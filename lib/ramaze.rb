@@ -84,7 +84,7 @@ module Ramaze
       if %w[Main Base Index].include?(name)
         mapping['/'] = c
       else
-        mapping["/#{name.downcase}"] = c
+        mapping["/#{name.downcase.split('::').last}"] = c
       end
       c.__send__(:send, :include, Ramaze::Controller)
     end
