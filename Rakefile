@@ -9,11 +9,11 @@ require 'fileutils'
 include FileUtils
 require File.join(File.dirname(__FILE__), 'lib', 'ramaze', 'version')
 
-AUTHOR = "you"
-EMAIL = "your contact email for bug fixes and info"
-DESCRIPTION = "description of gem"
+AUTHOR = "manveru"
+EMAIL = "m.fellinger@gmail.com"
+DESCRIPTION = "Ramaze tries to be a very simple Webframework without mysterious magic"
 HOMEPATH = 'http://ramaze.rubyforge.org'
-BIN_FILES = %w( )
+BIN_FILES = %w( ramaze )
 
 
 NAME = "ramaze"
