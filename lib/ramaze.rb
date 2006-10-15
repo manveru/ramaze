@@ -28,10 +28,10 @@ module Ramaze
 
     if Global.run_loose
       Thread.new do
-        init_adapter
+        Global.running_adapter = init_adapter
       end
     else
-      init_adapter.join
+      Global.running_adapter = init_adapter.join
     end
   end
 
