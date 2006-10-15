@@ -1,6 +1,7 @@
 $:.unshift File.dirname(File.expand_path(__FILE__))
 
 require 'ostruct'
+require 'pp'
 
 module Ramaze
   %w[
