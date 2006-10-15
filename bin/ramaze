@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require 'ramaze'
+
+runner = ARGV.find{|file| File.file?(file)} || 'main.rb'
+
+begin
+  require runner
+
+  # start it only if it isn't started already
+  # FIXME: find a nicer way :)
+  unless File.readlines(runner).find{|line| p line; line =~ /^(Ramaze\.)?(start|run)\s*$/}
+    Ramaze.start
+  end
+rescue LoadError
+  puts "Please give me a file as option to run, the default is main.rb"
+end
