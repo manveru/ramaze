@@ -1,0 +1,15 @@
+Sun Oct 15 13:44:54 JST 2006  manveru@weez-int.com
+  * added an ramaze executable
+  it can be found in bin/ramaze and you use it like that:
+  
+  $ cd example
+  $ ls
+    main.rb
+  $ ramaze
+  
+  which will in turn run the main.rb
+  you can give ramaze a parameter for the run-file, more sophisticated parameters are not included (yet)
+  
+
+Sat Oct 14 04:22:49 JST 2006  manveru@weez-int.com
+  * initialize
