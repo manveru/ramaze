@@ -1,3 +1,8 @@
 README for ramaze
 =================
 
+Ramaze is a very simple and straight-forward web-framework.
+The philosophy of it could be expressed in a mix of KISS and POLS, trying to make simple things simple and complex things possible.
+
+This of course is nothing new to anyone who knows some ruby, but is often forgotten in a chase for new functionality and features.
+Ramaze only tries to give you the ultimate tools, but you have to use them yourself to achive perfect custom-tailored results.
