@@ -7,5 +7,3 @@ class HelloController
     "Hello, World!"
   end
 end
-
-start
