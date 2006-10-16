@@ -1,10 +1,8 @@
 module Ramaze
   module Error
-    class NoAction < StandardError
-    end
-
-    class NoController < StandardError
-    end
+    class NoAction < StandardError; end
+    class NoController < StandardError; end
+    class WrongParameterCount < StandardError; end
 
     class Response
       def initialize error
@@ -16,7 +14,7 @@ module Ramaze
       end
 
       def out
-        g = Builder.new
+        g = Gestalt.new
         backtrace = @error.backtrace
         colors = []
         255.step(50, -(205 / backtrace.size)) do |color|

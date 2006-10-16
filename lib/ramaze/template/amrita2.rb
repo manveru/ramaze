@@ -1,18 +1,36 @@
 require 'amrita2/template'
 
-module Ramaze
-  module Template
-    class Amrita2 < Default
-      def render action, controller
-        template_file = 'templates/' + controller.class.name.gsub('Controller', '').downcase + '.html'
-        if File.exist?(template_file)
-          template = Amrita2::TemplateFile.new(template_file)
-          response = controller.send :response
-          controller.send :response_reset
-          template.expand(response.out, controller)
-          return response
+module Ramaze::Template
+  class Amrita2
+    class << self
+      def handle_request request, action, *params
+        p [:handle_request, request, action, params]
+        @template_root ||= 'template'
+        action = 'index' if action == '/'
+        p Global.mapping
+        template = @template_root / Global.mapping.invert[self] / action
+        template << '.html'
+        p template
+        out = ''
+        if File.exist?(template)
+          template = ::Amrita2::TemplateFile.new(template)
+          controller = self.new
+          p [out, template, controller]
+          template.expand(out, controller)
         end
       end
     end
+
+=begin
+    private
+
+    def initialize request
+      @request = request
+    end
+
+    def request request = @request
+      @request = request
+    end
+=end
   end
 end

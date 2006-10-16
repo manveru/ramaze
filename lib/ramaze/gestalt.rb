@@ -1,11 +1,13 @@
 class BlankSlate
+  alias __instance_eval__ instance_eval
   instance_methods.each{|m| undef_method m unless m =~ /^__/}
 end
 
 module Ramaze
   class Gestalt < BlankSlate
-    def initialize
+    def initialize &block
       @out = ''
+      __instance_eval__(&block) if block_given?
     end
 
     def method_missing meth, *args, &block

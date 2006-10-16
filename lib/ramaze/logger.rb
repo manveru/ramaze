@@ -1,15 +1,19 @@
 module Ramaze
   module Logger
     def debug *args
-      if Global.mode != :live
+      unless [:live, :stage].include?(Global.mode)
         log 'd', *args
       end
     end
 
     def error e
       if Global.mode != :live
-        log '! ', e.message
-        log '!', e.backtrace.join("\n! ")
+        if e.respond_to?(:message)
+          log '! ', e.message
+          log '!', e.backtrace.join("\n! ")
+        else
+          log '! ', e
+        end
       end
     end
 
@@ -26,5 +30,6 @@ module Ramaze
     end
 
     extend self
+    include self
   end
 end

@@ -1,22 +1,26 @@
 module Ramaze::Dispatcher
-  RESPONSE = Response.create
+  RESPONSE = Ramaze::Response.create
 
   class << self
     def handle orig_request, orig_response
       response = create_response(orig_request)
     rescue Object => e
-      error e
-      response = Error::Response.new(e)
+      if Ramaze::Error.constants.include?(e.class.name.split('::').last)
+        Ramaze::Logger.error e.message
+      else
+        Ramaze::Logger.error e
+      end
+      response = Ramaze::Error::Response.new(e)
     ensure
       response
     end
 
     def create_response orig_request
       response = RESPONSE.clear
-      request = Request.new(orig_request)
+      request = Ramaze::Request.new(orig_request)
 
-      path = request.request_path
-      debug "Request from #{request.remote_addr}: #{path}"
+      path = request.request_path.squeeze('/')
+      Ramaze::Logger.debug "Request from #{request.remote_addr}: #{path}"
 
       controller, action, params = resolve_controller(path)
       response.out = handle_controller(request, controller, action, params)
@@ -24,7 +28,7 @@ module Ramaze::Dispatcher
     end
 
     def resolve_action controller, paraction
-      info :resolve_action, controller, paraction
+      Ramaze::Logger.info :resolve_action, controller, paraction
 
       meths = controller.instance_methods(false)
 
@@ -46,24 +50,25 @@ module Ramaze::Dispatcher
           arity = controller.instance_method(current).arity
           params = (paraction - current.split('__'))
 
-          # (*foo) or (foo = :x) or it matches
-          if arity == -1 or arity == params.size
+          if params.size == arity
             return current, params
+          elsif arity < 0 and arity + params.size >= 0
+            return current, params
+          else
+            raise Ramaze::Error::WrongParameterCount
           end
         end
       end
-
-      return nil, []
     end
 
     def resolve_controller path
-      info :resolve_controller, path.inspect
+      Ramaze::Logger.info :resolve_controller, path.inspect
       track = path.split('/')
       controller = false
       action = false
       tracks = []
 
-      track.unshift ('/')
+      track.unshift '/'
 
       track.each do |atom|
         tracks << File.join(tracks.last.to_s, atom)
@@ -73,19 +78,19 @@ module Ramaze::Dispatcher
         current = tracks.pop
         paraction = path.gsub(/^#{current}/, '').split('/')
         paraction.delete('')
-        if controller = Global.mapping[current]
+        if controller = Ramaze::Global.mapping[current]
           action, params = resolve_action controller, paraction
         end
       end
 
-      raise Error::NoController, "No Controller found for #{path}" unless controller
-      raise Error::NoAction, "No Action found for #{path}" unless action
+      raise Ramaze::Error::NoController, "No Controller found for #{path}" unless controller
+      raise Ramaze::Error::NoAction, "No Action found for #{path}" unless action
 
       return controller, action, params
     end
 
     def handle_controller request, controller, action, params
-      if Global.cache
+      if Ramaze::Global.cache
         Global.out_cache ||= {}
 
         key = [controller.__id__, action, params]
@@ -93,23 +98,11 @@ module Ramaze::Dispatcher
 
         return out if out
 
-        debug "Compiling Action: #{action} #{params.join(', ')}"
+        Ramaze::Logger.debug "Compiling Action: #{action} #{params.join(', ')}"
         Global.out_cache[key] = request_controller request, controller, action, params
       else
-        request_controller request, controller, action, params
+        controller.handle_request(request, action, *params)
       end
-    end
-
-    def request_controller request, controller, action, params
-      controller.new(request).__send__(action, *params)
-    end
-
-    def resolve_template
-      false
-    end
-
-    def handle_template action, template
-      ''
     end
   end
 end

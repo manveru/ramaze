@@ -1,13 +1,5 @@
 module Ramaze::Template
-  module Default
-    def initialize request
-      @request = request
-      @out = request.out
-    end
-
-    def request
-      @request.out = @out
-      @request
-    end
+  %w[ Amrita2 ].each do |const|
+    autoload(const, "ramaze/template/#{const.downcase}")
   end
 end
