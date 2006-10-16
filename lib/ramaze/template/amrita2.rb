@@ -4,18 +4,14 @@ module Ramaze::Template
   class Amrita2
     class << self
       def handle_request request, action, *params
-        p [:handle_request, request, action, params]
+        p [self, :handle_request, request, action, params]
         @template_root ||= 'template'
-        action = 'index' if action == '/'
-        p Global.mapping
         template = @template_root / Global.mapping.invert[self] / action
         template << '.html'
-        p template
         out = ''
         if File.exist?(template)
           template = ::Amrita2::TemplateFile.new(template)
           controller = self.new
-          p [out, template, controller]
           template.expand(out, controller)
         end
       end

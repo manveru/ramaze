@@ -2,7 +2,7 @@ require 'test/test_helper'
 
 context "Simple Parameters" do
   module Ramaze
-    class SimpleController
+    class MainController < Ramaze::Template::Ramaze
       def index
         "index"
       end
@@ -42,38 +42,38 @@ context "Simple Parameters" do
   end
 
   specify "Should respond to no parameters given" do
-    request('/simple/no_params').should_equal 'no params'
+    request('/no_params').should_equal 'no params'
   end
 
   specify "Should respond to only / with the index" do
-    request('/simple').should_equal 'index'
+    request('/').should_equal 'index'
   end
 
   specify "index doesn't take parameters, so it should fail with some" do
-    request('/simple/bar').should_match /WrongParameterCount/
+    request('/bar').should_match /WrongParameterCount/
   end
 
   specify "action that takes a single param" do
-    request('/simple/single_param/foo').should_equal 'single param (foo)'
+    request('/single_param/foo').should_equal 'single param (foo)'
   end
 
   specify "action that takes two params" do
-    request('/simple/double_param/foo/bar').should_equal 'double param (foo, bar)'
+    request('/double_param/foo/bar').should_equal 'double param (foo, bar)'
   end
 
   specify "action that takes two params but we give only one" do
-    request('/simple/double_param/foo').should_match /WrongParameterCount/
+    request('/double_param/foo').should_match /WrongParameterCount/
   end
 
   specify "action that takes all params" do
-    request('/simple/all_params/foo/bar/foobar').should_equal 'all params (foo, bar, foobar)'
+    request('/all_params/foo/bar/foobar').should_equal 'all params (foo, bar, foobar)'
   end
 
   specify "action that takes all params but needs at least one" do
-    request('/simple/at_least_one/foo/bar/foobar').should_equal 'at least one (foo, bar, foobar)'
+    request('/at_least_one/foo/bar/foobar').should_equal 'at least one (foo, bar, foobar)'
   end
 
   specify "action that takes all params but needs at least one (not given here)" do
-    request('/simple/at_least_one').should_match /WrongParameterCount/
+    request('/at_least_one').should_match /WrongParameterCount/
   end
 end

@@ -9,7 +9,7 @@ begin
 
   # start it only if it isn't started already
   # FIXME: find a nicer way :)
-  unless File.readlines(runner).find{|line| p line; line =~ /^(Ramaze\.)?(start|run)\s*$/}
+  unless File.readlines(runner).find{|line| line =~ /^(Ramaze\.)?(start|run)\s*$/}
     Ramaze.start
   end
 rescue LoadError

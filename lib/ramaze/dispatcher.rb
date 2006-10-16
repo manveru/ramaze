@@ -1,9 +1,11 @@
+require 'timeout'
+
 module Ramaze::Dispatcher
   RESPONSE = Ramaze::Response.create
 
   class << self
     def handle orig_request, orig_response
-      response = create_response(orig_request)
+      response = create_response(orig_response, orig_request)
     rescue Object => e
       if Ramaze::Error.constants.include?(e.class.name.split('::').last)
         Ramaze::Logger.error e.message
@@ -15,15 +17,22 @@ module Ramaze::Dispatcher
       response
     end
 
-    def create_response orig_request
+    def create_response orig_response, orig_request
       response = RESPONSE.clear
       request = Ramaze::Request.new(orig_request)
 
       path = request.request_path.squeeze('/')
       Ramaze::Logger.debug "Request from #{request.remote_addr}: #{path}"
 
-      controller, action, params = resolve_controller(path)
-      response.out = handle_controller(request, controller, action, params)
+      the_path = $:.map{|way| File.join(way, 'public', path) }
+
+      if file = the_path.find{|way| File.exist?(way) and File.file?(way)}
+        response.head['Content-Type'] = ''
+        response.out = File.read(file)
+      else
+        controller, action, params = resolve_controller(path)
+        response.out = handle_controller(request, controller, action, params)
+      end
       response
     end
 

@@ -44,7 +44,7 @@ module Kernel
 
         if include_features
           feature_files = $LOADED_FEATURES.collect{ |feature|
-            $LOAD_PATH.map{ |lp| file = File.join(lp, feature) }
+            $LOAD_PATH.map{ |lp| file = File.expand_path(File.join(lp, feature)) }
           }.flatten.select{|f| File.file?(f)}
 
           feature_files.each do |file|

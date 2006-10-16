@@ -45,6 +45,7 @@ module Ramaze
       :mode         => :debug,
       :run_loose    => false,
       :cache        => false,
+      :tidy         => false,
     }
 
     defaults.merge(options).each do |key, value|
@@ -80,7 +81,7 @@ module Ramaze
     }
     mapping = {}
     Global.controllers.each do |c|
-      name = c.to_s.gsub('Controller', '')
+      name = c.to_s.gsub('Controller', '').split('::').last
       if %w[Main Base Index].include?(name)
         mapping['/'] = c
       else
