@@ -7,12 +7,17 @@ module Ramaze::Dispatcher
     def handle orig_request, orig_response
       response = create_response(orig_response, orig_request)
     rescue Object => e
-      if Ramaze::Error.constants.include?(e.class.name.split('::').last)
-        Ramaze::Logger.error e.message
+      if Ramaze::Global.error_page
+        if Ramaze::Error.constants.include?(e.class.name.split('::').last)
+          Ramaze::Logger.error e.message
+        else
+          Ramaze::Logger.error e
+        end
+        response = Ramaze::Error::Response.new(e)
       else
         Ramaze::Logger.error e
+        response = RESPONSE.clear
       end
-      response = Ramaze::Error::Response.new(e)
     ensure
       response
     end

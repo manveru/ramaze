@@ -3,7 +3,7 @@ module Ramaze
     attr_accessor :request
     def initialize request = {}
       @request = request
-      parse_query
+      parse_queries
     end
 
     def method_missing meth, *args, &block
@@ -14,18 +14,34 @@ module Ramaze
       end
     end
 
-    def parse_query
-      @query = {}
-      query_string.split('&').each do |pair|
-        key, value = pair.split('=')
-        @query[key] = value
-      end
-    rescue NoMethodError => ex
-      @query
+    def parse_queries
+      @get_query  = query_parse query_string rescue ''
+      @post_query = query_parse body.read rescue ''
     end
 
-    def query
-      @query
+    def query_parse str
+      tmp = {}
+      str.split('&').each do |pair|
+        key, value = pair.split('=')
+        tmp[key] = value
+      end
+      tmp
+    end
+
+    def [](key)
+      @post_query[key]
+    end
+
+    def []=(key, value)
+      @post_query[key] = value
+    end
+
+    def post_query
+      @post_query
+    end
+
+    def get_query
+      @get_query
     end
 
     def post?

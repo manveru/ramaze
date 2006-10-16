@@ -52,25 +52,25 @@ module Ramaze
                   end
                 end
                 backtrace.each do |lines, hash, file, lineno, meth|
-                  tr(:class => "line_#{hash}", :style => "background:rgb(#{colors.shift},70,60);") do
+                  tr(:id => "line_#{hash}", :style => "background:rgb(#{colors.shift},70,60);") do
                     [ file, lineno, meth ].each{|s| td{ s }}
                   end
-                  tr(:class => "code_#{hash}", :style => 'display:none') do
+                  tr(:id => "code_#{hash}", :style => 'display:none') do
                     td(:colspan => 3) do
                       div(:style => 'overflow:hidden;width:100%;') do
-                      table(:style => 'background:#ddd;width:100%') do
-                        tr{ td(:colspan => 2, :style => 'text-align:center'){ "vim #{file} +#{lineno}" } }
-                        lines.each do |llineno, lcode, lcurrent|
-                          style = lcurrent ? {:style => 'background:#faa;'} : {}
-                          tr(style) do
-                            td{ llineno.to_s }
-                            td{ pre{ lcode } }
-                          end # tr
-                        end # lines.each
-                      end # table
-                      end
+                        table(:style => 'background:#ddd;width:100%') do
+                          tr{ td(:colspan => 2, :style => 'text-align:center'){ "vim #{file} +#{lineno}" } }
+                          lines.each do |llineno, lcode, lcurrent|
+                            style = lcurrent ? {:style => 'background:#faa;'} : {}
+                            tr(style) do
+                              td{ llineno.to_s }
+                              td{ pre{ lcode } }
+                            end # tr
+                          end # lines.each
+                        end # table
+                      end # div
                       script(:type => 'text/javascript') do
-                        %{ $("tr.line_#{hash}").click(function(){$("tr.code_#{hash}").toggle()}); }
+                        %{ $("tr#line_#{hash}").click(function(){$("tr#code_#{hash}").toggle("fade")}); }
                       end # script
                     end # td
                   end # tr
