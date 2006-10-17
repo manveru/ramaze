@@ -46,6 +46,7 @@ module Ramaze
       :run_loose    => false,
       :cache        => false,
       :tidy         => false,
+      :error_page   => true,
     }
 
     defaults.merge(options).each do |key, value|
