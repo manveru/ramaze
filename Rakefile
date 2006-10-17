@@ -11,7 +11,7 @@ require File.join(File.dirname(__FILE__), 'lib', 'ramaze', 'version')
 
 AUTHOR = "manveru"
 EMAIL = "m.fellinger@gmail.com"
-DESCRIPTION = "Ramaze tries to be a very simple Webframework without mysterious magic"
+DESCRIPTION = "Ramaze tries to be a very simple Webframework without the voodoo"
 HOMEPATH = 'http://ramaze.rubyforge.org'
 BIN_FILES = %w( ramaze )
 
