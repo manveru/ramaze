@@ -1,3 +1,63 @@
+Tue Oct 17 09:51:30 JST 2006  manveru@weez-int.com
+  tagged Ramaze 0.0.2
+
+Tue Oct 17 09:50:51 JST 2006  manveru@weez-int.com
+  * tagged 0.0.2 - next version will support sessions (hopefully :)
+
+Tue Oct 17 09:50:36 JST 2006  manveru@weez-int.com
+  * updated the readmy and rakefile-description a bit
+
+Tue Oct 17 09:50:13 JST 2006  manveru@weez-int.com
+  * added Ramaze::VERSION
+
+Tue Oct 17 09:47:00 JST 2006  manveru@weez-int.com
+  * added a SIGINT-trap to cleanly shutdown
+
+Tue Oct 17 09:29:31 JST 2006  manveru@weez-int.com
+  * added test/tc_request [passes]
+
+Tue Oct 17 09:29:00 JST 2006  manveru@weez-int.com
+  * further improvment to the testcase-runner and setting default Global.error_page to true
+
+Mon Oct 16 20:18:33 JST 2006  manveru@weez-int.com
+  * and everything passes now...
+
+Mon Oct 16 17:52:59 JST 2006  manveru@weez-int.com
+  * patching the test-runner to shut down ramaze before it is run again from the next testcase...
+
+Mon Oct 16 17:48:09 JST 2006  manveru@weez-int.com
+  * huuuuge patch, perfect error-handling, better automagic controller-mapping, superb tidy-functionlity, even the params-testcase passes again :P - to turn on tidy, set Global.tidy to true
+
+Mon Oct 16 11:39:42 JST 2006  manveru@weez-int.com
+  * added snippets for String#/
+
+Mon Oct 16 11:38:47 JST 2006  manveru@weez-int.com
+  * added caller_lines in the snippets
+
+Mon Oct 16 10:08:51 JST 2006  manveru@weez-int.com
+  * a new snapshot with some more tests and lots of bugs fixed... also working now on the pluggable templating again.
+
+Sun Oct 15 13:53:32 JST 2006  manveru@weez-int.com
+  * this fixes a bug that lead to problems if you don't define a mapping
+
+Sun Oct 15 13:52:19 JST 2006  manveru@weez-int.com
+  * this introduces a new Global.running_adapter, for later easy access outside of Ramaze - should add some methods to check if the adapter is running and the like
+
+Sun Oct 15 13:51:46 JST 2006  manveru@weez-int.com
+  * by default, require 'pp', i think it's far too useful not to be available all the time
+
+Sun Oct 15 13:50:47 JST 2006  manveru@weez-int.com
+  * some more info in the CHANGELOG, this will only be updated in releases from now on, the information comes from darcs anyway
+
+Sun Oct 15 13:49:10 JST 2006  manveru@weez-int.com
+  * changed hello.rb to fit in with the use of the ramaze-binary
+
+Sun Oct 15 13:48:30 JST 2006  manveru@weez-int.com
+  * updated the Rakefile to prodcue some more useful stuff :) - also knows about the executable 'ramaze' now
+
+Sun Oct 15 13:47:20 JST 2006  manveru@weez-int.com
+  * updated the README a bit, more to come
+
 Sun Oct 15 13:44:54 JST 2006  manveru@weez-int.com
   * added an ramaze executable
   it can be found in bin/ramaze and you use it like that:
