@@ -26,6 +26,12 @@ module Ramaze
 
     info :global, Global
 
+    trap('SIGINT') do
+      info "Shutting down Ramaze"
+      Global.running_adapter.kill if Global.running_adapter
+      exit
+    end
+
     if Global.run_loose
       Thread.new do
         Global.running_adapter = init_adapter
