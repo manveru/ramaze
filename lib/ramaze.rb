@@ -3,6 +3,8 @@ $:.unshift File.dirname(File.expand_path(__FILE__))
 require 'ostruct'
 require 'pp'
 
+require 'ramaze/version'
+
 module Ramaze
   %w[
     Error Logger Global Template Controller Gestalt
@@ -12,7 +14,7 @@ module Ramaze
   include Logger
 
   def start options = {}
-    info "Starting up Ramaze"
+    info "Starting up Ramaze (Version #{VERSION})"
 
     require 'ramaze/snippets'
 
