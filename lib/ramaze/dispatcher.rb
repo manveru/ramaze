@@ -28,7 +28,7 @@ module Ramaze::Dispatcher
       path = request.request_path.squeeze('/')
       Ramaze::Logger.debug "Request from #{request.remote_addr}: #{path}"
 
-      the_path = $:.map{|way| File.join(way, 'public', path) }
+      the_path = $:.map{|way| (way/'public'/path) }
 
       if file = the_path.find{|way| File.exist?(way) and File.file?(way)}
         response.head['Content-Type'] = ''
@@ -86,7 +86,7 @@ module Ramaze::Dispatcher
       track.unshift '/'
 
       track.each do |atom|
-        tracks << File.join(tracks.last.to_s, atom)
+        tracks << (tracks.last.to_s / atom)
       end
 
       until controller and action or tracks.empty?
