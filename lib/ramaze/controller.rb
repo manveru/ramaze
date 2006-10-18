@@ -1,11 +1,11 @@
 module Ramaze
   module Controller
-    def initialize request
-      @request = request
+    def request
+      Thread.current[:request]
     end
 
-    def request
-      @request
+    def session
+      Thread.current[:session]
     end
   end
 end
