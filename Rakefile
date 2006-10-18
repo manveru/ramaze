@@ -77,3 +77,10 @@ end
 task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
+
+task :rcov do
+  basedir = File.dirname(__FILE__)
+  Dir["#{basedir}/test/tc_*.rb"].each do |file|
+    sh %{rcov #{file}}
+  end
+end
