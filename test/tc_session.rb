@@ -24,7 +24,6 @@ context "usual Session" do
   class Context
     def initialize(url = '/')
       @cookie = open(url).meta['set-cookie']
-      p [:initialized_with, :@cookie, @cookie]
     end
 
     def open url, hash = {}
