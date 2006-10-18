@@ -8,7 +8,7 @@ require 'ramaze/version'
 module Ramaze
   %w[
     Error Logger Global Template Controller Gestalt
-    Request Response Dispatcher Adapter Session
+    Request Response Dispatcher Session
   ].each{ |const| autoload(const, "ramaze/#{const.downcase}") }
 
   include Logger
@@ -34,13 +34,7 @@ module Ramaze
       exit
     end
 
-    if Global.run_loose
-      Thread.new do
-        Global.running_adapter = init_adapter
-      end
-    else
-      Global.running_adapter = init_adapter.join
-    end
+    init_adapter
   end
 
   alias run start
@@ -114,6 +108,16 @@ module Ramaze
   end
 
   def init_adapter
+    if Global.run_loose
+      Thread.new do
+        Global.running_adapter = run_adapter
+      end
+    else
+      Global.running_adapter = run_adapter.join
+    end
+  end
+
+  def run_adapter
     adapter, host, port = Global.values_at(:adapter, :host, :port)
     require "ramaze/adapter/#{adapter}".downcase
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
@@ -122,6 +126,12 @@ module Ramaze
     info "we're running: #{host}:#{port}"
 
     adapter_klass.start host, port
+  rescue => ex
+    puts ex
+    to_kill = Thread.list.reject{|t| t == Thread.current or t.dead?}
+    puts "joining #{to_kill.size} threads and retry"
+    to_kill.each{|t| t.join}
+    retry
   end
 
   extend self
