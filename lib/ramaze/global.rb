@@ -6,27 +6,13 @@ module Ramaze
     @@table = {}
 
     class << self
-      def initialize(hash=nil)
+      def create(hash=nil)
         if hash
           for k,v in hash
             @@table[k.to_sym] = v
             new_ostruct_member(k)
           end
         end
-      end
-
-      # Duplicate an OpenStruct object members. 
-      def initialize_copy(orig)
-        super
-        @@table = @@table.dup
-      end
-
-      def marshal_dump
-        @@table
-      end
-      def marshal_load(x)
-        @@table = x
-        @@table.each_key{|key| new_ostruct_member(key)}
       end
 
       def new_ostruct_member(name)
@@ -42,15 +28,10 @@ module Ramaze
       mname = mid.id2name
       len = args.length
       if mname =~ /=$/
-        if len != 1
-          raise ArgumentError, "wrong number of arguments (#{len} for 1)", caller(1)
-        end
-      if self.frozen?
-        raise TypeError, "can't modify frozen #{self.class}", caller(1)
-      end
-      mname.chop!
-      self.new_ostruct_member(mname)
-      @@table[mname.intern] = args[0]
+        mname.chop!
+        length
+        self.new_ostruct_member(mname)
+        @@table[mname.intern] = args[0]
       elsif len == 0
         @@table[mid]
       else
@@ -71,7 +52,7 @@ module Ramaze
     # Returns a string containing a detailed summary of the keys and values.
     #
     def inspect
-      str = "#<#{self.class}"
+      str = "#<Global"
 
       Thread.current[InspectKey] ||= []
       if Thread.current[InspectKey].include?(self) then
