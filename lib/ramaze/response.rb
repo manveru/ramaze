@@ -17,9 +17,5 @@ module Ramaze
       }
       self
     end
-
-    def inspect
-    "<Response #{__id__}>"
-    end
   end
 end

@@ -2,7 +2,7 @@ module Ramaze::Template
   class Ramaze
     class << self
       def handle_request request, action, *params
-        controller = self.new(request)
+        controller = self.new
         controller.instance_eval do
           out controller.__send__(action, *params).to_s
           template_file = "templates/#{action}.html"

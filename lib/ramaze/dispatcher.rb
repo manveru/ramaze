@@ -5,7 +5,7 @@ module Ramaze::Dispatcher
 
   class << self
     def handle orig_request, orig_response
-      response = create_response(orig_response, orig_request)
+      return create_response(orig_response, orig_request)
     rescue Object => e
       if Ramaze::Global.error_page
         if Ramaze::Error.constants.include?(e.class.name.split('::').last)
@@ -13,18 +13,17 @@ module Ramaze::Dispatcher
         else
           Ramaze::Logger.error e
         end
-        response = Ramaze::Error::Response.new(e)
+        return Ramaze::Error::Response.new(e)
       else
         Ramaze::Logger.error e
-        response = RESPONSE.clear
+        return RESPONSE.clear
       end
-    ensure
-      response
     end
 
     def create_response orig_response, orig_request
-      response = RESPONSE.clear
-      request = Ramaze::Request.new(orig_request)
+      response = Thread.current[:response] = RESPONSE.clear
+      request  = Thread.current[:request]  = Ramaze::Request.new(orig_request)
+      session  = Thread.current[:session]  = Ramaze::Session.new(request)
 
       path = request.request_path.squeeze('/')
       Ramaze::Logger.debug "Request from #{request.remote_addr}: #{path}"
@@ -37,7 +36,9 @@ module Ramaze::Dispatcher
       else
         controller, action, params = resolve_controller(path)
         response.out = handle_controller(request, controller, action, params)
+        response.head['Set-Cookie'] = session.export
       end
+
       response
     end
 
