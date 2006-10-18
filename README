@@ -6,3 +6,29 @@ The philosophy of it could be expressed in a mix of KISS and POLS, trying to mak
 
 This of course is nothing new to anyone who knows some ruby, but is often forgotten in a chase for new functionality and features.
 Ramaze only tries to give you the ultimate tools, but you have to use them yourself to achive perfect custom-tailored results.
+
+At the moment Ramaze offers following features:
+
+- Adapters
+-- Mongrel
+
+- Templates
+-- Ramaze
+-- Amrita2
+
+- Various
+-- Sessions
+
+-- simple request/response handling
+
+-- wide configurability via the Global system
+   You can just add your own options via Global.your_option = :foo
+   The defaults and possible values:
+      Global.adapter    ||= :mongrel  # uses the class from Adapter::
+      Global.host       ||= '0.0.0.0' # restrict access to a specific host
+      Global.port       ||= 7000      # adapter runs on that port
+      Global.mode       ||= :debug    # :debug|:stage|:live - atm only difference in verbosity
+      Global.run_loose  ||= false     # detaches Ramaze to run in the background (used for testcases)
+      Global.cache      ||= false     # caches requests to the controller based on request-values
+      Global.tidy       ||= false     # run tidy over the generated html if Content-Type is text/html
+      Global.error_page ||= true      # display an error-page with backtrace on errors
