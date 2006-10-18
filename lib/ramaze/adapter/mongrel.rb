@@ -16,20 +16,28 @@ module Ramaze::Adapter
     def respond orig_response, response
       if response
         orig_response.start(200) do |head, out|
-          if response.respond_to? :head
-            response.head.each do |key, val|
-              head[key] = val if head.respond_to? :[]
-            end
-          end
-          if response.respond_to? :out
-            if Ramaze::Global.tidy and (response.head['Content-Type'] == 'text/html' ? true : false)
-              out << tidy(response.out)
-            else
-              out << response.out
-            end
-          end
+          set_head(head, response)
+          set_out(out, response)
         end
       end
+    end
+
+    def set_out out, response
+      if Ramaze::Global.tidy and (response.head['Content-Type'] == 'text/html' ? true : false)
+        out << tidy(response.out)
+      else
+        out << response.out
+      end
+    rescue
+      error $!
+    end
+
+    def set_head head, response
+      response.head.each do |key, val|
+        head[key] = val
+      end
+    rescue
+      error $!
     end
 
     def tidy out
