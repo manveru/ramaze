@@ -1,25 +1,23 @@
 require 'test/test_helper'
 
-context "usual Session" do
-  module Ramaze
-    class MainController < Template::Ramaze
-      def index
-        session.inspect
-      end
+include Ramaze
 
-      def set_session key, val
-        session[key] = val
-        index
-      end
-    end
-
-    Global.error_page = false
-    Global.run_loose = true
-    Global.mode = :live
-
-    start
-    sleep 0.500
+class TCSessionController < Template::Ramaze
+  def index
+    session.inspect
   end
+
+  def set_session key, val
+    session[key] = val
+    index
+  end
+end
+
+context "usual Session" do
+
+  start
+  Global.mapping['/'] = TCSessionController
+  sleep 1
 
   class Context
     def initialize(url = '/')
@@ -27,7 +25,7 @@ context "usual Session" do
     end
 
     def open url, hash = {}
-      Kernel.open("http://localhost:#{Ramaze::Global.port}#{url}", hash)
+      Kernel.open("http://localhost:#{Global.port}#{url}", hash)
     end
 
     def request opt
@@ -36,6 +34,9 @@ context "usual Session" do
 
     def erequest opt
       eval(request(opt))
+    rescue Object => ex
+      puts ex
+      {}
     end
   end
 

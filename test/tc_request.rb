@@ -1,12 +1,12 @@
 require 'test/test_helper'
 
-include Ramaze
-
 require 'net/http'
 require 'open-uri'
 require 'uri'
 
-class MainController < Template::Ramaze
+include Ramaze
+
+class TCRequestController < Template::Ramaze
   def is_post
     request.post?
   end
@@ -28,12 +28,12 @@ class MainController < Template::Ramaze
   end
 end
 
-Global.run_loose = true
-Global.mode = :live
-start
-sleep 0.5
-
 context "POST" do
+
+  start
+  Global.mapping['/'] = TCRequestController
+  sleep 1
+
   def request req, params = {}
     uri = URI.parse("http://localhost:7000#{req}")
     res = Net::HTTP.post_form(uri, params)
@@ -54,6 +54,11 @@ context "POST" do
 end
 
 context "GET" do
+
+  start
+  Global.mapping['/'] = TCRequestController
+  sleep 1
+
   def request req, params = {}
     open("http://localhost:#{Ramaze::Global.port}#{req}").read
   end

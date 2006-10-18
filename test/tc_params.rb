@@ -1,41 +1,38 @@
 require 'test/test_helper'
 
-context "Simple Parameters" do
-  module Ramaze
-    class MainController < Ramaze::Template::Ramaze
-      def index
-        "index"
-      end
+include Ramaze
 
-      def no_params
-        "no params"
-      end
-
-      def single_param param
-        "single param (#{param})"
-      end
-
-      def double_param param1, param2
-        "double param (#{param1}, #{param2})"
-      end
-
-      def all_params *params
-        "all params (#{params.join(', ')})"
-      end
-
-      def at_least_one param, *params
-        "at least one (#{param}, #{params.join(', ')})"
-      end
-    end
-
-    Global.run_loose = true
-    Global.mode = :live
-
-    start
-    sleep 0.5
+class TCParamsController < Ramaze::Template::Ramaze
+  def index
+    "index"
   end
 
-  url = "http://localhost:7000"
+  def no_params
+    "no params"
+  end
+
+  def single_param param
+    "single param (#{param})"
+  end
+
+  def double_param param1, param2
+    "double param (#{param1}, #{param2})"
+  end
+
+  def all_params *params
+    "all params (#{params.join(', ')})"
+  end
+
+  def at_least_one param, *params
+    "at least one (#{param}, #{params.join(', ')})"
+  end
+end
+
+context "Simple Parameters" do
+
+  start
+  Global.mapping['/'] = TCParamsController
+  sleep 1
 
   def request opt
     open("http://localhost:#{Ramaze::Global.port}/#{opt}").read
@@ -49,7 +46,7 @@ context "Simple Parameters" do
     request('/').should_equal 'index'
   end
 
-  specify "index doesn't take parameters, so it should fail with some" do
+  specify "call /bar though index doesn't take params" do
     request('/bar').should_match /WrongParameterCount/
   end
 
