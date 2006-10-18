@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module Ramaze
   class Response < OpenStruct
     class << self
@@ -16,6 +18,10 @@ module Ramaze
         :head => {'Content-Type' => 'text/html'}
       }
       self
+    end
+
+    def to_s
+      out
     end
   end
 end

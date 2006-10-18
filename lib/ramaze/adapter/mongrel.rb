@@ -1,7 +1,11 @@
 require 'rubygems'
 require 'mongrel'
 
+require 'ramaze/tool/tidy'
+
 module Ramaze::Adapter
+  include Ramaze::Tool::Tidy
+
   class Mongrel < ::Mongrel::HttpHandler
     def self.start host, port
       h = ::Mongrel::HttpServer.new host, port
@@ -28,40 +32,11 @@ module Ramaze::Adapter
       else
         out << response.out
       end
-    rescue
-      error $!
     end
 
     def set_head head, response
       response.head.each do |key, val|
         head[key] = val
-      end
-    rescue
-      error $!
-    end
-
-    def tidy out
-      require 'tidy'
-
-      Tidy.path = `locate libtidy.so`.strip
-
-      html = out
-
-      options = {
-        :output_xml => true,
-        :input_encoding => :utf8,
-        :output_encoding => :utf8,
-        :indent_spaces => 2,
-        :indent => :auto,
-        :markup => :yes,
-        :wrap => 500
-      }
-
-      Tidy.open(:show_warnings => true) do |tidy|
-        options.each do |key, value|
-          tidy.options.send("#{key}=", value.to_s)
-        end
-        tidy.clean(html)
       end
     end
   end

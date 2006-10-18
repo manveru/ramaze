@@ -128,9 +128,9 @@ module Ramaze
     adapter_klass.start host, port
   rescue => ex
     puts ex
-    to_kill = Thread.list.reject{|t| t == Thread.current or t.dead?}
-    puts "joining #{to_kill.size} threads and retry"
-    to_kill.each{|t| t.join}
+    join = Thread.list.reject{|t| t == Thread.current or t.dead?}
+    puts "joining #{join.size} threads and retry"
+    join.each{|t| t.join }
     retry
   end
 

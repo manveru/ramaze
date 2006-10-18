@@ -11,16 +11,20 @@ module Ramaze
       @session_id = parse(request)['_session_id']
     end
 
+    def session_id
+      @session_id ||= hash
+    end
+
     def current
-      sessions[@session_id]
+      sessions[session_id] ||= {}
     end
 
     def sessions
-      @@sessions ||= Hash.new{|h,k| h[k] = {}}
+      @@sessions ||= {}
     end
 
     def parse request
-      cookie = request.http_cookie rescue request.http_set_cookie rescue ''
+      cookie = (request.http_cookie rescue request.http_set_cookie rescue '') || ''
       cookie.split('; ').inject({}) do |s,v| 
         key, value = v.split('=')
         s.merge key.strip => value
@@ -43,7 +47,7 @@ module Ramaze
     def export
       # do not use #{} here, that would evaluate the id, which is dangerous
       # since given by the user ;)
-      "_session_id=" + @session_id
+      "_session_id=" + session_id.to_s
     end
 
     def hash
