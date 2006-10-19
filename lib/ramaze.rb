@@ -28,16 +28,46 @@ module Ramaze
 
     info :global, Global
 
-    trap('SIGINT') do
-      info "Shutting down Ramaze"
-      Global.running_adapter.kill if Global.running_adapter
-      exit
-    end
+    trap(Global.shutdown_trap){ shutdown } rescue nil
 
     init_adapter
   end
 
   alias run start
+
+  # A simple and clean way to shutdown Ramaze, use this
+
+  def shutdown
+    info "Shutting down Ramaze"
+    Global.running_adapter.kill if Global.running_adapter
+    exit
+  end
+
+  # Setup the variables for Global
+  # This method can take a hash that maybe be used to override the defaults
+  # That functionality is not used at the moment anywhere in ramaze.
+  # Example:
+  #   Ramaze.setup_global :adapter => :mongrel, :mode => :live, :port => 80
+  #
+  # The default values:
+  #   uses the class from Adapter:: (is required automatically)
+  #       Global.adapter #=> :mongrel
+  #   restrict access to a specific host
+  #       Global.host #=> '0.0.0.0'
+  #   adapter runs on that port
+  #       Global.port #=> 7000
+  #   the running/debugging-mode (:debug|:stage|:live) - atm only differ in verbosity
+  #       Global.mode #=> :debug
+  #   detaches Ramaze to run in the background (used for testcases)
+  #       Global.run_loose #=> false
+  #   caches requests to the controller based on request-values (action/params)
+  #       Global.cache #=> false
+  #   run tidy over the generated html if Content-Type is text/html
+  #       Global.tidy #=> false
+  #   display an error-page with backtrace on errors (empty page otherwise)
+  #       Global.error_page    #=> true
+  #   trap this signal for clean shutdown (calls Ramaze.shutdown)
+  #       Global.shutdown_trap #=> 'SIGINT'  
 
   def setup_global options = {}
     defaults = {
