@@ -84,3 +84,8 @@ task :rcov do
     sh %{rcov #{file}}
   end
 end
+
+task :rdoc do
+  dirs = %w[ lib doc ].join(' ')
+  sh %{rdoc --op rdoc -d --main doc/README #{dirs}}
+end
