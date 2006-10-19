@@ -13,6 +13,15 @@ module Ramaze
 
   include Logger
 
+  # This initializes all the other stuff, Controller, Adapter and Global
+  # which in turn kickstart Ramaze into duty.
+  # additionally it starts up the autoreload , which reloads all the stuff every
+  # second in case it has changed.
+  # please note that Ramaze will catch SIGINT (^C) and kill the running adapter
+  # at that event, this provides a nice and clean way to shut down. shutdown
+  #
+  # TODO: add an option to control how often the autoreload runs.
+
   def start options = {}
     info "Starting up Ramaze (Version #{VERSION})"
 
@@ -88,7 +97,8 @@ module Ramaze
 
   # first, search for all the classes that end with 'Controller'
   # like FooController, BarController and so on
-  # then we use the classes within Ramaze::Controller
+  # then we search the classes within Ramaze::Controller as well
+
   def find_controllers
     Global.controllers ||= []
     controllers = []
@@ -108,6 +118,10 @@ module Ramaze
 
     info "Found following Controllers: #{Global.controllers.inspect}"
   end
+
+  # Setup the Controllers
+  # This autogenerates a mapping and also includes Ramaze::Controller
+  # in every found Controller.
 
   def setup_controllers
     controller = Global.controllers.find{|c|
@@ -137,6 +151,14 @@ module Ramaze
     end
   end
 
+  # Finally decide wether to use a main-thread to run Ramaze
+  # so that further stuff can be done outside (very useful for testcases)
+  # or we run it in standalone-mode, which is the default and waits
+  # until the adapter is finished. (hopefully never ;)
+  # change this behaviour by setting Global.run_loose = (true|false)
+  # In every case the running adapter-thread is assigned to
+  # Global.running_adapter
+
   def init_adapter
     if Global.run_loose
       Thread.new do
@@ -146,6 +168,12 @@ module Ramaze
       Global.running_adapter = run_adapter.join
     end
   end
+
+  # This first picks the right adapter according to Global.adapter
+  # It also looks for Global.host and Global.port and passes it on
+  # to the class-method of the adapter ::start
+  # It rescues StandardException and does retry after joining all
+  # still running threads (except for the current thread)
 
   def run_adapter
     adapter, host, port = Global.values_at(:adapter, :host, :port)

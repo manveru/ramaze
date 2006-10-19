@@ -1,4 +1,11 @@
 module Kernel
+
+  # Example:
+  #   aquire 'foo/bar/*'
+  # requires all files inside foo/bar - recursive
+  # can take multiple parameters, it's mainly used to require all the
+  # snippets.
+
   def aquire *files
     files.each do |file|
       require file if %w(rb so).any?{|f| File.file?("#{file}.#{f}")}
