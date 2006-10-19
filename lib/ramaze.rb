@@ -3,7 +3,7 @@ $:.unshift File.dirname(File.expand_path(__FILE__))
 require 'ostruct'
 require 'pp'
 
-require 'ramaze/version'
+# The main namespace for Ramaze
 
 module Ramaze
   %w[
@@ -119,7 +119,7 @@ module Ramaze
 
   def run_adapter
     adapter, host, port = Global.values_at(:adapter, :host, :port)
-    require "ramaze/adapter/#{adapter}".downcase
+    require "ramaze/adapter" / adapter.to_s.downcase
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
 
     info "Found adapter: #{adapter_klass}"

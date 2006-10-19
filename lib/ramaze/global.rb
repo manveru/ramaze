@@ -20,7 +20,7 @@ module Ramaze
         unless self.respond_to?(name)
           meta = class << self; self; end
         meta.send(:define_method, name) { @@table[name] }
-        meta.send(:define_method, :"#{name}=") { |x| @@table[name] = x }
+        meta.send(:define_method, "#{name}=") { |x| @@table[name] = x }
       end
     end
 

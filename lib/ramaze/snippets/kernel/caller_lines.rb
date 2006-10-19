@@ -19,7 +19,7 @@ module Kernel
 
     log.each_with_index do |line, index|
       index = index + first + 1
-      area << [index, line, index == current + 1]
+      area << [index, line.chomp, index == current + 1]
     end
 
     area
