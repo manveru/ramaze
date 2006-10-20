@@ -15,6 +15,7 @@ DESCRIPTION = "Ramaze tries to be a very simple Webframework without the voodoo"
 HOMEPATH = 'http://ramaze.rubyforge.org'
 BIN_FILES = %w( ramaze )
 
+BASEDIR = File.dirname(__FILE__)
 
 NAME = "ramaze"
 REV = File.read(".svn/entries")[/committed-rev="(d+)"/, 1] rescue nil
@@ -79,8 +80,7 @@ task :uninstall => [:clean] do
 end
 
 task :rcov do
-  basedir = File.dirname(__FILE__)
-  Dir["#{basedir}/test/tc_*.rb"].each do |file|
+  Dir[File.join(BASEDIR, 'test', 'tc_*.rb')].each do |file|
     sh %{rcov #{file}}
   end
 end
@@ -88,4 +88,36 @@ end
 task :rdoc do
   dirs = %w[ lib doc ].join(' ')
   sh %{rdoc --op rdoc -d --main doc/README #{dirs}}
+end
+
+task :todo do
+  files = Dir[File.join(BASEDIR, '{lib,test}', '**/*.rb')]
+
+  files.each do |file|
+    lastline = todo = comment = long_comment = false
+
+    File.readlines(file).each_with_index do |line, lineno|
+      lineno += 1
+      comment = line =~ /^\s*?#.*?$/ 
+      long_comment = line =~ /^=begin/
+      long_comment = line =~ /^=end/
+      todo = true if line =~ /TODO/ and (long_comment or comment)
+      todo = false if line.gsub('#', '').strip.empty? 
+      todo = false unless comment or long_comment
+      if todo
+        unless lastline and lastline + 1 == lineno
+          puts
+          puts "vim #{file} +#{lineno}"
+        end
+
+        l = line.strip.gsub(/^#\s*/, '')
+        if line =~ /TODO/
+          puts "\t#{l}"
+        else
+          puts "\t\t#{l}"
+        end
+        lastline = lineno
+      end
+    end
+  end
 end
