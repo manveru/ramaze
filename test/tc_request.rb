@@ -33,7 +33,6 @@ context "POST" do
 
   start
   Global.mapping['/'] = TCRequestController
-  sleep 1
 
   def request req, params = {}
     uri = URI.parse("http://localhost:7000#{req}")
@@ -58,7 +57,6 @@ context "GET" do
 
   start
   Global.mapping['/'] = TCRequestController
-  sleep 1
 
   def request req, params = {}
     open("http://localhost:#{Ramaze::Global.port}#{req}").read

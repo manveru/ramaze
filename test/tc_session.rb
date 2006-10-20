@@ -18,7 +18,6 @@ context "usual Session" do
 
   start
   Global.mapping['/'] = TCSessionController
-  sleep 1
 
   class Context
     def initialize(url = '/')
