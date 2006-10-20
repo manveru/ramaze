@@ -142,10 +142,6 @@ module Ramaze
     # also we set controller-variable as we go along, in case there
     # is only one controller it ends up hooked on '/'
     # otherwise we get some random one ...
-    #
-    # TODO: implement some intelligent hooking like:
-    #       '/foo' => FooController
-    #       (remark: maybe use Main|Base|Index and the like if we have them)
 
     Global.controllers.map! do |controller|
       controller = constant(controller)

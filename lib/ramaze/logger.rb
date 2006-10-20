@@ -44,7 +44,9 @@ module Ramaze
   # Also, if an argument is not a String, it will be called inspect upon and the
   # result is used instead.
   #
-  # TODO: make the seperator configurable
+  # TODO: 
+  # - make the seperator configurable
+  # - also add a timestamping-functionality
 
   module Logger
 
