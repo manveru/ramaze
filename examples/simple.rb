@@ -2,7 +2,7 @@ require 'ramaze'
 
 include Ramaze
 
-class SimpleController
+class SimpleController < Template::Ramaze
   def index
     "simple"
   end
@@ -25,7 +25,6 @@ Global.mapping = {
 }
 
 start
-sleep 0.5
 
 require 'open-uri'
 
