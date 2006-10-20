@@ -19,7 +19,7 @@ module Ramaze::Adapter
 
     def respond orig_response, response
       if response
-        orig_response.start(200) do |head, out|
+        orig_response.start(response.code) do |head, out|
           set_head(head, response)
           set_out(out, response)
         end

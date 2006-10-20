@@ -65,7 +65,7 @@ module Ramaze
   #       Global.host #=> '0.0.0.0'
   #   adapter runs on that port
   #       Global.port #=> 7000
-  #   the running/debugging-mode (:debug|:stage|:live) - atm only differ in verbosity
+  #   the running/debugging-mode (:debug|:stage|:live|:silent) - atm only differ in verbosity
   #       Global.mode #=> :debug
   #   detaches Ramaze to run in the background (used for testcases)
   #       Global.run_loose #=> false
@@ -76,7 +76,7 @@ module Ramaze
   #   display an error-page with backtrace on errors (empty page otherwise)
   #       Global.error_page    #=> true
   #   trap this signal for clean shutdown (calls Ramaze.shutdown)
-  #       Global.shutdown_trap #=> 'SIGINT'  
+  #       Global.shutdown_trap #=> 'SIGINT'
 
   def setup_global options = {}
     defaults = {
@@ -142,9 +142,11 @@ module Ramaze
     # also we set controller-variable as we go along, in case there
     # is only one controller it ends up hooked on '/'
     # otherwise we get some random one ...
+    #
     # TODO: implement some intelligent hooking like:
     #       '/foo' => FooController
     #       (remark: maybe use Main|Base|Index and the like if we have them)
+
     Global.controllers.map! do |controller|
       controller = constant(controller)
       controller.send(:include, Ramaze::Controller)
@@ -164,6 +166,7 @@ module Ramaze
       Thread.new do
         Global.running_adapter = run_adapter
       end
+      sleep 0.1 until Global.running_adapter
     else
       Global.running_adapter = run_adapter.join
     end

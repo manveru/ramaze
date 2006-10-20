@@ -13,6 +13,10 @@ module Ramaze
         { 'Content-Type' => 'text/html' }
       end
 
+      def code
+        500
+      end
+
       def out
         error = @error
         backtrace = @error.backtrace
@@ -70,7 +74,7 @@ module Ramaze
                         end # table
                       end # div
                       script(:type => 'text/javascript') do
-                        %{ $("tr#line_#{hash}").click(function(){$("tr#code_#{hash}").toggle("fade")}); }
+                        %{ $("tr#line_#{hash}").click(function(){$("tr#code_#{hash}").toggle()}); }
                       end # script
                     end # td
                   end # tr

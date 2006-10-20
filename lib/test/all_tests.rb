@@ -19,6 +19,12 @@ Dir['test/**/tc_*.rb'].each do |test_case|
   end
 end
 
+problematic.each do |key, value|
+  puts "-" * 80
+  puts key
+  puts value
+  puts "-" * 80
+end
+
 puts "Total: #{specs} specifications, #{failures} failures"
 puts "failed specs: #{problematic.keys.join(', ') || 'none'}"
-pp problematic
