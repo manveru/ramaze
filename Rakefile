@@ -31,7 +31,7 @@ task :default => [:test]
 task :package => [:clean]
 
 task :test do
-  require File.dirname(__FILE__) + '/test/all_tests.rb'
+  require File.dirname(__FILE__) + '/lib/test/all_tests.rb'
 end
 
 spec =

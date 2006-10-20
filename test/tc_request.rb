@@ -1,3 +1,4 @@
+require 'ramaze'
 require 'test/test_helper'
 
 require 'net/http'

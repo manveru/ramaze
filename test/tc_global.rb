@@ -1,5 +1,5 @@
+require 'ramaze'
 require 'test/test_helper'
-require 'ramaze/global'
 
 include Ramaze
 

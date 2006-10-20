@@ -1,5 +1,5 @@
+require 'ramaze'
 require 'test/test_helper'
-require 'ramaze/gestalt'
 
 context "all testcases" do
   def gestalt &block

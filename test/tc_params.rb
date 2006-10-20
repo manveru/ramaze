@@ -1,3 +1,4 @@
+require 'ramaze'
 require 'test/test_helper'
 
 include Ramaze
