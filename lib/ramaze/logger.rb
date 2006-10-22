@@ -58,7 +58,7 @@ module Ramaze
     #   d-| foo
 
     def debug *args
-      log('d-', *args) if logger_mode? :debug
+      log('d', *args) if logger_mode? :debug
     end
 
     # A very simple but powerful error-logger.
