@@ -43,6 +43,7 @@ module Ramaze
           html do
           head do
             title{ title }
+            link :rel => "stylesheet", :href => "css/coderay.css"
             style(:type => 'text/css') do
                 %[
                 <!--
@@ -74,6 +75,9 @@ module Ramaze
                 tr.source_container div table tr.source {
                   text-align:left;
                   }
+                div.source {
+                  background: #fff;
+                  }
                 -->
                  ]
             end
@@ -90,20 +94,28 @@ module Ramaze
                 tr(:id => "line_#{hash}", :style => "background:rgb(#{colors.shift},70,60);") do
                   [file, lineno, meth].each{|s| td{ s } }
                 end
-                tr(:id => "source_#{hash}", :class => :source_container) do
+                tr(:id => "source_#{hash}", :style => 'display:none') do
                   td(:colspan => 3) do
-                    div do
-                      table do
-                        tr{ td(:colspan => 2){ "vim #{file} +#{lineno}" } }
+                    div(:class => :source) do
+                      begin
+                        require 'rubygems'
+                        require 'coderay'
+                        code = lines.map{|llineno, lcode, lcurrent| lcode}.join("\n")
+                        tokens = CodeRay.scan(code, :ruby)
+                        tokens.div(:line_numbers => :table, :css => :class)
+                      rescue LoadError => ex
+                        table do
+                          tr{ td(:colspan => 2){ "vim #{file} +#{lineno}" } }
 
-                        lines.each do |llineno, lcode, lcurrent|
-                          style = lcurrent ? {:style => 'background:#faa;'} : {}
-                          tr(style.merge(:class => :source)) do
-                            td{ llineno.to_s }
-                            td{ pre{ lcode } }
-                          end # tr
-                        end # lines.each
-                      end # table
+                          lines.each do |llineno, lcode, lcurrent|
+                            style = lcurrent ? {:style => 'background:#faa;'} : {}
+                            tr(style.merge(:class => :source)) do
+                              td{ llineno.to_s }
+                              td{ pre{ lcode } }
+                            end # tr
+                          end # lines.each
+                        end # table
+                      end
                     end # div
                     script(:type => 'text/javascript') do
                       %{ $("tr#line_#{hash}").click(function(){$("tr#source_#{hash}").toggle()}); }
@@ -112,6 +124,34 @@ module Ramaze
                 end # tr
               end # backtrace.each
             end # table
+            div(:class => :additional) do
+              h3(:id => :inspect_session){'Session'}
+              p(:style => 'display:none', :id => :inspect_session){Thread.current[:session].inspect}
+              script(:type => 'text/javascript') do
+                %{ $("h3#inspect_session").click(function(){$("p#inspect_session").toggle()}); }
+              end # script
+            end
+            div(:class => :additional) do
+              h3(:id => :inspect_request){'Request'}
+              p(:style => 'display:none', :id => :inspect_request){Thread.current[:request].inspect}
+              script(:type => 'text/javascript') do
+                %{ $("h3#inspect_request").click(function(){$("p#inspect_request").toggle()}); }
+              end # script
+            end
+            div(:class => :additional) do
+              h3(:id => :inspect_response){'Response'}
+              p(:style => 'display:none', :id => :inspect_response){Thread.current[:response].inspect}
+              script(:type => 'text/javascript') do
+                %{ $("h3#inspect_response").click(function(){$("p#inspect_response").toggle()}); }
+              end # script
+            end
+            div(:class => :additional) do
+              h3(:id => :inspect_global){'Global'}
+              p(:style => 'display:none', :id => :inspect_global){Global.inspect}
+              script(:type => 'text/javascript') do
+                %{ $("h3#inspect_global").click(function(){$("p#inspect_global").toggle()}); }
+              end # script
+            end
           end # body
           end # html
         }.to_s
