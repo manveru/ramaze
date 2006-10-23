@@ -1,15 +1,12 @@
-$:.unshift File.dirname(File.expand_path(__FILE__))
-
 require 'ostruct'
 require 'pp'
 
 # The main namespace for Ramaze
-
 module Ramaze
-  %w[
-    Error Logger Global Template Controller Gestalt
-    Request Response Dispatcher Session
-  ].each{ |const| autoload(const, "ramaze/#{const.downcase}") }
+  BASEDIR = File.dirname(File.expand_path(__FILE__))
+
+  $:.unshift Ramaze::BASEDIR
+  Dir[File.join(Ramaze::BASEDIR, 'ramaze/*.rb')].each{|file| require file }
 
   include Logger
 
