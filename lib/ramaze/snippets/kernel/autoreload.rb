@@ -1,87 +1,67 @@
-#--
-# Michael Neumann
-# George Moschovitis <gm@navel.gr>
-# Michael Fellinger
-#++
+module Ramaze
 
-module Kernel
+  # this method loops through all loaded/required files
+  # and re-loads them when they are updated.
+  # It takes one parameter, which is the interval in seconds
+  # with a default of 10.
+  # You can also safely kill all threads (except for the main)
+  # and it will just restart the autoreloader.
 
-  # Auto reload feature files.
-  #
-  # Automatically reload, at regular intervals, any previously loaded features,
-  # and/or other files not already loaded, if they have been modified since the last
-  # interval check. A numeric parameter sets the reload interval in seconds
-  # and the file parameter can either be a glob string or an array
-  # of file paths. If a glob string, it is expanded only once on the initial
-  # method call. Supplying a boolean parameter of 'false' will force auto reload to
-  # skip previously loaded features and only reload the specified files.
-  # Also keeps a "dirty" flag.
-
-  def autoreload( *args )
-
-    check_interval=10
-    include_features = true
-    files = nil
-
-    args.each do |arg|
-      case arg
-      when Numeric
-        check_interval = arg
-      when String
-        files = Dir.glob( arg )
-      when Array
-        files = arg
-      when TrueClass, FalseClass
-        include_features = arg
-      end
-    end
-
-    file_mtime = {}
-
-    Thread.new(Time.now) do |start_time|
+  def autoreload interval = 10
+    gatherer = Thread.new do
+      this = Thread.current
+      cache = {}
+      this[:interval] = interval
+      joiner = lambda{|path, file| File.expand_path(File.join(path, file))}
       loop do
-        sleep check_interval
-
-        if include_features
-          feature_files = $LOADED_FEATURES.collect{ |feature|
-            $LOAD_PATH.map{ |lp| file = File.expand_path(File.join(lp, feature)) }
-          }.flatten.select{|f| File.file?(f)}
-
-          feature_files.each do |file|
-            if File.exists?(file) and (mtime = File.stat(file).mtime) > (file_mtime[file] || start_time)
-              $autoreload_dirty = true
-              file_mtime[file] = mtime
-              STDERR.puts "File '#{ file }' reloaded"
-              begin
-                load(file)
-              rescue Exception => e
-                STDERR.puts e.inspect
-              end
-            end
-          end
+        (this[:files] ||= []).dup.each do |file|
+          this[:files].delete(file) unless File.exist?(file)
         end
-
-        if files
-          files.each do |file|
-            if File.exists?(file) and (mtime = File.stat(file).mtime) > (file_mtime[file] || start_time)
-              $autoreload_dirty = true
-              file_mtime[file] = mtime
-              STDERR.puts "File '#{ file }' changed"
-            end
-          end
+        $".each do |file|
+          paths = $LOAD_PATH + ['']
+          correct_path = paths.find{|lp| File.exist?(joiner[lp, file])}
+          correct_file = joiner[correct_path, file]
+          this[:files] << correct_file unless this[:files].include?(correct_file)
         end
-
+        sleep(this[:interval] ||= interval)
       end
     end
 
-  end
-
-
-  # Same as #autoreload, but does not include previously loaded features.
-  # This is equivalent to as adding a 'false' parameter to #autoreload.
-
-  def autoreload_files( *args )
-    args << false
-    autoreload( *args )
+    reloader = Thread.new do
+      this = Thread.current
+      cache = {}
+      this[:interval] = interval
+      sleep 0.1 until gatherer[:files] # wait for the gatherer
+      loop do
+        begin
+          gatherer[:files].each do |file|
+            current_time = File.mtime(file)
+            if last_time = cache[file]
+              unless last_time == current_time
+                begin
+                  print "reloading #{file} ... "
+                  load(file)
+                  puts "successfully."
+                  cache[file] = current_time
+                rescue Object => ex # catches errors when the load fails
+                  # in case mtime fails
+                  puts "failed."
+                end
+              end
+            else
+              cache[file] = current_time
+            end
+            # sleep a total of reloader[:interval], 
+            # but spread it evenly on all files
+            sleep(this[:interval].to_f / gatherer[:files].size)
+          end
+        rescue Object => ex
+          unless ex.message =~ /no such file or directory/
+            puts ex
+            puts ex.backtrace
+          end
+        end
+      end
+    end
   end
 end
