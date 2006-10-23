@@ -1,0 +1,12 @@
+html do
+  head do
+    title{ @title }
+  end
+  body do
+    h1(:style => 'text-align:center'){ @title }
+    a(:href => "/edit/#@title"){ "Edit #@title" }
+    div(:style => 'background:#eee') do
+      @text 
+    end
+  end
+end
