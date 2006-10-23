@@ -179,7 +179,13 @@ module Ramaze
 
   def run_adapter
     adapter, host, port = Global.values_at(:adapter, :host, :port)
-    require "ramaze/adapter" / adapter.to_s.downcase
+    begin
+      require "ramaze/adapter" / adapter.to_s.downcase
+    rescue LoadError => ex
+      puts ex
+      puts "Please make sure you have an adapter called #{adapter}"
+      exit
+    end
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
 
     info "Found adapter: #{adapter_klass}"
@@ -188,7 +194,7 @@ module Ramaze
     adapter_klass.start host, port
   rescue => ex
     puts ex
-    join = Thread.list.reject{|t| t == Thread.current or t.dead?}
+    join = Thread.list.reject{|t| t == Thread.current or t.dead? or t[:interval]}
     puts "joining #{join.size} threads and retry"
     join.each{|t| t.join }
     retry
