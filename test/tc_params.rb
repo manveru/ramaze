@@ -27,6 +27,10 @@ class TCParamsController < Ramaze::Template::Ramaze
   def at_least_one param, *params
     "at least one (#{param}, #{params.join(', ')})"
   end
+
+  def one_default param = 'default'
+    "one_default (#{param})"
+  end
 end
 
 context "Simple Parameters" do
@@ -47,7 +51,7 @@ context "Simple Parameters" do
   end
 
   specify "call /bar though index doesn't take params" do
-    lambda{request('/bar')}.should_raise OpenURI::HTTPError
+    lambda{(request('/bar'))}.should_raise EOFError
   end
 
   specify "action that takes a single param" do
@@ -59,7 +63,7 @@ context "Simple Parameters" do
   end
 
   specify "action that takes two params but we give only one" do
-    lambda{request('/double_param/foo')}.should_raise OpenURI::HTTPError
+    lambda{(request('/double_param/foo'))}.should_raise EOFError
   end
 
   specify "action that takes all params" do
@@ -71,6 +75,14 @@ context "Simple Parameters" do
   end
 
   specify "action that takes all params but needs at least one (not given here)" do
-    lambda{request('/at_least_one')}.should_raise OpenURI::HTTPError
+    lambda{(request('/at_least_one'))}.should_raise EOFError
+  end
+
+  specify "one default" do
+    request('/one_default').should_equal "one_default (default)"
+  end
+
+  specify "one default" do
+    (request('/one_default/my_default')).should_equal "one_default (my_default)"
   end
 end
