@@ -14,7 +14,7 @@ module Ramaze
       end
 
       def code
-        500
+        STATUS_CODE[:internal_server_error] 
       end
 
       def out
@@ -38,6 +38,15 @@ module Ramaze
         error_page(colors, error, *backtrace)
       end
 
+      # excuse the complexity...
+      # this basically shows the error-page, but i will have to split this up a lot
+      # more so it can be reused in other parts...
+      # the CSS should be defined somewhere else, also the inspects are
+      # quite repetive
+      # also this method offers highlighting for the sourcecode-chunks from the
+      # traceback, just install rubygems/coderay :)
+      # oh, and yeah, no example - don't call this yourself
+ 
       def error_page(colors, title, *backtrace)
         Gestalt.new{
           html do
@@ -98,7 +107,6 @@ module Ramaze
                   td(:colspan => 3) do
                     div(:class => :source) do
                       begin
-                        require 'rubygems'
                         require 'coderay'
                         code = lines.map{|llineno, lcode, lcurrent| lcode}.join("\n")
                         tokens = CodeRay.scan(code, :ruby)
