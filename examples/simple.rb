@@ -16,11 +16,11 @@ class SimpleController < Template::Ramaze
   end
 end
 
-Global.mode = :debug
-Global.port = 7000
-Global.run_loose = true
-Global.caching = false
-Global.mapping = {
+Global.adapter    = :webrick
+Global.mode       = :debug
+Global.run_loose  = true
+Global.caching    = false
+Global.mapping    = {
   '/' => SimpleController
 }
 
@@ -29,5 +29,6 @@ start
 require 'open-uri'
 
 %w[ / /simple /post_or_get].each do |action|
+  puts "requesting #{action}"
   puts open("http://localhost:7000#{action}").read
 end
