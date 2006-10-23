@@ -41,46 +41,78 @@ module Ramaze
       def error_page(colors, title, *backtrace)
         Gestalt.new{
           html do
-            head do
-              title { title }
-              # stupid firefox-hack... had to wait till the day something like that is
-              # neccesary :P
-              script(:type => 'text/javascript', :src => '/js/jquery.js'){}
+          head do
+            title{ title }
+            style(:type => 'text/css') do
+                %[
+                <!--
+                h1.main {
+                  text-align: center;
+                  }
+                table.main {
+                  width:      100%;
+                  background: #000;
+                  }
+                table.main tr.head {
+                  background: #fee;
+                  width:      100%;
+                  }
+                table.main tr.source_container {
+                  display:    none;
+                  }
+                tr.source_container div {
+                  width:      100%;
+                  overflow:   auto;
+                  }
+                tr.source_container div table {
+                  background: #ddd;
+                  width:      100%;
+                  }
+                tr.source_container div table tr {
+                  text-align:center;
+                  }
+                tr.source_container div table tr.source {
+                  text-align:left;
+                  }
+                -->
+                 ]
             end
-            body do
-              h1(:style => 'font-size:100%;text-align:center;'){ title }
-              table(:style => 'width:100%;background:#000;') do
-                tr(:style => 'background:#fee;') do
-                  %w[ File Line Method ].each do |s|
-                    td{ s }
-                  end
+            # stupid firefox-hack... had to wait till the day something like that is
+            # neccesary :P
+            script(:type => 'text/javascript', :src => '/js/jquery.js'){}
+          end
+          body do
+            h1(:class => :main){ title }
+            table(:class => :main) do
+              tr(:class => :head){ %w[File Line Method].each{|s| td{ s } } }
+
+              backtrace.each do |lines, hash, file, lineno, meth|
+                tr(:id => "line_#{hash}", :style => "background:rgb(#{colors.shift},70,60);") do
+                  [file, lineno, meth].each{|s| td{ s } }
                 end
-                backtrace.each do |lines, hash, file, lineno, meth|
-                  tr(:id => "line_#{hash}", :style => "background:rgb(#{colors.shift},70,60);") do
-                    [ file, lineno, meth ].each{|s| td{ s }}
-                  end
-                  tr(:id => "code_#{hash}", :style => 'display:none') do
-                    td(:colspan => 3) do
-                      div(:style => 'overflow:hidden;width:100%;') do
-                        table(:style => 'background:#ddd;width:100%') do
-                          tr{ td(:colspan => 2, :style => 'text-align:center'){ "vim #{file} +#{lineno}" } }
-                          lines.each do |llineno, lcode, lcurrent|
-                            style = lcurrent ? {:style => 'background:#faa;'} : {}
-                            tr(style) do
-                              td{ llineno.to_s }
-                              td{ pre{ lcode } }
-                            end # tr
-                          end # lines.each
-                        end # table
-                      end # div
-                      script(:type => 'text/javascript') do
-                        %{ $("tr#line_#{hash}").click(function(){$("tr#code_#{hash}").toggle()}); }
-                      end # script
-                    end # td
-                  end # tr
-                end # backtrace.each
-              end # table
-            end # body
+                tr(:id => "source_#{hash}", :class => :source_container) do
+                  td(:colspan => 3) do
+                    div do
+                      table do
+                        tr{ td(:colspan => 2){ "vim #{file} +#{lineno}" } }
+
+                        lines.each do |llineno, lcode, lcurrent|
+                          style = lcurrent ? {:style => 'background:#faa;'} : {}
+                          tr(style.merge(:class => :source)) do
+                            td{ llineno.to_s }
+                            td{ pre{ lcode } }
+                          end # tr
+                        end # lines.each
+                      end # table
+                    end # div
+                    script(:type => 'text/javascript') do
+                      %{ $("tr#line_#{hash}").click(function(){$("tr#source_#{hash}").toggle()}); }
+                    end # script
+                  end # td
+                end # tr
+              end # backtrace.each
+            end # table
+          end # body
           end # html
         }.to_s
       end
