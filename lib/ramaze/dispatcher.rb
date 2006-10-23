@@ -36,6 +36,10 @@ module Ramaze
         response
       end
 
+      # TODO:
+      # - find a solution for def x(a = :a) which has arity -1
+      #   identical to def x(*a) for some odd reason
+
       def resolve_action controller, paraction
         info :resolve_action, controller, paraction
 
@@ -62,6 +66,8 @@ module Ramaze
             if params.size == arity
               return current, params
             elsif arity < 0 and arity + params.size >= 0
+              return current, params
+            elsif arity == -1
               return current, params
             end
           end
