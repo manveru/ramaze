@@ -1,11 +1,4 @@
-begin
-  require 'rubygems'
-  require 'mongrel'
-rescue LoadError => ex
-  puts ex
-  puts "please install rubygems and mongrel"
-end
-
+require 'mongrel'
 require 'ramaze/tool/tidy'
 
 module Ramaze::Adapter
