@@ -30,7 +30,7 @@ module Ramaze
     find_controllers
     setup_controllers
 
-    autoreload 1
+    autoreload({:debug => 5, :stage => 10, :live => 20, :silent => 40}[Global.mode])
 
     info :global, Global
 
