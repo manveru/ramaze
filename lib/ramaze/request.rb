@@ -7,7 +7,7 @@ module Ramaze
     end
 
     def method_missing meth, *args, &block
-      if value = @request.params[meth.to_s.upcase]
+      if value = @request.params[meth.to_s.upcase] rescue false
         value
       else
         @request.send(meth, *args, &block)
