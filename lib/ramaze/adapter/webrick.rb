@@ -1,3 +1,4 @@
+require 'cgi'
 require 'webrick'
 require 'ramaze/tool/tidy'
 
@@ -9,6 +10,19 @@ module WEBrick
 
     def remote_addr
       peeraddr.last
+    end
+
+    def params
+      @params ||= parse_params
+    end
+
+    def parse_params
+      params = {}
+      body.split('&').each do |chunk|
+        key, value = chunk.split('=')
+        params[CGI.unescape(key)] = CGI.unescape(value)
+      end
+      params
     end
   end
 end
