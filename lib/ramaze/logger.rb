@@ -52,13 +52,17 @@ module Ramaze
 
     # if the Global.mode is :debug this will output debugging-information
     # and prefix it with 'd'
-    # Example:
-    #   Logger.debug 'foo'
-    #   # will print
-    #   d-| foo
+    # Examples:
+    #   Logger.debug :this_method, params        # =>
+    #   Logger.debug :this_method, return_values # =>
+    #   Logger.debug 'foo', 'bar', 32            # =>
+    #   23.10.2006 09:29:33 D | foo, bar, 32
 
     def debug *args
-      log('d', *args) if logger_mode? :debug
+      if logger_mode? :debug
+        prefix = Global.logger[:prefix_debug] rescue 'DEBG'
+        log prefix, args
+      end
     end
 
     # A very simple but powerful error-logger.
@@ -74,12 +78,14 @@ module Ramaze
 
     def error e
       if logger_mode? :live, :stage, :debug
-        puts
+        prefix = Global.logger[:prefix_error] rescue 'ERRO'
         if e.respond_to?(:message) and e.respond_to?(:backtrace)
-          log '!', e.message
-          e.backtrace.each{|bt| log('!  ', bt) }
+          log prefix, e.message
+          if logger_mode? :debug, :stage
+            log prefix, *e.backtrace[0..15]
+          end
         else
-          log '!', e
+          log prefix, e
         end
       end
     end
@@ -90,18 +96,27 @@ module Ramaze
 
     def info *args
       if logger_mode? :stage, :debug
-        log '-', *args
+        prefix = (Global.logger[:prefix_info] rescue 'INFO')
+        log prefix, args
       end
     end
 
     private
 
+    def timestamp
+      mask = Global.logger[:timestamp] rescue "%Y-%m-%d %H:%M:%S"
+      Time.now.strftime(mask)
+    end
+
     def logger_mode? *modes
       modes.include?(Global.mode)
     end
 
-    def log *args
-      puts "-|" + args.map{|a| a.is_a?(String) ? a : a.inspect}.join('-|')
+    def log prefix, *args
+      args.each do |arg|
+        print "[#{timestamp}] #{prefix}  "
+        puts [arg].flatten.map{|e| e.is_a?(String) ? e : e.inspect}.join(', ')
+      end
     end
 
     def puts *args
