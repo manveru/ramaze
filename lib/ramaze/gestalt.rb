@@ -1,5 +1,6 @@
 class BlankSlate
   alias __instance_eval__ instance_eval
+  alias __instance_variable_set__ instance_variable_set
   instance_methods.each{|m| undef_method m unless m =~ /^__/}
 end
 
