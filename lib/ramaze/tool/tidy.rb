@@ -24,7 +24,7 @@ module Ramaze
       #     <body></body>
       #   </html>
 
-      def tidy html, options = {}
+      def self.tidy html, options = {}
         require 'tidy'
 
         ::Tidy.path = `locate libtidy.so`.strip
@@ -48,6 +48,10 @@ module Ramaze
       rescue LoadError => ex
         puts "cannot load 'tidy', please `gem install tidy`"
         puts "you can find it at http://tidy.rubyforge.org/"
+      end
+
+      def tidy html, options = {}
+        Ramaze::Tool::Tidy.tidy(html, options)
       end
     end
   end
