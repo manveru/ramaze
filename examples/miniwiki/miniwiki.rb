@@ -29,4 +29,6 @@ class MainController < Template::Ramaze
   end
 end
 
+Global.adapter = :webrick
+
 start
