@@ -1,11 +1,14 @@
-require 'rubygems'
-require 'mongrel'
+begin
+  require 'rubygems'
+  require 'mongrel'
+rescue LoadError => ex
+  puts ex
+  puts "please install rubygems and mongrel"
+end
 
 require 'ramaze/tool/tidy'
 
 module Ramaze::Adapter
-  include Ramaze::Tool::Tidy
-
   class Mongrel < ::Mongrel::HttpHandler
     def self.start host, port
       h = ::Mongrel::HttpServer.new host, port
@@ -14,7 +17,7 @@ module Ramaze::Adapter
     end
 
     def process(request, response)
-      respond response, Ramaze::Dispatcher.handle(request, response)
+      respond response, Dispatcher.handle(request, response)
     end
 
     def respond orig_response, response
@@ -27,8 +30,8 @@ module Ramaze::Adapter
     end
 
     def set_out out, response
-      if Ramaze::Global.tidy and (response.head['Content-Type'] == 'text/html' ? true : false)
-        out << tidy(response.out)
+      if Global.tidy and (response.head['Content-Type'] == 'text/html' ? true : false)
+        out << Tool::Tidy.tidy(response.out)
       else
         out << response.out
       end
