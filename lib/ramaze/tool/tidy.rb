@@ -46,6 +46,7 @@ module Ramaze
           tidy.clean(html)
         end
       rescue LoadError => ex
+        puts ex
         puts "cannot load 'tidy', please `gem install tidy`"
         puts "you can find it at http://tidy.rubyforge.org/"
       end
