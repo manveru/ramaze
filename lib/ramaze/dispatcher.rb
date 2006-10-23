@@ -7,14 +7,10 @@ module Ramaze
         return create_response(orig_response, orig_request)
       rescue Object => e
         if Global.error_page
-          if Error.constants.include?(e.class.name.split('::').last)
-            Logger.error e.message
-          else
-            Logger.error e
-          end
+          error e
           return Error::Response.new(e)
         else
-          Logger.error e
+          error e
           return Response.new('', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
         end
       end
@@ -41,7 +37,7 @@ module Ramaze
       end
 
       def resolve_action controller, paraction
-        Ramaze::Logger.info :resolve_action, controller, paraction
+        info :resolve_action, controller, paraction
 
         meths = controller.instance_methods(false)
 
@@ -67,15 +63,13 @@ module Ramaze
               return current, params
             elsif arity < 0 and arity + params.size >= 0
               return current, params
-            else
-              raise Ramaze::Error::WrongParameterCount
             end
           end
         end
       end
 
       def resolve_controller path
-        Ramaze::Logger.info :resolve_controller, path.inspect
+        info :resolve_controller, path.inspect
         track = path.split('/')
         controller = false
         action = false
