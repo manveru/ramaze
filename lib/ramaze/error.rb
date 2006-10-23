@@ -109,9 +109,11 @@ module Ramaze
                       begin
                         require 'coderay'
                         code = lines.map{|llineno, lcode, lcurrent| lcode}.join("\n")
+                        offset = lines.first.first
                         tokens = CodeRay.scan(code, :ruby)
-                        tokens.div(:line_numbers => :table, :css => :class)
-                      rescue LoadError => ex
+                        tokens.div(:line_number_start => offset, :line_numbers => :table, :css => :class)
+                      rescue Object => ex
+                        puts ex
                         table do
                           tr{ td(:colspan => 2){ "vim #{file} +#{lineno}" } }
 
