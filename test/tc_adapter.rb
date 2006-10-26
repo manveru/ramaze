@@ -11,8 +11,10 @@ end
 
 context "try Mongrel" do
 
-  Global.adapter = :mongrel
-  start
+  setup do
+    Global.adapter = :mongrel
+    start
+  end
 
   specify "simple request" do
     (open('http://localhost:7000/').read).should_equal "The index"
@@ -21,8 +23,10 @@ end
 
 context "try Webrick" do
 
-  Global.adapter = :webrick
-  start
+  setup do
+    Global.adapter = :webrick
+    start
+  end
 
   specify "simple request" do
     (open('http://localhost:7000/').read).should_equal "The index"
