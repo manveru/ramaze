@@ -75,7 +75,7 @@ context "all testcases" do
   end
 
   specify "now some ruby inside" do
-    gestalt do
+    gestalt{
       table do
         tr do
           %w[one two three].each do |s|
@@ -83,6 +83,6 @@ context "all testcases" do
           end
         end
       end
-    end.should_equal '<table><tr><td>one</td><td>two</td><td>three</td></tr></table>'
+    }.should_equal '<table><tr><td>one</td><td>two</td><td>three</td></tr></table>'
   end
 end
