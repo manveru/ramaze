@@ -30,9 +30,11 @@ module Ramaze
     find_controllers
     setup_controllers
 
-    autoreload({:debug => 5, :stage => 10, :live => 20, :silent => 40}[Global.mode])
+    info :global, Global.pretty_inspect
+    autoreload_interval = Global.autoreload[Global.mode]
+    debug "initialize autoreload with #{autoreload_interval}"
 
-    info :global, Global
+    Ramaze::autoreload(autoreload_interval)
 
     trap(Global.shutdown_trap){ shutdown } rescue nil
 
@@ -77,20 +79,29 @@ module Ramaze
 
   def setup_global options = {}
     defaults = {
-      :adapter    => :mongrel,
-      :host       => '0.0.0.0',
-      :port       => 7000,
-      :mode       => :debug,
-      :run_loose  => false,
-      :cache      => false,
-      :tidy       => false,
-      :error_page => true,
-      :logger     => {
-                       :timestamp    => "%Y-%m-%d %H:%M:%S",
-                       :prefix_info  => 'INFO',
-                       :prefix_error => 'ERRO',
-                       :prefix_debug => 'DEBG',
-                     }
+      :adapter        => :mongrel,
+      :host           => '0.0.0.0',
+      :port           => 7000,
+      :mode           => :debug,
+      :run_loose      => false,
+      :cache          => false,
+      :tidy           => false,
+      :error_page     => true,
+      :template_root  => 'template',
+
+      :autoreload     => {
+                          :benchmark  => 5,
+                          :debug      => 5,
+                          :stage      => 10,
+                          :live       => 20,
+                          :silent     => 40,
+                         },
+      :logger         => {
+                          :timestamp    => "%Y-%m-%d %H:%M:%S",
+                          :prefix_info  => 'INFO',
+                          :prefix_error => 'ERRO',
+                          :prefix_debug => 'DEBG',
+                         }
     }
 
     defaults.merge(options).each do |key, value|
