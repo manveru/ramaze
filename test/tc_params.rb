@@ -51,7 +51,7 @@ context "Simple Parameters" do
   end
 
   specify "call /bar though index doesn't take params" do
-    lambda{(request('/bar'))}.should_raise EOFError
+    lambda{(request('/bar'))}.should_raise OpenURI::HTTPError
   end
 
   specify "action that takes a single param" do
@@ -63,7 +63,7 @@ context "Simple Parameters" do
   end
 
   specify "action that takes two params but we give only one" do
-    lambda{(request('/double_param/foo'))}.should_raise EOFError
+    lambda{(request('/double_param/foo'))}.should_raise OpenURI::HTTPError
   end
 
   specify "action that takes all params" do
@@ -75,7 +75,7 @@ context "Simple Parameters" do
   end
 
   specify "action that takes all params but needs at least one (not given here)" do
-    lambda{(request('/at_least_one'))}.should_raise EOFError
+    lambda{(request('/at_least_one'))}.should_raise OpenURI::HTTPError
   end
 
   specify "one default" do
