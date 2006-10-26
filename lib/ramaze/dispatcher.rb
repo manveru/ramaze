@@ -4,14 +4,19 @@ module Ramaze
   module Dispatcher
     class << self
       def handle orig_request, orig_response
-        return create_response(orig_response, orig_request)
+        Timeout.timeout(1) do
+          create_response(orig_response, orig_request)
+        end
+      rescue Timeout::Error
+        error e
+        Response.new('', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
       rescue Object => e
         if Global.error_page
           error e
-          return Error::Response.new(e)
+          Error::Response.new(e)
         else
           error e
-          return Response.new('', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
+          Response.new('', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
         end
       end
 
