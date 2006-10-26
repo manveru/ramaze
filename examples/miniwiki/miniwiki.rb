@@ -1,87 +1,63 @@
+# written as an example of how to implement the minimal _why wiki
 require 'rubygems'
 require 'ramaze'
 require 'bluecloth'
 
-require 'yaml'
+require 'yaml/store'
 
-module Kernel
-  def ivs
-    instance_variables.inject({}){|s,v| s.merge v => eval(v)}
-  end
-end
+Db = YAML::Store.new('wiki.yaml')
 
 include Ramaze
 
-class Page < Gestalt
-  def self.transform template = '', ivs = ivs
-    self.new do
-      ivs.each{ |k, v| __instance_variable_set__(k, v) }
-      __instance_eval__(template)
+class WikiController < Template::Ramaze
+  def index
+    show 'Home'
+  end
+
+  def show page = 'Home'
+    text = Db.transaction{ Db[page] }.to_s
+
+    Gestalt.new do
+      a(:href => '/'){'< Home'} unless page == 'Home'
+      h1{ page }
+
+      if text.empty?
+        a(:href => "/edit/#{page}"){'Create?'}
+      else
+        div do
+          a(:href => "/edit/#{page}"){"Edit #{page}"}
+          BlueCloth.new(
+                        text.gsub(/\[\[(.*?)\]\]/, '<a href="show/\1">\1</a>')
+                       ).to_html
+        end
+      end
     end
   end
-end
 
-class Database
-  def initialize file = 'db.yaml'
-    @file = file
-    load
-  end
-
-  def load file = @file
-    @db = YAML.load_file(file)
-    p [:loaded, @db]
-  end
-
-  def save file = @file
-    File.open(file, 'w+') do |f|
-      f.print(YAML.dump(@db))
-    end
-    p [:saved, @db]
-  end
-
-  def method_missing(meth, *params, &block)
-    p [:method_missing, meth, params]
-    @db.send(meth, *params, &block)
-  end
-end
-
-class MainController < Template::Ramaze
-  def index title = 'miniwiki'
-    @title = title
-    @text = BlueCloth.new(database[title]).to_html
-    render(:index)
-  end
-
-  def edit title
-    @title = title
-    if @text = database[@title]
-      render(:edit)
-    else
-      redirect :index
-    end
+  def edit page = 'Home'
+    Gestalt.new{
+      h1{ "Edit #{page}" }
+      a(:href => "/show/#{page}"){"Show #{page}"}
+      form(:method => :post, :action => '/save') do
+        input :type => :hidden, :name => :page, :value => page
+        textarea(:name => :text, :style => 'width: 90%; height: 200px') do 
+          Db.transaction{ Db[page] }.to_s
+        end
+        input :type => :submit
+      end
+      }.to_s
   end
 
   def save
-    title, text = request.params.values_at('title', 'text')
-    database[title] = text
-    database.save
-    redirect :index
-  end
-
-  def render template
-    Page.transform(File.read("template/#{template}.rmze"), ivs)
-  end
-
-  def redirect target
-    Gestalt.new{html{body{a(:href => "/#{target}"){target.to_s}}}}
-  end
-
-  def database
-    @database ||= Database.new('db.yaml')
+    Db.transaction{ Db[request['page']] = CGI.unescape(request['text'] || '') }
+    redirect "/show/#{request['page']}"
   end
 end
 
-Global.adapter = :webrick
-Global.tidy = true
+
+#Global.adapter = :webrick
+#Global.tidy = true
+Global.mode = :benchmark
+Global.mapping = {'/' => WikiController}
 
 start
