@@ -5,10 +5,11 @@ module Ramaze
   #
   # Important to the Logger is especially Global.mode, which can be
   # one of:
-  #  Global.mode = :debug  # switch on info-, debug-, errorlogging
-  #  Global.mode = :stage  # switch on info- and errorlogging
-  #  Global.mode = :live   # switch on errorlogging
-  #  Global.mode = :silent # switch off logging
+  #  Global.mode = :benchmark # switch all logging on and bench requests
+  #  Global.mode = :debug     # switch all logging on
+  #  Global.mode = :stage     # switch on info- and errorlogging
+  #  Global.mode = :live      # switch on errorlogging
+  #  Global.mode = :silent    # switch off logging
   #
   #
   # It has a method called Logger#puts which uses per default Kernel#puts
@@ -43,10 +44,6 @@ module Ramaze
   # a single String (seperator is ' ').
   # Also, if an argument is not a String, it will be called inspect upon and the
   # result is used instead.
-  #
-  # TODO: 
-  # - make the seperator configurable
-  # - also add a timestamping-functionality
 
   module Logger
 
@@ -59,7 +56,7 @@ module Ramaze
     #   23.10.2006 09:29:33 D | foo, bar, 32
 
     def debug *args
-      if logger_mode? :debug
+      if logger_mode? :debug, :benchmark
         prefix = Global.logger[:prefix_debug] rescue 'DEBG'
         log prefix, args
       end
@@ -77,11 +74,11 @@ module Ramaze
     #   end
 
     def error e
-      if logger_mode? :live, :stage, :debug
+      if logger_mode? :live, :stage, :debug, :benchmark
         prefix = Global.logger[:prefix_error] rescue 'ERRO'
         if e.respond_to?(:message) and e.respond_to?(:backtrace)
           log prefix, e.message
-          if logger_mode? :debug, :stage
+          if logger_mode? :stage, :debug, :benchmark
             log prefix, *e.backtrace[0..15]
           end
         else
@@ -95,7 +92,7 @@ module Ramaze
     #   Logger.info
 
     def info *args
-      if logger_mode? :stage, :debug
+      if logger_mode? :stage, :debug, :benchmark
         prefix = (Global.logger[:prefix_info] rescue 'INFO')
         log prefix, args
       end
