@@ -1,3 +1,5 @@
+require 'benchmark'
+
 require 'mongrel'
 require 'ramaze/tool/tidy'
 
@@ -10,7 +12,19 @@ module Ramaze::Adapter
     end
 
     def process(request, response)
-      respond response, Dispatcher.handle(request, response)
+      if Global.mode == :benchmark
+        bench_process(request, response)
+      else
+        respond(response, Dispatcher.handle(request, response))
+      end
+    end
+
+    def bench_process(request, response)
+      time = Benchmark.measure do
+        response = respond(response, Dispatcher.handle(request, response))
+      end
+      info "#{request} took #{time.real}s"
+      response
     end
 
     def respond orig_response, response

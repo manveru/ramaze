@@ -1,5 +1,7 @@
 require 'cgi'
 require 'webrick'
+require 'benchmark'
+
 require 'ramaze/tool/tidy'
 
 module WEBrick
@@ -44,7 +46,19 @@ module Ramaze::Adapter
     end
 
     def process request, response
-      respond(response, Dispatcher.handle(request, response))
+      if Global.mode == :benchmark
+        bench_process(request, response)
+      else
+        respond(response, Dispatcher.handle(request, response))
+      end
+    end
+
+    def bench_process(request, response)
+      time = Benchmark.measure do
+        response = respond(response, Dispatcher.handle(request, response))
+      end
+      info "#{request} took #{time.real}s"
+      response
     end
 
     def process_request(request)
@@ -68,7 +82,7 @@ module Ramaze::Adapter
     end
 
     def set_out response
-      @response.body = 
+      @response.body =
         if Global.tidy and (response.head['Content-Type'] == 'text/html' ? true : false)
           Tool::Tidy.tidy(response.out)
         else
