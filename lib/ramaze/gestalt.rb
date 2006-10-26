@@ -1,9 +1,3 @@
-class BlankSlate
-  alias __instance_eval__ instance_eval
-  alias __instance_variable_set__ instance_variable_set
-  instance_methods.each{|m| undef_method m unless m =~ /^__/}
-end
-
 =begin rdoc
 Example:
 
@@ -33,33 +27,27 @@ Example:
 =end
 
 module Ramaze
-  class Gestalt < BlankSlate
+  class Gestalt
     def self.build &block
       self.new(&block).to_s
     end
 
     def initialize &block
       @out = ''
-      __instance_eval__(&block) if block_given?
+      instance_eval(&block) if block_given?
     end
 
-    # proxy everything to _gestalt_handle
     def method_missing meth, *args, &block
-      _gestalt_handle meth, *args, &block
+      _gestalt_build_tag meth, *args, &block
     end
 
-    # A little hack to circumvent Kernel::p
     def p *args, &block
-      _gestalt_handle :p, *args, &block
+      _gestalt_build_tag :p, *args, &block
     end
 
-    def _gestalt_handle meth, *args, &block
-      _gestalt_build_tag(meth, *args, &block)
-    end
-
-    # build a tag for `name`, using `args` and an optional block that 
+    # build a tag for `name`, using `args` and an optional block that
     # will be yielded
-    def _gestalt_build_tag(name, args = [])
+    def _gestalt_build_tag name, args = []
       @out << "<#{name}"
       if block_given?
         @out << args.inject(''){ |s,v| s << %{ #{v[0]}="#{v[1]}"} }
@@ -75,6 +63,10 @@ module Ramaze
 
     def to_s
       @out.to_s
+    end
+
+    def to_str
+      to_s
     end
   end
 end
