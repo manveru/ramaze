@@ -1,6 +1,20 @@
 require 'timeout'
 
 module Ramaze
+  module Trinity
+    def response
+      Thread.current[:response]
+    end
+
+    def request
+      Thread.current[:request]
+    end
+
+    def session
+      Thread.current[:session]
+    end
+  end
+
   module Dispatcher
     class << self
       def handle orig_request, orig_response
