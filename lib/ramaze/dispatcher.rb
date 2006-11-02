@@ -17,6 +17,8 @@ module Ramaze
 
   module Dispatcher
     class << self
+      include Trinity
+
       def handle orig_request, orig_response
         Timeout.timeout(1) do
           create_response(orig_response, orig_request)
@@ -142,19 +144,6 @@ module Ramaze
         Thread.current[:request]  = Request.new(orig_request)
         Thread.current[:session]  = Session.new(request)
       end
-
-      def response
-        Thread.current[:response]
-      end
-
-      def request
-        Thread.current[:request]
-      end
-
-      def session
-        Thread.current[:session]
-      end
-
     end
   end
 end
