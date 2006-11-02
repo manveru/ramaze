@@ -4,17 +4,16 @@ require 'test/test_helper'
 include Ramaze
 
 class MainController < Template::Amrita2
-  def data
-    [  
-      { :name=>"Ruby", :author=>"matz" },              
-      { :name=>"perl", :author=>"Larry Wall" },        
-      { :name=>"python", :author=>"Guido van Rossum" },
-    ]                                                   
+  def title
+    "hello world"
+  end
+
+  def body
+    "Amrita2 is an HTML template library for Ruby"
   end
 end
 
-start
-sleep 0.5
+start :mode => :debug
 
 context "Simply calling" do
   def request opt
@@ -22,6 +21,6 @@ context "Simply calling" do
   end
 
   specify "should respond to /data" do
-    request('/data').should_equal 'no params'
+    request('/data')                               # =>
   end
 end
