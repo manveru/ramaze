@@ -113,7 +113,12 @@ module Ramaze
           paraction = path.gsub(/^#{current}/, '').split('/')
           paraction.delete('')
           if controller = Ramaze::Global.mapping[current]
-            action, params = resolve_action controller, paraction
+            if controller.ann[:actionless] or controller.superclass.ann[:actionless]
+              action = paraction.shift
+              params = paraction
+            else
+              action, params = resolve_action controller, paraction
+            end
           end
         end
 
