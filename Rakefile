@@ -24,7 +24,7 @@ CLEAN.include ['**/.*.sw?', '*.gem', '.config']
 RDOC_OPTS = ['--quiet', '--title', "ramaze documentation",
     "--opname", "index.html",
     "--line-numbers", 
-    "--main", "README",
+    "--main", "doc/README",
     "--inline-source"]
 
 desc "Packages up ramaze gem."
@@ -41,7 +41,7 @@ spec =
         s.version = VERS
         s.platform = Gem::Platform::RUBY
         s.has_rdoc = true
-        s.extra_rdoc_files = ["README", "CHANGELOG"]
+        s.extra_rdoc_files = ["doc/README", "doc/CHANGELOG"]
         s.rdoc_options += RDOC_OPTS + ['--exclude', '^(examples|extras)/']
         s.summary = DESCRIPTION
         s.description = DESCRIPTION
@@ -55,7 +55,7 @@ spec =
         #s.add_dependency('activesupport', '>=1.3.1')
         #s.required_ruby_version = '>= 1.8.2'
 
-        s.files = %w(README CHANGELOG Rakefile) +
+        s.files = %w(doc/README doc/CHANGELOG Rakefile) +
           Dir.glob("{bin,doc,test,lib,templates,extras,website,script}/**/*") + 
           Dir.glob("ext/**/*.{h,c,rb}") +
           Dir.glob("examples/**/*.rb") +

@@ -16,8 +16,6 @@ module Ramaze
   # second in case it has changed.
   # please note that Ramaze will catch SIGINT (^C) and kill the running adapter
   # at that event, this provides a nice and clean way to shut down. shutdown
-  #
-  # TODO: add an option to control how often the autoreload runs.
 
   def start options = {}
     info "Starting up Ramaze (Version #{VERSION})"
