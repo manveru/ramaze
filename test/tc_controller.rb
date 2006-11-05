@@ -4,6 +4,8 @@ require 'test/test_helper'
 include Ramaze
 
 class AmritaController < Template::Amrita2
+  ann :template_root => File.join(File.dirname(File.expand_path(__FILE__)), 'template', 'amrita')
+
   def index
     "The index"
   end
@@ -16,7 +18,6 @@ class RamazeController < Template::Ramaze
 end
 
 start
-sleep 0.5
 
 context "Testing Ramaze" do
   def request opt
@@ -24,16 +25,16 @@ context "Testing Ramaze" do
   end
 
   specify "simple request should_equal" do
-    request('/').should_equal "The index"
+    request('/').should_equal 'The index'
   end
 end
 
 context "Testing Amrita" do
   def request opt
-    open("http://localhost:#{Ramaze::Global.port}/amrita/#{opt}").read
+    open("http://localhost:#{Ramaze::Global.port}/amrita/#{opt}").read.strip
   end
 
   specify "simple request to index" do
-    request('/').should_equal "The index"
+    request('/').should.equal("<div>The index</div>")
   end
 end
