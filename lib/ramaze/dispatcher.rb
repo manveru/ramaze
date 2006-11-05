@@ -116,6 +116,7 @@ module Ramaze
             if controller.ann[:actionless] or controller.superclass.ann[:actionless]
               action = paraction.shift
               params = paraction
+              action = 'index' if action == nil
             else
               action, params = resolve_action controller, paraction
             end
@@ -138,7 +139,7 @@ module Ramaze
           return out if out
 
           Ramaze::Logger.debug "Compiling Action: #{action} #{params.join(', ')}"
-          Global.out_cache[key] = request_controller request, controller, action, params
+          Global.out_cache[key] = controller.handle_request(request, action, *params)
         else
           controller.handle_request(request, action, *params)
         end
