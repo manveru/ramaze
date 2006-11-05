@@ -24,10 +24,12 @@ module Ramaze
       #     <body></body>
       #   </html>
 
+      ann[:path] ||= `locate libtidy.so`.strip
+
       def self.tidy html, options = {}
         require 'tidy'
 
-        ::Tidy.path = `locate libtidy.so`.strip
+        ::Tidy.path = ann[:path]
 
         defaults = {
           :output_xml => true,
