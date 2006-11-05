@@ -1,5 +1,9 @@
 module Ramaze
   module Tool
+
+    # This is a simple tool to tidy up your html-output
+    # in general this is just used by setting Global.tidy = true
+ 
     module Tidy
 
       # dirty html in, tidy html out

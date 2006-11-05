@@ -1,3 +1,270 @@
+Sun Nov  5 17:44:20 JST 2006  manveru@weez-int.com
+  * more efficient lookup of the libtidy.so, still relying on `locate`, but you can set it yourself now with Ramaze::Tool::Tidy.ann[:path]
+
+Sun Nov  5 17:42:38 JST 2006  manveru@weez-int.com
+  * fixing the amrita2 controller to find the correct path for templates (ann[:template_root] to override it)
+
+Sun Nov  5 17:42:02 JST 2006  manveru@weez-int.com
+  * patches to dispatcher, proper handling of caching and actionless controllers in case of / => index
+
+Sun Nov  5 17:40:15 JST 2006  manveru@weez-int.com
+  * fixing the tc_controller and added the amrita template for the controller testcase, also added the annotation for template_root
+
+Fri Nov  3 00:13:31 JST 2006  manveru@weez-int.com
+  * changed the amrita testcase to work
+
+Fri Nov  3 00:13:16 JST 2006  manveru@weez-int.com
+  * default testmode is now :live instead of :silent
+
+Fri Nov  3 00:12:44 JST 2006  manveru@weez-int.com
+  * added a simple YAMLstore... to be replaced by the real thing
+
+Fri Nov  3 00:12:29 JST 2006  manveru@weez-int.com
+  * the dispatcher respects actionless controllers now (Amrita2)
+
+Fri Nov  3 00:10:47 JST 2006  manveru@weez-int.com
+  * added trinity in most places and using the annotations now, also a bit of cleanup
+
+Fri Nov  3 00:10:13 JST 2006  manveru@weez-int.com
+  * added trinity, to be extracted
+
+Fri Nov  3 00:10:05 JST 2006  manveru@weez-int.com
+  * added self_method
+
+Fri Nov  3 00:09:53 JST 2006  manveru@weez-int.com
+  * added new Annotation
+
+Fri Nov  3 00:09:26 JST 2006  manveru@weez-int.com
+  * added favicon and logo
+
+Sun Nov  5 13:57:58 JST 2006  manveru@weez-int.com
+  * updated the Rakefile and changed to version 0.0.3 - one todo marked as done
+
+Wed Nov  1 08:00:49 JST 2006  manveru@weez-int.com
+  * added testcases for controller and templating of amrita2/ramaze - they still have to be made passing
+
+Thu Oct 26 19:39:45 JST 2006  manveru@weez-int.com
+  * added a setup for tc_adapter, makes it a bit slower but a lot better
+
+Thu Oct 26 19:29:22 JST 2006  manveru@weez-int.com
+  * after fix in mongrel, this should work nice again and the tcs should pass
+
+Thu Oct 26 19:29:00 JST 2006  manveru@weez-int.com
+  * more elegant tc_gestalt
+
+Thu Oct 26 19:28:35 JST 2006  manveru@weez-int.com
+  * finish up in the ramaze.rb and bring together the loose ends
+
+Thu Oct 26 19:28:12 JST 2006  manveru@weez-int.com
+  * rewrote the ramaze-template
+
+Thu Oct 26 19:27:16 JST 2006  manveru@weez-int.com
+  * autoreload is now a method in Ramaze and i added a Global.autoreload hash that holds the autoreload-times for the hashes, additionally there is the new :benchmark mode
+
+Thu Oct 26 19:26:08 JST 2006  manveru@weez-int.com
+  * added pretty_inspect to the response to fit better into the new error-page
+
+Thu Oct 26 19:25:58 JST 2006  manveru@weez-int.com
+  * implemented the logger-todos
+
+Thu Oct 26 19:24:55 JST 2006  manveru@weez-int.com
+  * Gestalt is now no subclass of BlankSlate anymore... it was unneccesary and just complicating the whole code. using the simple p-hack again
+
+Thu Oct 26 19:24:20 JST 2006  manveru@weez-int.com
+  * a really huge update to the errorpage again... remember to remove the logo ;)
+
+Thu Oct 26 19:23:54 JST 2006  manveru@weez-int.com
+  * added a timeout to the dispatcher and removed some annoying return-statements
+
+Thu Oct 26 19:23:34 JST 2006  manveru@weez-int.com
+  * added response method to controller-prototype
+
+Thu Oct 26 19:23:17 JST 2006  manveru@weez-int.com
+  * adapter have now the possibilities to bench requests when mode is :benchmark
+
+Thu Oct 26 19:20:58 JST 2006  manveru@weez-int.com
+  * updated the miniwiki to use YAML::Store and work correctly in general
+
+Mon Oct 23 19:36:40 JST 2006  manveru@weez-int.com
+  * added a testcase for params and proper handling of the errors now. (thanks mfp)
+
+Mon Oct 23 19:36:29 JST 2006  manveru@weez-int.com
+  * output the error if tidy fails
+
+Mon Oct 23 19:36:05 JST 2006  manveru@weez-int.com
+  * adding __instance_variable_set__ to Gestalt to better handle iv without evaling
+
+Mon Oct 23 19:35:22 JST 2006  manveru@weez-int.com
+  * better handling of CodeRay inside error-template
+
+Mon Oct 23 19:34:49 JST 2006  manveru@weez-int.com
+  * little cleanup and adding documentation in the error-page
+
+Mon Oct 23 19:34:26 JST 2006  manveru@weez-int.com
+  * proper handling of -1 params
+
+Mon Oct 23 19:33:54 JST 2006  manveru@weez-int.com
+  * adding proper params-handling for webrick, (very very bad proper handling)
+
+Mon Oct 23 19:33:23 JST 2006  manveru@weez-int.com
+  * remove the require 'rubygems' and error-handling from the adapter itself, that is handled one level lower
+
+Mon Oct 23 19:33:03 JST 2006  manveru@weez-int.com
+  * added a default in public/css/coderay.css since i will use it quite often.
+
+Mon Oct 23 19:32:03 JST 2006  manveru@weez-int.com
+  * first templates for Ramaze (called .rmze) and a proper working miniwiki-example - very very simplistic, but does its job so far
+
+Mon Oct 23 19:31:35 JST 2006  manveru@weez-int.com
+  * yay for my new miniwiki example :)
+
+Mon Oct 23 17:01:05 JST 2006  manveru@weez-int.com
+  * use webrick in the miniwiki
+
+Mon Oct 23 16:57:57 JST 2006  manveru@weez-int.com
+  * added codray-highlighting (if installed) and inspecting of request/session/response/global
+
+Mon Oct 23 16:23:09 JST 2006  manveru@weez-int.com
+  * better handling if the adapter is not found and don't kill the autoreload-threads anymore
+
+Mon Oct 23 16:21:17 JST 2006  manveru@weez-int.com
+  * update of the Global defaults (most important, added Global.logger[:timestamp|:prefix_(info|error|debug)]
+
+Mon Oct 23 16:20:33 JST 2006  manveru@weez-int.com
+  * replaced autoreload with the new one (and some settings for the reload-speed based on the Global.mode
+
+Mon Oct 23 16:19:53 JST 2006  manveru@weez-int.com
+  * replaced the Module.autoload with a require beforehand... the other way just added complexitiy though it's a nice thing :)
+
+Mon Oct 23 16:18:44 JST 2006  manveru@weez-int.com
+  * usage of Tidy.tidy now possible
+
+Mon Oct 23 16:18:22 JST 2006  manveru@weez-int.com
+  * reimplementation of autoreload
+
+Mon Oct 23 16:17:42 JST 2006  manveru@weez-int.com
+  * little update in the request, in case there is no @request.params (webrick)
+
+Mon Oct 23 16:16:43 JST 2006  manveru@weez-int.com
+  * rather large update to the error-page... not fully finished i fear - but i added CSS so it's going to be nicer to change :)
+
+Mon Oct 23 16:16:15 JST 2006  manveru@weez-int.com
+  * better use of the Logger in the dispatcher
+
+Mon Oct 23 16:13:12 JST 2006  manveru@weez-int.com
+  * a rather huge update to the logger, introducing the Global.logger hash to easily define your own favorite settings, also we got a Timestamp now! :)
+
+Mon Oct 23 16:11:49 JST 2006  manveru@weez-int.com
+  * updates to the mongrel-adapter, better rescue for rubygems/mongrel and nicer usage of Tidy
+
+Mon Oct 23 16:11:10 JST 2006  manveru@weez-int.com
+  * small updates to the simple example
+
+Mon Oct 23 16:08:43 JST 2006  manveru@weez-int.com
+  * added the webrick-adapter, it's not perfect, but works smooth so far
+
+Mon Oct 23 16:07:46 JST 2006  manveru@weez-int.com
+  * added testcase for the adapters (tc_adapter) [mongrel|webrick] so far
+
+Mon Oct 23 09:13:27 JST 2006  manveru@weez-int.com
+  * moved the HTTP-status codes to http_status.rb from dispatcher.rb
+
+Mon Oct 23 08:33:05 JST 2006  manveru@weez-int.com
+  * small typo in Logger.debug output ('d-' instead of 'd')
+
+Mon Oct 23 08:29:14 JST 2006  manveru@weez-int.com
+  * added stub for miniwiki
+
+Fri Oct 20 18:55:28 JST 2006  manveru@weez-int.com
+  * one todo gone, one added
+
+Fri Oct 20 18:51:40 JST 2006  manveru@weez-int.com
+  * an ultimate patch... this addes lots of documentation, rewrite of the Response to be Struct instead of OpenStruct (17 times faster) and also some minor tweaks all over the place, notable also the change of the logger-format
+
+Fri Oct 20 18:50:38 JST 2006  manveru@weez-int.com
+  * minor updates to the testcases, somehow i should fix the tc_params on the errors... but that takes a bit more time, otherwise just removed the sleeps that are now handled by ramaze
+
+Fri Oct 20 18:48:35 JST 2006  manveru@weez-int.com
+  * small fixes to the simple example
+
+Fri Oct 20 16:49:36 JST 2006  manveru@weez-int.com
+  * cleaned up the tests a bit and updated the test-runner to show some summary
+
+Fri Oct 20 14:53:55 JST 2006  manveru@weez-int.com
+  * added new rake task, todo - it scrapes the source for TODO markers and prints them out.
+
+Fri Oct 20 10:50:34 JST 2006  manveru@weez-int.com
+  * added documentation and Gestalt.build, which takes a block instead of Gestalt.new
+
+Thu Oct 19 19:18:12 JST 2006  manveru@weez-int.com
+  * loooooots of documentation (which is not displayed on rdoc due to some very weird behaviour
+
+Thu Oct 19 19:16:49 JST 2006  manveru@weez-int.com
+  * a new and simple way to react on signals, default is SIGINT, it executes Ramaze.shutdown which in turn kills the adapter, to change the signal listened on change Global.shutdown_trap
+
+Thu Oct 19 19:14:54 JST 2006  manveru@weez-int.com
+  * very minor cleanup of some methods...
+
+Thu Oct 19 19:14:40 JST 2006  manveru@weez-int.com
+  * added an rdoc-task to the Rakefile
+
+Thu Oct 19 19:14:18 JST 2006  manveru@weez-int.com
+  * moved README and CHANGELOG to the new /doc dir
+
+Thu Oct 19 19:13:26 JST 2006  manveru@weez-int.com
+  * tidy takes now an hash of options and i added extensive documentation ... could use some more though (removed require for rubygems)
+
+Wed Oct 18 19:27:23 JST 2006  manveru@weez-int.com
+  * lots of smaller changes, extracted tidy from the mongrel-adapter to a new dir named tool - where most helper-stuff should go to.
+
+Wed Oct 18 19:27:04 JST 2006  manveru@weez-int.com
+  * updates to global.rb - stuff that doesn't make sense for a singleton
+
+Wed Oct 18 19:25:31 JST 2006  manveru@weez-int.com
+  * revised most testcases and added tc_global and tc_tidy
+
+Wed Oct 18 19:25:16 JST 2006  manveru@weez-int.com
+  * added rcov-task
+
+Wed Oct 18 16:36:37 JST 2006  manveru@weez-int.com
+  * use String#/ instead of File.join
+
+Wed Oct 18 16:35:04 JST 2006  manveru@weez-int.com
+  * much better handling of restarts and stuff by joining still running mongrel-threads
+
+Wed Oct 18 16:34:41 JST 2006  manveru@weez-int.com
+  * remove the gostruct.rb
+
+Wed Oct 18 16:34:08 JST 2006  manveru@weez-int.com
+  * update to README
+
+Wed Oct 18 16:33:23 JST 2006  manveru@weez-int.com
+  * removing the global openstruct and just use Global...
+
+Wed Oct 18 15:34:48 JST 2006  manveru@weez-int.com
+  * removing the default-adapter because it's useless and not used
+
+Wed Oct 18 13:57:50 JST 2006  manveru@weez-int.com
+  * removed a bit of debugging-info from tc_session
+
+Wed Oct 18 13:55:14 JST 2006  manveru@weez-int.com
+  * this drives in the last nail to support sessions, also speeds up requests a tiny weeny bit ;)
+
+Wed Oct 18 13:54:04 JST 2006  manveru@weez-int.com
+  * controller now accesses the Thread#[] to get request/session
+
+Wed Oct 18 13:53:23 JST 2006  manveru@weez-int.com
+  * split up the response in mongrel into set_out and set_head
+
+Wed Oct 18 13:53:11 JST 2006  manveru@weez-int.com
+  * added ramaze/session
+
+Wed Oct 18 13:52:41 JST 2006  manveru@weez-int.com
+  * added a session-testcase
+
+Tue Oct 17 09:52:07 JST 2006  manveru@weez-int.com
+  * updated CHANGELOG
+
 Tue Oct 17 09:51:30 JST 2006  manveru@weez-int.com
   tagged Ramaze 0.0.2
 
