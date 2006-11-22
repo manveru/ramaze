@@ -41,15 +41,15 @@ context "POST" do
   end
 
   specify "give me the result of request.post?" do
-    request("/is_post").should_equal 'true'
+    request("/is_post").should == 'true'
   end
 
   specify "give me the result of request.get?" do
-    request("/is_get").should_equal 'false'
+    request("/is_get").should == 'false'
   end
 
   specify "give me back what i gave" do
-    eval(request("/post_inspect", 'this' => 'post')).should_equal "this" => "post"
+    eval(request("/post_inspect", 'this' => 'post')).should == {"this" => "post"}
   end
 end
 
@@ -63,18 +63,18 @@ context "GET" do
   end
 
   specify "give me the result of request.post?" do
-    request("/is_post").should_equal 'false'
+    request("/is_post").should == 'false'
   end
 
   specify "give me the result of request.get?" do
-    request("/is_get").should_equal 'true'
+    request("/is_get").should == 'true'
   end
 
   specify "give me back what i gave" do
-    eval(request("/get_inspect?one=two&three=four")).should_equal 'one' => 'two', 'three' => 'four'
+    eval(request("/get_inspect?one=two&three=four")).should == {'one' => 'two', 'three' => 'four'}
   end
 
   specify "my ip" do
-    request("/my_ip").should_equal '127.0.0.1'
+    request("/my_ip").should == '127.0.0.1'
   end
 end

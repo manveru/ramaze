@@ -43,11 +43,11 @@ context "Simple Parameters" do
   end
 
   specify "Should respond to no parameters given" do
-    request('/no_params').should_equal "no params"
+    request('/no_params').should == "no params"
   end
 
   specify "Should respond to only / with the index" do
-    request('/').should_equal "index"
+    request('/').should == "index"
   end
 
   specify "call /bar though index doesn't take params" do
@@ -55,11 +55,11 @@ context "Simple Parameters" do
   end
 
   specify "action that takes a single param" do
-    request('/single_param/foo').should_equal "single param (foo)"
+    request('/single_param/foo').should == "single param (foo)"
   end
 
   specify "action that takes two params" do
-    request('/double_param/foo/bar').should_equal "double param (foo, bar)"
+    request('/double_param/foo/bar').should == "double param (foo, bar)"
   end
 
   specify "action that takes two params but we give only one" do
@@ -67,11 +67,11 @@ context "Simple Parameters" do
   end
 
   specify "action that takes all params" do
-    request('/all_params/foo/bar/foobar').should_equal "all params (foo, bar, foobar)"
+    request('/all_params/foo/bar/foobar').should == "all params (foo, bar, foobar)"
   end
 
   specify "action that takes all params but needs at least one" do
-    request('/at_least_one/foo/bar/foobar').should_equal "at least one (foo, bar, foobar)"
+    request('/at_least_one/foo/bar/foobar').should == "at least one (foo, bar, foobar)"
   end
 
   specify "action that takes all params but needs at least one (not given here)" do
@@ -79,10 +79,10 @@ context "Simple Parameters" do
   end
 
   specify "one default" do
-    request('/one_default').should_equal "one_default (default)"
+    request('/one_default').should == "one_default (default)"
   end
 
   specify "one default" do
-    (request('/one_default/my_default')).should_equal "one_default (my_default)"
+    (request('/one_default/my_default')).should == "one_default (my_default)"
   end
 end

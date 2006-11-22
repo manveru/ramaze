@@ -7,17 +7,17 @@ context "all testcases" do
   end
 
   specify "simple tag" do
-    gestalt{ br }.should_equal '<br />'
-    gestalt{ p }.should_equal '<p />'
+    gestalt{ br }.should == '<br />'
+    gestalt{ p }.should == '<p />'
   end
 
   specify "open close tags" do
-    gestalt{ p{} }.should_equal '<p></p>'
-    gestalt{ div{} }.should_equal '<div></div>'
+    gestalt{ p{} }.should == '<p></p>'
+    gestalt{ div{} }.should == '<div></div>'
   end
 
   specify "nested tags" do
-    gestalt{ p{ br } }.should_equal '<p><br /></p>'
+    gestalt{ p{ br } }.should == '<p><br /></p>'
   end
 
   specify "deep nested tags" do
@@ -28,7 +28,7 @@ context "all testcases" do
         end 
       end 
     end
-    }.should_equal '<p><div><ol><li /></ol></div></p>'
+    }.should == '<p><div><ol><li /></ol></div></p>'
   end
 
   specify "deep nested tags with repetition" do
@@ -44,7 +44,7 @@ context "all testcases" do
         end
       end
     end
-    }.should_equal '<p><div><ol><li /><li /></ol><ol><li /><li /></ol></div></p>'
+    }.should == '<p><div><ol><li /><li /></ol><ol><li /><li /></ol></div></p>'
   end
 
   specify "deep nested tags with strings" do
@@ -54,7 +54,7 @@ context "all testcases" do
        'Hello, World'
       end
     end
-    }.should_equal '<p><div>Hello, World</div></p>'
+    }.should == '<p><div>Hello, World</div></p>'
   end
 
   specify "some simple example" do
@@ -71,7 +71,7 @@ context "all testcases" do
           end
         end
       end
-    }.should_equal '<html><head><title>Hello World</title></head><body><h1>Hello World</h1></body></html>'
+    }.should == '<html><head><title>Hello World</title></head><body><h1>Hello World</h1></body></html>'
   end
 
   specify "now some ruby inside" do
@@ -83,6 +83,6 @@ context "all testcases" do
           end
         end
       end
-    }.should_equal '<table><tr><td>one</td><td>two</td><td>three</td></tr></table>'
+    }.should == '<table><tr><td>one</td><td>two</td><td>three</td></tr></table>'
   end
 end

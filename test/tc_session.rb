@@ -43,14 +43,14 @@ context "usual Session" do
   ctx = Context.new
 
   specify "Should give me the current session" do
-    ctx.erequest('/').should_equal({})
+    ctx.erequest('/').should ==({})
   end
 
   specify "set some session-parameters" do
-    ctx.erequest('/set_session/foo/bar').should_equal 'foo' => 'bar'
+    ctx.erequest('/set_session/foo/bar').should == {'foo' => 'bar'}
   end
 
   specify "inspect session again" do
-    ctx.erequest('/').should_equal 'foo' => 'bar'
+    ctx.erequest('/').should == {'foo' => 'bar'}
   end
 end

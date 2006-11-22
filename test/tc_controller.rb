@@ -24,8 +24,8 @@ context "Testing Ramaze" do
     open("http://localhost:#{Ramaze::Global.port}/ramaze/#{opt}").read
   end
 
-  specify "simple request should_equal" do
-    request('/').should_equal 'The index'
+  specify "simple request should ==" do
+    request('/').should == 'The index'
   end
 end
 
@@ -35,6 +35,6 @@ context "Testing Amrita" do
   end
 
   specify "simple request to index" do
-    request('/').should.equal("<div>The index</div>")
+    request('/').should == "<div>The index</div>"
   end
 end

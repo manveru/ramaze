@@ -17,7 +17,7 @@ context "try Mongrel" do
   end
 
   specify "simple request" do
-    (open('http://localhost:7000/').read).should_equal "The index"
+    (open('http://localhost:7000/').read).should == "The index"
   end
 end
 
@@ -29,6 +29,6 @@ context "try Webrick" do
   end
 
   specify "simple request" do
-    (open('http://localhost:7000/').read).should_equal "The index"
+    (open('http://localhost:7000/').read).should == "The index"
   end
 end
