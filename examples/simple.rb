@@ -1,5 +1,20 @@
 require 'ramaze'
 
+# A very simple little application, you can simply run it and
+# point your browser to http://localhost:7000
+# you can change the port by setting
+# Global.port = 80
+# this most likely requires root-privileges though.
+
+# This example shows following (requests to the mentioned base-url) :
+# - simple text-output from the controller    [ / ]
+# - showing you what your request looked like [ /simple ]
+# - joining two strings                       [ /join/string1/string2 ]
+# - join arbitary strings                     [ /join_all/string1/string2/string3 ... ]
+# - sum two numbers                           [ /sum/1/3 ]
+# - show if you made a POST or GET request    [ /post_or_get ]
+# - How to map your controllers to urls       [ /other ]
+
 include Ramaze
 
 class SimpleController < Template::Ramaze
@@ -11,24 +26,32 @@ class SimpleController < Template::Ramaze
     request.inspect
   end
 
+  def join first, second
+    [first, second].join
+  end
+
+  def join_all *strings
+    strings.join
+  end
+  
+  def sum first, second
+    first.to_i + second.to_i
+  end
+  
   def post_or_get
     request.post? ? 'POST' : 'GET'
   end
 end
 
-Global.adapter    = :webrick
-Global.mode       = :debug
-Global.run_loose  = true
-Global.caching    = false
+class OtherController < Template::Ramaze
+  def index
+    "Hello, World from #{self.class.name}"
+  end
+end
+
 Global.mapping    = {
-  '/' => SimpleController
+  '/'      => SimpleController,
+  '/other' => OtherController
 }
 
 start
-
-require 'open-uri'
-
-%w[ / /simple /post_or_get].each do |action|
-  puts "requesting #{action}"
-  puts open("http://localhost:7000#{action}").read
-end
