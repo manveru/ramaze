@@ -1,3 +1,4 @@
+require 'timeout'
 require 'ostruct'
 require 'pp'
 
@@ -202,12 +203,26 @@ module Ramaze
 
     adapter_klass.start host, port
   rescue => ex
+    timeouted ||= false
     puts ex
     join = Thread.list.reject{|t| t == Thread.current or t.dead? or t[:interval]}
     puts "joining #{join.size} threads and retry"
-    join.each{|t| t.join }
+    begin
+      Timeout.timeout(5) do
+        join.each{|t| t.join }
+      end
+    rescue Timeout::Error => timeout
+      p timeouted
+      if timeouted
+        puts "sorry, please shutdown your other app first"
+        shutdown
+      end
+      puts timeout
+      puts "will still try to retry"
+      timeouted = timeout
+    end
+
     retry
   end
-
   extend self
 end
