@@ -15,6 +15,10 @@ class RamazeController < Template::Ramaze
   def index
     "The index"
   end
+
+  def sum first, second
+    first.to_i + second.to_i
+  end
 end
 
 start
@@ -26,6 +30,10 @@ context "Testing Ramaze" do
 
   specify "simple request should ==" do
     request('/').should == 'The index'
+  end
+
+  specify "summing two values" do
+    request('/sum/1/2').should == '3'
   end
 end
 
