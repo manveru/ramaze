@@ -57,7 +57,7 @@ module Ramaze
   #
   # The default values:
   #   uses the class from Adapter:: (is required automatically)
-  #       Global.adapter #=> :mongrel
+  #       Global.adapter #=> :webrick
   #   restrict access to a specific host
   #       Global.host #=> '0.0.0.0'
   #   adapter runs on that port
@@ -77,7 +77,7 @@ module Ramaze
 
   def setup_global options = {}
     defaults = {
-      :adapter        => :mongrel,
+      :adapter        => :webrick,
       :host           => '0.0.0.0',
       :port           => 7000,
       :mode           => :debug,
