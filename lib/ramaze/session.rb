@@ -23,8 +23,18 @@ module Ramaze
       @@sessions ||= {}
     end
 
+    def pre_parse request
+      if Global.adapter == :webrick
+        # input looks like this: "Set-Cookie: _session_id=fa8cc88dafcb0973b48d4d65ef57e7d3\r\n"
+        cookie = request.raw_header.grep(/Set-Cookie/).first rescue ''
+        cookie.gsub!(/Set-Cookie: (.*?)\r\n/, '\1')
+      else
+        cookie = (request.http_cookie rescue request.http_set_cookie rescue '') || ''
+      end
+    end
+
     def parse request
-      cookie = (request.http_cookie rescue request.http_set_cookie rescue '') || ''
+      cookie = pre_parse(request)
       cookie.split('; ').inject({}) do |s,v| 
         key, value = v.split('=')
         s.merge key.strip => value
