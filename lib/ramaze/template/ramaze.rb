@@ -5,7 +5,7 @@ module Ramaze::Template
       def handle_request request, action, *params
         controller = self.new
         template = controller.__send__(action, *params).to_s
-        rendered = controller.send(:render, action)
+        rendered = controller.send(:render, action).to_s
         template = rendered unless rendered.empty?
         template
       end
@@ -38,7 +38,7 @@ module Ramaze::Template
           %{#{$1} #[ for #{$2} { #{$3} } ]}
         end
 =end
-        string.gsub!(/#\[(.*?)\]/) do
+        string.gsub!(/#\[(.*?)\]\s*$/) do
           p $1 => (e = eval($1))
           e
         end
