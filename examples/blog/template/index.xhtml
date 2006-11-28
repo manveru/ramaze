@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>Blogging Ramaze</title>
+  </head>
+  <body>
+    <div id="blog_title">#[Config[:title]]</div>
+    <div id="blog_body">
+      <div id="blog_entry">
+        #[
+          @entries.each do |entry|
+           %{#{entry}}
+          end
+         ]
+      </div>
+    </div>
+  </body>
+</html>
