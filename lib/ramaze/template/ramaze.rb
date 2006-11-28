@@ -4,7 +4,8 @@ module Ramaze::Template
     class << self
       def handle_request request, action, *params
         controller = self.new
-        controller.__send__(action, *params)
+        template = controller.__send__(action, *params).to_s
+        template << controller.send(:render, action)
       end
     end
 
@@ -13,12 +14,36 @@ module Ramaze::Template
     include Trinity
 
     def render template
-      file = File.join(Global.template_root, Global.mapping.invert[self.class], "#{template}.rmze")
+      path = File.join(Global.template_root, Global.mapping.invert[self.class], template)
+
+      exts = %w[rmze xhtml html]
+
+      files = exts.map{|ext| "#{path}.#{ext}"}
+      file = files.find{|file| File.file?(file)}.to_s
 
       if File.exist?(file)
-        transform(file, ivs)
+        info "transforming #{file}"
+        transform(File.read(file))
       else
         ''
+      end
+    end
+
+    def transform string, ivs = {}
+      begin
+=begin
+        string.gsub!(/<(.*?) for="(.*?)" (.*?)>/) do
+          %{#{$1} #[ for #{$2} { #{$3} } ]}
+        end
+=end
+        string.gsub!(/#\[(.*?)\]/) do
+          puts $1
+          eval($1)
+        end
+      rescue Object => ex
+        error "something bad happened while transformation"
+        error ex
+        string
       end
     end
 
