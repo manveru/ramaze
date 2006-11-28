@@ -1,17 +1,11 @@
-class Annotations
-  @hash = Hash.new{|h,k| h[k] = {}}
-
-  def self.method_missing(meth, *args, &block)
-    @hash.send(meth, *args, &block)
-  end
-end
+Traits = Hash.new{|h,k| h[k] = {}}
 
 class Object
-  def ann hash = nil
+  def trait hash = nil
     if hash
-      Annotations[self].merge! hash
+      Traits[self].merge! hash
     else
-      Annotations[self]
+      Traits[self]
     end
   end
 end
