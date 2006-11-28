@@ -4,7 +4,7 @@ require 'test/test_helper'
 include Ramaze
 
 class AmritaController < Template::Amrita2
-  ann :template_root => File.join(File.dirname(File.expand_path(__FILE__)), 'template', 'amrita')
+  trait :template_root => File.join(File.dirname(File.expand_path(__FILE__)), 'template', 'amrita')
 
   def index
     "The index"
@@ -20,6 +20,7 @@ class RamazeController < Template::Ramaze
     first.to_i + second.to_i
   end
 end
+
 
 start
 

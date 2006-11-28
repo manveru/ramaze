@@ -1,6 +1,6 @@
 module Ramaze::Template
   class Ramaze
-    ann :actionless => false
+    trait :actionless => false
     class << self
       def handle_request request, action, *params
         controller = self.new

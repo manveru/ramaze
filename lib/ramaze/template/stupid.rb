@@ -1,6 +1,6 @@
 module Ramaze::Template
   class Stupid < Default
-    ann :actionless => false
+    trait :actionless => false
 
     class << self
       include Trinity

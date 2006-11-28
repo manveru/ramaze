@@ -28,12 +28,12 @@ module Ramaze
       #     <body></body>
       #   </html>
 
-      ann[:path] ||= `locate libtidy.so`.strip
+      trait[:path] ||= `locate libtidy.so`.strip
 
       def self.tidy html, options = {}
         require 'tidy'
 
-        ::Tidy.path = ann[:path]
+        ::Tidy.path = trait[:path]
 
         defaults = {
           :output_xml => true,

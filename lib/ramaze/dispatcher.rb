@@ -113,7 +113,7 @@ module Ramaze
           paraction = path.gsub(/^#{current}/, '').split('/')
           paraction.delete('')
           if controller = Ramaze::Global.mapping[current]
-            if controller.ann[:actionless] or controller.superclass.ann[:actionless]
+            if controller.trait[:actionless] or controller.superclass.trait[:actionless]
               action = paraction.shift
               params = paraction
               action = 'index' if action == nil

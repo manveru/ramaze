@@ -4,14 +4,14 @@ module Ramaze::Template
   class Amrita2
     include Trinity
 
-    ann :actionless => true
+    trait :actionless => true
 
     class << self
       include Trinity
 
       def handle_request request, action, *params
         template_file = 
-        if template_root = ann[:template_root]
+        if template_root = trait[:template_root]
           File.expand_path(File.join(template_root, action) << '.html')
         else
           File.expand_path((File.dirname($0) / 'template' / Global.mapping.invert[self] / action) << '.html')
