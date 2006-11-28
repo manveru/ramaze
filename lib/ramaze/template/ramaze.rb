@@ -5,7 +5,9 @@ module Ramaze::Template
       def handle_request request, action, *params
         controller = self.new
         template = controller.__send__(action, *params).to_s
-        template << controller.send(:render, action)
+        rendered = controller.send(:render, action)
+        template = rendered unless rendered.empty?
+        template
       end
     end
 
@@ -37,8 +39,8 @@ module Ramaze::Template
         end
 =end
         string.gsub!(/#\[(.*?)\]/) do
-          puts $1
-          eval($1)
+          p $1 => (e = eval($1))
+          e
         end
       rescue Object => ex
         error "something bad happened while transformation"
