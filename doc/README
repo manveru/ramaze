@@ -32,3 +32,9 @@ At the moment Ramaze offers following features:
       Global.cache      ||= false     # caches requests to the controller based on request-values
       Global.tidy       ||= false     # run tidy over the generated html if Content-Type is text/html
       Global.error_page ||= true      # display an error-page with backtrace on errors
+
+Good to know
+============
+
+# Nicer Error-pages
+## Install coderay
