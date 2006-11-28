@@ -212,7 +212,6 @@ module Ramaze
         join.each{|t| t.join }
       end
     rescue Timeout::Error => timeout
-      p timeouted
       if timeouted
         puts "sorry, please shutdown your other app first"
         shutdown
