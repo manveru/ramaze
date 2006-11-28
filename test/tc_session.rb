@@ -14,11 +14,12 @@ class TCSessionController < Template::Ramaze
   end
 end
 
+Global.mapping = {
+  '/' => TCSessionController,
+}
+Ramaze.start
+
 context "usual Session" do
-
-  start
-  Global.mapping['/'] = TCSessionController
-
   class Context
     def initialize(url = '/')
       @cookie = open(url).meta['set-cookie']
@@ -28,22 +29,22 @@ context "usual Session" do
       Kernel.open("http://localhost:#{Global.port}#{url}", hash)
     end
 
-    def request opt
+    def request opt = ''
       open(opt, 'Set-Cookie' => @cookie).read
     end
 
-    def erequest opt
+    def erequest opt = ''
       eval(request(opt))
     rescue Object => ex
       puts ex
-      {}
+      ex
     end
   end
 
   ctx = Context.new
 
-  specify "Should give me the current session" do
-    ctx.erequest('/').should ==({})
+  specify "Should give me an empty session" do
+    ctx.erequest.should == {}
   end
 
   specify "set some session-parameters" do
@@ -52,5 +53,13 @@ context "usual Session" do
 
   specify "inspect session again" do
     ctx.erequest('/').should == {'foo' => 'bar'}
+  end
+
+  specify "change the session" do
+    ctx.erequest('/set_session/foo/foobar').should == {'foo' => 'foobar'}
+  end
+
+  specify "inspect the changed session" do
+    ctx.erequest('/').should == {'foo' => 'foobar'}
   end
 end

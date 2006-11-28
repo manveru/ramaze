@@ -9,19 +9,19 @@ include Ramaze
 
 class TCRequestController < Template::Ramaze
   def is_post
-    request.post?
+    request.post?.to_s
   end
 
   def is_get
-    request.get?
+    request.get?.to_s
   end
 
   def post_inspect
-    request.post_query.inspect
+    request.params.inspect
   end
 
   def get_inspect
-    request.get_query.inspect
+    request.params.inspect
   end
 
   def my_ip
@@ -31,50 +31,42 @@ end
 
 context "POST" do
 
+  #Global.adapter = :mongrel
   start
   Global.mapping['/'] = TCRequestController
 
-  def request req, params = {}
-    uri = URI.parse("http://localhost:7000#{req}")
-    res = Net::HTTP.post_form(uri, params)
-    res.body
-  end
-
   specify "give me the result of request.post?" do
-    request("/is_post").should == 'true'
+    post("is_post").should == 'true'
   end
 
   specify "give me the result of request.get?" do
-    request("/is_get").should == 'false'
+    post("is_get").should == 'false'
   end
 
   specify "give me back what i gave" do
-    eval(request("/post_inspect", 'this' => 'post')).should == {"this" => "post"}
+    eval(post("post_inspect", 'this' => 'post')).should == {"this" => "post"}
   end
 end
 
 context "GET" do
 
+  Global.adapter = :mongrel
   start
   Global.mapping['/'] = TCRequestController
 
-  def request req, params = {}
-    open("http://localhost:#{Ramaze::Global.port}#{req}").read
-  end
-
   specify "give me the result of request.post?" do
-    request("/is_post").should == 'false'
+    get("/is_post").should == 'false'
   end
 
   specify "give me the result of request.get?" do
-    request("/is_get").should == 'true'
+    get("/is_get").should == 'true'
   end
 
   specify "give me back what i gave" do
-    eval(request("/get_inspect?one=two&three=four")).should == {'one' => 'two', 'three' => 'four'}
+    eval(get("/get_inspect?one=two&three=four")).should == {'one' => 'two', 'three' => 'four'}
   end
 
   specify "my ip" do
-    request("/my_ip").should == '127.0.0.1'
+    get("/my_ip").should == '127.0.0.1'
   end
 end

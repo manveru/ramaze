@@ -24,26 +24,19 @@ end
 
 start
 
-context "Testing Ramaze" do
-  def request opt
-    open("http://localhost:#{Ramaze::Global.port}/ramaze/#{opt}").read
-  end
 
-  specify "simple request should ==" do
-    request('/').should == 'The index'
+context "Testing Ramaze" do
+  specify "simple request to index" do
+    get('/ramaze').should == 'The index'
   end
 
   specify "summing two values" do
-    request('/sum/1/2').should == '3'
+    get('/ramaze/sum/1/2').should == '3'
   end
 end
 
 context "Testing Amrita" do
-  def request opt
-    open("http://localhost:#{Ramaze::Global.port}/amrita/#{opt}").read.strip
-  end
-
   specify "simple request to index" do
-    request('/').should == "<div>The index</div>"
+    get('/amrita').should == "<div>The index</div>"
   end
 end
