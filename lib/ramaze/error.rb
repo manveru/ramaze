@@ -1,8 +1,6 @@
 begin
   require 'coderay'
 rescue LoadError => ex
-  puts ex
-  puts "To get the full pleasure of errorpages install coderay"
 end
 
 module Ramaze
