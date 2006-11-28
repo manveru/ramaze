@@ -4,6 +4,9 @@ require 'benchmark'
 
 require 'ramaze/tool/tidy'
 
+# for OSX compatibility
+Socket.do_not_reverse_lookup = true
+
 module WEBrick
   class HTTPRequest
     def request_path

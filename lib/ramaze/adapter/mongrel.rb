@@ -3,6 +3,9 @@ require 'benchmark'
 require 'mongrel'
 require 'ramaze/tool/tidy'
 
+# for OSX compatibility
+Socket.do_not_reverse_lookup = true
+
 module Ramaze::Adapter
   class Mongrel < ::Mongrel::HttpHandler
     def self.start host, port
