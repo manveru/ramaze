@@ -5,6 +5,7 @@ require 'ramaze'
 runner = ARGV.find{|file| File.file?(file)} || 'main.rb'
 
 begin
+	puts "running #{File.expand_path(runner)}"
   require runner
 
   # start it only if it isn't started already
