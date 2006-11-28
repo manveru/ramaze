@@ -14,6 +14,8 @@ require 'ramaze'
 # - sum two numbers                           [ /sum/1/3 ]
 # - show if you made a POST or GET request    [ /post_or_get ]
 # - How to map your controllers to urls       [ /other ]
+# - Also try out the error-page, just pass something odd ;)
+
 
 include Ramaze
 
