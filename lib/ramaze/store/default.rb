@@ -6,6 +6,7 @@ module Ramaze
       attr_accessor :db
 
       def initialize filename = 'db.yaml'
+        FileUtils.touch(filename)
         @db = YAML::Store.new(filename)
       end
 
