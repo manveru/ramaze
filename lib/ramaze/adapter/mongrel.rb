@@ -40,7 +40,7 @@ module Ramaze::Adapter
     end
 
     def set_out out, response
-      if Global.tidy and (response.head['Content-Type'] == 'text/html' ? true : false)
+      if Global.tidy and response.content_type == 'text/html'
         out << Tool::Tidy.tidy(response.out)
       else
         out << response.out

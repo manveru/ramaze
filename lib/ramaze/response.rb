@@ -15,6 +15,10 @@ module Ramaze
     def pretty_inspect
       "<Response##{object_id} @code => #{code}, @head => #{head.inspect}, @out.size => #{out.size}>"
     end
+
+    def content_type
+      @head['Content-Type']
+    end
   end
 
   Response = ResponseStruct.new(:out, :code, :head)

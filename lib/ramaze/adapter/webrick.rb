@@ -9,6 +9,8 @@ Socket.do_not_reverse_lookup = true
 
 module WEBrick
   class HTTPRequest
+    attr_accessor :params
+
     def request_path
       request_uri.path
     end
@@ -17,15 +19,39 @@ module WEBrick
       peeraddr.last
     end
 
+    def request_path
+      request_uri.path
+    end
+
+    def get?
+      not post?
+    end
+
+    def post?
+      @request_method == 'POST'
+    end
+
+    def headers
+      return @headers if @headers
+      @headers = meta_vars.merge(header)
+      @headers.each do |key, value|
+        @headers.delete(key)
+        @headers[key.upcase] = value
+      end
+      @headers
+    end
+
     def params
       @params ||= parse_params
     end
 
-    def parse_params
+    def parse_params to_parse = body.to_s
       params = {}
-      body.split('&').each do |chunk|
-        key, value = chunk.split('=')
-        params[CGI.unescape(key)] = CGI.unescape(value)
+      [body, query_string].each do |chunk|
+        chunk.to_s.split('&').each do |pair|
+          key, value = pair.split('=').map{|e| CGI.unescape(e)}
+          params[key] = value
+        end
       end
       params
     end
@@ -45,7 +71,9 @@ module Ramaze::Adapter
 
       server = WEBrick::HTTPServer.new(:Port => port, :BindAddress => host)
       server.mount('/', WEBrick::HTTPServlet::ProcHandler.new(handler))
-      Thread.new{ server.start }
+      Thread.new do
+        server.start
+      end
     end
 
     def process request, response
@@ -64,11 +92,6 @@ module Ramaze::Adapter
       response
     end
 
-    def process_request(request)
-      request.define_method(:request_path){ request_uri.path }
-      request
-    end
-
     def respond orig_response, response
       @response = orig_response
       if response
@@ -76,6 +99,11 @@ module Ramaze::Adapter
         set_out(response)
       end
       @response
+    end
+
+    def process_request(request)
+      request.parse_params
+      request
     end
 
     def set_head(response)
@@ -86,7 +114,7 @@ module Ramaze::Adapter
 
     def set_out response
       @response.body =
-        if Global.tidy and (response.head['Content-Type'] == 'text/html' ? true : false)
+        if Global.tidy and response.content_type == 'text/html'
           Tool::Tidy.tidy(response.out)
         else
           response.out
