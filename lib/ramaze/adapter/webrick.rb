@@ -66,6 +66,8 @@ module Ramaze::Adapter
       # - implement graceful shutdown
 
       handler = lambda do |request, response|
+        # FIXME: urgent
+        # request = process_request(request)
         self.new.process(request, response)
       end
 
