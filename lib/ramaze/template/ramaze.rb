@@ -33,20 +33,36 @@ module Ramaze::Template
 
     def transform string, ivs = {}
       begin
-=begin
-        string.gsub!(/<(.*?) for="(.*?)" (.*?)>/) do
-          %{#{$1} #[ for #{$2} { #{$3} } ]}
+				string.gsub!(/<% (.*?) %>/) do |m|
+          "<?r #{$1} \n %{} ?>"
         end
-=end
-        string.gsub!(/#\[(.*?)\]\s*$/) do
-          p $1 => (e = eval($1))
-          e
+                       
+        string.gsub!(/<%= (.*?) %>/) do |m|
+          "<?r #{$1} ?>"
         end
+        
+        string.gsub!(/#\[(.*?)\]\s*$/) do |m|
+          "<?r #{$1} ?>"
+        end
+
+				string = "out.push(<<FOOBAR\n#{string}"
+        
+        string.gsub!(/<\?r (.*?) \?>/) do |m|
+          "\nFOOBAR\n)\n out.push(#{$1})\n out.push(<<FOOBAR\n"
+        end
+        
+        string << "FOOBAR\n)"
+
+        puts string
+        out = []
+        eval(string)
+				p out
+        string = out.join
       rescue Object => ex
         error "something bad happened while transformation"
         error ex
-        string
       end
+      string
     end
 
     def redirect target
