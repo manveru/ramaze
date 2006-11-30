@@ -10,6 +10,8 @@ module Ramaze
   def self.autoreload interval = 10
     gatherer = Thread.new do
       this = Thread.current
+      this[:task] = :autoreload
+
       cache = {}
 
       loop do
@@ -29,6 +31,8 @@ module Ramaze
 
     reloader = Thread.new do
       this = Thread.current
+      this[:task] = :autoreload
+
       cache = {}
       this[:interval] = interval
       sleep 0.1 until gatherer[:files] # wait for the gatherer
