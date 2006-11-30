@@ -7,12 +7,7 @@ runner = ARGV.find{|file| File.file?(file)} || 'main.rb'
 begin
 	puts "running #{File.expand_path(runner)}"
   require runner
-
-  # start it only if it isn't started already
-  # FIXME: find a nicer way :)
-  unless File.readlines(runner).find{|line| line =~ /^(Ramaze\.)?(start|run)\s*$/}
-    Ramaze.start
-  end
-rescue LoadError
-  puts "Please give me a file as option to run, the default is main.rb"
+  Ramaze.start
+rescue LoadError => ex
+  puts ex
 end
