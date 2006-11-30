@@ -1,3 +1,4 @@
+require 'timeout'
 require 'open-uri'
 require 'net/http'
 
@@ -7,19 +8,27 @@ $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..', 'lib')
 require 'ramaze'
 
 def get url = ''
-  url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
-  result = open(url).read.strip
-  #p url => result
-  result
+    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+  Timeout.timeout(1) do
+    result = open(url).read.strip
+    #p url => result
+    result
+  end
+rescue Timeout::Error => ex
+  ex.message
 end
 
 def post url = '', params = {}
-  url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
-  uri = URI.parse(url)
-  res = Net::HTTP.post_form(uri, params)
-  result = res.body.to_s.strip
-  #p res => result
-  result
+    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+    uri = URI.parse(url)
+  Timeout.timeout(1) do
+    res = Net::HTTP.post_form(uri, params)
+    result = res.body.to_s.strip
+    #p res => result
+    result
+  end
+rescue Timeout::Error => ex
+  ex.message
 end
 
 def ramaze_start hash = {}
@@ -37,6 +46,8 @@ end
 
 def ramaze(hash = {})
   ramaze_start(hash)
-  yield if block_given?
+  Timeout.timeout(10) do
+    yield if block_given?
+  end
   ramaze_teardown
 end
