@@ -104,7 +104,12 @@ module Ramaze
                          }
     }
 
-    defaults.merge(options).each do |key, value|
+    update_global options
+    update_global defaults
+  end
+
+  def update_global(hash = {})
+    hash.each do |key, value|
       Global[key] ||= value
     end
   end
