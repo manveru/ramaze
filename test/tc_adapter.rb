@@ -18,7 +18,7 @@ ramaze(:adapter => :mongrel) do
 end
 
 ramaze(:adapter => :webrick) do
-  context "Webrick" do
+  context "WEBrick" do
     specify "simple request" do
       (open('http://localhost:7000/').read).should == "The index"
     end
