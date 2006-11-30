@@ -20,7 +20,21 @@ def post url = '', params = {}
   result
 end
 
-Ramaze::Global.mode = :debug
-Ramaze::Global.adpater = :mongrel
-Ramaze::Global.run_loose = true
-Ramaze::Global.error_page = false
+def ramaze_start hash = {}
+  options = {
+    :mode => :debug,
+    :adapter => :mongrel,
+    :run_loose => true,
+    :error_page => false,
+  }
+  Ramaze.start(options.merge(hash))
+end
+
+def ramaze_teardown
+end
+
+def ramaze(hash = {})
+  ramaze_start(hash)
+  yield if block_given?
+  ramaze_teardown
+end
