@@ -14,9 +14,13 @@ module Ramaze
       end
     end
 
+    def params
+      @get_query.merge(@post_query)
+    end
+
     def parse_queries
-      @get_query  = query_parse query_string rescue ''
-      @post_query = query_parse body.read rescue ''
+      @get_query  = query_parse(query_string) rescue {}
+      @post_query = query_parse(body.read)    rescue {}
     end
 
     def query_parse str
