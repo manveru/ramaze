@@ -104,14 +104,8 @@ module Ramaze
                          }
     }
 
-    update_global options
-    update_global defaults
-  end
-
-  def update_global(hash = {})
-    hash.each do |key, value|
-      Global[key] ||= value
-    end
+    Global.update options
+    Global.update defaults
   end
 
   # first, search for all the classes that end with 'Controller'
