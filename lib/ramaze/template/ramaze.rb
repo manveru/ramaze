@@ -47,6 +47,11 @@ module Ramaze::Template
           "#{e} #{bufadd} (#{$1}); #{bufadd} #{a}"
         end
 
+        # this one should not be used until we find and solution
+        # that allows for stuff like
+        # #[@foo]!
+        # we just don't allow anything except space or newline
+        # after the expression #[] to make it sane
         string.gsub!(/#\[(.*?)\]\s*$/) do |m|
           "#{e} #{bufadd} (#{$1}); #{bufadd} #{a}"
         end
