@@ -172,11 +172,11 @@ module Ramaze
 
   def init_adapter
     (Thread.list - [Thread.current]).each do |thread|
-      thread.kill if thread[:ramaze]
+      thread.kill if thread[:task] == :adapter
     end
 
     Thread.new do
-      Thread.current[:ramaze] = true
+      Thread.current[:task] = :adapter
       Global.running_adapter = run_adapter
     end
 
