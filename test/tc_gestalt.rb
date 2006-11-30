@@ -1,7 +1,7 @@
 require 'ramaze'
 require 'test/test_helper'
 
-context "all testcases" do
+context "Gestalt" do
   def gestalt &block
     Ramaze::Gestalt.new(&block).to_s
   end

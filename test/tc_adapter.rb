@@ -9,26 +9,18 @@ class MainController < Template::Ramaze
   end
 end
 
-context "try Mongrel" do
-
-  setup do
-    Global.adapter = :mongrel
-    start
-  end
-
-  specify "simple request" do
-    (open('http://localhost:7000/').read).should == "The index"
+ramaze(:adapter => :mongrel) do
+  context "Mongrel" do
+    specify "simple request" do
+      (open('http://localhost:7000/').read).should == "The index"
+    end
   end
 end
 
-context "try Webrick" do
-
-  setup do
-    Global.adapter = :webrick
-    start
-  end
-
-  specify "simple request" do
-    (open('http://localhost:7000/').read).should == "The index"
+ramaze(:adapter => :webrick) do
+  context "Webrick" do
+    specify "simple request" do
+      (open('http://localhost:7000/').read).should == "The index"
+    end
   end
 end

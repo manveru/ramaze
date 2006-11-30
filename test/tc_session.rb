@@ -14,52 +14,49 @@ class TCSessionController < Template::Ramaze
   end
 end
 
-Global.mapping = {
-  '/' => TCSessionController,
-}
-Ramaze.start
+ramaze(:mapping => {'/' => TCSessionController}) do
+  context "usual Session" do
+    class Context
+      def initialize(url = '/')
+        @cookie = open(url).meta['set-cookie']
+      end
 
-context "usual Session" do
-  class Context
-    def initialize(url = '/')
-      @cookie = open(url).meta['set-cookie']
+      def open url, hash = {}
+        Kernel.open("http://localhost:#{Global.port}#{url}", hash)
+      end
+
+      def request opt = ''
+        open(opt, 'Set-Cookie' => @cookie).read
+      end
+
+      def erequest opt = ''
+        eval(request(opt))
+      rescue Object => ex
+        puts ex
+        ex
+      end
     end
 
-    def open url, hash = {}
-      Kernel.open("http://localhost:#{Global.port}#{url}", hash)
+    ctx = Context.new
+
+    specify "Should give me an empty session" do
+      ctx.erequest.should == {}
     end
 
-    def request opt = ''
-      open(opt, 'Set-Cookie' => @cookie).read
+    specify "set some session-parameters" do
+      ctx.erequest('/set_session/foo/bar').should == {'foo' => 'bar'}
     end
 
-    def erequest opt = ''
-      eval(request(opt))
-    rescue Object => ex
-      puts ex
-      ex
+    specify "inspect session again" do
+      ctx.erequest('/').should == {'foo' => 'bar'}
     end
-  end
 
-  ctx = Context.new
+    specify "change the session" do
+      ctx.erequest('/set_session/foo/foobar').should == {'foo' => 'foobar'}
+    end
 
-  specify "Should give me an empty session" do
-    ctx.erequest.should == {}
-  end
-
-  specify "set some session-parameters" do
-    ctx.erequest('/set_session/foo/bar').should == {'foo' => 'bar'}
-  end
-
-  specify "inspect session again" do
-    ctx.erequest('/').should == {'foo' => 'bar'}
-  end
-
-  specify "change the session" do
-    ctx.erequest('/set_session/foo/foobar').should == {'foo' => 'foobar'}
-  end
-
-  specify "inspect the changed session" do
-    ctx.erequest('/').should == {'foo' => 'foobar'}
+    specify "inspect the changed session" do
+      ctx.erequest('/').should == {'foo' => 'foobar'}
+    end
   end
 end

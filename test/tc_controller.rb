@@ -21,22 +21,20 @@ class RamazeController < Template::Ramaze
   end
 end
 
+ramaze do
+  context "Testing Ramaze" do
+    specify "simple request to index" do
+      get('/ramaze').should == 'The index'
+    end
 
-start
-
-
-context "Testing Ramaze" do
-  specify "simple request to index" do
-    get('/ramaze').should == 'The index'
+    specify "summing two values" do
+      get('/ramaze/sum/1/2').should == '3'
+    end
   end
 
-  specify "summing two values" do
-    get('/ramaze/sum/1/2').should == '3'
-  end
-end
-
-context "Testing Amrita" do
-  specify "simple request to index" do
-    get('/amrita').should == "<div>The index</div>"
+  context "Testing Amrita" do
+    specify "simple request to index" do
+      get('/amrita').should == "<div>The index</div>"
+    end
   end
 end

@@ -17,50 +17,51 @@ class MainController < Template::Ramaze
   end
 end
 
-Global.template_root = 'test/template/ramaze/'
-start
 
-context "simple external template" do
-  specify "hello world" do
-    get('/World').should == 'Hello, World!'
-    get('/You').should == 'Hello, You!'
-  end
+ramaze( :template_root => 'test/template/ramaze/' ) do
 
-  specify "summing" do
-    get('/sum/1/2').should == '3'
-  end
-
-  specify "nasty nested stuff" do
-    get('/nested/foo/bar').should == 'bar'
-  end
-end
-
-class OtherController < Template::Ramaze
-  def stuff string, vars = {}
-		vars.each do |k,v|
-      instance_variable_set("@#{k}", v)
+  context "simple external template" do
+    specify "hello world" do
+      get('/World').should == 'Hello, World!'
+      get('/You').should == 'Hello, You!'
     end
 
-    transform(string)
-  end
-end
+    specify "summing" do
+      get('/sum/1/2').should == '3'
+    end
 
-context "simple internal template" do
-  def transform(string, ivs = @ivs)
-    OtherController.new.stuff(string, ivs || {})
-  end
-  
-  specify "hello world" do
-    @ivs = {:string => 'World'}
-    transform("Hello, #[@string]").should == 'Hello, World'
+    specify "nasty nested stuff" do
+      get('/nested/foo/bar').should == 'bar'
+    end
   end
 
-  specify "plain interpolation" do
-    @ivs = {:string => 'World'}
-    transform("<%= @string %>").should == 'World'
+  class OtherController < Template::Ramaze
+    def stuff string, vars = {}
+      vars.each do |k,v|
+        instance_variable_set("@#{k}", v)
+      end
+
+      transform(string)
+    end
   end
 
-  specify "internal ruby" do
-    transform("<% a = 1+1 %> #[a] ").should == '2'
+  context "simple internal template" do
+    def transform(string, ivs = @ivs)
+      OtherController.new.stuff(string, ivs || {})
+    end
+
+    specify "hello world" do
+      @ivs = {:string => 'World'}
+      transform("Hello, #[@string]").should == 'Hello, World'
+    end
+
+    specify "plain interpolation" do
+      @ivs = {:string => 'World'}
+      transform("<%= @string %>").should == 'World'
+    end
+
+    specify "internal ruby" do
+      transform("<% a = 1+1 %> #[a] ").should == '2'
+    end
   end
 end

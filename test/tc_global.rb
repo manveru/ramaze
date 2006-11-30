@@ -3,7 +3,7 @@ require 'test/test_helper'
 
 include Ramaze
 
-context "simple stuff with global" do
+context "Global" do
   specify "Global.create" do
     Global.create :foo => :bar, :x => :y
     Global.foo.should.equal :bar
