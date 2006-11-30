@@ -25,14 +25,14 @@ module Ramaze
         end
       rescue Timeout::Error
         error e
-        Response.new('', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
+        Response.new(out = '', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
       rescue Object => e
         if Global.error_page
           error e
           Error::Response.new(e)
         else
           error e
-          Response.new('', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
+          Response.new(out = '', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
         end
       end
 
