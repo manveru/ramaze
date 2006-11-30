@@ -177,27 +177,17 @@ module Ramaze
   # Global.running_adapter
 
   def init_adapter
+    (Thread.list - [Thread.current]).each do |thread|
+      thread.kill if thread[:ramaze]
+    end
+
     Thread.new do
+      Thread.current[:ramaze] = true
       Global.running_adapter = run_adapter
-    end unless Global.running_adapter
+    end
 
     sleep 0.1 until Global.running_adapter
-
     Global.running_adapter.join unless Global.run_loose
-=begin
-    if Global.running_adapter
-      return(Global.running_adapter)
-    end
-    if Global.run_loose
-      Thread.new do
-        Global.running_adapter = run_adapter
-      end
-      sleep 0.1 until Global.running_adapter
-    else
-      raise Global.inspect
-      Global.running_adapter = run_adapter.join
-    end
-=end
   end
 
   # This first picks the right adapter according to Global.adapter
@@ -213,7 +203,7 @@ module Ramaze
     rescue LoadError => ex
       puts ex
       puts "Please make sure you have an adapter called #{adapter}"
-      exit
+      shutdown
     end
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
 
@@ -234,6 +224,7 @@ module Ramaze
       if timeouted
         puts "sorry, please shutdown your other app first"
         shutdown
+        exit
       end
       puts timeout
       puts "will still try to retry"
