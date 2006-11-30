@@ -11,7 +11,7 @@ Dir['test/**/tc_*.rb'].each do |test_case|
   out.split("\n").each do |line|
     if line =~ /(\d+) specifications?, (\d+) failures?/ 
       s, f = $1.to_i, $2.to_i
-      puts "rspec #{test_case} [#{s} specs]"
+      puts "rspec #{test_case.ljust(50)} [#{s.to_s.rjust(3)} specs]"
       problematic[test_case] = out unless f == 0
       specs    += s
       failures += f
@@ -19,9 +19,11 @@ Dir['test/**/tc_*.rb'].each do |test_case|
   end
 end
 
+puts "-" * 80
 problematic.each do |key, value|
-  puts "-" * 80
-  puts key
+  puts key.center(80)
+  puts "v" * 80
+  puts
   puts value
   puts "-" * 80
 end
