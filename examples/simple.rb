@@ -55,5 +55,3 @@ Global.mapping    = {
   '/'      => SimpleController,
   '/other' => OtherController
 }
-
-start
