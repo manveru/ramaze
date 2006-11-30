@@ -35,6 +35,7 @@ ramaze( :mapping => {'/' => TCRequestController} ) do
       post("is_get").should == 'false'
     end
 
+    # this here has shown some odd errors... keep an eye on it.
     specify "give me back what i gave" do
       eval(post("post_inspect", 'this' => 'post')).should == {"this" => "post"}
     end
