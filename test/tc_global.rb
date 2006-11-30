@@ -4,10 +4,16 @@ require 'test/test_helper'
 include Ramaze
 
 context "Global" do
-  specify "Global.create" do
+  specify "create" do
     Global.create :foo => :bar, :x => :y
     Global.foo.should.equal :bar
     Global.x.should.equal :y
+  end
+
+  specify "update" do
+    Global.update :foo => :fuz, :baz => :foobar
+    Global[:foo].should == :bar
+    Global[:baz].should == :foobar
   end
 
   specify "just simple assignment and retrive" do
