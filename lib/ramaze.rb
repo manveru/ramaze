@@ -46,8 +46,9 @@ module Ramaze
 
   def shutdown
     info "Shutting down Ramaze"
-    Global.running_adapter.kill if Global.running_adapter
-    exit
+    Thread.list.each do |thread|
+      thread.kill unless thread == Thread.main
+    end
   end
 
   # Setup the variables for Global
