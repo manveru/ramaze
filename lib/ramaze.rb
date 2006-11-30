@@ -177,14 +177,27 @@ module Ramaze
   # Global.running_adapter
 
   def init_adapter
+    Thread.new do
+      Global.running_adapter = run_adapter
+    end unless Global.running_adapter
+
+    sleep 0.1 until Global.running_adapter
+
+    Global.running_adapter.join unless Global.run_loose
+=begin
+    if Global.running_adapter
+      return(Global.running_adapter)
+    end
     if Global.run_loose
       Thread.new do
         Global.running_adapter = run_adapter
       end
       sleep 0.1 until Global.running_adapter
     else
+      raise Global.inspect
       Global.running_adapter = run_adapter.join
     end
+=end
   end
 
   # This first picks the right adapter according to Global.adapter
