@@ -1,5 +1,7 @@
-require 'rubygems'
 require 'open-uri'
+require 'net/http'
+
+require 'rubygems'
 require 'spec'
 $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..', 'lib')
 require 'ramaze'
@@ -22,9 +24,9 @@ end
 
 def ramaze_start hash = {}
   options = {
-    :mode => :debug,
-    :adapter => :mongrel,
-    :run_loose => true,
+    :mode       => :silent,
+    :adapter    => :mongrel,
+    :run_loose  => true,
     :error_page => false,
   }
   Ramaze.start(options.merge(hash))
