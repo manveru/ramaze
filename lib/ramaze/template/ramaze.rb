@@ -32,32 +32,34 @@ module Ramaze::Template
     end
 
     def transform string, ivs = {}
+      a, e = "\n<<FOOBARABOOF_RAMAZE\n", "\nFOOBARABOOF_RAMAZE\n"
+      bufadd = "out << "
       begin
-				string.gsub!(/<% (.*?) %>/) do |m|
-          "<?r #{$1} \n %{} ?>"
+        string.gsub!(/<% (.*?) %>/) do |m|
+          "#{e} #{$1}; #{bufadd} #{a}"
         end
-                       
+
         string.gsub!(/<%= (.*?) %>/) do |m|
-          "<?r #{$1} ?>"
+          "#{e} #{bufadd} (#{$1}); #{bufadd} #{a}"
         end
-        
+
+        string.gsub!(/<?r (.*?) ?>/) do |m|
+          "#{e} #{bufadd} (#{$1}); #{bufadd} #{a}"
+        end
+
         string.gsub!(/#\[(.*?)\]\s*$/) do |m|
-          "<?r #{$1} ?>"
+          "#{e} #{bufadd} (#{$1}); #{bufadd} #{a}"
         end
 
-				string = "out.push(<<FOOBAR\n#{string}"
-        
-        string.gsub!(/<\?r (.*?) \?>/) do |m|
-          "\nFOOBAR\n)\n out.push(#{$1})\n out.push(<<FOOBAR\n"
-        end
-        
-        string << "FOOBAR\n)"
-
-        puts string
         out = []
-        eval(string)
-				p out
-        string = out.join
+        final = "#{bufadd} #{a}"
+        final << string
+        final << e
+        eval(final)
+        out.map! do |line|
+          line.to_s.chomp
+        end
+        string = out.join.strip
       rescue Object => ex
         error "something bad happened while transformation"
         error ex
