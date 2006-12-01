@@ -1,17 +1,15 @@
 <html>
   <head>
-    <title>Blogging Ramaze</title>
+    <title>#{@title}</title>
   </head>
   <body>
-    <div id="blog_title">#[Config[:title]]</div>
+    <div id="blog_title">#{@title}</div>
     <div id="blog_body">
+      <?r @entries.each_with_index do |entry, i| ?>
       <div id="blog_entry">
-        #[
-          @entries.each do |entry|
-           %{#{entry}}
-          end
-         ]
+        #{i}: #{entry}
       </div>
+      <?r end ?>
     </div>
   </body>
 </html>

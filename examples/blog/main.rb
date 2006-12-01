@@ -1,19 +1,12 @@
+require 'ramaze'
+
 require 'src/model'
 
-require 'ramaze'
 include Ramaze
-
-class MainController < Template::Ramaze
-  def index
-    nil
-  end
-end
-
-class EntryController < Template::Ramaze
-end
+require 'src/controller'
 
 Global.template_root = 'template'
 Global.mapping = {
-  '/' => MainController,
-  '/entry' => EntryController,
+  '/'       => MainController,
+  '/entry'  => EntryController,
 }

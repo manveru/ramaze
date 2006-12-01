@@ -16,3 +16,7 @@ class Entry
   attr_accessor :time, Time
   has_many Comment
 end
+
+unless defined? Entry.ogmanager
+  Og.setup
+end
