@@ -20,7 +20,7 @@ BASEDIR = File.dirname(__FILE__)
 NAME = "ramaze"
 REV = File.read(".svn/entries")[/committed-rev="(d+)"/, 1] rescue nil
 VERS = ENV['VERSION'] || (Ramaze::VERSION + (REV ? ".#{REV}" : ""))
-CLEAN.include ['**/.*.sw?', '*.gem', '.config']
+CLEAN.include ['**/.*.sw?', '*.gem', '.config', '**/*~', '**/data.db']
 RDOC_OPTS = ['--quiet', '--title', "ramaze documentation",
     "--opname", "index.html",
     "--line-numbers", 
