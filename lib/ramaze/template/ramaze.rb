@@ -1,6 +1,7 @@
 module Ramaze::Template
   class Ramaze
     trait :actionless => false
+
     class << self
       def handle_request request, action, *params
         controller = self.new
@@ -9,11 +10,24 @@ module Ramaze::Template
         template = rendered unless rendered.empty?
         template
       end
+
+      def helper *syms
+        syms.each do |sym|
+          load "ramaze/helper/#{sym}.rb"
+          include ::Ramaze.const_get("#{sym.to_s.capitalize}Helper")
+        end
+      end
     end
 
     private
 
     include Trinity
+
+    helper :link, :redirect
+
+    def breakout
+      nil
+    end
 
     def render template
       path = File.join(Global.template_root, Global.mapping.invert[self.class], template)
@@ -70,12 +84,6 @@ module Ramaze::Template
         error ex
       end
       string
-    end
-
-    def redirect target
-      response.head['Location'] = target
-      response.code = 303
-      %{Please follow <a href="#{target}">#{target}</a>!}
     end
   end
 end
