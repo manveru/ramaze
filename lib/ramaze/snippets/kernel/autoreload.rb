@@ -25,7 +25,9 @@ module Ramaze
         end
 
         this[:files] = files
-        sleep(this[:interval] ||= interval)
+
+        sleep_interval = this[:interval] ||= interval || 10
+        sleep sleep_interval
       end
     end
 
@@ -59,7 +61,8 @@ module Ramaze
             # sleep a total of reloader[:interval],
             # but spread it evenly on all files
           end # begin
-          sleep(this[:interval].to_f / gatherer[:files].size)
+          sleep_interval = this[:interval].to_f / gatherer[:files].size
+          sleep sleep_interval
         end # each
       end # loop
     end # Thread.new
