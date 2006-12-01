@@ -8,6 +8,7 @@ Socket.do_not_reverse_lookup = true
 
 module Ramaze::Adapter
   class Mongrel < ::Mongrel::HttpHandler
+
     def self.start host, port
       h = ::Mongrel::HttpServer.new host, port
       h.register "/", self.new
@@ -15,42 +16,40 @@ module Ramaze::Adapter
     end
 
     def process(request, response)
-      if Global.mode == :benchmark
-        bench_process(request, response)
-      else
-        respond(response, Dispatcher.handle(request, response))
-      end
+      @request, @response = request, response
+      Global.mode == :benchmark ? bench_respond : respond
     end
 
-    def bench_process(request, response)
+    def bench_respond
       time = Benchmark.measure do
-        response = respond(response, Dispatcher.handle(request, response))
+        respond
       end
       info "#{request} took #{time.real}s"
-      response
     end
 
-    def respond orig_response, response
-      if response
-        orig_response.start(response.code) do |head, out|
-          set_head(head, response)
-          set_out(out, response)
+    def respond
+      @our_response = Dispatcher.handle(@request, @resopnse)
+      @response.start(@our_response.code) do |head, out|
+        set_head head
+        set_out  out
+      end
+    end
+
+    def set_head head
+      @our_response.head.each do |key, value|
+        head[key] = value
+      end
+    end
+
+    def set_out out
+      our_out = 
+        if Global.tidy and @our_response.content_type == 'text/html'
+          Tool::Tidy.tidy(@our_response.out)
+        else
+          @our_response.out
         end
-      end
+      out << our_out
     end
 
-    def set_out out, response
-      if Global.tidy and response.content_type == 'text/html'
-        out << Tool::Tidy.tidy(response.out)
-      else
-        out << response.out
-      end
-    end
-
-    def set_head head, response
-      response.head.each do |key, val|
-        head[key] = val
-      end
-    end
   end
 end
