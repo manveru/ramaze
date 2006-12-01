@@ -21,13 +21,10 @@ end
 ramaze( :template_root => 'test/template/ramaze/' ) do
 
   context "simple external template" do
-=begin
-    # invalid!
     specify "hello world" do
       get('/World').should == 'Hello, World!'
       get('/You').should == 'Hello, You!'
     end
-=end
 
     specify "summing" do
       get('/sum/1/2').should == '3'
@@ -40,11 +37,7 @@ ramaze( :template_root => 'test/template/ramaze/' ) do
 
   class OtherController < Template::Ramaze
     def stuff string, vars = {}
-      vars.each do |k,v|
-        instance_variable_set("@#{k}", v)
-      end
-
-      transform(string)
+      transform(string, vars)
     end
   end
 
@@ -55,16 +48,19 @@ ramaze( :template_root => 'test/template/ramaze/' ) do
 
     specify "hello world" do
       @ivs = {:string => 'World'}
-      transform("Hello, #[@string]").should == 'Hello, World'
+      transform('Hello, #{@string}').should == 'Hello, World'
+      transform('Hello, <%= @string %>').should == 'Hello, World'
     end
 
     specify "plain interpolation" do
       @ivs = {:string => 'World'}
       transform("<%= @string %>").should == 'World'
+      transform('#{@string}').should == 'World'
     end
 
     specify "internal ruby" do
-      transform("<% a = 1+1 %> #[a] ").should == '2'
+      transform('<% a = 1+1 %> #{a}').should == '2'
+      transform('<?r a = 1+1 ?> #{a}').should == '2'
     end
   end
 end
