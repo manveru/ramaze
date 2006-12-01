@@ -57,8 +57,8 @@ module Ramaze::Template
           "#{e} #{bufadd} (#{$1}); #{bufadd} #{a}"
         end
 
-        string.gsub!(/<?r (.*?) ?>/) do |m|
-          "#{e} #{bufadd} (#{$1}); #{bufadd} #{a}"
+        string.gsub!(/<\?r (.*?) \?>/) do |m|
+          "#{e} #{$1}; #{bufadd} #{a}"
         end
 
         # this one should not be used until we find and solution
