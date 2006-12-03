@@ -7,7 +7,9 @@ require 'rake/rdoctask'
 require 'rake/contrib/rubyforgepublisher'
 require 'fileutils'
 include FileUtils
-require File.join(File.dirname(__FILE__), 'lib', 'ramaze', 'version')
+
+$:.unshift File.join(File.dirname(__FILE__), "lib")
+require 'ramaze/version'
 
 AUTHOR = "manveru"
 EMAIL = "m.fellinger@gmail.com"
@@ -31,9 +33,22 @@ desc "Packages up ramaze gem."
 task :default => [:test]
 task :package => [:clean]
 
+
+require 'spec/rake/spectask'
+
+desc "Generate HTML report for failing examples"
+Spec::Rake::SpecTask.new('rcov') do |t|
+  t.spec_files = FileList['test/tc_*.rb']
+  t.spec_opts = ["--format", "html", "--diff"]
+  t.out = 'doc/output/tools/rcov/test.html'
+  t.fail_on_error = true
+end
+
+
 task :test do
   system("ruby",  File.dirname(__FILE__) + '/lib/test/all_tests.rb')
 end
+
 
 spec =
     Gem::Specification.new do |s|
