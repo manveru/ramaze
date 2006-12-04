@@ -1,5 +1,5 @@
-require 'ramaze'
-require 'test/test_helper'
+require 'lib/test/test_helper'
+
 include Ramaze
 
 class MainController < Template::Ramaze

@@ -1,5 +1,4 @@
-require 'ramaze'
-require 'test/test_helper'
+require 'lib/test/test_helper'
 
 context "Gestalt" do
   def gestalt &block
