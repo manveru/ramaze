@@ -7,7 +7,18 @@ module Ramaze
   BASEDIR = File.dirname(File.expand_path(__FILE__))
 
   $:.unshift Ramaze::BASEDIR
-  Dir[File.join(Ramaze::BASEDIR, 'ramaze/*.rb')].each{|file| require file }
+
+  require 'ramaze/controller'
+  require 'ramaze/dispatcher'
+  require 'ramaze/error'
+  require 'ramaze/gestalt'
+  require 'ramaze/global'
+  require 'ramaze/http_status'
+  require 'ramaze/logger'
+  require 'ramaze/model'
+  require 'ramaze/snippets'
+  require 'ramaze/template'
+  require 'ramaze/version'
 
   include Logger
 

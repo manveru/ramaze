@@ -1,15 +1,7 @@
+require 'ramaze/trinity'
+
 module Ramaze
   module Controller
-    def request
-      Thread.current[:request]
-    end
-
-    def response
-      Thread.current[:response]
-    end
-
-    def session
-      Thread.current[:session]
-    end
+    include Ramaze::Trinity
   end
 end
