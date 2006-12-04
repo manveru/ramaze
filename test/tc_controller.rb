@@ -3,7 +3,7 @@ require 'lib/test/test_helper'
 include Ramaze
 
 class AmritaController < Template::Amrita2
-  trait :template_root => File.join(File.dirname(File.expand_path(__FILE__)), 'template', 'amrita')
+  trait :template_root => 'template/amrita2'
 
   def index
     "The index"
