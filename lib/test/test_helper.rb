@@ -15,8 +15,6 @@ def get url = ''
     #p url => result
     result
   end
-rescue Object => ex
-  ex.message
 end
 
 def post url = '', params = {}
@@ -28,8 +26,6 @@ def post url = '', params = {}
     #p res => result
     result
   end
-rescue Object => ex
-  ex.message
 end
 
 def ramaze_start hash = {}
