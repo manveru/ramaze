@@ -1,9 +1,3 @@
-=begin
-Dir['test/**/tc_*.rb'].each do |test_case|
-  require test_case
-end
-=end
-
 require 'pp'
 
 $stdout.sync = true
