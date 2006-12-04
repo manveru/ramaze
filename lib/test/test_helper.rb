@@ -4,7 +4,8 @@ require 'net/http'
 
 require 'rubygems'
 require 'spec'
-$:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..', 'lib')
+
+$:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..')
 require 'ramaze'
 
 def get url = ''
