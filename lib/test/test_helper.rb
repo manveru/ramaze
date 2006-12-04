@@ -30,7 +30,7 @@ end
 
 def ramaze_start hash = {}
   options = {
-    :mode       => :silent,
+    :mode       => :debug,
     :adapter    => :mongrel,
     :run_loose  => true,
     :error_page => false,
