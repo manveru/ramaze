@@ -55,7 +55,8 @@ p method(:p)
 =end
 
 module Kernel
-  alias :method_get :method
+  alias_method :method_get, :method unless defined? method_get
+
   def method(n = 0)
     return method_get(n) unless n.is_a? Integer
     method_get caller.to_s.scan(/`(.*?)'/)[n].first rescue nil
