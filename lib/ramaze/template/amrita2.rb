@@ -13,7 +13,7 @@ module Ramaze::Template
 
         file = find_template(action)
 
-        return '' unless file
+        raise Ramaze::Error::NoAction, "No Action found for #{request.request_path}" unless file
 
         template = ::Amrita2::TemplateFile.new(file)
         out = ''
@@ -21,9 +21,8 @@ module Ramaze::Template
         out
 
       rescue Object => ex
-        puts ex
         Logger.error ex
-        ''
+        raise Ramaze::Error::NoAction, "No Action found for #{request.request_path}"
       end
 
       def find_template action
