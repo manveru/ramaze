@@ -5,12 +5,125 @@
 
 require 'ramaze'
 
+usage = %{
+Usage: ramaze [switches] startfile [arguments]
+  -a, --adapter=ADAPTER select an adapter [mongrel|webrick]
+  -m, --mongrel         use mongrel to process requests
+  -w, --webrick         the default
+
+      --mode=LEVEL      set the running-mode
+  -b, --benchmark       full logging with benchmarks, autoreload 5
+  -d, --debug           the default, full logging,    autoreload 5
+  -t, --stage           log infos/errors,             autoreload 10
+  -l, --live            log errors,                   autoreload 20
+  -s, --silent          no logging,                   autoreload 40
+
+  -o, --host            which host should ramaze listen for requests
+                          default is 0.0.0.0
+  -p, --port            what port should ramaze use
+                          default is 7000
+
+  -n, --no-errorpage    don't use the default errorpage of ramaze
+                          helpful if you want to make sure noone can
+                          ever see your code by accident or for testing
+      --template-root   set a custom template-root for the whole
+                          application, please note that ~ is not
+                          expanded to your home-directory
+      --autoreload=N    set how frequent ramaze should search for
+                          updated files in your application
+                          default depends on the (-mode)
+  -r, --run-loose       don't take control after startup.
+                          this is useful for testcases.
+      --cache           use the simple caching based on the signature
+                          of your requests (experimental)
+      --tidy            run Tool::Tidy over text/html output
+
+  -h, --help            print this help
+  -v, --version         print the version
+  -c, --copyright       print the copyrith
+
+Please report bugs to <m.fellinger at gmail.com>
+}.strip
+
 runner = ARGV.find{|file| File.file?(file)} || 'main.rb'
 
 begin
-	puts "running #{File.expand_path(runner)}"
+  require 'getoptlong'
+
+  # memo:
+  #   REQUIRED_ARGUMENT, NO_ARGUMENT, OPTIONAL_ARGUMENT
+
+  opts = GetoptLong.new *[
+    [ '--adapter',        '-a', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--mongrel',        '-m', GetoptLong::NO_ARGUMENT       ],
+    [ '--webrick',        '-w', GetoptLong::NO_ARGUMENT       ],
+
+    [ '--mode',                 GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--benchmark',      '-b', GetoptLong::NO_ARGUMENT       ],
+    [ '--debug',          '-d', GetoptLong::NO_ARGUMENT       ],
+    [ '--stage',          '-t', GetoptLong::NO_ARGUMENT       ],
+    [ '--live',           '-l', GetoptLong::NO_ARGUMENT       ],
+    [ '--silent',         '-s', GetoptLong::NO_ARGUMENT       ],
+
+    [ '--host',           '-o', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--port',           '-p', GetoptLong::REQUIRED_ARGUMENT ],
+
+    [ '--no-errorpage',   '-n', GetoptLong::NO_ARGUMENT       ],
+    [ '--template-root',        GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--autoreload',           GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--run-loose',      '-r', GetoptLong::NO_ARGUMENT       ],
+
+    [ '--help',           '-h', GetoptLong::NO_ARGUMENT       ],
+    [ '--version',        '-v', GetoptLong::NO_ARGUMENT       ],
+    [ '--copyright',      '-c', GetoptLong::NO_ARGUMENT       ],
+  ]
+
+  options = {}
+
+  opts.each do |opt, arg|
+    p opt => arg
+    sopt = opt[2..-1].gsub('-', '_').intern
+
+    case sopt
+    when :help
+      puts usage
+      exit
+    when :version
+      puts "ramaze #{Ramaze::VERSION}"
+      exit
+    when :copyright
+      puts "Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com"
+      puts "All files in this distribution are subject to the terms of the Ruby license."
+      exit
+    when :adapter
+      options[:adapter] = arg.intern
+    when :mongrel, :webrick
+      options[:adapter] = sopt
+    when :mode
+      options[:mode] = arg.intern
+    when :benchmark, :debug, :stage, :live, :silent
+      options[:mode] = sopt
+    when :host
+      options[:host] = arg
+    when :port
+      options[:port] = arg
+    when :no_errorpage
+      options[:error_page] = false
+    when :template_root
+      options[:template_root] = arg
+    when :autoreload
+      raise "implement me"
+    when :run_loose
+      options[:run_loose] = true
+    end
+  end
+
+  Ramaze.setup_global(options)
+
+  puts "running #{File.expand_path(runner)}"
   require runner
-  Ramaze.start
+
+  Ramaze.start(options)
 rescue LoadError => ex
   puts ex
 end
