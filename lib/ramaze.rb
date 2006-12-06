@@ -43,7 +43,6 @@ module Ramaze
     find_controllers
     setup_controllers
 
-    info :global, Global.pretty_inspect
     autoreload_interval = Global.autoreload[Global.mode]
     debug "initialize autoreload with #{autoreload_interval}"
 
