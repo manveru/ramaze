@@ -11,7 +11,7 @@ end
 ramaze(:adapter => :mongrel) do
   context "Mongrel" do
     specify "simple request" do
-      (open('http://localhost:7000/').read).should == "The index"
+      get('/').should == "The index"
     end
   end
 end
@@ -19,7 +19,7 @@ end
 ramaze(:adapter => :webrick) do
   context "WEBrick" do
     specify "simple request" do
-      (open('http://localhost:7000/').read).should == "The index"
+      get('/').should == "The index"
     end
   end
 end
