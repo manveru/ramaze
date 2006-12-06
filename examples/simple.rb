@@ -1,3 +1,6 @@
+#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
 require 'ramaze'
 
 # A very simple little application, you can simply run it and
