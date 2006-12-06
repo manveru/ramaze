@@ -51,7 +51,7 @@ module Ramaze::Adapter
       server = WEBrick::HTTPServer.new(:Port => port, :BindAddress => host)
       server.mount('/', WEBrick::HTTPServlet::ProcHandler.new(handler))
 
-      server.start
+      Thread.new{ server.start }
     end
 
     def process request, response
@@ -75,6 +75,7 @@ module Ramaze::Adapter
       if response
         set_head(response)
         set_out(response)
+        @response.status = response.code || 500
       end
       @response
     end
