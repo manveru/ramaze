@@ -57,7 +57,8 @@ ramaze do
       not_accessable = AmritaController.private_instance_methods(false).sort
 
       accessable.each do |action|
-        lambda{get("/amrita/#{action}")}.should_raise OpenURI::HTTPError
+        get("/amrita/#{action}").should_not == ''
+        lambda{get("/amrita/#{action}")}.should_not_raise OpenURI::HTTPError
       end
 
       not_accessable.each do |action|
