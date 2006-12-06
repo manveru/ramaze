@@ -34,20 +34,6 @@ module WEBrick
       @headers
     end
 
-    def params
-      @params ||= parse_params
-    end
-
-    def parse_params to_parse = body.to_s
-      params = {}
-      [body, query_string].each do |chunk|
-        chunk.to_s.split('&').each do |pair|
-          key, value = pair.split('=').map{|e| CGI.unescape(e)}
-          params[key] = value
-        end
-      end
-      params
-    end
   end
 end
 
@@ -59,8 +45,6 @@ module Ramaze::Adapter
       # - implement graceful shutdown
 
       handler = lambda do |request, response|
-        # FIXME: urgent
-        # request = process_request(request)
         self.new.process(request, response)
       end
 
@@ -93,11 +77,6 @@ module Ramaze::Adapter
         set_out(response)
       end
       @response
-    end
-
-    def process_request(request)
-      request.parse_params
-      request
     end
 
     def set_head(response)

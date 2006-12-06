@@ -18,9 +18,16 @@ module Ramaze
       @get_query.merge(@post_query)
     end
 
+    # this parses stuff like post-requests (very untested)
+    # and also ?foo=bar stuff (get-query)
+    # WEBrick uses body as a streaming-object, so we have to read
+    # Mongrel has a normal string as body, we just call to_s in case
+    # it's no POST
+
     def parse_queries
-      @get_query  = query_parse(query_string) rescue {}
-      @post_query = query_parse(body.read)    rescue {}
+      @get_query  = query_parse(query_string.to_s) rescue {}
+      @post_query = body.respond_to?(:read) ?
+        query_parse(body.read) : query_parse(body.to_s)
     end
 
     def query_parse str
