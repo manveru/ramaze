@@ -23,13 +23,6 @@ module WEBrick
       request_uri.path
     end
 
-    def get?
-      not post?
-    end
-
-    def post?
-      @request_method == 'POST'
-    end
 
     def headers
       return @headers if @headers

@@ -48,13 +48,10 @@ module Ramaze
       @get_query
     end
 
-    def post?
-      request_method == 'POST'
-    end
-
-    def get?
-      request_method == 'GET'
-    end
+    def get?()    request_method == 'GET'    end
+    def post?()   request_method == 'POST'   end
+    def put?()    request_method == 'PUT'    end
+    def delete?() request_method == 'DELETE' end
 
     def local?
       remote_addr == '127.0.0.1'
