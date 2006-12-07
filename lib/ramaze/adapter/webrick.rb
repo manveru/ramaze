@@ -77,7 +77,7 @@ module Ramaze::Adapter
       if response
         set_head(response)
         set_out(response)
-        @response.status = response.code || 500
+        @response.status = response.code || STATUS_CODE[:internal_server_error]
       end
       @response
     end

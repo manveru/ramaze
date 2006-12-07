@@ -29,7 +29,7 @@ module Ramaze
     def redirect *target
       target = target.join('/')
       response.head['Location'] = target
-      response.code = 303
+      response.code = STATUS_CODE[:see_other]
       %{Please follow <a href="#{target}">#{target}</a>!}
     end
   end
