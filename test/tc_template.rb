@@ -5,7 +5,7 @@ require 'lib/test/test_helper'
 
 include Ramaze
 
-class MainController < Template::Ramaze
+class TCTemplateController < Template::Ramaze
   def index text
     @text = text
   end
@@ -20,7 +20,7 @@ class MainController < Template::Ramaze
 end
 
 
-ramaze( :template_root => 'test/template/ramaze/' ) do
+ramaze(:mapping => {'/' => TCTemplateController}, :template_root => 'test/template/ramaze/' ) do
 
   context "simple external template" do
     specify "hello world" do

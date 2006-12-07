@@ -5,7 +5,7 @@ require 'lib/test/test_helper'
 
 include Ramaze
 
-class MainController < Template::Erubis
+class TCTemplateErubisController < Template::Erubis
   trait :template_root => 'template/erubis/'
 
   def index
@@ -21,8 +21,7 @@ class MainController < Template::Erubis
     "<%= @args.inspect %>"
   end
 end
-
-ramaze do
+ramaze(:mapping => {'/' => TCTemplateErubisController}) do
   context "Erubis" do
     specify "index" do
       get('/').should == 'Erubis Index'

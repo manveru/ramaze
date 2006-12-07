@@ -5,7 +5,7 @@ require 'lib/test/test_helper'
 
 include Ramaze
 
-class AmritaController < Template::Amrita2
+class TCControllerAmritaController < Template::Amrita2
   trait :template_root => 'template/amrita2'
 
   def index
@@ -18,7 +18,7 @@ class AmritaController < Template::Amrita2
   end
 end
 
-class RamazeController < Template::Ramaze
+class TCControllerRamazeController < Template::Ramaze
   def index
     "The index"
   end
@@ -33,7 +33,7 @@ class RamazeController < Template::Ramaze
   end
 end
 
-ramaze do
+ramaze(:mapping => {'/amrita' => TCControllerAmritaController, '/ramaze' => TCControllerRamazeController}) do
   context "Testing Ramaze" do
     specify "simple request to index" do
       get('/ramaze').should == 'The index'
@@ -56,8 +56,8 @@ ramaze do
     end
 
     specify "should not respond to private methods" do
-      accessable = AmritaController.public_instance_methods(false).sort
-      not_accessable = AmritaController.private_instance_methods(false).sort
+      accessable = TCControllerAmritaController.public_instance_methods(false).sort
+      not_accessable = TCControllerAmritaController.private_instance_methods(false).sort
 
       accessable.each do |action|
         get("/amrita/#{action}").should_not == ''

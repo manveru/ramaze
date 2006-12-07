@@ -5,7 +5,7 @@ require 'lib/test/test_helper'
 
 include Ramaze
 
-class MainController < Template::Ramaze
+class TCHelperMainController < Template::Ramaze
   def index
     self.class.name
   end
@@ -27,7 +27,7 @@ class MainController < Template::Ramaze
   end
 end
 
-class MinorController < Template::Ramaze
+class TCHelperMinorController < Template::Ramaze
   def index
     self.class.name
   end
@@ -49,7 +49,7 @@ class MinorController < Template::Ramaze
   end
 end
 
-ramaze do
+ramaze(:mapping => {'/' => TCHelperMainController, '/minor' => TCHelperMinorController}) do
   context "default Helper" do
     
     def lh
@@ -57,27 +57,27 @@ ramaze do
     end
 
     specify "testrun" do
-      get('/index').should == 'MainController'
-      get('/minor').should == 'MinorController'
+      get('/').should      == "TCHelperMainController"
+      get('/minor').should == "TCHelperMinorController"
     end
 
     specify "RedirectHelper" do
-      get('/redirection').should       == 'MainController target'
-      get('/minor/redirection').should == 'MinorController target'
-      get('/double_redirection').should       == 'MainController target'
-      get('/minor/double_redirection').should == 'MinorController target'
+      get('/redirection').should              == "TCHelperMainController target"
+      get('/double_redirection').should       == "TCHelperMainController target"
+      get('/minor/redirection').should        == "TCHelperMinorController target"
+      get('/minor/double_redirection').should == "TCHelperMinorController target"
     end
 
     specify "LinkHelper" do
       lh.link(:foo).should == %{<a href="foo">foo</a>}
       lh.link(:foo, :bar).should == %{<a href="foo/bar">bar</a>}
-      lh.link(MinorController, :bar).should == %{<a href="/minor/bar">bar</a>}
-      lh.link(MainController, :bar).should == %{<a href="/bar">bar</a>}
+      lh.link(TCHelperMinorController, :bar).should == %{<a href="/minor/bar">bar</a>}
+      lh.link(TCHelperMainController, :bar).should == %{<a href="/bar">bar</a>}
       lh.link('/foo/bar').should == %{<a href="/foo/bar">bar</a>}
     end
 
     specify "RedirectHelper and LinkHelper combined" do
-      get(lh.link_raw(MainController, :link_redirection)).should == "MainController"
+      get(lh.link_raw(TCHelperMainController, :link_redirection)).should == "TCHelperMainController"
     end
 
   end

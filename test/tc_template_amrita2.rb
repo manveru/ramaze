@@ -5,7 +5,7 @@ require 'lib/test/test_helper'
 
 include Ramaze
 
-class MainController < Template::Amrita2
+class TCTemplateAmritaController < Template::Amrita2
   trait :template_root => 'template/amrita2/'
 
   def title
@@ -16,8 +16,7 @@ class MainController < Template::Amrita2
     "Amrita2 is an HTML template library for Ruby"
   end
 end
-
-ramaze do
+ramaze(:mapping => {'/' => TCTemplateAmritaController}) do 
   context "Simply calling" do
     specify "should respond to /data" do
       get('/data').should == 
