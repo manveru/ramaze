@@ -126,11 +126,8 @@ task :todo do
         end
 
         l = line.strip.gsub(/^#\s*/, '')
-        if line =~ /TODO/
-          puts "\t#{l}"
-        else
-          puts "\t\t#{l}"
-        end
+        print '  ' unless l =~ /^-/
+        puts l
         lastline = lineno
       end
     end
