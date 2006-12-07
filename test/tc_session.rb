@@ -18,26 +18,6 @@ end
 
 ramaze(:mapping => {'/' => TCSessionController}) do
   context "usual Session" do
-    class Context
-      def initialize(url = '/')
-        @cookie = open(url).meta['set-cookie']
-      end
-
-      def open url, hash = {}
-        Kernel.open("http://localhost:#{Global.port}#{url}", hash)
-      end
-
-      def request opt = ''
-        open(opt, 'Set-Cookie' => @cookie).read
-      end
-
-      def erequest opt = ''
-        eval(request(opt))
-      rescue Object => ex
-        puts ex
-        ex
-      end
-    end
 
     ctx = Context.new
 

@@ -11,8 +11,29 @@ require 'spec'
 $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..')
 require 'ramaze'
 
+class Context
+  def initialize(url = '/')
+    @cookie = open(url).meta['set-cookie']
+  end
+
+  def open url, hash = {}
+    Kernel.open("http://localhost:#{Global.port}#{url}", hash)
+  end
+
+  def request opt = ''
+    open(opt, 'Set-Cookie' => @cookie).read
+  end
+
+  def erequest opt = ''
+    eval(request(opt))
+  rescue Object => ex
+    puts ex
+    ex
+  end
+end
+
 def get url = ''
-    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+  url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
   Timeout.timeout(1) do
     result = open(url).read.strip
     #p url => result
@@ -21,8 +42,8 @@ def get url = ''
 end
 
 def post url = '', params = {}
-    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
-    uri = URI.parse(url)
+  url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+  uri = URI.parse(url)
   Timeout.timeout(1) do
     res = Net::HTTP.post_form(uri, params)
     result = res.body.to_s.strip
