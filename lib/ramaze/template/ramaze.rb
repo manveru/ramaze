@@ -114,7 +114,7 @@ module Ramaze::Template
     # _start_heredoc_, _end_heredoc_, _string_, _out_, _bufadd_
     #
 
-    def transform _string_, _ivs_ = {}
+    def transform _string_, _ivs_ = {}, binding = binding
       _ivs_.each do |key, value|
         instance_variable_set("@#{key}", value)
       end
@@ -139,13 +139,13 @@ module Ramaze::Template
         # #[@foo]!
         # we just don't allow anything except space or newline
         # after the expression #[] to make it sane
-        _string_.gsub!(/#\[(.*?)\]\s*$/) do |m|
-          "#{_end_heredoc_} #{_bufadd_} (#{$1}); #{_bufadd_} #{_start_heredoc_}"
-        end
+        #_string_.gsub!(/#\[(.*?)\]\s*$/) do |m|
+        #  "#{_end_heredoc_} #{_bufadd_} (#{$1}); #{_bufadd_} #{_start_heredoc_}"
+        #end
 
         _out_ = []
 
-        eval("#{_bufadd_} #{_start_heredoc_} #{_string_} #{_end_heredoc_}")
+        eval("#{_bufadd_} #{_start_heredoc_} #{_string_} #{_end_heredoc_}", binding)
 
         _out_.map! do |line|
           line.to_s.chomp
