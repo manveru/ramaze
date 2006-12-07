@@ -44,7 +44,6 @@ module Ramaze::Adapter
   class Webrick
     def self.start host, port
       # TODO
-      # - add host
       # - implement graceful shutdown
 
       handler = lambda do |request, response|
