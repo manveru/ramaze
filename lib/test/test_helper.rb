@@ -20,15 +20,32 @@ class Context
     Kernel.open("http://localhost:#{Global.port}#{url}", hash)
   end
 
-  def request opt = ''
-    open(opt, 'Set-Cookie' => @cookie).read
+  def get url = ''
+    open(url, 'Set-Cookie' => @cookie).read
   end
 
-  def erequest opt = ''
-    eval(request(opt))
+  def post url = '', params = {}
+    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+    uri = URI.parse(url)
+    params['Set-Cookie'] = @cookie
+    res = Net::HTTP.post_form(uri, params)
+    result = res.body.to_s.strip
+    #p res => result
+    result
+  end
+
+  def epost opt = '', params = {}
+    seval(post(opt, params))
+  end
+
+  def eget opt = ''
+    seval(get(opt))
+  end
+
+  def seval(string)
+    eval(string)
   rescue Object => ex
-    puts ex
-    ex
+    ex.message
   end
 end
 
