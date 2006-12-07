@@ -33,23 +33,6 @@ desc "Packages up ramaze gem."
 task :default => [:test]
 task :package => [:clean]
 
-
-require 'spec/rake/spectask'
-
-desc "Generate HTML report for failing examples"
-Spec::Rake::SpecTask.new('rcov') do |t|
-  t.spec_files = FileList['test/tc_*.rb']
-  t.spec_opts = ["--format", "html", "--diff"]
-  t.out = 'doc/output/tools/rcov/test.html'
-  t.fail_on_error = true
-end
-
-
-task :test do
-  system("ruby",  File.dirname(__FILE__) + '/lib/test/all_tests.rb')
-end
-
-
 spec =
     Gem::Specification.new do |s|
         s.name = NAME
@@ -57,7 +40,7 @@ spec =
         s.platform = Gem::Platform::RUBY
         s.has_rdoc = true
         s.extra_rdoc_files = ["doc/README", "doc/CHANGELOG"]
-        s.rdoc_options += RDOC_OPTS + ['--exclude', '^(examples|extras)/']
+        s.rdoc_options += RDOC_OPTS + ['--exclude', '^(test|examples|extras)/']
         s.summary = DESCRIPTION
         s.description = DESCRIPTION
         s.author = AUTHOR
@@ -94,10 +77,18 @@ task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
 
-task :rcov do
-  Dir[File.join(BASEDIR, 'test', 'tc_*.rb')].each do |file|
-    sh %{rcov #{file}}
-  end
+require 'spec/rake/spectask'
+desc "Generate HTML report for failing examples"
+Spec::Rake::SpecTask.new('rcov') do |t|
+  t.spec_files = FileList['test/tc_*.rb']
+  t.spec_opts = ["--format", "html", "--diff"]
+  t.out = 'doc/output/tools/rcov/test.html'
+  t.fail_on_error = true
+end
+
+
+task :test do
+  system("ruby",  File.dirname(__FILE__) + '/lib/test/all_tests.rb')
 end
 
 task :rdoc do
