@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'rubygems'
-require_gem 'facets', '= 1.4.5'
+require_gem 'facets', '=1.4.5'
 require '/home/manveru/prog/projects/nitroproject/glycerin'
 require 'og'
 
@@ -15,8 +15,8 @@ end
 
 class Entry
   attr_accessor :title, String
-  attr_accessor :text, String
-  attr_accessor :time, Time
+  attr_accessor :text,  String, :control => :textarea
+  attr_accessor :time,  Time
   has_many Comment
 end
 

@@ -4,11 +4,23 @@
   </head>
   <body>
     <div id="blog_title">#{@title}</div>
+    <div id="menu">
+      #{link EntryController, :new, :title => 'New Entry'}
+    </div>
     <div id="blog_body">
+      #{@entries.pretty_inspect}
       <?r @entries.each_with_index do |entry, i| ?>
-      <div id="blog_entry">
-        #{i}: #{entry}
-      </div>
+        <div id="blog_entry" style="background:#666;width:80%;margin:auto;">
+          <div style="background:#fff;text-align:center;font-size:1.5em;">
+            #{entry.title}
+          </div>
+          <div style="background:#eee;">
+            #{entry.text}
+          </div>
+          <div style="background:#ddd;">
+            #{link EntryController, :delete, entry.oid, :title => 'delete Entry'}
+          </div>
+        </div>
       <?r end ?>
     </div>
   </body>

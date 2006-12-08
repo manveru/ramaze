@@ -4,18 +4,15 @@
 class MainController < Template::Ramaze
   def index
     @title = 'Blogging Ramaze'
-    @entries = [
-      %{ Day one, still very flakey, but this is how it will work :) },
-    ]
-    nil
+    @entries = Entry.all
   end
 end
 
 class EntryController < Template::Ramaze
-  helper :link
+  helper :form
 
   def index
-    @entries = Entry.all.pretty_inspect
+    @entries = Entry.all
   end
 
   def view oid
@@ -23,9 +20,17 @@ class EntryController < Template::Ramaze
   end
 
   def new
-    redirect :entry, :old, 1
+    @title = "Add Entry"
   end
 
   def add
+    entry = Entry.new.assign(request.params)
+    entry.save
+    redirect :/
+  end
+
+  def delete oid
+    entry.delete if entry = Entry[oid.to_i]
+    redirect_referer
   end
 end
