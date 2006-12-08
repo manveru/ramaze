@@ -53,7 +53,7 @@ module Ramaze
       if hash[:raw]
         link
       else
-        title = link.split('/').last || hash[:title] || 'index'
+        title = hash[:title] || link.split('/').last || 'index'
         %{<a href="#{link}">#{title}</a>}
       end
     end
