@@ -32,5 +32,9 @@ module Ramaze
       response.code = STATUS_CODE[:see_other]
       %{Please follow <a href="#{target}">#{target}</a>!}
     end
+
+    def redirect_referer
+      redirect request.header['referer']
+    end
   end
 end
