@@ -76,6 +76,7 @@ def ramaze_start hash = {}
     :run_loose  => true,
     :error_page => false,
   }
+
   options.merge(hash).each do |key, value|
     Global[key] = value
   end

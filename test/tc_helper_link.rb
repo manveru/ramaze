@@ -32,6 +32,7 @@ ramaze(:mapping => {'/' => TCLinkHelperController}) do
       link(:foo, :bar).should                   == %{<a href="foo/bar">bar</a>}
       link(TCLinkHelperController, :bar).should == %{<a href="/bar">bar</a>}
       link('/foo/bar').should                   == %{<a href="/foo/bar">bar</a>}
+      link(:foo, :title => 'bar').should        == %{<a href="foo">bar</a>}
     end
 
     specify "R" do
