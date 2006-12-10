@@ -28,7 +28,7 @@ module Ramaze::Template
 
       def helper *syms
         syms.each do |sym|
-          load "ramaze/helper/#{sym}.rb"
+          require "ramaze/helper/#{sym}"
           include ::Ramaze.const_get("#{sym.to_s.capitalize}Helper")
         end
       end
