@@ -6,7 +6,7 @@ module Ramaze::Template
     trait :actionless => false
 
     class << self
-      include Trinity
+      include Ramaze::Helper
 
       def transform string
         eval(string)
