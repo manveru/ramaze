@@ -5,12 +5,12 @@ require 'amrita2/template'
 
 module Ramaze::Template
   class Amrita2
-    include Trinity
+    extend Ramaze::Helper
 
     trait :actionless => true
 
     class << self
-      include Trinity
+      include Ramaze::Helper
 
       def handle_request request, action, *params
 
