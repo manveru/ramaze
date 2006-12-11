@@ -1,7 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'erubis'
+require 'markaby'
 
 module Ramaze::Template
   class Markaby
@@ -32,26 +32,25 @@ module Ramaze::Template
 
         mab = ::Markaby::Builder.new
 
-        p :file => file, :result => result
-
         template =
           if file
             ivs =
               controller.instance_variables.map do |iv|
-
-            mab(.instance_eval(File.read(file))
+                [iv.gsub('@', '').to_sym, controller.instance_variable_get(iv)]
+              end
+            controller.mab(Hash[*ivs.flatten]) do
+              instance_eval(File.read(file))
+            end
           elsif result.respond_to? :to_str
             result
           end
-
-        p template
 
         template ? template : ''
 
       rescue Object => ex
         puts ex
         Logger.error ex
-        ''
+        raise Ramaze::Error::NoAction, "No Action found for #{request.request_path}"
       end
 
       def find_template action
