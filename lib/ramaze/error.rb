@@ -143,7 +143,15 @@ module Ramaze
         </tr>
       <?r end ?>
     </table>
-    <?r { 'Session'   => Thread.current[:session], 'Request'   => Thread.current[:request], 'Response'  => Thread.current[:response], 'Global'    => Global, }.each do |title, content| hash = [title, content].object_id.abs ?>
+    <?r
+      {
+        'Session'   => Thread.current[:session],
+        'Request'   => Thread.current[:request],
+        'Response'  => Thread.current[:response],
+        'Global'    => Global,
+      }.each do |title, content|
+        hash = [title, content].object_id.abs
+      ?>
       <div class="additional">
         <h3 id="show_<%= hash %>"><%= title %></h3>
         <pre style="display:none" id="is_<%= hash %>"><%= content.pretty_inspect %></pre>
@@ -156,7 +164,7 @@ module Ramaze
 </html>
         HEREDOC
 
-        Template::Ramaze.new.send(:transform, template, ivs)
+        Ramaze::Template::Ramaze.new.send(:transform, template, ivs)
       end
     end
   end
