@@ -21,6 +21,7 @@ class TCTemplateErubisController < Template::Erubis
     "<%= @args.inspect %>"
   end
 end
+
 ramaze(:mapping => {'/' => TCTemplateErubisController}) do
   context "Erubis" do
     specify "index" do
