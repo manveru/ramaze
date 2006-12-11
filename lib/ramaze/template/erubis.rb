@@ -5,12 +5,25 @@ require 'erubis'
 
 module Ramaze::Template
   class Erubis
-    include Trinity
+    extend Ramaze::Helper
 
     trait :actionless => false
 
+    private
+
+    helper :link, :redirect
+
+    def transform string, bound = binding
+      self.class.transform(string, bound)
+    end
+
     class << self
-      include Trinity
+      include Ramaze::Helper
+
+      # initializes the handling of a request on the controller.
+      # Creates a new instances of itself and sends the action and params.
+      # Also tries to render the template.
+      # In Theory you can use this standalone, this has not been tested though.
 
       def handle_request request, action, *params
 
@@ -30,13 +43,16 @@ module Ramaze::Template
 
         bound = result.is_a?(Binding) ? result : controller.send(:send, :binding)
 
-        eruby = ::Erubis::Eruby.new(template)
-        eruby.result(bound)
-
+        transform(template, bound)
       rescue Object => ex
         puts ex
         Logger.error ex
         ''
+      end
+
+      def transform string, bound = binding
+        eruby = ::Erubis::Eruby.new(string)
+        eruby.result(bound)
       end
 
       def find_template action
@@ -46,12 +62,11 @@ module Ramaze::Template
           else
             Global.template_root / Global.mapping.invert[self] / action
           end
-        path = File.expand_path(File.dirname($0) / path)
+        path = File.expand_path(path)
 
-        exts = %w[rhtml rmze xhtml html ephp ec ejava escheme eprl ejs]
+        exts = %w[rhtml rmze xhtml html ephp ec ejava escheme eprl ejs].join(',')
 
-        files = exts.map{|ext| "#{path}.#{ext}"}
-        file = files.find{|file| File.file?(file)}
+        file = Dir["#{path}.{#{exts}}"].first
       end
     end
   end
