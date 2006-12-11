@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>external Template::Ramaze</title>
+  </head>
+  <body>
+  <h1>The external Template</h1>
+    <p>
+      Here you can pass some stuff if you like, parameters are just passed like this:<br />
+      #{link self, @action, :one, :title => "#@action/one"}<br />
+      #{link self, @action, :one, :two, :three, :title => "#@action/one/two/three"}<br />
+      #{link self, @action, :one, :foo => :bar, :title => "#@action?foo=bar"}<br />
+    </p>
+    <div>
+      *args
+      <?r @args.each do |arg| ?>
+        <span>#{arg}</span>
+      <?r end ?>
+    </div>
+    <div>
+      #{request.params.inspect}
+    </div>
+  </body>
+</html>
