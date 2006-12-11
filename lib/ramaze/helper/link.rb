@@ -2,7 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-
   # LinkHelper is included into the Template::Ramaze by default
   #
   # this helper tries to get along without any major magic, the only 'magic'
@@ -16,6 +15,7 @@ module Ramaze
   # link MinorController, :foo                #=> '<a href="/minor/foo">foo</a>'
   # link MinorController, :foo, :bar          #=> '<a href="/minor/foo/bar">bar</a>'
   # link MainController, :foo, :raw => true   #=> '/foo'
+  # link MainController, :foo => :bar         #=> '/?foo=bar'
   #
   # link_raw MainController, :foo             #=> '/foo'
   # link_raw MinorController, :foo            #=> '/minor/foo'
@@ -38,6 +38,7 @@ module Ramaze
     #   link MinorController, :foo, :bar          #=> '<a href="/minor/foo/bar">bar</a>'
     #   link MainController, :foo, :raw => true   #=> '/foo'
     #   link MainController, :foo, :title => 'a'  #=> '<a href="/minor/foo/bar">a</a>'
+    #   link MainController, :foo => :bar         #=> '/?foo=bar'
 
     def link *to
       hash = to.last.is_a?(Hash) ? to.pop : {}
@@ -45,15 +46,18 @@ module Ramaze
       to = to.flatten
 
       to.map! do |t|
+        t = t.class if not t.respond_to?(:transform) and t.is_a?(Controller)
         Global.mapping.invert[t] || t
       end
 
-      link = to.join('/').squeeze('/')
+      raw, title = hash.delete(:raw), hash.delete(:title)
+      opts = hash.inject('?'){|s,(k,v)| s << "#{k}=#{v};"}[0..-2]
+      link = to.join('/').squeeze('/') << (opts.empty? ? '' : opts)
 
-      if hash[:raw]
+      if raw
         link
       else
-        title = hash[:title] || link.split('/').last || 'index'
+        title ||= link.split('/').last.to_s.split('?').first || 'index'
         %{<a href="#{link}">#{title}</a>}
       end
     end
