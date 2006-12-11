@@ -25,6 +25,8 @@ module Ramaze::Template
         require 'markaby'
 
         controller = self.new
+        controller.instance_variable_set('@action', action)
+
         result = controller.send(action, *params) if controller.respond_to?(action)
         file = find_template(action)
 

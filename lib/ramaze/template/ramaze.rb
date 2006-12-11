@@ -24,6 +24,7 @@ module Ramaze::Template
 
       def handle_request request, action, *params
         controller = self.new
+        controller.instance_variable_set('@action', action)
         template = controller.__send__(action, *params).to_s
         rendered = controller.__send__(:render, action).to_s
         template = rendered unless rendered.empty?
