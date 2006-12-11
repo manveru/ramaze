@@ -3,10 +3,20 @@
 
 module Ramaze::Template
   class Ramaze
+    extend Ramaze::Helper
+
     trait :actionless => false
 
-    class << self
+    private
 
+    helper :link, :redirect
+
+    def breakout
+      nil
+    end
+
+    class << self
+      include Ramaze::Helper
       # initializes the handling of a request on the controller.
       # Creates a new instances of itself and sends the action and params.
       # Also tries to render the template.
@@ -19,29 +29,6 @@ module Ramaze::Template
         template = rendered unless rendered.empty?
         template
       end
-
-      # This loads the helper-files from /ramaze/helper/helpername.rb and
-      # includes it into Ramaze::Template (or wherever it is called)
-      #
-      # Usage:
-      #   helper :redirect, :link
-
-      def helper *syms
-        syms.each do |sym|
-          require "ramaze/helper/#{sym}"
-          include ::Ramaze.const_get("#{sym.to_s.capitalize}Helper")
-        end
-      end
-    end
-
-    private
-
-    include Trinity
-
-    helper :link, :redirect
-
-    def breakout
-      nil
     end
 
     # render an action
