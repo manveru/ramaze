@@ -5,7 +5,7 @@ require 'erubis'
 
 module Ramaze::Template
   class Markaby
-    include Trinity
+    extend Ramaze::Helper
 
     trait :actionless => false
 
@@ -19,7 +19,7 @@ module Ramaze::Template
     end
 
     class << self
-      include Trinity
+      include Ramaze::Helper
 
       def handle_request request, action, *params
         require 'markaby'
