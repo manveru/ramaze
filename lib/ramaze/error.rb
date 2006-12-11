@@ -11,6 +11,7 @@ module Ramaze
     class NoAction < StandardError; end
     class NoController < StandardError; end
     class WrongParameterCount < StandardError; end
+    class Template < StandardError; end
 
     class Response
       def initialize error
