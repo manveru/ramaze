@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze::Template
-  %w[ Ramaze Amrita2 Erubis ].each do |const|
+  %w[ Ramaze Amrita2 Erubis Markaby ].each do |const|
     autoload(const, "ramaze/template/#{const.downcase}")
   end
 end
