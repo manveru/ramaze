@@ -1,6 +1,8 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'digest/sha1'
+
 module Ramaze::Template
   class Ramaze
     extend Ramaze::Helper
@@ -89,17 +91,13 @@ module Ramaze::Template
     # <%= rubycode %>
     #   The result of this will be interpolated at the position in the template.
     #   Not valid XHTML either.
-    # #[ rubycode ]
-    #   In theory, this should just act like #{} - it's neither neccesary nor does
-    #   it give you any advantages. Will most likely be removed as it was just an
-    #   experiment.
-    #   Don't use it :)
     #
     # Warning:
     # the variables used in here have the schema _variable_ to make it harder to break stuff
     # however, you should take care.
     # At the time of writing, the variables used are:
-    # _start_heredoc_, _end_heredoc_, _string_, _out_, _bufadd_
+    # _start_heredoc_, _end_heredoc_, _string_, _out_, _bufadd_ and _ivs_
+    # However, you may reuse _ivs_ if you desperatly need it and just can't live without.
     #
 
     def transform _string_, _ivs_ = {}, binding = binding
@@ -107,20 +105,14 @@ module Ramaze::Template
         instance_variable_set("@#{key}", value)
       end
 
-      _start_heredoc_, _end_heredoc_ = "\n<<FOOBARABOOF_RAMAZE\n", "\nFOOBARABOOF_RAMAZE\n"
+      _start_heredoc_ = Digest::SHA1.hexdigest(_string_)
+      _start_heredoc_, _end_heredoc_ = "\n<<#{_start_heredoc_}\n", "\n#{_start_heredoc_}\n"
       _bufadd_ = "_out_ << "
       begin
-        _string_.gsub!(/<% (.*?) %>/) do |m|
-          "#{_end_heredoc_} #{$1}; #{_bufadd_} #{_start_heredoc_}"
-        end
+        _string_.gsub!(/<%\s+(.*?)\s+%>/m, "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
+        _string_.gsub!(/<\?r\s+(.*?)\s+\?>/m, "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
 
-        _string_.gsub!(/<\?r (.*?) \?>/) do |m|
-          "#{_end_heredoc_} #{$1}; #{_bufadd_} #{_start_heredoc_}"
-        end
-
-        _string_.gsub!(/<%= (.*?) %>/) do |m|
-          "#{_end_heredoc_} #{_bufadd_} (#{$1}); #{_bufadd_} #{_start_heredoc_}"
-        end
+        _string_.gsub!(/<%=\s+(.*?)\s+%>/m, "#{_end_heredoc_} #{_bufadd_} (\\1); #{_bufadd_} #{_start_heredoc_}")
 
         # this one should not be used until we find and solution
         # that allows for stuff like
@@ -142,6 +134,7 @@ module Ramaze::Template
       rescue Object => ex
         error "something bad happened while transformation"
         error ex
+        #raise Error::Template, "Problem during transformation for: #{request.request_path}"
       end
       _string_
     end
