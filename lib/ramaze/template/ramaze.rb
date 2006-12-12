@@ -33,6 +33,40 @@ module Ramaze::Template
         template = rendered unless rendered.empty?
         template
       end
+
+      # This finds the template for the given action on the current controller
+      # there are some basic ways how you can provide an alternative path:
+      #
+      # Global.template_root = 'default/path'
+      #
+      # class FooController < Template::Ramaze
+      #   trait :template_root => 'another/path'
+      #   trait :index_template => :foo
+      #
+      #   def index
+      #   end
+      # end
+      #
+      # One feature also used in the above example is the custom template for
+      # one action, in this case :index - now the template of :foo will be
+      # used instead.
+
+      def find_template action
+        custom_template = trait["#{action}_template".intern] || self.class.trait["#{action}_template".intern]
+        action = custom_template if custom_template
+
+        path =
+          if template_root = trait[:template_root] || self.class.trait[:template_root]
+            template_root / action
+          else
+            Global.template_root / Global.mapping.invert[self.class] / action
+          end
+        path = File.expand_path(path)
+
+        exts = %w[rmze rhtml xhtml html].join(',')
+
+        file = Dir["#{path}.{#{exts}}"].first
+      end
     end
 
     # render an action
@@ -60,14 +94,9 @@ module Ramaze::Template
     def render action
       path = File.join(Global.template_root, Global.mapping.invert[self.class], action)
 
-      exts = %w[rmze xhtml html]
+      return '' unless file = self.class.find_template(action)
 
-      files = exts.map{|ext| "#{path}.#{ext}"}
-      file = files.find{|file| File.file?(file)}.to_s
-
-      return '' unless File.exist?(file)
-
-      info "transforming #{file}"
+      info "transforming #{file.gsub(Dir.pwd, '.')}"
       transform(File.read(file))
     end
 
