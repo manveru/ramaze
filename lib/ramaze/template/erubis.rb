@@ -33,6 +33,7 @@ module Ramaze::Template
 
         file = find_template(action)
 
+
         template =
           if file
             File.read(file)
