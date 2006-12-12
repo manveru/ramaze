@@ -1,44 +1,184 @@
            Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
   All files in this distribution are subject to the terms of the Ruby license.
 
-
-README for Ramaze
-=================
+================================================================================
+****************************** Readme for Ramaze *******************************
+================================================================================
 
 Ramaze is a very simple and straight-forward web-framework.
-The philosophy of it could be expressed in a mix of KISS and POLS, trying to make simple things simple and complex things possible.
+The philosophy of it could be expressed in a mix of KISS and POLS, trying to
+make simple things simple and complex things possible.
 
-This of course is nothing new to anyone who knows some ruby, but is often forgotten in a chase for new functionality and features.
-Ramaze only tries to give you the ultimate tools, but you have to use them yourself to achive perfect custom-tailored results.
+This of course is nothing new to anyone who knows some ruby, but is often
+forgotten in a chase for new functionality and features. Ramaze only tries to
+give you the ultimate tools, but you have to use them yourself to achive
+perfect custom-tailored results.
 
-At the moment Ramaze offers following features:
+Another interesting aspect is that Ramaze tries to be as much copy&paste-able
+as possible, as to encourage the use of its code in similar projects and to
+act as a single point of reference for projects using its components.
+This tries to tackle the problem that everybody who wants/needs to create a
+custom webframework always has to reimplement the most basic and common
+functionality. So when for example someone wants a basic example of how to
+build a comfortable testingenvironment for a webframework it's hardly leading
+to the goal if this first has to be reinvented before even the basic testing
+can start.
+The same goes for the implementation of sessions or the request/response
+objects which are collected under the module Trinity. Or all the examples
+of realworld-usage of the most popular templating-engines. within a framework,
+not to mention the basic need for a Dispatcher.
+Of course most other frameworks will introduce their own paradigmas and special
+implementations, and this is the reason why it is not encouraged to directly
+require files from Ramaze, they are one working entity together, but with a few
+modifications it's your very own implementation and fits into your own project.
+Not to mention that introducing another webframework for your own would be
+quite odd ;)
+
+
+================================================================================
+************************** Basic Principles of Ramaze **************************
+================================================================================
+
+There are some basic principles that Ramaze tries to follow:
+
+- Test everything
+  what use is a wonderful application if it doesn't work?
+
+- Document everything
+  documentation is the glue between the code and the programmers brain
+
+- Keep It Super Simple (KISS)
+  most things should be understandable after reading them once
+
+- Principle Of Least Surprise (POLS)
+  going the way of ruby
+
+- Modular design
+  making it as simple as possible to extract parts
+
+- Minimal dependencies
+  in case a dependency is not met use a simple fallback instead
+
+- Provide as many examples as possible
+  examples are a superior way of getting a quick start into everything
+
+- Open development
+  i happily accept all patches or feature-requests that you may have,
+  as long as they comply with these principles
+
+
+================================================================================
+*************************** Quick features overview ****************************
+================================================================================
+
+Ramaze offers following features at the moment:
 
 - Adapters
 -- Mongrel
+-- WEBrick
 
 - Templates
 -- Ramaze
 -- Amrita2
+-- Erubis
+-- Markaby
 
 - Various
 -- Sessions
+-- Global configuration system
+-- Simple request/response handling
 
--- simple request/response handling
 
--- wide configurability via the Global system
-   You can just add your own options via Global.your_option = :foo
-   The defaults and possible values:
-      Global.adapter    ||= :mongrel  # uses the class from Adapter::
-      Global.host       ||= '0.0.0.0' # restrict access to a specific host
-      Global.port       ||= 7000      # adapter runs on that port
-      Global.mode       ||= :debug    # :debug|:stage|:live - atm only difference in verbosity
-      Global.run_loose  ||= false     # detaches Ramaze to run in the background (used for testcases)
-      Global.cache      ||= false     # caches requests to the controller based on request-values
-      Global.tidy       ||= false     # run tidy over the generated html if Content-Type is text/html
-      Global.error_page ||= true      # display an error-page with backtrace on errors
+================================================================================
+******************************* Getting started ********************************
+================================================================================
 
-Good to know
-============
+Now that you have a vague idea of what you're about to get into you might just
+want to get a way to get up and running ASAP.
+Please read below for more information about installation.
 
-# Nicer Error-pages
-## Install coderay
+Depending on what you are planning to do you can either just go and start
+reading the source or directly get some hands-on experience by trying some of
+the examples.
+Most things will require dependencies though. The basic functionality is
+provided by the WEBrick adapter and the Template::Ramaze, which just run out
+of the box. For more features you will have to install some templating-engines
+and mongrel (_very_ recommended). Ramaze will inform you when it needs further
+dependencies, so just go and try some things.
+
+
+================================================================================
+********************************* Installation *********************************
+================================================================================
+
+- via RubyGems
+  The simplest way of installing Ramaze is via `gem install ramaze` in case you
+  have rubygems installed.
+  (this will work as soon as i have registered on RubyForge ;)
+
+- via install.rb
+  Ramaze provides a basic install.rb that should take care of the installation
+  you can use it like `ruby install.rb`, you might need root-privileges to do
+  that, depending on what options you provide.
+  (please note that i haven't tested the install.rb extensivly yet, so if you
+  find some quirks, please send me patches or a simple note)
+
+- via darcs
+  To get the latest and sweetest, you can just pull from the repository and run
+  Ramaze that way.
+  $ darcs get http://manveru.mine.nu/darcs/prog/projects/ramaze
+  please read the manpage or `darcs help` for more information about updating
+  and creating your own patches.
+  This is at the moment the premier way to use Ramaze, since it is the way i use
+  it.
+
+
+================================================================================
+******************************* Ramaze Examples ********************************
+================================================================================
+
+There are some examples for your instant pleasure inside the examples-directory
+in the Ramaze-distribution.
+To start up an example, you can use the Ramaze binary located in bin/ramaze 
+for example:
+
+  $ ramaze examples/hello.rb
+
+or:
+
+  $ cd examples/blog
+  $ ramaze
+
+since ramaze uses the main.rb by default if you don't pass anything else.
+
+For more information about the usage of ramaze try:
+
+  $ ramaze --help
+
+
+Examples include:
+
+- examples/hello.rb
+  Hello, World!
+
+- examples/simple.rb
+  A bit more advanced than the hello-example, but still very basic.
+
+- examples/blog
+  Not yet fully functional, but coming along.
+
+- examples/whywiki
+  A basic examples of a minimalistic application, based on the wiki of _why in
+  his camping-framework.
+
+- examples/templates
+  examples of real usage of the templating-engines. Tries to implement the same
+  functionality in each template_*.rb file using a different engine.
+
+
+================================================================================
+********************************* good to know *********************************
+================================================================================
+
+- Nicer Error-pages
+-- Install coderay
