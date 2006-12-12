@@ -6,7 +6,7 @@ require 'lib/test/test_helper'
 include Ramaze
 
 class TCTemplateErubisController < Template::Erubis
-  trait :template_root => 'template/erubis/'
+  trait :template_root => 'test/template/erubis/'
 
   def index
     'Erubis Index'
