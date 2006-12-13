@@ -77,15 +77,18 @@ task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
 
-require 'spec/rake/spectask'
-desc "Generate HTML report for failing examples"
-Spec::Rake::SpecTask.new('rcov') do |t|
-  t.spec_files = FileList['test/tc_*.rb']
-  t.spec_opts = ["--format", "html", "--diff"]
-  t.out = 'doc/output/tools/rcov/test.html'
-  t.fail_on_error = true
+task :rcov_dir do
+  mkdir_p 'doc/output/tools/rcov/'
 end
 
+require 'spec/rake/spectask'
+desc "Generate HTML report for failing tests"
+Spec::Rake::SpecTask.new(:rcov_summary => :rcov_dir) do |t|
+  t.spec_files = FileList['test/tc_adapter.rb']
+  t.spec_opts = ["--format", "html"]
+  t.out = 'doc/output/tools/rcov/test.html'
+  t.fail_on_error = false
+end
 
 task :test do
   system("ruby",  File.dirname(__FILE__) + '/lib/test/all_tests.rb')
