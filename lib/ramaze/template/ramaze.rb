@@ -77,13 +77,13 @@ module Ramaze::Template
           if template_root = trait[:template_root] || self.class.trait[:template_root]
             template_root / action
           else
-            Global.template_root / Global.mapping.invert[self.class] / action
+            Global.template_root / Global.mapping.invert[self] / action
           end
         path = File.expand_path(path)
 
         exts = %w[rmze rhtml xhtml html].join(',')
 
-        file = Dir["#{path}.{#{exts}}"].first
+        Dir["#{path}.{#{exts}}"].first
       end
     end
 
