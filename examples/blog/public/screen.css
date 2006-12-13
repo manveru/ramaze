@@ -1,0 +1,43 @@
+body {
+  background: #111;
+  margin:     auto;
+  padding:    1em;
+  color:      #fff;
+}
+
+div#title {
+  font-size:  2em;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: #afa;
+}
+
+div.blog_entry {
+  background: #222;
+  margin:     auto;
+  width:      80%;
+  padding:    0.4em;
+}
+
+div.blog_entry div.title {
+  background: #111;
+  text-align: center;
+  font-size:  1.5em;
+  margin:     0.4em;
+  padding:    0.4em;
+}
+
+div.blog_entry div.text {
+  background: #111;
+  margin:     0.4em;
+  padding:    0.4em;
+}
+
+div.blog_entry div.menu {
+  background: #111;
+  text-align: center;
+  margin:     0.4em;
+}
