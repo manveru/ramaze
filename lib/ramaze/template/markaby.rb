@@ -4,14 +4,13 @@
 require 'markaby'
 
 module Ramaze::Template
-  class Markaby
+  class Markaby < Template
     extend Ramaze::Helper
 
     trait :actionless => false
+    trait :template_extensions => %w[mab]
 
     private
-
-    helper :link, :redirect
 
     # use this inside your controller to directly build Markaby
     # Refer to the Markaby-documentation and testsuite for more examples.
@@ -26,11 +25,7 @@ module Ramaze::Template
     end
 
     class << self
-      include Ramaze::Helper
-
       def handle_request request, action, *params
-        require 'markaby'
-
         controller = self.new
         controller.instance_variable_set('@action', action)
 
@@ -53,21 +48,6 @@ module Ramaze::Template
           end
 
         template ? template : ''
-      end
-
-      def find_template action
-        path = 
-          if template_root = trait[:template_root]
-            template_root / action
-          else
-            Global.template_root / Global.mapping.invert[self] / action
-          end
-        path = File.expand_path(File.dirname($0) / path)
-
-        exts = %w[mab]
-
-        files = exts.map{|ext| "#{path}.#{ext}"}
-        file = files.find{|file| File.file?(file)}
       end
     end
   end
