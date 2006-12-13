@@ -10,7 +10,7 @@ end
 include Ramaze
 
 class TCTemplateMarkabyController < Template::Markaby
-  trait :template_root => 'template/markaby/'
+  trait :template_root => 'test/template/markaby/'
 
   def index
     mab { h1 "Markaby Index" }

@@ -6,8 +6,6 @@ require 'lib/test/test_helper'
 include Ramaze
 
 class TCControllerAmritaController < Template::Amrita2
-  trait :template_root => 'template/amrita2'
-
   def index
     "The index"
   end
