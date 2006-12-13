@@ -1,9 +1,10 @@
 <html>
   <head>
-    <title>external Template::Ramaze</title>
+    <title>Template::Ramaze external</title>
   </head>
   <body>
-  <h1>The external Template</h1>
+  <h1>The #{@action} Template for Ramaze</h1>
+    #{link :/, :title => 'Home'}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
       #{link self, @action, :one, :title => "#@action/one"}<br />
