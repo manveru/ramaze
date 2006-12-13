@@ -34,6 +34,7 @@ module Kernel
   #   ]
 
   def __caller_lines__ file, line, size = 4
+    return [[0, file, true]] if file == '(eval)'
     lines = File.readlines(file)
     current = line.to_i - 1
 
