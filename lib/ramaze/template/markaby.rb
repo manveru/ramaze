@@ -46,11 +46,6 @@ module Ramaze::Template
           end
 
         template ? template : ''
-
-      rescue Object => ex
-        puts ex
-        Logger.error ex
-        raise Ramaze::Error::NoAction, "No Action found for #{request.request_path}"
       end
 
       def find_template action
