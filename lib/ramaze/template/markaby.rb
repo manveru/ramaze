@@ -9,13 +9,20 @@ module Ramaze::Template
 
     trait :actionless => false
 
+    private
+
+    helper :link, :redirect
+
     # use this inside your controller to directly build Markaby
     # Refer to the Markaby-documentation and testsuite for more examples.
     # Usage:
     #   mab { h1 "Apples & Oranges"}                    #=> "<h1>Apples &amp; Oranges</h1>"
     #   mab { h1 'Apples', :class => 'fruits&floots' }  #=> "<h1 class=\"fruits&amp;floots\">Apples</h1>"
     def mab(*args, &block)
-      ::Markaby::Builder.new(*args, &block).to_s
+      builder = ::Markaby::Builder
+      builder.extend(Ramaze::Helper)
+      builder.send(:helper, :link)
+      builder.new(*args, &block).to_s
     end
 
     class << self
