@@ -4,10 +4,10 @@
 require 'amrita2/template'
 
 module Ramaze::Template
-  class Amrita2
-    extend Ramaze::Helper
+  class Amrita2 < Template
 
     trait :actionless => true
+    trait :template_extensions => %w[html]
 
     class << self
       include Ramaze::Helper
@@ -16,7 +16,7 @@ module Ramaze::Template
 
         file = find_template(action)
 
-        raise Ramaze::Error::NoAction, "No Action found for #{request.request_path}" unless file
+        raise Ramaze::Error::Template, "No Template found for #{request.request_path}" unless file
 
         template = ::Amrita2::TemplateFile.new(file)
         out = ''
@@ -26,21 +26,6 @@ module Ramaze::Template
       rescue Object => ex
         Logger.error ex
         raise Ramaze::Error::NoAction, "No Action found for #{request.request_path}"
-      end
-
-      def find_template action
-        path =
-          if template_root = trait[:template_root]
-            template_root / action
-          else
-            Global.template_root / Global.mapping.invert[self] / action
-          end
-        path = File.expand_path(File.dirname($0) / path)
-
-        exts = %w[html rhtml rmze xhtml]
-
-        files = exts.map{|ext| "#{path}.#{ext}"}
-        file = files.find{|file| File.file?(file)}
       end
     end
   end
