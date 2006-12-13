@@ -7,6 +7,7 @@ require 'src/model'
 
 include Ramaze
 require 'src/controller'
+require 'src/element'
 
 Global.template_root = 'template'
 Global.mapping = {
