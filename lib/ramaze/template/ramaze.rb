@@ -3,6 +3,24 @@
 
 require 'digest/sha1'
 
+module Ramaze
+  class Element
+    extend Ramaze::Helper
+
+    helper :link, :redirect
+
+    attr_accessor :content
+
+    def initialize(content)
+      @content = content
+    end
+
+    def render
+      @content
+    end
+  end
+end
+
 module Ramaze::Template
   class Ramaze
     extend Ramaze::Helper
