@@ -64,7 +64,7 @@ module Ramaze::Template
           end
         path = File.expand_path(File.dirname($0) / path)
 
-        exts = %w[mab rmze]
+        exts = %w[mab]
 
         files = exts.map{|ext| "#{path}.#{ext}"}
         file = files.find{|file| File.file?(file)}
