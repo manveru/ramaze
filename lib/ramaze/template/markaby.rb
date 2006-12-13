@@ -34,11 +34,11 @@ module Ramaze::Template
 
         template =
           if file
-            ivs =
-              controller.instance_variables.map do |iv|
-                [iv.gsub('@', '').to_sym, controller.instance_variable_get(iv)]
-              end
-            controller.mab(Hash[*ivs.flatten]) do
+            ivs = {}
+            controller.instance_variables.each do |iv|
+              ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
+            end
+            controller.send(:mab, ivs) do
               instance_eval(File.read(file))
             end
           elsif result.respond_to? :to_str
