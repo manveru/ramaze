@@ -189,6 +189,7 @@ module Ramaze
     end
 
     Thread.new do
+      Thread.current.priority = 99
       Thread.current[:task] = :adapter
       Global.running_adapter = run_adapter
     end
