@@ -157,10 +157,12 @@ module Ramaze::Template
       _start_heredoc_, _end_heredoc_ = "\n<<#{_start_heredoc_}\n", "\n#{_start_heredoc_}\n"
       _bufadd_ = "_out_ << "
       begin
+        _string_ = handle_elements(_string_)
         _string_.gsub!(/<%\s+(.*?)\s+%>/m, "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
         _string_.gsub!(/<\?r\s+(.*?)\s+\?>/m, "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
 
         _string_.gsub!(/<%=\s+(.*?)\s+%>/m, "#{_end_heredoc_} #{_bufadd_} (\\1); #{_bufadd_} #{_start_heredoc_}")
+
 
         # this one should not be used until we find and solution
         # that allows for stuff like
@@ -185,6 +187,18 @@ module Ramaze::Template
         #raise Error::Template, "Problem during transformation for: #{request.request_path}"
       end
       _string_
+    end
+
+    def handle_elements string
+      matches = string.scan(/<\/?[A-Z][a-zA-Z0-9]*>/)
+      matches.each do |e|
+        m = e.match(/<\/(.*?)>/).to_a.last
+        next unless m and matches.include?("<#{m}>")
+        string.gsub!(/<#{m}>(.*?)<\/#{m}>/m) do
+          constant(m).new($1).render
+        end
+      end
+      string
     end
   end
 end
