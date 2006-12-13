@@ -1,16 +1,8 @@
-<html>
-  <head>
-    <title>#{@title}</title>
-  </head>
-  <body>
-    <h1>Entry list</h1>
+<Page>
+  #{link :new}
+  <?r @entries.each do |entry| ?>
     <div>
-      #{link :new}
-      <?r @entries.each do |entry| ?>
-        <div>
-          #{entry}
-        </div>
-      <?r end ?>
+      #{entry}
     </div>
-  </body>
-</html>
+  <?r end ?>
+</Page>

@@ -1,0 +1,7 @@
+<Page>
+  <form method="POST" action="#{R EntryController, :save}">
+    <input type="hidden" name="oid" value="#{@entry.oid}" />
+    #{form @entry}
+    <input type="submit" />
+  </form>
+</Page>

@@ -1,15 +1,10 @@
-<html>
-  <head>
-    <title>New Entry</title>
-  </head>
-  <body>
-    <div id="blog_title">#{@title}</div>
-    <div id="menu">
-      #{link :/}
-      #{link self.class, :new, :title => 'New Entry'}
-    </div>
-    <form method="POST" action="#{R EntryController, :add}">
-      #{form Entry}
-    </form>
-  </body>
-</html>
+<Page>
+  <div id="menu">
+    #{link :/}
+    #{link self.class, :new, :title => 'New Entry'}
+  </div>
+  <form method="POST" action="#{R EntryController, :add}">
+    #{form Entry}
+    <input type="submit" />
+  </form>
+</Page>
