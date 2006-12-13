@@ -26,37 +26,6 @@ module Ramaze
     end
 
     module Control
-      trait :class_map => {
-        :String    => :text,
-        :Fixnum    => :fixnum,
-        :Time      => :time,
-        :Date      => :date,
-        :DateTime  => :datetime,
-      }
-
-      trait :control_map => {
-        :fixnum       => :Fixnum,
-        :integer      => :Fixnum
-        :float        => :Float
-        :file         => :File,
-        :webfile      => :File,
-        :array        => :Array,
-        :date         => :D
-        :true_class   => Checkbox,
-        :boolean      => Checkbox,
-        :checkbox     => Checkbox,
-        :string       => Text,
-        :password     => Password,
-        :textarea     => Textarea,
-        :options      => Options,
-        :refers_to    => RefersTo,
-        :has_one      => RefersTo,
-        :belongs_to   => RefersTo,
-        :has_many     => HasMany,
-        :many_to_many => HasMany,
-        :joins_many   => HasMany
-      }
-
       class Fixnum
         def self.render name, value
           %{<input type="text" name="#{name}" value="#{value}" />}
@@ -122,6 +91,39 @@ module Ramaze
           %{<input type="text" name="#{name}" value="#{value}" />}
         end
       end
+    end
+
+    module Control
+      trait :class_map => {
+        :String    => :text,
+        :Fixnum    => :fixnum,
+        :Time      => :time,
+        :Date      => :date,
+        :DateTime  => :datetime,
+      }
+
+      trait :control_map => {
+        :fixnum       => :Fixnum,
+        :integer      => :Fixnum,
+        :float        => :Float,
+        :file         => :File,
+        :webfile      => :File,
+        :array        => :Array,
+        :date         => :Date,
+        :true_class   => Checkbox,
+        :boolean      => Checkbox,
+        :checkbox     => Checkbox,
+        :string       => Text,
+        :password     => Password,
+        :textarea     => Textarea,
+        :options      => Options,
+        :refers_to    => RefersTo,
+        :has_one      => RefersTo,
+        :belongs_to   => RefersTo,
+        :has_many     => HasMany,
+        :many_to_many => HasMany,
+        :joins_many   => HasMany,
+      }
     end
 
     def control_string name, value
