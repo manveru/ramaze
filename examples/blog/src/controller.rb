@@ -3,6 +3,7 @@
 
 class MainController < Template::Ramaze
   def index
+    @title = 'Ramaze'
     @entries = Entry.all.reverse
   end
 end
@@ -11,6 +12,7 @@ class EntryController < Template::Ramaze
   helper :form
 
   def index
+    @title = 'Ramaze Blog'
     @entries = Entry.all.reverse
   end
 

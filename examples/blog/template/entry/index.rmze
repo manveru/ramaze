@@ -1,8 +1,3 @@
-<Page>
-  #{link :new}
-  <?r @entries.each do |entry| ?>
-    <div>
-      #{link self, :view, entry.oid, :title => entry.title}
-    </div>
-  <?r end ?>
+<Page title="Ramaze Blog">
+  #{render('list')}
 </Page>

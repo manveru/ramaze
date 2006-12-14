@@ -1,5 +1,5 @@
 class Page < Ramaze::Element
-  def render
+  def render(*args)
     %{
 <html>
   <head>

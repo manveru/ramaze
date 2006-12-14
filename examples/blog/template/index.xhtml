@@ -1,19 +1,3 @@
-<Page>
-  <?r @entries.each_with_index do |entry, i| ?>
-    <div class="blog_entry">
-      <div class="title">
-        <div class="title">#{link EntryController, :view, entry.oid, :title => entry.title}</div>
-        <div class="date">#{entry.time}</div> 
-      </div>
-      <div class="text">
-        #{entry.text}
-      </div>
-      <div class="menu">
-        #{link EntryController, :delete, entry.oid, :title => 'Delete'}
-        #{link EntryController, :edit, entry.oid, :title => 'Edit'}<br />
-        Entry #{@entries.size - i}/#{@entries.size}
-      </div>
-    </div>
-  <?r end ?>
-  #{link EntryController, :new, :title => 'New Entry'}
+<Page title="Ramaze">
+  #{render('entry' / 'list')}
 </Page>
