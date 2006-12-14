@@ -47,12 +47,7 @@ module Ramaze::Template
 
       extensions = ancestors.find{|a| a.trait[:template_extensions]}.trait[:template_extensions]
 
-      p :extensions => extensions
-
-      file = Dir["#{path}.{#{extensions.join(',')}}"].first
-      p :file => file
-      p :path => path
-      file
+      Dir["#{path}.{#{extensions.join(',')}}"].first
     end
   end
 end
