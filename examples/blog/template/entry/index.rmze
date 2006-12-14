@@ -2,7 +2,7 @@
   #{link :new}
   <?r @entries.each do |entry| ?>
     <div>
-      #{entry}
+      #{link self, :view, entry.oid, :title => entry.title}
     </div>
   <?r end ?>
 </Page>

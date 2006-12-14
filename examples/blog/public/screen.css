@@ -5,9 +5,11 @@ body {
   color:      #fff;
 }
 
-div#title {
-  font-size:  2em;
-  text-align: center;
+span#title {
+  font-size:  1.5em;
+  text-align: right;
+  float: left;
+  margin-top: -0.6em;
 }
 
 a {
@@ -15,19 +17,41 @@ a {
   color: #afa;
 }
 
+div#menu {
+  text-align: center;
+  padding: 0.2em;
+  margin-top: -0.5em;
+  margin-right: -0.5em;
+  margin-left: -0.5em;
+  margin-bottom: 0.5em;
+  background: #222;
+  font-size: 2em;
+}
+
 div.blog_entry {
   background: #222;
   margin:     auto;
   width:      80%;
   padding:    0.4em;
+  margin-bottom: 1em;
+  border: #333 1px solid;
 }
 
 div.blog_entry div.title {
   background: #111;
+  padding-bottom: 1em;
   text-align: center;
+}
+
+div.blog_entry div.title div.date {
+  color: #aaa;
+  text-align: right;
+  font-size: 0.8em;
+  float: right;
+}
+
+div.blog_entry div.title div.title {
   font-size:  1.5em;
-  margin:     0.4em;
-  padding:    0.4em;
 }
 
 div.blog_entry div.text {

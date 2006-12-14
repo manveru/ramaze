@@ -3,7 +3,7 @@
 
 class MainController < Template::Ramaze
   def index
-    @entries = Entry.all
+    @entries = Entry.all.reverse
   end
 end
 
@@ -11,11 +11,11 @@ class EntryController < Template::Ramaze
   helper :form
 
   def index
-    @entries = Entry.all
+    @entries = Entry.all.reverse
   end
 
   def view oid
-    Entry[oid.to_i].pretty_insepct
+    @entry = Entry[oid.to_i]
   end
 
   def new
