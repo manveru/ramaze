@@ -31,16 +31,15 @@ module Ramaze::Template
     # used instead.
 
     def self.find_template action
+      action = action.to_s
       custom_template = trait["#{action}_template".intern] ||
         self.class.trait["#{action}_template".intern]
       action = custom_template if custom_template
 
       path =
         if template_root = trait[:template_root] || trait[:template_root]
-          p [template_root, action]
           template_root / action
         else
-          p [Global.template_root , Global.mapping.invert[self] , action]
           Global.template_root / Global.mapping.invert[self] / action
         end
       path = File.expand_path(path)

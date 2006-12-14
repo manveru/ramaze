@@ -51,7 +51,7 @@ module Ramaze::Template
     #
 
     def render action
-      path = File.join(Global.template_root, Global.mapping.invert[self.class], action)
+      path = File.join(Global.template_root, Global.mapping.invert[self.class], action.to_s)
 
       return '' unless file = self.class.find_template(action)
 
