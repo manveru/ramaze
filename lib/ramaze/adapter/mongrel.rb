@@ -20,10 +20,16 @@ end
 module Ramaze::Adapter
   class Mongrel < ::Mongrel::HttpHandler
 
-    def self.start host, port
-      h = ::Mongrel::HttpServer.new host, port
-      h.register "/", self.new
-      h.run
+    class << self
+      def start host, port
+        h = ::Mongrel::HttpServer.new host, port
+        h.register "/", self.new
+
+        h.run
+      end
+
+      def stop
+      end
     end
 
     def process(request, response)

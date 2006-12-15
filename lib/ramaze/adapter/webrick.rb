@@ -42,18 +42,33 @@ end
 
 module Ramaze::Adapter
   class Webrick
-    def self.start host, port
-      # TODO
-      # - implement graceful shutdown
+    class << self
+      def start host, port
+        # TODO
+        # - implement graceful shutdown
 
-      handler = lambda do |request, response|
-        self.new.process(request, response)
+        handler = lambda do |request, response|
+          self.new.process(request, response)
+        end
+
+        options = {
+          :Port => port,
+          :BindAddress => host,
+        }
+
+        server = WEBrick::HTTPServer.new(options)
+        server.mount('/', WEBrick::HTTPServlet::ProcHandler.new(handler))
+
+        Thread.new do
+          Thread.current[:task] = :webrick
+          Thread.current[:adapter] = server
+          server.start
+        end
       end
 
-      server = WEBrick::HTTPServer.new(:Port => port, :BindAddress => host)
-      server.mount('/', WEBrick::HTTPServlet::ProcHandler.new(handler))
-
-      Thread.new{ server.start }
+      def stop
+        p :stop
+      end
     end
 
     def process request, response
