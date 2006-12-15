@@ -39,7 +39,8 @@ module Ramaze
 
     Thread.abort_on_exception = true
 
-    setup_global(options)
+    Global.setup(options)
+
     find_controllers
     setup_controllers
 
@@ -62,63 +63,6 @@ module Ramaze
     Thread.list.each do |thread|
       thread.kill unless thread == Thread.main
     end
-  end
-
-  # Setup the variables for Global
-  # This method can take a hash that maybe be used to override the defaults
-  # That functionality is not used at the moment anywhere in ramaze.
-  # Example:
-  #   Ramaze.setup_global :adapter => :mongrel, :mode => :live, :port => 80
-  #
-  # The default values:
-  #   uses the class from Adapter:: (is required automatically)
-  #       Global.adapter #=> :webrick
-  #   restrict access to a specific host
-  #       Global.host #=> '0.0.0.0'
-  #   adapter runs on that port
-  #       Global.port #=> 7000
-  #   the running/debugging-mode (:debug|:stage|:live|:silent) - atm only differ in verbosity
-  #       Global.mode #=> :debug
-  #   detaches Ramaze to run in the background (used for testcases)
-  #       Global.run_loose #=> false
-  #   caches requests to the controller based on request-values (action/params)
-  #       Global.cache #=> false
-  #   run tidy over the generated html if Content-Type is text/html
-  #       Global.tidy #=> false
-  #   display an error-page with backtrace on errors (empty page otherwise)
-  #       Global.error_page    #=> true
-  #   trap this signal for clean shutdown (calls Ramaze.shutdown)
-  #       Global.shutdown_trap #=> 'SIGINT'
-
-  def setup_global options = {}
-    defaults = {
-      :adapter        => :webrick,
-      :host           => '0.0.0.0',
-      :port           => 7000,
-      :mode           => :debug,
-      :run_loose      => false,
-      :cache          => false,
-      :tidy           => false,
-      :error_page     => true,
-      :template_root  => 'template',
-
-      :autoreload     => {
-                          :benchmark  => 5,
-                          :debug      => 5,
-                          :stage      => 10,
-                          :live       => 20,
-                          :silent     => 40,
-                         },
-      :logger         => {
-                          :timestamp    => "%Y-%m-%d %H:%M:%S",
-                          :prefix_info  => 'INFO',
-                          :prefix_error => 'ERRO',
-                          :prefix_debug => 'DEBG',
-                         }
-    }
-
-    Global.update options
-    Global.update defaults
   end
 
   # first, search for all the classes that end with 'Controller'

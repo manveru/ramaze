@@ -18,12 +18,17 @@ context "Global" do
     Global[:baz].should == :foobar
   end
 
+  specify "setup" do
+    Global.setup :foo => :baz, :foobar => :bar
+    Global.foo.should == :baz
+    Global.foobar.should == :bar
+    Global.update :foo => :bar
+    Global.foo.should == :baz
+    Global.foobar.should == :bar
+  end
+
   specify "just simple assignment and retrive" do
     Global.some = :xxx
     Global.some.should.equal :xxx
-  end
-
-  specify "let's force some errors" do
-    lambda{ Global.duh(:bar) }.should.raise NoMethodError
   end
 end

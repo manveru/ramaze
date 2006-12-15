@@ -50,35 +50,38 @@ module Ramaze
         }
       }
 
-      @@table = {}
+      @@table = nil
 
-      def create(h = {})
-        @@table = Thread.main[:global] = h
+      def create(hash = DEFAULT_OPTIONS)
+        @@table = Thread.main[:global] = hash
       end
 
       def table
         @@table
       end
 
-      def setup hash = DEFAULT_OPTIONS
-        create
-        update hash
+      def setup hash = {}
+        create unless @@table
+        @@table.merge!(hash)
       end
 
-      def update(h = {})
+      def update(hash = {})
         create unless @@table
-        @@table = h.merge(@@table)
+        @@table = hash.merge(@@table)
       end
 
       def [](key)
+        create unless @@table
         @@table[key.to_sym]
       end
 
       def []=(key, value)
+        create unless @@table
         @@table[key.to_sym] = value
       end
 
       def method_missing(meth, *args, &block)
+        create unless @@table
         if meth.to_s[-1..-1] == '='
           key = meth.to_s[0..-2].to_sym
           @@table.send("[]=", key, *args)
@@ -98,10 +101,12 @@ module Ramaze
       end
 
       def inspect
+        create unless @@table
         @@table.inspect
       end
 
       def pretty_inspect
+        create unless @@table
         @@table.pretty_inspect
       end
 
