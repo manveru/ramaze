@@ -60,7 +60,7 @@ module Ramaze
 
     def debug *args
       if logger_mode? :debug, :benchmark
-        prefix = Global.logger[:prefix_debug] rescue 'DEBG'
+        prefix = Global.logger[:prefix_debug] rescue 'DEBUG'
         log prefix, args
       end
     end
@@ -78,7 +78,7 @@ module Ramaze
 
     def error e
       if logger_mode? :live, :stage, :debug, :benchmark
-        prefix = Global.logger[:prefix_error] rescue 'ERRO'
+        prefix = Global.logger[:prefix_error] rescue 'ERROR'
         if e.respond_to?(:message) and e.respond_to?(:backtrace)
           log prefix, e.message
           if logger_mode? :stage, :debug, :benchmark
@@ -96,7 +96,7 @@ module Ramaze
 
     def info *args
       if logger_mode? :stage, :debug, :benchmark
-        prefix = (Global.logger[:prefix_info] rescue 'INFO')
+        prefix = Global.logger[:prefix_info] rescue 'INFO '
         log prefix, args
       end
     end
@@ -124,6 +124,7 @@ module Ramaze
     end
 
     extend self
-    include self
   end
+
+  include Logger
 end

@@ -11,6 +11,8 @@ module Ramaze
   # and it will just restart the autoreloader.
 
   def self.autoreload interval = 10
+    debug "initialize autoreload with an interval of #{interval} seconds"
+
     gatherer = Thread.new do
       this = Thread.current
       this[:task] = :autoreload

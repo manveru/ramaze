@@ -11,6 +11,7 @@ module Ramaze
 
   $:.unshift Ramaze::BASEDIR
 
+  require 'ramaze/snippets'
   require 'ramaze/controller'
   require 'ramaze/dispatcher'
   require 'ramaze/error'
@@ -35,8 +36,6 @@ module Ramaze
   def start options = {}
     info "Starting up Ramaze (Version #{VERSION})"
 
-    require 'ramaze/snippets'
-
     Thread.abort_on_exception = true
 
     Global.setup(options)
@@ -45,8 +44,6 @@ module Ramaze
     setup_controllers
 
     autoreload_interval = Global.autoreload[Global.mode]
-    debug "initialize autoreload with #{autoreload_interval}"
-
     Ramaze::autoreload(autoreload_interval)
 
     trap(Global.shutdown_trap){ shutdown } rescue nil
