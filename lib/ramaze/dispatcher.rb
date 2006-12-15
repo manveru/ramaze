@@ -9,12 +9,7 @@ module Ramaze
       include Trinity
 
       def handle orig_request, orig_response
-        Timeout.timeout(1) do
-          create_response(orig_response, orig_request)
-        end
-      rescue Timeout::Error
-        error e
-        Response.new(out = '', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
+        create_response(orig_response, orig_request)
       rescue Object => e
         if Global.error_page
           error e
