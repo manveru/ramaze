@@ -9,6 +9,14 @@ require 'ramaze/tool/tidy'
 # for OSX compatibility
 Socket.do_not_reverse_lookup = true
 
+module Mongrel
+  class Configurator
+    def log(msg)
+      info :mongrel, msg
+    end
+  end
+end
+
 module Ramaze::Adapter
   class Mongrel < ::Mongrel::HttpHandler
 
