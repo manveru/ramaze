@@ -54,6 +54,11 @@ module Ramaze::Adapter
         options = {
           :Port => port,
           :BindAddress => host,
+          :Logger => Logger,
+          :AccessLog => [
+            [Logger, WEBrick::AccessLog::COMMON_LOG_FORMAT],
+            [Logger, WEBrick::AccessLog::REFERER_LOG_FORMAT]
+          ]
         }
 
         server = WEBrick::HTTPServer.new(options)
