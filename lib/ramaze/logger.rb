@@ -101,6 +101,18 @@ module Ramaze
       end
     end
 
+    def puts *args
+      debug(*args)
+    end
+
+    def <<(*args)
+      puts(*args)
+    end
+
+    def method_missing(meth, *args, &block)
+      error :method_missing, meth, args
+    end
+
     private
 
     def timestamp
@@ -115,12 +127,8 @@ module Ramaze
     def log prefix, *args
       args.each do |arg|
         print "[#{timestamp}] #{prefix}  "
-        puts [arg].flatten.map{|e| e.is_a?(String) ? e : e.inspect}.join(', ')
+        Kernel.puts [arg].flatten.map{|e| e.is_a?(String) ? e : e.inspect}.join(', ')
       end
-    end
-
-    def puts *args
-      Kernel.puts(*args)
     end
 
     extend self
