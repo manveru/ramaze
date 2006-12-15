@@ -77,19 +77,15 @@ def ramaze_start hash = {}
     :error_page => false,
   }
 
-  options.merge(hash).each do |key, value|
-    Global[key] = value
-  end
   Ramaze.start(options.merge(hash))
 end
 
 def ramaze_teardown
+  #Ramaze.shutdown
 end
 
 def ramaze(hash = {})
   ramaze_start(hash)
-  Timeout.timeout(10) do
     yield if block_given?
-  end
   ramaze_teardown
 end
