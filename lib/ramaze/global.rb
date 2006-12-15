@@ -3,10 +3,6 @@
 
 module Ramaze
   class Global
-    def initialize
-      raise "whack!"
-    end
-
     class << self
       @@table = {}
 
