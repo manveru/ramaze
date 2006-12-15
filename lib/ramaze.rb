@@ -53,13 +53,16 @@ module Ramaze
 
   alias run start
 
-  # A simple and clean way to shutdown Ramaze, use this
+  # A simple and clean way to shutdown Ramaze
 
   def shutdown
     info "Shutting down Ramaze"
-    Thread.list.each do |thread|
-      thread.kill unless thread == Thread.main
+    Global.adapter_klass.stop
+    (Thread.list - [Thread.main]).each do |thread|
+      thread.kill
     end
+    info "exit"
+    Thread.main.exit
   end
 
   # first, search for all the classes that end with 'Controller'
@@ -155,6 +158,7 @@ module Ramaze
       shutdown
     end
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
+    Global.adapter_klass = adapter_klass
 
     info "Found adapter: #{adapter_klass}"
     info "we're running: #{host}:#{port}"
@@ -162,9 +166,8 @@ module Ramaze
     adapter_klass.start host, port
   rescue => ex
     timeouted ||= false
-    puts ex
     join = Thread.list.reject{|t| t == Thread.current or t.dead? or t[:interval]}
-    puts "joining #{join.size} threads and retry"
+    debug "joining #{join.size} threads and retry"
     begin
       Timeout.timeout(5) do
         join.each{|t| t.join }
