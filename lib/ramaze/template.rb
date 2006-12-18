@@ -37,14 +37,14 @@ module Ramaze::Template
       action = custom_template if custom_template
 
       path =
-        if template_root = trait[:template_root] || trait[:template_root]
+        if template_root = trait[:template_root] || ancestors_trait(:template_root)
           template_root / action
         else
           Global.template_root / Global.mapping.invert[self] / action
         end
       path = File.expand_path(path)
 
-      extensions = ancestors.find{|a| a.trait[:template_extensions]}.trait[:template_extensions]
+      extensions = trait[:template_extensions] || ancestors_trait(:template_extensions)
 
       Dir["#{path}.{#{extensions.join(',')}}"].first
     end
