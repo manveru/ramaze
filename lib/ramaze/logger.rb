@@ -110,7 +110,7 @@ module Ramaze
     end
 
     def method_missing(meth, *args, &block)
-      error :method_missing, meth, args
+      error ":method_missing(#{meth.inspect}, #{args.inspect}"
     end
 
     private

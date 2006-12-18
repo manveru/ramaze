@@ -118,8 +118,6 @@ begin
     end
   end
 
-  Ramaze.setup_global(options)
-
   puts "running #{File.expand_path(runner)}"
   require runner
 
