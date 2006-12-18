@@ -109,10 +109,6 @@ module Ramaze
       puts(*args)
     end
 
-    def method_missing(meth, *args, &block)
-      error ":method_missing(#{meth.inspect}, #{args.inspect}"
-    end
-
     private
 
     def timestamp
