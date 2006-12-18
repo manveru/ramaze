@@ -11,4 +11,9 @@ class Object
       Traits[self]
     end
   end
+
+  def ancestors_trait key
+    trait[key] ||
+    (ancestors rescue self.class.ancestors).find{|a| a.trait[key]}.trait[key]
+  end
 end
