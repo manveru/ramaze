@@ -11,7 +11,7 @@ class TCElementController < Template::Ramaze
   end
 
   def elementy
-    transform "<Page>#{index}</Page>"
+    "<Page>#{index}</Page>"
   end
 end
 

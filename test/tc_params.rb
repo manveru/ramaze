@@ -5,7 +5,7 @@ require 'lib/test/test_helper'
 
 include Ramaze
 
-class TCParamsController < Ramaze::Template::Ramaze
+class TCParamsController < Template::Ramaze
   def index
     "index"
   end
