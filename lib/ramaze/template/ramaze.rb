@@ -17,95 +17,19 @@ module Ramaze::Template
       # Also tries to render the template.
       # In Theory you can use this standalone, this has not been tested though.
 
-      def handle_request request, action, *params
+      def handle_request(action, *params)
         controller = self.new
-        controller.instance_variable_set('@action', action)
-        template = controller.__send__(action, *params).to_s
-        rendered = controller.__send__(:render, action).to_s
-        template = rendered unless rendered.empty?
-        template
+        controller.send(:render, action, *params)
       end
 
-      # transform a String to a final xhtml
-      #
-      # All ye who seek magic, look elsewhere, this method is ASAP (as simple as possible)
-      #
-      # There are some simple gsubs that build a final template which is evaluated
-      #
-      # The rules are following:
-      # <?r rubycode ?>
-      #   evaluate the code inside the tag, this is considered XHTML-valid and so is the
-      #   preferred method for executing code inside your templates.
-      #   The return-value is ignored
-      # <% rubycode %>
-      #   The same as <?r ?>, ERB-style and not valid XHTML, but should give someone who
-      #   is already familiar with ERB some common ground
-      # #{ rubycode }
-      #   You know this from normal ruby already and it's actually nothing else.
-      #   Interpolation at the position in the template, isn't any special taggy format
-      #   and therefor safe to use.
-      # <%= rubycode %>
-      #   The result of this will be interpolated at the position in the template.
-      #   Not valid XHTML either.
-      #
-      # Warning:
-      # the variables used in here have the schema _variable_ to make it harder to break stuff
-      # however, you should take care.
-      # At the time of writing, the variables used are:
-      # _start_heredoc_, _end_heredoc_, _string_, _out_, _bufadd_ and _ivs_
-      # However, you may reuse _ivs_ if you desperatly need it and just can't live without.
-      #
+      # in case someone wants to call directly (pipeline)
 
-      def transform _string_, binding = binding, _ivs_ = {}
-        _ivs_.each do |key, value|
-          instance_variable_set("@#{key}", value)
-        end
-
-        _start_heredoc_ = Digest::SHA1.hexdigest(_string_)
-        _start_heredoc_, _end_heredoc_ = "\n<<#{_start_heredoc_}\n", "\n#{_start_heredoc_}\n"
-        _bufadd_ = "_out_ << "
-        begin
-
-          _string_.gsub!(/<%\s+(.*?)\s+%>/m,
-          "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
-          _string_.gsub!(/<\?r\s+(.*?)\s+\?>/m,
-          "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
-
-          _string_.gsub!(/<%=\s+(.*?)\s+%>/m,
-          "#{_end_heredoc_} #{_bufadd_} (\\1); #{_bufadd_} #{_start_heredoc_}")
-
-
-          # this one should not be used until we find and solution
-          # that allows for stuff like
-          # #[@foo]!
-          # we just don't allow anything except space or newline
-          # after the expression #[] to make it sane
-          #_string_.gsub!(/#\[(.*?)\]\s*$/) do |m|
-          #  "#{_end_heredoc_} #{_bufadd_} (#{$1}); #{_bufadd_} #{_start_heredoc_}"
-          #end
-
-          _out_ = []
-
-          eval("#{_bufadd_} #{_start_heredoc_} #{_string_} #{_end_heredoc_}", binding)
-
-          _out_.map! do |line|
-            line.to_s.chomp
-          end
-          _string_ = _out_.join.strip
-        rescue Object => ex
-          error "something bad happened while transformation"
-          error ex
-          #raise Error::Template, "Problem during transformation for: #{request.request_path}"
-        end
-        _string_
+      def transform(template, bound)
+        self.new.send(:transform, template, bound)
       end
     end
 
     private
-
-    def transform(string, binding = binding, ivs = {})
-      self.class.transform(string, binding, ivs)
-    end
 
     # render an action
     # this looks up the file depending on your Global.template_root
@@ -129,19 +53,109 @@ module Ramaze::Template
     #   - add extensive tests!
     #
 
-    def render action
-      path = File.join(Global.template_root, Global.mapping.invert[self.class], action.to_s)
+    def render(action, *params)
+      begin
+        ctrl_template = send(action, *params).to_s
+      rescue
+        Dispatcher.respond_action([action, *params].join('/'))
+        ctrl_template = response.out
+      end
+      file_template = find_template(action)
+      pipeline(file_template || ctrl_template)
+    end
 
-      return '' unless file = self.class.find_template(action)
+    # find the file that fits to the action, just ask the
+    # super-method
 
-      info "transforming #{file.gsub(Dir.pwd, '.')}"
-      template = File.read(file)
+    def find_template(action)
+      template = super
+      return nil unless template
 
+      info "found template #{template.gsub(Dir.pwd, '.')}"
+      File.read(template)
+    end
+
+    # go through the pipeline and call #transform on every object found there,
+    # passing the template at that point.
+    # the order and contents of the pipeline are determined by an array
+    # in trait[:template_pipeline]
+    # the default being [self, Element]
+
+    def pipeline(template)
       transform_pipeline = trait[:template_pipeline] || ancestors_trait(:transform_pipeline)
-      p transform_pipeline
+
       transform_pipeline.each do |tp|
         template = tp.transform(template, binding)
       end
+
+      template
+    end
+
+    # transform a String to a final xhtml
+    #
+    # All ye who seek magic, look elsewhere, this method is ASAP (as simple as possible)
+    #
+    # There are some simple gsubs that build a final template which is evaluated
+    #
+    # The rules are following:
+    # <?r rubycode ?>
+    #   evaluate the code inside the tag, this is considered XHTML-valid and so is the
+    #   preferred method for executing code inside your templates.
+    #   The return-value is ignored
+    # <% rubycode %>
+    #   The same as <?r ?>, ERB-style and not valid XHTML, but should give someone who
+    #   is already familiar with ERB some common ground
+    # #{ rubycode }
+    #   You know this from normal ruby already and it's actually nothing else.
+    #   Interpolation at the position in the template, isn't any special taggy format
+    #   and therefor safe to use.
+    # <%= rubycode %>
+    #   The result of this will be interpolated at the position in the template.
+    #   Not valid XHTML either.
+    #
+    # Warning:
+    # the variables used in here have the schema _variable_ to make it harder to break stuff
+    # however, you should take care.
+    # At the time of writing, the variables used are:
+    # _start_heredoc_, _end_heredoc_, _string_, _out_, _bufadd_ and _ivs_
+    # However, you may reuse _ivs_ if you desperatly need it and just can't live without.
+    #
+
+    def transform(_template_, _binding_ = binding)
+      _start_heredoc_ = Digest::SHA1.hexdigest(_template_)
+      _start_heredoc_, _end_heredoc_ = "\n<<#{_start_heredoc_}\n", "\n#{_start_heredoc_}\n"
+      _bufadd_ = "_out_ << "
+
+      _template_.gsub!(/<%\s+(.*?)\s+%>/m,
+          "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
+      _template_.gsub!(/<\?r\s+(.*?)\s+\?>/m,
+          "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
+
+      _template_.gsub!(/<%=\s+(.*?)\s+%>/m,
+          "#{_end_heredoc_} #{_bufadd_} (\\1); #{_bufadd_} #{_start_heredoc_}")
+
+
+      # this one should not be used until we find and solution
+      # that allows for stuff like
+      # #[@foo]!
+      # we just don't allow anything except space or newline
+      # after the expression #[] to make it sane
+      #_template_.gsub!(/#\[(.*?)\]\s*$/) do |m|
+      #  "#{_end_heredoc_} #{_bufadd_} (#{$1}); #{_bufadd_} #{_start_heredoc_}"
+      #end
+
+      _out_ = eval("_out_ = []; #{_bufadd_} #{_start_heredoc_} #{_template_} #{_end_heredoc_}; _out_", _binding_)
+
+      _out_.map! do |line|
+        line.to_s.chomp
+      end
+
+      _template_ = _out_.join.strip
+    rescue Object => ex
+      error "something bad happened while transformation"
+      error ex
+      #raise Error::Template, "Problem during transformation for: #{request.request_path}"
+      _template_
     end
 
   end

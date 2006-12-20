@@ -18,7 +18,7 @@ module Ramaze
     end
 
     class << self
-      def transform string = ''
+      def transform string = '', binding = nil
         string = string.to_s
         matches = string.scan(/<\/?[A-Z][a-zA-Z0-9]*>/)
         matches.each do |match|

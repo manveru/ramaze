@@ -12,7 +12,7 @@ module Ramaze::Template
     class << self
       include Ramaze::Helper
 
-      def handle_request request, action, *params
+      def handle_request action, *params
 
         file = find_template(action)
 

@@ -25,7 +25,7 @@ module Ramaze::Template
     end
 
     class << self
-      def handle_request request, action, *params
+      def handle_request action, *params
         controller = self.new
         controller.instance_variable_set('@action', action)
 

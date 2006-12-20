@@ -16,7 +16,7 @@ module Ramaze::Template
       # Also tries to render the template.
       # In Theory you can use this standalone, this has not been tested though.
 
-      def handle_request request, action, *params
+      def handle_request action, *params
         controller = self.new
         controller.instance_variable_set('@action', action)
         result = controller.send(action, *params) if controller.respond_to?(action)
