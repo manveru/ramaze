@@ -46,8 +46,6 @@ module Ramaze
     autoreload_interval = Global.autoreload[Global.mode]
     Ramaze::autoreload(autoreload_interval)
 
-    trap(Global.shutdown_trap){ shutdown } rescue nil
-
     init_adapter
   end
 
@@ -136,6 +134,8 @@ module Ramaze
       Thread.current.priority = 99
       Thread.current[:task] = :adapter
       Global.running_adapter = run_adapter
+
+      trap(Global.shutdown_trap){ shutdown } rescue nil
     end
 
     sleep 0.1 until Global.running_adapter
