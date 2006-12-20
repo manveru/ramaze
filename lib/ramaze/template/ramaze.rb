@@ -5,11 +5,14 @@ require 'digest/sha1'
 require 'ramaze/template/ramaze/element'
 
 module Ramaze::Template
+
+  # The usual Template for use of Ramaze.
+  # It supports erb-style interpolation and a pipeline for the transform
+
   class Ramaze < Template
     trait :actionless => false
     trait :template_extensions => %w[rmze xhtml rhtml html]
-    trait :transform_pipeline => [Template, Element]
-
+    trait :transform_pipeline => [self, Element]
 
     class << self
       # initializes the handling of a request on the controller.

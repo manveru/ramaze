@@ -48,5 +48,11 @@ module Ramaze::Template
 
       Dir["#{path}.{#{extensions.join(',')}}"].first
     end
+
+    private
+
+    def find_template action
+      self.class.find_template(action)
+    end
   end
 end
