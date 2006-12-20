@@ -14,9 +14,9 @@ forgotten in a chase for new functionality and features. Ramaze only tries to
 give you the ultimate tools, but you have to use them yourself to achive
 perfect custom-tailored results.
 
-Another interesting aspect is that Ramaze tries to be as much copy&paste-able
-as possible, as to encourage the use of its code in similar projects and to
-act as a single point of reference for projects using its components.
+Another interesting aspect is that Ramaze tries to provide as much reuseable
+code as possible, as to encourage the use of its code in similar projects and
+to act as a single point of reference for projects using its components.
 This tries to tackle the problem that everybody who wants/needs to create a
 custom webframework always has to reimplement the most basic and common
 functionality. So when for example someone wants a basic example of how to
