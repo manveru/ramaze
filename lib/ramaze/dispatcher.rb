@@ -31,14 +31,22 @@ module Ramaze
 
         the_paths = $:.map{|way| (way/'public'/path) }
         if file = the_paths.find{|way| File.exist?(way) and File.file?(way)}
-          response.head['Content-Type'] = ''
-          response.out = File.read(file)
+          respond_file file
         else
-          controller, action, params = resolve_controller(path)
-          response.out = handle_controller(request, controller, action, params)
-          response.head['Set-Cookie'] = session.export
+          respond_action path
         end
         response
+      end
+
+      def respond_file file
+        response.head['Content-Type'] = ''
+        response.out = File.read(file)
+      end
+
+      def respond_action path
+        controller, action, params = resolve_controller(path)
+        response.out = handle_controller(controller, action, params)
+        response.head['Set-Cookie'] = session.export
       end
 
       # TODO:
@@ -113,7 +121,7 @@ module Ramaze
         return controller, action, params
       end
 
-      def handle_controller request, controller, action, params
+      def handle_controller controller, action, params
         if Ramaze::Global.cache
           Global.out_cache ||= {}
 
@@ -123,9 +131,9 @@ module Ramaze
           return out if out
 
           Ramaze::Logger.debug "Compiling Action: #{action} #{params.join(', ')}"
-          Global.out_cache[key] = controller.handle_request(request, action, *params)
+          Global.out_cache[key] = controller.handle_request(action, *params)
         else
-          controller.handle_request(request, action, *params)
+          controller.handle_request(action, *params)
         end
       end
 
