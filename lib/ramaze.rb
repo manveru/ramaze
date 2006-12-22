@@ -1,29 +1,33 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+# The main namespace for Ramaze
+module Ramaze
+  BASEDIR = File.dirname(File.expand_path(__FILE__))
+end
+
+$:.unshift Ramaze::BASEDIR
+
+require 'ramaze/snippets'
+rescue_require 'fastthread'
+
 require 'timeout'
 require 'ostruct'
 require 'pp'
 
-# The main namespace for Ramaze
+require 'ramaze/controller'
+require 'ramaze/dispatcher'
+require 'ramaze/error'
+require 'ramaze/gestalt'
+require 'ramaze/global'
+require 'ramaze/http_status'
+require 'ramaze/logger'
+require 'ramaze/model'
+require 'ramaze/snippets'
+require 'ramaze/template'
+require 'ramaze/version'
+
 module Ramaze
-  BASEDIR = File.dirname(File.expand_path(__FILE__))
-
-  $:.unshift Ramaze::BASEDIR
-
-  require 'ramaze/snippets'
-  require 'ramaze/controller'
-  require 'ramaze/dispatcher'
-  require 'ramaze/error'
-  require 'ramaze/gestalt'
-  require 'ramaze/global'
-  require 'ramaze/http_status'
-  require 'ramaze/logger'
-  require 'ramaze/model'
-  require 'ramaze/snippets'
-  require 'ramaze/template'
-  require 'ramaze/version'
-
   include Logger
 
   # This initializes all the other stuff, Controller, Adapter and Global
