@@ -23,7 +23,7 @@ module Ramaze
 
     # this parses stuff like post-requests (very untested)
     # and also ?foo=bar stuff (get-query)
-    # WEBrick uses body as a streaming-object, so we have to read
+    # WEBrick uses body as a streaming-object, so we have to #read.
     # Mongrel has a normal string as body, we just call to_s in case
     # it's no POST
 
