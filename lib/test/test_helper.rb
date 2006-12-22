@@ -1,15 +1,16 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'timeout'
-require 'open-uri'
-require 'net/http'
-
-require 'rubygems'
-require 'spec'
+require 'rubygems' rescue LoadError
 
 $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..')
 require 'ramaze'
+
+require 'spec'
+
+require 'timeout'
+require 'open-uri'
+require 'net/http'
 
 class Context
   def initialize(url = '/')
