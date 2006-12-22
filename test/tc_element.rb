@@ -13,6 +13,10 @@ class TCElementController < Template::Ramaze
   def elementy
     "<Page>#{index}</Page>"
   end
+
+  def nested
+    "<Page> some stuff <Page>#{index}</Page> more stuff </Page>"
+  end
 end
 
 class Page < Ramaze::Element
@@ -29,6 +33,10 @@ ramaze(:mapping => {'/' => TCElementController}) do
 
     specify "with element" do
       get('/elementy').should == "<wrap> The index </wrap>"
+    end
+
+    specify "nested element" do
+      get('/nested').should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
     end
   end
 end
