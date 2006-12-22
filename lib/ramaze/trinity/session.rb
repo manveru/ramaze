@@ -1,16 +1,17 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'digest/md5'
+require 'digest/sha1'
 
 module Ramaze
   class Session
+    SESSION_KEY = '_ramaze_session_id'
     attr_accessor :session
 
     # TODO: introduce some key/value cache...
 
     def initialize request
-      @session_id = parse(request)['_session_id']
+      @session_id = parse(request)[SESSION_KEY]
     end
 
     def session_id
@@ -27,7 +28,7 @@ module Ramaze
 
     def pre_parse request
       if Global.adapter == :webrick
-        # input looks like this: "Set-Cookie: _session_id=fa8cc88dafcb0973b48d4d65ef57e7d3\r\n"
+        # input looks like this: "Set-Cookie: _ramaze__session_id=fa8cc88dafcb0973b48d4d65ef57e7d3\r\n"
         cookie = request.raw_header.grep(/Set-Cookie/).first rescue ''
         cookie.to_s.gsub(/Set-Cookie: (.*?)\r\n/, '\1')
       else
@@ -43,7 +44,7 @@ module Ramaze
       end
     rescue
       Logger.error $!
-      {'_session_id' => hash}
+      {SESSION_KEY => hash}
     end
 
     def method_missing meth, *args, &block
@@ -52,22 +53,22 @@ module Ramaze
 
     def inspect
       tmp = current.clone
-      tmp.delete '_session_id'
+      tmp.delete SESSION_KEY
       tmp.inspect
     end
 
     def export
-      # do not use #{} here, that would evaluate the id, which is dangerous
-      # since given by the user ;)
-      "_session_id=" + session_id.to_s
+      "#{SESSION_KEY}=#{session_id}"
     end
 
     def hash
-      hash = []
-      hash << rand * rand ** rand / rand
-      hash << Time.now.hash
-      hash << 'salt_n_pepper'
-      Digest::MD5.hexdigest(hash.join(rand.to_s))
+      h = [
+        Time.now.to_f.to_s.reverse, rand,
+        Thread.current[:request].hash, rand,
+        Process.pid, rand,
+        object_id, rand
+      ].join
+      Digest::SHA512.hexdigest(h)
     end
   end
 end
