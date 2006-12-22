@@ -24,6 +24,7 @@ module Ramaze
       syms.each do |sym|
         require "ramaze/helper/#{sym}"
         include ::Ramaze.const_get("#{sym.to_s.capitalize}Helper")
+        extend ::Ramaze.const_get("#{sym.to_s.capitalize}Helper")
       end
     end
   end
