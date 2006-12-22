@@ -125,7 +125,7 @@ module Ramaze::Template
     #
 
     def transform(_template_, _binding_ = binding)
-      _start_heredoc_ = Digest::SHA1.hexdigest(_template_)
+      _start_heredoc_ = "T" << Digest::SHA1.hexdigest(_template_)
       _start_heredoc_, _end_heredoc_ = "\n<<#{_start_heredoc_}\n", "\n#{_start_heredoc_}\n"
       _bufadd_ = "_out_ << "
 
