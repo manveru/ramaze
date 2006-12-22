@@ -3,7 +3,6 @@
 
 require 'benchmark'
 
-require 'fastthread' rescue LoadError
 require 'mongrel'
 require 'ramaze/tool/tidy'
 
