@@ -24,7 +24,7 @@ module Ramaze
         $LOADED_FEATURES.map do |file|
           file = file.to_s
           paths = $LOAD_PATH + ['']
-          correct_path = paths.find{|lp| File.exist?(File.join(lp, file))}
+          correct_path = paths.find{|lp| File.exist?(File.join(lp.to_s, file))}
           correct_file = File.expand_path(File.join(correct_path, file)) if correct_path
 
           files << correct_file if correct_file
