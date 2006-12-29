@@ -51,7 +51,7 @@ module Ramaze
             current_time = File.mtime(file)
             if last_time = cache[file]
               unless last_time == current_time
-                Ramaze::Logger.info "autoreload #{file}"
+                Ramaze::Inform.info "autoreload #{file}"
                 load(file)
                 cache[file] = current_time
               end
