@@ -17,6 +17,11 @@ class TCElementController < Template::Ramaze
   def nested
     "<Page> some stuff <Page>#{index}</Page> more stuff </Page>"
   end
+
+  def with_params(*params)
+    hash = Hash[*params.flatten]
+    %{<PageWithParams one="two"></PageWithParams>}
+  end
 end
 
 class Page < Ramaze::Element
@@ -25,8 +30,14 @@ class Page < Ramaze::Element
   end
 end
 
+class PageWithParams < Ramaze::Element
+  def render(hash)
+    hash.inspect
+  end
+end
+
 ramaze(:mapping => {'/' => TCElementController}) do
-  context "Mongrel" do
+  context "Element" do
     specify "simple request" do
       get('/').should == "The index"
     end
@@ -37,6 +48,10 @@ ramaze(:mapping => {'/' => TCElementController}) do
 
     specify "nested element" do
       get('/nested').should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
+    end
+
+    specify "with_params" do
+      get('/with_params/one/two').should == {'one' => 'two'}.inspect
     end
   end
 end

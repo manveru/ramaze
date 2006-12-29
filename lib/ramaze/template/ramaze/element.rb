@@ -24,15 +24,23 @@ module Ramaze
         matches.each do |(klass, params)|
           next unless klass and string =~ /<\/#{klass}>/
           string.gsub!(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do
+            hash = demunge_passed_variables($1.to_s)
             k = constant(klass).new($2)
             case k.method(:render).arity
             when 0 : k.render
             else
-              k.render($1)
+              k.render(hash)
             end
           end
         end
         string
+      end
+
+      # very buggy and not reliable, but for my usual purposes it's good enough :)
+      def demunge_passed_variables(string)
+        string.scan(/\s?(.*?)="(.*?)"/).inject({}) do |hash, (key, value)|
+          hash.merge key => value
+        end
       end
     end
   end
