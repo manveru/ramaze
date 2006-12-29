@@ -9,7 +9,8 @@ end
 $:.unshift Ramaze::BASEDIR
 
 require 'ramaze/snippets'
-rescue_require 'fastthread'
+rescue_require 'rubygems', 'rubygems failed to load'
+rescue_require 'fastthread', 'fastthread failed to load'
 
 require 'timeout'
 require 'ostruct'

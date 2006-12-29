@@ -1,7 +1,7 @@
 module Kernel
   def rescue_require(sym, message = nil)
     require sym
-  rescue LoadError
+  rescue LoadError, RuntimeError
     puts message if message
   end
 end

@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'rubygems'
-require_gem 'facets', '=1.4.5'
+gem 'facets', '=1.4.5'
 require '/home/manveru/prog/projects/nitroproject/glycerin'
 require 'og'
 
