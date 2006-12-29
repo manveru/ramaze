@@ -54,10 +54,10 @@ module Ramaze::Adapter
         options = {
           :Port => port,
           :BindAddress => host,
-          :Logger => Logger,
+          :Logger => Inform,
           :AccessLog => [
-            [Logger, WEBrick::AccessLog::COMMON_LOG_FORMAT],
-            [Logger, WEBrick::AccessLog::REFERER_LOG_FORMAT]
+            [Inform, WEBrick::AccessLog::COMMON_LOG_FORMAT],
+            [Inform, WEBrick::AccessLog::REFERER_LOG_FORMAT]
           ]
         }
 

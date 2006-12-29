@@ -43,7 +43,7 @@ module Ramaze
         s.merge key.strip => value
       end
     rescue
-      Logger.error $!
+      Inform.error $!
       {SESSION_KEY => hash}
     end
 

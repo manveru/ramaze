@@ -22,14 +22,14 @@ require 'ramaze/error'
 require 'ramaze/gestalt'
 require 'ramaze/global'
 require 'ramaze/http_status'
-require 'ramaze/logger'
+require 'ramaze/inform'
 require 'ramaze/model'
 require 'ramaze/snippets'
 require 'ramaze/template'
 require 'ramaze/version'
 
 module Ramaze
-  include Logger
+  include Inform
 
   # This initializes all the other stuff, Controller, Adapter and Global
   # which in turn kickstart Ramaze into duty.

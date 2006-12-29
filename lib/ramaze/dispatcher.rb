@@ -27,7 +27,7 @@ module Ramaze
 
       def fill_out
         path = request.request_path.squeeze('/')
-        Ramaze::Logger.debug "Request from #{request.remote_addr}: #{path}"
+        Inform.debug "Request from #{request.remote_addr}: #{path}"
 
         the_paths = $:.map{|way| (way/'public'/path) }
         if file = the_paths.find{|way| File.exist?(way) and File.file?(way)}
@@ -130,7 +130,7 @@ module Ramaze
 
           return out if out
 
-          Ramaze::Logger.debug "Compiling Action: #{action} #{params.join(', ')}"
+          Inform.debug "Compiling Action: #{action} #{params.join(', ')}"
           Global.out_cache[key] = controller.handle_request(action, *params)
         else
           controller.handle_request(action, *params)
