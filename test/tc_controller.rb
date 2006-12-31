@@ -20,20 +20,20 @@ class TCControllerRamazeController < Template::Ramaze
   end
 end
 
-ramaze(:mapping => {'/ramaze' => TCControllerRamazeController}) do
-  context "Testing Ramaze" do
-    specify "simple request to index" do
-      get('/ramaze').should == 'The index'
-    end
+context "Testing Ramaze" do
+  ramaze(:mapping => {'/ramaze' => TCControllerRamazeController})
 
-    specify "summing two values" do
-      get('/ramaze/sum/1/2').should == '3'
-    end
+  specify "simple request to index" do
+    get('/ramaze').should == 'The index'
+  end
 
-    specify "should not respond to private methods" do
+  specify "summing two values" do
+    get('/ramaze/sum/1/2').should == '3'
+  end
+
+  specify "should not respond to private methods" do
       %w[ session request response find_template handle_request trait test_private ].each do |action|
         lambda{get("/ramaze/#{action}")}.should_raise OpenURI::HTTPError
       end
-    end
   end
 end

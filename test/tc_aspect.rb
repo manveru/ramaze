@@ -39,27 +39,27 @@ class TCAspectAllController < Template::Ramaze
   post :all, :post_aspect
 end
 
-ramaze(:mapping => {'/' => TCAspectController, '/all' => TCAspectAllController}) do
-  context "Aspect" do
-    specify "pre" do
-      get('/test_pre').should == '<aspect>test pre'
-    end
+context "Aspect" do
+  ramaze(:mapping => {'/' => TCAspectController, '/all' => TCAspectAllController})
 
-    specify "post" do
-      get('/test_post').should == 'test post</aspect>'
-    end
+  specify "pre" do
+    get('/test_pre').should == '<aspect>test pre'
+  end
 
-    specify "pre and post" do
-      get('/test').should == '<aspect>test</aspect>'
-    end
+  specify "post" do
+    get('/test_post').should == 'test post</aspect>'
+  end
 
-    specify "wrap" do
-      get('/test_wrap').should == '<br />test wrap<br />'
-    end
+  specify "pre and post" do
+    get('/test').should == '<aspect>test</aspect>'
+  end
 
-    specify ":all" do
-      get('/all/test_all_first').should == '<pre>first</pre>'
-      get('/all/test_all_second').should == '<pre>second</pre>'
-    end
+  specify "wrap" do
+    get('/test_wrap').should == '<br />test wrap<br />'
+  end
+
+  specify ":all" do
+    get('/all/test_all_first').should == '<pre>first</pre>'
+    get('/all/test_all_second').should == '<pre>second</pre>'
   end
 end

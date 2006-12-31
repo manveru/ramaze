@@ -42,35 +42,35 @@ class TCFormHelperController < Template::Ramaze
 end
 
 
-ramaze(:mapping => {'/' => TCFormHelperController}) do
-  context "FormHelper" do
-    specify "testrun" do
-      get('/').should == 'FormHelper Index'
-    end
+context "FormHelper" do
+  ramaze(:mapping => {'/' => TCFormHelperController})
 
-    specify "with submit" do
-      get('/form_with_submit').should ==
-        %{title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
-    end
+  specify "testrun" do
+    get('/').should == 'FormHelper Index'
+  end
 
-    specify "without submit" do
-      get('/form_without_submit').should ==
-        %{title: <input type="text" name="title" value="" />}
-    end
+  specify "with submit" do
+    get('/form_with_submit').should ==
+      %{title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
+  end
 
-    specify "with title" do
-      get('/form_with_title').should ==
-        %{Title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
-    end
+  specify "without submit" do
+    get('/form_without_submit').should ==
+      %{title: <input type="text" name="title" value="" />}
+  end
 
-    specify "without title" do
-      get('/form_without_title').should ==
-        %{<input type="text" name="title" value="" /><br />\n<input type="submit" />}
-    end
+  specify "with title" do
+    get('/form_with_title').should ==
+      %{Title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
+  end
 
-    specify "with oid" do
-      get('/form_with_oid').should ==
-        %{title: <input type="text" name="title" value="" /><br />\noid: <input type="text" name="oid" value="0" /><br />\n<input type="submit" />}
-    end
+  specify "without title" do
+    get('/form_without_title').should ==
+      %{<input type="text" name="title" value="" /><br />\n<input type="submit" />}
+  end
+
+  specify "with oid" do
+    get('/form_with_oid').should ==
+      %{title: <input type="text" name="title" value="" /><br />\noid: <input type="text" name="oid" value="0" /><br />\n<input type="submit" />}
   end
 end

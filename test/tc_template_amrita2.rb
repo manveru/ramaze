@@ -17,16 +17,16 @@ class TCTemplateAmritaController < Template::Amrita2
   end
 end
 
-ramaze(:mapping => {'/' => TCTemplateAmritaController}) do 
-  context "Simply calling" do
-    specify "should respond to /data" do
-      get('/data').should == 
+context "Simply calling" do
+  ramaze(:mapping => {'/' => TCTemplateAmritaController})
+
+  specify "should respond to /data" do
+    get('/data').should ==
 %{<html>
   <body>
     <h1>hello world</h1>
     <p>Amrita2 is an HTML template library for Ruby</p>
   </body>
 </html>}
-    end
   end
 end

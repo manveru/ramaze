@@ -36,22 +36,22 @@ class PageWithParams < Ramaze::Element
   end
 end
 
-ramaze(:mapping => {'/' => TCElementController}) do
-  context "Element" do
-    specify "simple request" do
-      get('/').should == "The index"
-    end
+context "Element" do
+  ramaze(:mapping => {'/' => TCElementController})
 
-    specify "with element" do
-      get('/elementy').should == "<wrap> The index </wrap>"
-    end
+  specify "simple request" do
+    get('/').should == "The index"
+  end
 
-    specify "nested element" do
-      get('/nested').should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
-    end
+  specify "with element" do
+    get('/elementy').should == "<wrap> The index </wrap>"
+  end
 
-    specify "with_params" do
-      get('/with_params/one/two').should == {'one' => 'two'}.inspect
-    end
+  specify "nested element" do
+    get('/nested').should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
+  end
+
+  specify "with_params" do
+    get('/with_params/one/two').should == {'one' => 'two'}.inspect
   end
 end

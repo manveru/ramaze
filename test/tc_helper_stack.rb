@@ -16,7 +16,7 @@ class TCStackHelperController < Template::Ramaze
     call :login unless logged_in?
     "logged in"
   end
-  
+
   def bar
     call :login unless logged_in?
     request.params.inspect
@@ -34,26 +34,25 @@ class TCStackHelperController < Template::Ramaze
   end
 end
 
-ramaze(:mapping => {'/' => TCStackHelperController}) do
-  context "StackHelper" do
+context "StackHelper" do
+  ramaze(:mapping => {'/' => TCStackHelperController})
 
-    setup do
-      @ctx = Context.new
-      @ctx.eget.should == {}
-    end
+  setup do
+    @ctx = Context.new
+    @ctx.eget.should == {}
+  end
 
-    specify "indirect login" do
-      @ctx.get('/foo').should == 'logged in'
-      @ctx.eget('/').should == {:logged_in => true, :STACK => []}
-    end
+  specify "indirect login" do
+    @ctx.get('/foo').should == 'logged in'
+    @ctx.eget('/').should == {:logged_in => true, :STACK => []}
+  end
 
-    specify "indirect login with params" do
-      @ctx.eget('/bar?x=y').should == {'x' => 'y'}
-      @ctx.eget('/').should == {:logged_in => true, :STACK => []}
-    end
+  specify "indirect login with params" do
+    @ctx.eget('/bar?x=y').should == {'x' => 'y'}
+    @ctx.eget('/').should == {:logged_in => true, :STACK => []}
+  end
 
-    specify "indirect posting fun" do
-      @ctx.epost('/bar', :x => :y)['x'].should == 'y'
-    end
+  specify "indirect posting fun" do
+    @ctx.epost('/bar', :x => :y)['x'].should == 'y'
   end
 end

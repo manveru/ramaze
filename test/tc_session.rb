@@ -16,29 +16,28 @@ class TCSessionController < Template::Ramaze
   end
 end
 
-ramaze(:mapping => {'/' => TCSessionController}) do
-  context "usual Session" do
+context "usual Session" do
+  ramaze(:mapping => {'/' => TCSessionController})
 
-    ctx = Context.new
+  ctx = Context.new
 
-    specify "Should give me an empty session" do
-      ctx.eget.should == {}
-    end
+  specify "Should give me an empty session" do
+    ctx.eget.should == {}
+  end
 
-    specify "set some session-parameters" do
-      ctx.eget('/set_session/foo/bar').should == {'foo' => 'bar'}
-    end
+  specify "set some session-parameters" do
+    ctx.eget('/set_session/foo/bar').should == {'foo' => 'bar'}
+  end
 
-    specify "inspect session again" do
-      ctx.eget('/').should == {'foo' => 'bar'}
-    end
+  specify "inspect session again" do
+    ctx.eget('/').should == {'foo' => 'bar'}
+  end
 
-    specify "change the session" do
-      ctx.eget('/set_session/foo/foobar').should == {'foo' => 'foobar'}
-    end
+  specify "change the session" do
+    ctx.eget('/set_session/foo/foobar').should == {'foo' => 'foobar'}
+  end
 
-    specify "inspect the changed session" do
-      ctx.eget('/').should == {'foo' => 'foobar'}
-    end
+  specify "inspect the changed session" do
+    ctx.eget('/').should == {'foo' => 'foobar'}
   end
 end

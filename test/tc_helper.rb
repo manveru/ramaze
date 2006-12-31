@@ -21,15 +21,14 @@ class TCRedirectHelperController < Template::Ramaze
   end
 end
 
-ramaze(:mapping => {'/' => TCRedirectHelperController}) do
-  context "RedirectHelper" do
-    specify "testrun" do
-      get('/').should      == "TCRedirectHelperController"
-    end
+context "RedirectHelper" do
+  ramaze(:mapping => {'/' => TCRedirectHelperController})
+  specify "testrun" do
+    get('/').should      == "TCRedirectHelperController"
+  end
 
-    specify "calls" do
-      get('/redirection').should              == "TCRedirectHelperController"
-      get('/double_redirection').should       == "TCRedirectHelperController"
-    end
+  specify "calls" do
+    get('/redirection').should              == "TCRedirectHelperController"
+    get('/double_redirection').should       == "TCRedirectHelperController"
   end
 end
