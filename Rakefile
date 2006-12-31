@@ -99,6 +99,33 @@ task :rdoc do
   sh %{rdoc --op rdoc -d --main doc/README #{dirs}}
 end
 
+task :uncommented do
+  files = Dir[File.join('lib', '**', '*.rb')]
+
+  files.each do |file|
+    puts file
+    lines_till_here = []
+    lines = File.readlines(file).map{|line| line.chomp}
+
+    lines.each do |line|
+      if line =~ /def /
+        indent = line =~ /[^\s]/
+        e = lines_till_here.reverse.find{|l| l =~ /end/}
+        i = lines_till_here.reverse.index(e)
+        lines_till_here = lines_till_here[-(i)..-1] if i
+        unless lines_till_here.any?{|l| l =~ /^\s*#/}
+          puts lines_till_here
+          puts line
+          puts "#{' ' * indent}..."
+          puts e
+        end
+      lines_till_here.clear
+      end
+      lines_till_here << line
+    end
+  end
+end
+
 task :todo do
   files = Dir[File.join(BASEDIR, '{lib,test}', '**/*.rb')]
 
