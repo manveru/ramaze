@@ -23,9 +23,12 @@ module Ramaze
         matches = string.scan(/<([A-Z][a-zA-Z0-9]*)(.*?)?>/)
         matches.each do |(klass, params)|
           next unless klass and string =~ /<\/#{klass}>/
-          string.gsub!(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do
+          string.gsub!(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do |m|
             hash = demunge_passed_variables($1.to_s)
-            k = constant(klass).new($2)
+            k = constant(klass).new($2) rescue nil
+
+            break m unless k and k.respond_to?(:render)
+
             case k.method(:render).arity
             when 0 : k.render
             else
