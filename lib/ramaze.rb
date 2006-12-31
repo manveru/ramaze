@@ -8,14 +8,18 @@ end
 
 $:.unshift Ramaze::BASEDIR
 
-require 'ramaze/snippets'
-rescue_require 'rubygems', 'rubygems failed to load'
-rescue_require 'fastthread', 'fastthread failed to load'
+# not very evil hack to make sure fastthread is required before
+# anything else if it's available...
+# hopefully some day rescue LoadError will work without begin..end
+
+begin; require 'fastthread'; rescue LoadError; end
+
 
 require 'timeout'
 require 'ostruct'
 require 'pp'
 
+require 'ramaze/snippets'
 require 'ramaze/controller'
 require 'ramaze/dispatcher'
 require 'ramaze/error'
@@ -56,16 +60,20 @@ module Ramaze
 
   alias run start
 
-  # A simple and clean way to shutdown Ramaze
-
-  def shutdown
-    info "Shutting down Ramaze"
+  def shutoff
+    info "Power off Ramaze"
     Global.adapter_klass.stop
     (Thread.list - [Thread.main]).each do |thread|
       thread.kill
     end
+  end
+
+  # A simple and clean way to shutdown Ramaze
+
+  def shutdown
+    shutoff
     info "exit"
-    Thread.main.exit
+    exit
   end
 
   # first, search for all the classes that end with 'Controller'
