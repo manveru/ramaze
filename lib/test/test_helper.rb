@@ -41,6 +41,7 @@ include StatelessContext
 # so you can simulate sessions and consecutive requests
 
 class Context
+  attr_accessor :cookie
 
   # initialize the context with an url to obtain your cookie
 

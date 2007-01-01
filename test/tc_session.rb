@@ -40,4 +40,8 @@ context "usual Session" do
   specify "inspect the changed session" do
     ctx.eget('/').should == {'foo' => 'foobar'}
   end
+
+  specify "snooping a bit around" do
+    ctx.cookie.split('=').size.should == 2
+  end
 end
