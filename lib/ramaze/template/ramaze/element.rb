@@ -28,8 +28,9 @@ module Ramaze
             k = constant(klass).new($2) rescue nil
 
             break m unless k and k.respond_to?(:render)
-            break k.render if k.method(:render).arity == 0
-            k.render(hash)
+            k.instance_variable_set("@hash", hash)
+
+            k.render
           end
         end
         string
