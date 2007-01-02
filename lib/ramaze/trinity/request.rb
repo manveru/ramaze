@@ -1,6 +1,8 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'cgi'
+
 module Ramaze
   class Request
     attr_accessor :request
@@ -34,12 +36,11 @@ module Ramaze
     end
 
     def query_parse str
-      tmp = {}
-      str.split('&').each do |pair|
-        key, value = pair.split('=')
-        tmp[key] = value
+      hash = CGI.parse(str.to_s.split('?').last.to_s)
+      hash.each do |key, value|
+        hash[key] = value.first if value.size == 1
       end
-      tmp
+      hash
     end
 
     def [](key)
