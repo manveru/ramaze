@@ -32,7 +32,7 @@ module Ramaze
         control = obj.ann[attribute].control
         control = ClassMap[o.klass] unless control.is_a?(Symbol)
 
-        out << Control.send(control, o)
+        out << Control.send(control, o) unless control == :none
       end
       if options[:submit] == true
         out << %{<input type="submit" />}
