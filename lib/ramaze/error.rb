@@ -67,7 +67,7 @@ module Ramaze
 <html>
   <head>
     <title><%= @title %></title>
-    <link rel="stylesheet" href="css/coderay.css" />
+    <link rel="stylesheet" href="/css/coderay.css" />
     <style type="text/css">
       <!--
       h1.main {
