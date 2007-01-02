@@ -24,15 +24,15 @@ class TCElementController < Template::Ramaze
   end
 end
 
-class Page < Ramaze::Element
+class Page < Element
   def render
     %{ <wrap> #{content} </wrap> }
   end
 end
 
-class PageWithParams < Ramaze::Element
-  def render(hash)
-    hash.inspect
+class PageWithParams < Element
+  def render
+    @hash.inspect
   end
 end
 
