@@ -20,7 +20,7 @@ module Ramaze
     end
 
     def params
-      @get_query.merge(@post_query)
+      (@get_query || {}).merge(@post_query || {})
     end
 
     # this parses stuff like post-requests (very untested)
@@ -30,13 +30,16 @@ module Ramaze
     # it's no POST
 
     def parse_queries
-      @get_query  = query_parse(query_string.to_s) rescue {}
-      @post_query = body.respond_to?(:read) ?
-        query_parse(body.read) : query_parse(body.to_s)
+      if get?
+        @get_query  = query_parse(query_string) rescue {}
+      elsif post?
+        @post_query = query_parse(body.respond_to?(:read) ? body.read : body)
+      end
     end
 
     def query_parse str
-      hash = CGI.parse(str.to_s.split('?').last.to_s)
+      str = CGI.unescape(str).split('?').last.to_s rescue ''
+      hash = CGI.parse(str)
       hash.each do |key, value|
         hash[key] = value.first if value.size == 1
       end
