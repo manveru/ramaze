@@ -77,6 +77,25 @@ task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
 
+task :add_copyright do
+  puts "adding copyright to files that don't have it currently"
+  Dir['{lib,test}/**/*{.rb}'].each do |file|
+    lines = File.readlines(file).map{|l| l.chomp}
+    copyright = [
+      "#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com",
+      "# All files in this distribution are subject to the terms of the Ruby license."
+    ]
+    unless lines.first(2) == copyright
+      puts "fixing #{file}"
+      File.open(file, 'w+') do |f|
+        (copyright + lines).each do |line|
+          f.puts(line)
+        end
+      end
+    end
+  end
+end
+
 task :rcov_dir do
   mkdir_p 'doc/output/tools/rcov/'
 end
