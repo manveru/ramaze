@@ -42,6 +42,9 @@ context "POST" do
   specify "give me back what i gave" do
     post("post_inspect", 'this' => 'post').should == {"this" => "post"}.inspect
   end
+
+  specify "send a file" do
+  end
 end
 
 context "GET" do
