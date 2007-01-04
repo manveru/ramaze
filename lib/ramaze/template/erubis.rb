@@ -34,7 +34,7 @@ module Ramaze::Template
 
         bound = result.is_a?(Binding) ? result : controller.send(:send, :binding)
 
-        controller.send(:transform, template, bound)
+        controller.send(:transform, template, bound, file)
       rescue Object => ex
         puts ex
         Inform.error ex
@@ -44,9 +44,9 @@ module Ramaze::Template
 
     private
 
-
-    def transform string, bound = binding
+    def transform string, bound = binding, file = nil
       eruby = ::Erubis::Eruby.new(string)
+      eruby.init_evaluator(:filename => file) if file
       eruby.result(bound)
     end
   end
