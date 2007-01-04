@@ -38,10 +38,12 @@ module Ramaze
     end
 
     def query_parse str
-      str = CGI.unescape(str).split('?').last.to_s rescue ''
+      str = str.split('?').last.to_s rescue ''
       hash = CGI.parse(str)
-      hash.each do |key, value|
-        hash[key] = value.first if value.size == 1
+      hash.each do |key, values|
+        key = CGI.unescape(key)
+        values = values.map{|v| CGI.unescape(v)}
+        hash[key] = values.size == 1 ? values.first : values
       end
       hash
     end
