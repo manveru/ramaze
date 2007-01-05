@@ -2,6 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 class OpenStruct
   def temp hash
-    self.new(@table.merge(hash))
+    self.class.new(@table.merge(hash))
   end
 end
