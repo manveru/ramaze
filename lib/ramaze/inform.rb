@@ -61,7 +61,7 @@ module Ramaze
     def debug *args
       if inform_mode? :debug, :benchmark
         prefix = Global.inform[:prefix_debug] rescue 'DEBUG'
-        log prefix, args
+        log prefix, *args
       end
     end
 
@@ -76,16 +76,18 @@ module Ramaze
     #     Inform.error ex
     #   end
 
-    def error e
+    def error *errors
       if inform_mode? :live, :stage, :debug, :benchmark
         prefix = Global.inform[:prefix_error] rescue 'ERROR'
-        if e.respond_to?(:message) and e.respond_to?(:backtrace)
-          log prefix, e.message
-          if inform_mode? :stage, :debug, :benchmark
-            log prefix, *e.backtrace[0..15]
+        errors.each do |e|
+          if e.respond_to?(:message) and e.respond_to?(:backtrace)
+            log prefix, e.message
+            if inform_mode? :stage, :debug, :benchmark
+              log prefix, *e.backtrace[0..15]
+            end
+          else
+            log prefix, e
           end
-        else
-          log prefix, e
         end
       end
     end
@@ -97,7 +99,7 @@ module Ramaze
     def info *args
       if inform_mode? :stage, :debug, :benchmark
         prefix = Global.inform[:prefix_info] rescue 'INFO '
-        log prefix, args
+        log prefix, *args
       end
     end
 
@@ -112,15 +114,17 @@ module Ramaze
     private
 
     def timestamp
-      mask = Global.inform[:timestamp] rescue "%Y-%m-%d %H:%M:%S"
+      mask = Global.inform[:timestamp]
       Time.now.strftime(mask)
+    rescue
+      Time.now.strftime("%Y-%m-%d %H:%M:%S")
     end
 
     def inform_mode? *modes
       modes.include?(Global.mode)
     end
 
-    def log prefix, *args
+    def log prefix = '', *args
       args.each do |arg|
         print "[#{timestamp}] #{prefix}  "
         Kernel.puts [arg].flatten.map{|e| e.is_a?(String) ? e : e.inspect}.join(', ')
