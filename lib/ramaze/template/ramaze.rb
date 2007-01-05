@@ -67,17 +67,6 @@ module Ramaze::Template
       pipeline(file_template || ctrl_template)
     end
 
-    # find the file that fits to the action, just ask the
-    # super-method
-
-    def find_template(action)
-      template = super
-      return nil unless template
-
-      info "found template #{template.gsub(Dir.pwd, '.')}"
-      File.read(template)
-    end
-
     # go through the pipeline and call #transform on every object found there,
     # passing the template at that point.
     # the order and contents of the pipeline are determined by an array
@@ -87,11 +76,9 @@ module Ramaze::Template
     def pipeline(template)
       transform_pipeline = trait[:template_pipeline] || ancestors_trait(:transform_pipeline)
 
-      transform_pipeline.each do |tp|
-        template = tp.transform(template, binding)
+      transform_pipeline.inject(template) do |memo, current|
+        current.transform(memo, binding)
       end
-
-      template
     end
 
     # transform a String to a final xhtml
@@ -120,7 +107,7 @@ module Ramaze::Template
     # the variables used in here have the schema _variable_ to make it harder to break stuff
     # however, you should take care.
     # At the time of writing, the variables used are:
-    # _start_heredoc_, _end_heredoc_, _string_, _out_, _bufadd_ and _ivs_
+    # _start_heredoc_, _end_heredoc_, _template_, _out_, _file_ and _bufadd_
     # However, you may reuse _ivs_ if you desperatly need it and just can't live without.
     #
 
@@ -128,6 +115,8 @@ module Ramaze::Template
       _start_heredoc_ = "T" << Digest::SHA1.hexdigest(_template_)
       _start_heredoc_, _end_heredoc_ = "\n<<#{_start_heredoc_}\n", "\n#{_start_heredoc_}\n"
       _bufadd_ = "_out_ << "
+
+      _file_, _template_ = _template_, File.read(_template_) if File.file?(_template_)
 
       _template_.gsub!(/<%\s+(.*?)\s+%>/m,
           "#{_end_heredoc_} \\1; #{_bufadd_} #{_start_heredoc_}")
@@ -147,7 +136,8 @@ module Ramaze::Template
       #  "#{_end_heredoc_} #{_bufadd_} (#{$1}); #{_bufadd_} #{_start_heredoc_}"
       #end
 
-      _out_ = eval("_out_ = []; #{_bufadd_} #{_start_heredoc_} #{_template_} #{_end_heredoc_}; _out_", _binding_)
+      _template_ = [_bufadd_, _start_heredoc_, _template_, _end_heredoc_].join(' ')
+      _out_ = eval(*["_out_ = []; #{_template_}; _out_", _binding_, _file_].compact)
 
       _out_.map! do |line|
         line.to_s.chomp
