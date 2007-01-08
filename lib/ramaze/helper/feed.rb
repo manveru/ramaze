@@ -69,6 +69,30 @@ module Feed
   end
 end
 
+=begin
+atom =
+  Feed::Atom::Feed.new do
+  title "Example Feed"
+  subtitle "A subtitle."
+  link "http://example.org/"
+  id uuid
+
+  author do
+    name "John Doe"
+    email "johndoe@example.com"
+  end
+
+  entry do
+    title "Atom-Powered Robots Run Amok"
+    link "http://example.org/2003/12/13/atom03"
+    summary "Some text."
+    id uuid
+  end
+end
+
+puts atom.to_atom
+=end
+
 module Feed::Atom
   STRFTIME = "%Y-%m-%d"
 
@@ -93,25 +117,6 @@ module Feed
     klass = "RSS_#{version}".split('.').join('_')
     const_get(klass)
   end
-end
-
-module Feed::RSS_2_0
-  STRFTIME = "%Y-%m-%d"
-
-  class RSSBag < Feed::Bag
-    def to_rss
-      [
-        '<?xml version="1.0"?>',
-        '<rss version="2.0">',
-        to_s('  '),
-        '</rss>',
-      ]
-    end
-  end
-
-  class Feed < RSSBag; end
-  class Item < RSSBag; end
-  class Channel < RSSBag; end
 end
 
 =begin
@@ -142,78 +147,21 @@ end
 puts rss.to_rss
 =end
 
-=begin
-<?xml version="1.0"?>
-<rss version="2.0">
-  <channel>
-    <title>Liftoff News</title>
-    <link>http://liftoff.msfc.nasa.gov/</link>
-    <description>Liftoff to Space Exploration.</description>
-    <language>en-us</language>
-    <pubDate>Tue, 10 Jun 2003 04:00:00 GMT</pubDate>
-    <lastBuildDate>Tue, 10 Jun 2003 09:41:01 GMT</lastBuildDate>
-    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
-    <generator>Weblog Editor 2.0</generator>
-    <managingEditor>editor@example.com</managingEditor>
-    <webMaster>webmaster@example.com</webMaster>
+module Feed::RSS_2_0
+  STRFTIME = "%Y-%m-%d"
 
-    <item>
-      <title>Star City</title>
-      <link>http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp</link>
-      <description>How do Americans get ready to work with Russians aboard the
-      International Space Station? They take a crash course in culture, language
-      and protocol at Russia's Star City.</description>
-      <pubDate>Tue, 03 Jun 2003 09:39:21 GMT</pubDate>
-      <guid>http://liftoff.msfc.nasa.gov/2003/06/03.html#item573</guid>
-    </item>
-  </channel>
-</rss>
-=end
-
-=begin
-atom =
-  Feed::Atom::Feed.new do
-  title "Example Feed"
-  subtitle "A subtitle."
-  link "http://example.org/"
-  id uuid
-
-  author do
-    name "John Doe"
-    email "johndoe@example.com"
+  class RSSBag < Feed::Bag
+    def to_rss
+      [
+        '<?xml version="1.0"?>',
+        '<rss version="2.0">',
+        to_s('  '),
+        '</rss>',
+      ]
+    end
   end
 
-  entry do
-    title "Atom-Powered Robots Run Amok"
-    link "http://example.org/2003/12/13/atom03"
-    summary "Some text."
-    id uuid
-  end
+  class Feed < RSSBag; end
+  class Item < RSSBag; end
+  class Channel < RSSBag; end
 end
-
-puts atom.to_atom
-=end
-
-=begin
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-
- <title>Example Feed</title>
- <subtitle>A subtitle.</subtitle>
- <link href="http://example.org/"/>
- <updated>2003-12-13T18:30:02Z</updated>
- <author>
-   <name>John Doe</name>
-   <email>johndoe@example.com</email>
- </author>
- <id>urn:uuid:60a76c80-d399-11d9-b91C-0003939e0af6</id>
-
- <entry>
-   <title>Atom-Powered Robots Run Amok</title>
-   <link href="http://example.org/2003/12/13/atom03"/>
-   <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
-   <updated>2003-12-13T18:30:02Z</updated>
-   <summary>Some text.</summary>
- </entry>
-</feed>
-=end
