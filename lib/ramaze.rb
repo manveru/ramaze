@@ -105,9 +105,8 @@ module Ramaze
   # in every found Controller.
 
   def setup_controllers
-    controller = Global.controllers.find{|c|
-    }
     mapping = {}
+
     Global.controllers.each do |c|
       name = c.to_s.gsub('Controller', '').split('::').last
       if %w[Main Base Index].include?(name)
