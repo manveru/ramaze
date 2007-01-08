@@ -12,7 +12,7 @@ end
 
 module Feed
   class Bag
-    undef_method :id
+    undef_method :id if defined?(id)
 
     def initialize(&block)
       @tags = {}
