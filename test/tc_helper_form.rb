@@ -16,6 +16,10 @@ begin
     is Timestamped
   end
 
+  class EntryDated
+    attr_accessor :date, Date
+  end
+
   Og.start :destroy => true
 
   include Ramaze
@@ -44,7 +48,7 @@ begin
     end
 
     def form_with_oid
-      form Entry, :except => nil
+      form Entry, :deny => nil
     end
   end
 
@@ -57,6 +61,18 @@ begin
 
     def form_with_submit
       form EntryTimestamped
+    end
+  end
+
+  class TCFormHelperEntryDated < Template::Ramaze
+    helper :form
+
+    def index
+      "FormHelper Dated"
+    end
+
+    def form_with_submit
+      form EntryDated
     end
   end
 
@@ -104,11 +120,29 @@ begin
 
         specify "with submit" do
           get('/entry_timestamped/form_with_submit').should ==
-            ''
+            "title: <input type=\"text\" name=\"title\" value=\"\" /><br />\n<input type=\"submit\" />"
+        end
+      end
+
+      context "EntryDated" do
+        Global.mapping['/entry_dated'] = TCFormHelperEntryDated
+
+        specify "testrun" do
+          get('/entry_dated').should ==
+            "FormHelper Dated"
+        end
+
+        specify "with submit" do
+          result = get('/entry_dated/form_with_submit')
+          result.should =~ /date\[day\]/
+          result.should =~ /date\[month\]/
+          result.should =~ /date\[year\]/
+          result.should =~ /<input type="submit" \/>/
         end
       end
     end
   end
 
 rescue LoadError
+  puts "skip #{__FILE__}, no Og installed"
 end
