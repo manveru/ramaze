@@ -59,7 +59,8 @@ module Ramaze::Template
     def render(action, *params)
       begin
         ctrl_template = send(action, *params).to_s
-      rescue
+      rescue => e
+        error e
         Dispatcher.respond_action([action, *params].join('/'))
         ctrl_template = response.out
       end
