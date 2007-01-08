@@ -12,7 +12,7 @@ end
 
 module Feed
   class Bag
-    undef_method :id if defined?(id)
+    undef_method :id if instance_methods.include?(:id)
 
     def initialize(&block)
       @tags = {}
@@ -96,7 +96,7 @@ puts atom.to_atom
 module Feed::Atom
   STRFTIME = "%Y-%m-%d"
 
-  class AtomBag < Feed::Bag
+  class AtomBag < ::Feed::Bag
     def to_atom
       [
         '<?xml version="1.0" encoding="utf-8"?>',
@@ -150,7 +150,7 @@ puts rss.to_rss
 module Feed::RSS_2_0
   STRFTIME = "%Y-%m-%d"
 
-  class RSSBag < Feed::Bag
+  class RSSBag < ::Feed::Bag
     def to_rss
       [
         '<?xml version="1.0"?>',
