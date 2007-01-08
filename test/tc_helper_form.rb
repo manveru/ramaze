@@ -5,20 +5,26 @@ require 'lib/test/test_helper'
 
 begin
   require 'og'
+  require 'glue/timestamped'
 
   class Entry
     attr_accessor :title, String
+  end
+
+  class EntryTimestamped
+    attr_accessor :title, String
+    is Timestamped
   end
 
   Og.start :destroy => true
 
   include Ramaze
 
-  class TCFormHelperController < Template::Ramaze
+  class TCFormHelperEntryController < Template::Ramaze
     helper :form
 
     def index
-    'FormHelper Index'
+      'FormHelper Entry'
     end
 
     def form_with_submit
@@ -42,37 +48,65 @@ begin
     end
   end
 
+  class TCFormHelperEntryTimestampedController < Template::Ramaze
+    helper :form
+
+    def index
+      "FormHelper EntryTimestamped"
+    end
+
+    def form_with_submit
+      form EntryTimestamped
+    end
+  end
 
   context "FormHelper" do
-    ramaze(:mapping => {'/' => TCFormHelperController})
+    ramaze
 
-    specify "testrun" do
-      get('/').should == 'FormHelper Index'
-    end
+    context "Entry" do
+      Global.mapping['/entry'] = TCFormHelperEntryController
 
-    specify "with submit" do
-      get('/form_with_submit').should ==
-      %{title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
-    end
+      specify "testrun" do
+        get('/entry/').should == 'FormHelper Entry'
+      end
 
-    specify "without submit" do
-      get('/form_without_submit').should ==
-      %{title: <input type="text" name="title" value="" />}
-    end
+      specify "with submit" do
+        get('/entry/form_with_submit').should ==
+          %{title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
+      end
 
-    specify "with title" do
-      get('/form_with_title').should ==
-      %{Title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
-    end
+      specify "without submit" do
+        get('/entry/form_without_submit').should ==
+          %{title: <input type="text" name="title" value="" />}
+      end
 
-    specify "without title" do
-      get('/form_without_title').should ==
-      %{<input type="text" name="title" value="" /><br />\n<input type="submit" />}
-    end
+      specify "with title" do
+        get('/entry/form_with_title').should ==
+          %{Title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
+      end
 
-    specify "with oid" do
-      get('/form_with_oid').should ==
-      %{title: <input type="text" name="title" value="" /><br />\noid: <input type="text" name="oid" value="0" /><br />\n<input type="submit" />}
+      specify "without title" do
+        get('/entry/form_without_title').should ==
+          %{<input type="text" name="title" value="" /><br />\n<input type="submit" />}
+      end
+
+      specify "with oid" do
+        get('/entry/form_with_oid').should ==
+          %{title: <input type="text" name="title" value="" /><br />\noid: <input type="text" name="oid" value="0" /><br />\n<input type="submit" />}
+      end
+
+      context "EntryTimestamped" do
+        Global.mapping['/entry_timestamped'] = TCFormHelperEntryTimestampedController
+
+        specify "testrun" do
+          get('/entry_timestamped/').should == "FormHelper EntryTimestamped"
+        end
+
+        specify "with submit" do
+          get('/entry_timestamped/form_with_submit').should ==
+            ''
+        end
+      end
     end
   end
 
