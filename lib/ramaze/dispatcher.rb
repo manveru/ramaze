@@ -126,9 +126,10 @@ module Ramaze
           Global.out_cache ||= {}
 
           key = [controller.__id__, action, params]
-          out = Global.out_cache[key]
-
-          return out if out
+          if out = Global.out_cache[key]
+            Inform.debug("Using Cached version for #{key.inspect}")
+            return out
+          end
 
           Inform.debug "Compiling Action: #{action} #{params.join(', ')}"
           Global.out_cache[key] = controller.handle_request(action, *params)
