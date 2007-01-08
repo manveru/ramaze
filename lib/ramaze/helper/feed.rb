@@ -10,8 +10,6 @@ module Ramaze
   end
 end
 
-require 'uuidtools'
-
 module Feed
   class Bag
     undef_method :id
@@ -35,7 +33,7 @@ module Feed
     end
 
     def uuid
-      "urn:uuid:#{UUID.timestamp_create.to_s}"
+      "unique id"
     end
 
     def each

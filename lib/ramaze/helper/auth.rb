@@ -1,8 +1,10 @@
 module Ramaze
   module AuthHelper
+    PASSWORD = 'passwort'
+
     def login
       if pass = request.params['password']
-        session[:logged_in] = (pass == 'passwort')
+        session[:logged_in] = (pass == PASSWORD)
         redirect R(self)
       else
         %{
