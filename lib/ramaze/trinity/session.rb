@@ -8,6 +8,12 @@ module Ramaze
     SESSION_KEY = '_ramaze_session_id'
     attr_accessor :session
 
+    class << self
+      def current
+        Thread.current[:session]
+      end
+    end
+
     # TODO: introduce some key/value cache...
 
     def initialize request
