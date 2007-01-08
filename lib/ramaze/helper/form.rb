@@ -1,5 +1,6 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
+
 module Ramaze
   module FormHelper
     ClassMap = {
@@ -9,7 +10,7 @@ module Ramaze
     }
 
     def form obj, options = {}
-      default = {:except => /oid/, :submit => true}
+      default = {:deny => /oid/, :submit => true}
       options = default.merge(options)
 
       if obj.respond_to? :serializable_attributes
@@ -22,17 +23,20 @@ module Ramaze
       attributes = obj.serializable_attributes
       out = []
 
-      attributes.each do |attribute|
-        keep = decide_attribute(attribute, options)
-        next unless keep
+      chosen_attributes(attributes, options).each do |attribute|
 
         o = OpenStruct.new :klass => obj.ann[attribute].class,
                            :value => (instance.send(attribute) rescue nil),
                            :name  => attribute,
                            :title => (options.has_key?(attribute) ? options[attribute] : attribute)
 
+        p attribute => o
+
         control = obj.ann[attribute].control
         control = ClassMap[o.klass] unless control.is_a?(Symbol)
+
+        p ClassMap
+        p o.klass => control
 
         out << Control.send(control, o) unless control == :none
       end
@@ -44,12 +48,38 @@ module Ramaze
       out.join("<br />\n")
     end
 
+    # options #=>
+    # { :deny => /oid/ }
+    # { :deny => [/time/, /oid/]}
+
+    def chosen_attributes(attributes, options)
+      attributes.reject do |attribute|
+        begin
+          [options[:deny]].flatten.find do |d|
+            attribute =~ d rescue d == attribute
+          end
+        rescue => ex
+          puts ex
+          true
+        end
+      end
+    end
+
+=begin
     def decide_attribute(attribute, options)
       keep = true
       options.each do |key, values|
         return keep unless keep
         values = [values].flatten
         case key
+        when :show, :include, :cover
+          values.each do |value|
+            if value.kind_of?(Regexp)
+              keep = attribute.to_s.match(value)
+            else
+              keep = attribute == value
+            end
+          end
         when :except, :reject, :exclude
           values.each do |value|
             if value.kind_of?(Regexp)
@@ -62,6 +92,7 @@ module Ramaze
       end
       !!keep
     end
+=end
 
     module Control
       class << self
@@ -83,33 +114,50 @@ module Ramaze
           %{<textarea name="#{o.name}">#{o.value}</textarea>}
         end
 
-        def date o
-          o.value ||= Date.today
-          selects = []
-          selects << date_day(o.temp(:value => o.value.day))
-          selects << date_month(o.temp(:value => o.value.month))
-          selects << date_year(o.temp(:value => o.value.year))
-          selects.join("\n")
-        end
-
         def time o
           o.value ||= Time.now
-          selects = []
-          selects << date_day(    o.temp(:value => o.value.day))
-          selects << date_month(  o.temp(:value => o.value.month))
-          selects << date_year(   o.temp(:value => o.value.year))
-          selects << time_hour(   o.temp(:value => o.value.hour))
-          selects << time_minute( o.temp(:value => o.value.min))
-          selects << time_second( o.temp(:value => o.value.sec))
-          selects.join("\n")
+          [
+            date_day(o.temp(:value => o.value.day)),
+            date_month(o.temp(:value => o.value.month)),
+            date_year(o.temp(:value => o.value.year)),
+            time_hour(o.temp(:value => o.value.hour)),
+            time_minute(o.temp(:value => o.value.min)),
+            time_second(o.temp(:value => o.value.sec)),
+          ].join("\n")
         end
 
-        def time_second(o) select(o.name, (0...60),     o.value) end
-        def time_minute(o) select(o.name, (0...60),     o.value) end
-        def time_hour(o)   select(o.name, (0...24),     o.value) end
-        def date_day(o)    select(o.name, (1..31),      o.value) end
-        def date_month(o)  select(o.name, (1..21),      o.value) end
-        def date_year(o)   select(o.name, (1950..2050), o.value) end
+        def time_second(o)
+          select(o.name + '[sec]', (0...60), o.value)
+        end
+
+        def time_minute(o)
+          select(o.name + '[min]', (0...60), o.value)
+        end
+
+        def time_hour(o)
+          select(o.name + '[hour]', (0...24), o.value)
+        end
+
+        def date o
+          o.value ||= Date.today
+          [
+            date_day(o.temp(:value => o.value.day)),
+            date_month(o.temp(:value => o.value.month)),
+            date_year(o.temp(:value => o.value.year)),
+          ].join("\n")
+        end
+
+        def date_day(o)  
+          select(o.name + '[day]', (1..31), o.value)
+        end
+
+        def date_month(o) 
+          select(o.name + '[month]', (1..21), o.value)
+        end
+
+        def date_year(o)
+          select(o.name + '[year]', (1950..2050), o.value)
+        end
 
         def select name, range, default
           out = %{<select name="#{name}">\n}
