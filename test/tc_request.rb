@@ -57,7 +57,7 @@ context "GET" do
   end
 
   specify "give me back what i gave" do
-    eval(get("/get_inspect?one=two&three=four")).should == {'one' => 'two', 'three' => 'four'}
+    get("/get_inspect?one=two&three=four").should == {'one' => 'two', 'three' => 'four'}.inspect
   end
 
   specify "my ip" do
