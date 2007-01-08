@@ -125,10 +125,8 @@ module Ramaze
     end
 
     def log prefix = '', *args
-      args.each do |arg|
-        print "[#{timestamp}] #{prefix}  "
-        Kernel.puts [arg].flatten.map{|e| e.is_a?(String) ? e : e.inspect}.join(', ')
-      end
+      print "[#{timestamp}] #{prefix}  "
+      Kernel.puts args.flatten.map{|e| e.is_a?(String) ? e : e.inspect}.join(', ')
     end
 
     extend self
