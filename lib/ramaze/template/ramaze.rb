@@ -36,7 +36,10 @@ module Ramaze::Template
 
     # render an action
     # this looks up the file depending on your Global.template_root
-    # and also takes the mapping of the controller in account
+    # and also takes the mapping of the controller in account.
+    # To use the exception of method_missing as flow-control might seem odd,
+    # but it works perfect for method_missing defined in the controller...
+    # otherwise one has to modify respond_to?... maybe add a special take-all method?
     #
     # for example:
     # / => FooController, /main => MainController
@@ -60,7 +63,8 @@ module Ramaze::Template
       begin
         ctrl_template = send(action, *params).to_s
       rescue => e
-        error e
+        error e unless e.message =~ /undefined method `#{Regexp.escape(action)}'/
+
         Dispatcher.respond_action([action, *params].join('/'))
         ctrl_template = response.out
       end
