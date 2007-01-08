@@ -83,7 +83,9 @@ module Ramaze
           if e.respond_to?(:message) and e.respond_to?(:backtrace)
             log prefix, e.message
             if inform_mode? :stage, :debug, :benchmark
-              log prefix, *e.backtrace[0..15]
+              e.backtrace[0..15].each do |bt|
+                log prefix, bt
+              end
             end
           else
             log prefix, e
