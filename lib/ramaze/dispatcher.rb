@@ -101,7 +101,7 @@ module Ramaze
         end
 
         until controller and action or tracks.empty?
-          current = tracks.pop
+          current = Regexp.escape(tracks.pop.to_s)
           paraction = path.gsub(/^#{current}/, '').split('/')
           paraction.delete('')
           if controller = Ramaze::Global.mapping[current]
