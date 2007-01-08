@@ -11,11 +11,11 @@ module Ramaze
       def handle orig_request, orig_response
         create_response(orig_response, orig_request)
       rescue Object => e
+        error e
+
         if Global.error_page
-          error e
           Error::Response.new(e)
         else
-          error e
           Response.new(out = '', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
         end
       end
