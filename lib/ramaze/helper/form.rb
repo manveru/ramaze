@@ -6,6 +6,7 @@ module Ramaze
     ClassMap = {
       String  => :text,
       Time    => :time,
+      Date    => :date,
       Fixnum  => :number,
     }
 
@@ -27,18 +28,13 @@ module Ramaze
 
         o = OpenStruct.new :klass => obj.ann[attribute].class,
                            :value => (instance.send(attribute) rescue nil),
-                           :name  => attribute,
+                           :name  => attribute.to_s,
                            :title => (options.has_key?(attribute) ? options[attribute] : attribute)
-
-        p attribute => o
 
         control = obj.ann[attribute].control
         control = ClassMap[o.klass] unless control.is_a?(Symbol)
 
-        p ClassMap
-        p o.klass => control
-
-        out << Control.send(control, o) unless control == :none
+        out << Control.send(control, o) unless control.nil? or control == :none
       end
       if options[:submit] == true
         out << %{<input type="submit" />}
@@ -54,45 +50,13 @@ module Ramaze
 
     def chosen_attributes(attributes, options)
       attributes.reject do |attribute|
-        begin
-          [options[:deny]].flatten.find do |d|
-            attribute =~ d rescue d == attribute
-          end
-        rescue => ex
-          puts ex
-          true
+        attribute = attribute.to_s
+        [options[:deny]].flatten.find do |d|
+          first_comp = attribute =~ d rescue attribute == d
+          first_comp || attribute == d
         end
       end
     end
-
-=begin
-    def decide_attribute(attribute, options)
-      keep = true
-      options.each do |key, values|
-        return keep unless keep
-        values = [values].flatten
-        case key
-        when :show, :include, :cover
-          values.each do |value|
-            if value.kind_of?(Regexp)
-              keep = attribute.to_s.match(value)
-            else
-              keep = attribute == value
-            end
-          end
-        when :except, :reject, :exclude
-          values.each do |value|
-            if value.kind_of?(Regexp)
-              keep = !attribute.to_s.match(value)
-            else
-              keep = attribute != value
-            end
-          end
-        end
-      end
-      !!keep
-    end
-=end
 
     module Control
       class << self
