@@ -27,7 +27,6 @@ class TCTemplateController < Template::Ramaze
 end
 
 
-
 context "Ramaze" do
   ramaze(:mapping => {'/' => TCTemplateController})
 
@@ -48,35 +47,8 @@ context "Ramaze" do
     get('/internal').should == '4 [] on the table'
     get('/internal/foo').should == '4 ["foo"] on the table'
   end
-end
 
-__END__
-class OtherController < Template::Ramaze
-  def stuff string, vars = {}
-    transform(string, vars)
+  specify "without method" do
+    get('/file_only').should == "This is only the file"
   end
-end
-
-context "simple internal template" do
-  def transform(string, ivs = @ivs)
-    OtherController.new.stuff(string, ivs || {})
-  end
-
-  specify "hello world" do
-    @ivs = {:string => 'World'}
-    transform('Hello, #{@string}').should == 'Hello, World'
-      transform('Hello, <%= @string %>').should == 'Hello, World'
-  end
-
-  specify "plain interpolation" do
-    @ivs = {:string => 'World'}
-    transform("<%= @string %>").should == 'World'
-    transform('#{@string}').should == 'World'
-  end
-
-  specify "internal ruby" do
-    transform('<% a = 1+1 %> #{a}').should == '2'
-    transform('<?r a = 1+1 ?> #{a}').should == '2'
-  end
-end
 end

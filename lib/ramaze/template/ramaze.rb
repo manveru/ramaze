@@ -60,16 +60,26 @@ module Ramaze::Template
     #
 
     def render(action, *params)
-      begin
-        ctrl_template = send(action, *params).to_s
-      rescue => e
-        error e unless e.message =~ /undefined method `#{Regexp.escape(action)}'/
+      alternate = render_template(params.last) if params.size == 1 and action == 'index'
+      file_template = render_template(action, *params)
+      ctrl_template = render_method(action, *params)
 
+      pipeline(alternate || file_template || ctrl_template)
+    end
+
+    def render_method(action, *params)
+      ctrl_template = send(action, *params).to_s
+    rescue => e
+      error e unless e.message =~ /undefined method `#{Regexp.escape(action)}'/
+
+      unless caller.select{|bt| bt[/`render_method'/]}.size > 3
         Dispatcher.respond_action([action, *params].join('/'))
         ctrl_template = response.out
       end
-      file_template = find_template(action)
-      pipeline(file_template || ctrl_template)
+    end
+
+    def render_template(action, *params)
+      find_template(action)
     end
 
     # go through the pipeline and call #transform on every object found there,

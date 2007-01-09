@@ -46,7 +46,8 @@ module Ramaze::Template
 
       extensions = trait[:template_extensions] || ancestors_trait(:template_extensions)
 
-      Dir["#{path}.{#{extensions.join(',')}}"].first
+      possible = Dir["#{path}.{#{extensions.join(',')}}"]
+      possible.first
     end
 
     private
