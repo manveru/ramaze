@@ -77,6 +77,11 @@ task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
 
+task :record do
+  system("darcs", "record")
+  invoke 'changes'
+end
+
 task 'changes-xml' do
   File.open('doc/changes.xml', 'w+') do |f|
     f.print(`darcs changes --xml`)
@@ -89,6 +94,9 @@ task 'changes-text' do
   end
 end
 
+task :changes => ['changes-xml', 'changes-text'] do
+  system("darcs", "changes")
+end
 
 task :add_copyright do
   puts "adding copyright to files that don't have it currently"
