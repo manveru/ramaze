@@ -77,6 +77,19 @@ task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
 
+task 'changes-xml' do
+  File.open('doc/changes.xml', 'w+') do |f|
+    f.print(`darcs changes --xml`)
+  end
+end
+
+task 'changes-text' do
+  File.open('doc/changes.txt', 'w+') do |f|
+    f.print(`darcs changes --human-readable`)
+  end
+end
+
+
 task :add_copyright do
   puts "adding copyright to files that don't have it currently"
   Dir['{lib,test}/**/*{.rb}'].each do |file|
