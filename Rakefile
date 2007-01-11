@@ -79,7 +79,7 @@ end
 
 task :record do
   system("darcs", "record")
-  invoke 'changes'
+  system("rake", "changes")
 end
 
 task 'changes-xml' do
