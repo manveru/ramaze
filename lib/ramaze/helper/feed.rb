@@ -5,7 +5,7 @@ module Ramaze
     end
 
     def atom_feed(&block)
-      Feed::Atom::Feed.new(&block)
+      Feed::Atom.new(&block)
     end
   end
 end
