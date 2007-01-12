@@ -1,6 +1,8 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'set'
+
 module Ramaze
 
   # this method loops through all loaded/required files
@@ -18,9 +20,10 @@ module Ramaze
       this[:task] = :autoreload
 
       cache = {}
+      file_set = Set.new
 
       loop do
-        files = []
+        files = file_set.dup
         $LOADED_FEATURES.map do |file|
           file = file.to_s
           paths = $LOAD_PATH + ['']
