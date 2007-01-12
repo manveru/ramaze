@@ -54,9 +54,7 @@ module Ramaze
     find_controllers
     setup_controllers
 
-    autoreload_interval = Global.autoreload[Global.mode]
-    Ramaze::autoreload(autoreload_interval)
-
+    init_autoreload
     init_adapter
   end
 
@@ -124,6 +122,13 @@ module Ramaze
       controller = constant(controller)
       controller.send(:include, Ramaze::Controller)
     end
+  end
+
+  def init_autoreload
+    return unless Global.autoreload
+
+    autoreload_interval = Global.autoreload[Global.mode]
+    Ramaze::autoreload(autoreload_interval)
   end
 
   # Finally decide wether to use a main-thread to run Ramaze
