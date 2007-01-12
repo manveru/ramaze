@@ -21,6 +21,7 @@ require 'set'
 require 'pp'
 
 require 'ramaze/snippets'
+require 'ramaze/cache'
 require 'ramaze/controller'
 require 'ramaze/dispatcher'
 require 'ramaze/error'
