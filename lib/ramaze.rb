@@ -17,6 +17,7 @@ begin; require 'fastthread'; rescue LoadError; end
 require 'socket'
 require 'timeout'
 require 'ostruct'
+require 'set'
 require 'pp'
 
 require 'ramaze/snippets'
@@ -81,21 +82,16 @@ module Ramaze
   # then we search the classes within Ramaze::Controller as well
 
   def find_controllers
-    Global.controllers ||= []
-    controllers = []
+    Global.controllers ||= Set.new
 
     Module.constants.each do |klass|
-      controllers << constant(klass) if klass =~ /.+?Controller/
+      Global.controllers << constant(klass) if klass =~ /.+?Controller/
     end
 
     Ramaze::Controller.constants.each do |klass|
       klass = constant("Ramaze::Controller::#{klass}")
-      controllers << klass
+      Global.controllers << klass
     end
-
-    Global.controllers << controllers
-    Global.controllers.flatten!
-    Global.controllers.uniq!
 
     info "Found following Controllers: #{Global.controllers.inspect}"
   end
