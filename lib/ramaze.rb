@@ -14,7 +14,7 @@ $:.unshift Ramaze::BASEDIR
 
 begin; require 'fastthread'; rescue LoadError; end
 
-
+require 'socket'
 require 'timeout'
 require 'ostruct'
 require 'pp'
@@ -162,40 +162,34 @@ module Ramaze
 
   def run_adapter
     adapter, host, port = Global.values_at(:adapter, :host, :port)
-    begin
-      require "ramaze/adapter" / adapter.to_s.downcase
-    rescue LoadError => ex
-      puts ex
-      puts "Please make sure you have an adapter called #{adapter}"
-      shutdown
-    end
+    require_adapter(adapter)
+
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
     Global.adapter_klass = adapter_klass
 
     info "Found adapter: #{adapter_klass}"
-    info "we're running: #{host}:#{port}"
+
+    shutdown unless connection_possible(host, port)
+    info "and we're running: #{host}:#{port}"
 
     adapter_klass.start host, port
-  rescue => ex
-    timeouted ||= false
-    join = Thread.list.reject{|t| t == Thread.current or t.dead? or t[:interval]}
-    debug "joining #{join.size} threads and retry"
-    begin
-      Timeout.timeout(5) do
-        join.each{|t| t.join }
-      end
-    rescue Timeout::Error => timeout
-      if timeouted
-        puts "sorry, please shutdown your other app first"
-        shutdown
-        exit
-      end
-      puts timeout
-      puts "will still try to retry"
-      timeouted = timeout
-    end
+  end
 
-    retry
+  def require_adapter adapter
+    require "ramaze/adapter" / adapter.to_s.downcase
+  rescue LoadError => ex
+    puts ex
+    puts "Please make sure you have an adapter called #{adapter}"
+    shutdown
+  end
+
+  def connection_possible host, port
+    Timeout.timeout(1) do
+      TCPServer.open(host, port){ true }
+    end
+  rescue => ex
+    puts ex
+    false
   end
   extend self
 end
