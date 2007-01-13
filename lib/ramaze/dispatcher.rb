@@ -122,17 +122,17 @@ module Ramaze
       end
 
       def handle_controller controller, action, params
-        if Ramaze::Global.cache
-          Global.out_cache ||= {}
+        if Ramaze::Global.cache_all
+          const_set('Cache', Global.cache.new) unless Cache
 
           key = [controller.__id__, action, params]
-          if out = Global.out_cache[key]
+          if out = Cache[key]
             Inform.debug("Using Cached version for #{key.inspect}")
             return out
           end
 
           Inform.debug "Compiling Action: #{action} #{params.join(', ')}"
-          Global.out_cache[key] = controller.handle_request(action, *params)
+          Cache[key] = controller.handle_request(action, *params)
         else
           controller.handle_request(action, *params)
         end
