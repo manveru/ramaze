@@ -98,7 +98,11 @@ task :changes => ['changes-xml', 'changes-text'] do
   system("darcs", "changes")
 end
 
-task :add_copyright do
+task :changelog => :changes do
+  cp 'doc/changes.txt', 'doc/CHANGELOG'
+end
+
+task 'add-copyright' do
   puts "adding copyright to files that don't have it currently"
   Dir['{lib,test}/**/*{.rb}'].each do |file|
     lines = File.readlines(file).map{|l| l.chomp}
