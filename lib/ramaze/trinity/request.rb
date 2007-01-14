@@ -31,9 +31,17 @@ module Ramaze
 
     def parse_queries
       if get?
-        @get_query  = query_parse(query_string) rescue {}
+        @get_query = {}
+        get_query  = query_parse(query_string) rescue {}
+        get_query.each do |key, value|
+          @get_query[CGI.unescape(key)] = CGI.unescape(value)
+        end
       elsif post?
-        @post_query = query_parse(body.respond_to?(:read) ? body.read : body)
+        @post_query = {}
+        post_query = query_parse(body.respond_to?(:read) ? body.read : body)
+        post_query.each do |key, value|
+          @post_query[CGI.unescape(key)] = CGI.unescape(value)
+        end
       end
     end
 

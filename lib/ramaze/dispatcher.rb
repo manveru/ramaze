@@ -102,7 +102,7 @@ module Ramaze
 
         until controller and action or tracks.empty?
           current = Regexp.escape(tracks.pop.to_s)
-          paraction = path.gsub(/^#{current}/, '').split('/')
+          paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
           paraction.delete('')
           if controller = Ramaze::Global.mapping[current]
             if controller.trait[:actionless] or controller.superclass.trait[:actionless]
