@@ -8,26 +8,6 @@ module Ramaze
       @cache = YAML::Store.new(file)
     end
 
-    def [](key)
-      transaction do |y|
-        y[key]
-      end
-    end
-
-    def []=(key, value)
-      transaction do |y|
-        y[key] = value
-      end
-    end
-
-    def delete(*keys)
-      transaction do |y|
-        keys.each do |k|
-          y.delete(k)
-        end
-      end
-    end
-
     def values_at(*keys)
       transaction do |y|
         keys.map{|k| y[k]}
@@ -36,6 +16,12 @@ module Ramaze
 
     def transaction(&block)
       @cache.transaction(&block)
+    end
+
+    def method_missing(*args, &block)
+      transaction do |y|
+        y.send(*args, &block)
+      end
     end
   end
 end
