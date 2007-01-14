@@ -131,6 +131,8 @@ module Spec::Runner::ContextEval::ModuleMethods
       :adapter    => :webrick,
       :run_loose  => true,
       :error_page => false,
+      :port       => 7007,
+      :host       => '127.0.0.1',
     }
 
     Ramaze.start(options.merge(hash))
