@@ -22,6 +22,10 @@ module Ramaze
         { 'Content-Type' => 'text/html' }
       end
 
+      def content_type
+        head['Content-Type']
+      end
+
       def code
         STATUS_CODE[:internal_server_error]
       end
