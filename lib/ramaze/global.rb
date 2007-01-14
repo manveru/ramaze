@@ -26,15 +26,16 @@ module Ramaze
     #       Global.shutdown_trap #=> 'SIGINT'
 
     DEFAULT = {
+      :adapter        => :webrick,
+      :autoreload     => true,
+      :cache          => MemoryCache,
+      :cache_all      => false,
+      :error_page     => true,
       :host           => '0.0.0.0',
       :port           => 7000,
       :mode           => :debug,
-      :tidy           => false,
-      :cache          => MemoryCache,
-      :cache_all      => false,
-      :adapter        => :webrick,
       :run_loose      => false,
-      :error_page     => true,
+      :tidy           => false,
       :template_root  => 'template',
 
       :autoreload => {
