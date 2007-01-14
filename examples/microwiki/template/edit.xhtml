@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title>MicroWiki Edit #{@page}</title>
+  </head>
+    #{ link(R(self), :title => "&lt; Home") }
+  <body>
+    <h1>Edit #{@page}</h1>
+    <form method="POST" action="#{R(self, :save)}">
+      <input type="hidden" name="page" value="#{CGI.escape(@page)}" />
+      <textarea name="text" style="width: 90%; height: 20em;">#{@text}</textarea>
+      <input type="submit" />
+    </form>
+  </body>
+</html>

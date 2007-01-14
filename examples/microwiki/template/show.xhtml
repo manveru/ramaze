@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>MicroWiki #{@page}</title>
+  </head>
+    #{ link(R(self), :title => "&lt; Home") unless @page == "Home" }
+  <body>
+    <h1>#{@page}</h1>
+    <?r if @text.empty? ?>
+      #{ link(R(self, :edit, CGI.escape(@page)), :title => "Create #{@page}?") }
+    <?r else ?>
+    <div>
+      #{ link(R(self, :edit, CGI.escape(@page)), :title => "Edit #{@page}") }
+      #{@text}
+    </div>
+    <?r end ?>
+  </body>
+</html>
