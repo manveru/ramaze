@@ -61,7 +61,7 @@ module Ramaze
   alias run start
 
   def shutoff
-    info "Power off Ramaze"
+    info "Killing the Threads"
     Global.adapter_klass.stop
     (Thread.list - [Thread.main]).each do |thread|
       thread.kill
@@ -71,9 +71,12 @@ module Ramaze
   # A simple and clean way to shutdown Ramaze
 
   def shutdown
-    shutoff
-    info "exit"
-    exit
+    Timeout.timeout(2){ shutoff }
+  rescue => ex
+    puts ex
+  ensure
+    info "Shutdown Ramaze (it's save to kill me now if i hang)"
+    Kernel.exit
   end
 
   # first, search for all the classes that end with 'Controller'
@@ -152,15 +155,18 @@ module Ramaze
       trap(Global.shutdown_trap){ shutdown } rescue nil
     end
 
-    sleep 0.1 until Global.running_adapter
+    Timeout.timeout(3) do
+      sleep 0.1 until Global.running_adapter
+    end
     Global.running_adapter.join unless Global.run_loose
+  rescue Object => ex
+    puts ex.message
+    exit
   end
 
   # This first picks the right adapter according to Global.adapter
   # It also looks for Global.host and Global.port and passes it on
   # to the class-method of the adapter ::start
-  # It rescues StandardException and does retry after joining all
-  # still running threads (except for the current thread)
 
   def run_adapter
     adapter, host, port = Global.values_at(:adapter, :host, :port)
@@ -190,7 +196,7 @@ module Ramaze
       TCPServer.open(host, port){ true }
     end
   rescue => ex
-    puts ex
+    puts ex.message
     false
   end
   extend self
