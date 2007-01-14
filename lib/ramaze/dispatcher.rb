@@ -139,9 +139,10 @@ module Ramaze
       end
 
       def setup_environment orig_response, orig_request
-        Thread.current[:response] = Response.new('', STATUS_CODE[:ok], 'Content-Type' => 'text/html')
-        Thread.current[:request]  = Request.new(orig_request)
-        Thread.current[:session]  = Session.new(request)
+        this = Thread.current
+        this[:response] = Response.new('', STATUS_CODE[:ok], 'Content-Type' => 'text/html')
+        this[:request]  = Request.new(orig_request)
+        this[:session]  = Session.new(request)
       end
     end
   end
