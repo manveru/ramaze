@@ -127,15 +127,17 @@ end
 module Spec::Runner::ContextEval::ModuleMethods
   def ramaze_start hash = {}
     options = {
-      :mode       => :debug,
-      :adapter    => :webrick,
-      :run_loose  => true,
-      :error_page => false,
-      :port       => 7007,
-      :host       => '127.0.0.1',
-    }
+      :mode         => :debug,
+      :adapter      => :webrick,
+      :run_loose    => true,
+      :error_page   => false,
+      :port         => 7007,
+      :host         => '127.0.0.1',
+      :force        => true,
+      :force_setup  => true,
+    }.merge(hash)
 
-    Ramaze.start(options.merge(hash))
+    Ramaze.start(options)
   end
 
   def ramaze_teardown

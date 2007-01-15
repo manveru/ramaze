@@ -78,7 +78,7 @@ begin
     [ '--copyright',      '-c', GetoptLong::NO_ARGUMENT       ],
   ]
 
-  options = {}
+  options = {:force_setup => true}
 
   opts.each do |opt, arg|
     p opt => arg

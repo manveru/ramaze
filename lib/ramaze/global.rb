@@ -53,11 +53,13 @@ module Ramaze
       }
     }
 
-    def setup hash = {}
+    def setup hash = {}, &block
+      Global.instance_eval(&block) if block_given?
       table.merge!(hash)
     end
 
-    def update hash = {}
+    def update hash = {}, &block
+      Global.instance_eval(&block) if block_given?
       table.merge!(hash.merge(table))
     end
 

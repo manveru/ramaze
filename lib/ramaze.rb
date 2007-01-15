@@ -42,14 +42,40 @@ module Ramaze
   # additionally it starts up the autoreload , which reloads all the stuff every
   # second in case it has changed.
   # please note that Ramaze will catch SIGINT (^C) and kill the running adapter
-  # at that event, this provides a nice and clean way to shut down. shutdown
+  # at that event, this provides a nice and clean way to shut down.
+  #
+  # The start might be a bit odd, but i think it is a quite decent hack, what
+  # it does is following.
+  # It looks up who called the start-method, and if the method that called it
+  # is not the file that was run first, it will return without doing anything
+  # The use of this is:
+  # If you start ramaze over the CLI, using ruby main.rb
+  # and the start-method is called in your main.rb, it will run, using the
+  # configuration from you without any modifcation (just with the defaults)
+  # In case you start it via the ramaze-command however, you may pass options
+  # that could be overwritten by your application, but you just want to use
+  # these options temporarily - in this case the start-call from your main.rb
+  # will simply be ignored, the start from bin/ramaze is invoked which in turn
+  # sets the options you passed on the commandline.
+  # If you pertout want to run with bin/ramaze, pass commandline-options _and_
+  # use the start-method your own application, use start(:force => true)
+  # This also applies if your start is in another file than the file you
+  # called first, therefor giving you the option to layout your application
+  # as it pleases you.
 
   def start options = {}
+    starter = caller[0].split(':').first
+    return unless $0 == starter or options.delete(:force)
+
     info "Starting up Ramaze (Version #{VERSION})"
 
     Thread.abort_on_exception = true
 
-    Global.setup(options)
+    if options.delete(:force_setup)
+      Global.setup(options)
+    else
+      Global.update(options)
+    end
 
     find_controllers
     setup_controllers
@@ -60,6 +86,14 @@ module Ramaze
 
   alias run start
 
+  # same as start(:force => true)
+
+  def force_start(options = {})
+    start options.merge(:force => true)
+  end
+
+  alias force_run force_start
+
   def shutoff
     info "Killing the Threads"
     Global.adapter_klass.stop
@@ -67,6 +101,8 @@ module Ramaze
       thread.kill
     end
   end
+
+  alias exit shutoff
 
   # A simple and clean way to shutdown Ramaze
 
