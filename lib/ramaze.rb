@@ -95,7 +95,7 @@ module Ramaze
       Global.controllers << klass
     end
 
-    info "Found following Controllers: #{Global.controllers.inspect}"
+    debug "Found following Controllers: #{Global.controllers.inspect}"
   end
 
   # Setup the Controllers
@@ -160,8 +160,8 @@ module Ramaze
     end
     Global.running_adapter.join unless Global.run_loose
   rescue Object => ex
-    puts ex.message
-    exit
+    debug ex.message unless ex.is_a? Interrupt
+    shutdown
   end
 
   # This first picks the right adapter according to Global.adapter
