@@ -199,3 +199,8 @@ task :todo do
     end
   end
 end
+
+task :patchsize do
+  size = `darcs changes`.split("\n").reject{|l| l =~ /^\s/ or l.empty?}.size
+  puts "currently we got #{size} patches"
+end
