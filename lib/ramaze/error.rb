@@ -66,7 +66,7 @@ module Ramaze
         @title = title
         @coderay = Object.constants.include?('CodeRay')
 
-        template = 
+        template =
           <<-HEREDOC
 <html>
   <head>

@@ -44,7 +44,7 @@ module Ramaze
 
     def parse request
       cookie = pre_parse(request)
-      cookie.split('; ').inject({}) do |s,v| 
+      cookie.split('; ').inject({}) do |s,v|
         key, value = v.split('=')
         s.merge key.strip => value
       end

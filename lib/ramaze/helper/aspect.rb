@@ -133,7 +133,7 @@ module Ramaze
     # enwrap(:post, :index, :my_post_method, :except => :bar
 
     def enwrap(kind, key, meths, hash = {})
-      wrapping = 
+      wrapping =
       if key == :all
         instance_methods(false).map{|im| im.to_sym}
       else

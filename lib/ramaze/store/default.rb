@@ -18,7 +18,7 @@ module Ramaze
           @db.send(meth, *args, &block)
         end
       end
-      
+
       def [](key)
         @db.transaction do
           @db[key]

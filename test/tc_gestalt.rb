@@ -26,21 +26,21 @@ context "Gestalt" do
     gestalt{ p do
       div do
         ol do
-          li 
-        end 
-      end 
+          li
+        end
+      end
     end
     }.should == '<p><div><ol><li /></ol></div></p>'
   end
 
   specify "deep nested tags with repetition" do
     gestalt{ p do
-      div do 
+      div do
         ol do
           li
           li
         end
-        ol do 
+        ol do
           li
           li
         end

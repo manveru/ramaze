@@ -111,11 +111,11 @@ module Ramaze
           ].join("\n")
         end
 
-        def date_day(o)  
+        def date_day(o)
           select(o.name + '[day]', (1..31), o.value)
         end
 
-        def date_month(o) 
+        def date_month(o)
           select(o.name + '[month]', (1..21), o.value)
         end
 

@@ -44,7 +44,7 @@ context "Markaby" do
   end
 
   specify "should not respond to mab" do
-    lambda{get('/mab')}.should_raise 
+    lambda{get('/mab')}.should_raise
   end
 
   specify "simple" do

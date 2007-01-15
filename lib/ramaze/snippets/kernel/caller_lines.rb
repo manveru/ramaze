@@ -17,7 +17,7 @@ module Kernel
   #   [
   #     line = [
   #              lineno           = Integer,
-  #              line             = String, 
+  #              line             = String,
   #              is_searched_line = (lineno == initial_lineno)
   #            ],
   #     ...,
