@@ -74,6 +74,12 @@ module Ramaze
     def values_at(*keys)
       table.values_at(*keys)
     end
+
+    def each
+      table.each do |e|
+        yield(e)
+      end
+    end
   end
 
   Thread.current[:global] = GlobalStruct.new(GlobalStruct::DEFAULT)
