@@ -204,3 +204,25 @@ task :patchsize do
   size = `darcs changes`.split("\n").reject{|l| l =~ /^\s/ or l.empty?}.size
   puts "currently we got #{size} patches"
 end
+
+task 'fix-end-spaces' do
+  Dir['{lib,test}/**/*.rb'].each do |file|
+    lines = File.readlines(file)
+    new = lines.dup
+    lines.each_with_index do |line, i|
+      if line =~ /\s+\n/
+        puts "fixing #{file}:#{i + 1}"
+        p line
+        new[i] = line.rstrip
+      end
+    end
+
+    unless new == lines
+      File.open(file, 'w+') do |f|
+        new.each do |line|
+          f.puts(line)
+        end
+      end
+    end
+  end
+end
