@@ -77,7 +77,7 @@ task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
 
-task :record do
+task :record => ['fix-end-spaces', 'add-copyright'] do
   system("darcs", "record")
   system("rake", "changes")
 end
