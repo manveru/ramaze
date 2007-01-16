@@ -205,7 +205,7 @@ module Ramaze
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
     Global.adapter_klass = adapter_klass
 
-    info "Found adapter: #{adapter_klass}"
+    info "Found adapter: #{adapter_klass}, attempting to run on #{host}:#{port} ..."
 
     shutdown unless connection_possible(host, port)
     info "and we're running: #{host}:#{port}"

@@ -30,15 +30,15 @@ Dir['test/**/tc_*.rb'].each do |test_case|
       specs    += s
       failures += f
 
-      out = "[#{s.to_s.rjust(3)} specs | "
+      message = "[#{s.to_s.rjust(3)} specs | "
 
       if f.nonzero?
         problematic[test_case] = out
-        out << "#{f.to_s.rjust(3)} failed ]"
-        puts out.red
+        message << "#{f.to_s.rjust(3)} failed ]"
+        puts message.red
       else
-        out << "all passed ]"
-        puts out.green
+        message << "all passed ]"
+        puts message.green
       end
     end
   end
