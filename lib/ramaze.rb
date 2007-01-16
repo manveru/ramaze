@@ -8,12 +8,6 @@ end
 
 $:.unshift Ramaze::BASEDIR
 
-# not very evil hack to make sure fastthread is required before
-# anything else if it's available...
-# hopefully some day rescue LoadError will work without begin..end
-
-begin; require 'fastthread'; rescue LoadError; end
-
 require 'socket'
 require 'timeout'
 require 'ostruct'
