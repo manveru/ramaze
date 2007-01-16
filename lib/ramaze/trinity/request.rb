@@ -2,6 +2,8 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'cgi'
+require 'tmpdir'
+require 'digest/md5'
 
 module Ramaze
   class Request
@@ -38,9 +40,17 @@ module Ramaze
         end
       elsif post?
         @post_query = {}
-        post_query = query_parse(body.respond_to?(:read) ? body.read : body)
-        post_query.each do |key, value|
-          @post_query[CGI.unescape(key)] = CGI.unescape(value)
+
+        type, boundary = content_type.split(';')
+
+        if type.downcase == 'multipart/form-data' and not boundary.empty?
+          parse_multipart(body, boundary.split('=').last)
+        else
+
+          post_query = query_parse(body.respond_to?(:read) ? body.read : body)
+          post_query.each do |key, value|
+            @post_query[CGI.unescape(key)] = CGI.unescape(value)
+          end
         end
       end
     end
@@ -54,6 +64,35 @@ module Ramaze
         hash[key] = values.size == 1 ? values.first : values
       end
       hash
+    end
+
+    def parse_multipart(body, boundary)
+      text = body.read
+      text.split("--" << boundary).each do |chunk|
+        header = chunk.split("\r\n\r\n").first
+        next if (!header or !body) || (header.strip.empty? or chunk.strip.empty?)
+        head = parse_multipart_head(header)
+        next if head.empty?
+        chunk = chunk[(header.size + 4)..-3]
+        hash = Digest::MD5.hexdigest([head['name'], chunk.size, head.hash].inspect)
+        p :hash => hash
+        filename = File.join(Dir.tmpdir, hash)
+        p :filename => filename
+        File.open(filename, "w+") do |file|
+          file.print(chunk)
+        end
+        @post_query[head['name']] = File.open(filename)
+      end
+      body.rewind
+    end
+
+    def parse_multipart_head(string)
+      p :string => string
+      string.gsub("\r\n", ";").split(';').inject({}) do |sum, param|
+        key, value = param.strip.split('=')
+        sum[key] = value[1..-2] if key and value
+        sum
+      end
     end
 
     def [](key)
