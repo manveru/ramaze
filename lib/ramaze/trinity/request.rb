@@ -22,7 +22,11 @@ module Ramaze
     end
 
     def params
-      (@get_query || {}).merge(@post_query || {})
+      @params ||= [
+        @get_query, @post_query, @put_query, @delete_query
+      ].inject({}) do |sum, hash|
+        sum.merge(hash)
+      end
     end
 
     # this parses stuff like post-requests (very untested)
@@ -32,27 +36,46 @@ module Ramaze
     # it's no POST
 
     def parse_queries
-      if get?
-        @get_query = {}
-        get_query  = query_parse(query_string) rescue {}
-        get_query.each do |key, value|
-          @get_query[CGI.unescape(key)] = CGI.unescape(value)
-        end
-      elsif post?
-        @post_query = {}
+      @get_query = @post_query = @delete_query = @put_query = {}
 
-        type, boundary = content_type.split(';')
+      case request_method
+      when 'GET'    : process_get
+      when 'POST'   : process_post
+      when 'PUT'    : process_put
+      when 'DELETE' : process_delete
+      end
+    end
 
-        if type.downcase == 'multipart/form-data' and not boundary.empty?
-          parse_multipart(body, boundary.split('=').last)
-        else
+    def process_post
+      type, boundary = content_type.split(';')
 
-          post_query = query_parse(body.respond_to?(:read) ? body.read : body)
-          post_query.each do |key, value|
-            @post_query[CGI.unescape(key)] = CGI.unescape(value)
-          end
+      if type.downcase == 'multipart/form-data' and not boundary.empty?
+        parse_multipart(body, boundary.split('=').last)
+      else
+        post_query = query_parse(body.respond_to?(:read) ? body.read : body)
+        post_query.each do |key, value|
+          @post_query[CGI.unescape(key)] = CGI.unescape(value)
         end
       end
+    end
+
+    def process_get
+      get_query = query_parse(query_string) rescue {}
+      get_query.each do |key, value|
+        @get_query[CGI.unescape(key)] = CGI.unescape(value)
+      end
+    end
+
+    def process_delete
+      raise "Implement me"
+    end
+
+    def process_put
+      put_query = query_parse(query_string) rescue {}
+      put_query.each do |key, value|
+        @put_query[CGI.unescape(key)] = CGI.unescape(value)
+      end
+      @put_query['PUT'] = body.read
     end
 
     def query_parse str
@@ -75,9 +98,7 @@ module Ramaze
         next if head.empty?
         chunk = chunk[(header.size + 4)..-3]
         hash = Digest::MD5.hexdigest([head['name'], chunk.size, head.hash].inspect)
-        p :hash => hash
         filename = File.join(Dir.tmpdir, hash)
-        p :filename => filename
         File.open(filename, "w+") do |file|
           file.print(chunk)
         end
@@ -87,7 +108,6 @@ module Ramaze
     end
 
     def parse_multipart_head(string)
-      p :string => string
       string.gsub("\r\n", ";").split(';').inject({}) do |sum, param|
         key, value = param.strip.split('=')
         sum[key] = value[1..-2] if key and value
