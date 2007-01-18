@@ -20,6 +20,16 @@ begin
     attr_accessor :date, Date
   end
 
+  # catches all the stuff Og sends to Logger,
+  # i wished on could mute it otherwise
+
+  gulp_class = Class.new do
+    def method_missing(*all)
+      p(all)
+    end
+  end
+  Logger.send(:class_variable_set, "@@global_logger", gulp_class.new)
+
   Og.start :destroy => true
 
   include Ramaze
