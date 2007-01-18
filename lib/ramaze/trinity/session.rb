@@ -27,7 +27,9 @@ module Ramaze
     end
 
     def sessions
-      Ramaze.const_set('SessionCache', Global.cache.new) unless SessionCache
+      silently do
+        Ramaze.const_set('SessionCache', Global.cache.new) unless SessionCache
+      end
 
       SessionCache
     end
