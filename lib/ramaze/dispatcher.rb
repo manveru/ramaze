@@ -57,7 +57,7 @@ module Ramaze
         info :resolve_action, controller, paraction
 
         meths =
-          (controller.ancestors - [Kernel, Object]).inject do |sum, klass|
+          (controller.ancestors - [Kernel, Object]).inject([]) do |sum, klass|
             sum | (klass.is_a?(Module) ? klass.instance_methods(false) : sum)
           end
 
