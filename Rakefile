@@ -95,7 +95,7 @@ task 'changes-text' do
 end
 
 task :changes => ['changes-xml', 'changes-text'] do
-  system("darcs", "changes")
+  puts(`darcs changes`.split("\n").first(25))
 end
 
 task :changelog => :changes do
