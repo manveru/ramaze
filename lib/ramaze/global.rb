@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ostruct'
+require 'set'
 
 module Ramaze
   class GlobalStruct < OpenStruct
@@ -37,6 +38,7 @@ module Ramaze
       :run_loose      => false,
       :tidy           => false,
       :template_root  => 'template',
+      :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
 
       :autoreload => {
         :benchmark  => 5,

@@ -122,20 +122,32 @@ module Ramaze
       end
 
       def handle_controller controller, action, params
-        if Ramaze::Global.cache_all
-          const_set('Cache', Global.cache.new) unless Cache
-
-          key = [controller.__id__, action, params]
-          if out = Cache[key]
-            Inform.debug("Using Cached version for #{key.inspect}")
-            return out
-          end
-
-          Inform.debug "Compiling Action: #{action} #{params.join(', ')}"
-          Cache[key] = controller.handle_request(action, *params)
+        if Global.cache_all or Global.cache_actions[controller].include?(action.to_s)
+          handle_cached_controller(controller, action, *params)
         else
-          controller.handle_request(action, *params)
+          handle_uncached_controller(controller, action, *params)
         end
+      end
+
+      def handle_uncached_controller controller, action, *params
+        controller.handle_request(action, *params)
+      end
+
+      def handle_cached_controller controller, action, *params
+        Global.cached_actions ||= Global.cache.new
+
+        key = [action, params].inspect
+
+        Global.cached_actions[controller] ||= {key => nil}
+
+        if out = Global.cached_actions[controller][key]
+          Inform.debug("Using Cached version for #{key.inspect}")
+          return out
+        end
+
+        Inform.debug "Compiling Action: #{action} #{params.join(', ')}"
+        Global.cached_actions[controller][key] =
+          handle_uncached_controller(controller, action, *params)
       end
 
       def setup_environment orig_response, orig_request

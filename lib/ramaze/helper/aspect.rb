@@ -171,11 +171,15 @@ module Ramaze
 
     def new_render(action, *params)
       post, pre = resolve_aspect(action).values_at(:post, :pre)
-      [
-      (old_render(pre, *params) if pre),
-      old_render(action, *params),
-      (old_render(post, *params) if post),
-      ].join
+
+      pre_content = old_render(pre, *params) if pre
+
+      unless (pre_content.delete(:skip_next_aspects) rescue false)
+        content = old_render(action, *params)
+        post_content = old_render(post, *params) if post
+      end
+
+      [pre_content, content, post_content].join
     end
   end
 end
