@@ -10,10 +10,6 @@ module Ramaze
       @@cache ||= Global.cache.new
     end
 
-    def invalidate_cache(key = nil)
-      ''
-    end
-
     def uncache action
       Global.cached_actions[self.class].each do |e|
         e.include?(action.to_s)
