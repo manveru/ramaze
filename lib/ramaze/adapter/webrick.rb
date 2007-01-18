@@ -46,6 +46,7 @@ module Ramaze::Adapter
       def start host, port
         # TODO
         # - implement graceful shutdown
+        # - implement PUT/DELETE
 
         handler = lambda do |request, response|
           self.new.process(request, response)

@@ -49,10 +49,6 @@ module Ramaze::Template
     # otherwise nothing happens
     #
     # TODO:
-    #   - the extensions should be user-defineable, add a Global for it
-    #   - add AOP capabilities
-    #     pre ;index, :on => [:foo, :bar]
-    #     post :index, :on => :all, :except => [:foo, :bar]
     #   - maybe add some way to define a custom template-file per action via traits
     #     trait :methodname_template => :foo
     #     would point to the template-file of action :foo - template_root/foo.ext
