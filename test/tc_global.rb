@@ -30,15 +30,17 @@ context "Global" do
   end
 
   specify "getting thready" do
+    Global[:i] = 0
+    Thread.main[:i] = 0
+
     (1..10).each do |i|
       Thread.new do
-        sleep i / 10.0
-        Global[:i] = i
-        Thread.main[:i] = i
+        Global[:i] += i
+        Thread.main[:i] += i
       end
     end
-    sleep 0.5
+
     Global[:i].should == Thread.main[:i]
-    Global[:i].should == 5
+    Global[:i].should == 55
   end
 end
