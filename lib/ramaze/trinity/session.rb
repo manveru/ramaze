@@ -14,8 +14,6 @@ module Ramaze
       end
     end
 
-    # TODO: introduce some key/value cache...
-
     def initialize request
       @session_id = parse(request)[SESSION_KEY]
     end
@@ -29,7 +27,9 @@ module Ramaze
     end
 
     def sessions
-      @@sessions ||= {}
+      Ramaze.const_set('SessionCache', Global.cache.new) unless SessionCache
+
+      SessionCache
     end
 
     def pre_parse request

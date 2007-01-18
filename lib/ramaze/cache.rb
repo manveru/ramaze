@@ -7,4 +7,5 @@ module Ramaze
   autoload :MemcachedCache, "ramaze/cache/memcached.rb"
 
   Cache = nil
+  SessionCache = nil
 end

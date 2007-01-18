@@ -34,7 +34,7 @@ end
 
 context "Request" do
   context "POST" do
-    ramaze( :adapter => :webrick, :mapping => {'/' => TCRequestController} )
+    ramaze( :adapter => :mongrel, :mapping => {'/' => TCRequestController} )
 
     specify "give me the result of request.post?" do
       post("is_post").should == 'true'
