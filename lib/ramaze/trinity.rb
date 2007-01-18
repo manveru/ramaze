@@ -7,6 +7,8 @@ require 'ramaze/trinity/session'
 
 module Ramaze
   module Trinity
+    private
+
     def request
       Thread.current[:request]
     end
