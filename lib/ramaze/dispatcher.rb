@@ -56,7 +56,10 @@ module Ramaze
       def resolve_action controller, paraction
         info :resolve_action, controller, paraction
 
-        meths = controller.instance_methods(false)
+        meths =
+          (controller.ancestors - [Kernel, Object]).inject do |sum, klass|
+            sum | (klass.is_a?(Module) ? klass.instance_methods(false) : sum)
+          end
 
         track = paraction.dup
         tracks = []
