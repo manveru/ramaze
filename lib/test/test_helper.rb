@@ -18,6 +18,8 @@ require 'net/http'
 # Spec::Runner
 
 module StatelessContext
+  # just GET an [url]
+
   def get url = ''
     url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
     Timeout.timeout(1) do
@@ -26,6 +28,8 @@ module StatelessContext
       result
     end
   end
+
+  # POST to an url the given params
 
   def post url = '', params = {}
     url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
@@ -125,6 +129,10 @@ class Context
 end
 
 module Spec::Runner::ContextEval::ModuleMethods
+
+  # start up ramaze with a given hash of options
+  # that will be merged with the default-options.
+
   def ramaze_start hash = {}
     options = {
       :mode         => :debug,
@@ -140,11 +148,12 @@ module Spec::Runner::ContextEval::ModuleMethods
     Ramaze.start(options)
   end
 
+  alias ramaze ramaze_start
+
+  # shutdown ramaze, this is not implemeted yet
+  # (and might never be due to limited possibilites)
+
   def ramaze_teardown
     #Ramaze.teardown
-  end
-
-  def ramaze(hash = {})
-    ramaze_start(hash)
   end
 end
