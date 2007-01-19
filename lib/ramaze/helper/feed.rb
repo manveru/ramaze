@@ -36,6 +36,24 @@ module ReFeed
             klass::XML_ATTRIBUTES[arg] = hash
           end
         end
+
+        def from_xml(text)
+          instance = self.new
+
+          require 'hpricot'
+
+          xml = Hpricot(text.to_s)
+          attributes = instance.xml_attributes
+
+          attributes.each do |attribute, opts|
+            value = xml.at(attribute)
+            instance.send("#{attribute}=", value.inner_html) if value
+          end
+        rescue LoadError => ex
+          error ex
+        ensure
+          instance
+        end
       end
     end
   end
@@ -55,6 +73,7 @@ module ReFeed
       if opts and not opts.empty?
         case opts[:type]
         when nil, :text : "<#{key}>#{value}</#{key}>"
+        when :cdata : "<#{key}><![CDATA[#{value}]]></#{key}>"
         when :collection : value.map{|v| v.to_xml }
         end
       elsif value.respond_to?(:to_xml)

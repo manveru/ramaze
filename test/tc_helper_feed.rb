@@ -35,10 +35,11 @@ include Ramaze
 class Book < With
   include ReFeed
 
-  attr_accessor :title, :text, :author, :isbn
+  attr_accessor :title, :text, :author, :isbn, :description
 
   xml :title, :text, :type => :text
   xml :isbn, :type => :attribute
+  xml :description, :type => :cdata
   xml :author
 end
 
@@ -63,15 +64,19 @@ context "ReFeed" do
   end
 
   context "Book" do
-    book = Book.with :title => 'foo', :text => 'bar', :isbn => 123456789012
+    book = Book.with :title => 'foo', :text => 'bar',
+                     :isbn => 123456789012, :description => 'The Best Foo in the world!'
 
     specify "to_xml" do
       xml = ( book.to_xml.hpricot/:book )
 
       xml.size.should == 1
+
       xml.first['isbn'].to_i.should == book.isbn
-      xml.at('title').inner_html.should == 'foo'
-      xml.at('text').inner_html.should  == 'bar'
+
+      xml.at('description').inner_html.should == book.description
+      xml.at('title').inner_html.should       == 'foo'
+      xml.at('text').inner_html.should        == 'bar'
     end
   end
 
@@ -113,6 +118,16 @@ context "ReFeed" do
 
       second.at('title').inner_html.should  == book2.title
       second.at('text').inner_html.should   == book2.text
+    end
+  end
+
+  context "User from XML" do
+    user = User.with :name => 'manveru', :email => 'foo@bar.com'
+
+    specify "from_xml" do
+      new_user = User.from_xml(user.to_xml)
+      new_user.name.should == user.name
+      new_user.email.should == user.email
     end
   end
 end
