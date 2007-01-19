@@ -141,8 +141,8 @@ task :test do
 end
 
 task :rdoc do
-  dirs = %w[ lib doc ].join(' ')
-  sh %{rdoc --op rdoc -d --main doc/README #{dirs}}
+  dirs = %w[ doc/README lib doc ].join(' ')
+  sh %{rdoc --op rdoc --all --main doc/README #{dirs}}
 end
 
 task :uncommented do
