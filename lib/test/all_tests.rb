@@ -9,7 +9,15 @@ begin
   end
 rescue LoadError
   class String
+
+    # this will be set in case term/ansicolor cannot be
+    # required, just makes colorless output
+
     def red() self end
+
+    # this will be set in case term/ansicolor cannot be
+    # required, just makes colorless output
+
     def green() self end
   end
 end
