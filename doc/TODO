@@ -1,0 +1,25 @@
+/home/manveru/prog/projects/ramaze/lib/ramaze/helper/link.rb
+- handling of no passed parameters
+- setting imagelinks
+- setting of id or class
+- taking advantae of Gestalt to build links
+- lots of other minor niceties, for the moment i'm only concerned to keep
+  it as simple as possible
+
+/home/manveru/prog/projects/ramaze/lib/ramaze/dispatcher.rb
+- find a solution for def x(a = :a) which has arity -1
+  identical to def x(*a) for some odd reason
+
+/home/manveru/prog/projects/ramaze/lib/ramaze/template/ramaze.rb
+- maybe add some way to define a custom template-file per action via traits
+  trait :methodname_template => :foo
+  would point to the template-file of action :foo - template_root/foo.ext
+- add extensive tests!
+
+/home/manveru/prog/projects/ramaze/lib/ramaze/helper/redirect.rb
+- setting custom status-code, it ignores any preset ones at the moment
+- maybe some more options, like a delay
+
+/home/manveru/prog/projects/ramaze/lib/ramaze/adapter/webrick.rb
+- implement graceful shutdown
+- implement PUT/DELETE

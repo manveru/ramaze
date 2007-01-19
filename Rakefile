@@ -6,6 +6,7 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/contrib/rubyforgepublisher'
 require 'fileutils'
+require 'pp'
 include FileUtils
 
 $:.unshift File.join(File.dirname(__FILE__), "lib")
@@ -197,6 +198,29 @@ task :todo do
         lastline = lineno
       end
     end
+  end
+end
+
+task 'todolist' do
+  list = `rake todo`.split("\n")[2..-1]
+  tasks = {}
+  current = nil
+
+  list.map do |line|
+    if line =~ /TODO/ or line.empty?
+    elsif line =~ /^vim/
+      current = line.split[1]
+      tasks[current] = []
+    else
+      tasks[current] << line
+    end
+  end
+
+  lines = tasks.map{ |name, items| [name, items, ''] }.flatten
+  lines.pop
+
+  File.open(File.join('doc', 'TODO'), 'w+') do |f|
+    f.puts(lines)
   end
 end
 
