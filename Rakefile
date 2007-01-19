@@ -145,7 +145,7 @@ task :rdoc do
   sh %{rdoc --op rdoc --all --main doc/README #{dirs}}
 end
 
-task :uncommented do
+task :undocumented do
   files = Dir[File.join('lib', '**', '*.rb')]
 
   files.each do |file|
