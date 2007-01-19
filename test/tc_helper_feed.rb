@@ -32,18 +32,21 @@ end
 
 include Ramaze
 
-class Article < With
+class Book < With
   include ReFeed
 
-  attr_accessor :title, :text, :author
+  attr_accessor :title, :text, :author, :isbn
 
-  xml :title, :text, :author, :foo => :bar
+  xml :title, :text, :type => :text
+  xml :isbn, :type => :attribute
+  xml :author
 end
 
 class User < With
   include ReFeed
 
-  xml_accessor :name, :email, :articles, :foo => :bar
+  xml_accessor :name, :email, :type => :text
+  xml_accessor :books
 end
 
 context "ReFeed" do
@@ -59,56 +62,57 @@ context "ReFeed" do
     end
   end
 
-  context "Article" do
-    article = Article.with :title => 'foo', :text => 'bar'
+  context "Book" do
+    book = Book.with :title => 'foo', :text => 'bar', :isbn => 123456789012
 
     specify "to_xml" do
-      xml = ( article.to_xml.hpricot/:article )
+      xml = ( book.to_xml.hpricot/:book )
 
       xml.size.should == 1
+      xml.first['isbn'].to_i.should == book.isbn
       xml.at('title').inner_html.should == 'foo'
       xml.at('text').inner_html.should  == 'bar'
     end
   end
 
-  context "Article and User" do
-    user    = User.with :name => 'manveru', :email => 'foo@bar.com'
-    article = Article.with :title => 'foo', :text => 'bar', :author => user
+  context "Book and User" do
+    user = User.with :name => 'manveru', :email => 'foo@bar.com'
+    book = Book.with :title => 'foo', :text => 'bar', :author => user
 
     specify "to_xml" do
-      xml_article = ( article.to_xml.hpricot/:article )
-      xml_user    = xml_article.at(:user)
+      xml_book = ( book.to_xml.hpricot/:book )
+      xml_user = xml_book.at(:user)
 
-      xml_article.at('title').inner_html.should == article.title
-      xml_article.at('text').inner_html.should  == article.text
+      xml_book.at('title').inner_html.should == book.title
+      xml_book.at('text').inner_html.should  == book.text
 
-      xml_user.at('name').inner_html.should     == user.name
-      xml_user.at('email').inner_html.should    == user.email
+      xml_user.at('name').inner_html.should  == user.name
+      xml_user.at('email').inner_html.should == user.email
     end
   end
 
-  context "User and articles" do
-    article1  = Article.with :title => 'foo', :text => 'bar'
-    article2  = Article.with :title => 'foz', :text => 'baz'
+  context "User and books" do
+    book1  = Book.with :title => 'foo', :text => 'bar'
+    book2  = Book.with :title => 'foz', :text => 'baz'
     user      = User.with :name => 'manveru', :email => 'foo@bar.com',
-    :articles => [article1, article2]
+    :books => [book1, book2]
 
     specify "to_xml" do
       xml       = ( user.to_xml.hpricot/:user )
-      articles  = ( xml/:article )
-      first     = articles.find{|a| a.at('title').inner_html == article1.title }
-      second    = articles.find{|a| a.at('title').inner_html == article2.title }
+      books  = ( xml/:book )
+      first     = books.find{|a| a.at('title').inner_html == book1.title }
+      second    = books.find{|a| a.at('title').inner_html == book2.title }
 
-      articles.size.should == 2
+      books.size.should == 2
 
       xml.at('name').inner_html.should      == user.name
       xml.at('email').inner_html.should     == user.email
 
-      first.at('title').inner_html.should   == article1.title
-      first.at('text').inner_html.should    == article1.text
+      first.at('title').inner_html.should   == book1.title
+      first.at('text').inner_html.should    == book1.text
 
-      second.at('title').inner_html.should  == article2.title
-      second.at('text').inner_html.should   == article2.text
+      second.at('title').inner_html.should  == book2.title
+      second.at('text').inner_html.should   == book2.text
     end
   end
 end

@@ -48,16 +48,30 @@ module ReFeed
     name = self.class.name
     xml = xml_attributes.map do |key, opts|
       value = send(key)
+
       next unless value
-      if value.respond_to?(:to_xml)
+      next if (opts[:type] == :attribute rescue false)
+
+      if opts and not opts.empty?
+        case opts[:type]
+        when nil, :text : "<#{key}>#{value}</#{key}>"
+        when :collection : value.map{|v| v.to_xml }
+        end
+      elsif value.respond_to?(:to_xml)
         value.to_xml
       elsif value.respond_to?(:all?) and value.all?{|v| v.respond_to?(:to_xml) }
         value.map{|v| v.to_xml }
-      else
-        "<#{key}>#{value}</#{key}>"
       end
     end
-    "<#{name}>#{xml}</#{name}>"
+
+    attributes = xml_attributes.select{|k, o| o && o[:type] == :attribute}
+    attributes.map!{|k, o| %{#{k}="#{send(k)}"} }
+
+    unless attributes or attributes.empty?
+      "<#{name}>#{xml}</#{name}>"
+    else
+      "<#{name} #{attributes.join(' ')}><#{xml}></#{name}>"
+    end
   end
 end
 
