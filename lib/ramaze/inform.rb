@@ -105,15 +105,23 @@ module Ramaze
       end
     end
 
+    # same as #debug
+
     def puts *args
       debug(*args)
     end
+
+    # same as #puts
 
     def <<(*args)
       puts(*args)
     end
 
     private
+
+    # This uses Global.inform[:timestamp] or a date in the format of
+    #   %Y-%m-%d %H:%M:%S
+    #   # => "2007-01-19 21:09:32"
 
     def timestamp
       mask = Global.inform[:timestamp]
@@ -122,9 +130,18 @@ module Ramaze
       Time.now.strftime("%Y-%m-%d %H:%M:%S")
     end
 
+    # is the Global.mode any of the given modes?
+
     def inform_mode? *modes
       modes.include?(Global.mode)
     end
+
+    # the core of Inform, here is where all the methods come
+    # together.
+    #
+    # It currently uses simple Kernel.puts to output it's information
+    # so you can just set $stdout to something else to get your
+    # information in a logfile or similar.
 
     def log prefix = '', *args
       print "[#{timestamp}] #{prefix}  "
