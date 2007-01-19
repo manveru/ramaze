@@ -9,6 +9,8 @@ module Ramaze
 
     module Tidy
 
+      trait[:path] ||= `locate libtidy.so`.strip
+
       # dirty html in, tidy html out
       # To activate Tidy for everything outgoing (given that it is of
       # Content-Type text/html) set
@@ -30,8 +32,6 @@ module Ramaze
       #     </head>
       #     <body></body>
       #   </html>
-
-      trait[:path] ||= `locate libtidy.so`.strip
 
       def self.tidy html, options = {}
         require 'tidy'
@@ -59,6 +59,8 @@ module Ramaze
         puts "cannot load 'tidy', please `gem install tidy`"
         puts "you can find it at http://tidy.rubyforge.org/"
       end
+
+      # calls self#tidy
 
       def tidy html, options = {}
         Ramaze::Tool::Tidy.tidy(html, options)
