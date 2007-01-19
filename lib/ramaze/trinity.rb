@@ -6,16 +6,30 @@ require 'ramaze/trinity/response'
 require 'ramaze/trinity/session'
 
 module Ramaze
+
+  # The module to be included into the Controller it basically just provides
+  # #request, #response and #session, each accessing Thread.current to
+  # retrieve the demanded object
+
   module Trinity
     private
+
+    # same as
+    #   Thread.current[:request]
 
     def request
       Thread.current[:request]
     end
 
+    # same as
+    #   Thread.current[:response]
+
     def response
       Thread.current[:response]
     end
+
+    # same as
+    #   Thread.current[:session]
 
     def session
       Thread.current[:session]
