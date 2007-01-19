@@ -75,7 +75,6 @@ module Ramaze
       put_query.each do |key, value|
         @put_query[CGI.unescape(key)] = CGI.unescape(value)
       end
-      @put_query['PUT'] = body.read
     end
 
     def query_parse str
