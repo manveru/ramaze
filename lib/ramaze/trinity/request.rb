@@ -6,12 +6,32 @@ require 'tmpdir'
 require 'digest/md5'
 
 module Ramaze
+
+  # This class is used for processing the information coming in from a request
+  # to the dispatcher, it takes the original request-object, processes it and
+  # is later available in the controller or as Thread.current[:request]
+  #
+  # Please note that the implementation is lacking performance and security
+  # in favor of simplicity. Hopefully I (or some CGI-guru) will come along
+  # and implement this properly, until then consider it unsafe, but functional.
+  #
+  # Most information you will need is in the #params, which is a compound of
+  # all the information available from POST, GET, DELETE and PUT.
+
   class Request
-    attr_accessor :request
+    attr_accessor :request, :post_query, :get_query, :puts_query, :get_query
+
+    # create a new instance of Request, takes the original request-object
+    # and runs #parse_queries to extract/process the information inside
+
     def initialize request = {}
       @request = request
       parse_queries
     end
+
+    # you can access the original @request via this method_missing,
+    # first it tries to match your method with any of the HTTP parameters
+    # then, in case that fails, it will relay to @request
 
     def method_missing meth, *args, &block
       if value = @request.params[meth.to_s.upcase] rescue false
@@ -20,6 +40,11 @@ module Ramaze
         @request.send(meth, *args, &block)
       end
     end
+
+    # containts all the parameters given, no matter wheter with
+    # POST, GET, PUT or DELETE
+    # answers with a hash that is generated from the respective
+    # _query instance-variables and cached subsequently in @params
 
     def params
       @params ||= [
@@ -46,6 +71,12 @@ module Ramaze
       end
     end
 
+    # very naive implementation of POST-body parsing, this won't withstand
+    # any serious testing or multiple simultanous huge posts...
+    # However, it just extracts the information inside the @request.body
+    # and puts it into proper form
+    # you can access its contents via #post_query
+
     def process_post
       type, boundary = content_type.split(';')
 
@@ -59,6 +90,9 @@ module Ramaze
       end
     end
 
+    # processing incoming GET, stuffing the results into @get_query,
+    # you can access the information via #get_query
+
     def process_get
       get_query = query_parse(query_string) rescue {}
       get_query.each do |key, value|
@@ -66,9 +100,15 @@ module Ramaze
       end
     end
 
+    # TODO
+    # - implement and test DELETE
+
     def process_delete
       raise "Implement me"
     end
+
+    # again, rather naive, it just gives you the control over what to do
+    # with the #body but will parse the parameters from the URL
 
     def process_put
       put_query = query_parse(query_string) rescue {}
@@ -76,6 +116,12 @@ module Ramaze
         @put_query[CGI.unescape(key)] = CGI.unescape(value)
       end
     end
+
+    # process the parameters passed over the URL, they look like
+    #
+    # http://foo.bar/action?eins=one&zwei=two
+    #
+    # that would result in #params containing {'eins' => 'one', 'zwei' => 'two'}
 
     def query_parse str
       str = str.split('?').last.to_s rescue ''
@@ -87,6 +133,10 @@ module Ramaze
       end
       hash
     end
+
+    # parse multipart-requests, just pass it something that responds to .read
+    # and a boundary for the parts.
+    # again a naive implementation without any guarantee against DoS.
 
     def parse_multipart(body, boundary)
       text = body.read
@@ -106,6 +156,9 @@ module Ramaze
       body.rewind
     end
 
+    # parse the head of the one part of multipart
+    # you most likely won't have to use this on your own :)
+
     def parse_multipart_head(string)
       string.gsub("\r\n", ";").split(';').inject({}) do |sum, param|
         key, value = param.strip.split('=')
@@ -114,26 +167,28 @@ module Ramaze
       end
     end
 
+    # like request.query[key]
+
     def [](key)
-      @post_query[key]
+      query[key]
     end
+
+    # like reuqest.query[key] = value
 
     def []=(key, value)
-      @post_query[key] = value
+      query[key] = value
     end
 
-    def post_query
-      @post_query
-    end
-
-    def get_query
-      @get_query
-    end
-
+    # request_method == 'GET'
     def get?()    request_method == 'GET'    end
+    # request_method == 'POST'
     def post?()   request_method == 'POST'   end
+    # request_method == 'PUT'
     def put?()    request_method == 'PUT'    end
+    # request_method == 'DELETE'
     def delete?() request_method == 'DELETE' end
+
+    # remote_addr == '127.0.0.1'
 
     def local?
       remote_addr == '127.0.0.1'
