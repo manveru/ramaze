@@ -42,7 +42,7 @@ module Ramaze
   #     <p>
   #       Hello, World!
   #     </p>
-  #   <Page>
+  #   </Page>
   #
   # would result in:
   #
@@ -92,15 +92,24 @@ module Ramaze
         string = string.to_s
         matches = string.scan(/<([A-Z][a-zA-Z0-9]*)(.*?)?>/)
         matches.each do |(klass, params)|
-          next unless klass and string =~ /<\/#{klass}>/
-          string.gsub!(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do |m|
-            hash = demunge_passed_variables($1.to_s)
-            k = constant(klass).new($2) rescue nil
-
-            break m unless k and k.respond_to?(:render)
-            k.instance_variable_set("@hash", hash)
-
-            k.render
+          if params[-1,1] == '/'
+            string.gsub!(/<#{klass}( .*?)?\/>/) do |m|
+              params = $1.to_s
+              instance = constant(klass).new(content = '') rescue nil
+              break unless instance and instance.respond_to?(:render)
+              hash = demunge_passed_variables(params)
+              instance.instance_variable_set("@hash", hash)
+              instance.render
+            end
+          else
+            string.gsub!(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do |m|
+              params, content = $1.to_s, $2.to_s
+              instance = constant(klass).new(content) rescue nil
+              break unless instance and instance.respond_to?(:render)
+              hash = demunge_passed_variables(params)
+              instance.instance_variable_set("@hash", hash)
+              instance.render
+            end
           end
         end
         string

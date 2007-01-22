@@ -19,8 +19,17 @@ class TCElementController < Template::Ramaze
   end
 
   def with_params(*params)
-    hash = Hash[*params.flatten]
-    %{<PageWithParams one="two"></PageWithParams>}
+    hash = Hash[*params.flatten].map{|k,v| %{#{k}="#{v}"}}.join(' ')
+    %{<PageWithParams #{hash}></PageWithParams>}
+  end
+
+  def little
+    %{<PageLittle />}
+  end
+
+  def little_params(*params)
+    hash = Hash[*params.flatten].map{|k,v| %{#{k}="#{v}"}}.join(' ')
+    %{<PageLittleWithParams #{hash} />}
   end
 end
 
@@ -31,6 +40,18 @@ class Page < Element
 end
 
 class PageWithParams < Element
+  def render
+    @hash.inspect
+  end
+end
+
+class PageLittle < Element
+  def render
+    "little"
+  end
+end
+
+class PageLittleWithParams < Element
   def render
     @hash.inspect
   end
@@ -53,5 +74,13 @@ context "Element" do
 
   specify "with_params" do
     get('/with_params/one/two').should == {'one' => 'two'}.inspect
+  end
+
+  specify "little" do
+    get('/little').should == 'little'
+  end
+
+  specify "little params" do
+    get('/little_params/one/eins').should == {'one' => 'eins'}.inspect
   end
 end
