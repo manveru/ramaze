@@ -2,7 +2,12 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 # written as an example of how to implement the minimal _why wiki
-require 'rubygems'
+
+begin
+  require 'rubygems'
+rescue LoadError
+end
+
 require 'ramaze'
 require 'bluecloth'
 

@@ -1,9 +1,13 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'rubygems'
-gem 'facets', '=1.4.5'
-require '/home/manveru/prog/projects/nitroproject/glycerin'
+begin
+  require 'rubygems'
+  gem 'facets', '=1.4.5'
+  require '/home/manveru/prog/projects/nitroproject/glycerin'
+rescue LoadError
+end
+
 require 'og'
 
 class Comment
