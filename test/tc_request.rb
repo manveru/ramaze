@@ -27,6 +27,15 @@ class TCRequestController < Template::Ramaze
     request.params.inspect
   end
 
+  def test_get
+    request['foo']
+  end
+
+  def test_get_set(arg)
+    request['foo'] = arg
+    request['foo']
+  end
+
   def my_ip
     request.remote_addr
   end
@@ -81,6 +90,14 @@ context "Request" do
 
     specify "my ip" do
       get("/my_ip").should == '127.0.0.1'
+    end
+
+    specify "request[key]" do
+      get('test_get?foo=bar').should == 'bar'
+    end
+
+    specify "request[key] = value" do
+      get('test_get_set/bar').should == 'bar'
     end
   end
 end
