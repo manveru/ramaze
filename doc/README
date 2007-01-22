@@ -11,27 +11,27 @@ make simple things simple and complex things possible.
 
 This of course is nothing new to anyone who knows some ruby, but is often
 forgotten in a chase for new functionality and features. Ramaze only tries to
-give you the ultimate tools, but you have to use them yourself to achive
+give you the ultimate tools, but you have to use them yourself to achieve
 perfect custom-tailored results.
 
-Another interesting aspect is that Ramaze tries to provide as much reuseable
+Another interesting aspect is that Ramaze tries to provide as much reusable
 code as possible, as to encourage the use of its code in similar projects and
 to act as a single point of reference for projects using its components.
 This tries to tackle the problem that everybody who wants/needs to create a
-custom webframework always has to reimplement the most basic and common
+custom web framework always has to reimplement the most basic and common
 functionality. So when for example someone wants a basic example of how to
-build a comfortable testingenvironment for a webframework it's hardly leading
+build a comfortable testing environment for a web framework it's hardly leading
 to the goal if this first has to be reinvented before even the basic testing
 can start.
 The same goes for the implementation of sessions or the request/response
 objects which are collected under the module Trinity. Or all the examples
-of realworld-usage of the most popular templating-engines. within a framework,
+of real world-usage of the most popular templating-engines. Within a framework,
 not to mention the basic need for a Dispatcher.
-Of course most other frameworks will introduce their own paradigmas and special
+Of course most other frameworks will introduce their own paradigms and special
 implementations, and this is the reason why it is not encouraged to directly
 require files from Ramaze, they are one working entity together, but with a few
 modifications it's your very own implementation and fits into your own project.
-Not to mention that introducing another webframework for your own would be
+Not to mention that introducing another web framework for your own would be
 quite odd ;)
 
 
@@ -57,7 +57,7 @@ There are some basic principles that Ramaze tries to follow:
   making it as simple as possible to extract parts
 
 - Minimal dependencies
-  in case a dependency is not met use a simple fallback instead
+  in case a dependency is not met use a simple fall-back instead
 
 - Provide as many examples as possible
   examples are a superior way of getting a quick start into everything
@@ -123,7 +123,7 @@ dependencies, so just go and try some things.
 
 Some places to get started are:
 - Read the documentation.
-- Run and read the testcases.
+- Run and read the test cases.
 - Look at the examples and run/modify them.
 
 
@@ -133,21 +133,21 @@ Some places to get started are:
 
 - via RubyGems
   The simplest way of installing Ramaze is via `gem install ramaze` in case you
-  have rubygems installed.
+  have RubyGems installed.
   (this will work as soon as I have registered on RubyForge ;)
 
 - via install.rb
   Ramaze provides a basic install.rb that should take care of the installation
   you can use it like `ruby install.rb`, you might need root-privileges to do
   that, depending on what options you provide.
-  (please note that I haven't tested the install.rb extensivly yet, so if you
+  (please note that I haven't tested the install.rb extensively yet, so if you
   find some quirks, please send me patches or a simple note)
 
 - via darcs
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
   $ darcs get http://manveru.mine.nu/darcs/prog/projects/ramaze
-  please read the manpage or `darcs help` for more information about updating
+  please read the man page or `darcs help` for more information about updating
   and creating your own patches.
   This is at the moment the premier way to use Ramaze, since it is the way I use
   it.
@@ -164,12 +164,12 @@ for example:
 
   $ ramaze examples/hello.rb
 
-or:
+Or:
 
   $ cd examples/blog
   $ ramaze
 
-since ramaze uses the main.rb by default if you don't pass anything else.
+Since ramaze uses the main.rb by default if you don't pass anything else.
 
 For more information about the usage of ramaze try:
 
@@ -188,7 +188,7 @@ Examples include:
   Not yet fully functional, but coming along.
 
 - examples/whywiki
-  A basic examples of a minimalistic application, based on the wiki of _why in
+  A basic examples of a minimalistic application, based on the Wiki of _why in
   his camping-framework.
 
 - examples/templates
@@ -201,7 +201,7 @@ Examples include:
 ================================================================================
 
 - module Ramaze
-  The main Namespace, just about everything is put in here.
+  The main Name space, just about everything is put in here.
 - Controller
   The default Controller that acts, depending on your templating-system
   as the center of your request -> response chain
@@ -211,7 +211,7 @@ Examples include:
   provides the response for the server, has the current status of your response
   in your Controller you can see it via `response'
 - Request
-  the request from the client/browser, available wit `request'
+  the request from the client/browser, available with `request'
 - Trinity
   contains the instances for Request/Response/Session and is included in the
   Controller
