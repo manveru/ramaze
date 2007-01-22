@@ -49,6 +49,7 @@ module ReFeed
             value = xml.at(attribute)
             instance.send("#{attribute}=", value.inner_html) if value
           end
+          instance
         rescue LoadError => ex
           error ex
         ensure
