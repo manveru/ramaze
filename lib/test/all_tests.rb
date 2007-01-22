@@ -40,7 +40,7 @@ Dir['test/**/tc_*.rb'].each do |test_case|
 
       message = "[#{s.to_s.rjust(3)} specs | "
 
-      if f.nonzero?
+      if f.nonzero? or $?.exitstatus != 0
         problematic[test_case] = out
         message << "#{f.to_s.rjust(3)} failed ]"
         puts message.red
