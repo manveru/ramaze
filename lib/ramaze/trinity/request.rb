@@ -167,16 +167,16 @@ module Ramaze
       end
     end
 
-    # like request.query[key]
+    # like request.params[key]
 
     def [](key)
-      query[key]
+      params[key]
     end
 
-    # like reuqest.query[key] = value
+    # like reuqest.params[key] = value
 
     def []=(key, value)
-      query[key] = value
+      params[key] = value
     end
 
     # request_method == 'GET'
