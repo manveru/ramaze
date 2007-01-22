@@ -20,7 +20,7 @@ class TCRequestController < Template::Ramaze
   end
 
   def put_inspect(file)
-    request.params['PUT'].inspect
+    request.body.read.inspect
   end
 
   def get_inspect
