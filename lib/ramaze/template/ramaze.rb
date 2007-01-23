@@ -3,6 +3,7 @@
 
 require 'digest/sha1'
 require 'ramaze/template/ramaze/element'
+require 'ramaze/template/ramaze/morpher'
 
 module Ramaze::Template
 
@@ -12,7 +13,7 @@ module Ramaze::Template
   class Ramaze < Template
     trait :actionless => false
     trait :template_extensions => %w[rmze xhtml rhtml html]
-    trait :transform_pipeline => [self, Element]
+    trait :transform_pipeline => [Morpher, self, Element]
 
     class << self
       # initializes the handling of a request on the controller.
