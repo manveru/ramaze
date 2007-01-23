@@ -36,6 +36,9 @@ class TCRequestController < Template::Ramaze
     request['foo']
   end
 
+  def test_headers
+  end
+
   def my_ip
     request.remote_addr
   end
@@ -98,6 +101,11 @@ context "Request" do
 
     specify "request[key] = value" do
       get('test_get_set/bar').should == 'bar'
+    end
+
+    specify "header" do
+      raw_get('/test_headers').status.should == %w[200 OK]
+      raw_get('/test_headers').content_type.should == "text/html"
     end
   end
 end

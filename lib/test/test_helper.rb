@@ -18,15 +18,17 @@ require 'net/http'
 # Spec::Runner
 
 module StatelessContext
+  def raw_get url = ''
+    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+    Timeout.timeout(1) do
+      open(url)
+    end
+  end
+
   # just GET an [url]
 
   def get url = ''
-    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
-    Timeout.timeout(1) do
-      result = open(url).read.strip
-      #p url => result
-      result
-    end
+    raw_get(url).read.strip
   end
 
   # POST to an url the given params
