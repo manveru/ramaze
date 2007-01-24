@@ -65,11 +65,9 @@ module Ramaze
 
     Thread.abort_on_exception = true
 
-    if options.delete(:force_setup)
-      Global.setup(options)
-    else
-      Global.update(options)
-    end
+    init_global options
+
+    return if options.delete(:fake_start)
 
     find_controllers
     setup_controllers
@@ -133,6 +131,7 @@ module Ramaze
   # in every found Controller.
 
   def setup_controllers
+    Global.mapping ||= {}
     mapping = {}
 
     Global.controllers.each do |c|
@@ -140,12 +139,12 @@ module Ramaze
       if %w[Main Base Index].include?(name)
         mapping['/'] = c
       else
-        mapping["/#{name.downcase.split('::').last}"] = c
+        mapping["/#{name.split('::').last.snake_case}"] = c
       end
       c.__send__(:send, :include, Ramaze::Controller)
     end
 
-    Global.mapping ||= mapping
+    Global.mapping.merge!(mapping) if Global.mapping.empty?
     # Now we make them to real Ramze::Controller s :)
     # also we set controller-variable as we go along, in case there
     # is only one controller it ends up hooked on '/'
@@ -162,6 +161,18 @@ module Ramaze
 
     autoreload_interval = Global.autoreload[Global.mode]
     Ramaze::autoreload(autoreload_interval)
+  end
+
+  def init_global options = {}
+    tmp_mapping = Global.mapping || {}
+
+    if options.delete(:force_setup)
+      Global.setup(options)
+    else
+      Global.update(options)
+    end
+
+    Global.mapping = tmp_mapping.merge(Global.mapping)
   end
 
   # Finally decide wether to use a main-thread to run Ramaze
