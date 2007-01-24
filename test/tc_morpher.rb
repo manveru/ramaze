@@ -35,6 +35,20 @@ class TCMorpherController < Template::Ramaze
       <div for="i in @n">#{i}</div>
     }
   end
+
+  def simple_times n = 1
+    @n = n.to_i
+    %q{
+      <div times="@n">#{_t}</div>
+    }
+  end
+
+  def simple_each *elem
+    @elem = elem
+    %q{
+      <div each="@elem">#{_e}</div>
+    }
+  end
 end
 
 context "Morpher" do
@@ -57,6 +71,16 @@ context "Morpher" do
   specify "for" do
     get('/simple_for').should == "<div>0</div><div>1</div>"
     get('/simple_for/3').should == "<div>0</div><div>1</div><div>2</div><div>3</div>"
+  end
+
+  specify "times" do
+    get('/simple_times').should == "<div>0</div>"
+    get('/simple_times/3').should == "<div>0</div><div>1</div><div>2</div>"
+  end
+
+  specify "each" do
+    get('/simple_each').should == ''
+    get('/simple_each/1/2/3').should == "<div>1</div><div>2</div><div>3</div>"
   end
 end
 
