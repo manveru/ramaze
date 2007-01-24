@@ -87,10 +87,8 @@ class TCFormHelperEntryDated < Template::Ramaze
 end
 
 context "FormHelper" do
-  ramaze
-
   context "Entry" do
-    Global.mapping['/entry'] = TCFormHelperEntryController
+    ramaze :mapping => {'/entry' => TCFormHelperEntryController}
 
     specify "testrun" do
       get('/entry/').should == 'FormHelper Entry'
@@ -122,7 +120,7 @@ context "FormHelper" do
     end
 
     context "EntryTimestamped" do
-      Global.mapping['/entry_timestamped'] = TCFormHelperEntryTimestampedController
+      ramaze :fake_start => true, :mapping => {'/entry_timestamped' => TCFormHelperEntryTimestampedController}
 
       specify "testrun" do
         get('/entry_timestamped/').should == "FormHelper EntryTimestamped"
@@ -135,7 +133,7 @@ context "FormHelper" do
     end
 
     context "EntryDated" do
-      Global.mapping['/entry_dated'] = TCFormHelperEntryDated
+      ramaze :fake_start => true, :mapping => {'/entry_dated' => TCFormHelperEntryDated}
 
       specify "testrun" do
         get('/entry_dated').should ==
