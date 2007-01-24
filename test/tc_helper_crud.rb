@@ -5,70 +5,62 @@ require 'lib/test/test_helper'
 
 include Ramaze
 
-class User
-  attr_accessor :name, :oid
-
-  class << self
-    STORE = []
-
-    def create
-      instance = self.new
-      instance.oid = STORE.size
-      Thread.current[:request].post_query.each do |key, value|
-        instance.send("#{key}=", value)
-      end
-      STORE << instance
-      instance.oid
-    end
-
-    def update(oid)
-      instance = STORE[oid.to_i]
-      Thread.current[:request].post_query.each do |key, value|
-        instance.send("#{key}=", value)
-      end
-      STORE[oid.to_i].inspect
-    end
-
-    def read(oid)
-      STORE[oid.to_i].inspect
-    end
-
-    def delete(oid)
-      STORE.delete_at(oid.to_i).inspect
-    end
-  end
-
-  def inspect
-    "<User @oid=#{oid} @name=#{name.inspect}>"
-  end
+class UserStub
 end
 
 class TCCrudHelperController < Template::Ramaze
   helper :crud
 
-  crud User
+  crud UserStub, 'custom' => :customized
 
   def index
     self.class.name
+  end
+
+  def check_trinity
+    request.request_method
   end
 end
 
 context "CrudHelper" do
   ramaze :mapping => {'/' => TCCrudHelperController}
 
-  oid = post('/User/create', :name => 'manveru')
+  specify "create" do
+    UserStub.stub!(:create).and_return(:created)
+
+    UserStub.should_receive(:create).and_return('created')
+    post('/UserStub/create', :name => 'manveru').should == 'created'
+  end
 
   specify "read" do
-    get("/User/read/#{oid}").should == '<User @oid=0 @name="manveru">'
+    UserStub.stub!(:read).and_return(:read)
+
+    UserStub.should_receive(:read, 1).and_return('read 1')
+    get('/UserStub/read/1').should == 'read 1'
   end
 
   specify "update" do
-    post("/User/update/#{oid}", :name => 'madveru')
-    get("/User/read/#{oid}").should == '<User @oid=0 @name="madveru">'
+    UserStub.stub!(:update).and_return(:updated)
+
+    UserStub.should_receive(:update, 1).and_return('updated 1')
+    post('/UserStub/update', :oid => 1).should == 'updated 1'
   end
 
   specify "delete" do
-    get("/User/delete/#{oid}").should == '<User @oid=0 @name="madveru">'
-    get("/User/read/#{oid}").should == 'nil'
+    UserStub.stub!(:delete).and_return(:deleted)
+
+    UserStub.should_receive(:delete, 1).and_return('deleted 1')
+    get('/UserStub/delete/1').should == 'deleted 1'
+  end
+
+  specify "custom" do
+    UserStub.stub!(:customized).and_return('customized meth')
+
+    UserStub.should_receive(:customized).and_return('customized meth called')
+    get('/UserStub/custom').should == 'customized meth called'
+  end
+
+  specify "Trinity included?" do
+    get('/check_trinity').should == 'GET'
   end
 end
