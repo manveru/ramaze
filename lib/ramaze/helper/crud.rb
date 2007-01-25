@@ -24,7 +24,7 @@ module Ramaze
 
             def klass.handle_request(action, *args)
               meth = trait[:crud_routes][action] || action
-              send(meth, *args).to_s
+              send(meth, *args).to_s + "\n"
             end
 
             name = routes.delete(:name) || klass.name
