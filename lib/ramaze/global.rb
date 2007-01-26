@@ -33,8 +33,16 @@ module Ramaze
       :cache_all      => false,
       :error_page     => true,
       :host           => '0.0.0.0',
+      :inform         => {
+          :to             => $stdout,
+          :tags           => Set.new([:debug, :info, :error]),
+          :backtrace_size => 10,
+          :timestamp      => "%Y-%m-%d %H:%M:%S",
+          :prefix_info    => 'INFO ',
+          :prefix_debug   => 'DEBUG',
+          :prefix_error   => 'ERROR',
+        },
       :port           => 7000,
-      :mode           => :debug,
       :mapping        => {},
       :run_loose      => false,
       :tidy           => false,
@@ -48,12 +56,6 @@ module Ramaze
         :live       => 20,
         :silent     => 40,
         },
-      :logger => {
-        :timestamp    => "%Y-%m-%d %H:%M:%S",
-        :prefix_info  => 'INFO',
-        :prefix_error => 'ERRO',
-        :prefix_debug => 'DEBG',
-      }
     }
 
     def setup hash = {}, &block
