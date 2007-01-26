@@ -35,6 +35,7 @@ module Ramaze
       :host           => '0.0.0.0',
       :port           => 7000,
       :mode           => :debug,
+      :mapping        => {},
       :run_loose      => false,
       :tidy           => false,
       :template_root  => 'template',
