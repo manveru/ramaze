@@ -55,10 +55,10 @@ module Ramaze::Adapter
         options = {
           :Port => port,
           :BindAddress => host,
-          :Logger => Inform,
+          :Logger => Informer,
           :AccessLog => [
-            [Inform, WEBrick::AccessLog::COMMON_LOG_FORMAT],
-            [Inform, WEBrick::AccessLog::REFERER_LOG_FORMAT]
+            [Informer, WEBrick::AccessLog::COMMON_LOG_FORMAT],
+            [Informer, WEBrick::AccessLog::REFERER_LOG_FORMAT]
           ]
         }
 
@@ -73,7 +73,7 @@ module Ramaze::Adapter
       end
 
       def stop
-        p :stop
+        debug "stopping WEBrick"
       end
     end
 

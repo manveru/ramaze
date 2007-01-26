@@ -28,11 +28,10 @@ module Ramaze
 
       def fill_out
         path = request.request_path.squeeze('/')
-        debug "Request from #{request.remote_addr}: #{path}"
+        info "Request from #{request.remote_addr}: #{path}"
 
         the_paths = $:.map{|way| (way/'public'/path) }
         if file = the_paths.find{|way| File.exist?(way) and File.file?(way)}
-          debug "Responding with static file: #{file}"
           respond_file file
         else
           respond_action path
@@ -41,6 +40,8 @@ module Ramaze
       end
 
       def respond_file file
+        debug "Responding with static file: #{file}"
+
         response.head['Content-Type'] = ''
         if Global.adapter == :mongrel
           @orig_response.send_file(file)
@@ -50,6 +51,8 @@ module Ramaze
       end
 
       def respond_action path
+        debug "Responding with action: #{path}"
+
         controller, action, params = resolve_controller(path)
         response.out = handle_controller(controller, action, params)
         response.head['Set-Cookie'] = session.export
@@ -60,7 +63,7 @@ module Ramaze
       #   identical to def x(*a) for some odd reason
 
       def resolve_action controller, paraction
-        info :resolve_action, controller, paraction
+        meth_debug :resolve_action, controller, paraction
 
         meths =
           (controller.ancestors - [Kernel, Object]).inject([]) do |sum, klass|
@@ -97,7 +100,7 @@ module Ramaze
       end
 
       def resolve_controller path
-        info :resolve_controller, path.inspect
+        meth_debug :resolve_controller, path
         track = path.split('/')
         controller = false
         action = false
@@ -150,7 +153,7 @@ module Ramaze
         Global.cached_actions[controller] ||= {key => nil}
 
         if out = Global.cached_actions[controller][key]
-          debug("Using Cached version for #{key.inspect}")
+          debug "Using Cached version for #{key.inspect}"
           return out
         end
 

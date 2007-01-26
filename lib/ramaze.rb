@@ -104,6 +104,12 @@ module Ramaze
     puts ex
   ensure
     info "Shutdown Ramaze (it's save to kill me now if i hang)"
+
+    if to = Global.inform[:to] and to.respond_to?(:close)
+      debug "close #{to.inspect}"
+      to.close until to.closed?
+    end
+
     Kernel.exit
   end
 
