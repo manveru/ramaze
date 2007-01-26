@@ -3,121 +3,105 @@
 
 module Ramaze
 
-  # The central interface-tool for Ramaze, it just spits out all the things
-  # you always wanted to tell your user but didn't dare to ;)
+  # The module Inform is mainly used for Debugging and Logging.
   #
-  # Important to the Inform is especially Global.mode, which can be
-  # one of:
-  #  Global.mode = :benchmark # switch all logging on and bench requests
-  #  Global.mode = :debug     # switch all logging on
-  #  Global.mode = :stage     # switch on info- and errorlogging
-  #  Global.mode = :live      # switch on errorlogging
-  #  Global.mode = :silent    # switch off logging
+  # You can include/extend your objects with it and access its methods.
+  # Please note that all methods are private, so you should use them only
+  # within your object. The reasoning for making them private is simply
+  # to avoid interference inside the controller.
   #
+  # In case you want to use it from the outside you can work over the
+  # Informer object. This is used for example as the Logger for WEBrick.
   #
-  # It has a method called Inform#puts which uses per default Kernel#puts
-  # and which is called by the central #log method (that in turn is used by
-  # all the other logging-methods)
+  # Inform is a tag-based system, Global.inform[:tags] holds the tags
+  # that are used to filter the messages passed to Inform. The default
+  # is to use all tags :debug, :info and :error.
   #
-  # Example of use:
-  #   Inform.info "Hello, World!"
-  #   include Inform
-  #   info "Hello again"
-  #
-  #   begin
-  #     raise StandardError, "Something gone wrong"
-  #   rescue => ex
-  #     error ex
-  #   end
-  #
-  # So if you want to log to a file, you can just override this method
-  #
-  # Example of override:
-  #   module Ramaze::Inform
-  #     def puts(*args)
-  #       File.open('log/default.log', 'a+') do |file|
-  #         file.puts(*args)
-  #       end
-  #     end
-  #   end
-  # To use the Inform, you can just include it into your current namespace
-  # or call it directly via (for example) Inform.debug('foo')
-  #
-  # Please note that, if you pass multiple parameters, they are being joined to
-  # a single String (seperator is ' ').
-  # Also, if an argument is not a String, it will be called inspect upon and the
-  # result is used instead.
+  # You can control what gets logged over this Set.
 
   module Inform
+    # the possible tags
+    trait :tags => [:debug, :info, :error]
 
-    # if the Global.mode is :debug this will output debugging-information
-    # and prefix it with 'd'
-    # Examples:
-    #   Inform.debug :this_method, params        # =>
-    #   Inform.debug :this_method, return_values # =>
-    #   Inform.debug 'foo', 'bar', 32            # =>
-    #   23.10.2006 09:29:33 D | foo, bar, 32
+    private
 
-    def debug *args
-      if inform_mode? :debug, :benchmark
-        prefix = Global.inform[:prefix_debug] rescue 'DEBUG'
-        log prefix, *args
-      end
+    # general debugging information, this yields quite verbose information
+    # about how requests make their way through Ramaze.
+    #
+    # Use it for your own debugging purposes.
+    # All messages you pass to it are going to be inspected.
+    # it is aliased to #D for convenience.
+
+    def debug *messages
+      return unless inform_tag?(:debug)
+      log(Global.inform[:prefix_debug], *messages.map{|m| m.inspect})
     end
 
-    # A very simple but powerful error-inform.
-    # You can pass it both usual stuff and error-objects, which have
-    # to respond to :message and :backtrace
-    #
-    # Example:
-    #   def foo
-    #     raise ExampleError, "aaah, something's gone wrong"
-    #   rescue ExampleError => ex
-    #     Inform.error ex
-    #   end
+    alias D debug
 
-    def error *errors
-      if inform_mode? :live, :stage, :debug, :benchmark
-        prefix = Global.inform[:prefix_error] rescue 'ERROR'
-        errors.each do |e|
-          if e.respond_to?(:message) and e.respond_to?(:backtrace)
-            log prefix, e.message
-            if inform_mode? :stage, :debug, :benchmark
-              e.backtrace[0..15].each do |bt|
-                log prefix, bt
-              end
+    # A little but powerful method to debug calls to methods.
+    #
+    #   def foo(*args)
+    #     meth_debug(:foo, args)
+    #   end
+    #
+    #   foo :bar
+    #
+    # Will give you
+    #
+    #   [2007-01-26 22:17:24] DEBUG  foo([:bar])
+    #
+    # It will also run inspect on all parameters you pass to it (only the
+    # method-name is processed with to_s)
+    #
+    # It is aliased to #mD
+
+    def meth_debug meth, *params
+      return unless inform_tag?(:debug)
+      log(Global.inform[:prefix_debug], "#{meth}(#{params.map{|pa| pa.inspect}.join(', ')})")
+    end
+
+    alias mD meth_debug
+
+    # General information about startup, requests and other things.
+    #
+    # Use of this method is mainly for things that are not overly verbose
+    # but give you a general overview about what's happening.
+
+    def info message
+      return unless inform_tag?(:info)
+      log(Global.inform[:prefix_info], message)
+    end
+
+    # Informing yourself about errors, you can pass it instances of Error
+    # but also simple Strings.
+    # (all that responds to :message/:backtrace or to_s)
+    #
+    # It will nicely truncate the backtrace to:
+    #   Global.inform[:backtrace_size]
+    # It will not differentiate its behaviour based on other tags, as
+    # having a full backtrace is the most valuable thing to fixing the issue.
+    #
+    # However, you can set a different behaviour by adding/removing tags from:
+    #   Global.inform[:backtrace_for]
+    # By default it just points to Global.inform[:tags]
+
+    def error *messages
+      return unless inform_tag?(:error)
+      prefix = Global.inform[:prefix_error]
+      messages.each do |e|
+        if e.respond_to?(:message) and e.respond_to?(:backtrace)
+          log prefix, e.message
+          if (Global.inform[:backtrace_for] || Global.inform[:tags]).any?{|t| inform_tag?(t)}
+            e.backtrace[0..10].each do |bt|
+              log prefix, bt
             end
-          else
-            log prefix, e
           end
+        else
+          log prefix, e
         end
       end
     end
-
-    # The usual info-inform
-    # Example:
-    #   Inform.info
-
-    def info *args
-      if inform_mode? :stage, :debug, :benchmark
-        prefix = Global.inform[:prefix_info] rescue 'INFO '
-        log prefix, *args
-      end
-    end
-
-    # same as #debug
-
-    def puts *args
-      debug(*args)
-    end
-
-    # same as #puts
-
-    def <<(*args)
-      puts(*args)
-    end
-
-    private
 
     # This uses Global.inform[:timestamp] or a date in the format of
     #   %Y-%m-%d %H:%M:%S
@@ -125,31 +109,46 @@ module Ramaze
 
     def timestamp
       mask = Global.inform[:timestamp]
-      Time.now.strftime(mask)
-    rescue
-      Time.now.strftime("%Y-%m-%d %H:%M:%S")
+      Time.now.strftime(mask || "%Y-%m-%d %H:%M:%S")
     end
 
-    # is the Global.mode any of the given modes?
+    # is the given inform_tag in Global.inform[:tags] ?
 
-    def inform_mode? *modes
-      modes.include?(Global.mode)
+    def inform_tag?(inform_tag)
+      Global.inform[:tags].include?(inform_tag)
     end
 
-    # the core of Inform, here is where all the methods come
-    # together.
+    # the common logging-method, you shouldn't have to call this yourself
+    # it takes the prefix and any number of messages.
     #
-    # It currently uses simple Kernel.puts to output it's information
-    # so you can just set $stdout to something else to get your
-    # information in a logfile or similar.
+    # The produced inform-message consists of
+    #   [timestamp] prefix  message
+    # For the output is anything used that responds to :puts, the default
+    # is $stdout in:
+    #   Global.inform[:to]
+    # where you can configure it.
+    #
+    # To log to a file just do
+    #   Global.inform[:to] = File.open('log.txt', 'a+')
 
-    def log prefix = '', *args
-      print "[#{timestamp}] #{prefix}  "
-      Kernel.puts args.flatten.map{|e| e.is_a?(String) ? e : e.inspect}.join(', ')
+    def log prefix, *messages
+      [messages].flatten.each do |message|
+        compiled = %{[#{timestamp}] #{prefix}  #{message}}
+        out = Global.inform[:to]
+        out.puts(*compiled) unless (out.respond_to?(:closed?) and out.closed?)
+      end
     end
 
     extend self
   end
+
+  class GlobalInformer
+    include Inform
+
+    public :error, :info, :meth_debug, :debug
+  end
+
+  Informer = GlobalInformer.new
 
   include Inform
 end
