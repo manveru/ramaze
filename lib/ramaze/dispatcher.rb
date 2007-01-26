@@ -9,6 +9,7 @@ module Ramaze
       include Trinity
 
       def handle orig_request, orig_response
+        @orig_request, @orig_response = orig_request, orig_response
         create_response(orig_response, orig_request)
       rescue Object => e
         error e
@@ -27,10 +28,11 @@ module Ramaze
 
       def fill_out
         path = request.request_path.squeeze('/')
-        Inform.debug "Request from #{request.remote_addr}: #{path}"
+        debug "Request from #{request.remote_addr}: #{path}"
 
         the_paths = $:.map{|way| (way/'public'/path) }
         if file = the_paths.find{|way| File.exist?(way) and File.file?(way)}
+          debug "Responding with static file: #{file}"
           respond_file file
         else
           respond_action path
@@ -40,7 +42,11 @@ module Ramaze
 
       def respond_file file
         response.head['Content-Type'] = ''
-        response.out = File.read(file)
+        if Global.adapter == :mongrel
+          @orig_response.send_file(file)
+        else
+          response.out = File.read(file)
+        end
       end
 
       def respond_action path
@@ -144,11 +150,11 @@ module Ramaze
         Global.cached_actions[controller] ||= {key => nil}
 
         if out = Global.cached_actions[controller][key]
-          Inform.debug("Using Cached version for #{key.inspect}")
+          debug("Using Cached version for #{key.inspect}")
           return out
         end
 
-        Inform.debug "Compiling Action: #{action} #{params.join(', ')}"
+        debug "Compiling Action: #{action} #{params.join(', ')}"
         Global.cached_actions[controller][key] =
           handle_uncached_controller(controller, action, *params)
       end

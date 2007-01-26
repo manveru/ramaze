@@ -45,7 +45,7 @@ module Ramaze::Adapter
     end
 
     def respond
-      @our_response = Dispatcher.handle(@request, @resopnse)
+      @our_response = Dispatcher.handle(@request, @response)
       code = @our_response.code || STATUS_CODE[:internal_server_error]
       @response.start(code) do |head, out|
         set_head head
