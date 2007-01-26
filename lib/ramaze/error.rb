@@ -132,7 +132,7 @@ module Ramaze
                   <tr class="source"<%=  'style="background:#faa;"' if lcurrent %>>
                     <td><%= llineno %></td>
                     <td>
-                      <%= @coderay ? CodeRay.scan(lcode, :ruby).html : "<pre>\#{lcode}</pre>" %>
+                      <%= @coderay ? CodeRay.scan(lcode.to_s, :ruby).html : "<pre>\#{lcode}</pre>" %>
                     </td>
                   </tr>
                 <?r end ?>
