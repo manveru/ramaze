@@ -61,11 +61,11 @@ module Ramaze
     starter = caller[0].split(':').first
     return unless $0 == starter or options.delete(:force)
 
+    init_global options
+
     info "Starting up Ramaze (Version #{VERSION})"
 
     Thread.abort_on_exception = true
-
-    init_global options
 
     return if options.delete(:fake_start)
 
