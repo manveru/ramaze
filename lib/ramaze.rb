@@ -164,9 +164,7 @@ module Ramaze
 
   def init_autoreload
     return unless Global.autoreload
-
-    autoreload_interval = Global.autoreload[Global.mode]
-    Ramaze::autoreload(autoreload_interval)
+    Ramaze::autoreload Global.autoreload
   end
 
   def init_global options = {}
