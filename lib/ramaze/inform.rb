@@ -146,6 +146,10 @@ module Ramaze
     include Inform
 
     public :error, :info, :meth_debug, :debug
+
+    def <<(str)
+      info str
+    end
   end
 
   Informer = GlobalInformer.new
