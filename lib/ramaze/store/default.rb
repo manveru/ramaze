@@ -5,29 +5,24 @@ require 'yaml/store'
 
 module Ramaze
   module Store
+
+    # A simple wrapper around YAML::Store
+
     class Default
       attr_accessor :db
+
+      # create a new store with a filename
 
       def initialize filename = 'db.yaml'
         FileUtils.touch(filename)
         @db = YAML::Store.new(filename)
       end
 
+      # pass on all methods inside a transaction
+
       def method_missing(meth, *args, &block)
         @db.transaction do
           @db.send(meth, *args, &block)
-        end
-      end
-
-      def [](key)
-        @db.transaction do
-          @db[key]
-        end
-      end
-
-      def []=(key, value)
-        @db.transaction do
-          @db[key] = value
         end
       end
     end
