@@ -13,7 +13,7 @@ module Ramaze
   # In case you want to use it from the outside you can work over the
   # Informer object. This is used for example as the Logger for WEBrick.
   #
-  # Inform is a tag-based system, Global.inform[:tags] holds the tags
+  # Inform is a tag-based system, Global.inform_tags holds the tags
   # that are used to filter the messages passed to Inform. The default
   # is to use all tags :debug, :info and :error.
   #
@@ -34,7 +34,7 @@ module Ramaze
 
     def debug *messages
       return unless inform_tag?(:debug)
-      log(Global.inform[:prefix_debug], *messages.map{|m| m.inspect})
+      log(Global.inform_prefix_debug, *messages.map{|m| m.inspect})
     end
 
     alias D debug
@@ -58,7 +58,7 @@ module Ramaze
 
     def meth_debug meth, *params
       return unless inform_tag?(:debug)
-      log(Global.inform[:prefix_debug], "#{meth}(#{params.map{|pa| pa.inspect}.join(', ')})")
+      log(Global.inform_prefix_debug, "#{meth}(#{params.map{|pa| pa.inspect}.join(', ')})")
     end
 
     alias mD meth_debug
@@ -70,7 +70,7 @@ module Ramaze
 
     def info message
       return unless inform_tag?(:info)
-      log(Global.inform[:prefix_info], message)
+      log(Global.inform_prefix_info, message)
     end
 
     # Informing yourself about errors, you can pass it instances of Error
@@ -78,21 +78,21 @@ module Ramaze
     # (all that responds to :message/:backtrace or to_s)
     #
     # It will nicely truncate the backtrace to:
-    #   Global.inform[:backtrace_size]
+    #   Global.inform_backtrace_size
     # It will not differentiate its behaviour based on other tags, as
     # having a full backtrace is the most valuable thing to fixing the issue.
     #
     # However, you can set a different behaviour by adding/removing tags from:
-    #   Global.inform[:backtrace_for]
-    # By default it just points to Global.inform[:tags]
+    #   Global.inform_backtrace_for
+    # By default it just points to Global.inform_tags
 
     def error *messages
       return unless inform_tag?(:error)
-      prefix = Global.inform[:prefix_error]
+      prefix = Global.inform_prefix_error
       messages.each do |e|
         if e.respond_to?(:message) and e.respond_to?(:backtrace)
           log prefix, e.message
-          if (Global.inform[:backtrace_for] || Global.inform[:tags]).any?{|t| inform_tag?(t)}
+          if (Global.inform_backtrace_for || Global.inform_tags).any?{|t| inform_tag?(t)}
             e.backtrace[0..10].each do |bt|
               log prefix, bt
             end
@@ -103,19 +103,19 @@ module Ramaze
       end
     end
 
-    # This uses Global.inform[:timestamp] or a date in the format of
+    # This uses Global.inform_timestamp or a date in the format of
     #   %Y-%m-%d %H:%M:%S
     #   # => "2007-01-19 21:09:32"
 
     def timestamp
-      mask = Global.inform[:timestamp]
+      mask = Global.inform_timestamp
       Time.now.strftime(mask || "%Y-%m-%d %H:%M:%S")
     end
 
-    # is the given inform_tag in Global.inform[:tags] ?
+    # is the given inform_tag in Global.inform_tags ?
 
     def inform_tag?(inform_tag)
-      Global.inform[:tags].include?(inform_tag)
+      Global.inform_tags.include?(inform_tag)
     end
 
     # the common logging-method, you shouldn't have to call this yourself
@@ -125,16 +125,16 @@ module Ramaze
     #   [timestamp] prefix  message
     # For the output is anything used that responds to :puts, the default
     # is $stdout in:
-    #   Global.inform[:to]
+    #   Global.inform_to
     # where you can configure it.
     #
     # To log to a file just do
-    #   Global.inform[:to] = File.open('log.txt', 'a+')
+    #   Global.inform_to = File.open('log.txt', 'a+')
 
     def log prefix, *messages
       [messages].flatten.each do |message|
         compiled = %{[#{timestamp}] #{prefix}  #{message}}
-        out = Global.inform[:to]
+        out = Global.inform_to
         out.puts(*compiled) unless (out.respond_to?(:closed?) and out.closed?)
       end
     end
