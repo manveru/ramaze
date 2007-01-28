@@ -34,6 +34,8 @@ module Ramaze
       %{Please follow <a href="#{target}">#{target}</a>!}
     end
 
+    # redirect to the location the browser says it's coming from.
+
     def redirect_referer
       redirect request.header['referer']
     end

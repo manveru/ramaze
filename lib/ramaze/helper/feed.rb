@@ -3,21 +3,51 @@
 
 module Ramaze
   module FeedHelper
-    def feed
+
+    # just a stub, for the moment, doing nothing more than calling
+    # #to_xml on the object you pass
+
+    def feed object
+      object.to_xml
     end
   end
 end
 
 module ReFeed
+
+  # Does a couple of things on include.
+  #
+  # defines #xml_accessor, which in turn offers a way to define
+  # both an attr_accessor and xml-annotation.
+  #   xml_accessor :name, :age
+  #
+  # defines #xml, a little DSLy way to add an attribute that
+  # is later used to generate/read XML
+  #   xml :name, :age
+  #
+  # defines #from_xml, which takes XML and maps the structure of the
+  # XML to your instances accessors.
+  #   Foo.new.from_xml('<name>manveru</name><age>22</age>')
+  #   # #<Foo @name='manveru', @age=22>
+
   def self.included(klass)
     klass.class_eval do
       const_set('XML_ATTRIBUTES', {})
 
       class << self
+
+        # Offers a way to define
+        # both an attr_accessor and xml-annotation.
+        #   xml_accessor :name, :age
+
         def xml_accessor(*args)
           args = xml(*args)
           attr_accessor(*args)
         end
+
+        # A little DSLy way to add an attribute that
+        # is later used to generate/read XML
+        #   xml :name, :age
 
         def xml(*arguments)
           args = []
@@ -36,6 +66,11 @@ module ReFeed
             klass::XML_ATTRIBUTES[arg] = hash
           end
         end
+
+        # Which takes XML and maps the structure of the
+        # XML to your instances accessors.
+        #   Foo.new.from_xml('<name>manveru</name><age>22</age>')
+        #   # #<Foo @name='manveru', @age=22>
 
         def from_xml(text)
           instance = self.new
@@ -59,9 +94,13 @@ module ReFeed
     end
   end
 
+  # return the XML_ATTRIBUTES of self.class
+
   def xml_attributes
     self.class::XML_ATTRIBUTES
   end
+
+  # convert this instance to XML
 
   def to_xml
     name = self.class.name
