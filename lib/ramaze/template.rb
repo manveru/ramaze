@@ -37,14 +37,14 @@ module Ramaze::Template
       action = custom_template if custom_template
 
       path =
-        if template_root = trait[:template_root] || ancestors_trait(:template_root)
+        if template_root = ancestral_trait[:template_root]
           template_root / action
         else
           Global.template_root / Global.mapping.invert[self] / action
         end
       path = File.expand_path(path)
 
-      extensions = trait[:template_extensions] || ancestors_trait(:template_extensions)
+      extensions = ancestral_trait[:template_extensions]
 
       possible = Dir["#{path}.{#{extensions.join(',')}}"]
       possible.first
