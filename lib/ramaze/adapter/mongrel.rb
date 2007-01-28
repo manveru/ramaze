@@ -34,14 +34,14 @@ module Ramaze::Adapter
 
     def process(request, response)
       @request, @response = request, response
-      Global.mode == :benchmark ? bench_respond : respond
+      Global.inform_tags.include?(:benchmark) ? bench_respond : respond
     end
 
     def bench_respond
       time = Benchmark.measure do
         respond
       end
-      info "#{request} took #{time.real}s"
+      info "request took #{time.real}s"
     end
 
     def respond

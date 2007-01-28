@@ -78,7 +78,7 @@ module Ramaze::Adapter
     end
 
     def process request, response
-      if Global.mode == :benchmark
+      if Global.inform_tags.include?(:benchmark)
         bench_process(request, response)
       else
         respond(response, Dispatcher.handle(request, response))
