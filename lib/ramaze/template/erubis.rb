@@ -44,6 +44,8 @@ module Ramaze::Template
 
     private
 
+    # Transform any String via Erubis, takes an optional binding and filename
+
     def transform string, bound = binding, file = nil
       eruby = ::Erubis::Eruby.new(string)
       eruby.init_evaluator(:filename => file) if file

@@ -17,6 +17,7 @@ module Ramaze::Template
     # Usage:
     #   mab { h1 "Apples & Oranges"}                    #=> "<h1>Apples &amp; Oranges</h1>"
     #   mab { h1 'Apples', :class => 'fruits&floots' }  #=> "<h1 class=\"fruits&amp;floots\">Apples</h1>"
+
     def mab(*args, &block)
       builder = ::Markaby::Builder
       builder.extend(Ramaze::Helper)
@@ -25,6 +26,16 @@ module Ramaze::Template
     end
 
     class << self
+
+      # Takes the action and parameter
+      # creates a new instance of itself, sets the @action instance-variable
+      # to the action just called, the sends the action and parameter further
+      # on to the instance (if the instance responds to the action)
+      #
+      # uses the #find_template method for the action to locate the template
+      # and uses the response from the template instead in case there is no
+      # template (and the response from the template responds to to_str)
+
       def handle_request action, *params
         controller = self.new
         controller.instance_variable_set('@action', action)
