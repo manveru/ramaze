@@ -25,7 +25,7 @@ module Ramaze
     # same as #head['Content-Type']
 
     def content_type
-      @head['Content-Type']
+      head['Content-Type']
     end
   end
 
