@@ -158,8 +158,8 @@ task :undocumented do
         indent = line =~ /[^\s]/
         e = lines_till_here.reverse.find{|l| l =~ /end/}
         i = lines_till_here.reverse.index(e)
-        lines_till_here = lines_till_here[-(i)..-1] if i
-        unless lines_till_here.any?{|l| l =~ /^\s*#/}
+        lines_till_here = lines_till_here[-(i + 1)..-1] if i
+        unless lines_till_here.any?{|l| l =~ /^\s*#/} or lines_till_here.empty?
           puts lines_till_here
           puts line
           puts "#{' ' * indent}..."
