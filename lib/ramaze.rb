@@ -105,7 +105,7 @@ module Ramaze
   ensure
     info "Shutdown Ramaze (it's save to kill me now if i hang)"
 
-    if to = Global.inform[:to] and to.respond_to?(:close)
+    if to = Global.inform_to and to.respond_to?(:close)
       debug "close #{to.inspect}"
       to.close until to.closed?
     end
