@@ -55,6 +55,6 @@ class Object
 
   def ancestral_trait
     ancs = (ancestors rescue self.class.ancestors)
-    ancs.reverse.inject({}){|s,v| s.merge(v.trait)}
+    ancs.reverse.inject({}){|s,v| s.merge(v.trait)}.merge(trait)
   end
 end
