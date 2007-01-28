@@ -4,9 +4,15 @@ require 'yaml/store'
 
 module Ramaze
   class YAMLStoreCache
+
+    # create a new YAML::Store with the given file (which will be created if it
+    # is not already there).
+
     def initialize(file = 'cache.yaml')
       @cache = YAML::Store.new(file)
     end
+
+    # return the values for given keys.
 
     def values_at(*keys)
       transaction do |y|
@@ -14,9 +20,13 @@ module Ramaze
       end
     end
 
+    # just a helper to use transactions.
+
     def transaction(&block)
       @cache.transaction(&block)
     end
+
+    # catch everything else and use a transaction to send it.
 
     def method_missing(*args, &block)
       transaction do |y|
