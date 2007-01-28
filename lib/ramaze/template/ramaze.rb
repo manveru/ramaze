@@ -59,21 +59,25 @@ module Ramaze::Template
     def render(action, *params)
       alternate = render_template(params.last) if params.size == 1 and action == 'index'
       file_template = render_template(action, *params)
-      ctrl_template = render_method(action, *params)
+      ctrl_template = render_action(action, *params)
 
       pipeline(alternate || file_template || ctrl_template)
     end
 
-    def render_method(action, *params)
+    # Render an action, usually a method on the controller.
+
+    def render_action(action, *params)
       ctrl_template = send(action, *params).to_s
     rescue => e
       error e unless e.message =~ /undefined method `#{Regexp.escape(action)}'/
 
-      unless caller.select{|bt| bt[/`render_method'/]}.size > 3
+      unless caller.select{|bt| bt[/`render_action'/]}.size > 3
         Dispatcher.respond_action([action, *params].join('/'))
         ctrl_template = response.out
       end
     end
+
+    # Render the template.
 
     def render_template(action, *params)
       find_template(action)
@@ -86,7 +90,7 @@ module Ramaze::Template
     # the default being [self, Element]
 
     def pipeline(template)
-      transform_pipeline = trait[:template_pipeline] || ancestors_trait(:transform_pipeline)
+      transform_pipeline = ancestral_trait[:template_pipeline]
 
       transform_pipeline.inject(template) do |memo, current|
         current.transform(memo, binding)
