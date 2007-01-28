@@ -147,8 +147,10 @@ module Ramaze
 
     public :error, :info, :meth_debug, :debug
 
-    def <<(str)
-      info str
+    # this simply sends the parameters to #debug
+
+    def <<(*str)
+      debug(*str)
     end
   end
 

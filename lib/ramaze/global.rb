@@ -61,27 +61,43 @@ module Ramaze
       :inform_prefix_error   => 'ERROR',
     }
 
+    # takes an hash of options and optionally an block that is evaled in this
+    # instance of GlobalStruct.
+
     def setup hash = {}, &block
       Global.instance_eval(&block) if block_given?
       table.merge!(hash)
     end
 
+    # just update the hash, not deleting values already set.
+    # again, takes a block, but your assignments may be
+    # overwritten if they existed before.
+
     def update hash = {}, &block
+      old_table = table.dup
       Global.instance_eval(&block) if block_given?
-      table.merge!(hash.merge(table))
+      table.merge!(hash.merge(old_table))
     end
+
+    # synonym to Global.key = value
 
     def []=(key, value)
       table[key] = value
     end
 
+    # synonym for Global.key
+
     def [](key)
       table[key]
     end
 
+    # get all the values for the given keys in the right order.
+
     def values_at(*keys)
       table.values_at(*keys)
     end
+
+    # iterate over the GlobalStruct, no guarantee on the order.
 
     def each
       table.each do |e|

@@ -85,6 +85,8 @@ module Ramaze
 
   alias force_run force_start
 
+  # kill all threads except Thread.main before #shutdown
+
   def shutoff
     info "Killing the Threads"
     Global.adapter_klass.stop rescue nil
@@ -95,7 +97,10 @@ module Ramaze
 
   alias exit shutoff
 
-  # A simple and clean way to shutdown Ramaze
+  # A simple and clean way to shutdown Ramaze, closes the IO your
+  # Global.inform_out points to.
+  #
+  # #shutoff is called before doing anything else.
 
   def shutdown
     Timeout.timeout(2){ shutoff }
@@ -150,6 +155,7 @@ module Ramaze
     end
 
     Global.mapping.merge!(mapping) if Global.mapping.empty?
+
     # Now we make them to real Ramze::Controller s :)
     # also we set controller-variable as we go along, in case there
     # is only one controller it ends up hooked on '/'
@@ -161,10 +167,17 @@ module Ramaze
     end
   end
 
+  # Initialize the Kernel#autoreload with the value of Global.autoreload
+
   def init_autoreload
     return unless Global.autoreload
-    Ramaze::autoreload Global.autoreload
+    autoreload Global.autoreload
   end
+
+  # initialize the Global, setting a default-mapping if none is given yet.
+  #
+  # You may pass :force_setup => true in your options if you want your options
+  # to override everything else set till now.
 
   def init_global options = {}
     tmp_mapping = Global.mapping || {}
@@ -227,6 +240,8 @@ module Ramaze
     adapter_klass.start host, port
   end
 
+  # require the specified adapter from 'ramaze/adapter/name.to_s.downcase'
+
   def require_adapter adapter
     require "ramaze/adapter" / adapter.to_s.downcase
   rescue LoadError => ex
@@ -234,6 +249,8 @@ module Ramaze
     puts "Please make sure you have an adapter called #{adapter}"
     shutdown
   end
+
+  # test if a connection can be made at the specified host/port.
 
   def connection_possible host, port
     Timeout.timeout(1) do
