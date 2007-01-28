@@ -12,7 +12,7 @@ Socket.do_not_reverse_lookup = true
 module Mongrel
   class Configurator
     def log(msg)
-      info :mongrel, msg
+      debug :mongrel, msg
     end
   end
 end
