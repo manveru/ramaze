@@ -90,7 +90,7 @@ module Ramaze::Template
     # the default being [self, Element]
 
     def pipeline(template)
-      transform_pipeline = ancestral_trait[:template_pipeline]
+      transform_pipeline = ancestral_trait[:transform_pipeline]
 
       transform_pipeline.inject(template) do |memo, current|
         current.transform(memo, binding)
