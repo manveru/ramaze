@@ -17,7 +17,9 @@ end
 class SideBar < Template::Ramaze::Element
   def render
     %{
-     <a href="http://something.com">something</a>
+     <div class="sidebar">
+       <a href="http://something.com">something</a>
+     </div>
      }
   end
 end
