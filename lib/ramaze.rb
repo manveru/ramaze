@@ -88,7 +88,7 @@ module Ramaze
 
   def shutoff
     info "Killing the Threads"
-    Global.adapter_klass.stop
+    Global.adapter_klass.stop rescue nil
     (Thread.list - [Thread.main]).each do |thread|
       thread.kill
     end
