@@ -27,35 +27,38 @@ module Ramaze
     #       Global.shutdown_trap #=> 'SIGINT'
 
     DEFAULT = {
+      # Interval for autoreload
+      :autoreload     => 5,
+      # The adapter to run with ( webrick | mongrel )
       :adapter        => :webrick,
-      :autoreload     => true,
+      # The caching to use ( MemoryCache | MemcachedCache | YAMLStoreCache )
       :cache          => MemoryCache,
+      # Cache all responses based on a simple mapping of the call-parameters
       :cache_all      => false,
+      # Show the default Errorpage of Ramaze
       :error_page     => true,
+      # What hosts to respond to.
       :host           => '0.0.0.0',
-      :inform         => {
-          :to             => $stdout,
-          :tags           => Set.new([:debug, :info, :error]),
-          :backtrace_size => 10,
-          :timestamp      => "%Y-%m-%d %H:%M:%S",
-          :prefix_info    => 'INFO ',
-          :prefix_debug   => 'DEBUG',
-          :prefix_error   => 'ERROR',
-        },
+      # What port to run on
       :port           => 7000,
+      # The mapping of the Controllers, format {'/' => Foo, '/bar' => Bar}
       :mapping        => {},
+      # Pass on control after startup.
       :run_loose      => false,
+      # Run tidy over every response of type 'text/html'.
       :tidy           => false,
+      # The place your templates are located, relative to the place you start.
       :template_root  => 'template',
+      # Used by CacheHelper.
       :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
 
-      :autoreload => {
-        :benchmark  => 5,
-        :debug      => 5,
-        :stage      => 10,
-        :live       => 20,
-        :silent     => 40,
-        },
+      :inform_to             => $stdout,
+      :inform_tags           => Set.new([:debug, :info, :error]),
+      :inform_backtrace_size => 10,
+      :inform_timestamp      => "%Y-%m-%d %H:%M:%S",
+      :inform_prefix_info    => 'INFO ',
+      :inform_prefix_debug   => 'DEBUG',
+      :inform_prefix_error   => 'ERROR',
     }
 
     def setup hash = {}, &block
