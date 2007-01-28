@@ -52,6 +52,8 @@ module Ramaze::Template
 
     private
 
+    # just call self.class.find_template(action)
+
     def find_template action
       self.class.find_template(action)
     end
