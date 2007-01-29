@@ -58,6 +58,8 @@ module Ramaze
     # of the client, in case there is none it will try to set one.
     # Unfortunatly we have to go seperate paths here for mongrel and webrick,
     # since they do not share the same API.
+    #
+    # ARGH, 3 different ways for webrick to hand us cookies!? (and counting)
 
     def pre_parse request
       if Global.adapter == :webrick
@@ -65,10 +67,10 @@ module Ramaze
         #   "Set-Cookie: _ramaze__session_id=fa8cc88dafcb0973b48d4d65ef57e7d3\r\n"
         cookie = request.raw_header.grep(/Set-Cookie/).first rescue ''
         cookie = request.post_query.delete('Set-Cookie') if cookie.to_s.empty? and request.post?
+        cookie = request.header['cookie'] unless cookie
         cookie.to_s.gsub(/Set-Cookie: (.*?)\r\n/, '\1')
       else
         cookie = (request.http_cookie rescue request.http_set_cookie rescue '') || ''
-        cookie
       end
     end
 
@@ -76,6 +78,9 @@ module Ramaze
 
     def parse request
       cookie = pre_parse(request)
+
+      return cookie if cookie.respond_to?(:to_hash)
+
       cookie.split('; ').inject({}) do |s,v|
         key, value = v.split('=')
         s.merge key.strip => value
