@@ -64,7 +64,7 @@ module Ramaze
       :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
 
       # Switch Cookies on/off
-      :cookies        => true
+      :cookies        => true,
 
       # Options for Inform
       :inform_to             => $stdout,
