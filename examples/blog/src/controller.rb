@@ -2,13 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 class MainController < Template::Ramaze
-  def index
-    @title = 'Ramaze'
-    @entries = Entry.all.reverse
-  end
-end
-
-class EntryController < Template::Ramaze
   helper :form
 
   def index

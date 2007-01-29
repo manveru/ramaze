@@ -13,7 +13,6 @@ Global.setup do |g|
   g.template_root = 'template'
   g.mapping = {
     '/'       => MainController,
-    '/entry'  => EntryController,
   }
 end
 
