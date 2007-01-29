@@ -22,7 +22,7 @@
 #
 # -o, --host::       which host should ramaze listen for requests
 #                    default is 0.0.0.0
-# -p, --port::       what port should ramaze use
+# -p, --port::       what port should ramaze use, like 80 or 7000..7005
 #                    default is 7000
 #
 # -n, --no-errorpage:: don't use the default errorpage of ramaze

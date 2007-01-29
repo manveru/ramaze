@@ -234,10 +234,11 @@ module Ramaze
 
     info "Found adapter: #{adapter_klass}, trying to connect to #{host}:#{port} ..."
 
-    shutdown unless connection_possible(host, port)
+    parse_port(port)
+    shutdown unless test_connections(host, Global.ports)
     info "and we're running: #{host}:#{port}"
 
-    adapter_klass.start host, port
+    adapter_klass.start host, Global.ports
   end
 
   # require the specified adapter from 'ramaze/adapter/name.to_s.downcase'
@@ -250,7 +251,20 @@ module Ramaze
     shutdown
   end
 
+  def parse_port port
+    if (from_port, to_port = port.to_s.split('..')).compact.size == 2
+      Global.ports = from_port.to_i..to_port.to_i
+    else
+      Global.ports = from_port.to_i..from_port.to_i
+    end
+    Global.port = Global.ports.begin
+  end
+
   # test if a connection can be made at the specified host/port.
+
+  def test_connections host, ports
+    ports.map{|port| connection_possible(host, port) }.all?
+  end
 
   def connection_possible host, port
     Timeout.timeout(1) do
