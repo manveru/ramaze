@@ -54,8 +54,11 @@ module Ramaze
         debug "Responding with action: #{path}"
 
         controller, action, params = resolve_controller(path)
-        response.out = handle_controller(controller, action, params)
-        response.head['Set-Cookie'] = session.export
+        response.head['Set-Cookie'] = session.export if Global.cookies
+
+        catch :respond do
+          response.out = handle_controller(controller, action, params)
+        end
       end
 
       # TODO:

@@ -29,29 +29,44 @@ module Ramaze
     DEFAULT = {
       # Interval for autoreload
       :autoreload     => 5,
+
       # The adapter to run with ( webrick | mongrel )
       :adapter        => :webrick,
+
       # The caching to use ( MemoryCache | MemcachedCache | YAMLStoreCache )
       :cache          => MemoryCache,
+
       # Cache all responses based on a simple mapping of the call-parameters
       :cache_all      => false,
+
       # Show the default Errorpage of Ramaze
       :error_page     => true,
+
       # What hosts to respond to.
       :host           => '0.0.0.0',
+
       # What port to run on
       :port           => 7000,
+
       # The mapping of the Controllers, format {'/' => Foo, '/bar' => Bar}
       :mapping        => {},
+
       # Pass on control after startup.
       :run_loose      => false,
+
       # Run tidy over every response of type 'text/html'.
       :tidy           => false,
+
       # The place your templates are located, relative to the place you start.
       :template_root  => 'template',
+
       # Used by CacheHelper.
       :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
 
+      # Switch Cookies on/off
+      :cookies        => true
+
+      # Options for Inform
       :inform_to             => $stdout,
       :inform_tags           => Set.new([:debug, :info, :error]),
       :inform_backtrace_size => 10,
