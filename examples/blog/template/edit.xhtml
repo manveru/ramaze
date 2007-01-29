@@ -1,5 +1,5 @@
 <Page>
-  <form method="POST" action="#{R EntryController, :save}">
+  <form method="POST" action="#{R self, :save}">
     <input type="hidden" name="oid" value="#{@entry.oid}" />
     #{form @entry}
     <input type="submit" />

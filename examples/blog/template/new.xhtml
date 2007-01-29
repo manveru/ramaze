@@ -3,7 +3,7 @@
     #{link :/}
     #{link self.class, :new, :title => 'New Entry'}
   </div>
-  <form method="POST" action="#{R EntryController, :add}">
+  <form method="POST" action="#{R self, :add}">
     #{form Entry}
     <input type="submit" />
   </form>

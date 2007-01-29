@@ -8,9 +8,6 @@ class Page < Ramaze::Element
   </head>
   <body>
     <div id="menu">
-      #{link MainController, :/, :title => 'Home'}
-      &middot;
-      #{link EntryController, :/, :title => 'Blog'}
       <span id="title"><a href="#{R :/}">#{@title || 'Blogging Ramaze'}</a></span>
     </div>
     #{content}
