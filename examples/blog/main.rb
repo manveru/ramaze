@@ -9,8 +9,12 @@ include Ramaze
 require 'src/controller'
 require 'src/element'
 
-Global.template_root = 'template'
-Global.mapping = {
-  '/'       => MainController,
-  '/entry'  => EntryController,
-}
+Global.setup do |g|
+  g.template_root = 'template'
+  g.mapping = {
+    '/'       => MainController,
+    '/entry'  => EntryController,
+  }
+end
+
+start
