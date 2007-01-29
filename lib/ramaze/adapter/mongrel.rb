@@ -29,9 +29,7 @@ module Ramaze::Adapter
       # mongrel will give us a new Thread back.
 
       def start host, ports
-        ports.each do |port|
-          run_server host, port
-        end
+        ports.map{|port| run_server(host, port) }.first
       end
 
       def run_server host, port

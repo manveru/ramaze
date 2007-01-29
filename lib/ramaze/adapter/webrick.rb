@@ -63,9 +63,7 @@ module Ramaze::Adapter
           self.new.process(request, response)
         end
 
-        ports.each do |port|
-          run_server host, port, handler
-        end
+        ports.map{|port| run_server(host, port, handler) }.first
       end
 
       def run_server host, port, handler
