@@ -69,7 +69,7 @@ module Ramaze::Template
     def render_action(action, *params)
       ctrl_template = send(action, *params).to_s
     rescue => e
-      error e unless e.message =~ /undefined method `#{Regexp.escape(action)}'/
+      error e unless e.message =~ /undefined method `#{Regexp.escape(action.to_s)}'/
 
       unless caller.select{|bt| bt[/`render_action'/]}.size > 3
         Dispatcher.respond_action([action, *params].join('/'))
