@@ -171,7 +171,7 @@ module Ramaze
 
   def init_autoreload
     return unless Global.autoreload
-    autoreload Global.autoreload
+    Ramaze.autoreload Global.autoreload
   end
 
   # initialize the Global, setting a default-mapping if none is given yet.
