@@ -64,7 +64,7 @@ module Ramaze
         # input looks like this:
         #   "Set-Cookie: _ramaze__session_id=fa8cc88dafcb0973b48d4d65ef57e7d3\r\n"
         cookie = request.raw_header.grep(/Set-Cookie/).first rescue ''
-        cookie = request.post_query.delete('Set-Cookie') if cookie.to_s.empty?
+        cookie = request.post_query.delete('Set-Cookie') if cookie.to_s.empty? and request.post?
         cookie.to_s.gsub(/Set-Cookie: (.*?)\r\n/, '\1')
       else
         cookie = (request.http_cookie rescue request.http_set_cookie rescue '') || ''
