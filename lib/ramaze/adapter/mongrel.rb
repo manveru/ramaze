@@ -28,7 +28,13 @@ module Ramaze::Adapter
       # create a new instance of Mongrel::HttpServer and run it
       # mongrel will give us a new Thread back.
 
-      def start host, port
+      def start host, ports
+        ports.each do |port|
+          run_server host, port
+        end
+      end
+
+      def run_server host, port
         h = ::Mongrel::HttpServer.new host, port
         h.register "/", self.new
 
