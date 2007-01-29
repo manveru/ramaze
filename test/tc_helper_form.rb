@@ -151,7 +151,7 @@ context "FormHelper" do
   end
 end
 
-rescue LoadError
+rescue LoadError => ex
   puts ex
   puts "Won't run #{__FILE__} unless you install og"
 end
