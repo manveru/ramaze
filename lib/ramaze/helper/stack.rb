@@ -53,13 +53,15 @@ module Ramaze
     # return to the last location on session[:STACK]
 
     def answer
-      redirect session[:STACK].pop
+      redirect session[:STACK].pop if inside_stack?
     end
 
     # check if the stack has something inside.
 
     def inside_stack?
       not session[:STACK].empty?
+    rescue
+      false
     end
   end
 end
