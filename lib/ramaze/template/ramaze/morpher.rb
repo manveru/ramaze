@@ -107,7 +107,7 @@ module Ramaze
     def self.transform template, bound = nil
       morphs =
         trait[:morphs].map{|k,v| [k.to_s, v.to_s]}.select do |(k,v)|
-        template.include?("#{k}=")
+        template.to_s.include?("#{k}=")
         end
 
       morphs = Hash[*morphs.flatten]
