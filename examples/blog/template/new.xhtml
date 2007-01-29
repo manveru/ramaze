@@ -1,10 +1,5 @@
 <Page>
-  <div id="menu">
-    #{link :/}
-    #{link self.class, :new, :title => 'New Entry'}
-  </div>
-  <form method="POST" action="#{R self, :add}">
-    #{form Entry}
-    <input type="submit" />
+  <form method="POST" action="#{R :add}">
+    #{form Entry, :deny => [/time/, /oid/]}
   </form>
 </Page>

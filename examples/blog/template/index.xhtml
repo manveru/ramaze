@@ -1,4 +1,7 @@
 <Page title="Ramaze Blog">
+  <?r if @entries.empty? ?>
+    <p>No Entries</p>
+  <?r end ?>
   <?r @entries.each_with_index do |entry, i| ?>
     <div class="blog_entry">
       <div class="title">
@@ -6,14 +9,16 @@
         <div class="date">#{entry.time}</div>
       </div>
       <div class="text">
-        #{entry.text}
+        #{BlueCloth.new(entry.text.to_s).to_html}
       </div>
       <div class="menu">
-        #{link self, :delete, entry.oid, :title => 'Delete'}
-        #{link self, :edit, entry.oid, :title => 'Edit'}<br />
+        <?r if check_login ?>
+          #{link self, :delete, entry.oid, :title => 'Delete'}
+          #{link self, :edit, entry.oid, :title => 'Edit'}<br />
+        <?r end ?>
         Entry #{@entries.size - i}/#{@entries.size}
       </div>
     </div>
   <?r end ?>
-  #{link self, :new, :title => 'New Entry'}
+  #{link(self, :new, :title => 'New Entry') if check_login}
 </Page>

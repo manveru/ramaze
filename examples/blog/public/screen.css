@@ -8,8 +8,12 @@ body {
 span#title {
   font-size:  1.5em;
   text-align: right;
-  float: left;
-  margin-top: -0.6em;
+}
+
+span#login {
+  font-size:  0.5em;
+  float:      right;
+  margin-top: -2em;
 }
 
 a {
@@ -19,35 +23,54 @@ a {
 
 div#menu {
   text-align: center;
-  padding: 0.2em;
-  margin-top: -0.5em;
-  margin-right: -0.5em;
-  margin-left: -0.5em;
-  margin-bottom: 0.5em;
-  background: #222;
-  font-size: 2em;
+  padding:        0.2em;
+  margin-top:     -0.5em;
+  margin-right:   -0.5em;
+  margin-left:    -0.5em;
+  margin-bottom:  0.5em;
+  background:     #222;
+  font-size:      2em;
 }
 
-div.blog_entry {
+div#sidebar {
+  width: 12%;
+  height: 50%;
+  float: right;
+  margin-right: -0.3em;
   background: #222;
-  margin:     auto;
-  width:      80%;
-  padding:    0.4em;
-  margin-bottom: 1em;
+  padding: 0.5em;
   border: #333 1px solid;
-}
-
-div.blog_entry div.title {
-  background: #111;
-  padding-bottom: 1em;
   text-align: center;
 }
 
+div#sidebar h1 {
+  font-size: 1.1em;
+  color: #0da;
+  background: #011;
+  margin: -0.4em;
+  margin-bottom: 0.4em;
+  text-align: center;
+}
+
+div.blog_entry {
+  background:     #222;
+  width:          80%;
+  padding:        0.4em;
+  margin-bottom:  1em;
+  margin-left:    5%;
+  margin-right:   15%;
+  border:         #333 1px solid;
+}
+
+div.blog_entry div.title {
+  background:     #111;
+  text-align:     center;
+}
+
 div.blog_entry div.title div.date {
-  color: #aaa;
+  color:      #aaa;
   text-align: right;
-  font-size: 0.8em;
-  float: right;
+  font-size:  0.8em;
 }
 
 div.blog_entry div.title div.title {
@@ -55,13 +78,29 @@ div.blog_entry div.title div.title {
 }
 
 div.blog_entry div.text {
-  background: #111;
-  margin:     0.4em;
-  padding:    0.4em;
+  background:     #111;
+  margin:         0.4em;
+  padding:        0.4em;
+  padding-top:    2em;
+  padding-bottom: 1.5em;
 }
 
 div.blog_entry div.menu {
   background: #111;
   text-align: center;
   margin:     0.4em;
+}
+
+form {
+  margin: auto;
+  width: 70%;
+}
+
+form input {
+  width: 100%;
+}
+
+form textarea {
+  width:  100%;
+  height: 70%;
 }

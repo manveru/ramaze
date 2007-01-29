@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 class MainController < Template::Ramaze
-  helper :form
+  helper :form, :auth, :aspect
 
   def index
     @title = 'Ramaze Blog'
@@ -19,6 +19,7 @@ class MainController < Template::Ramaze
 
   def add
     entry = Entry.new.assign(request.params)
+    entry.time = Time.now
     session[:result] = "#{entry.title} added successfully" if entry.save
     redirect :/
   end
@@ -44,4 +45,6 @@ class MainController < Template::Ramaze
     end
     redirect_referer
   end
+
+  pre :all, :logged_in?, :except => [:index, :view]
 end
