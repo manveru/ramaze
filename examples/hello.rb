@@ -18,3 +18,6 @@ class MainController < Template::Ramaze
     "Hello, World!"
   end
 end
+
+# use this to start your app if you don't want to use the `ramaze` bin
+# start
