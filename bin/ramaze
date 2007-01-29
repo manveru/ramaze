@@ -84,15 +84,14 @@ begin
     [ '--autoreload',     '-a', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--run-loose',      '-r', GetoptLong::NO_ARGUMENT       ],
 
+    [ '--console',        '-c', GetoptLong::NO_ARGUMENT       ],
     [ '--help',           '-h', GetoptLong::NO_ARGUMENT       ],
     [ '--version',        '-v', GetoptLong::NO_ARGUMENT       ],
-    [ '--copyright',      '-c', GetoptLong::NO_ARGUMENT       ],
   ]
 
   options = {:force_setup => true}
 
   opts.each do |opt, arg|
-    p opt => arg
     sopt = opt[2..-1].gsub('-', '_').intern
 
     options[:inform_tags] = Set.new([:debug, :info, :error])
@@ -122,7 +121,29 @@ begin
   puts "running #{File.expand_path(runner)}"
   require runner
 
-  Ramaze.start(options)
+
+  if options.delete(:console)
+    options.merge!(:run_loose => true)
+    p options
+
+    ARGV.clear # Avoid passing args to IRB 
+    p :pre
+    Ramaze.start(options)
+    p :post
+
+    require 'irb'
+    require 'irb/completion'
+
+    def exit
+      exit!
+    end
+
+    ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
+    IRB.start
+    exit!
+  else
+    Ramaze.start(options)
+  end
 rescue LoadError => ex
   puts ex
 end
