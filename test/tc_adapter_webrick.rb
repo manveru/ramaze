@@ -12,9 +12,11 @@ class TCAdapterController < Template::Ramaze
 end
 
 context "WEBrick" do
-  ramaze(:mapping => {'/' => TCAdapterController}, :adapter => :webrick)
+  context "multiple" do
+    ramaze :mapping => {'/' => TCAdapterController}, :port => '7001..7003', :adapter => :webrick
 
-  specify "simple request" do
-    get('/').should == "The index"
+    specify "simple request" do
+      get('/').should == "The index"
+    end
   end
 end

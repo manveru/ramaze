@@ -54,7 +54,7 @@ module Ramaze::Adapter
       # start an instance of WEBrick and run it inside a new
       # Thread, setting all the default-options
 
-      def start host, port
+      def start host, ports
         # TODO
         # - implement graceful shutdown
         # - implement PUT/DELETE
@@ -63,6 +63,12 @@ module Ramaze::Adapter
           self.new.process(request, response)
         end
 
+        ports.each do |port|
+          run_server host, port, handler
+        end
+      end
+
+      def run_server host, port, handler
         options = {
           :Port => port,
           :BindAddress => host,
@@ -82,7 +88,6 @@ module Ramaze::Adapter
           server.start
         end
       end
-
       # doesn't do anything, for the time being.
 
       def stop
