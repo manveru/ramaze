@@ -14,6 +14,11 @@ class TCSessionController < Template::Ramaze
     session[key] = val
     index
   end
+
+  def post_set_session
+    session.merge! request.params
+    index
+  end
 end
 
 context "usual Session" do
@@ -39,6 +44,10 @@ context "usual Session" do
 
   specify "inspect the changed session" do
     ctx.eget('/').should == {'foo' => 'foobar'}
+  end
+
+  specify "now a little bit with POST" do
+    ctx.epost('/post_set_session', :x => :y)['x'].should == 'y'
   end
 
   specify "snooping a bit around" do

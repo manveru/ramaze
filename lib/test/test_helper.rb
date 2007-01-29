@@ -91,14 +91,25 @@ class Context
   # Net::HTTP.post_form with the cookie
   # params are for the POST-parameters
 
-  def post url = '', params = {}
-    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".squeeze('/')
-    uri = URI.parse(url)
+  def post url_param = '', params = {}, limit = 10
+    raise "Too many redirections" if limit <= 0
+
     params['Set-Cookie'] = @cookie
+    url = "http://localhost:#{Ramaze::Global.port}"
+    url << "/#{url_param.gsub(url, '')}".squeeze('/')
+
+    uri = URI.parse(url)
     res = Net::HTTP.post_form(uri, params)
-    result = res.body.to_s.strip
-    #p res => result
-    result
+
+    case res
+    when Net::HTTPSuccess
+      result = res.body.to_s.strip
+      result
+    when Net::HTTPRedirection
+      post(res['location'], params, limit - 1)
+    else
+      res.error!
+    end
   end
 
   # like post, but seval the returned string

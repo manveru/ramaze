@@ -50,7 +50,7 @@ module Ramaze
       @params ||= [
         @get_query, @post_query, @put_query, @delete_query
       ].inject({}) do |sum, hash|
-        sum.merge(hash)
+        sum.merge(hash || {})
       end
     end
 
@@ -61,8 +61,6 @@ module Ramaze
     # it's no POST
 
     def parse_queries
-      @get_query = @post_query = @delete_query = @put_query = {}
-
       case request_method
       when 'GET'    : process_get
       when 'POST'   : process_post
@@ -78,6 +76,8 @@ module Ramaze
     # you can access its contents via #post_query
 
     def process_post
+      @post_query = {}
+
       type, boundary = content_type.split(';')
 
       if type.downcase == 'multipart/form-data' and not boundary.empty?
@@ -94,6 +94,8 @@ module Ramaze
     # you can access the information via #get_query
 
     def process_get
+      @get_query = {}
+
       get_query = query_parse(query_string) rescue {}
       get_query.each do |key, value|
         @get_query[CGI.unescape(key)] = CGI.unescape(value)
@@ -104,6 +106,7 @@ module Ramaze
     # - implement and test DELETE
 
     def process_delete
+      @delete_query = {}
       raise "Implement me"
     end
 
@@ -111,6 +114,8 @@ module Ramaze
     # with the #body but will parse the parameters from the URL
 
     def process_put
+      @pust_query = {}
+
       put_query = query_parse(query_string) rescue {}
       put_query.each do |key, value|
         @put_query[CGI.unescape(key)] = CGI.unescape(value)

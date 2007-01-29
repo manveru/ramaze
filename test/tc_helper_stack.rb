@@ -37,22 +37,19 @@ end
 context "StackHelper" do
   ramaze(:mapping => {'/' => TCStackHelperController})
 
-  setup do
-    @ctx = Context.new
-    @ctx.eget.should == {}
-  end
+  ctx = Context.new
 
   specify "indirect login" do
-    @ctx.get('/foo').should == 'logged in'
-    @ctx.eget('/').should == {:logged_in => true, :STACK => []}
+    ctx.get('/foo').should == 'logged in'
+    ctx.eget('/').should == {:logged_in => true, :STACK => []}
   end
 
   specify "indirect login with params" do
-    @ctx.eget('/bar?x=y').should == {'x' => 'y'}
-    @ctx.eget('/').should == {:logged_in => true, :STACK => []}
+    ctx.eget('/bar?x=y').should == {'x' => 'y'}
+    ctx.eget('/').should == {:logged_in => true, :STACK => []}
   end
 
   specify "indirect posting fun" do
-    @ctx.epost('/bar', :x => :y)['x'].should == 'y'
+    ctx.epost('/bar', :x => :y)['x'].should == 'y'
   end
 end
