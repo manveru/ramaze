@@ -28,10 +28,15 @@ module Ramaze
 
     def redirect *target
       target = target.join('/')
+
       response.head['Location'] = target
+
       hash = target.find{|h| h.is_a?(Hash)} and status = hash.delete(:status) rescue nil
+
       response.code = status || STATUS_CODE[:see_other]
-      %{Please follow <a href="#{target}">#{target}</a>!}
+      response.out = %{Please follow <a href="#{target}">#{target}</a>!}
+
+      throw :respond
     end
 
     # redirect to the location the browser says it's coming from.
