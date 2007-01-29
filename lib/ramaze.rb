@@ -76,6 +76,7 @@ module Ramaze
   end
 
   alias run start
+  alias new start
 
   # same as start(:force => true)
 
