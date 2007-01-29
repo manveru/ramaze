@@ -170,9 +170,14 @@ module Ramaze
     # before/after your action and joins the results
 
     def new_render(action, *params)
+      arity_for = lambda{|meth| method(meth).arity rescue -1 }
       post, pre = resolve_aspect(action).values_at(:post, :pre)
 
-      pre_content = old_render(pre, *params) if pre
+      if pre
+        arity = arity_for[pre].abs
+        p :arity => arity
+        pre_content = old_render(pre, *params[0,arity]) if pre
+      end
 
       unless (pre_content.delete(:skip_next_aspects) rescue false)
         content = old_render(action, *params)
