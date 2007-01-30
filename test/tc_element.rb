@@ -37,31 +37,31 @@ class TCElementController < Template::Ramaze
   end
 end
 
-class Page < Element
+class Page < Template::Element
   def render
     %{ <wrap> #{content} </wrap> }
   end
 end
 
-class PageWithParams < Element
+class PageWithParams < Template::Element
   def render
     @hash.inspect
   end
 end
 
-class PageLittle < Element
+class PageLittle < Template::Element
   def render
     "little"
   end
 end
 
-class PageLittleWithParams < Element
+class PageLittleWithParams < Template::Element
   def render
     @hash.inspect
   end
 end
 
-class PageWithTemplating < Element
+class PageWithTemplating < Template::Element
   def render
     (1..@hash['times']).to_a.join(', ')
   end
