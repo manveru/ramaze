@@ -31,6 +31,10 @@ class TCElementController < Template::Ramaze
     hash = Hash[*params.flatten].map{|k,v| %{#{k}="#{v}"}}.join(' ')
     %{<PageLittleWithParams #{hash} />}
   end
+
+  def templating(times)
+    %{<PageWithTemplating times="#{times}" />}
+  end
 end
 
 class Page < Element
@@ -54,6 +58,12 @@ end
 class PageLittleWithParams < Element
   def render
     @hash.inspect
+  end
+end
+
+class PageWithTemplating < Element
+  def render
+    (1..@hash['times']).to_a.join(', ')
   end
 end
 
@@ -82,5 +92,9 @@ context "Element" do
 
   specify "little params" do
     get('/little_params/one/eins').should == {'one' => 'eins'}.inspect
+  end
+
+  specify "templating" do
+    get('/templating/10').should == (1..10).to_a.join(', ')
   end
 end

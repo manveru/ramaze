@@ -91,37 +91,73 @@ module Ramaze
       def transform string = '', binding = nil
         string = string.to_s
         matches = string.scan(/<([A-Z][a-zA-Z0-9]*)(.*?)?>/)
+
         matches.each do |(klass, params)|
-          if params[-1,1] == '/'
-            string.gsub!(/<#{klass}( .*?)?\/>/) do |m|
-              params = $1.to_s
-              instance = constant(klass).new(content = '') rescue nil
-              break unless instance and instance.respond_to?(:render)
-              hash = demunge_passed_variables(params)
-              instance.instance_variable_set("@hash", hash)
-              instance.render
-            end
-          else
-            string.gsub!(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do |m|
-              params, content = $1.to_s, $2.to_s
-              instance = constant(klass).new(content) rescue nil
-              break unless instance and instance.respond_to?(:render)
-              hash = demunge_passed_variables(params)
-              instance.instance_variable_set("@hash", hash)
-              instance.render
-            end
-          end
+          transformer = (params[-1,1] == '/' ? :without : :with)
+          string = send("transform_#{transformer}_content", string, klass)
         end
         string
+      end
+
+      # transforms elements like:
+      #   <Page> some content </Page>
+
+      def transform_with_content(string, klass)
+        string.gsub(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do |m|
+          params, content = $1.to_s, $2.to_s
+          finish_transform(klass, params, content)
+        end
+      end
+
+      # transforms elements like:
+      #   <Page />
+
+      def transform_without_content(string, klass)
+        string.gsub(/<#{klass}( .*?)?\/>/) do |m|
+          params = $1.to_s
+          finish_transform(klass, params, content = '')
+        end
+      end
+
+      # find the element, create an instance, pass it the content
+      # check if it responds to :render and set an instance-variable
+      # called @hash to hold the parameters passed to the element.
+      #
+      # Parameters look like:
+      #   <Page foo="true"> bar </Page>
+      #   <Page foo="true" />
+
+      def finish_transform(klass, params, content)
+        instance = constant(klass).new(content) rescue nil
+
+        return unless instance and instance.respond_to?(:render)
+
+        hash = demunge_passed_variables(params)
+        instance.instance_variable_set("@hash", hash)
+
+        instance.render
       end
 
       # basically processes stuff like
       #   'foo="bar" foobar="baz"'
       # do NOT pass actual objects that cannot be simply read as a string
       # here, the information will be lost.
+      #
+      # Exceptions are true, false, Integers and Floats. They will appear
+      # in their real form (this again is also valid for strings that contain
+      # these values in a way that makes Integer/Float possible to parse them)
+      #
+      # Just remember, walk like a duck, talk like a duck.
 
       def demunge_passed_variables(string)
         string.scan(/\s?(.*?)="(.*?)"/).inject({}) do |hash, (key, value)|
+          value =
+            case value
+            when 'true'  : true
+            when 'false' : false
+            else
+              Integer(value) rescue Float(value) rescue value
+            end
           hash.merge key => value
         end
       end
