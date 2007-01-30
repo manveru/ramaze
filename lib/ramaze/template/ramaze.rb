@@ -69,7 +69,7 @@ module Ramaze::Template
     def render_action(action, *params)
       ctrl_template = send(action, *params).to_s
     rescue => e
-      error e unless e.message =~ /undefined method `#{Regexp.escape(action.to_s)}'/
+      Informer.error e unless e.message =~ /undefined method `#{Regexp.escape(action.to_s)}'/
 
       unless caller.select{|bt| bt[/`render_action'/]}.size > 3
         Dispatcher.respond_action([action, *params].join('/'))
@@ -161,8 +161,8 @@ module Ramaze::Template
 
       _template_ = _out_.join.strip
     rescue Object => ex
-      error "something bad happened while transformation"
-      error ex
+      Informer.error "something bad happened while transformation"
+      Informer.error ex
       #raise Error::Template, "Problem during transformation for: #{request.request_path}"
       {ex.message => _template_}.inspect
     end
