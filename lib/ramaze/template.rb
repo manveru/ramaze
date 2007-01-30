@@ -11,6 +11,8 @@ module Ramaze::Template
   class Template
     extend ::Ramaze::Helper
 
+    trait :public => ( 'lib' / 'public' )
+
     helper :link, :redirect
 
     # This finds the template for the given action on the current controller
@@ -32,21 +34,22 @@ module Ramaze::Template
 
     def self.find_template action
       action = action.to_s
-      custom_template = trait["#{action}_template".intern] ||
-        self.class.trait["#{action}_template".intern]
+      custom_template = ancestral_trait["#{action}_template".intern]
       action = custom_template if custom_template
 
-      path =
+      first_path =
         if template_root = ancestral_trait[:template_root]
-          template_root / action
+          template_root
         else
-          Global.template_root / Global.mapping.invert[self] / action
+          Global.template_root / Global.mapping.invert[self]
         end
-      path = File.expand_path(path)
 
       extensions = ancestral_trait[:template_extensions]
 
-      possible = Dir["#{path}.{#{extensions.join(',')}}"]
+      paths = [ first_path, ancestral_trait[:public], ]
+      paths = paths.map{|pa| File.expand_path(pa / action)}.join(',')
+
+      possible = Dir["{#{paths}}.{#{extensions.join(',')}}"]
       possible.first
     end
 
@@ -56,6 +59,31 @@ module Ramaze::Template
 
     def find_template action
       self.class.find_template(action)
+    end
+
+    def error
+      error = Thread.current[:exception]
+      backtrace = error.backtrace
+      title = error.message
+
+      colors = []
+      min = 160
+      max = 255
+      step = -((max - min) / backtrace.size).abs
+      max.step(min, step) do |color|
+        colors << color
+      end
+
+      backtrace.map! do |line|
+        file, lineno, meth = line.scan(/(.*?):(\d+)(?::in `(.*?)')?/).first
+        lines = __caller_lines__(file, lineno, 5)
+        [ lines, lines.object_id.abs, file, lineno, meth ]
+      end
+
+      @backtrace = backtrace
+      @colors = colors
+      @title = title
+      @coderay = Object.constants.include?('CodeRay')
     end
   end
 end
