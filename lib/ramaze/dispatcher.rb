@@ -16,6 +16,25 @@ module Ramaze
         handle_error(exception)
       end
 
+      # The handle_error method takes an exception and decides based on that
+      # how it is going to respond in case of an error.
+      #
+      # In future this will become more and more configurable, right now
+      # you can provide your own error-method and error.xhtml inside either
+      # your trait[:template_root] or trait[:public].
+      #
+      # As more and more error-classes are being added to Ramaze you will get
+      # the ability to define your own response-pages and/or behaviour like
+      # automatic redirects.
+      #
+      # This feature is only available if your Global.error is true, which is
+      # the default.
+      #
+      # Yes, again, webrick _has_ to be really obscure, I searched for half an hour
+      # and still have not the faintest idea how request_path is related to
+      # request_uri...
+      # anyway, the solution might be simple?
+
       def handle_error exception
         meth_debug :handle_error, exception
         Thread.current[:exception] = exception
@@ -25,7 +44,12 @@ module Ramaze
           Response.new(exception.message, STATUS_CODE[:not_found], 'Content-Type' => 'text/plain')
         else
           if Global.error_page
-            Thread.current[:request].request.params['REQUEST_PATH'] = '/error'
+            req = Thread.current[:request]
+            if Global.adapter == :webrick
+              req.request_uri.path = '/error'
+            else
+              req.request.params['REQUEST_PATH'] = '/error'
+            end
             fill_out
           else
             Response.new(exception.message, STATUS_CODE[:internal_server_error], 'Content-Type' => 'text/plain')
