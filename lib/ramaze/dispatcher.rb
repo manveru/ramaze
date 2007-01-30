@@ -11,13 +11,25 @@ module Ramaze
       def handle orig_request, orig_response
         @orig_request, @orig_response = orig_request, orig_response
         create_response(orig_response, orig_request)
-      rescue Object => e
-        error e
+      rescue Object => exception
+        error(exception)
+        handle_error(exception)
+      end
 
-        if Global.error_page
-          Error::Response.new(e)
+      def handle_error exception
+        meth_debug :handle_error, exception
+        Thread.current[:exception] = exception
+
+        case exception
+        when nil #Error::NoAction, Error::NoController
+          Response.new(exception.message, STATUS_CODE[:not_found], 'Content-Type' => 'text/plain')
         else
-          Response.new(out = '', STATUS_CODE[:internal_error], 'Content-Type' => 'text/html')
+          if Global.error_page
+            Thread.current[:request].request.params['REQUEST_PATH'] = '/error'
+            fill_out
+          else
+            Response.new(exception.message, STATUS_CODE[:internal_server_error], 'Content-Type' => 'text/plain')
+          end
         end
       end
 
@@ -120,7 +132,10 @@ module Ramaze
           paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
           paraction.delete('')
           if controller = Ramaze::Global.mapping[current]
-            if controller.trait[:actionless] or controller.superclass.trait[:actionless]
+            if controller.trait[:actionless] or
+              controller.superclass.trait[:actionless] or
+              paraction == ['error']
+
               action = paraction.shift
               params = paraction
               action = 'index' if action == nil
