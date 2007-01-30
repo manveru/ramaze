@@ -8,7 +8,7 @@
   <body>
     <img id="logo" alt="Ramaze" src="/ramaze.png" />
 
-    <h1>#{@title}></h1>
+    <h1>#{@title}</h1>
 
     <table class="main">
       <tr class="head">
@@ -18,24 +18,31 @@
         <tr id="line_#{hash}" style="background:rgb(#{@colors.shift},70,60);">
           <td>#{file}</td><td>#{lineno}</td><td>#{meth}</td>
         </tr>
-        <tr id="source_#{hash}" class="source">
+        <tr id="source_#{hash}" style="display:none;">
           <td colspan="3">
             <div class="source">
-              <table>
+              <table style="width:100%;">
                 <tr>
                   <td colspan="2">vim #{file} +#{lineno}</td>
                 </tr>
-                <?r lines.each do |llineno, lcode, lcurrent| ?>
-                  <tr class="source" #{'style="background:#faa;"' if lcurrent}>
-                    <td>#{llineno}</td>
-                    <td>
-                      <?r if @codray ?>
-                        #{CodeRay.scan(lcode.to_s, :ruby)}
-                      <?r else ?>
-                        <pre>#{lcode}</pre>
-                      <?r end ?>
-                    </td>
-                  </tr>
+                <?r
+                  if @coderay
+                    code = lines.map{|no, code, cur| code}.join("\n")
+                    line = lines.first[0]
+                    options = {
+                      :wrap => :div,
+                      :line_numbers => :inline,
+                      :line_number_start => line
+                      }
+                 ?>
+                  #{CodeRay.scan(code, :ruby).html(options)}
+                <?r else ?>
+                  <?r lines.each do |llineno, lcode, lcurrent| ?>
+                    <tr class="source" #{'style="background:#faa;"' if lcurrent}>
+                      <td>#{llineno}</td>
+                      <td>#{lcode.rstrip}</td>
+                    </tr>
+                  <?r end ?>
                 <?r end ?>
               </table>
             </div>

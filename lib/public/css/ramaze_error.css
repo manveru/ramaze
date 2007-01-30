@@ -1,9 +1,11 @@
 img#logo {
   float:left;
 }
+
 h1.main {
   text-align: center;
 }
+
 table.main {
   background: #000;
 }
@@ -33,10 +35,6 @@ tr.source_container div table tr {
 
 tr.source_container div table tr.source {
   text-align:left;
-}
-
-tr.source {
-  display: none;
 }
 
 div.source {
