@@ -10,7 +10,7 @@ module Ramaze
   # and also a helper method, look below for more information about it
 
   module Helper
-    include Ramaze::Trinity
+    include Trinity
 
     private
 
