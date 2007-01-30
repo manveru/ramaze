@@ -164,7 +164,7 @@ module Ramaze::Template
       error "something bad happened while transformation"
       error ex
       #raise Error::Template, "Problem during transformation for: #{request.request_path}"
-      _template_
+      {ex.message => _template_}.inspect
     end
 
   end
