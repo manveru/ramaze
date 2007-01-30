@@ -13,7 +13,11 @@ module Ramaze::Template
   class Ramaze < Template
     trait :actionless => false
     trait :template_extensions => %w[rmze xhtml rhtml html]
-    trait :transform_pipeline => [Element, Morpher, self]
+    trait :transform_pipeline => [
+      Element,
+      Morpher,
+      self
+    ]
 
     class << self
       # initializes the handling of a request on the controller.
