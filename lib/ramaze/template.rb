@@ -63,7 +63,7 @@ module Ramaze::Template
 
     def error
       error = Thread.current[:exception]
-      backtrace = error.backtrace
+      backtrace = error.backtrace[0..20]
       title = error.message
 
       colors = []
@@ -83,7 +83,10 @@ module Ramaze::Template
       @backtrace = backtrace
       @colors = colors
       @title = title
-      @coderay = Object.constants.include?('CodeRay')
+      require 'coderay'
+      @coderay = true
+    rescue LoadError => ex
+      @coderay = false
     end
   end
 end
