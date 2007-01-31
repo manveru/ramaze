@@ -78,10 +78,11 @@ Ramaze offers following features at the moment:
 -- WEBrick
 
 - Templates
--- Ramaze
 -- Amrita2
 -- Erubis
+-- Haml
 -- Markaby
+-- Ramaze
 
 - Cache
 -- Hash
