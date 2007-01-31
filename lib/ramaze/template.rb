@@ -4,7 +4,7 @@
 require 'ramaze/helper'
 
 module Ramaze::Template
-  %w[ Ramaze Amrita2 Erubis Markaby ].each do |const|
+  %w[ Amrita2 Erubis Haml Markaby Ramaze ].each do |const|
     autoload(const, "ramaze/template/#{const.downcase}")
   end
 
