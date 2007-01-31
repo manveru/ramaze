@@ -7,11 +7,11 @@
     %p
       = "Here you can pass some stuff if you like, parameters are just passed like this:"
       %br/
-      = link( R(self, @action, :one), :title => 'external/one') 
+      = link( R(self, @action, :one), :title => "#@action/one")
       %br/
-      = link( R(self, @action, :one, :two, :three), :title => 'external/one/two/three') 
+      = link( R(self, @action, :one, :two, :three), :title => "#@action/one/two/three")
       %br/
-      = link( R(self, @action, :one, :foo => :bar), :title => 'external/one?foo=bar') 
+      = link( R(self, @action, :one, :foo => :bar), :title => "#@action/one?foo=bar")
     %div= "The arguments you have passed to this action are:"
       - if @args.empty?
         = "none"

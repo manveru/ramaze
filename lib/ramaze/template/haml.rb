@@ -36,9 +36,7 @@ module Ramaze::Template
 
         return '' unless template
 
-        bound = result.is_a?(Binding) ? result : controller.send(:send, :binding)
-
-        controller.send(:transform, template, bound, file)
+        controller.send(:transform, template)
       rescue Object => ex
         puts ex
         Informer.error ex
@@ -48,10 +46,14 @@ module Ramaze::Template
 
     private
 
-    # Transform any String via Erubis, takes an optional binding and filename
+    # Transform any String via Haml, takes optionally an hash with the haml_options
+    # that you can set also by
+    #   trait :haml_options => {}
+    # if you pass the options it will merge the trait with them. (your options
+    # override the defaults from trait[:haml_options]
 
-    def transform string, bound = binding, file = nil
-      haml = ::Haml::Engine.new(string, ancestral_trait[:haml_options])
+    def transform string, options = {}
+      haml = ::Haml::Engine.new(string, ancestral_trait[:haml_options].merge(options))
       haml.to_html(self)
     end
   end
