@@ -79,8 +79,9 @@ Ramaze offers following features at the moment:
 
 - Templates
 -- Amrita2
--- Erubis
--- Haml
+-- ( Erubis )[http://rubyforge.org/projects/erubis]
+-- ( Haml   )[http://haml.hamptoncatlin.com/]
+-- ( Liquid )[http://home.leetsoft.com/liquid]
 -- Markaby
 -- Ramaze
 
@@ -103,6 +104,7 @@ Ramaze offers following features at the moment:
 -- Sessions
 -- Global configuration system
 -- Simple request/response handling
+-- Custom Error-handling
 
 
 ================================================================================
