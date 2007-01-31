@@ -24,7 +24,7 @@ module Ramaze::Template
         out
 
       rescue Object => ex
-        Inform.error ex
+        Informer.error ex
         raise Ramaze::Error::NoAction, "No Action found for #{request.request_path}"
       end
     end

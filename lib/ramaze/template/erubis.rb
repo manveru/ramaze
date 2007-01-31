@@ -37,7 +37,7 @@ module Ramaze::Template
         controller.send(:transform, template, bound, file)
       rescue Object => ex
         puts ex
-        Inform.error ex
+        Informer.error ex
         ''
       end
     end
