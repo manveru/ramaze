@@ -49,5 +49,4 @@ class MainController < Template::Markaby
   end
 end
 
-Global.mode = :debug
 Ramaze.start
