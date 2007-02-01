@@ -68,41 +68,48 @@ Rake::GemPackageTask.new(spec) do |p|
     p.gem_spec = spec
 end
 
+desc "package and install ramaze"
 task :install do
   name = "#{NAME}-#{VERS}.gem"
   sh %{rake package}
   sh %{sudo gem install pkg/#{name}}
 end
 
+desc "uninstall the ramaze gem"
 task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
 end
 
+desc "sanitize the code and darcs record"
 task :record => ['fix-end-spaces', 'add-copyright'] do
   system("darcs", "record")
-  system("rake", "changes")
 end
 
+desc "create the doc/changes.xml"
 task 'changes-xml' do
   File.open('doc/changes.xml', 'w+') do |f|
     f.print(`darcs changes --xml`)
   end
 end
 
+desc "create the doc/changes.txt"
 task 'changes-text' do
   File.open('doc/changes.txt', 'w+') do |f|
     f.print(`darcs changes --human-readable`)
   end
 end
 
+desc "create both doc/changes.txt and doc/changes.xml"
 task :changes => ['changes-xml', 'changes-text'] do
   puts(`darcs changes`.split("\n").first(25))
 end
 
+desc "copy the doc/changes.txt to doc/CHANGELOG"
 task :changelog => :changes do
   cp 'doc/changes.txt', 'doc/CHANGELOG'
 end
 
+desc "add copyright to all .rb files in the distribution"
 task 'add-copyright' do
   puts "adding copyright to files that don't have it currently"
   Dir['{lib,test}/**/*{.rb}'].each do |file|
@@ -127,7 +134,7 @@ task :rcov_dir do
 end
 
 require 'spec/rake/spectask'
-desc "Generate HTML report for failing tests"
+desc "Generate HTML coverage report"
 Spec::Rake::SpecTask.new(:rcov_summary => :rcov_dir) do |t|
   t.spec_files = FileList['test/tc_adapter.rb']
   t.spec_opts = ["--format", "html"]
@@ -135,16 +142,19 @@ Spec::Rake::SpecTask.new(:rcov_summary => :rcov_dir) do |t|
   t.fail_on_error = false
 end
 
+desc "run the specs and clean up afterwards"
 task :test do
   system("ruby",  File.dirname(__FILE__) + '/lib/test/all_tests.rb')
   sh "rake clean"
 end
 
+desc "generate rdoc"
 task :rdoc do
   dirs = %w[ doc/README lib doc ].join(' ')
   sh %{rdoc --op rdoc --all --main doc/README #{dirs}}
 end
 
+desc "list all still undocumented methods"
 task :undocumented do
   files = Dir[File.join('lib', '**', '*.rb')]
 
@@ -172,6 +182,7 @@ task :undocumented do
   end
 end
 
+desc "show a todolist from all the TODO tags in the source"
 task :todo do
   files = Dir[File.join(BASEDIR, '{lib,test}', '**/*.rb')]
 
@@ -201,6 +212,7 @@ task :todo do
   end
 end
 
+desc "generate doc/TODO from the TODO tags in the source"
 task 'todolist' do
   list = `rake todo`.split("\n")[2..-1]
   tasks = {}
@@ -224,11 +236,14 @@ task 'todolist' do
   end
 end
 
+desc "show how many patches we made so far"
 task :patchsize do
   size = `darcs changes`.split("\n").reject{|l| l =~ /^\s/ or l.empty?}.size
   puts "currently we got #{size} patches"
+  puts "shall i now play some Death-Metal for you?" if size == 666
 end
 
+desc "remove those annoying spaces at the end of lines"
 task 'fix-end-spaces' do
   Dir['{lib,test}/**/*.rb'].each do |file|
     lines = File.readlines(file)
