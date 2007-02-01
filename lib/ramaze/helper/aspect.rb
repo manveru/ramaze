@@ -149,7 +149,7 @@ module Ramaze
       end
 
       wrapping.each do |meth|
-        trait[:aspects][kind][meth] = meths
+        ancestral_trait[:aspects][kind][meth] = meths
       end
     end
 
@@ -157,7 +157,7 @@ module Ramaze
 
     def resolve_aspect(action)
       action = action.to_sym
-      aspects = Traits[self.class][:aspects]
+      aspects = ancestral_trait[:aspects]
       {
         :pre  => aspects[:pre][action],
         :post => aspects[:post][action]
