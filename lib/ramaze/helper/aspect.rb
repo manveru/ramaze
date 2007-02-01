@@ -175,7 +175,6 @@ module Ramaze
 
       if pre
         arity = arity_for[pre].abs
-        p :arity => arity
         pre_content = old_render(pre, *params[0,arity]) if pre
       end
 
