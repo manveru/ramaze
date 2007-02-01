@@ -19,7 +19,7 @@ require 'net/http'
 
 module StatelessContext
   def raw_get url = ''
-    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".squeeze('/')
     Timeout.timeout(1) do
       open(url)
     end
@@ -34,7 +34,7 @@ module StatelessContext
   # POST to an url the given params
 
   def post url = '', params = {}
-    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".gsub(/^\/+/, '/')
+    url = "http://localhost:#{Ramaze::Global.port}" + "/#{url}".squeeze('/')
     uri = URI.parse(url)
     Timeout.timeout(1) do
       res = Net::HTTP.post_form(uri, params)
@@ -55,15 +55,28 @@ class Context
 
   # initialize the context with an url to obtain your cookie
 
-  def initialize(url = '/')
-    @cookie_url = url
+  def initialize(url = '/', base = nil)
+    @base = base
+    @cookie_url = with_base(url)
+    @history = []
     reset
+  end
+
+  def with_base(url = '/')
+    url = url.to_s.squeeze('/')
+    if @base
+      unless url[0...@base.size] == @base
+        url = [@base,  url].join('/')
+      end
+    end
+    result = url.strip.squeeze('/')
+    result
   end
 
   # reset your session
 
   def reset(url = @cookie_url)
-    @cookie = obtain_cookie(url)
+    @cookie = obtain_cookie( with_base(url) )
   end
 
   # just get a cookie, doesn't reset your session
@@ -78,7 +91,15 @@ class Context
   # any headers you wanna use for the request
 
   def open url, hash = {}
-    Kernel.open("http://localhost:#{Global.port}#{url}", hash)
+    unless @history.empty?
+      hash = {'HTTP_REFERER' => @history.last}.merge(hash)
+    end
+    url = with_base(url)
+    uri = "http://localhost:#{Global.port}#{url}"
+    puts "GET: #{uri}"
+    result = Kernel.open(uri, hash)
+    @history << url
+    result
   end
 
   # use Context#open with our cookie
@@ -96,10 +117,13 @@ class Context
 
     params['Set-Cookie'] = @cookie
     url = "http://localhost:#{Ramaze::Global.port}"
-    url << "/#{url_param.gsub(url, '')}".squeeze('/')
+    new = with_base("/#{url_param.gsub(url, '')}")
+    url << new
 
     uri = URI.parse(url)
+    puts "POST: #{uri}"
     res = Net::HTTP.post_form(uri, params)
+    @history << uri.path
 
     case res
     when Net::HTTPSuccess
