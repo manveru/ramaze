@@ -198,5 +198,29 @@ module Ramaze
     def local?
       remote_addr == '127.0.0.1'
     end
+
+    # Is the request coming from a local network?
+
+    def local_net?(ip = remote_addr)
+      bip = ip.split('.').map{ |x| x.to_i }.pack('C4').unpack('N')[0]
+
+      # 127.0.0.1/32    => 2130706433
+      # 192.168.0.0/16  => 49320
+      # 172.16.0.0/12   => 2753
+      # 10.0.0.0/8      => 10
+
+      { 0 => 2130706433, 16 => 49320, 20 => 2753, 24 => 10}.each do |s,c|
+        return true if (bip >> s) == c
+      end
+
+      return false
+    end
+
+    # check the referer from which the browser came
+    # '/' if no referer given.
+
+    def referer
+      headers['HTTP_REFERER'] || '/'
+    end
   end
 end

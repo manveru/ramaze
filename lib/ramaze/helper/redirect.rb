@@ -42,7 +42,7 @@ module Ramaze
     # redirect to the location the browser says it's coming from.
 
     def redirect_referer
-      redirect request.header['referer']
+      redirect request.referer
     end
   end
 end
