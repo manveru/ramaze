@@ -1,7 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-module Ramaze::Template
+module Ramaze
 
   # an Element is almost like an Controller, however, instead
   # of connecting actions to templates it is only used in
