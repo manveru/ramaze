@@ -30,11 +30,7 @@ module Ramaze
     def login
       if check_auth(request['username'], request['password'])
         session[:logged_in] = true
-        if inside_stack?
-          answer
-        else
-          redirect R(self)
-        end
+        inside_stack? ? answer : redirect( R(self) )
       else
         %{
           <#{AUTH_ELEMENT}>
@@ -55,29 +51,70 @@ module Ramaze
 
     def logout
       session.clear
-      redirect R(self)
+      redirect_referer
     end
 
     private
 
-    # redirects if not logged in to index
+    # call( R(self, :login) ) if not logged in
 
-    def logged_in?
-      call(R(self, :login)) unless check_login
+    def login_required
+      call(R(self, :login)) unless logged_in?
     end
 
     # checks if the user is already logged in.
+    #   session[:logged_in] is not nil/false
 
-    def check_login
-      session[:logged_in]
+    def logged_in?
+      !!session[:logged_in]
     end
 
+    # check the authentication (username and password) against the auth_table.
+    #
+    # auth_table is a trait, it may be the name of a method, a Proc or a simple
+    # Hash.
+    # If it is neither of the above it has at least to respond to #[]
+    # which will pass it the username as key and it should answer with the
+    # password as a SHA1.hexdigest.
+    #
+    # The method and Proc are both called on demand.
+    #
+    # If you want to change the way the password is hashed, change
+    #   trait[:auth_hashify]
+    #
+    # The default looks like:
+    #   lambda{ |pass| Digest::SHA1.hexdigest(pass.to_s) }
+    #
+    # As with the auth_table, this has to be an object that responds to #[]
+    #
+    # If you want all your controllers to use the same mechanism set the trait
+    # on one of the ancestors, the traits are looked up by #ancestral_trait
+    #
+    # Examples:
+    #
+    #   # The method to be called.
+    #   trait :auth_table => :auth_table
+    #   trait :auth_tagle => 'auth_table'
+    #
+    #   # Lambda that will be called upon demand
+    #   trait :auth_table => lambda{ {'manveru' => SHA1.hexdigest 'password'} }
+    #
+    #   # Hash holding the data.
+    #   trait :auth_table => {'manveru' => SHA1.hexdigest('password')}
+
     def check_auth user, pass
-      authtable = {
-        'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'
-      }
-      password = Digest::SHA1.hexdigest(pass.to_s)
-      authtable[user.to_s] == password
+      auth_table = ancestral_trait[:auth_table] ||= {}
+
+      auth_table = method(auth_table) if auth_table.is_a?(Symbol)
+      auth_table = method(auth_table) if auth_table.respond_to?(:to_str)
+      auth_table = auth_table.call    if auth_table.respond_to?(:call)
+
+      default_hashify = lambda{ |pass| Digest::SHA1.hexdigest(pass.to_s) }
+
+      hashify  = (ancestral_trait[:auth_hashify] ||= default_hashify)
+      password = hashify[pass.to_s]
+
+      auth_table[user.to_s] == password
     end
   end
 end
