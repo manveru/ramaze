@@ -29,7 +29,7 @@ failures = 0
 problematic = {}
 
 Dir['test/**/tc_*.rb'].each do |test_case|
-  print "rspec #{test_case.ljust(50)} "
+  print "rspec #{test_case.ljust(48)} "
   out = `ruby #{test_case}`
   out.split("\n").each do |line|
     if line =~ /(\d+) specifications?, (\d+) failures?/
@@ -61,8 +61,13 @@ problematic.each do |key, value|
   puts "-" * 80
 end
 
-puts "Total: #{specs} contexts, #{failures} failures"
+puts
+puts "#{specs} specifications, #{failures} failures"
+puts
 
-if problems = problematic.keys.join(', ')
+unless (problems = problematic.keys.join(', ')).empty?
   puts "These failed: #{problems}"
+else
+  puts "No failing specifications, let's add some tests!"
 end
+puts
