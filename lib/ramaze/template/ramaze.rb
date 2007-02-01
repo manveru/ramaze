@@ -84,7 +84,7 @@ module Ramaze::Template
     # Render the template.
 
     def render_template(action, *params)
-      find_template(action)
+      File.read(find_template(action)) rescue nil
     end
 
     # go through the pipeline and call #transform on every object found there,
