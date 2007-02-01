@@ -12,6 +12,10 @@ class TCRedirectHelperController < Template::Ramaze
     self.class.name
   end
 
+  def noop
+    'noop'
+  end
+
   def redirection
     redirect :index
   end
@@ -19,17 +23,29 @@ class TCRedirectHelperController < Template::Ramaze
   def double_redirection
     redirect :redirection
   end
+
+  def redirect_referer_action
+    redirect_referer
+  end
 end
 
 context "RedirectHelper" do
   ramaze(:mapping => {'/' => TCRedirectHelperController})
 
+  ctx = Context.new
+
   specify "testrun" do
-    get('/').should      == "TCRedirectHelperController"
+    ctx.get('/').should == "TCRedirectHelperController"
   end
 
   specify "calls" do
-    get('/redirection').should              == "TCRedirectHelperController"
-    get('/double_redirection').should       == "TCRedirectHelperController"
+    ctx.get('/redirection').should        == "TCRedirectHelperController"
+    ctx.get('/double_redirection').should == "TCRedirectHelperController"
+  end
+
+  specify "redirect to referer" do
+    ctx.get('/redirect_referer_action').should == 'TCRedirectHelperController'
+    ctx.get('/noop').should                    == 'noop'
+    ctx.get('/redirect_referer_action').should == 'noop'
   end
 end
