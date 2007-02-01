@@ -13,6 +13,11 @@ module Ramaze
   # implement your own authentication.
 
   module AuthHelper
+    def self.included(klass)
+      klass.class_eval do
+        helper :aspect, :stack
+      end
+    end
 
     # The default Element to use (if any)
 
@@ -24,10 +29,12 @@ module Ramaze
 
     def login
       if check_auth(request['username'], request['password'])
-        p :session => session
         session[:logged_in] = true
-        p :session => session
-        redirect R(self)
+        if inside_stack?
+          answer
+        else
+          redirect R(self)
+        end
       else
         %{
           <#{AUTH_ELEMENT}>
@@ -47,7 +54,6 @@ module Ramaze
     # current controller.
 
     def logout
-      p :logout => session
       session.clear
       redirect R(self)
     end
@@ -57,13 +63,12 @@ module Ramaze
     # redirects if not logged in to index
 
     def logged_in?
-      redirect R(self) unless check_login
+      call(R(self, :login)) unless check_login
     end
 
     # checks if the user is already logged in.
 
     def check_login
-      p :check_login => session[:logged_in]
       session[:logged_in]
     end
 
@@ -72,10 +77,6 @@ module Ramaze
         'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'
       }
       password = Digest::SHA1.hexdigest(pass.to_s)
-      p :user => user, :pass => pass, :hash => password
-      p authtable
-      p authtable[user.to_s]
-      p authtable[user.to_s] == password
       authtable[user.to_s] == password
     end
   end
