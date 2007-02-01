@@ -15,19 +15,47 @@ class TCAuthHelperController < Template::Ramaze
   def secured
     "Secret content"
   end
-  pre :secured, :logged_in?
+  pre :secured, :login_required
+end
+
+class TCAuthHashHelperController < TCAuthHelperController
+  trait :auth_table => {
+      'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'
+    }
+end
+
+class TCAuthMethodHelperController < TCAuthHelperController
+  trait :auth_table => :auth_table
+
+  def auth_table
+    { 'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8' }
+  end
+end
+
+class TCAuthLambdaHelperController < TCAuthHelperController
+  trait :auth_table => lambda{
+      { 'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8' }
+    }
 end
 
 context "StackHelper" do
-  ramaze(:mapping => {'/' => TCAuthHelperController})
+  ramaze
+  [
+    TCAuthHashHelperController,
+    TCAuthMethodHelperController,
+    TCAuthLambdaHelperController
+  ].each do |controller|
+    p controller
+    ctx = Context.new('/session_inspect', Global.mapping.invert[controller])
 
-  ctx = Context.new '/session_inspect'
-
-  specify "checking security" do
-    ctx.get('/secured').should == ''
-    ctx.get('/secured').should == ''
-    ctx.post('/login', :username => 'manveru', :password => 'password').should == 'Secret content'
-    ctx.get('/secured').should == 'Secret content'
-    ctx.get('/secured').should == 'Secret content'
+    specify "checking security" do
+      ctx.get('secured').should == ''
+      ctx.get('secured').should == ''
+      ctx.post('login', :username => 'manveru', :password => 'password').should == 'Secret content'
+      ctx.get('secured').should == 'Secret content'
+      ctx.get('secured').should == 'Secret content'
+      ctx.get('logout').should == ''
+      ctx.get('secured').should == ''
+    end
   end
 end
