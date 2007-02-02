@@ -3,7 +3,7 @@
 
 require 'spec/spec_helper'
 
-require 'ramaze/tool/tidy'
+testcase_requires 'tidy', 'ramaze/tool/tidy'
 
 include Ramaze::Tool::Tidy
 

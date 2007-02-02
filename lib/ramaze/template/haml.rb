@@ -6,8 +6,6 @@ require 'haml/engine'
 
 module Ramaze::Template
   class Haml < Template
-    extend Ramaze::Helper
-
     trait :actionless => false
     trait :template_extensions => %w[haml]
     trait :haml_options => {

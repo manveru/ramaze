@@ -3,6 +3,8 @@
 
 require 'spec/spec_helper'
 
+testcase_requires 'mongrel'
+
 include Ramaze
 
 class TCAdapterController < Template::Ramaze

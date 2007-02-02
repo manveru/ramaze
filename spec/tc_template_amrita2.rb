@@ -3,6 +3,8 @@
 
 require 'spec/spec_helper'
 
+testcase_requires 'amrita2'
+
 include Ramaze
 
 class TCTemplateAmritaController < Template::Amrita2

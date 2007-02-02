@@ -25,6 +25,7 @@ require 'ramaze/global'
 require 'ramaze/inform'
 require 'ramaze/http_status'
 require 'ramaze/snippets'
+require 'ramaze/helper'
 require 'ramaze/template'
 require 'ramaze/version'
 

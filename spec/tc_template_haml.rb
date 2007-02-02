@@ -3,6 +3,8 @@
 
 require 'spec/spec_helper'
 
+testcase_requires 'ramaze/template/haml'
+
 include Ramaze
 
 class TCTemplateHamlController < Template::Haml

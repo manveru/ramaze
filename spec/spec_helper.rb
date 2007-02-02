@@ -1,13 +1,15 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-$:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..')
+$:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..', 'lib')
+
 require 'ramaze'
 
 begin
   require 'rubygems'
 rescue LoadError => ex
 end
+
 require 'spec'
 
 require 'timeout'
@@ -195,4 +197,19 @@ module Spec::Runner::ContextEval::ModuleMethods
   def ramaze_teardown
     #Ramaze.teardown
   end
+end
+
+
+# require each of the following and rescue LoadError, telling you why it failed.
+
+def testcase_requires(*following)
+  following.each do |file|
+    require(file.to_s)
+  end
+rescue LoadError => ex
+  puts ex
+  puts "Can't run #{$0}: #{ex}"
+  puts "Usually you should not worry about this failure, just install the"
+  puts "library and try again (if you want to use that featureit later on)"
+  exit
 end

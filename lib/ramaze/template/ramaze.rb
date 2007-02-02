@@ -13,11 +13,7 @@ module Ramaze::Template
   class Ramaze < Template
     trait :actionless => false
     trait :template_extensions => %w[rmze xhtml rhtml html]
-    trait :transform_pipeline => [
-      Element,
-      Morpher,
-      self
-    ]
+    trait :transform_pipeline => [ Element, Morpher, self ]
 
     class << self
       # initializes the handling of a request on the controller.
@@ -91,7 +87,7 @@ module Ramaze::Template
     # passing the template at that point.
     # the order and contents of the pipeline are determined by an array
     # in trait[:template_pipeline]
-    # the default being [self, Element]
+    # the default being [Element, Morpher, self]
 
     def pipeline(template)
       transform_pipeline = ancestral_trait[:transform_pipeline]

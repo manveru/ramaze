@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-begin
-  require 'og'
-  require 'glue/timestamped'
+testcase_requires 'og', 'glue/timestamped'
 
 class Entry
   attr_accessor :title, String
@@ -145,9 +143,4 @@ context "FormHelper" do
       end
     end
   end
-end
-
-rescue LoadError => ex
-  puts ex
-  puts "Won't run #{__FILE__} unless you install og"
 end

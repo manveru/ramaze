@@ -3,6 +3,8 @@
 
 require 'spec/spec_helper'
 
+testcase_requires 'liquid'
+
 include Ramaze
 
 module ProductsFilter

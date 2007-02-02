@@ -3,6 +3,8 @@
 
 require 'spec/spec_helper'
 
+testcase_requires 'erubis'
+
 include Ramaze
 
 class TCTemplateErubisController < Template::Erubis

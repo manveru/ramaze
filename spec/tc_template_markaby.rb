@@ -2,10 +2,8 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/spec_helper'
-begin
-  require 'rubygems'
-rescue LoadError
-end
+
+testcase_requires 'markaby'
 
 include Ramaze
 
