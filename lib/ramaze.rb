@@ -143,6 +143,11 @@ module Ramaze
 
   def setup_controllers
     Global.mapping ||= {}
+
+    Global.mapping.dup.each do |route, controller|
+      Global.mapping[route] = constant(controller.to_s)
+    end
+
     mapping = {}
 
     Global.controllers.each do |c|
