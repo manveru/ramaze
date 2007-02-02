@@ -8,6 +8,8 @@
 #
 # ramaze [switches] startfile [arguments]
 #
+# --create:: create a new application based on proto
+#
 # -m, --mongrel:: use mongrel to process requests
 # -w, --webrick:: the default
 #
@@ -67,6 +69,7 @@ begin
   #   REQUIRED_ARGUMENT, NO_ARGUMENT, OPTIONAL_ARGUMENT
 
   opts = GetoptLong.new *[
+    [ '--create',               GetoptLong::REQUIRED_ARGUMENT ],
     [ '--mongrel',        '-m', GetoptLong::NO_ARGUMENT       ],
     [ '--webrick',        '-w', GetoptLong::NO_ARGUMENT       ],
 
@@ -91,12 +94,17 @@ begin
 
   options = {:force_setup => true}
 
+  create = lambda do |app|
+    Ramaze::Tool::Create.create(app)
+  end
+
   opts.each do |opt, arg|
     sopt = opt[2..-1].gsub('-', '_').intern
 
     options[:inform_tags] = Set.new([:debug, :info, :error])
 
     case sopt
+    when :create            : create[arg]
     when :help              : RDoc::usage('Usage')
     when :version           : RDoc::usage('Version')
     when :copyright         : RDoc::usage('Copyright')
