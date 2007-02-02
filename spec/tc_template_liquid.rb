@@ -1,7 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'lib/test/test_helper'
+require 'spec/spec_helper'
 
 include Ramaze
 
@@ -25,7 +25,7 @@ end
 
 
 class TCTemplateLiquidController < Template::Liquid
-  trait :template_root => 'test/template/liquid/'
+  trait :template_root => 'spec/template/liquid/'
   trait :liquid_options => { :filters => ProductsFilter }
 
   def index

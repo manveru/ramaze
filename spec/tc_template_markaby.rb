@@ -1,7 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'lib/test/test_helper'
+require 'spec/spec_helper'
 begin
   require 'rubygems'
 rescue LoadError
@@ -10,7 +10,7 @@ end
 include Ramaze
 
 class TCTemplateMarkabyController < Template::Markaby
-  trait :template_root => 'test/template/markaby/'
+  trait :template_root => 'spec/template/markaby/'
 
   def index
     mab { h1 "Markaby Index" }

@@ -28,7 +28,7 @@ specs = 0
 failures = 0
 problematic = {}
 
-Dir['test/**/tc_*.rb'].each do |test_case|
+Dir['spec/**/tc_*.rb'].each do |test_case|
   print "rspec #{test_case.ljust(48)} "
   out = `ruby #{test_case}`
   out.split("\n").each do |line|
