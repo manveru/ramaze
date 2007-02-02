@@ -1,4 +1,4 @@
-class Page < Ramaze::Element
+class Page < Element
   include Trinity
   helper :auth
 

@@ -1,6 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'yaml'
 require 'bluecloth'
 require 'ramaze'
 
@@ -10,11 +11,6 @@ include Ramaze
 require 'src/controller'
 require 'src/element'
 
-Global.setup do |g|
-  g.template_root = 'template'
-  g.mapping = {
-    '/'       => MainController,
-  }
-end
+Global.setup(YAML.load_file('conf/global.yaml'))
 
 start
