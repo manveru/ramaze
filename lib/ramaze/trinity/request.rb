@@ -21,6 +21,17 @@ module Ramaze
   class Request
     attr_accessor :request, :post_query, :get_query, :puts_query, :get_query
 
+    class << self
+
+      # get the current request out of Thread.current[:request]
+      #
+      # You can call this from everywhere with Ramaze::Request.current
+
+      def current
+        Thread.current[:request]
+      end
+    end
+
     # create a new instance of Request, takes the original request-object
     # and runs #parse_queries to extract/process the information inside
 

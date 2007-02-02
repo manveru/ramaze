@@ -18,7 +18,9 @@ module Ramaze
 
     class << self
 
-      # the current session, you can call this from everywhere with Ramaze::Session.current
+      # Get the current session out of Thread.current[:session]
+      #
+      # You can call this from everywhere with Ramaze::Session.current
 
       def current
         Thread.current[:session]
