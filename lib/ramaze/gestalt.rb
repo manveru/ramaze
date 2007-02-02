@@ -30,19 +30,52 @@ Example:
 =end
 
 module Ramaze
+
+  # Gestalt is the custom HTML/XML builder for Ramaze, based on a very simple
+  # DSL it will build your markup.
+
   class Gestalt
+    attr_accessor :out
+
+    # The default way to start building your markup.
+    # Takes a block and returns the markup.
+    #
+    # Example:
+    #   html =
+    #     Gestalt.build do
+    #       html do
+    #         head do
+    #           title "Hello, World!"
+    #         end
+    #         body do
+    #           h1 "Hello, World!"
+    #         end
+    #       end
+    #     end
+    #
+
     def self.build &block
       self.new(&block).to_s
     end
+
+    # Gestalt.new is like ::build but will return itself.
+    # you can either access #out or .to_s it, which will
+    # return the actual markup.
+    #
+    # Useful for distributed building of one page.
 
     def initialize &block
       @out = ''
       instance_eval(&block) if block_given?
     end
 
+    # catching all the tags. passing it to _gestalt_build_tag
+
     def method_missing meth, *args, &block
       _gestalt_build_tag meth, *args, &block
     end
+
+    # workaround for Kernel#p to make <p /> tags possible.
 
     def p *args, &block
       _gestalt_build_tag :p, *args, &block
@@ -50,6 +83,7 @@ module Ramaze
 
     # build a tag for `name`, using `args` and an optional block that
     # will be yielded
+
     def _gestalt_build_tag name, args = []
       @out << "<#{name}"
       if block_given?
@@ -64,12 +98,11 @@ module Ramaze
       end
     end
 
+    # @out.to_s
+
     def to_s
       @out.to_s
     end
-
-    def to_str
-      to_s
-    end
+    alias to_str to_s
   end
 end
