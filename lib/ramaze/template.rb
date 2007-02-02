@@ -11,7 +11,7 @@ module Ramaze::Template
   class Template
     extend ::Ramaze::Helper
 
-    trait :public => ( ::Ramaze::BASEDIR / 'public' )
+    trait :public => ( ::Ramaze::BASEDIR / 'proto' / 'public' )
 
     helper :link, :redirect
 
