@@ -1,9 +1,7 @@
            Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
   All files in this distribution are subject to the terms of the Ruby license.
 
-================================================================================
-****************************** Readme for Ramaze *******************************
-================================================================================
+= Readme for Ramaze
 
 Ramaze is a very simple and straight-forward web-framework.
 The philosophy of it could be expressed in a mix of KISS and POLS, trying to
@@ -35,81 +33,109 @@ Not to mention that introducing another web framework for your own would be
 quite odd ;)
 
 
-================================================================================
-************************** Basic Principles of Ramaze **************************
-================================================================================
+== Basic Principles of Ramaze
 
 There are some basic principles that Ramaze tries to follow:
 
-- Test everything
+* Test everything
   what use is a wonderful application if it doesn't work?
 
-- Document everything
+* Document everything
   documentation is the glue between the code and the programmers brain
 
-- Keep It Super Simple (KISS)
+* Keep It Super Simple (KISS)
   most things should be understandable after reading them once
 
-- Principle Of Least Surprise (POLS)
+* Principle Of Least Surprise (POLS)
   going the way of ruby
 
-- Modular design
+* Modular design
   making it as simple as possible to extract parts
 
-- Minimal dependencies
+* Minimal dependencies
   in case a dependency is not met use a simple fall-back instead
 
-- Provide as many examples as possible
+* Provide as many examples as possible
   examples are a superior way of getting a quick start into everything
 
-- Open development
+* Open development
   I happily accept all patches or feature-requests that you may have,
   as long as they comply with these principles
 
 
-================================================================================
-*************************** Quick features overview ****************************
-================================================================================
+== Quick features overview
 
 Ramaze offers following features at the moment:
 
-- Adapters
--- Mongrel
--- WEBrick
+* Adapters
+  * Mongrel
+    http://mongrel.rubyforge.org/
+    Mongrel is a fast HTTP library and server for Ruby that is intended for
+    hosting Ruby web applications of any kind using plain HTTP rather than
+    FastCGI or SCGI.
 
-- Templates
--- Amrita2
--- ( Erubis )[http://rubyforge.org/projects/erubis]
--- ( Haml   )[http://haml.hamptoncatlin.com/]
--- ( Liquid )[http://home.leetsoft.com/liquid]
--- Markaby
--- Ramaze
-
-- Cache
--- Hash
--- YAML::Store
--- MemCache
-
-- Helper
--- Aspect
--- Auth
--- Cache
--- Feed
--- Form
--- Link
--- Redirect
--- Stack
-
-- Various
--- Sessions
--- Global configuration system
--- Simple request/response handling
--- Custom Error-handling
+  * WEBrick
+    http://www.webrick.org/
+    WEBrick is a Ruby library program to build HTTP servers.
 
 
-================================================================================
-******************************* Getting started ********************************
-================================================================================
+* Templates
+  * Amrita2
+
+    http://amrita2.rubyforge.org/
+    Amrita2 is a a xml/xhtml template library for Ruby. It makes html documents
+    from a template and a model data.
+
+  * Erubis
+
+    http://rubyforge.org/projects/erubis
+    Erubis is a fast, secure, and very extensible implementation of eRuby.
+
+  * Haml
+
+    http://haml.hamptoncatlin.com/
+    Haml is a refreshing take that is meant to free us from the shitty
+    templating languages we have gotten used to.
+
+  * Liquid
+
+    http://home.leetsoft.com/liquid
+    Liquid's syntax and parse model are inspired by Django templates, as well
+    as PHP's smarty.
+
+  * Markaby
+
+    http://code.whytheluckystiff.net/markaby/
+    Markaby means Markup as Ruby.
+
+  * Ramaze
+
+    A simple homage to Nitros templating. Please check out http://nitroproject.org
+    for more information.
+
+* Cache
+  * Hash
+  * YAML::Store
+  * MemCache
+
+* Helper
+  * Aspect
+  * Auth
+  * Cache
+  * Feed
+  * Form
+  * Link
+  * Redirect
+  * Stack
+
+* Various
+  * Sessions
+  * Global configuration system
+  * Simple request/response handling
+  * Custom Error-handling
+
+
+== Getting started
 
 Now that you have a vague idea of what you're about to get into you might just
 want to get a way to get up and running ASAP.
@@ -130,35 +156,43 @@ Some places to get started are:
 - Look at the examples and run/modify them.
 
 
-================================================================================
-********************************* Installation *********************************
-================================================================================
+== Installation
 
-- via RubyGems
-  The simplest way of installing Ramaze is via `gem install ramaze` in case you
-  have RubyGems installed.
+* via RubyGems
+
+  The simplest way of installing Ramaze is via 
+
+    $ gem install ramaze
+
+  in case you have RubyGems installed.
   (this will work as soon as I have registered on RubyForge ;)
 
-- via install.rb
+* via install.rb
+
   Ramaze provides a basic install.rb that should take care of the installation
-  you can use it like `ruby install.rb`, you might need root-privileges to do
+  you can use it like 
+
+    $ ruby install.rb
+
+  you might need root-privileges to do
   that, depending on what options you provide.
   (please note that I haven't tested the install.rb extensively yet, so if you
   find some quirks, please send me patches or a simple note)
 
-- via darcs
+* via darcs
+
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
-  $ darcs get http://manveru.mine.nu/darcs/prog/projects/ramaze
+
+    $ darcs get http://manveru.mine.nu/darcs/prog/projects/ramaze
+
   please read the man page or `darcs help` for more information about updating
   and creating your own patches.
   This is at the moment the premier way to use Ramaze, since it is the way I use
   it.
 
 
-================================================================================
-******************************* Ramaze Examples ********************************
-================================================================================
+== Ramaze Examples
 
 There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
@@ -181,62 +215,44 @@ For more information about the usage of ramaze try:
 
 Examples include:
 
-- examples/hello.rb
+* examples/hello.rb
   Hello, World!
 
-- examples/simple.rb
+* examples/simple.rb
   A bit more advanced than the hello-example, but still very basic.
 
-- examples/blog
+* examples/blog
   Not yet fully functional, but coming along.
 
-- examples/whywiki
+* examples/whywiki
   A basic examples of a minimalistic application, based on the Wiki of _why in
   his camping-framework.
 
-- examples/templates
+* examples/templates
   examples of real usage of the templating-engines. Tries to implement the same
   functionality in each template_*.rb file using a different engine.
 
 
-================================================================================
-******************************* Classes Overview *******************************
-================================================================================
+== good to know
 
-- module Ramaze
-  The main Name space, just about everything is put in here.
-- Controller
-  The default Controller that acts, depending on your templating-system
-  as the center of your request -> response chain
-- Session
-  provides session-functionality (use `session' in your Controller)
-- Response
-  provides the response for the server, has the current status of your response
-  in your Controller you can see it via `response'
-- Request
-  the request from the client/browser, available with `request'
-- Trinity
-  contains the instances for Request/Response/Session and is included in the
-  Controller
+* Nicer Error-pages
+  * Install coderay (it's a gem)
+
+* Performance
+  * Serving
+  
+    For best performance you should consider using Mongrel to host your
+    application.
+
+  * Caching
+  
+    You can easily cache your pages using the CacheHelper.
+    Also, using MemCache gives you high-end performance and security.
 
 
-================================================================================
-********************************* good to know *********************************
-================================================================================
-
-- Nicer Error-pages
--- Install coderay
-
-- Performance
--- For best performance you should consider using Mongrel to host your
-   application.
--- You can easily cache your pages using the CacheHelper.
-   Also, using MemCache gives you the best choice of caching-technique.
-
-================================================================================
-********************************* Getting Help *********************************
-================================================================================
+== Getting Help
 
 For help you can just join #ramaze on irc.freenode.net.
+
 Or mail me, at m [dot] fellinger [at] gmail [dot] com - I'm happy to provide
 help on anything related to web-development.
