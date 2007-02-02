@@ -8,9 +8,10 @@ end
 
 $:.unshift Ramaze::BASEDIR
 
-require 'socket'
 require 'timeout'
 require 'ostruct'
+require 'socket'
+require 'yaml'
 require 'set'
 require 'pp'
 
@@ -62,11 +63,11 @@ module Ramaze
 
     init_global options
 
-    info "Starting up Ramaze (Version #{VERSION})"
-
     Thread.abort_on_exception = true
 
     return if options.delete(:fake_start)
+
+    info "Starting up Ramaze (Version #{VERSION})"
 
     find_controllers
     setup_controllers

@@ -84,7 +84,7 @@ module Ramaze::Template
 
       backtrace.map! do |line|
         file, lineno, meth = line.scan(/(.*?):(\d+)(?::in `(.*?)')?/).first
-        lines = __caller_lines__(file, lineno, 5)
+        lines = __caller_lines__(file, lineno, Global.inform_backtrace_size)
         [ lines, lines.object_id.abs, file, lineno, meth ]
       end
 

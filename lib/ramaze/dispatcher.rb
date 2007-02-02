@@ -63,7 +63,7 @@ module Ramaze
           if Global.error_page
             req = Thread.current[:request]
 
-            unless (req.request_uri.path = '/error') rescue false
+            unless ((req.request_uri.path = '/error') rescue false)
               req.request.params['REQUEST_PATH'] = '/error'
             end
 
@@ -306,9 +306,9 @@ module Ramaze
 
       def setup_environment orig_response, orig_request
         this = Thread.current
-        this[:response] = build_response('', STATUS_CODE[:ok], 'Content-Type' => 'text/html')
         this[:request]  = Request.new(orig_request)
         this[:session]  = Session.new(request)
+        this[:response] = build_response('', STATUS_CODE[:ok], 'Content-Type' => 'text/html')
       end
     end
   end

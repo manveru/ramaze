@@ -134,7 +134,13 @@ module Ramaze
     def log prefix, *messages
       [messages].flatten.each do |message|
         compiled = %{[#{timestamp}] #{prefix}  #{message}}
-        out = Global.inform_to
+        out =
+          case Global.inform_to
+          when $stdout, :stderr, 'stdout' : $stdout
+          when $stdout, :stderr, 'stderr' : $stderr
+          else
+            File.open(Global.inform_to, 'r+')
+          end
         out.puts(*compiled) unless (out.respond_to?(:closed?) and out.closed?)
       end
     end
