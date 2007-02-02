@@ -139,7 +139,7 @@ module Ramaze
           when $stdout, :stderr, 'stdout' : $stdout
           when $stdout, :stderr, 'stderr' : $stderr
           else
-            File.open(Global.inform_to, 'r+')
+            File.open(Global.inform_to, 'ab+')
           end
         out.puts(*compiled) unless (out.respond_to?(:closed?) and out.closed?)
       end
