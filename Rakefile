@@ -23,15 +23,30 @@ BASEDIR = File.dirname(__FILE__)
 NAME = "ramaze"
 REV = File.read(".svn/entries")[/committed-rev="(d+)"/, 1] rescue nil
 VERS = ENV['VERSION'] || (Ramaze::VERSION + (REV ? ".#{REV}" : ""))
-CLEAN.include ['**/.*.sw?', '*.gem', '.config', '**/*~', '**/data.db', '**/cache.yaml']
-RDOC_OPTS = ['--quiet', '--title', "ramaze documentation",
-    "--opname", "index.html",
-    "--line-numbers", 
-    "--main", "doc/README",
-    "--inline-source"]
+CLEAN.include %w[
+  **/.*.sw?
+  *.gem
+  .config
+  **/*~
+  **/{data.db,cache.yaml}
+  pkg
+  rdoc
+]
+RDOC_OPTS = %w[
+  --all
+  --quiet
+  --inline-source
+  --main doc/README
+  --opname index.html
+  --title Ramze\ documentation
+  --exclude "^(spec|examples|bin|pkg)/"
+  --exclude lib/proto
+]
 
 desc "Packages up ramaze gem."
 task :default => [:test]
+
+desc "clean up temporary files and gems"
 task :package => [:clean]
 
 spec =
@@ -41,7 +56,7 @@ spec =
         s.platform = Gem::Platform::RUBY
         s.has_rdoc = true
         s.extra_rdoc_files = ["doc/README", "doc/CHANGELOG"]
-        s.rdoc_options += RDOC_OPTS + ['--exclude', '^(test|examples|extras)/']
+        s.rdoc_options += RDOC_OPTS
         s.summary = DESCRIPTION
         s.description = DESCRIPTION
         s.author = AUTHOR
@@ -54,12 +69,9 @@ spec =
         #s.add_dependency('activesupport', '>=1.3.1')
         #s.required_ruby_version = '>= 1.8.2'
 
-        s.files = %w(doc/README doc/CHANGELOG Rakefile) +
-          Dir.glob("{bin,doc,test,lib,templates,extras,website,script}/**/*") + 
-          Dir.glob("ext/**/*.{h,c,rb}") +
-          Dir.glob("examples/**/*.rb") +
-          Dir.glob("tools/*.rb")
-        
+        s.files = %w(doc/COPYING doc/TODO doc/README doc/CHANGELOG Rakefile) +
+          Dir["{examples,bin,doc,spec,lib}/**/*"]
+
         # s.extensions = FileList["ext/**/extconf.rb"].to_a
     end
 
@@ -144,14 +156,26 @@ end
 
 desc "run the specs and clean up afterwards"
 task :test do
-  system("ruby",  File.dirname(__FILE__) + '/lib/test/all_tests.rb')
+  sh "ruby #{File.dirname(__FILE__)}/spec/spec_all.rb"
   sh "rake clean"
 end
 
 desc "generate rdoc"
-task :rdoc do
-  dirs = %w[ doc/README lib doc ].join(' ')
-  sh %{rdoc --op rdoc --all --main doc/README #{dirs}}
+Rake::RDocTask.new do |rd|
+  rd.options = %w[
+    --all
+    --quiet
+    --line-numbers
+    --inline-source
+    --title Ramaze\ documentation
+    --opname index.html
+  ]
+
+  rd.rdoc_dir = 'rdoc'
+  rd.rdoc_files = Dir['lib/ramaze/**/*']
+  rd.rdoc_files.push('lib/ramaze.rb', 'doc/README', 'doc/CHANGELOG')
+  rd.main = 'doc/README'
+  rd.title = "Ramaze Documentation"
 end
 
 desc "list all still undocumented methods"
@@ -191,11 +215,11 @@ task :todo do
 
     File.readlines(file).each_with_index do |line, lineno|
       lineno += 1
-      comment = line =~ /^\s*?#.*?$/ 
+      comment = line =~ /^\s*?#.*?$/
       long_comment = line =~ /^=begin/
       long_comment = line =~ /^=end/
       todo = true if line =~ /TODO/ and (long_comment or comment)
-      todo = false if line.gsub('#', '').strip.empty? 
+      todo = false if line.gsub('#', '').strip.empty?
       todo = false unless comment or long_comment
       if todo
         unless lastline and lastline + 1 == lineno
