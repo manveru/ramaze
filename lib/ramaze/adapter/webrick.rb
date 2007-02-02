@@ -51,20 +51,22 @@ module Ramaze::Adapter
   class Webrick
     class << self
 
-      # start an instance of WEBrick and run it inside a new
-      # Thread, setting all the default-options
+      # The method to start a new webrick-adapter on the specified
+      # host/ports, will return the first of the started adapters.
+      #
+      # sets up the default handler for the request/response cycle.
 
       def start host, ports
-        # TODO
-        # - implement graceful shutdown
-        # - implement PUT/DELETE
-
         handler = lambda do |request, response|
           self.new.process(request, response)
         end
 
         ports.map{|port| run_server(host, port, handler) }.first
       end
+
+      # run the actual server on host/port with the handler given.
+      # passes WEBrick::HTTPServlet the default options and starts
+      # it up in a new Thread, setting Thread.current[:adapter]
 
       def run_server host, port, handler
         options = {
@@ -86,6 +88,7 @@ module Ramaze::Adapter
           server.start
         end
       end
+
       # doesn't do anything, for the time being.
 
       def stop

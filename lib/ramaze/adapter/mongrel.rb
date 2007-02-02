@@ -25,12 +25,15 @@ module Ramaze::Adapter
 
     class << self
 
-      # create a new instance of Mongrel::HttpServer and run it
-      # mongrel will give us a new Thread back.
+      # starts a range of servers on the given host/ports.
+      # answers with the first adapter it creates.
 
       def start host, ports
         ports.map{|port| run_server(host, port) }.first
       end
+
+      # run the actual adapter on host/port, answering with the Thread
+      # mongrel creates.
 
       def run_server host, port
         h = ::Mongrel::HttpServer.new host, port
