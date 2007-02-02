@@ -15,6 +15,7 @@ module Ramaze::Template
     }
 
     class << self
+
       # initializes the handling of a request on the controller.
       # Creates a new instances of itself and sends the action and params.
       # Also tries to render the template.

@@ -12,6 +12,11 @@ module Ramaze::Template
     class << self
       include Ramaze::Helper
 
+      # initializes the handling of a request on the controller.
+      # Creates a new instances of itself and sends the action and params.
+      # Also tries to render the template.
+      # In Theory you can use this standalone, this has not been tested though.
+
       def handle_request action, *params
 
         file = find_template(action)
