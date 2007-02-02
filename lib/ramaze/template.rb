@@ -61,6 +61,14 @@ module Ramaze::Template
       self.class.find_template(action)
     end
 
+    # the default error-page handler. you can overwrite this method
+    # in your controller and create your own error-template for use.
+    #
+    # Error-pages can be in whatever the templating-engine of your controller
+    # is set to.
+    #   Thread.current[:exception]
+    # holds the exception thrown.
+
     def error
       error = Thread.current[:exception]
       backtrace = error.backtrace[0..20]
