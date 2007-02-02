@@ -7,6 +7,14 @@ module Kernel
   # get the object of the method you are currently in or any
   # other out of the backtrace, as long as it is in the same
   # instance and retrievable via method_get (which is the old #method).
+  #
+  #   class Foo
+  #     def bar
+  #       method
+  #     end
+  #   end
+  #
+  #   Foo.new.bar #=> #<Method: Foo#bar>
 
   def method(n = 0)
     return method_get(n) unless n.is_a? Integer
@@ -16,7 +24,15 @@ end
 
 class Method
 
-  # name of the Method
+  # name of the Method (example shows combination with the new Kernel#method)
+  #
+  #   class Foo
+  #     def bar
+  #       method.name
+  #     end
+  #   end
+  #
+  #   Foo.new.bar #=> 'bar'
 
   def name
     #<Method: A.d>
