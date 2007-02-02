@@ -27,7 +27,7 @@ module Ramaze
 
       def handle orig_request, orig_response
         @orig_request, @orig_response = orig_request, orig_response
-        create_response(orig_response, orig_request)
+        respond(orig_response, orig_request)
       rescue Object => exception
         error(exception)
         handle_error(exception)
@@ -58,28 +58,47 @@ module Ramaze
 
         case exception
         when nil #Error::NoAction, Error::NoController
-          Response.new(exception.message, STATUS_CODE[:not_found], 'Content-Type' => 'text/plain')
+          build_response(exception.message, STATUS_CODE[:not_found])
         else
           if Global.error_page
             req = Thread.current[:request]
-            if Global.adapter == :webrick
-              req.request_uri.path = '/error'
-            else
+
+            unless (req.request_uri.path = '/error') rescue false
               req.request.params['REQUEST_PATH'] = '/error'
             end
+
             fill_out
           else
-            Response.new(exception.message, STATUS_CODE[:internal_server_error], 'Content-Type' => 'text/plain')
+            build_response(exception.message, STATUS_CODE[:internal_server_error])
           end
         end
       end
 
-      # setup the environment (Trinity) and start #fill_out
+      # setup the #setup_environment (Trinity) and start #fill_out
 
-      def create_response orig_response, orig_request
+      def respond orig_response, orig_request
         setup_environment orig_response, orig_request
         fill_out
       end
+
+      #
+
+      def build_response out = '', code = STATUS_CODE[:internal_server_error], head = {}
+        default_head = {
+          'Content-Type' => 'text/plain',
+        }
+
+        if Global.cookies
+          default_head['Set-Cookie'] = session.export
+        else
+          head.delete('Set-Cookie')
+        end
+
+        head = default_head.merge(head)
+
+        Response.new(out, code, head)
+      end
+
 
       # Obtain the path requested from the request and search for a static
       # file matching the request, #respond_file is called if it finds one,
@@ -99,30 +118,100 @@ module Ramaze
         response
       end
 
-      # pushes out the file passed as a string containing the location.
+      # takes a file and sets the response.out to the contents of the file
+      # If you are running mongrel as your adapter it will take advantage of
+      # mongrels #send_file
 
       def respond_file file
         debug "Responding with static file: #{file}"
 
         response.head['Content-Type'] = ''
-        if Global.adapter == :mongrel
+        if @orig_response.respond_to?(:send_file)
           @orig_response.send_file(file)
         else
           response.out = File.read(file)
         end
       end
 
+      # Takes the path, figures out the controller by asking #resolve_controller
+      # for the controller, action and params for the path.
+      #
+      # Sets the cookies in the response.head if Global.cookies is set
+      #
+      # finally it runs #handle_controller
+
       def respond_action path
         debug "Responding with action: #{path}"
 
         controller, action, params = resolve_controller(path)
-        response.head['Set-Cookie'] = session.export if Global.cookies
-
         catch :respond do
           response.out = handle_controller(controller, action, params)
         end
       end
 
+      # find out which controller should be used based on the path.
+      # it will answer [controller, action, params] or raise an
+      #
+      #   Ramaze::Error::NoController # if no controller is found
+      #   Ramaze::Error::NoAction     # if no action but a controller is found
+      #
+      # It actually uses #resolve_action on almost every combination of
+      # so-called paractions (yet unsplit but possible combination of action
+      # and parameters for the action)
+      #
+      # If your templating is action-less, which means it does not depend on
+      # methods on the controller, but rather on templates or just dynamically
+      # calculated stuff you can set trait[:actionless] for your templating.
+      #
+      # Please see the documentation for Ramaze::Template::Amrita2 for an more
+      # specific example of how it is used in practice.
+      #
+      # Further it uses the Global.mapping to look up the controller to be used.
+      #
+      # Also, the action '/' will be expanded to 'index'
+      #
+      # Parameters are CGI.unescaped
+
+      def resolve_controller path
+        meth_debug :resolve_controller, path
+        track = path.split('/')
+        controller = false
+        action = false
+        tracks = []
+
+        track.unshift '/'
+
+        track.each do |atom|
+          tracks << (tracks.last.to_s / atom)
+        end
+
+        until controller and action or tracks.empty?
+          current = Regexp.escape(tracks.pop.to_s)
+          paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
+          paraction.delete('')
+          if controller = Ramaze::Global.mapping[current]
+            if controller.ancestral_trait[:actionless] or paraction == ['error']
+
+              action = paraction.shift
+              params = paraction
+              action = 'index' if action == nil
+            else
+              action, params = resolve_action controller, paraction
+            end
+          end
+        end
+
+        raise Ramaze::Error::NoController, "No Controller found for #{path}" unless controller
+        raise Ramaze::Error::NoAction, "No Action found for #{path}" unless action
+
+        return controller, action, params
+      end
+
+      # Resolve the method to be called and the number of parameters
+      # it will receive for a specific class (the controller) given the
+      # paraction (like 'foo/bar' => controller.call('foo', 'bar'))
+      # in case arity is 1 and a public instance-method named foo is defined.
+      #
       # TODO:
       # - find a solution for def x(a = :a) which has arity -1
       #   identical to def x(*a) for some odd reason
@@ -164,42 +253,9 @@ module Ramaze
         end
       end
 
-      def resolve_controller path
-        meth_debug :resolve_controller, path
-        track = path.split('/')
-        controller = false
-        action = false
-        tracks = []
-
-        track.unshift '/'
-
-        track.each do |atom|
-          tracks << (tracks.last.to_s / atom)
-        end
-
-        until controller and action or tracks.empty?
-          current = Regexp.escape(tracks.pop.to_s)
-          paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
-          paraction.delete('')
-          if controller = Ramaze::Global.mapping[current]
-            if controller.trait[:actionless] or
-              controller.superclass.trait[:actionless] or
-              paraction == ['error']
-
-              action = paraction.shift
-              params = paraction
-              action = 'index' if action == nil
-            else
-              action, params = resolve_action controller, paraction
-            end
-          end
-        end
-
-        raise Ramaze::Error::NoController, "No Controller found for #{path}" unless controller
-        raise Ramaze::Error::NoAction, "No Action found for #{path}" unless action
-
-        return controller, action, params
-      end
+      # Depending on Global.cache_all and Global.cache_actions it will
+      # call either #handle_uncached_controller or #handle_cached_controller
+      # takes the controller, action and params and just passes them on.
 
       def handle_controller controller, action, params
         if Global.cache_all or Global.cache_actions[controller].include?(action.to_s)
@@ -209,9 +265,21 @@ module Ramaze
         end
       end
 
+      # Call the class-method handle_request with action and *params, all
+      # the controller has to do is to respond with a string.
+
       def handle_uncached_controller controller, action, *params
         controller.handle_request(action, *params)
       end
+
+      # Call the class-method handle_request with action and *params, all
+      # the controller has to do is to respond with a string.
+      #
+      # To add a method for caching you can either use the CacheHelper
+      # or directly
+      #   Global.cache_actions[self] << 'index'
+      #
+      # Caching is done for [action, params] pairs per controller.
 
       def handle_cached_controller controller, action, *params
         Global.cached_actions ||= Global.cache.new
@@ -230,9 +298,15 @@ module Ramaze
           handle_uncached_controller(controller, action, *params)
       end
 
+      # Setup the Trinity (Request, Response, Session) and store them as
+      # thread-variables in Thread.current
+      #   Thread.current[:request]  == Request.current
+      #   Thread.current[:response] == Response.current
+      #   Thread.current[:session]  == Session.current
+
       def setup_environment orig_response, orig_request
         this = Thread.current
-        this[:response] = Response.new('', STATUS_CODE[:ok], 'Content-Type' => 'text/html')
+        this[:response] = build_response('', STATUS_CODE[:ok], 'Content-Type' => 'text/html')
         this[:request]  = Request.new(orig_request)
         this[:session]  = Session.new(request)
       end
