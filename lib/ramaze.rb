@@ -257,6 +257,11 @@ module Ramaze
     shutdown
   end
 
+  # convert ports given as string (7000..7007) to an actual range.
+  # sets Global.port to the first of the ports given
+  # sets Global.ports to the range (if one port given just a range from
+  # that to the same (7000..7000)
+
   def parse_port port
     if (from_port, to_port = port.to_s.split('..')).compact.size == 2
       Global.ports = from_port.to_i..to_port.to_i
@@ -266,11 +271,13 @@ module Ramaze
     Global.port = Global.ports.begin
   end
 
-  # test if a connection can be made at the specified host/port.
+  # test if a connection can be made at the specified host/ports.
 
   def test_connections host, ports
     ports.map{|port| connection_possible(host, port) }.all?
   end
+
+  # check connectivity to a specific host/port
 
   def connection_possible host, port
     Timeout.timeout(1) do

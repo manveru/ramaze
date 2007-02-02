@@ -62,6 +62,9 @@ class Context
     reset
   end
 
+  # combines the url given with the @base given, sanitizes
+  # the result a bit.
+
   def with_base(url = '/')
     url = url.to_s.squeeze('/')
     if @base
@@ -69,8 +72,7 @@ class Context
         url = [@base,  url].join('/')
       end
     end
-    result = url.strip.squeeze('/')
-    result
+    url.strip.squeeze('/')
   end
 
   # reset your session
