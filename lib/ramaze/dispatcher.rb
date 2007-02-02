@@ -4,9 +4,26 @@
 require 'timeout'
 
 module Ramaze
+
+  # The Dispatcher is the very heart of Ramaze itself.
+  #
+  # It will take requests and guide the request through all parts of the
+  # framework and your application.
+  #
+  # It is built in a way that lets you easily replace it with something you
+  # like better, since i'm very fond of the current implementation you can't
+  # find any examples of how this is done exactly yet.
+
   module Dispatcher
     class << self
       include Trinity
+
+      # handle a request/response pair as given by the adapter.
+      # has to answer with a response.
+      #
+      # It is built so it will catch _all_ errors and exceptions
+      # thrown during processing of the request and #handle_error if
+      # a problem occurs.
 
       def handle orig_request, orig_response
         @orig_request, @orig_response = orig_request, orig_response
@@ -57,10 +74,17 @@ module Ramaze
         end
       end
 
+      # setup the environment (Trinity) and start #fill_out
+
       def create_response orig_response, orig_request
         setup_environment orig_response, orig_request
         fill_out
       end
+
+      # Obtain the path requested from the request and search for a static
+      # file matching the request, #respond_file is called if it finds one,
+      # otherwise the path is given on to #respond_action.
+      # Answers with a response
 
       def fill_out
         path = request.request_path.squeeze('/')
@@ -74,6 +98,8 @@ module Ramaze
         end
         response
       end
+
+      # pushes out the file passed as a string containing the location.
 
       def respond_file file
         debug "Responding with static file: #{file}"
