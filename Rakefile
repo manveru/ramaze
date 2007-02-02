@@ -265,3 +265,20 @@ task 'fix-end-spaces' do
     end
   end
 end
+
+desc "opens a simple readline that makes making requests easier"
+task 'request' do
+  ARGV.clear
+  require 'open-uri'
+  require 'pp'
+
+  loop do
+    print 'do request? [enter] '
+    gets
+    begin
+      pp open('http://localhost:7000/xxx').read
+    rescue Object => ex
+      puts ex
+    end
+  end
+end
