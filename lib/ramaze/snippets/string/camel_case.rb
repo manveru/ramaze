@@ -5,6 +5,7 @@ class String
   def camel_case
 
     # simple transformation to CamelCase from snake_case
+    #
     #   'foo_bar'.camel_case # => 'FooBar'
 
     split('_').map{|e| e.capitalize}.join
