@@ -25,6 +25,24 @@ module Ramaze
           @db.send(meth, *args, &block)
         end
       end
+
+      # the actual content of the store in YAML format
+
+      def to_yaml
+        Db.dump(:x)
+      end
+
+      # loads the #to_yaml
+
+      def original
+        YAML.load(to_yaml)
+      end
+
+      # available keys of the store
+
+      def keys
+        original.keys
+      end
     end
   end
 end
