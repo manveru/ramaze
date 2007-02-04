@@ -95,7 +95,9 @@ begin
   options = {:force_setup => true}
 
   create = lambda do |app|
+    require 'ramaze/tool/create'
     Ramaze::Tool::Create.create(app)
+    exit
   end
 
   opts.each do |opt, arg|
