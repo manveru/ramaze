@@ -6,48 +6,41 @@ require 'set'
 
 module Ramaze
   class GlobalStruct < OpenStruct
-    # The default variables for Global:
+    # autoreload    - Interval for autoreloading changed source in seconds
+    # adapter       - Webserver-adapter ( :mongrel | :webrick )
+    # cache         - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
+    # cache_actions - Finegrained caching based on actions (see CacheHelper)
+    # cache_all     - Naive caching for all responses ( true | false )
+    # error_page    - Show default errorpage with inspection and backtrace ( true | false )
+    # host          - Host to respond to ( '0.0.0.0' )
+    # mapping       - Route to controller map ( {} )
+    # port          - First port of the port-range the adapters run on. ( 7000 )
+    # run_loose     - Don't wait for the servers to finish, useful for testing ( true | false )
+    # tidy          - Run all text/html responses through Tidy ( true | false )
+    # template_root - Default directory for your templates.
     #
-    # uses the class from Adapter:: (is required automatically)
-    #   Global.adapter #=> :webrick
-    #
-    # restrict access to a specific host
-    #   Global.host #=> '0.0.0.0'
-    #
-    # adapter runs on that port
-    #   Global.port #=> 7000
-    #
-    # the running/debugging-mode (:debug|:stage|:live|:silent) - atm only differ in verbosity
-    #   Global.mode #=> :debug
-    #
-    # detaches Ramaze to run in the background (used for testcases)
-    #   Global.run_loose #=> false
-    #
-    # caches requests to the controller based on request-values (action/params)
-    #   Global.cache #=> false
-    #
-    # run tidy over the generated html if Content-Type is text/html
-    #   Global.tidy #=> false
-    #
-    # display an error-page with backtrace on errors (empty page otherwise)
-    #   Global.error_page    #=> true
-    #
-    # TODO: complete documentation of every option
+    # inform_to             - :stdout/'stdout'/$stderr (similar for stdout) or some path to a file
+    # inform_tags           - a Set with any of [ :debug, :info, :error ]
+    # inform_backtrace_size - size of backtrace to be logged (and show on error-page).
+    # inform_timestamp      - parameter for Time.strftime
+    # inform_prefix_info    - prefix for all the Inform#info messages
+    # inform_prefix_debug   - prefix for all the Inform#debug messages
+    # inform_prefix_error   - prefix for all the Inform#error messages
 
     DEFAULT = {
       :autoreload     => 5,
       :adapter        => :webrick,
       :cache          => MemoryCache,
+      :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
       :cache_all      => false,
+      :cookies        => true,
       :error_page     => true,
       :host           => '0.0.0.0',
-      :port           => 7000,
       :mapping        => {},
+      :port           => 7000,
       :run_loose      => false,
       :tidy           => false,
       :template_root  => 'template',
-      :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
-      :cookies        => true,
 
       :inform_to             => $stdout,
       :inform_tags           => Set.new([:debug, :info, :error]),
