@@ -167,7 +167,6 @@ Rake::RDocTask.new do |rd|
     --quiet
     --line-numbers
     --inline-source
-    --title Ramaze\ documentation
     --opname index.html
   ]
 
