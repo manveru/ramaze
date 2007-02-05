@@ -153,6 +153,11 @@ module Ramaze
     # parse multipart-requests, just pass it something that responds to .read
     # and a boundary for the parts.
     # again a naive implementation without any guarantee against DoS.
+    #
+    # TODO:
+    #  - rewrite parsing of multipart
+    #  - chunk through the body and pipe into tempfile
+    #  - look at merb for example of correct parsing
 
     def parse_multipart(body, boundary)
       text = body.read
