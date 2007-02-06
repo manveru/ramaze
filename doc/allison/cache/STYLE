@@ -1,0 +1,322 @@
+
+/* Stylesheet for Allison RDoc template */
+/* Copyright 2006 Cloudburst LLC */
+
+/* default styles */
+
+* {
+margin: 0;
+padding: 0;
+border: none;
+}
+
+a {
+color: #244;
+font-weight: bold;
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+} a:visited {
+font-weight: normal;
+}
+
+html, body {
+color: #270f2b;
+background-color: #eeffff;
+text-align: center;
+margin: 0;
+padding: 0;
+}
+
+p, ul, ol, li {
+line-height: 1.4em;
+margin: .4em;
+} p {
+margin: 1.4em;
+} h1 {
+margin-top: .4em;
+} #item_name {
+margin-top: -.4em;
+}
+
+h2 {
+font-size: 2em;
+margin-top: 1em;
+margin-right: -1em;
+}
+
+
+/* center everything */
+
+#container {
+margin: 20px auto 0 auto;
+width: 900px;
+text-align: left;
+}
+
+
+
+
+/* header stuff */
+
+#header {
+padding: 10px;
+padding-top: 0;
+width: 880px;
+height: 71px;
+_height: 81px;
+margin-bottom: 25px;
+vertical-align: baseline;
+background: url('data:image/gif;base64,R0lGODlhNwA6AKU1AABjewFjegBkfAZnfQZnfgdnfwZofgxrgQxrghdyhxdyiBx1ixx3ix13ih13iyJ5jSJ6jiN6jih+kS6ClTOFlzSGmDiImziJmzmJnD6Nnj+OnlCYqFSbqVWdq2Glsni0vn24wY7Dyo/Dyo7EypTHzZTHzpTIzpnL0aTT2KrW2qvW2qvX27Da3bDa3rDb3rXd4LXe4MHm58bp6sfq68zu7v///////////////////////////////////////////yH5BAEKAD8ALAAAAAA3ADoAAAb+QJpwSCwaUxCAYLlkjFIsmXFKrVqFLk1kYVAKDAsIhhS9ms/EmUtFwkQgEEchMFhYTlK03qxWpVJtbxASHDB7h2h9f1B5iI6PkJGPMy8zaS4ujZKILh14QjMnGGNlm32lVTMmERgtWBgFBQsZrkaKjFdZrJ9VLhgECyRSvgQAAMGaaiZug4VXKxF0FrVU0AAGF66hFcXY1DRZcnQUvL2/AA8pVsTo6jQzJAvGyEO+BcB3mlTw8hDu+/EA+Kt3ztuQUKPI6KuCBACDEguJNHyYh5+xdJcy7WlokGGSjjQaCqAoiR1Gjxf/iQQ5KeBAlAJegjvXblNDmVPYOfnDIkb+wJj/IE2EmCogAgtwMJxAkQToJmIsjyRxYmwAhQ8MlJCMZPFkkT4hFhDIxgXAgARdvmR7iuHA2oNrAnGhGNaYXQE1JYXa8KlPIHHGKLJj0oSo3koyXCyLANjYEm/bihE2QIHEIlyIlGFobACtF4MWCZsNA0eMZcxXNMuxC4aCBwVetg5mYtdunaSnUX0VtdoYGAsjQExICzI04eO1b5tGraxCAdZ2LJNw7pucptlgSkMouyR5GFIyZPAe4Dt6zxPUr1nfzU3rk0WBtqfFW3VWixawyltQKD495XJp/LTVO2sAwgx3KaUQQXX8KebfelSw899CisQHBy0taCFGX+PlVQegLQGZNY0VtzCSmB9lbPPcNXZ8mBNN9HCF3oqUKXRGZNe8NcmMHkZUlDzHCLPjgy6aIaGOe6jYoyMWBenjOvmpVyQaEkKYiAkNLAlJkwOMmAh63VgJCTtO3sijQ4bp9VNUUyiZ4zclwShkKmdOuMlBayLJHo1i3klmjHtqeSee8qgF5yt8TslWMWWmgaWgg6YB5puStjdSmpF+FWKMbrKZKUHdrNVpn58SOo8w+CX6ZKlHApKllKuWahFlIFAQpqKl1qMFBiCkN2CuqRQowqueAhthQaQaeywBdip7YzwLYHpnEAA7') no-repeat top right;
+background-color: #cee;
+overflow: hidden;
+} .curve {
+background-color: #cee;
+margin: 0;
+padding: 0;
+height: 1px;
+overflow: hidden /* again, ie problem */;
+}
+
+
+
+
+
+#preheader_curve_10{border-left: 0px solid #eeffff; border-right: 0px solid #eeffff; width: 900px; _width: 880px; }
+#preheader_curve_9{border-left: 1px solid #eeffff; border-right: 1px solid #eeffff; width: 898px; _width: 880px; }
+#preheader_curve_8{border-left: 1px solid #eeffff; border-right: 1px solid #eeffff; width: 898px; _width: 880px; }
+#preheader_curve_7{border-left: 1px solid #eeffff; border-right: 1px solid #eeffff; width: 898px; _width: 880px; }
+#preheader_curve_6{border-left: 2px solid #eeffff; border-right: 2px solid #eeffff; width: 896px; _width: 880px; }
+#preheader_curve_5{border-left: 2px solid #eeffff; border-right: 2px solid #eeffff; width: 896px; _width: 880px; }
+#preheader_curve_4{border-left: 3px solid #eeffff; border-right: 3px solid #eeffff; width: 894px; _width: 880px; }
+#preheader_curve_3{border-left: 4px solid #eeffff; border-right: 4px solid #eeffff; width: 892px; _width: 880px; }
+#preheader_curve_2{border-left: 5px solid #eeffff; border-right: 5px solid #eeffff; width: 890px; _width: 880px; }
+#preheader_curve_1{border-left: 7px solid #eeffff; border-right: 7px solid #eeffff; width: 886px; _width: 880px; }
+#preheader_curve_0{border-left: 10px solid #eeffff; border-right: 10px solid #eeffff; width: 880px; _width: 880px; }
+
+#header h1 {
+color: #122;
+font-size: 3em;
+margin: 0;
+} #header p {
+margin: 0;
+padding: 0;
+padding-left: 3px;
+color: #122;
+} #header a {
+color: #122;
+text-decoration: none;
+font-weight: bold;
+}
+
+/* basic layout and navigation bars */
+
+#left {
+background-color: #cdd;
+width: 220px;
+float: left;
+_width: 200px;
+} #left a {
+line-height: 1.2em;
+} #left div.curve {
+float: left;
+background-color: #cdd;
+}
+
+/* navigation bar colors and text styles */
+
+.navigation {
+width: 180px;
+margin: 10px;
+padding: 10px;
+text-align: left;
+background-color: #eeffff;
+overflow: hidden;
+} .navigation a, {
+margin-left: 10px;
+} .navigation h3 {
+font-weight: bold;
+margin-bottom: 5px;
+} .dark {
+background-color: #bcc;
+} .dark a, .dark span {
+color: #122;
+margin-left: 10px;
+} span.bpink {
+color: #244;
+font-weight: bold;
+margin-left: 10px;
+} span.bpink a, .dark span a {
+margin-left: 0;
+} #spacer {
+background-color: #eeffff;
+height: 30px;
+display: none;
+}
+
+#content {
+padding: 20px;
+width: 640px;
+background-color: #eeffff;
+float: left;
+}
+
+.clear {
+clear: both;
+}
+
+#footer {
+margin: 0 auto;
+text-align: right;
+background-color: #eeffff;
+font-size: .8em;
+padding: 10px;
+} #footer a {
+font-weight: normal;
+color: #bcc;
+}
+
+/* for that dumb redirect index page I can't avoid */
+
+#redirect {
+text-align: center;
+} #redirect a {
+color: #cdd;
+}
+
+/* tables */
+
+table {
+width: 600px;
+border-collapse: collapse;
+}
+td, th {
+background-color: #eeffff;
+text-align: left;
+padding-left: 5px;
+padding-right: 5px;
+padding-top: 5px;
+line-height: 1.2em;
+} th {
+color: #122;
+background-color: #cee;
+} th.description {
+text-align: center;
+} td.highlight {
+color: #244;
+} td.first, th.first {
+background-color: #cee;
+}
+
+
+/* method details */
+
+div.a_method {
+background: #cee;
+padding: 10px;
+margin-left: 22px;
+} div.a_method h3 {
+color: #244;
+} div.a_method div {
+background: #bdd;
+padding-left: 10px;
+} div.a_method a.small {
+font-size: .1em;
+line-height: .1em;
+} div.a_method p {
+margin: .6em;
+margin-left: 1.4em;
+}
+
+div.section_spacer {
+height: 0;
+margin-top: 20px;
+}
+
+
+/* index includes on the navigation bar */
+
+div.index a {
+font-size: .8em;
+} #method {
+display: none;
+} #file, #class {
+display: block;
+} div.list_header {
+float: left;
+} div.list_header_link {
+float: right;
+padding-top: 3px;
+} div.list_header_link a {
+font-weight: normal;
+} #method_wrapper {
+margin-bottom: 0;
+}
+
+.index label {
+font-size: 0.8em;
+} .index form input {
+width: 110px;
+} .index form {
+margin-bottom: 10px;
+}
+
+
+#left_curve_10{border-left: 10px solid #eeffff; border-right: 10px solid #eeffff; width: 200px; _width: 200px; }
+#left_curve_9{border-left: 7px solid #eeffff; border-right: 7px solid #eeffff; width: 206px; _width: 200px; }
+#left_curve_8{border-left: 5px solid #eeffff; border-right: 5px solid #eeffff; width: 210px; _width: 200px; }
+#left_curve_7{border-left: 4px solid #eeffff; border-right: 4px solid #eeffff; width: 212px; _width: 200px; }
+#left_curve_6{border-left: 3px solid #eeffff; border-right: 3px solid #eeffff; width: 214px; _width: 200px; }
+#left_curve_5{border-left: 2px solid #eeffff; border-right: 2px solid #eeffff; width: 216px; _width: 200px; }
+#left_curve_4{border-left: 2px solid #eeffff; border-right: 2px solid #eeffff; width: 216px; _width: 200px; }
+#left_curve_3{border-left: 1px solid #eeffff; border-right: 1px solid #eeffff; width: 218px; _width: 200px; }
+#left_curve_2{border-left: 1px solid #eeffff; border-right: 1px solid #eeffff; width: 218px; _width: 200px; }
+#left_curve_1{border-left: 1px solid #eeffff; border-right: 1px solid #eeffff; width: 218px; _width: 200px; }
+#left_curve_0{border-left: 0px solid #eeffff; border-right: 0px solid #eeffff; width: 220px; _width: 200px; }
+
+ol, ul {
+margin-left: 50px;
+} ul {
+list-style-type: square;
+}
+
+p.source_link a {
+text-align: right;
+font-weight: normal;
+} div.source {
+display: none;
+} pre {
+color: black;
+font-weight: normal;
+/* font-family: Courier, Courier New, monospace */
+font-size: .8em;
+padding: 10px;
+margin-left: 20px;
+overflow: auto;
+/* next 4 lines because IE sucks */
+_position: relative;
+_width: 567px;
+_overflow-x:scroll;
+_overflow-y:visible;
+} div.source pre {
+margin-left: 0;
+} p.source_link {
+text-align: center;
+}
+
+/* source code highlighting */
+
+pre .ruby-value, pre .ruby-symbol {
+color: #1104bb;
+} pre .ruby-value.str, pre .ruby-node {
+color: #244;
+} pre .ruby-ivar, pre .ruby-cvar {
+} pre .ruby-comment {
+color: #009500;
+} pre .ruby-constant {
+color: #cd8802;
+} pre .ruby-keyword {
+color: #8d04aa;
+}
