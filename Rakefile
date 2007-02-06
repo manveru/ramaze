@@ -185,6 +185,13 @@ task :rdoc => :clean do
   sh "rdoc #{RDOC_OPTS.join(' ')} lib doc doc/README doc/CHANGELOG"
 end
 
+desc "generate improved allison-rdoc"
+task :allison => :clean do
+  opts = RDOC_OPTS
+  opts << %w[--template 'doc/allison/allison.rb']
+  sh "rdoc #{RDOC_OPTS.join(' ')} lib doc/README doc/CHANGELOG"
+end
+
 desc "doc/README to html"
 Rake::RDocTask.new('gen-readme2html') do |rd|
   rd.options = %w[
