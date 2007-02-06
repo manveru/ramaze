@@ -129,7 +129,7 @@ module ReFeed
     unless attributes or attributes.empty?
       "<#{name}>#{xml}</#{name}>"
     else
-      "<#{name} #{attributes.join(' ')}><#{xml}></#{name}>"
+      "<#{name} #{attributes.join(' ')}>#{xml}</#{name}>"
     end
   end
 end
