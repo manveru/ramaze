@@ -47,6 +47,21 @@ RDOC_OPTS = %w[
   --accessor "trait"
 ]
 
+POST_INSTALL_MESSAGE = %{
+#{'=' * 60}
+
+Thank you for installing Ramaze!
+You can now do following:
+
+* Create a new project using the `ramaze' command:
+    ramaze --create yourproject
+
+* Browse and try the Examples in
+    #{File.join(Gem.path, 'gems', 'ramaze-' + VERS, 'examples')}
+
+#{'=' * 60}
+}.strip
+
 desc "Packages up ramaze gem."
 task :default => [:test]
 
@@ -69,6 +84,7 @@ spec =
         s.executables = BIN_FILES
         s.bindir = "bin"
         s.require_path = "lib"
+        s.post_install_message = POST_INSTALL_MESSAGE
 
         s.add_dependency('rake', '>=0.7.1')
         #s.required_ruby_version = '>= 1.8.2'

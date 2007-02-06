@@ -6,8 +6,25 @@ require 'yaml'
 
 module Ramaze
   module Tool
+
+    # Create is a simple class used to create new projects based on the proto
+    # directory.
+    #
+    # It is primarly used for this command:
+    #
+    #   ramaze --create project
+    #
+    # where project is the directory you want the content put into.
+
     class Create
       class << self
+
+        # a method to create a new project by copying the contents of lib/proto
+        # to the position you specify (project)
+        #
+        # It is just a nice wrapper showing you what files/directories are put
+        # in place.
+
         def create project
           @basedir = ::Ramaze::BASEDIR / 'proto'
           @destdir = Dir.pwd / project
@@ -26,6 +43,8 @@ module Ramaze
 
         end
 
+        # create the directories recursivly
+
         def create_dirs(*dirs)
           dirs.each do |dir|
             dest = dir.gsub(@basedir, @destdir)
@@ -34,6 +53,8 @@ module Ramaze
             FileUtils.mkdir_p(dest)
           end
         end
+
+        # copy the files over
 
         def copy_files(*files)
           files.each do |file|
