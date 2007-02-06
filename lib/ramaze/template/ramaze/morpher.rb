@@ -38,6 +38,8 @@ module Ramaze
   # %content is the tag without the attribute (and all inside): '<a>x</a>'
 
   class Morpher
+
+    # Use this trait to define your custom morphs.
     trait :morphs => {
                       'if'     => '<?r %morph %expression ?>%content<?r end ?>',
                       'unless' => '<?r %morph %expression ?>%content<?r end ?>',

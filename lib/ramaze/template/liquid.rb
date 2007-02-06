@@ -7,8 +7,13 @@ module Ramaze::Template
   class Liquid < Template
     extend Ramaze::Helper
 
+    # Actions consist of both templates and methods on the controller.
     trait :actionless => false
+
+    # Usual extensions for templates.
     trait :template_extensions => %w[liquid]
+
+    # Custom options for Liquid to be merged for your controller.
     trait :liquid_options => {}
 
     class << self

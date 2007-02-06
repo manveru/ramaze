@@ -11,8 +11,14 @@ module Ramaze::Template
   # It supports erb-style interpolation and a pipeline for the transform
 
   class Ramaze < Template
+
+    # Actions consist of both templates and methods on the controller.
     trait :actionless => false
+
+    # Usual extensions for templates.
     trait :template_extensions => %w[rmze xhtml rhtml html]
+
+    # Each Object in this Array will be called :transform upon.
     trait :transform_pipeline => [ Element, Morpher, self ]
 
     class << self

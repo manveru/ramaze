@@ -6,7 +6,10 @@ require 'amrita2/template'
 module Ramaze::Template
   class Amrita2 < Template
 
+    # No actions on the controller are serached or called.
     trait :actionless => true
+
+    # usual extensions for templates
     trait :template_extensions => %w[html]
 
     class << self

@@ -6,8 +6,14 @@ require 'haml/engine'
 
 module Ramaze::Template
   class Haml < Template
+
+    # Actions consist of both templates and methods on the controller.
     trait :actionless => false
+
+    # Usual extensions for templates.
     trait :template_extensions => %w[haml]
+
+    # Custom HAML-options for your controller to be merged.
     trait :haml_options => {
       :locals => {}
     }

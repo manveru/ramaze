@@ -7,7 +7,10 @@ module Ramaze::Template
   class Erubis < Template
     extend Ramaze::Helper
 
+    # Actions consist of both templates and methods on the controller.
     trait :actionless => false
+
+    # usual extensions for templates.
     trait :template_extensions => %w[rhtml rmze xhtml html]
 
     class << self

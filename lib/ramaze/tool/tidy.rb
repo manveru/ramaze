@@ -9,6 +9,7 @@ module Ramaze
 
     module Tidy
 
+      # set this to define a custom path to your tidy.so
       trait[:path] ||= `locate libtidy.so`.strip
 
       # dirty html in, tidy html out

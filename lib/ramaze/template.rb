@@ -11,6 +11,8 @@ module Ramaze::Template
   class Template
     extend ::Ramaze::Helper
 
+    # Path to the ramaze-internal public directory for error-pages and the like.
+    # It acts just as a shadow.
     trait :public => ( ::Ramaze::BASEDIR / 'proto' / 'public' )
 
     helper :link, :redirect

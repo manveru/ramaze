@@ -7,7 +7,10 @@ module Ramaze::Template
   class Markaby < Template
     extend Ramaze::Helper
 
+    # Actions consist of both templates and methods on the controller.
     trait :actionless => false
+
+    # Usual extensions for templates.
     trait :template_extensions => %w[mab]
 
     private
