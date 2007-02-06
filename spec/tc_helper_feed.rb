@@ -3,11 +3,7 @@
 
 require 'spec/spec_helper'
 
-begin
-  require 'hpricot'
-rescue LoadError
-  exit
-end
+testcase_requires 'hpricot'
 
 require 'ramaze/helper/feed'
 require 'pp'
