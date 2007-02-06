@@ -35,12 +35,16 @@ CLEAN.include %w[
 RDOC_OPTS = %w[
   --all
   --quiet
+  --op rdoc
+  --line-numbers
   --inline-source
-  --main doc/README
+  --main "doc/README"
   --opname index.html
-  --title Ramze\ documentation
-  --exclude "^(spec|examples|bin|pkg)/"
-  --exclude lib/proto
+  --title "Ramze documentation"
+  --exclude "^(_darcs|spec|examples|bin|pkg)/"
+  --exclude "lib/proto"
+  --include "doc"
+  --accessor "trait"
 ]
 
 desc "Packages up ramaze gem."
@@ -66,7 +70,7 @@ spec =
         s.bindir = "bin"
         s.require_path = "lib"
 
-        #s.add_dependency('activesupport', '>=1.3.1')
+        s.add_dependency('rake', '>=0.7.1')
         #s.required_ruby_version = '>= 1.8.2'
 
         s.files = %w(doc/COPYING doc/TODO doc/README doc/CHANGELOG Rakefile) +
@@ -161,20 +165,27 @@ task :test do
 end
 
 desc "generate rdoc"
-Rake::RDocTask.new do |rd|
+task :rdoc => :clean do
+  sh "rdoc #{RDOC_OPTS.join(' ')} lib doc doc/README doc/CHANGELOG"
+end
+
+desc "doc/README to html"
+Rake::RDocTask.new('gen-readme2html') do |rd|
   rd.options = %w[
-    --all
     --quiet
-    --line-numbers
-    --inline-source
-    --opname index.html
+    --opname readme.html
   ]
 
-  rd.rdoc_dir = 'rdoc'
-  rd.rdoc_files = Dir['lib/ramaze/**/*']
-  rd.rdoc_files.push('lib/ramaze.rb', 'doc/README', 'doc/CHANGELOG')
+  rd.rdoc_dir = 'readme'
+  rd.rdoc_files = ['doc/README']
   rd.main = 'doc/README'
-  rd.title = "Ramaze Documentation"
+  rd.title = "Ramaze documentation"
+end
+
+desc "doc/README to doc/README.html"
+task 'readme2html' => 'gen-readme2html' do
+  FileUtils.cp('readme/files/doc/README.html', 'doc/README.html')
+  FileUtils.rm_rf('readme')
 end
 
 desc "list all still undocumented methods"
