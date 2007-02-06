@@ -40,7 +40,7 @@ RDOC_OPTS = %w[
   --inline-source
   --main "doc/README"
   --opname index.html
-  --title "Ramze documentation"
+  --title "Ramaze documentation"
   --exclude "^(_darcs|spec|examples|bin|pkg)/"
   --exclude "lib/proto"
   --include "doc"
