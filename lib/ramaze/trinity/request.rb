@@ -237,6 +237,8 @@ module Ramaze
 
     def referer
       headers['HTTP_REFERER'] || '/'
+    rescue
+      params['HTTP_REFERER'] || '/'
     end
   end
 end
