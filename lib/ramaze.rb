@@ -117,6 +117,7 @@ module Ramaze
           send(task)
         end
       rescue Object => ex
+        exit if ex.is_a?(SystemExit)
         error ex
       end
     end
