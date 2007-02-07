@@ -1,3 +1,699 @@
+Wed Feb  7 19:02:15 JST 2007  m.fellinger@gmail.com
+  * this introduces a new startup/shutdown hook system
+
+Wed Feb  7 19:00:52 JST 2007  m.fellinger@gmail.com
+  * update changelog, fixing Rakefile and making bin/ramaze a bit nicer.
+
+Tue Feb  6 17:29:23 JST 2007  m.fellinger@gmail.com
+  * adding documentation for all traits.
+
+Tue Feb  6 17:29:09 JST 2007  m.fellinger@gmail.com
+  * improving Hash#keys_to_sym
+
+Tue Feb  6 17:28:42 JST 2007  m.fellinger@gmail.com
+  * adding the files for the allison-template
+
+Tue Feb  6 17:28:25 JST 2007  m.fellinger@gmail.com
+  * add rake allison for the improved allison rdoc-template
+
+Tue Feb  6 16:08:35 JST 2007  manveru@weez-int.com
+  * add a post install message for the gem and add documentation for Tool::Create
+
+Tue Feb  6 13:51:17 JST 2007  manveru@weez-int.com
+  * handle referer for mongrel too
+
+Tue Feb  6 13:50:29 JST 2007  manveru@weez-int.com
+  * remove the require coderay in error.rb main-body, this is done dynamically and with a proper rescue in the error-method instead, therefor removing the shown dependecy in rake dependencies
+
+Tue Feb  6 13:49:03 JST 2007  manveru@weez-int.com
+  * fixing rake rdoc, adding rake readme2html and adding rake as dependency
+
+Sun Feb  4 23:34:54 JST 2007  manveru@weez-int.com
+  * adding some more methods to Store::Default
+
+Sun Feb  4 22:50:29 JST 2007  manveru@weez-int.com
+  * finally make ramaze --create project work
+
+Tue Feb  6 12:42:37 JST 2007  m.fellinger@gmail.com
+  * fixing minor typos in the README, removing ramaze.xcf and fixing require hpricot in tc_helper_feed
+
+Mon Feb  5 11:30:34 JST 2007  m.fellinger@gmail.com
+  * minor changes to README
+
+Mon Feb  5 11:23:41 JST 2007  m.fellinger@gmail.com
+  * adding todo
+
+Mon Feb  5 11:23:21 JST 2007  m.fellinger@gmail.com
+  * update documentation for Global
+
+Mon Feb  5 11:23:13 JST 2007  m.fellinger@gmail.com
+  * update doc/TODO
+
+Mon Feb  5 11:21:25 JST 2007  m.fellinger@gmail.com
+  * little patch to rake todolist
+
+Sat Feb  3 08:45:15 JST 2007  manveru@weez-int.com
+  * adding testcase_requires in spec_helper to have a standard way of saying whether a testcase is supposed to pass at all, also fixing a little issue with require-path for ramaze and problematic lookup of Ramaze::Helper in haml (it's extended anyway)
+
+Sat Feb  3 08:09:37 JST 2007  manveru@weez-int.com
+  * use proto/public for static lookup, not lib/public
+
+Sat Feb  3 08:09:25 JST 2007  manveru@weez-int.com
+  * fixing logger for files
+
+Sat Feb  3 08:07:46 JST 2007  manveru@weez-int.com
+  * adds the other stuff for lib/proto, just a very simple little hello-world app with most of the structure of a fully grown application and some example configurations.
+
+Sat Feb  3 08:07:26 JST 2007  manveru@weez-int.com
+  * move lib/public to lib/proto/public
+
+Sat Feb  3 08:06:33 JST 2007  manveru@weez-int.com
+  * add tool/create and change the bin/ramaze for ramaze --create myapp, which basically copies the proto-directory from lib/proto
+
+Sat Feb  3 08:06:18 JST 2007  manveru@weez-int.com
+  * uh, forgot the source of these two files
+
+Sat Feb  3 08:05:32 JST 2007  manveru@weez-int.com
+  * add the snippets for Hash and Symbol
+
+Sat Feb  3 08:05:01 JST 2007  manveru@weez-int.com
+  * update Rakefile for testing and superior options for rdoc
+
+Sat Feb  3 08:03:42 JST 2007  manveru@weez-int.com
+  * remove lib/test
+
+Sat Feb  3 08:02:45 JST 2007  manveru@weez-int.com
+  * move lib/test/request_maker into the rake-task request
+
+Sat Feb  3 08:02:03 JST 2007  manveru@weez-int.com
+  * patch the specs to work in the new directory
+
+Sat Feb  3 08:01:21 JST 2007  manveru@weez-int.com
+  * move test_helper to spec/spec_helper and all_tests to spec_all
+
+Sat Feb  3 08:00:50 JST 2007  manveru@weez-int.com
+  * move test to spec
+
+Sat Feb  3 04:45:39 JST 2007  manveru@weez-int.com
+  * tons of little changes to make dispatcher work again, also adding support for defining your Global.inform_to in a YAML file ('stdout', 'stderr', :stdout, :stderr or a filename)
+
+Fri Feb  2 21:14:46 JST 2007  m.fellinger@gmail.com
+  * yet another typo
+
+Fri Feb  2 21:13:38 JST 2007  m.fellinger@gmail.com
+  * typo
+
+Fri Feb  2 21:12:10 JST 2007  m.fellinger@gmail.com
+  * document String#snake_case
+
+Fri Feb  2 21:11:03 JST 2007  m.fellinger@gmail.com
+  * docu for String#camel_case
+
+Fri Feb  2 21:07:29 JST 2007  m.fellinger@gmail.com
+  * MAJOR update to README ;) - now it should be a lot more RDoc-able
+
+Fri Feb  2 20:39:37 JST 2007  m.fellinger@gmail.com
+  * update docs for Template::Amrita2
+
+Fri Feb  2 20:37:47 JST 2007  m.fellinger@gmail.com
+  * remove the Template::Stupid
+
+Fri Feb  2 20:33:16 JST 2007  m.fellinger@gmail.com
+  * document some more snippets
+
+Fri Feb  2 20:24:54 JST 2007  m.fellinger@gmail.com
+  * adding docs for OpenStruct#temp
+
+Fri Feb  2 20:20:46 JST 2007  m.fellinger@gmail.com
+  * add the last bits of code and documentation for request/response/session (mostly the ::current method)
+
+Fri Feb  2 20:20:07 JST 2007  m.fellinger@gmail.com
+  * a little bit nicer API in Dispatcher, but most importantly, fully documented!
+
+Fri Feb  2 14:32:26 JST 2007  manveru@weez-int.com
+  * first draft of documentation for dispatcher
+
+Fri Feb  2 14:24:48 JST 2007  manveru@weez-int.com
+  * completing documentation of ramaze.rb and lib/test/test_helper
+
+Fri Feb  2 14:24:19 JST 2007  manveru@weez-int.com
+  * completing documentation for Ramaze::Template
+
+Fri Feb  2 14:24:07 JST 2007  manveru@weez-int.com
+  * minor changes and full documenation for Gestalt
+
+Fri Feb  2 14:23:42 JST 2007  manveru@weez-int.com
+  * completing documentation of adapter/mongrel adapter/webrick
+
+Fri Feb  2 14:01:44 JST 2007  manveru@weez-int.com
+  * taking advantage of a custom external config-file... i won't build an automatic loading of that file since it's just a oneliner to load it. this is for the blog-example
+
+Fri Feb  2 14:01:01 JST 2007  manveru@weez-int.com
+  * support for mapping controllers as symbols/strings, looking up the constants on startup.
+
+Thu Feb  1 22:47:06 JST 2007  manveru@weez-int.com
+  * testing redirect_referer in tc_helper_redirect
+
+Thu Feb  1 22:46:16 JST 2007  manveru@weez-int.com
+  * updating tc_helper_auth for the different ways to set the auth_table
+
+Thu Feb  1 22:45:30 JST 2007  manveru@weez-int.com
+  * this adds the possibility to add a base url for the context (like path to a controller)... nasty, nasty stuff
+
+Thu Feb  1 22:45:01 JST 2007  manveru@weez-int.com
+  * make rake all_tests compatible for tinderbox and a little bit prettier
+
+Thu Feb  1 22:44:15 JST 2007  manveru@weez-int.com
+  * use request.referer and add request.local_net? from nitro
+
+Thu Feb  1 22:43:32 JST 2007  manveru@weez-int.com
+  * restructuring and documenting AuthHelper
+
+Thu Feb  1 22:43:11 JST 2007  manveru@weez-int.com
+  * use ancestral_trait for aspects
+
+Thu Feb  1 22:42:53 JST 2007  manveru@weez-int.com
+  * add documentation for the Rakefile tasks
+
+Thu Feb  1 20:40:42 JST 2007  manveru@weez-int.com
+  * remove a bit of debugging-info from AspectHelper
+
+Thu Feb  1 20:39:36 JST 2007  manveru@weez-int.com
+  * adding stack functionality in the AuthHelper by default. So once you are logged in, you will be redirected back to the last known position.
+
+Thu Feb  1 20:39:05 JST 2007  manveru@weez-int.com
+  * simplify the code in helper.rb a little bit
+
+Thu Feb  1 17:26:41 JST 2007  m.fellinger@gmail.com
+  * something broke... now reading the template extra-early... this should give us better ways to do action-compiles later on...
+
+Thu Feb  1 16:48:13 JST 2007  m.fellinger@gmail.com
+  * Ramaze::Template::Element => Ramaze::Element
+
+Wed Jan 31 22:33:16 JST 2007  manveru@weez-int.com
+  * small updates to the README again, adding some links.
+
+Wed Jan 31 22:22:35 JST 2007  manveru@weez-int.com
+  * adding the Liquid templating-engine (Template::Liquid) complete with tests and example.
+
+Wed Jan 31 22:19:59 JST 2007  manveru@weez-int.com
+  * little fixes for Haml (examples/templates) and adding the option to pass your own haml_options or set a trait... also some docs for transform.
+
+Wed Jan 31 13:35:06 JST 2007  manveru@weez-int.com
+  * another Inform => Informer for erubis and amrita2
+
+Wed Jan 31 13:34:18 JST 2007  manveru@weez-int.com
+  * adding Haml example in examples/templates
+
+Wed Jan 31 13:06:47 JST 2007  manveru@weez-int.com
+  * updating README
+
+Wed Jan 31 13:05:26 JST 2007  manveru@weez-int.com
+  * adding Haml Templating-engine. (Template::Haml)
+
+Wed Jan 31 01:09:22 JST 2007  manveru@weez-int.com
+  * add a tc_error
+
+Wed Jan 31 01:06:50 JST 2007  manveru@weez-int.com
+  * fixing Element => Template::Element
+
+Tue Jan 30 22:58:16 JST 2007  manveru@weez-int.com
+  * limiting the backtrace for the errorpage to 0..20 to make it speedier, requiring coderay
+
+Tue Jan 30 22:57:28 JST 2007  manveru@weez-int.com
+  * putting Element and Morpher in the Ramaze::Template namespace, prefixing the Ramaze::BASEDIR
+
+Tue Jan 30 22:57:00 JST 2007  manveru@weez-int.com
+  * fixing dispatcher errorhandling for webrick... was broken, as usual.
+
+Tue Jan 30 22:56:26 JST 2007  manveru@weez-int.com
+  * adapt the errorpage and give it really neat new CodeRay highlighting, the old one was b0rken ages ago.
+
+Tue Jan 30 21:42:15 JST 2007  manveru@weez-int.com
+  * use Informer in the templating to avoid confusion with the error method on the controller and of Inform (which will need to search for a new naming-scheme, i fear)
+
+Tue Jan 30 21:41:06 JST 2007  manveru@weez-int.com
+  * template.rb gets a new trait, the :public which points per default to ramazes public directory, we extend the paths searched to this directory, some more general cleanup as well.
+
+Tue Jan 30 21:39:13 JST 2007  manveru@weez-int.com
+  * just a little nicety ;)
+
+Tue Jan 30 21:38:24 JST 2007  manveru@weez-int.com
+  * remove the old errorpage-cruft from the error.rb, it will in future serve for some general errors that Ramaze will use.
+
+Tue Jan 30 21:37:52 JST 2007  manveru@weez-int.com
+  * make dispatcher aware of error-handling (not just that hardcoded errorpage-stuff
+
+Tue Jan 30 21:37:00 JST 2007  manveru@weez-int.com
+  * create the new error.xhtml and error.css in order to finally get some sane structure in error-handling.
+
+Tue Jan 30 20:00:37 JST 2007  manveru@weez-int.com
+  * show the error-message as well when Template.transform fails.
+
+Tue Jan 30 20:00:10 JST 2007  manveru@weez-int.com
+  * remove Template from the pipeline again, just causing problems with multiple evaluation.
+
+Tue Jan 30 19:59:15 JST 2007  manveru@weez-int.com
+  * splitting out Element.transform into multiple methods, this is the preparation to make it a bit more... itelligent :)
+
+Mon Jan 29 23:59:38 JST 2007  manveru@weez-int.com
+  * _yet_ another way how webrick handles cookies... this is getting tiresome :P
+
+Mon Jan 29 23:59:14 JST 2007  manveru@weez-int.com
+  * if the action is a symbol convert to string before escaping
+
+Mon Jan 29 23:58:26 JST 2007  manveru@weez-int.com
+  * changes to morpher and rearranging the pipeline... evaluating twice should be avoided somehow...
+
+Mon Jan 29 23:57:59 JST 2007  manveru@weez-int.com
+  * vast upgrade of AuthHelper
+
+Mon Jan 29 23:57:30 JST 2007  manveru@weez-int.com
+  * support different arity for pre-aspects
+
+Mon Jan 29 23:57:11 JST 2007  manveru@weez-int.com
+  * final version of the blog (for the time being, as always ;)
+
+Mon Jan 29 22:32:00 JST 2007  manveru@weez-int.com
+  * remove the pointers to EntryController and remove the list.xhtml
+
+Mon Jan 29 22:28:49 JST 2007  manveru@weez-int.com
+  * remove the EntryController and use MainController instead
+
+Mon Jan 29 22:27:05 JST 2007  manveru@weez-int.com
+  * move the templates for the wiki to the root template-folder
+
+Mon Jan 29 22:25:38 JST 2007  manveru@weez-int.com
+  * use the cleaner Global.setup instead of direct assignment
+
+Mon Jan 29 22:25:20 JST 2007  manveru@weez-int.com
+  * fixing session for non-POST
+
+Mon Jan 29 22:24:44 JST 2007  manveru@weez-int.com
+  * remove the old index of blog, we'll implement that more minimalistic
+
+Mon Jan 29 22:17:27 JST 2007  manveru@weez-int.com
+  * remove miniwiki and move microwiki to whywiki
+
+Mon Jan 29 21:22:46 JST 2007  m.fellinger@gmail.com
+  * huuge patch (kinda) to support cookies via POST with Net::HTTP to webrick, improves some tests and remove tc_helper_crud
+
+Mon Jan 29 21:22:24 JST 2007  m.fellinger@gmail.com
+  * prevent stack from answering if the stack is empty
+
+Mon Jan 29 21:22:06 JST 2007  m.fellinger@gmail.com
+  * little typo, forgot comma ;)
+
+Mon Jan 29 20:14:42 JST 2007  m.fellinger@gmail.com
+  * uhm... remove model... again? :)
+
+Mon Jan 29 20:13:57 JST 2007  m.fellinger@gmail.com
+  * removing the CrudHelper stuff again, it's just confusing and quite worthless in practice.
+
+Mon Jan 29 20:10:02 JST 2007  m.fellinger@gmail.com
+  * little fix in tc_helper_form in case Og isn't there.
+
+Mon Jan 29 20:09:27 JST 2007  m.fellinger@gmail.com
+  * as promised, using throw(:respond) now to do redirection properly
+
+Mon Jan 29 20:07:39 JST 2007  m.fellinger@gmail.com
+  * adding a new option Global.cookies to turn sending cookies on and off... also we are now catching :respond to break out of a request/response cycle early (this will be used for redirection)
+
+Mon Jan 29 20:06:36 JST 2007  m.fellinger@gmail.com
+  * alias Ramaze.start with Ramaze.new
+
+Mon Jan 29 20:06:13 JST 2007  m.fellinger@gmail.com
+  * a little more explanation in the examples/hello
+
+Mon Jan 29 20:05:39 JST 2007  m.fellinger@gmail.com
+  * adding ramaze --console for starting up an irb-session while the server runs in the background
+
+Mon Jan 29 16:41:05 JST 2007  m.fellinger@gmail.com
+  * Ramaze.autoreload instead of Kernel.autoreload
+
+Mon Jan 29 15:03:28 JST 2007  manveru@weez-int.com
+  * the adapter should return only one thread to watch...
+
+Mon Jan 29 14:56:06 JST 2007  manveru@weez-int.com
+  * implement multiple ports for webrick + tests
+
+Mon Jan 29 14:55:46 JST 2007  manveru@weez-int.com
+  * implement for mongrel + tests
+
+Mon Jan 29 14:54:24 JST 2007  manveru@weez-int.com
+  * first step in supporting startup for multiple servers at once (ramaze -p 7000..7010) via a new Global.ports that is taken from Global.port (which loses in significance... but it's only of value before startup anyway
+
+Mon Jan 29 07:49:46 JST 2007  manveru@weez-int.com
+  * small change to make ancestral_trait work for the current instance as well.
+
+Sun Jan 28 15:46:11 JST 2007  manveru@weez-int.com
+  * add documentation and fix minor bugs in ramaze, ramaze/global and ramaze/inform
+
+Sun Jan 28 15:34:08 JST 2007  manveru@weez-int.com
+  * document ramaze/template and remove the require of ramaze/model
+
+Sun Jan 28 15:33:41 JST 2007  manveru@weez-int.com
+  * it should be :transform_pipeline, not :template_pipeline
+
+Sun Jan 28 15:29:35 JST 2007  manveru@weez-int.com
+  * remove lib/ramaze/model.rb - nowhere used anyway :P
+
+Sun Jan 28 15:27:30 JST 2007  manveru@weez-int.com
+  * documentation for adapter/mongrel, adapter/webrick, AuthHelper and CacheHelper
+
+Sun Jan 28 15:22:24 JST 2007  manveru@weez-int.com
+  * set the default method for mongrels log-method to Informer#<<
+
+Sun Jan 28 15:01:37 JST 2007  manveru@weez-int.com
+  * documentation for: FeedHelper, StackHelper and FormHelper
+
+Sun Jan 28 14:28:00 JST 2007  manveru@weez-int.com
+  * remove #instance? was a nice hack but we don't use it anywhere
+
+Sun Jan 28 14:27:03 JST 2007  manveru@weez-int.com
+  * fixing rake undocmented... missed out some methods and added some too much
+
+Sun Jan 28 14:25:14 JST 2007  manveru@weez-int.com
+  * remove test/tc_helper, it was just a copy of test/tc_helper_redirect ... makes my autocomplete a little bit faster ;)
+
+Sun Jan 28 14:24:53 JST 2007  manveru@weez-int.com
+  * use head instead of @head in the response
+
+Sun Jan 28 14:24:00 JST 2007  manveru@weez-int.com
+  * template/ramaze uses render_action instead of render_method... another ancestral_trait
+
+Sun Jan 28 14:23:43 JST 2007  manveru@weez-int.com
+  * docs for template/markaby
+
+Sun Jan 28 14:23:14 JST 2007  manveru@weez-int.com
+  * replace the clumsy ancestors_trait by ancestral_trait
+
+Sun Jan 28 14:22:28 JST 2007  manveru@weez-int.com
+  * a little bit of docs for store/default - still pondering about removing it since it's not used anywhere... also remove the [] and []= method, they should be handled by method_missing anyway.
+
+Sun Jan 28 14:21:07 JST 2007  manveru@weez-int.com
+  * changes for Object#trait, adding docs and replacing the ancestors_trait with the ancestral_trait method, it yields an hash that consists of all the traits of the ancestors
+
+Sun Jan 28 14:20:24 JST 2007  manveru@weez-int.com
+  * Ramaze::Informer instead of Ramaze::Inform for autoreload output
+
+Sun Jan 28 14:20:10 JST 2007  manveru@weez-int.com
+  * make Informer respond to << for WEBrick
+
+Sun Jan 28 14:19:10 JST 2007  manveru@weez-int.com
+  * it's Global.inform_ ... no Hash anymore for easier defaults
+
+Sun Jan 28 14:18:24 JST 2007  manveru@weez-int.com
+  * new defaults for Global plus a little bit of documentation-stubs... we really should make a seperate documentation in doc/ for the options.
+
+Sun Jan 28 14:17:04 JST 2007  manveru@weez-int.com
+  * check for the :benchmark tag in the adapter
+
+Sun Jan 28 14:16:42 JST 2007  manveru@weez-int.com
+  * make mongrel log as #debug instead of info
+
+Sun Jan 28 14:16:13 JST 2007  manveru@weez-int.com
+  * Global.autoreload is now a simple integer, no mapping of modes to integers, since we don't have modes anymore
+
+Sun Jan 28 14:15:30 JST 2007  manveru@weez-int.com
+  * close the thing Inform logs to at shutdown
+
+Sun Jan 28 14:14:40 JST 2007  manveru@weez-int.com
+  * small change, in case the adapter doesn't respond to #stop
+
+Sun Jan 28 14:13:30 JST 2007  manveru@weez-int.com
+  * little change in examples/element
+
+Sun Jan 28 14:12:18 JST 2007  manveru@weez-int.com
+  * adjust the bin/ramaze for the new Inform and use RDocs parser for the output of help, version and copyright.
+
+Fri Jan 26 23:22:53 JST 2007  manveru@weez-int.com
+  * typo
+
+Fri Jan 26 23:22:20 JST 2007  manveru@weez-int.com
+  * move init_global a bit forward so it's available right from the start.
+
+Fri Jan 26 23:21:29 JST 2007  manveru@weez-int.com
+  * update the Global for the new Inform
+
+Fri Jan 26 23:20:41 JST 2007  manveru@weez-int.com
+  * patch the rest of the system for the new Inform
+
+Fri Jan 26 23:19:48 JST 2007  manveru@weez-int.com
+  * rewrite Inform to be tag-based and a lot simpler :)
+
+Fri Jan 26 13:52:42 JST 2007  manveru@weez-int.com
+  * finally set a default mapping to {} at require Global
+
+Fri Jan 26 13:52:17 JST 2007  manveru@weez-int.com
+  * prevent errors in case we pass Coderay some empty piece of code
+
+Fri Jan 26 13:51:13 JST 2007  manveru@weez-int.com
+  * supporting mongrels send_file, should give some decent speedups.
+
+Thu Jan 25 13:52:55 JST 2007  manveru@weez-int.com
+  * append a newline to the output of CrudHelper... makes CLI-use easier
+
+Thu Jan 25 13:52:20 JST 2007  manveru@weez-int.com
+  * add the examples/crud.rb to show how to use the CrudHelper
+
+Wed Jan 24 20:28:55 JST 2007  manveru@weez-int.com
+  * for subsequent starts of ramaze in tests we finally have the :fake_start option that updates the Global but doesn't do much else, so that the original instance can just continue to work, i like the implementation... but our Global slowly gets stuffed :)
+
+Wed Jan 24 20:26:16 JST 2007  manveru@weez-int.com
+  * big change also to the way Global is set up, new method init_global on Ramaze that sets up the Global as usual but now also preserves the mappings set before the start of ramaze and just adds new mappings that you pass on start, gives the CrudHelper the ability to set up a mapping for your Store... you can change the name of the mapping with 'crud => YourStore, :name => "blah"' which maps to /blah...
+
+Wed Jan 24 20:22:41 JST 2007  manveru@weez-int.com
+  * rewrite of CrudHelper, now it only converts your Store into a kind of Controller, extends it with Trinity and defines the ::handle_request method (yay for ducktyping), it just sets up a proxy and you can define your own 'route', which request should send what method.
+
+Wed Jan 24 14:50:15 JST 2007  manveru@weez-int.com
+  * introduce custom morphs and add even more docs... ratio must be 2:1 by now :)
+
+Tue Jan 23 21:09:16 JST 2007  manveru@weez-int.com
+  * adding documentation for Morpher#transform and making the rescue a lot better.
+
+Tue Jan 23 20:34:33 JST 2007  manveru@weez-int.com
+  * rearrange tc_heper_form to resemble tc_morpher in regard to the require-failsafe
+
+Tue Jan 23 20:32:32 JST 2007  manveru@weez-int.com
+  * add template/ramaze/morpher and tests for it, it requires hpricot at the moment but got a graceful fallback that just won't process morphers... maybe i can whip up a pure ruby variant later, but the code using hpricot is just sweet :)
+
+Tue Jan 23 20:30:41 JST 2007  manveru@weez-int.com
+  * add test for headers in tc_request and add a method for raw_get that gives you the original object from open() back
+
+Mon Jan 22 21:25:19 JST 2007  manveru@weez-int.com
+  * CrudHelper and testcase
+
+Mon Jan 22 19:56:21 JST 2007  manveru@weez-int.com
+  * fixing tons of typos in the README
+
+Mon Jan 22 19:46:42 JST 2007  manveru@weez-int.com
+  * fail gently on require rubygems... we probably should remove that requires completly...
+
+Mon Jan 22 17:39:32 JST 2007  manveru@weez-int.com
+  * add some more tests for the previous bug (request.params instead of request.query)
+
+Mon Jan 22 17:32:28 JST 2007  manveru@weez-int.com
+  * fix request[key] and request[key] = value
+
+Mon Jan 22 17:28:43 JST 2007  manveru@weez-int.com
+  * add an example for the usage of Element in examples/element.rb
+
+Mon Jan 22 14:45:16 JST 2007  manveru@weez-int.com
+  * make tc_request pass again, request.body.read instead
+
+Mon Jan 22 14:42:59 JST 2007  manveru@weez-int.com
+  * fixing helper/feed
+
+Mon Jan 22 14:40:10 JST 2007  manveru@weez-int.com
+  * add exitstatus checking for all_tests
+
+Mon Jan 22 14:37:25 JST 2007  manveru@weez-int.com
+  * reimplementation of Element, making code a bit cleaner (but longer... and possibly harder to understand?) also adding some tests for <Element />
+
+Sun Jan 21 03:16:56 JST 2007  manveru@weez-int.com
+  * remove cruft from helper/feed
+
+Fri Jan 19 21:39:52 JST 2007  manveru@weez-int.com
+  * document lib/test/test_helper
+
+Fri Jan 19 21:39:31 JST 2007  manveru@weez-int.com
+  * document lib/test/all_tests
+
+Fri Jan 19 21:39:15 JST 2007  manveru@weez-int.com
+  * document tool/tidy
+
+Fri Jan 19 21:38:55 JST 2007  manveru@weez-int.com
+  * complete documentation of template/ramaze/element
+
+Fri Jan 19 21:38:23 JST 2007  manveru@weez-int.com
+  * add/remove documentation from snippets/kernel/self_method
+
+Fri Jan 19 21:13:30 JST 2007  manveru@weez-int.com
+  * change rake uncommented to rake undocumented
+
+Fri Jan 19 21:12:26 JST 2007  manveru@weez-int.com
+  * document all of Inform
+
+Fri Jan 19 21:07:27 JST 2007  manveru@weez-int.com
+  * document all of Trinity
+
+Fri Jan 19 21:07:14 JST 2007  manveru@weez-int.com
+  * document all of trinity/session
+
+Fri Jan 19 21:06:56 JST 2007  manveru@weez-int.com
+  * document all of trinity/response
+
+Fri Jan 19 21:06:34 JST 2007  manveru@weez-int.com
+  * document all of trinity/request
+
+Fri Jan 19 21:05:42 JST 2007  manveru@weez-int.com
+  * don't include the dot-graph here (yet), also show all methods (private, protected)
+
+Fri Jan 19 20:10:25 JST 2007  manveru@weez-int.com
+  * new rake todolist and the file it generates
+
+Fri Jan 19 14:31:44 JST 2007  manveru@weez-int.com
+  * add support for CDATA in FeedHelper, add some more tests and add from_xml to parse the class in again (just basic yet, no nested niceties)
+
+Fri Jan 19 13:54:11 JST 2007  manveru@weez-int.com
+  * extending FeedHelper and testcase, now attributes to tags are possible... (just for the enclosing class for now)
+
+Fri Jan 19 13:32:57 JST 2007  manveru@weez-int.com
+  * don't duplicate body by reading it, the user can always see it with request.body.read in the controller.
+
+Fri Jan 19 00:13:58 JST 2007  manveru@weez-int.com
+  * set the trinity-methods to private, we don't want them to be accessable
+
+Fri Jan 19 00:11:04 JST 2007  manveru@weez-int.com
+  * ignore memcached in the tests if it's not installed
+
+Thu Jan 18 22:57:49 JST 2007  manveru@weez-int.com
+  * fixing the controller-method-lookup
+
+Thu Jan 18 22:44:18 JST 2007  manveru@weez-int.com
+  * remove the useless invalidate_cache method from CacheHelper
+
+Thu Jan 18 22:43:14 JST 2007  manveru@weez-int.com
+  * make rake record a bit less annoying ;)
+
+Thu Jan 18 22:41:47 JST 2007  manveru@weez-int.com
+  * add example/caching.rb
+
+Thu Jan 18 22:28:07 JST 2007  manveru@weez-int.com
+  * total reimplementation of caching, the CacheHelper now finally works (added testcase) for both actions (based on action(*params)) and values, this is a giant step for ramaze, since proper caching is a key to serving fast. The implementation might not be perfect yet, but some real-life testing will show if the current API and use-cases are worth anything, for now i'm very satisfied :)
+
+Thu Jan 18 21:25:01 JST 2007  manveru@weez-int.com
+  * test/tc_aspect.rb => test/tc_helper_aspect.rb
+
+Thu Jan 18 20:43:16 JST 2007  manveru@weez-int.com
+  * provide a little anonymous gulp-class to catch the stuff Og sends out in the testcase, finally the rake test looks pretty enough :)
+
+Thu Jan 18 20:33:35 JST 2007  manveru@weez-int.com
+  * add Kernel#silently, to temporarly turn off warnings on reassinging constants and use it in session.rb
+
+Thu Jan 18 13:50:48 JST 2007  manveru@weez-int.com
+  * add/remove some todos
+
+Thu Jan 18 13:49:42 JST 2007  manveru@weez-int.com
+  * introduce caching now for sessions as well, setting the adapter for tc_request back to mongrel since webrick doesn't implement PUT (fix that too)
+
+Thu Jan 18 13:35:36 JST 2007  manveru@weez-int.com
+  * add test for PUT, we need to find a way to do a DELETE-request, possibly with Net::HTTP? (also investigate other ways not to rely on curl for PUT)
+
+Thu Jan 18 13:35:19 JST 2007  manveru@weez-int.com
+  * rewrite tc_helper_feed
+
+Thu Jan 18 13:34:58 JST 2007  manveru@weez-int.com
+  * better implementation of the tc_global, it would fail on slow or busy systems
+
+Thu Jan 18 13:34:29 JST 2007  manveru@weez-int.com
+  * support PUT and DELETE
+
+Thu Jan 18 13:33:57 JST 2007  manveru@weez-int.com
+  * rewrite FeedHelper, still not functional, but a lot nicer to build XML from objects
+
+Thu Jan 18 12:24:54 JST 2007  m.fellinger@gmail.com
+  * patching method-lookup for controllers... now it should be possible to expose public methods via helper-methods... have to test this first though.
+
+Wed Jan 17 11:56:21 JST 2007  m.fellinger@gmail.com
+  * rephrase message on startup...
+
+Wed Jan 17 00:18:30 JST 2007  manveru@weez-int.com
+  * provide some info about where the adapter attempts to connect... also fix debugging-output in tests
+
+Wed Jan 17 00:18:06 JST 2007  manveru@weez-int.com
+  * remove require of fastthread, they finally fixed it
+
+Wed Jan 17 00:17:48 JST 2007  manveru@weez-int.com
+  * add handling of multipart (file-uploads)
+
+Mon Jan 15 21:17:42 JST 2007  manveru@weez-int.com
+  * all_tests gives _much_ prettier and more informative output... still gotta use systemu for catching that nasty output from Og though...
+
+Mon Jan 15 21:16:55 JST 2007  manveru@weez-int.com
+  * redirect takes now a :status argument, for your very own redirect-status-code
+
+Mon Jan 15 20:53:16 JST 2007  manveru@weez-int.com
+  * fix the spaces ;)
+
+Mon Jan 15 20:52:43 JST 2007  manveru@weez-int.com
+  * run fix-end-spaces and add-copyright before rake record
+
+Mon Jan 15 20:50:45 JST 2007  manveru@weez-int.com
+  * rake fix-end-spaces, new task to remove spaces at end of line where not needed ;)
+
+Mon Jan 15 20:50:29 JST 2007  manveru@weez-int.com
+  * add a .each method to GlobalStruct
+
+Mon Jan 15 20:48:21 JST 2007  manveru@weez-int.com
+  * a much POLSer way of working with the bin/ramaze, options from the CLI are not overwritten by options in your app anymore... also ignores start from your app if you use this command.
+
+Mon Jan 15 14:42:43 JST 2007  manveru@weez-int.com
+  * add rake patchsize to show how many patches we got
+
+Mon Jan 15 14:15:49 JST 2007  manveru@weez-int.com
+  * nicer handling of SIGINT
+
+Sun Jan 14 09:10:50 JST 2007  manveru@weez-int.com
+  * add example/microwiki, like miniwiki but total reimplementation using Template::Ramaze, should do one for every templating-engine to show usage
+
+Sun Jan 14 09:10:08 JST 2007  manveru@weez-int.com
+  * run tests per default on port 7007 and only on 127.0.0.1, avoids interfering with running apps
+
+Sun Jan 14 09:09:48 JST 2007  manveru@weez-int.com
+  * improve shutdown
+
+Sun Jan 14 09:09:24 JST 2007  manveru@weez-int.com
+  * rearrange and add the Global parameters a little bit
+
+Sun Jan 14 09:08:56 JST 2007  manveru@weez-int.com
+  * provide a content_type for the error-page... old bug, need to add some tests for the errorpage...
+
+Sun Jan 14 09:08:33 JST 2007  manveru@weez-int.com
+  * clean the setting of response/request/sessions a little bit
+
+Sun Jan 14 09:07:44 JST 2007  manveru@weez-int.com
+  * CGI.unescape all parameters of GET/POST
+
+Sun Jan 14 09:06:39 JST 2007  manveru@weez-int.com
+  * use method_missing to catch all the transactions for YAML::Store, cleans the API quite a bit and provides more functionality
+
+Sun Jan 14 07:28:57 JST 2007  manveru@weez-int.com
+  tagged 0.0.5
+
+Sun Jan 14 07:28:33 JST 2007  manveru@weez-int.com
+  * Ramaze 0.0.5
+
+Sun Jan 14 07:28:04 JST 2007  manveru@weez-int.com
+  * update CHANGELOG
+
+Sun Jan 14 07:27:20 JST 2007  manveru@weez-int.com
+  * added changelog task that updates doc/CHANGELOG based on doc/changes.txt (from rake changes)
+
+Sun Jan 14 07:26:15 JST 2007  manveru@weez-int.com
+  * ran add-copyright once again
+
 Sun Jan 14 07:20:50 JST 2007  manveru@weez-int.com
   * update README a bit
 
@@ -9,6 +705,21 @@ Sun Jan 14 06:52:54 JST 2007  manveru@weez-int.com
 
 Sun Jan 14 06:49:14 JST 2007  manveru@weez-int.com
   * finally added and integrated caching, possible caches for now are YAML::Store, usual Hash (for one instance only) and MemCache, the respective objects are YAMLStoreCache, MemoryCache and MemcachedCache, you can set them with Global.cache = respective_class before startup, there is no functionality yet to change this during runtime, but you could Ramaze.const_set('Cache', YourClass.new) since Ramze::Cache is the usual instance. See the testcases and documentation for more information on the usage
+
+Fri Jan 12 00:43:08 JST 2007  manveru@weez-int.com
+  * fix Rakefile
+
+Fri Jan 12 00:35:03 JST 2007  manveru@weez-int.com
+  * add some more tasks, :record and :changes (record calls changes)
+
+Fri Jan 12 00:28:19 JST 2007  manveru@weez-int.com
+  * added tasks changes-xml and changes-text to the Rakefile, stores the current changes into textual format for further use :)
+
+Tue Jan  9 14:19:11 JST 2007  manveru@weez-int.com
+  * add the template for the tc_template_ramaze
+
+Tue Jan  9 14:17:22 JST 2007  manveru@weez-int.com
+  * support template-only actions for Template::Ramaze, now you can just put a file with the appropiate name in your template-directory and it doesn't need a seperate method in your controller... this does not work yet with multiple arguments
 
 Sat Jan 13 07:12:07 JST 2007  manveru@weez-int.com
   * add tc_feed_helper
@@ -40,21 +751,6 @@ Sat Jan 13 07:07:50 JST 2007  manveru@weez-int.com
 Thu Jan 11 23:00:53 JST 2007  manveru@weez-int.com
   * simple CacheHelper
 
-Fri Jan 12 00:43:08 JST 2007  manveru@weez-int.com
-  * fix Rakefile
-
-Fri Jan 12 00:35:03 JST 2007  manveru@weez-int.com
-  * add some more tasks, :record and :changes (record calls changes)
-
-Fri Jan 12 00:28:19 JST 2007  manveru@weez-int.com
-  * added tasks changes-xml and changes-text to the Rakefile, stores the current changes into textual format for further use :)
-
-Tue Jan  9 14:19:11 JST 2007  manveru@weez-int.com
-  * add the template for the tc_template_ramaze
-
-Tue Jan  9 14:17:22 JST 2007  manveru@weez-int.com
-  * support template-only actions for Template::Ramaze, now you can just put a file with the appropiate name in your template-directory and it doesn't need a seperate method in your controller... this does not work yet with multiple arguments
-
 Mon Jan  8 22:38:33 JST 2007  manveru@weez-int.com
   * stop some squeaking of the wheel and added a little comment of the why
 
@@ -63,9 +759,6 @@ Mon Jan  8 17:38:21 JST 2007  manveru@weez-int.com
 
 Mon Jan  8 18:37:14 JST 2007  manveru@weez-int.com
   * check before undef method id in Feed::Bag, that makes it better suited for autoreload
-
-Mon Jan  8 18:15:30 JST 2007  manveru@weez-int.com
-  * escape the stuff we get (possibly dangerous)
 
 Mon Jan  8 16:28:02 JST 2007  manveru@weez-int.com
   * serious extension of TCFormHelper
@@ -87,6 +780,9 @@ Mon Jan  8 16:25:22 JST 2007  manveru@weez-int.com
 
 Mon Jan  8 16:24:57 JST 2007  manveru@weez-int.com
   * little prettification in dispatcher
+
+Mon Jan  8 18:15:30 JST 2007  manveru@weez-int.com
+  * escape the stuff we get (possibly dangerous)
 
 Mon Jan  8 12:55:09 JST 2007  manveru@weez-int.com
   * fixed test (for rcov)
