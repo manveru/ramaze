@@ -187,7 +187,7 @@ module Ramaze
 
     Global.mapping.merge!(mapping) if Global.mapping.empty?
 
-    # Now we make them to real Ramze::Controller s :)
+    # Now we make them to real Ramaze::Controller s :)
     # also we set controller-variable as we go along, in case there
     # is only one controller it ends up hooked on '/'
     # otherwise we get some random one ...

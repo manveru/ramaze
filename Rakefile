@@ -192,6 +192,20 @@ task :allison => :clean do
   sh "rdoc #{opts.join(' ')} lib doc/TODO doc/README doc/CHANGELOG"
 end
 
+desc "create bzip2 and tarball"
+task :distribute => :gem do
+  sh "rm -rf pkg/ramaze-#{VERS}"
+  sh "mkdir -p pkg/ramaze-#{VERS}"
+  sh "cp -r {bin,doc,lib,examples,spec,Rakefile,setup.rb} pkg/ramaze-#{VERS}/"
+
+  Dir.chdir('pkg') do |pwd|
+    sh "tar -zcvf ramaze-#{VERS}.tar.gz ramaze-#{VERS}"
+    sh "tar -jcvf ramaze-#{VERS}.tar.bz2 ramaze-#{VERS}"
+  end
+
+  sh "rm -rf pkg/ramaze-#{VERS}"
+end
+
 desc "doc/README to html"
 Rake::RDocTask.new('gen-readme2html') do |rd|
   rd.options = %w[
