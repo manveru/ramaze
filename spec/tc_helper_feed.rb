@@ -31,9 +31,9 @@ include Ramaze
 class Book < With
   include ReFeed
 
-  attr_accessor :title, :text, :author, :isbn, :description
+  attr_accessor :title, :content, :author, :isbn, :description
 
-  xml :title, :text, :type => :text
+  xml :title, :content, :type => :text
   xml :isbn, :type => :attribute
   xml :description, :type => :cdata
   xml :author
@@ -60,7 +60,7 @@ context "ReFeed" do
   end
 
   context "Book" do
-    book = Book.with :title => 'foo', :text => 'bar',
+    book = Book.with :title => 'foo', :content => 'bar',
                      :isbn => 123456789012, :description => 'The Best Foo in the world!'
 
     specify "to_xml" do
@@ -70,22 +70,22 @@ context "ReFeed" do
 
       xml.first['isbn'].to_i.should == book.isbn
 
-      xml.at('description').inner_html.should == book.description
+      xml.at('description').to_plain_text.should == book.description
       xml.at('title').inner_html.should       == 'foo'
-      xml.at('text').inner_html.should        == 'bar'
+      xml.at('content').inner_html.should     == 'bar'
     end
   end
 
   context "Book and User" do
     user = User.with :name => 'manveru', :email => 'foo@bar.com'
-    book = Book.with :title => 'foo', :text => 'bar', :author => user
+    book = Book.with :title => 'foo', :content => 'bar', :author => user
 
     specify "to_xml" do
       xml_book = ( book.to_xml.hpricot/:book )
       xml_user = xml_book.at(:user)
 
       xml_book.at('title').inner_html.should == book.title
-      xml_book.at('text').inner_html.should  == book.text
+      xml_book.at('content').inner_html.should  == book.content
 
       xml_user.at('name').inner_html.should  == user.name
       xml_user.at('email').inner_html.should == user.email
@@ -93,8 +93,8 @@ context "ReFeed" do
   end
 
   context "User and books" do
-    book1  = Book.with :title => 'foo', :text => 'bar'
-    book2  = Book.with :title => 'foz', :text => 'baz'
+    book1  = Book.with :title => 'foo', :content => 'bar'
+    book2  = Book.with :title => 'foz', :content => 'baz'
     user      = User.with :name => 'manveru', :email => 'foo@bar.com',
     :books => [book1, book2]
 
@@ -110,10 +110,10 @@ context "ReFeed" do
       xml.at('email').inner_html.should     == user.email
 
       first.at('title').inner_html.should   == book1.title
-      first.at('text').inner_html.should    == book1.text
+      first.at('content').inner_html.should    == book1.content
 
       second.at('title').inner_html.should  == book2.title
-      second.at('text').inner_html.should   == book2.text
+      second.at('content').inner_html.should   == book2.content
     end
   end
 
