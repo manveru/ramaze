@@ -70,11 +70,7 @@ module Ramaze
 
     info "Starting up Ramaze (Version #{VERSION})"
 
-    find_controllers
-    setup_controllers
-
-    init_autoreload
-    init_adapter
+    startup
   end
 
   alias run start
@@ -88,36 +84,63 @@ module Ramaze
 
   alias force_run force_start
 
-  # kill all threads except Thread.main before #shutdown
+  # Execute the tasks specified in Global.startup
+  # (where you can define your own tasks)
+  # and afterwards the ones in Global.ramaze_startup
+  # (reserved for the usage of Ramaze itself)
 
-  def shutoff
-    info "Killing the Threads"
-    Global.adapter_klass.stop rescue nil
-    (Thread.list - [Thread.main]).each do |thread|
-      thread.kill
+  def startup
+    tasks = Global.startup + Global.ramaze_startup
+    execute *tasks
+  end
+
+  # Execute the tasks specified in Global.shutdown
+  # (where you can define your own tasks)
+  # and afterwards the ones in Global.ramaze_shutdown
+  # (reserved for the usage of Ramaze itself)
+
+  def shutdown
+    tasks = Global.shutdown + Global.ramaze_shutdown
+    execute *tasks
+  end
+
+  # executes a list of tasks, depending on the task-object, if it responds to
+  # :call it will be called upon, otherwise the task is sent to self ( the
+  # module Ramaze ).
+
+  def execute *tasks
+    tasks.flatten.each do |task|
+      begin
+        if task.respond_to?(:call)
+          task.call
+        else
+          send(task)
+        end
+      rescue Object => ex
+        error ex
+      end
     end
   end
 
-  alias exit shutoff
+  # kill all threads except Thread.main before #shutdown
 
-  # A simple and clean way to shutdown Ramaze, closes the IO your
-  # Global.inform_out points to.
-  #
-  # #shutoff is called before doing anything else.
+  def kill_threads
+    info "Killing the Threads"
+    Global.adapter_klass.stop rescue nil
+    (Thread.list - [Thread.main]).each do |thread|
+      Timeout.timeout(2) do
+        thread.kill
+      end
+    end
+  end
 
-  def shutdown
-    Timeout.timeout(2){ shutoff }
-  rescue => ex
-    puts ex
-  ensure
-    info "Shutdown Ramaze (it's save to kill me now if i hang)"
+  # closes the IO that Global.inform_to points to.
 
+  def close_inform
     if to = Global.inform_to and to.respond_to?(:close)
       debug "close #{to.inspect}"
       to.close until to.closed?
     end
-
-    Kernel.exit
   end
 
   # first, search for all the classes that end with 'Controller'

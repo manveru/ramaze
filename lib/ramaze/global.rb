@@ -26,6 +26,12 @@ module Ramaze
     # inform_prefix_info    - prefix for all the Inform#info messages
     # inform_prefix_debug   - prefix for all the Inform#debug messages
     # inform_prefix_error   - prefix for all the Inform#error messages
+    #
+    # startup         - List of methods and lambdas that are executed on startup
+    # ramaze_startup  - Internal list of methods and lambdas that are executed on startup
+    #
+    # shutdown        - List of methods and lambdas that are executed on startup
+    # ramaze_shutdown - Internal list of methods and lambdas that are executed on shutdown
 
     DEFAULT = {
       :autoreload     => 5,
@@ -49,6 +55,19 @@ module Ramaze
       :inform_prefix_info    => 'INFO ',
       :inform_prefix_debug   => 'DEBUG',
       :inform_prefix_error   => 'ERROR',
+
+      :startup => [],
+      :ramaze_startup => [
+          :find_controllers, :setup_controllers, :init_autoreload, :init_adapter
+        ],
+
+      :shutdown => [],
+      :ramaze_shutdown => [
+        :kill_threads,
+        :close_inform,
+        lambda{ puts "Shutdown Ramaze (it's save to kill me now if i hang)" },
+        :exit
+        ],
     }
 
     # takes an hash of options and optionally an block that is evaled in this
