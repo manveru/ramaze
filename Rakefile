@@ -87,6 +87,7 @@ spec =
         s.post_install_message = POST_INSTALL_MESSAGE
 
         s.add_dependency('rake', '>=0.7.1')
+        s.add_dependency('rspec', '>=0.7.5.1')
         #s.required_ruby_version = '>= 1.8.2'
 
         s.files = %w(doc/COPYING doc/TODO doc/README doc/CHANGELOG Rakefile) +
