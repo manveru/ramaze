@@ -51,10 +51,6 @@
 #
 #            Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 #   All files in this distribution are subject to the terms of the Ruby license.
-#
-# = Version
-#
-# Ramaze 0.0.5
 
 require 'ramaze'
 
@@ -108,7 +104,7 @@ begin
     case sopt
     when :create            : create[arg]
     when :help              : RDoc::usage('Usage')
-    when :version           : RDoc::usage('Version')
+    when :version           : puts("ramaze #{Ramaze::Version}")
     when :copyright         : RDoc::usage('Copyright')
     when :mongrel, :webrick : options[:adapter] = sopt
 
@@ -131,15 +127,12 @@ begin
   puts "running #{File.expand_path(runner)}"
   require runner
 
-
   if options.delete(:console)
     options.merge!(:run_loose => true)
-    p options
 
     ARGV.clear # Avoid passing args to IRB 
-    p :pre
+
     Ramaze.start(options)
-    p :post
 
     require 'irb'
     require 'irb/completion'

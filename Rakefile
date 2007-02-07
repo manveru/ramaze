@@ -74,7 +74,7 @@ spec =
         s.version = VERS
         s.platform = Gem::Platform::RUBY
         s.has_rdoc = true
-        s.extra_rdoc_files = ["doc/README", "doc/CHANGELOG"]
+        s.extra_rdoc_files = ["doc/TODO", "doc/README", "doc/CHANGELOG"]
         s.rdoc_options += RDOC_OPTS
         s.summary = DESCRIPTION
         s.description = DESCRIPTION
@@ -189,7 +189,7 @@ desc "generate improved allison-rdoc"
 task :allison => :clean do
   opts = RDOC_OPTS
   opts << %w[--template 'doc/allison/allison.rb']
-  sh "rdoc #{RDOC_OPTS.join(' ')} lib doc/README doc/CHANGELOG"
+  sh "rdoc #{opts.join(' ')} lib doc/TODO doc/README doc/CHANGELOG"
 end
 
 desc "doc/README to html"

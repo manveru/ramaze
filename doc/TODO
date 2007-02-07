@@ -28,9 +28,6 @@ position specified in the list.
 /home/manveru/prog/projects/ramaze/lib/ramaze/template/ramaze/morpher.rb
 - Add pure Ruby implementation as a fall-back.
 
-/home/manveru/prog/projects/ramaze/lib/ramaze/global.rb
-- complete documentation of every option
-
 /home/manveru/prog/projects/ramaze/lib/ramaze/helper/redirect.rb
 - setting custom status-code, it ignores any preset ones at the moment
 - maybe some more options, like a delay
