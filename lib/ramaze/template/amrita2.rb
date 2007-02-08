@@ -10,7 +10,7 @@ module Ramaze::Template
     trait :actionless => true
 
     # usual extensions for templates
-    trait :template_extensions => %w[html]
+    trait :template_extensions => %w[html amrita]
 
     class << self
       include Ramaze::Helper
@@ -28,7 +28,9 @@ module Ramaze::Template
 
         template = ::Amrita2::TemplateFile.new(file)
         out = ''
-        template.expand(out, self.new)
+        controller = self.new
+        controller.instance_variable_set('@params', params)
+        template.expand(out, controller)
         out
 
       rescue Object => ex

@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Template::Ramaze external</title>
+  </head>
+  <body>
+  <h1 id="title">Title</h1>
+    <a id="link_home">Home</a>
+    <p>
+      Here you can pass some stuff if you like, parameters are just passed like this:<br />
+      <a id="link_one"></a><br />
+      <a id="link_two"></a><br />
+      <a id="link_three"></a>
+    </p>
+    <div id="args">
+      *args
+    </div>
+    <div id="inspect_parameters"></div>
+  </body>
+</html>
