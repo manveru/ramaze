@@ -30,7 +30,6 @@ CLEAN.include %w[
   **/*~
   **/{data.db,cache.yaml}
   pkg
-  rdoc
 ]
 RDOC_OPTS = %w[
   --all

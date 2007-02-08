@@ -60,7 +60,7 @@ module Ramaze
 
   def start options = {}
     starter = caller[0].split(':').first
-    return unless $0 == starter or options.delete(:force)
+    return unless ($0 == starter or options.delete(:force))
 
     init_global options
 
