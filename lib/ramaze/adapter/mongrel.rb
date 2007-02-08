@@ -79,10 +79,23 @@ module Ramaze::Adapter
 
     def respond
       @our_response = Dispatcher.handle(@request, @response)
-      code = @our_response.code || STATUS_CODE[:internal_server_error]
-      @response.start(code) do |head, out|
-        set_head head
-        set_out  out
+      o_response = @our_response
+
+      if file = (o_response.out[:send_file] rescue nil)
+        @response.start(200) do |head, out|
+          head['Content-Type'] = 'text/plain'
+          stat = File.stat(file)
+          @response.send_status(stat.size)
+          @response.send_header
+          @response.send_file(file)
+        end
+      else
+        code = o_response.code || STATUS_CODE[:internal_server_error]
+
+        @response.start(code) do |head, out|
+          set_head head
+          set_out  out
+        end
       end
     end
 

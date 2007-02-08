@@ -6,6 +6,8 @@ require 'spec/spec_helper'
 include Ramaze
 
 class TCRequestController < Template::Ramaze
+  trait :public => 'spec/public'
+
   def is_post()   request.post?.to_s end
   def is_get()    request.get?.to_s end
   def is_put()    request.put?.to_s end
@@ -106,6 +108,10 @@ context "Request" do
     specify "header" do
       raw_get('/test_headers').status.should == %w[200 OK]
       raw_get('/test_headers').content_type.should == "text/html"
+    end
+
+    specify "send_file" do
+      get('test_download.css').should == File.read('spec/public/test_download.css').strip
     end
   end
 end

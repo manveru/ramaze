@@ -110,6 +110,9 @@ module Ramaze
         info "Request from #{request.remote_addr}: #{path}"
 
         the_paths = $:.map{|way| (way/'public'/path) }
+        custom_publics = Global.controllers.map{|c| c.trait[:public]}.compact
+        the_paths += custom_publics.map{|c| c/path}
+
         if file = the_paths.find{|way| File.exist?(way) and File.file?(way)}
           respond_file file
         else
@@ -127,7 +130,7 @@ module Ramaze
 
         response.head['Content-Type'] = ''
         if @orig_response.respond_to?(:send_file)
-          @orig_response.send_file(file)
+          response.out = {:send_file => file}
         else
           response.out = File.read(file)
         end
