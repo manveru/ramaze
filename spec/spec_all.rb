@@ -43,13 +43,14 @@ Dir['spec/**/tc_*.rb'].each do |test_case|
       if f.nonzero? or $?.exitstatus != 0
         problematic[test_case] = out
         message << "#{f.to_s.rjust(3)} failed ]"
-        puts message.red
+        print message.red
       else
         message << "all passed ]"
-        puts message.green
+        print message.green
       end
     end
   end
+  puts
 end
 
 puts "-" * 80
