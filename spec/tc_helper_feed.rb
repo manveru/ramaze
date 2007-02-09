@@ -70,9 +70,9 @@ context "ReFeed" do
 
       xml.first['isbn'].to_i.should == book.isbn
 
-      xml.at('description').inner_html.should == book.description
+      xml.at('description').to_plain_text.should == book.description
       xml.at('title').inner_html.should       == 'foo'
-      xml.at('text').inner_html.should        == 'bar'
+      xml.at('content').inner_html.should     == 'bar'
     end
   end
 
@@ -85,7 +85,7 @@ context "ReFeed" do
       xml_user = xml_book.at(:user)
 
       xml_book.at('title').inner_html.should == book.title
-      xml_book.at('text').inner_html.should  == book.text
+      xml_book.at('content').inner_html.should  == book.content
 
       xml_user.at('name').inner_html.should  == user.name
       xml_user.at('email').inner_html.should == user.email
@@ -110,10 +110,10 @@ context "ReFeed" do
       xml.at('email').inner_html.should     == user.email
 
       first.at('title').inner_html.should   == book1.title
-      first.at('text').inner_html.should    == book1.text
+      first.at('content').inner_html.should    == book1.content
 
       second.at('title').inner_html.should  == book2.title
-      second.at('text').inner_html.should   == book2.text
+      second.at('content').inner_html.should   == book2.content
     end
   end
 
