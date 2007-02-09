@@ -1,0 +1,14 @@
+<Page title="TodoList">
+  <a href="/new">New Task</a>
+  <?r if @tasks.empty? ?>
+    No Tasks
+  <?r else ?>
+    <ul>
+      <?r @tasks.each do |title, status, toggle, delete| ?>
+        <li>
+          #{title}: #{status} [ #{toggle} | #{delete} ]
+        </li>
+      <?r end ?>
+    </ul>
+  <?r end ?>
+</Page>
