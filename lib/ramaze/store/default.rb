@@ -43,6 +43,12 @@ module Ramaze
       def keys
         original.keys
       end
+
+      # is the Store empty? (no keys)
+
+      def empty?
+        keys.empty?
+      end
     end
   end
 end
