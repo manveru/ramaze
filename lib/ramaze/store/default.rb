@@ -9,6 +9,8 @@ module Ramaze
     # A simple wrapper around YAML::Store
 
     class Default
+      include Enumerable
+
       attr_accessor :db
 
       # create a new store with a filename
@@ -16,6 +18,14 @@ module Ramaze
       def initialize filename = 'db.yaml'
         FileUtils.touch(filename)
         @db = YAML::Store.new(filename)
+      end
+
+      # yield a block in a transaction, identical to #db.transaction{}
+
+      def transaction
+        @db.transaction do
+          yield
+        end
       end
 
       # pass on all methods inside a transaction
@@ -29,7 +39,7 @@ module Ramaze
       # the actual content of the store in YAML format
 
       def to_yaml
-        Db.dump(:x)
+        dump(:x)
       end
 
       # loads the #to_yaml
@@ -41,13 +51,53 @@ module Ramaze
       # available keys of the store
 
       def keys
-        original.keys
+        (original || {}).keys
       end
 
       # is the Store empty? (no keys)
 
       def empty?
         keys.empty?
+      end
+
+      # nondestructive merge on #original
+
+      def merge hash = {}
+        original.merge(hash)
+      end
+
+      # destructive #merge
+
+      def merge! hash = {}
+        hash.each do |key, value|
+          transaction do
+            @db[key] = value
+          end
+        end
+
+        original
+      end
+
+      # delete all entries
+
+      def clear
+        keys.each do |key|
+          delete key
+        end
+      end
+
+      # number of #keys
+
+      def size
+        keys.size
+      end
+
+      # Iterate over #original and pass the key and value to a block.
+
+      def each
+        original.each do |key, value|
+          yield key, value
+        end
       end
     end
   end
