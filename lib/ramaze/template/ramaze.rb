@@ -168,9 +168,10 @@ module Ramaze::Template
 
       _template_ = _out_.join.strip
     rescue Object => ex
-      Informer.error "something bad happened while transformation"
+      message = "Something bad happened while transforming `#{@action}': #{ex.message}"
+      Informer.error message
       Informer.error ex
-      #raise Error::Template, "Problem during transformation for: #{request.request_path}"
+      raise Error::Template, message
       {ex.message => _template_}.inspect
     end
 
