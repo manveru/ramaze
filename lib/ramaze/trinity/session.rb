@@ -53,7 +53,7 @@ module Ramaze
     # well.
 
     def sessions
-      Thread.main[:session_cache] ||= Global.cache.new
+      Thread.main[:session_cache] ||= constant(Global.cache.to_s).new
     end
 
     # this runs before #parse and will extract the information stored in the cookie
