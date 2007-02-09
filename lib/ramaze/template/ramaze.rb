@@ -29,6 +29,7 @@ module Ramaze::Template
 
       def handle_request(action, *params)
         controller = self.new
+        controller.instance_variable_set('@action', action)
         controller.send(:render, action, *params)
       end
 
