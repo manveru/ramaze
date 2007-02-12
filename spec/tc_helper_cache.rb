@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCCacheHelperController < Template::Ezamar
+class TCCacheHelperController < Controller
   helper :cache
 
   def index

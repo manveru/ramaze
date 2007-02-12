@@ -7,8 +7,10 @@ testcase_requires 'amrita2'
 
 include Ramaze
 
-class TCTemplateAmritaController < Template::Amrita2
+class TCTemplateAmritaController < Controller
   trait :template_root => 'spec/template/amrita2/'
+  trait :engine => Template::Amrita2
+  trait :actionless => true
 
   def title
     "hello world"

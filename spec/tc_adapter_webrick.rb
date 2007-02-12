@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCAdapterController < Template::Ezamar
+class TCAdapterController < Controller
   def index
     "The index"
   end

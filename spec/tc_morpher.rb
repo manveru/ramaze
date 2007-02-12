@@ -8,7 +8,7 @@ include Ramaze
 begin
   require 'hpricot'
 
-class TCMorpherController < Template::Ezamar
+class TCMorpherController < Controller
   def index
     self.class.name
   end

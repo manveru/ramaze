@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCAspectController < Template::Ezamar
+class TCAspectController < Controller
   helper :aspect
 
   def pre_aspect() '<aspect>' end
@@ -26,7 +26,7 @@ class TCAspectController < Template::Ezamar
   wrap :test_wrap, :wrap_aspect
 end
 
-class TCAspectAllController < Template::Ezamar
+class TCAspectAllController < Controller
   helper :aspect
 
   def pre_aspect() '<pre>' end

@@ -26,8 +26,9 @@ module ProductsFilter
 end
 
 
-class TCTemplateLiquidController < Template::Liquid
-  trait :template_root => 'spec/template/liquid/'
+class TCTemplateLiquidController < Controller
+  trait :template_root  => 'spec/template/liquid/'
+  trait :engine         => Template::Liquid
   trait :liquid_options => { :filters => ProductsFilter }
 
   def index

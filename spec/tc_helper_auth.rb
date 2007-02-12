@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCAuthHelperController < Template::Ezamar
+class TCAuthHelperController < Controller
   helper :auth
 
   def session_inspect

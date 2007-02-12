@@ -7,59 +7,36 @@ require 'haml/engine'
 module Ramaze::Template
   class Haml < Template
 
-    # Actions consist of both templates and methods on the controller.
-    trait :actionless => false
-
-    # Usual extensions for templates.
-    trait :template_extensions => %w[haml]
-
     # Custom HAML-options for your controller to be merged.
     trait :haml_options => {
-      :locals => {}
-    }
+            :locals => {}
+          }
+
+    Ramaze::Controller.register_engine self, %w[ haml ]
 
     class << self
 
-      # initializes the handling of a request on the controller.
-      # Creates a new instances of itself and sends the action and params.
-      # Also tries to render the template.
-      # In Theory you can use this standalone, this has not been tested though.
+      # Transform any String via Haml, takes optionally an hash with the haml_options
+      # that you can set also by
+      #   trait :haml_options => {}
+      # if you pass the options it will merge the trait with them. (your options
+      # override the defaults from trait[:haml_options]
 
-      def handle_request action, *params
-        controller = self.new
-        controller.instance_variable_set('@action', action)
-        result = controller.send(action, *params) if controller.respond_to?(action)
+      def transform controller, options = {}
+        action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)
 
-        file = find_template(action)
-
-        template =
-          if file
-            File.read(file)
-          elsif result.respond_to? :to_str
-            result
-          end
+        reaction = controller.send(action, *parameter)
+        template = reaction_or_file(reaction, file)
 
         return '' unless template
 
-        controller.send(:transform, template)
+        haml = ::Haml::Engine.new(template, ancestral_trait[:haml_options])
+        haml.to_html(controller)
       rescue Object => ex
         puts ex
         Informer.error ex
         ''
       end
-    end
-
-    private
-
-    # Transform any String via Haml, takes optionally an hash with the haml_options
-    # that you can set also by
-    #   trait :haml_options => {}
-    # if you pass the options it will merge the trait with them. (your options
-    # override the defaults from trait[:haml_options]
-
-    def transform string, options = {}
-      haml = ::Haml::Engine.new(string, ancestral_trait[:haml_options].merge(options))
-      haml.to_html(self)
     end
   end
 end

@@ -7,7 +7,7 @@ testcase_requires 'mongrel'
 
 include Ramaze
 
-class TCAdapterController < Template::Ezamar
+class TCAdapterController < Controller
   def index
     "The index"
   end

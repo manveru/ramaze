@@ -28,7 +28,7 @@ Og.start :destroy => true
 
 include Ramaze
 
-class TCFormHelperEntryController < Template::Ezamar
+class TCFormHelperEntryController < Controller
   helper :form
 
   def index
@@ -56,7 +56,7 @@ class TCFormHelperEntryController < Template::Ezamar
   end
 end
 
-class TCFormHelperEntryTimestampedController < Template::Ezamar
+class TCFormHelperEntryTimestampedController < Controller
   helper :form
 
   def index
@@ -68,7 +68,7 @@ class TCFormHelperEntryTimestampedController < Template::Ezamar
   end
 end
 
-class TCFormHelperEntryDated < Template::Ezamar
+class TCFormHelperEntryDatedController < Controller
   helper :form
 
   def index
@@ -127,7 +127,7 @@ context "FormHelper" do
     end
 
     context "EntryDated" do
-      ramaze :fake_start => true, :mapping => {'/entry_dated' => TCFormHelperEntryDated}
+      ramaze :fake_start => true, :mapping => {'/entry_dated' => TCFormHelperEntryDatedController}
 
       specify "testrun" do
         get('/entry_dated').should ==

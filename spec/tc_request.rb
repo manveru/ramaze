@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCRequestController < Template::Ezamar
+class TCRequestController < Controller
   trait :public => 'spec/public'
 
   def is_post()   request.post?.to_s end

@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCStackHelperController < Template::Ezamar
+class TCStackHelperController < Controller
   helper :stack
 
   def index

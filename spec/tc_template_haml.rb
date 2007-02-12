@@ -7,8 +7,11 @@ testcase_requires 'ramaze/template/haml'
 
 include Ramaze
 
-class TCTemplateHamlController < Template::Haml
+class TCTemplateHamlController < Controller
   trait :template_root => 'spec/template/haml/'
+  trait :engine => Template::Haml
+
+  helper :link
 
   def index
   end

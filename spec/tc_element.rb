@@ -5,7 +5,9 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCElementController < Template::Ezamar
+class TCElementController < Controller
+  trait :engine => Template::Ezamar
+
   def index
     "The index"
   end

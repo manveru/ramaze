@@ -5,14 +5,47 @@ require 'markaby'
 
 module Ramaze::Template
   class Markaby < Template
-    extend Ramaze::Helper
 
-    # Actions consist of both templates and methods on the controller.
-    trait :actionless => false
+    Controller.register_engine self, %w[ mab ]
 
-    # Usual extensions for templates.
-    trait :template_extensions => %w[mab]
+    class << self
+      # initializes the handling of a request on the controller.
+      # Creates a new instances of itself and sends the action and params.
+      # Also tries to render the template.
+      # In Theory you can use this standalone, this has not been tested though.
 
+      def transform controller, options = {}
+        action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)
+
+        controller.class.send(:include, MarkabyMixin) unless controller.class.ancestors === MarkabyMixin
+
+        reaction = controller.send(action, *parameter)
+
+        mab = ::Markaby::Builder.new
+
+        template =
+          if file
+            ivs = {}
+            controller.instance_variables.each do |iv|
+              ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
+            end
+            controller.send(:mab, ivs) do
+              instance_eval(File.read(file))
+            end
+          elsif reaction.respond_to? :to_str
+            reaction
+          end
+
+        template ? template : ''
+      rescue Object => ex
+        puts ex
+        Informer.error ex
+        ''
+      end
+    end
+  end
+
+  module MarkabyMixin
     private
 
     # use this inside your controller to directly build Markaby
@@ -26,43 +59,6 @@ module Ramaze::Template
       builder.extend(Ramaze::Helper)
       builder.send(:helper, :link)
       builder.new(*args, &block).to_s
-    end
-
-    class << self
-
-      # Takes the action and parameter
-      # creates a new instance of itself, sets the @action instance-variable
-      # to the action just called, the sends the action and parameter further
-      # on to the instance (if the instance responds to the action)
-      #
-      # uses the #find_template method for the action to locate the template
-      # and uses the response from the template instead in case there is no
-      # template (and the response from the template responds to to_str)
-
-      def handle_request action, *params
-        controller = self.new
-        controller.instance_variable_set('@action', action)
-
-        result = controller.send(action, *params) if controller.respond_to?(action)
-        file = find_template(action)
-
-        mab = ::Markaby::Builder.new
-
-        template =
-          if file
-            ivs = {}
-            controller.instance_variables.each do |iv|
-              ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
-            end
-            controller.send(:mab, ivs) do
-              instance_eval(File.read(file))
-            end
-          elsif result.respond_to? :to_str
-            result
-          end
-
-        template ? template : ''
-      end
     end
   end
 end

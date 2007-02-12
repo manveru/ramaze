@@ -17,7 +17,7 @@ require 'pp'
 
 require 'ramaze/snippets'
 require 'ramaze/cache'
-require 'ramaze/controller'
+require 'ramaze/trinity'
 require 'ramaze/dispatcher'
 require 'ramaze/error'
 require 'ramaze/gestalt'
@@ -26,6 +26,7 @@ require 'ramaze/inform'
 require 'ramaze/http_status'
 require 'ramaze/snippets'
 require 'ramaze/helper'
+require 'ramaze/controller'
 require 'ramaze/template'
 require 'ramaze/version'
 
@@ -183,7 +184,6 @@ module Ramaze
       else
         mapping["/#{name.split('::').last.snake_case}"] = c
       end
-      c.__send__(:send, :include, Ramaze::Controller)
     end
 
     Global.mapping.merge!(mapping) if Global.mapping.empty?
@@ -195,7 +195,6 @@ module Ramaze
 
     Global.controllers.map! do |controller|
       controller = constant(controller)
-      controller.send(:include, Ramaze::Controller)
     end
   end
 

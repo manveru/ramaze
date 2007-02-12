@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCControllerRamazeController < Template::Ezamar
+class TCControllerEzamarController < Controller
   def index
     "The index"
   end
@@ -20,20 +20,20 @@ class TCControllerRamazeController < Template::Ezamar
   end
 end
 
-context "Testing Ramaze" do
-  ramaze(:mapping => {'/ramaze' => TCControllerRamazeController})
+context "Testing Ezamar" do
+  ramaze(:mapping => {'/ezamar' => TCControllerEzamarController})
 
   specify "simple request to index" do
-    get('/ramaze').should == 'The index'
+    get('/ezamar').should == 'The index'
   end
 
   specify "summing two values" do
-    get('/ramaze/sum/1/2').should == '3'
+    get('/ezamar/sum/1/2').should == '3'
   end
 
   specify "should not respond to private methods" do
-      %w[ session request response find_template handle_request trait test_private ].each do |action|
-        lambda{get("/ramaze/#{action}")}.should_raise OpenURI::HTTPError
-      end
+    %w[ session request response find_template handle_request trait test_private ].each do |action|
+      lambda{get("/ramaze/#{action}")}.should_raise OpenURI::HTTPError
+    end
   end
 end

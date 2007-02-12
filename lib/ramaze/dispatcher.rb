@@ -268,14 +268,14 @@ module Ramaze
         end
       end
 
-      # Call the class-method handle_request with action and *params, all
+      # Call the class-method render with action and *params, all
       # the controller has to do is to respond with a string.
 
       def handle_uncached_controller controller, action, *params
-        controller.handle_request(action, *params)
+        controller.render(action, *params)
       end
 
-      # Call the class-method handle_request with action and *params, all
+      # Call the class-method render with action and *params, all
       # the controller has to do is to respond with a string.
       #
       # To add a method for caching you can either use the CacheHelper

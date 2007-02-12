@@ -7,8 +7,9 @@ testcase_requires 'markaby'
 
 include Ramaze
 
-class TCTemplateMarkabyController < Template::Markaby
+class TCTemplateMarkabyController < Controller
   trait :template_root => 'spec/template/markaby/'
+  trait :engine => Template::Markaby
 
   def index
     mab { h1 "Markaby Index" }
@@ -24,6 +25,7 @@ end
 
 context "Markaby" do
   ramaze(:mapping => {'/' => TCTemplateMarkabyController})
+  trait :engine => Template::Markaby
 
   def mab(&block)
     TCTemplateMarkabyController.new.send(:mab, &block)
