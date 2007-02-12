@@ -14,7 +14,7 @@ module Kernel
       require file if %w(rb so).any?{|f| File.file?("#{file}.#{f}")}
       $:.each do |path|
         Dir[File.join(path, file, '*.rb')].each do |file|
-          require file
+          require file unless file == File.expand_path(__FILE__)
         end
       end
     end
