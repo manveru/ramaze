@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+$VERBOSE = true
+
 # = Synopsis
 #
 # The commandline tool to control ramaze

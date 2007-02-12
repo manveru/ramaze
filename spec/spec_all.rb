@@ -30,7 +30,7 @@ problematic = {}
 
 Dir['spec/**/tc_*.rb'].each do |test_case|
   print "rspec #{test_case.ljust(48)} "
-  out = `ruby #{test_case}`
+  out = `ruby -w #{test_case}`
   out.split("\n").each do |line|
     if line =~ /(\d+) specifications?, (\d+) failures?/
       s, f = $1.to_i, $2.to_i
