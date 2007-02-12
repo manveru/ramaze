@@ -18,7 +18,7 @@ module Ramaze
   #
   # If you want to turn this functionality off, either remove Morpher
   # from:
-  #   Ramaze::Template::Ramaze.trait[:transform_pipeline]
+  #   Ramaze::Template::Ezamar.trait[:transform_pipeline]
   # or do:
   #   Ramaze::Morpher.trait[:morphs] = {}
   #

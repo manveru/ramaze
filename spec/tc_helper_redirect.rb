@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCRedirectHelperController < Template::Ramaze
+class TCRedirectHelperController < Template::Ezamar
   helper :redirect
 
   def index

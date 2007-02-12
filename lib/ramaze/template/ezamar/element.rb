@@ -5,7 +5,7 @@ module Ramaze
 
   # an Element is almost like an Controller, however, instead
   # of connecting actions to templates it is only used in
-  # Ramaze::Template::Ramaze and can be used inside the
+  # Ramaze::Template::Ezamar and can be used inside the
   # templates of the Controller as a simple wrapper.
   #
   # Example:

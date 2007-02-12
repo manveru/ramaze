@@ -5,8 +5,8 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCTemplateController < Template::Ramaze
-  trait :template_root => 'spec/template/ramaze'
+class TCTemplateController < Template::Ezamar
+  trait :template_root => 'spec/template/ezamar'
 
   def index text
     @text = text
@@ -27,7 +27,7 @@ class TCTemplateController < Template::Ramaze
 end
 
 
-context "Ramaze" do
+context "Ezamar" do
   ramaze(:mapping => {'/' => TCTemplateController})
 
   specify "hello world" do

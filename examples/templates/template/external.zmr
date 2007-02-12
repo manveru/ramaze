@@ -1,9 +1,9 @@
 <html>
   <head>
-    <title>Template::Ramaze external</title>
+    <title>Template::Ezamar external</title>
   </head>
   <body>
-  <h1>The #{@action} Template for Ramaze</h1>
+  <h1>The #{@action} Template for Ezamar</h1>
     #{link :/, :title => 'Home'}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />

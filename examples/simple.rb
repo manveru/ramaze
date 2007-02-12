@@ -22,7 +22,7 @@ require 'ramaze'
 
 include Ramaze
 
-class SimpleController < Template::Ramaze
+class SimpleController < Template::Ezamar
   def index
     "simple"
   end
@@ -48,7 +48,7 @@ class SimpleController < Template::Ramaze
   end
 end
 
-class OtherController < Template::Ramaze
+class OtherController < Template::Ezamar
   def index
     "Hello, World from #{self.class.name}"
   end

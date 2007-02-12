@@ -2,21 +2,21 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'digest/sha1'
-require 'ramaze/template/ramaze/element'
-require 'ramaze/template/ramaze/morpher'
+require 'ramaze/template/ezamar/element'
+require 'ramaze/template/ezamar/morpher'
 
 module Ramaze::Template
 
   # The usual Template for use of Ramaze.
   # It supports erb-style interpolation and a pipeline for the transform
 
-  class Ramaze < Template
+  class Ezamar < Template
 
     # Actions consist of both templates and methods on the controller.
     trait :actionless => false
 
     # Usual extensions for templates.
-    trait :template_extensions => %w[rmze xhtml rhtml html]
+    trait :template_extensions => %w[zmr rmze xhtml rhtml html]
 
     # Each Object in this Array will be called :transform upon.
     trait :transform_pipeline => [ Element, Morpher, self ]

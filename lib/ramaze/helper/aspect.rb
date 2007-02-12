@@ -47,7 +47,7 @@ module Ramaze
     #   With great power comes great responsibility
     #
     # Example:
-    #   class FooController < Template::Ramaze
+    #   class FooController < Template::Ezamar
     #
     #     def index
     #       'foo'
@@ -93,7 +93,7 @@ module Ramaze
     #   With great power comes great responsibility
     #
     # Example:
-    #   class FooController < Template::Ramaze
+    #   class FooController < Template::Ezamar
     #
     #     def index
     #       'foo'

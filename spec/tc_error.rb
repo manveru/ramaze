@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCErrorController < Template::Ramaze
+class TCErrorController < Template::Ezamar
   def index
     self.class.name
   end

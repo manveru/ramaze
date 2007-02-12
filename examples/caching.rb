@@ -2,7 +2,7 @@ require 'ramaze'
 
 include Ramaze
 
-class MainController < Template::Ramaze
+class MainController < Template::Ezamar
   helper :cache
 
   def index

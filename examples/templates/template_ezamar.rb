@@ -5,7 +5,7 @@ require 'ramaze'
 
 include Ramaze
 
-class MainController < Template::Ramaze
+class MainController < Template::Ezamar
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end
@@ -15,7 +15,7 @@ class MainController < Template::Ramaze
     transform %q{
 <html>
   <head>
-    <title>Template::Ramaze internal</title>
+    <title>Template::Ezamar internal</title>
   </head>
   <body>
   <h1>The #{@action} Template</h1>

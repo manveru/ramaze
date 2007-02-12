@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCSessionController < Template::Ramaze
+class TCSessionController < Template::Ezamar
   def index
     session.inspect
   end

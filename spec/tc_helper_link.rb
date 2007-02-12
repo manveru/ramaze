@@ -5,7 +5,7 @@ require 'spec/spec_helper'
 
 include Ramaze
 
-class TCLinkHelperController < Template::Ramaze
+class TCLinkHelperController < Template::Ezamar
   helper :link
 
   def index

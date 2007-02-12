@@ -15,7 +15,7 @@ class MainController < Template::Erubis
     transform %q{
 <html>
   <head>
-    <title>Template::Ramaze internal</title>
+    <title>Template::Erubis internal</title>
   </head>
   <body>
   <h1>The <%= @action %> Template</h1>

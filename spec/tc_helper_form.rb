@@ -28,7 +28,7 @@ Og.start :destroy => true
 
 include Ramaze
 
-class TCFormHelperEntryController < Template::Ramaze
+class TCFormHelperEntryController < Template::Ezamar
   helper :form
 
   def index
@@ -56,7 +56,7 @@ class TCFormHelperEntryController < Template::Ramaze
   end
 end
 
-class TCFormHelperEntryTimestampedController < Template::Ramaze
+class TCFormHelperEntryTimestampedController < Template::Ezamar
   helper :form
 
   def index
@@ -68,7 +68,7 @@ class TCFormHelperEntryTimestampedController < Template::Ramaze
   end
 end
 
-class TCFormHelperEntryDated < Template::Ramaze
+class TCFormHelperEntryDated < Template::Ezamar
   helper :form
 
   def index

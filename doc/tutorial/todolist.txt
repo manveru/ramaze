@@ -70,7 +70,7 @@ To have a base to start off of, let's add some items as well.
 Now let's get our hands dirty and just edit the templates for our to-do list.
 
 Start with editing `template/index.xhtml`, it is using the default templating
-of Ramaze.
+of Ramaze, called Ezamar.
 
 Let's put some things in there, I'll explain the syntax as we go, it's quite
 simple.
@@ -144,13 +144,13 @@ edit the file `src/controller/main.rb`.
 
 The contents of it are like following:
 
-  class MainController < Template::Ramaze
+  class MainController < Template::Ezamar
     def index
       "Hello, World"
     end
   end
 
-As you can see, the Controller is a simple subclass of Template::Ramaze. This
+As you can see, the Controller is a simple subclass of Template::Ezamar. This
 is important, as you can change the templating-engine later on to your favorite.
 
 The only method right now is #index, with a simple and for the moment quite

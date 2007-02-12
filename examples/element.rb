@@ -1,7 +1,7 @@
 require 'ramaze'
 include Ramaze
 
-class Page < Template::Ramaze::Element
+class Page < Template::Ezamar::Element
   def render
     %{
      <html>
@@ -14,7 +14,7 @@ class Page < Template::Ramaze::Element
   end
 end
 
-class SideBar < Template::Ramaze::Element
+class SideBar < Template::Ezamar::Element
   def render
     %{
      <div class="sidebar">
@@ -24,7 +24,7 @@ class SideBar < Template::Ramaze::Element
   end
 end
 
-class MainController < Template::Ramaze
+class MainController < Template::Ezamar
   def index
     %{
     <Page title="Test">
