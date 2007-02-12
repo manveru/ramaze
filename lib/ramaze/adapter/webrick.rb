@@ -26,12 +26,6 @@ module WEBrick
       peeraddr.last
     end
 
-    #  request_uri.path
-
-    def request_path
-      request_uri.path
-    end
-
     # the headers of the current request.
 
     def headers
