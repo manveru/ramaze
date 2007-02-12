@@ -6,17 +6,20 @@ require 'ramaze/template/ezamar/morpher'
 
 module Ezamar
   class Template
-    attr_accessor :original, :binding, :old, :last_result, :file
+    attr_accessor :binding, :last_result, :file
+    attr_reader :original
 
     # Start a new template with some string for your template
     # that's going to be transformed.
 
-    def initialize source
+    def initialize source, file = nil
       @original = @source = source
+      @file = file
       @file, @source = @source, File.read(@source) if File.file?(@source)
       @start_heredoc = "T" << Digest::SHA1.hexdigest(@source)
       @start_heredoc, @end_heredoc = "\n<<#{@start_heredoc}\n", "\n#{@start_heredoc}\n"
       @bufadd = "_out_ << "
+      @old = true
       compile
     end
 
@@ -102,6 +105,7 @@ module Ezamar
 
       @source = [@bufadd, @start_heredoc, @source, @end_heredoc].join(' ')
 
+      @old = false
       @compiled = "_out_ = []; #{@source}; _out_"
     end
   end
