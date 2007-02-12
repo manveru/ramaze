@@ -18,9 +18,16 @@ module Ramaze
       # if we haven't been included yet...
       unless defined?(Traits[klass][:aspects]) and Traits[klass][:aspects]
         Traits[klass] = {:aspects => {:pre => {}, :post => {}, :wrap => {}}}
-        unless defined?(klass.old_render)
-          klass.send(:alias_method, :old_render, :render)
-          klass.send(:alias_method, :render, :new_render)
+        unless defined?(Controller.old_render)
+          Controller.class_eval do
+            class << self
+              include AspectHelper
+              alias_method :old_render, :render
+              alias_method :render, :new_render
+
+              public :render
+            end
+          end
         end
       end
     end
