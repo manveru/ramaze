@@ -14,14 +14,6 @@ module Ramaze
 
   class ResponseStruct < Struct
 
-    # get the current response out of Thread.current[:response]
-    #
-    # You can call this from everywhere with Ramaze::Response.current
-
-    def current
-      Thread.current[:response]
-    end
-
     # just #inspect for this class in the format of
     #   <Response#324543 @code => 200, @head => {'Content-Type'=>'text/html', @out.size => 234>
 
@@ -38,4 +30,12 @@ module Ramaze
   end
 
   Response = ResponseStruct.new(:out, :code, :head)
+
+  # get the current response out of Thread.current[:response]
+  #
+  # You can call this from everywhere with Ramaze::Response.current
+
+  def Response.current
+    Thread.current[:response]
+  end
 end
