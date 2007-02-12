@@ -45,7 +45,9 @@ RDOC_OPTS = %w[
   --include "doc"
   --accessor "trait"
 ]
-
+RDOC_FILES = %w[
+  lib doc doc/README doc/FAQ doc/CHANGELOG
+]
 POST_INSTALL_MESSAGE = %{
 #{'=' * 60}
 
@@ -73,7 +75,7 @@ spec =
         s.version = VERS
         s.platform = Gem::Platform::RUBY
         s.has_rdoc = true
-        s.extra_rdoc_files = ["doc/TODO", "doc/README", "doc/CHANGELOG"]
+        s.extra_rdoc_files = RDOC_FILES
         s.rdoc_options += RDOC_OPTS
         s.summary = DESCRIPTION
         s.description = DESCRIPTION
@@ -89,8 +91,7 @@ spec =
         s.add_dependency('rspec', '>=0.7.5.1')
         #s.required_ruby_version = '>= 1.8.2'
 
-        s.files = %w(doc/COPYING doc/TODO doc/README doc/CHANGELOG Rakefile) +
-          Dir["{examples,bin,doc,spec,lib}/**/*"]
+        s.files = RDOC_FILES + %w[Rakefile] + Dir["{examples,bin,doc,spec,lib}/**/*"]
 
         # s.extensions = FileList["ext/**/extconf.rb"].to_a
     end
@@ -182,14 +183,14 @@ end
 
 desc "generate rdoc"
 task :rdoc => :clean do
-  sh "rdoc #{RDOC_OPTS.join(' ')} lib doc doc/README doc/CHANGELOG"
+  sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
 end
 
 desc "generate improved allison-rdoc"
 task :allison => :clean do
   opts = RDOC_OPTS
   opts << %w[--template 'doc/allison/allison.rb']
-  sh "rdoc #{opts.join(' ')} lib doc/TODO doc/README doc/CHANGELOG"
+  sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
 end
 
 desc "create bzip2 and tarball"
