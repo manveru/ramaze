@@ -22,7 +22,7 @@ require 'ramaze'
 
 include Ramaze
 
-class SimpleController < Template::Ezamar
+class SimpleController < Controller
   def index
     "simple"
   end

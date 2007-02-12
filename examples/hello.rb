@@ -13,7 +13,7 @@ include Ramaze
 # Hello, World!
 # in your browser
 
-class MainController < Template::Ezamar
+class MainController < Controller
   def index
     "Hello, World!"
   end
