@@ -3,6 +3,10 @@
 Welcome to our official tutorial, the mandatory to-do list.
 I'm writing this while doing the steps to assure it will work for you.
 
+The tutorial assumes that you have Ramaze installed already. The easiest way to
+do that is `gem install ramaze`, for other ways of installation please see the
+documentation at http://ramaze.rubyforge.org
+
 Should you encounter any problems while doing this tutorial, this might either
 be because Ramaze changed (which happens very often while it is still young)
 or I actually made some mistake while writing it.
@@ -10,7 +14,7 @@ or I actually made some mistake while writing it.
 In either case it would make me (and all other poor fellows who happen to try
 this tutorial) very happy if you could spare some time and report the issue
 either on the Bug tracker at http://rubyforge.org/projects/ramaze or just
-drop by on IRC ( irc.freenode.org channel: #ramaze )
+drop by on IRC ( irc.freenode.org channel: #ramaze ).
 
 There is also a Mailing list available where you can keep yourself updated on
 what is going on with little effort, it is also located on the project-page at
