@@ -92,7 +92,7 @@ module Ramaze
 
   def startup
     tasks = Global.startup + Global.ramaze_startup
-    execute *tasks
+    execute(*tasks)
   end
 
   # Execute the tasks specified in Global.shutdown
@@ -102,7 +102,7 @@ module Ramaze
 
   def shutdown
     tasks = Global.shutdown + Global.ramaze_shutdown
-    execute *tasks
+    execute(*tasks)
   end
 
   # executes a list of tasks, depending on the task-object, if it responds to
