@@ -25,6 +25,8 @@ module StatelessContext
     Timeout.timeout(1) do
       open(url)
     end
+  rescue Timeout::Error => ex
+    ex
   end
 
   # just GET an [url]
@@ -44,6 +46,8 @@ module StatelessContext
       #p res => result
       result
     end
+  rescue Timeout::Error => ex
+    ex
   end
 end
 
