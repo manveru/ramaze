@@ -2,10 +2,13 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
   # A helper that provides the means to wrap actions of the controller with
   # other methods.
+  #
   # For examples please look at the test/tc_aspect.rb
-  # this is not a default helper due to the possible performance-issues.
+  #
+  # This is not a default helper due to the possible performance-issues.
   # However, it should be only an overhead of about 6-8 calls, so if you
   # want this feature it shouldn't have too large impact ;)
 
@@ -18,10 +21,10 @@ module Ramaze
       # if we haven't been included yet...
       unless defined?(Traits[klass][:aspects]) and Traits[klass][:aspects]
         Traits[klass] = {:aspects => {:pre => {}, :post => {}, :wrap => {}}}
-        unless defined?(Controller.old_render)
-          Controller.class_eval do
+        unless defined?(klass.old_render)
+          klass.class_eval do
             class << self
-              include AspectHelper
+              include AspectHelperMixin
               alias_method :old_render, :render
               alias_method :render, :new_render
 
@@ -31,7 +34,16 @@ module Ramaze
         end
       end
     end
+  end
 
+  # This is the actual Module to be included into the Controller you call
+  #   helper :aspect
+  # from.
+  #
+  # The reason for that is to avoid recursion of inclusion in AspectHelper
+  # which does the aliasing and predefinition of the traits for the aspects.
+
+  module AspectHelperMixin
     private
 
     # define pre-aspect which calls render(:your_pre_aspect)
@@ -177,17 +189,24 @@ module Ramaze
     # before/after your action and joins the results
 
     def new_render(action, *params)
+      p :new_render => [action, params]
       arity_for = lambda{|meth| method(meth).arity rescue -1 }
       post, pre = resolve_aspect(action).values_at(:post, :pre)
 
+      p :post => post, :pre => pre
+
       if pre
         arity = arity_for[pre].abs
-        pre_content = old_render(pre, *params[0,arity]) if pre
+        pre_content = old_render(pre, *params[0,arity])
       end
 
       unless (pre_content.delete(:skip_next_aspects) rescue false)
         content = old_render(action, *params)
-        post_content = old_render(post, *params) if post
+
+        if post
+          arity = arity_for[post].abs
+          post_content = old_render(post, *params[0,arity])
+        end
       end
 
       [pre_content, content, post_content].join
