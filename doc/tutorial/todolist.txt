@@ -144,14 +144,11 @@ edit the file `src/controller/main.rb`.
 
 The contents of it are like following:
 
-  class MainController < Template::Ezamar
+  class MainController < Controller
     def index
       "Hello, World"
     end
   end
-
-As you can see, the Controller is a simple subclass of Template::Ezamar. This
-is important, as you can change the templating-engine later on to your favorite.
 
 The only method right now is #index, with a simple and for the moment quite
 useless "Hello, World". The relationship between the methods on the controller
