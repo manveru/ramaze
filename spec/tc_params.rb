@@ -33,6 +33,14 @@ class TCParamsController < Controller
   def one_default param = 'default'
     "one_default (#{param})"
   end
+
+  def cat1__cat11
+    'cat1: cat11'
+  end
+
+  def cat1__cat11__cat111
+    'cat1: cat11: cat111'
+  end
 end
 
 context "Simple Parameters" do
@@ -47,7 +55,7 @@ context "Simple Parameters" do
   end
 
   specify "call /bar though index doesn't take params" do
-    lambda{ p get('/bar') }.should_raise #OpenURI::HTTPError
+    lambda{ get('/bar') }.should_raise #OpenURI::HTTPError
   end
 
   specify "action that takes a single param" do
@@ -59,7 +67,7 @@ context "Simple Parameters" do
   end
 
   specify "action that takes two params but we give only one" do
-    lambda{ p get('/double_param/foo') }.should_raise #OpenURI::HTTPError
+    lambda{ get('/double_param/foo') }.should_raise #OpenURI::HTTPError
   end
 
   specify "action that takes all params" do
@@ -71,7 +79,7 @@ context "Simple Parameters" do
   end
 
   specify "action that takes all params but needs at least one (not given here)" do
-    lambda{ p get('/at_least_one') }.should_raise #OpenURI::HTTPError
+    lambda{ get('/at_least_one') }.should_raise #OpenURI::HTTPError
   end
 
   specify "one default" do
@@ -80,5 +88,13 @@ context "Simple Parameters" do
 
   specify "one default" do
     get('/one_default/my_default').should == "one_default (my_default)"
+  end
+
+  specify "double underscore lookup" do
+    get('/cat1/cat11').should == 'cat1: cat11'
+  end
+
+  specify "double double underscore lookup" do
+    get('/cat1/cat11/cat111').should == 'cat1: cat11: cat111'
   end
 end
