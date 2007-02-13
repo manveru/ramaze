@@ -11,7 +11,8 @@ module Ramaze::Template
     Ramaze::Controller.register_engine self, %w[ zmr ]
 
     class << self
-      # initializes the handling of a request on the controller.
+
+      # Initializes the handling of a request on the controller.
       # Creates a new instances of itself and sends the action and params.
       # Also tries to render the template.
       # In Theory you can use this standalone, this has not been tested though.
@@ -31,7 +32,11 @@ module Ramaze::Template
         ''
       end
 
-      # the actual transformation is done here.
+      # The actual transformation is done here.
+      #
+      # Getting the various possible template-files and the response from
+      # the controller and then deciding based on them what goes into the
+      # #pipeline
 
       def real_transform(controller, bound, file, action, *params)
         alternate     = file_template(params.last, controller) if params.size == 1 and action == 'index'
@@ -40,6 +45,10 @@ module Ramaze::Template
 
         pipeline(alternate || file_template || ctrl_template, bound)
       end
+
+      # See if a string is an actual file.
+      #
+      # Answers with the contents and otherwise nil
 
       def file_template action_or_file, controller
         path =

@@ -3,15 +3,29 @@
 
 require 'ramaze/helper'
 
+# This module serves as a namespace for all templates, it will autoload
+# Amrita2, Erubis, Ezamar, Haml, Liquid and Markaby if you refer to them.
+
 module Ramaze::Template
   %w[ Amrita2 Erubis Ezamar Haml Liquid Markaby ].each do |const|
     autoload(const, "ramaze/template/#{const.downcase}")
   end
 
+  # The superclass for all templates, doesn't do much more than including
+  # Ramaze::Helper and defining #reaction_or_file
+
   class Template
     include Ramaze::Helper
 
     class << self
+
+      # pass it the results of the method of the controller
+      # and a possible file, it will see if the file is an actual file
+      # and otherwise answer the contents of the response from the controller
+      # if it responds to :to_str.
+      #
+      # Answers nil if none of both is valid.
+
       def reaction_or_file reaction, file
         if file
           File.read(file)

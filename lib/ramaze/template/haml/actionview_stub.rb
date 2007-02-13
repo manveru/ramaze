@@ -5,6 +5,10 @@
 # but we are not running Rails ;)
 
 module ActionView
+
+  # stub, in case the requires for that active_* stuff of Haml doesn't fail
+  # but we are not running Rails ;)
+
   class Base
 
     # stub

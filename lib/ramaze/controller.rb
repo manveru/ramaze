@@ -20,6 +20,15 @@ module Ramaze
       include Ramaze::Helper
       extend Ramaze::Helper
 
+      # The universal #render method that has to be provided by every
+      # prospective Controller, pass it your action and parameters.
+      #
+      # This is called upon by the Dispatcher, but you can use it in your
+      # Controller/View to get the contents of another action.
+      #
+      # It will set the instance-variable @action in the instance of itself
+      # to the value of the current action.
+
       def render action, *parameter
         file = find_template(action)
 
@@ -76,6 +85,12 @@ module Ramaze
         possible.first
       end
 
+      # lookup the trait[:template_extensions] for the extname of the filename
+      # you pass.
+      #
+      # Answers with the engine that matches the extension, Template::Ezamar
+      # is used if none matches.
+
       def engine_for file
         extension = File.extname(file)
         trait[:template_extensions].invert[extension]
@@ -83,8 +98,11 @@ module Ramaze
         Template::Ezamar
       end
 
-      def register_engine engine, extensions
-        trait[:template_extensions][engine] = extensions
+      # This method is called by templating-engines to register themselves with
+      # a list of extensions that will be looked up on #render of an action.
+
+      def register_engine engine, *extensions
+        trait[:template_extensions][engine] = [extensions].flatten.uniq
       end
     end
 

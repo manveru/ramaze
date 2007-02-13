@@ -10,6 +10,9 @@ require 'rdoc/usage'
 
 module RDoc
   class << self
+
+    # a patch for RDocs::usage calling our Rdoc::ramazes_usage_no_exit
+
     def ramazes_usage(*args)
       exit_code = 0
 
@@ -25,6 +28,12 @@ module RDoc
       ramazes_usage_no_exit(*args)
       exit(exit_code)
     end
+
+    # Only a modfication of RDoc::usage_no_exit for the lookup of main_program,
+    # this would be buggy if used by the binary of the gem since $0 is
+    # different.
+    #
+    # Using caller to lookup the actual bin.
 
     def ramazes_usage_no_exit(*args)
       main_program_file = caller[1].sub(/:\d+$/, '')
