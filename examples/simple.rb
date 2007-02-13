@@ -48,7 +48,7 @@ class SimpleController < Controller
   end
 end
 
-class OtherController < Template::Ezamar
+class OtherController < Controller
   def index
     "Hello, World from #{self.class.name}"
   end

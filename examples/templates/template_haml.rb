@@ -5,7 +5,10 @@ require 'ramaze'
 
 include Ramaze
 
-class MainController < Template::Haml
+class MainController < Controller
+
+  trait :engine => Template::Haml
+
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end

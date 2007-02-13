@@ -8,7 +8,10 @@ include Ramaze
 # TODO:
 # implement the amrita2 example, man, this engine is awkward :P
 
-class MainController < Template::Amrita2
+class MainController < Controller
+
+  trait :engine => Template::Amrita2
+
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end

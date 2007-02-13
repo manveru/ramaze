@@ -5,7 +5,8 @@ require 'ramaze'
 
 include Ramaze
 
-class MainController < Template::Markaby
+class MainController < Controller
+  trait :engine => Template::Markaby
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end

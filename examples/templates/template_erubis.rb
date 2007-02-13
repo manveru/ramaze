@@ -5,7 +5,10 @@ require 'ramaze'
 
 include Ramaze
 
-class MainController < Template::Erubis
+class MainController < Controller
+
+  trait :engine => Template::Erubis
+
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end

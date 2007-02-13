@@ -15,7 +15,7 @@ include Ramaze
 
 Db = YAMLStoreCache.new('wiki.yaml')
 
-class WikiController < Template::Ezamar
+class WikiController < Controller
   def index
     redirect(R(:show, 'Home'))
   end

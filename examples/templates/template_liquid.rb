@@ -5,7 +5,8 @@ require 'ramaze'
 
 include Ramaze
 
-class MainController < Template::Liquid
+class MainController < Controller
+  trait :engine => Template::Liquid
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end
