@@ -12,7 +12,7 @@ module Ramaze
   #
   # Example:
   #
-  # class AuthController < Template::Ezamar
+  # class AuthController < Controller
   #   helper :stack
   #
   #   def login pass
@@ -30,7 +30,7 @@ module Ramaze
   #   end
   # end
   #
-  # class ImportantController < Template::Ezamar
+  # class ImportantController < Controller
   #   helper :stack
   #
   #   def secret_information

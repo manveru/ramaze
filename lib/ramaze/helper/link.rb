@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  # LinkHelper is included into the Template::Ezamar by default
+  # LinkHelper is included into the Controller by default
   #
   # this helper tries to get along without any major magic, the only 'magic'
   # thing is that it looks up controller-paths if you pass it a controller
