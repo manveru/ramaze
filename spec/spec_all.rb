@@ -2,12 +2,29 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'pp'
+
+begin
+  require 'systemu'
+rescue LoadError
+  puts "Please install systemu for better-looking results"
+
+  # small drop-in replacement for systemu... far from perfect though, so please
+  # install the library
+
+  def systemu command
+    stdout = `#{command} 2>&1`
+    status, stdout, stderr = $?, stdout, ''
+  end
+end
+
 begin
   require 'term/ansicolor'
   class String
     include Term::ANSIColor
   end
 rescue LoadError
+  puts "Please install term-ansicolor for better-looking results"
+
   class String
 
     # this will be set in case term/ansicolor cannot be
@@ -24,51 +41,76 @@ end
 
 $stdout.sync = true
 
-specs = 0
-failures = 0
-problematic = {}
+total_specs = 0
+total_fails = 0
+failed      = {}
+specs       = Dir['spec/tc_*.rb'].sort
+width       = specs.sort_by{|s| s.size }.last.size
 
-Dir['spec/**/tc_*.rb'].each do |test_case|
-  print "rspec #{test_case.ljust(48)} "
-  out = `ruby -w #{test_case}`
-  out.split("\n").each do |line|
-    if line =~ /(\d+) specifications?, (\d+) failures?/
-      s, f = $1.to_i, $2.to_i
+result_format = lambda do |str|
+  str = " #{ str } ".center(22, '=')
+  "[ #{str} ]"
+end
 
-      specs    += s
-      failures += f
+specs.each do |spec|
+  print "Running #{spec}... ".ljust(width + 20)
+  status, stdout, stderr = systemu("ruby #{spec}")
+  hash = {:status => status, :stdout => stdout, :stderr => stderr}
 
-      message = "[#{s.to_s.rjust(3)} specs | "
+  if stdout =~ /Usually you should not worry about this failure, just install the/
 
-      if f.nonzero? or $?.exitstatus != 0
-        problematic[test_case] = out
-        message << "#{f.to_s.rjust(3)} failed ]"
-        print message.red
-      else
-        message << "all passed ]"
-        print message.green
+    lib = stdout.scan(/^no such file to load -- (.*?)$/).flatten.first
+    print result_format["needs #{lib}"].red
+
+  elsif status.exitstatus.nonzero? or stdout.empty? or not stderr.empty?
+
+    failed[spec] = hash
+    print result_format['failed'].red
+
+  else
+    stdout.each do |line|
+      if line =~ /(\d+) specifications?, (\d+) failures?/
+        s, f = $1.to_i, $2.to_i
+        ss, sf = s.to_s.rjust(3), f.to_s.rjust(3)
+
+        total_specs += s
+        total_fails += f
+
+        message = "[ #{ss} specs - "
+
+        if f.nonzero?
+          failed[spec] = hash
+          print((message << "#{ss} failed ]").red)
+        else
+          print((message << "all passed ]").green)
+        end
       end
     end
   end
   puts
 end
 
-puts "-" * 80
-problematic.each do |key, value|
-  puts key.center(80)
-  puts "v" * 80
+failed.each do |name, hash|
+  status, stdout, stderr = hash.values_at(:status, :stdout, :stderr)
+
+  puts "[ #{name} ]".center(80, '-')
+  puts "ExitStatus:".yellow
+  pp status
   puts
-  puts value
-  puts "-" * 80
+  puts "StdOut:".yellow
+  puts stdout
+  puts
+  puts "StdErr:".yellow
+  puts stderr
 end
 
 puts
-puts "#{specs} specifications, #{failures} failures"
+puts "#{total_specs} specifications, #{total_fails} failures"
 puts
 
-unless (problems = problematic.keys.join(', ')).empty?
-  puts "These failed: #{problems}"
-else
+if failed.empty?
   puts "No failing specifications, let's add some tests!"
+  puts
+else
+  puts "These failed: #{failed.keys.join(', ')}"
 end
-puts

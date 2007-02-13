@@ -210,6 +210,6 @@ rescue LoadError => ex
   puts ex
   puts "Can't run #{$0}: #{ex}"
   puts "Usually you should not worry about this failure, just install the"
-  puts "library and try again (if you want to use that featureit later on)"
+  puts "library and try again (if you want to use that feature later on)"
   exit
 end
