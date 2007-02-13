@@ -8,7 +8,7 @@ module Ramaze::Template
 
     trait :transform_pipeline => [ Element, Morpher, self ]
 
-    Ramaze::Controller.register_engine self, %w[ zmr ]
+    Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
 
     class << self
 
