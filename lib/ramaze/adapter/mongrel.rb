@@ -20,7 +20,14 @@ module Mongrel
   end
 end
 
+# The basic module for all Adapter-classes in Ramaze.
+#
+# An Adapter is anything that can serve HTTP.
+
 module Ramaze::Adapter
+
+  # This class is responsible for interacting with Mongrel.
+
   class Mongrel < ::Mongrel::HttpHandler
 
     class << self
