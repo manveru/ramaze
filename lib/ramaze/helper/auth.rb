@@ -14,9 +14,7 @@ module Ramaze
 
   module AuthHelper
     def self.included(klass)
-      klass.class_eval do
-        helper :aspect, :stack
-      end
+      klass.send(:helper, :aspect, :stack)
     end
 
     # The default Element to use (if any)
