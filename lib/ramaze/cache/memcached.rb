@@ -4,6 +4,12 @@ require 'memcache'
 
 module Ramaze
   class MemcachedCache
+
+    # Create a new MemcachedCache with host, port and a namespace that defaults
+    # to 'ramaze'
+    #
+    # For your own usage you should use another namespace.
+
     def initialize(host = 'localhost', port = '11211', namespace = 'ramaze')
       @cache = MemCache.new("#{host}:#{port}", :namespace => namespace)
     end
