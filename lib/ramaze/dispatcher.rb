@@ -81,7 +81,9 @@ module Ramaze
         fill_out
       end
 
-      #
+      # takes the content, code and head for a new response, will set the cookies
+      # if Global.cookies is true (which it is by default) and set the default
+      # Content-Type to 'text/plain'
 
       def build_response out = '', code = STATUS_CODE[:internal_server_error], head = {}
         default_head = {
