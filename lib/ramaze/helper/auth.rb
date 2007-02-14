@@ -13,6 +13,9 @@ module Ramaze
   # implement your own authentication.
 
   module AuthHelper
+
+    # add AspectHelper and StackHelper on inclusion of AuthHelper
+
     def self.included(klass)
       klass.send(:helper, :aspect, :stack)
     end

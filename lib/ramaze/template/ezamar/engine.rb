@@ -4,7 +4,16 @@ require 'digest/sha1'
 require 'ramaze/template/ezamar/element'
 require 'ramaze/template/ezamar/morpher'
 
+# Ezamar is a very simple (and at no means complete) reimplementation of the
+# Templating-engine found in Nitro.
+#
+# Since Nitros templating is based on REXML and Ezamar is not there are vast
+# differences, but it tries to keep the look and feel as close as possible.
+
 module Ezamar
+
+  # This class is responsible for initializing and compiling the template.
+
   class Template
     attr_accessor :binding, :last_result, :file
     attr_reader :original
