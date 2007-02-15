@@ -6,12 +6,19 @@ require 'spec/spec_helper'
 include Ramaze
 
 class TCControllerEzamarController < Controller
+  trait :template_root => 'spec/template/ezamar'
   def index
     "The index"
   end
 
   def sum first, second
-    first.to_i + second.to_i
+    @num1, @num2 = first.to_i, second.to_i
+  end
+
+  def some__long__action
+  end
+
+  def another__long__action
   end
 
   private
@@ -29,6 +36,11 @@ context "Testing Ezamar" do
 
   specify "summing two values" do
     get('/ezamar/sum/1/2').should == '3'
+  end
+
+  specify "double underscore in templates" do
+    get('/ezamar/some/long/action').should == 'some long action'
+    get('/ezamar/another/long/action').should == 'another long action'
   end
 
   specify "should not respond to private methods" do

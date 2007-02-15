@@ -27,7 +27,6 @@ module Ramaze::Template
           ::Ezamar::Template.new(template).transform(bound)
         end
       rescue Object => ex
-        puts ex
         Informer.error ex
         ''
       end

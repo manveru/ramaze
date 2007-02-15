@@ -66,6 +66,7 @@ module Ramaze
         action = action.to_s
         custom_template = ancestral_trait["#{action}_template".intern]
         action = custom_template if custom_template
+        action_converted = action.split('__').inject{|s,v| s/v}
 
         first_path =
           if template_root = klass.ancestral_trait[:template_root]
@@ -76,8 +77,9 @@ module Ramaze
 
         extensions = [ancestral_trait[:template_extensions].values].flatten.uniq
 
-        paths = [ first_path, ancestral_trait[:public], ]
-        paths = paths.map{|pa| File.expand_path(pa / action)}.join(',')
+        paths = [ first_path, ancestral_trait[:public], ].
+                  map{|pa| [ pa / action, pa / action_converted ] }.
+                  flatten.map{|pa| File.expand_path(pa) }.join(',')
 
         glob = "{#{paths}}.{#{extensions.join(',')}}"
 
