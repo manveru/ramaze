@@ -13,4 +13,3 @@ class String
     File.join(self, obj.to_s)
   end
 end
-

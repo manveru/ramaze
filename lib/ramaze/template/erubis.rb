@@ -4,15 +4,19 @@
 require 'erubis'
 
 module Ramaze::Template
+
+  # Is responsible for compiling a template using the Erubis templating engine.
+
   class Erubis < Template
 
     Controller.register_engine self, %w[ rhtml ]
 
     class << self
-      # initializes the handling of a request on the controller.
-      # Creates a new instances of itself and sends the action and params.
-      # Also tries to render the template.
-      # In Theory you can use this standalone, this has not been tested though.
+
+      # Takes a controller and the options :action, :parameter, :file and :binding
+      #
+      # Builds a template out of the method on the controller and the
+      # template-file.
 
       def transform controller, options = {}
         action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)

@@ -4,6 +4,9 @@
 require 'ramaze/helper'
 
 module Ramaze
+
+  # The Controller is responsible for combining and rendering actions.
+
   class Controller
     include Ramaze::Helper
     extend Ramaze::Helper

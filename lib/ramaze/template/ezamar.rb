@@ -4,6 +4,9 @@
 require 'ramaze/template/ezamar/engine'
 
 module Ramaze::Template
+
+  # Is responsible for compiling a template using the Ezamar templating engine.
+
   class Ezamar < Template
 
     trait :transform_pipeline => [ Element, Morpher, self ]
@@ -12,10 +15,9 @@ module Ramaze::Template
 
     class << self
 
-      # Initializes the handling of a request on the controller.
-      # Creates a new instances of itself and sends the action and params.
-      # Also tries to render the template.
-      # In Theory you can use this standalone, this has not been tested though.
+      # Takes a controller and the options :action, :parameter, :file and :binding
+      #
+      # Uses Ezamar::Template to compile the template.
 
       def transform controller, options = {}
         unless options.is_a?(Binding) # little hack to allow inclusion into the pipeline
@@ -80,6 +82,9 @@ module Ramaze::Template
       # the order and contents of the pipeline are determined by an array
       # in trait[:template_pipeline]
       # the default being [Element, Morpher, self]
+      #
+      # TODO
+      #   - put the pipeline into the Controller for use with all templates.
 
       def pipeline(template, bound = binding)
         transform_pipeline = ancestral_trait[:transform_pipeline]

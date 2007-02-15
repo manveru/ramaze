@@ -4,15 +4,20 @@
 require 'amrita2/template'
 
 module Ramaze::Template
+
+  # Is responsible for compiling a template using the Amrita2 templating engine.
+
   class Amrita2 < Template
 
     Controller.register_engine self, %w[ amrita ]
 
     class << self
-      # initializes the handling of a request on the controller.
-      # Creates a new instances of itself and sends the action and params.
-      # Also tries to render the template.
-      # In Theory you can use this standalone, this has not been tested though.
+
+      # Takes a controller and the options :action, :parameter, :file and :binding
+      # The file is rendered using Amrita2::TemplateFile.
+      # The Controller is used as the object for expansion.
+      #
+      # The parameters are set to @params in the controller before expansion.
 
       def transform controller, options = {}
         action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)

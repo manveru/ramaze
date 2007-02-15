@@ -8,6 +8,7 @@ module Ramaze::Template
   class Haml < Template
 
     # Custom HAML-options for your controller to be merged.
+
     trait :haml_options => {
             :locals => {}
           }
