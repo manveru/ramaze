@@ -243,7 +243,7 @@ module Ramaze
 
         until action or tracks.empty?
           current = tracks.pop
-          if meths.include?(current) or current = controller.ancestral_trait[:template_map][current]
+          if meths.include?(current) #or current = controller.ancestral_trait[:template_map][current]
             arity = controller.instance_method(current).arity
             params = (paraction - current.split('__'))
 
