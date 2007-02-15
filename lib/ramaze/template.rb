@@ -11,30 +11,31 @@ module Ramaze
   autoload(:Morpher, 'ramaze/template/ezamar/morpher')
 
   module Template
-  %w[ Amrita2 Erubis Ezamar Haml Liquid Markaby ].each do |const|
-    autoload(const, "ramaze/template/#{const.downcase}")
-  end
+    %w[ Amrita2 Erubis Ezamar Haml Liquid Markaby ].each do |const|
+      autoload(const, "ramaze/template/#{const.downcase}")
+    end
 
-  # The superclass for all templates, doesn't do much more than including
-  # Ramaze::Helper and defining #reaction_or_file
+    # The superclass for all templates, doesn't do much more than including
+    # Ramaze::Helper and defining #reaction_or_file
 
-  class Template
-    include Ramaze::Helper
+    class Template
+      include Ramaze::Helper
 
-    class << self
+      class << self
 
-      # pass it the results of the method of the controller
-      # and a possible file, it will see if the file is an actual file
-      # and otherwise answer the contents of the response from the controller
-      # if it responds to :to_str.
-      #
-      # Answers nil if none of both is valid.
+        # pass it the results of the method of the controller
+        # and a possible file, it will see if the file is an actual file
+        # and otherwise answer the contents of the response from the controller
+        # if it responds to :to_str.
+        #
+        # Answers nil if none of both is valid.
 
-      def reaction_or_file reaction, file
-        if file
-          File.read(file)
-        elsif reaction.respond_to? :to_str
-          reaction
+        def reaction_or_file reaction, file
+          if file
+            File.read(file)
+          elsif reaction.respond_to? :to_str
+            reaction
+          end
         end
       end
     end
