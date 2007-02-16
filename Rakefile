@@ -29,6 +29,7 @@ CLEAN.include %w[
   .config
   **/*~
   **/{data.db,cache.yaml}
+  *.yaml
   pkg
 ]
 RDOC_OPTS = %w[
