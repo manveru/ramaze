@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'timeout'
+require 'ramaze/tool/mime'
 
 module Ramaze
 
@@ -128,57 +129,16 @@ module Ramaze
         file = the_paths.find{|way| File.file?(way)}
 
         if file
+          response.head['Content-Type'] = Tool::MIME.type_for(file)
           File.open(file)
         end
       end
 
-      # Resolve the method to be called and the number of parameters
-      # it will receive for a specific class (the controller) given the
-      # paraction (like 'foo/bar' => controller.call('foo', 'bar'))
-      # in case arity is 1 and a public instance-method named foo is defined.
-      #
-      # TODO:
-      # - find a solution for def x(a = :a) which has arity -1
-      #   identical to def x(*a) for some odd reason
+      # takes the content, code and head for a new response, will set the cookies
+      # if Global.cookies is true (which it is by default) and set the default
+      # Content-Type to 'text/plain'
 
-      def resolve_action controller, paraction
-        meth_debug :resolve_action, controller, paraction
-
-        meths =
-          (controller.ancestors - [Kernel, Object]).inject([]) do |sum, klass|
-            sum | (klass.is_a?(Module) ? klass.instance_methods(false) : sum)
-          end
-
-        track = paraction.dup
-        tracks = []
-        action = false
-
-        track.each do |atom|
-          atom = [tracks.last.to_s, atom]
-          atom.delete('')
-          tracks << atom.join('__')
-        end
-
-        tracks.unshift 'index'
-
-        until action or tracks.empty?
-          current = tracks.pop
-          if meths.include?(current) or current = controller.ancestral_trait[:template_map][current]
-            arity = controller.instance_method(current).arity
-            params = (paraction - current.split('__'))
-
-            if params.size == arity
-              return current, params
-            elsif arity < 0 and arity + params.size >= 0
-              return current, params
-            elsif arity == -1
-              return current, params
-            end
-          end
-        end
-      end
-
-      def build_response out = '', code = STATUS_CODE[:internal_server_error], head = {}
+      def build_response out = '', code = STATUS_CODE[:internal_server_error], head = nil
         default_head = {
           'Content-Type' => 'text/html',
         }
@@ -189,7 +149,7 @@ module Ramaze
           head.delete('Set-Cookie')
         end
 
-        head = default_head.merge(head)
+        head = default_head.merge(head || response.head)
 
         response.out, response.code, response.head = out, code, head
         response
