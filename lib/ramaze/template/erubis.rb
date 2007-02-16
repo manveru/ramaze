@@ -19,7 +19,7 @@ module Ramaze::Template
       # template-file.
 
       def transform controller, options = {}
-        action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)
+        action, parameter, file, bound = *super
 
         reaction = controller.send(action, *parameter)
         template = reaction_or_file(reaction, file)
@@ -29,10 +29,6 @@ module Ramaze::Template
         eruby = ::Erubis::Eruby.new(template)
         eruby.init_evaluator(:filename => file) if file
         eruby.result(bound)
-      rescue Object => ex
-        puts ex
-        Informer.error ex
-        ''
       end
     end
   end

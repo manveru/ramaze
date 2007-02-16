@@ -20,7 +20,7 @@ module Ramaze::Template
       # The parameters are set to @params in the controller before expansion.
 
       def transform controller, options = {}
-        action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)
+        action, parameter, file, bound = *super
 
         raise Ramaze::Error::Template, "No Template found for #{Request.current.request_path}" unless file
 
@@ -29,10 +29,6 @@ module Ramaze::Template
         controller.instance_variable_set('@params', parameter)
         template.expand(out, controller)
         out
-      rescue Object => ex
-        puts ex
-        Informer.error ex
-        ''
       end
     end
   end

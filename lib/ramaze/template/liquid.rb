@@ -16,7 +16,7 @@ module Ramaze::Template
       # In Theory you can use this standalone, this has not been tested though.
 
       def transform controller, options = {}
-        action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)
+        action, parameter, file, bound = *super
 
         reaction = controller.send(action, *parameter)
         template = reaction_or_file(reaction, file)
@@ -28,10 +28,6 @@ module Ramaze::Template
         options  = controller.ancestral_trait[:liquid_options]
 
         template.render(hash, options)
-      rescue Object => ex
-        puts ex
-        Informer.error ex
-        ''
       end
     end
   end

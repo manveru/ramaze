@@ -21,7 +21,7 @@ module Ramaze::Template
 
       def transform controller, options = {}
         unless options.is_a?(Binding) # little hack to allow inclusion into the pipeline
-          action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)
+          action, parameter, file, bound = *super
 
           real_transform controller, bound, file, action, *parameter
         else

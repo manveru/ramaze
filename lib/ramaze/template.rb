@@ -37,6 +37,10 @@ module Ramaze
             reaction
           end
         end
+
+        def transform controller, options = {}
+          options.values_at(:action, :parameter, :file, :binding)
+        end
       end
     end
   end

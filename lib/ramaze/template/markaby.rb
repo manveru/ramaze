@@ -15,7 +15,7 @@ module Ramaze::Template
       # In Theory you can use this standalone, this has not been tested though.
 
       def transform controller, options = {}
-        action, parameter, file, bound = options.values_at(:action, :parameter, :file, :binding)
+        action, parameter, file, bound = *super
 
         controller.class.send(:include, MarkabyMixin) unless controller.class.ancestors === MarkabyMixin
 
@@ -34,13 +34,9 @@ module Ramaze::Template
             end
           elsif reaction.respond_to? :to_str
             reaction
+          else
+            ''
           end
-
-        template ? template : ''
-      rescue Object => ex
-        puts ex
-        Informer.error ex
-        ''
       end
     end
   end
