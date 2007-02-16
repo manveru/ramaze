@@ -68,13 +68,15 @@ module Ramaze::Template
 
       def render_action(controller, action, *params)
         ctrl_template = controller.send(action, *params).to_s
+=begin
       rescue => e
         Informer.error e unless e.message =~ /undefined method `#{Regexp.escape(action.to_s)}'/
 
         unless caller.select{|bt| bt[/`render_action'/]}.size > 3
-          Dispatcher.respond_action([action, *params].join('/'))
+          handle([action, *params].join('/'))
           ctrl_template = Response.current.out
         end
+=end
       end
 
       # go through the pipeline and call #transform on every object found there,

@@ -23,6 +23,115 @@ module Ramaze
       include Ramaze::Helper
       extend Ramaze::Helper
 
+      def handle path
+        controller, action, params = *resolve_controller(path)
+        controller.render action, *params
+      end
+
+      # find out which controller should be used based on the path.
+      # it will answer [controller, action, params] or raise an
+      #
+      #   Ramaze::Error::NoController # if no controller is found
+      #   Ramaze::Error::NoAction     # if no action but a controller is found
+      #
+      # It actually uses #resolve_action on almost every combination of
+      # so-called paractions (yet unsplit but possible combination of action
+      # and parameters for the action)
+      #
+      # If your templating is action-less, which means it does not depend on
+      # methods on the controller, but rather on templates or just dynamically
+      # calculated stuff you can set trait[:actionless] for your templating.
+      #
+      # Please see the documentation for Ramaze::Template::Amrita2 for an more
+      # specific example of how it is used in practice.
+      #
+      # Further it uses the Global.mapping to look up the controller to be used.
+      #
+      # Also, the action '/' will be expanded to 'index'
+      #
+      # Parameters are CGI.unescaped
+
+      def resolve_controller path
+        meth_debug :resolve_controller, path
+        track = path.split('/')
+        controller = false
+        action = false
+        tracks = []
+
+        track.unshift '/'
+
+        track.each do |atom|
+          tracks << (tracks.last.to_s / atom)
+        end
+
+        until controller and action or tracks.empty?
+          current = Regexp.escape(tracks.pop.to_s)
+          paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
+          paraction.delete('')
+          if controller = Ramaze::Global.mapping[current]
+            if controller.ancestral_trait[:actionless] or paraction == ['error']
+
+              action = paraction.shift
+              params = paraction
+              action = 'index' if action == nil
+            else
+              action, params = resolve_action controller, paraction
+            end
+          end
+        end
+
+        raise Ramaze::Error::NoController, "No Controller found for #{path}" unless controller
+        raise Ramaze::Error::NoAction, "No Action found for #{path}" unless action
+
+        return controller, action, params
+      end
+
+      # Resolve the method to be called and the number of parameters
+      # it will receive for a specific class (the controller) given the
+      # paraction (like 'foo/bar' => controller.call('foo', 'bar'))
+      # in case arity is 1 and a public instance-method named foo is defined.
+      #
+      # TODO:
+      # - find a solution for def x(a = :a) which has arity -1
+      #   identical to def x(*a) for some odd reason
+
+      def resolve_action controller, paraction
+        meth_debug :resolve_action, controller, paraction
+
+        meths =
+          (controller.ancestors - [Kernel, Object]).inject([]) do |sum, klass|
+            sum | (klass.is_a?(Module) ? klass.instance_methods(false) : sum)
+          end
+
+        track = paraction.dup
+        tracks = []
+        action = false
+
+        track.each do |atom|
+          atom = [tracks.last.to_s, atom]
+          atom.delete('')
+          tracks << atom.join('__')
+        end
+
+        tracks.unshift 'index'
+
+        until action or tracks.empty?
+          current = tracks.pop
+          if meths.include?(current) #or current = controller.ancestral_trait[:template_map][current]
+            arity = controller.instance_method(current).arity
+            params = (paraction - current.split('__'))
+
+            if params.size == arity
+              return current, params
+            elsif arity < 0 and arity + params.size >= 0
+              return current, params
+            elsif arity == -1
+              return current, params
+            end
+          end
+        end
+      end
+
       # The universal #render method that has to be provided by every
       # prospective Controller, pass it your action and parameters.
       #
@@ -35,8 +144,26 @@ module Ramaze
       def render action, *parameter
         file = find_template(action)
 
+        trait[:actions_cached] ||= Set.new
+
+        cache_indicators = [
+          Global.cache_all,
+          ancestral_trait[:cache_all],
+          ancestral_trait[:actions_cached].map{|k| k.to_s}.include?(action.to_s),
+        ]
+
+        if cache_indicators.any?
+          cached_render(action, *parameter)
+        else
+          uncached_render(action, *parameter)
+        end
+      end
+
+      def uncached_render action, *parameter
         controller = self.new
         controller.instance_variable_set('@action', action)
+
+        file = find_template(action)
 
         engine = ancestral_trait[:engine] || engine_for(file)
         options = {
@@ -46,6 +173,18 @@ module Ramaze
           :parameter => parameter,
         }
         engine.transform(controller, options)
+      end
+
+      def cached_render action, *parameter
+        key = [action, parameter].inspect
+
+        if out = ancestral_trait[:action_cache][key]
+          debug "Using Cached version for #{key}"
+          return out
+        end
+
+        debug "Compiling Action: #{action} #{parameter.join(', ')}"
+        ancestral_trait[:action_cache][key] = uncached_render(action, *parameter)
       end
 
       # This finds the template for the given action on the current controller

@@ -97,11 +97,14 @@ module Ramaze::Adapter
     # otherwise simply #respond.
 
     def process request, response
+      @webrick_request, @webrick_response = request, response
       if Global.inform_tags.include?(:benchmark)
-        bench_process(request, response)
+        bench_dispatcher
       else
-        respond(response, Dispatcher.handle(request, response))
+        call_dispatcher
       end
+      respond
+      @webrick_response
     end
 
     # benchmark the current request/respond cycle and output the result
@@ -110,46 +113,37 @@ module Ramaze::Adapter
     # It works as a simple wrapper with no other impacts on the rest
     # of the system.
 
-    def bench_process(request, response)
+    def bench_dispatcher(request, response)
       time = Benchmark.measure do
-        response = respond(response, Dispatcher.handle(request, response))
       end
       debug "#{request} took #{time.real}s"
-      response
+    end
+
+    def call_dispatcher
+      Dispatcher.handle @webrick_request, @webrick_response
     end
 
     # simply respond to a given request, #set_head and #set_out in the process
     # as well as setting the response-status (which is, in case it is not
     # given, 500, if nothing goes wrong it should be 200 or 302)
 
-    def respond orig_response, response
-      @response = orig_response
-      if response
-        set_head(response)
-        set_out(response)
-        @response.status = response.code || STATUS_CODE[:internal_server_error]
-      end
-      @response
-    end
+    def respond
+      @response = Thread.current[:response]
+      code, out, head = @response.code, @response.out, @response.head
 
-    # map the respond.head[key] to @response[key]
-
-    def set_head(response)
-      response.head.each do |key, val|
-        @response[key] = val
-      end
-    end
-
-    # set the body... in case you have Global.tidy = true it will run it
-    # through Tool::Tidy.tidy first (if your content-type is text/html)
-
-    def set_out response
-      @response.body =
-        if Global.tidy and response.content_type == 'text/html'
-          Tool::Tidy.tidy(response.out)
-        else
-          response.out
+      if @response
+        @response.head.each do |key, val|
+          @webrick_response[key] = val
         end
+        @webrick_response.status = @response.code || STATUS_CODE[:internal_server_error]
+        if out.respond_to?(:read)
+          until out.eof?
+            @webrick_response.body << out.read(1024)
+          end
+        else
+          @webrick_response.body << out
+        end
+      end
     end
   end
 end

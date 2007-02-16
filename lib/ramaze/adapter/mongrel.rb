@@ -62,8 +62,8 @@ module Ramaze::Adapter
     # if the Global.inform_tags include :benchmark it will run #bench_process,
     # otherwise simply #respond.
 
-    def process(request, response)
-      @request, @response = request, response
+    def process(mongrel_request, mongrel_response)
+      @mongrel_request, @mongrel_response = mongrel_request, mongrel_response
       Global.inform_tags.include?(:benchmark) ? bench_respond : respond
     end
 
@@ -85,10 +85,31 @@ module Ramaze::Adapter
     # given, 500, if nothing goes wrong it should be 200 or 302)
 
     def respond
-      @our_response = Dispatcher.handle(@request, @response)
-      o_response = @our_response
+      Dispatcher.handle(@mongrel_request, @mongrel_response)
+      @response = Thread.current[:response]
 
-      if file = (o_response.out[:send_file] rescue nil)
+      code, out, head = @response.code, @response.out, @response.head
+
+      @mongrel_response.start(code) do |mongrel_head, mongrel_out|
+        if out.respond_to?(:read)
+          until out.eof?
+            mongrel_out << out.read(1024)
+          end
+        else
+          mongrel_out << out
+        end
+
+        head.each do |key, value|
+          mongrel_head[key] = value
+        end
+      end
+    end
+
+    def foo
+      send_file = o_response.out.respond_to?(:to_hash)
+
+      if send_file
+        file = o_response.out[:send_file]
         @response.start(200) do |head, out|
           head['Content-Type'] = 'text/plain'
           stat = File.stat(file)

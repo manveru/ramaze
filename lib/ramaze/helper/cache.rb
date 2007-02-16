@@ -2,51 +2,21 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 module Ramaze
   module CacheHelper
+    trait :value_cache  => Global.cache.new
+    trait :action_cache => Global.cache.new
+
     private
 
-    # a simple cache for values based on Global.cache
-
     def value_cache
-      @@cache ||= Global.cache.new
+      ancestral_trait[:value_cache]
     end
 
-    # forget about one cached action
-
-    def uncache action
-      Global.cached_actions[self.class].each do |e|
-        e.include?(action.to_s)
-      end
+    def action_cache
+      ancestral_trait[:action_cache]
     end
 
-    # uncache all actions
-
-    def uncache_all
-      Global.cached_actions.delete(self.class)
-    end
-    alias uncache_all_actions uncache_all
-
-    # cache all given methods
-
-    def cache(*actions)
-      self.class.cache(*actions)
-    end
-    alias cache_actions cache
-
-    # define the cache class-method on inclusion
-
-    def self.included(klass)
-      klass.class_eval do
-        class << self
-
-          # mark actions for caching
-
-          def cache(*actions)
-            Global.cache_actions[self].merge(*actions.flatten.map{|a| a.to_s })
-          end
-          alias cache_actions cache
-
-        end
-      end
+    def actions_cached
+      ancestral_trait[:actions_cached]
     end
   end
 end

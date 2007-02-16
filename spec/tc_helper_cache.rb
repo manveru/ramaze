@@ -8,6 +8,8 @@ include Ramaze
 class TCCacheHelperController < Controller
   helper :cache
 
+  trait :actions_cached => [:cached_action]
+
   def index
     self.class.name
   end
@@ -17,7 +19,7 @@ class TCCacheHelperController < Controller
   end
 
   def uncache_value
-    value_cache.delete(:time)
+    value_cache.delete :time
   end
 
   def cached_action
@@ -25,10 +27,8 @@ class TCCacheHelperController < Controller
   end
 
   def uncache_actions
-    uncache_all
+    action_cache.clear
   end
-
-  cache_actions :cached_action
 
   private
 

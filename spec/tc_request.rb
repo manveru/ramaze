@@ -109,9 +109,39 @@ context "Request" do
       raw_get('/test_headers').status.should == %w[200 OK]
       raw_get('/test_headers').content_type.should == "text/html"
     end
+  end
 
+  context "send_file" do
     specify "send_file" do
-      get('test_download.css').should == File.read('spec/public/test_download.css').strip
+      css_path = 'test_download.css'
+      image_path = 'favicon.ico'
+      static_css = File.read("spec/public/#{css_path}")
+      static_image = File.read("spec/public/#{image_path}")
+
+      images = []
+      csses = []
+      threads = []
+
+      times = 1
+
+      times.times do
+        threads << Thread.new do
+          csses   << open("http://localhost:#{Global.port}/#{css_path}").read
+          images  << open("http://localhost:#{Global.port}/#{image_path}").read
+        end
+      end
+
+      threads.each do |t|
+        t.join
+      end
+
+      images.each do |image|
+        image.should == static_image
+      end
+
+      csses.each do |css|
+        css.should == static_css
+      end
     end
   end
 end
