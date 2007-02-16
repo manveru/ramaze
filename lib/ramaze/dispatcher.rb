@@ -131,11 +131,14 @@ module Ramaze
         debug "Responding with static file: #{file}"
 
         response.head['Content-Type'] = ''
+        response.out = File.read(file)
+=begin
         if @orig_response.respond_to?(:send_file)
           response.out = {:send_file => file}
         else
           response.out = File.read(file)
         end
+=end
       end
 
       # Takes the path, figures out the controller by asking #resolve_controller
