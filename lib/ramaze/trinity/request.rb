@@ -65,6 +65,18 @@ module Ramaze
       end
     end
 
+    def body
+      unless @body and @request.body.respond_to?(:read)
+        self.body = @request.body
+      end
+      @body ||= @request.body
+    end
+
+    def body= string
+      @body = string if string.respond_to?(:read)
+      @body ||= StringIO.new(string || '')
+    end
+
     # this parses stuff like post-requests (very untested)
     # and also ?foo=bar stuff (get-query)
     # WEBrick uses body as a streaming-object, so we have to #read.
@@ -130,6 +142,10 @@ module Ramaze
       put_query = query_parse(query_string) rescue {}
       put_query.each do |key, value|
         @put_query[CGI.unescape(key)] = CGI.unescape(value)
+      end
+
+      unless body.respond_to?(:read)
+        self.body = StringIO.new(body)
       end
     end
 

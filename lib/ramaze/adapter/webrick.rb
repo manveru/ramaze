@@ -39,6 +39,13 @@ module WEBrick
     end
 
   end
+
+  module HTTPServlet
+    class ProcHandler
+      alias do_PUT do_GET
+      alias do_DELETE do_GET
+    end
+  end
 end
 
 module Ramaze::Adapter
