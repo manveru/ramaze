@@ -47,9 +47,9 @@ class TCRequestController < Controller
 end
 
 context "Request" do
-  context "POST" do
-    ramaze( :adapter => :mongrel, :mapping => {'/' => TCRequestController} )
+  ramaze ramaze_options.merge( :mapping => {'/' => TCRequestController})
 
+  context "POST" do
     specify "give me the result of request.post?" do
       post("is_post").should == 'true'
     end
@@ -66,9 +66,11 @@ context "Request" do
 
   context "PUT" do
     specify "put a ressource" do
-      address = "http://localhost:7007/put_inspect/#{CGI.escape(__FILE__)}"
-      response = `curl -S -s -T #{__FILE__} #{address}`
-      file = File.read(__FILE__)
+      image = 'favicon.ico'
+      image_path = File.join('spec', 'public', image)
+      address = "http://localhost:7007/put_inspect/#{image}"
+      response = `curl -S -s -T #{image_path} #{address}`
+      file = File.read(image_path)
 
       response[1..-2].should == file
     end
@@ -106,7 +108,9 @@ context "Request" do
     end
 
     specify "header" do
-      raw_get('/test_headers').status.should == %w[200 OK]
+      code, status = raw_get('/test_headers').status
+      code.to_i.should == 200
+      status.strip.should == 'OK'
       raw_get('/test_headers').content_type.should == "text/html"
     end
   end
