@@ -68,6 +68,7 @@ begin
     [ '--create',               GetoptLong::REQUIRED_ARGUMENT ],
     [ '--mongrel',        '-m', GetoptLong::NO_ARGUMENT       ],
     [ '--webrick',        '-w', GetoptLong::NO_ARGUMENT       ],
+    [ '--rack',                 GetoptLong::NO_ARGUMENT       ],
 
     [ '--debug',          '-d', GetoptLong::NO_ARGUMENT       ],
     [ '--stage',          '-t', GetoptLong::NO_ARGUMENT       ],
@@ -107,7 +108,7 @@ begin
     when :help              : RDoc::ramazes_usage('Usage')
     when :version           : puts("ramaze #{Ramaze::Version}")
     when :copyright         : RDoc::ramazes_usage('Copyright')
-    when :mongrel, :webrick : options[:adapter] = sopt
+    when :mongrel, :webrick, :rack : options[:adapter] = sopt
 
     when :benchmark         : options[:inform_tags] << :benchmark
     when :debug             : options
