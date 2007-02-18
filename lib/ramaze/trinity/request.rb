@@ -19,7 +19,7 @@ module Ramaze
   # all the information available from POST, GET, DELETE and PUT.
 
   class Request
-    attr_accessor :request, :post_query, :get_query, :puts_query, :get_query
+    #attr_accessor :request, :post_query, :get_query, :puts_query, :get_query
 
     class << self
 
@@ -37,7 +37,14 @@ module Ramaze
 
     def initialize request = {}
       @request = request
-      parse_queries
+    end
+
+    def [](key)
+      @request.params[key]
+    end
+
+    def []=(key, value)
+      @request.params[key] = value
     end
 
     # you can access the original @request via this method_missing,
@@ -45,6 +52,15 @@ module Ramaze
     # then, in case that fails, it will relay to @request
 
     def method_missing meth, *args, &block
+      @request.send(meth, *args, &block)
+    rescue
+      @request.env[meth.to_s.upcase]
+    end
+  end
+end
+
+
+=begin
       if value = @request.params[meth.to_s.upcase] rescue false
         value
       else
@@ -63,18 +79,6 @@ module Ramaze
       ].inject({}) do |sum, hash|
         sum.merge(hash || {})
       end
-    end
-
-    def body
-      unless @body and @request.body.respond_to?(:read)
-        self.body = @request.body
-      end
-      @body ||= @request.body
-    end
-
-    def body= string
-      @body = string if string.respond_to?(:read)
-      @body ||= StringIO.new(string || '')
     end
 
     # this parses stuff like post-requests (very untested)
@@ -142,10 +146,6 @@ module Ramaze
       put_query = query_parse(query_string) rescue {}
       put_query.each do |key, value|
         @put_query[CGI.unescape(key)] = CGI.unescape(value)
-      end
-
-      unless body.respond_to?(:read)
-        self.body = StringIO.new(body)
       end
     end
 
@@ -258,3 +258,4 @@ module Ramaze
     end
   end
 end
+=end

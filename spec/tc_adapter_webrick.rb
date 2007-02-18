@@ -3,20 +3,10 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
+testcase_requires 'webrick'
 
-class TCAdapterController < Controller
-  def index
-    "The index"
-  end
+def ramaze_options
+  { :adapter => :webrick }
 end
 
-context "WEBrick" do
-  context "multiple" do
-    ramaze :mapping => {'/' => TCAdapterController}, :port => '7001..7003', :adapter => :webrick
-
-    specify "simple request" do
-      get('/').should == "The index"
-    end
-  end
-end
+require 'spec/adapter_spec'

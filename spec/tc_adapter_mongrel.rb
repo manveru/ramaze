@@ -5,20 +5,8 @@ require 'spec/spec_helper'
 
 testcase_requires 'mongrel'
 
-include Ramaze
-
-class TCAdapterController < Controller
-  def index
-    "The index"
-  end
+def ramaze_options
+  { :adapter => :mongrel }
 end
 
-context "Mongrel" do
-  context "multiple" do
-    ramaze :mapping => {'/' => TCAdapterController}, :port => '7001..7003', :adapter => :mongrel
-
-    specify "simple request" do
-      get('/').should == "The index"
-    end
-  end
-end
+require 'spec/adapter_spec'

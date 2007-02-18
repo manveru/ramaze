@@ -32,7 +32,8 @@ module Ramaze
 
       def handle orig_request, orig_response
         @orig_request, @orig_response = orig_request, orig_response
-        respond(orig_response, orig_request)
+        setup_environment orig_response, orig_request
+        respond
       rescue Object => exception
         error exception
         handle_error(exception)
@@ -79,19 +80,12 @@ module Ramaze
         end
       end
 
-      # setup the #setup_environment (Trinity) and start #handle_response
-      #
       # Obtain the path requested from the request and search for a static
       # file matching the request, #respond_file is called if it finds one,
       # otherwise the path is given on to #respond_action.
       # Answers with a response
 
-      def respond orig_response, orig_request
-        setup_environment orig_response, orig_request
-        handle_response
-      end
-
-      def handle_response
+      def respond
         path = request.request_path.squeeze('/')
         info "Request from #{request.remote_addr}: #{path}"
 
@@ -152,6 +146,8 @@ module Ramaze
         head = default_head.merge(head || response.head)
 
         response.out, response.code, response.head = out, code, head
+      rescue Object => ex
+        Informer.error ex
         response
       end
 

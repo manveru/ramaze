@@ -39,6 +39,10 @@ class MainController < Controller
     redirect R(self)
   end
 
+  def error
+    @foo = 'bar'
+  end
+
   private
 
   def task_status title, status

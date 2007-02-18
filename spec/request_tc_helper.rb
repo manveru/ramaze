@@ -33,11 +33,6 @@ class TCRequestController < Controller
     request['foo']
   end
 
-  def test_get_set(arg)
-    request['foo'] = arg
-    request['foo']
-  end
-
   def test_headers
   end
 
@@ -101,10 +96,6 @@ context "Request" do
 
     specify "request[key]" do
       get('test_get?foo=bar').should == 'bar'
-    end
-
-    specify "request[key] = value" do
-      get('test_get_set/bar').should == 'bar'
     end
 
     specify "header" do
