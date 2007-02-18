@@ -114,7 +114,7 @@ class Context
   # you can pass any header you want with an hash
 
   def get url = '', headers = {}
-    open(url, {'Set-Cookie' => @cookie}.merge(headers)).read
+    open(url, {'Cookie' => @cookie}.merge(headers)).read
   end
 
   # Net::HTTP.post_form with the cookie
@@ -123,7 +123,7 @@ class Context
   def post url_param = '', params = {}, limit = 10
     raise "Too many redirections" if limit <= 0
 
-    params['Set-Cookie'] = @cookie
+    params['Cookie'] = @cookie
     url = "http://localhost:#{Ramaze::Global.port}"
     new = with_base("/#{url_param.gsub(url, '')}")
     url << new

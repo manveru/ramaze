@@ -3,8 +3,82 @@
 
 require 'digest/sha2'
 
-module Ramaze
+class Ramaze::Session
+  SESSION_KEY = '_ramaze_session_id'
 
+  class << self
+    def current
+      Thread.current[:session]
+    end
+  end
+
+  def initialize request
+    @session_id = (request.cookies[SESSION_KEY] || random_key)
+  end
+
+  def session_id
+    @session_id
+  end
+
+  # tries to catch all methods and proxy them to the #current
+  # this makes it easier to do i.e. hash-manipulation directly
+  # on #session in the controller.
+
+=begin
+  def method_missing meth, *args, &block
+    current.send(meth, *args, &block)
+  end
+=end
+
+  def [](key)
+    current[key]
+  end
+
+  def []=(key, value)
+    current[key] = value
+  end
+
+  def merge!(hash = {})
+    current.merge! hash
+  end
+
+  # the current contents of session
+
+  def current
+    sessions[session_id] ||= {}
+  end
+
+  # all the sessions currently stored, in case there are none yet it will
+  # set the constant Ramaze::SessionCache and from then on start populating
+  # it with the sessions. SessionCache is an instance of Global.cache as
+  # well.
+
+  def sessions
+    Thread.main[:session_cache] ||= constant(Global.cache.to_s).new
+  end
+
+  def export
+    "#{SESSION_KEY}=#{session_id}"
+  end
+
+  def random_key
+    h = [
+      Time.now.to_f.to_s.reverse, rand,
+      Thread.current[:request].hash, rand,
+      Process.pid, rand,
+      object_id, rand
+    ].join
+    Digest::SHA512.hexdigest(h)
+  end
+
+  def inspect
+    tmp = current.clone
+    tmp.delete SESSION_KEY
+    tmp.inspect
+  end
+end
+
+=begin
   # Session is the object that stores all the session-information of the user.
   # It is heavily based on cookies storing the key to the information stored
   # on the server.
@@ -31,7 +105,7 @@ module Ramaze
     # stored in the cookie with the key of SESSION_KEY
 
     def initialize request
-      @session_id = parse(request)[SESSION_KEY]
+      @session_id = get_cookie(request)[SESSION_KEY]
     end
 
     # current session_id, will generate a new one based on #hash if no session
@@ -56,40 +130,10 @@ module Ramaze
       Thread.main[:session_cache] ||= constant(Global.cache.to_s).new
     end
 
-    # this runs before #parse and will extract the information stored in the cookie
-    # of the client, in case there is none it will try to set one.
-    # Unfortunatly we have to go seperate paths here for mongrel and webrick,
-    # since they do not share the same API.
-    #
-    # ARGH, 3 different ways for webrick to hand us cookies!? (and counting)
-
-    def pre_parse request
-      if Global.adapter == :webrick
-        # input looks like this:
-        #   "Set-Cookie: _ramaze__session_id=fa8cc88dafcb0973b48d4d65ef57e7d3\r\n"
-        cookie = request.raw_header.grep(/Set-Cookie/).first rescue ''
-        cookie = request.post_query.delete('Set-Cookie') if cookie.to_s.empty? and request.post?
-        cookie = request.header['cookie'] unless cookie
-        cookie.to_s.gsub(/Set-Cookie: (.*?)\r\n/, '\1')
-      else
-        cookie = (request.http_cookie rescue request.http_set_cookie rescue '') || ''
-      end
-    end
-
-    # parse the cookie and extract all the variables stored in there.
-
-    def parse request
-      cookie = pre_parse(request)
-
-      return cookie if cookie.respond_to?(:to_hash)
-
-      cookie.split('; ').inject({}) do |s,v|
-        key, value = v.split('=')
-        s.merge key.strip => value
-      end
-    rescue => ex
-      Informer.error ex
-      {SESSION_KEY => hash}
+    def get_cookie request
+      cookies = request.cookies
+      cookie = cookies[SESSION_KEY]
+      cookie || {SESSION_KEY => session_key}
     end
 
     # tries to catch all methods and proxy them to the #current
@@ -116,7 +160,7 @@ module Ramaze
 
     # generate an unique #hash for the current session
 
-    def hash
+    def session_key
       h = [
         Time.now.to_f.to_s.reverse, rand,
         Thread.current[:request].hash, rand,
@@ -127,3 +171,4 @@ module Ramaze
     end
   end
 end
+=end
