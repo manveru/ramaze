@@ -17,8 +17,8 @@ module Ramaze
 
   module Dispatcher
     trait :filters => [
-            lambda{|path| handle_action path },
             lambda{|path| handle_file   path },
+            lambda{|path| handle_action path },
           ]
     class << self
       include Trinity
@@ -121,6 +121,7 @@ module Ramaze
 
         if file
           response.head['Content-Type'] = Tool::MIME.type_for(file)
+          Informer.debug("Serving static: #{file}")
           File.open(file)
         end
       end
