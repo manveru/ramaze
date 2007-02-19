@@ -28,6 +28,7 @@ require 'ramaze/snippets'
 require 'ramaze/helper'
 require 'ramaze/controller'
 require 'ramaze/template'
+require 'ramaze/adapter'
 require 'ramaze/version'
 
 module Ramaze

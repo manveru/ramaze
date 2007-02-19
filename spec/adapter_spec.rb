@@ -3,8 +3,6 @@
 
 require 'spec/spec_helper'
 
-testcase_requires 'rack'
-
 include Ramaze
 
 class TCAdapterController < Controller
