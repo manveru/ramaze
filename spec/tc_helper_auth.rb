@@ -49,16 +49,13 @@ context "StackHelper" do
     TCAuthMethodHelperController,
     TCAuthLambdaHelperController
   ].each do |controller|
-    p controller => Global.mapping.invert[controller]
     ctx = Context.new('/session_inspect', Global.mapping.invert[controller])
 
     specify "checking security" do
       ctx.get('/secured').should == ''
-      ctx.get('/secured').should == ''
-      ctx.post('login', :username => 'manveru', :password => 'password').should == 'Secret content'
+      ctx.post('/login', :username => 'manveru', :password => 'password')
       ctx.get('/secured').should == 'Secret content'
-      ctx.get('/secured').should == 'Secret content'
-      ctx.get('/logout').should == ''
+      ctx.get('/logout')
       ctx.get('/secured').should == ''
     end
   end

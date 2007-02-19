@@ -29,7 +29,8 @@ module Ramaze
     # if no password given, shows a simple form to input it.
 
     def login
-      if check_auth(request['username'], request['password'])
+      username, password = request.params.values_at('username', 'password')
+      if check_auth(username, password)
         session[:logged_in] = true
         inside_stack? ? answer : redirect( R(self) )
       else
@@ -76,7 +77,7 @@ module Ramaze
     # Hash.
     # If it is neither of the above it has at least to respond to #[]
     # which will pass it the username as key and it should answer with the
-    # password as a SHA1.hexdigest.
+    # password as a Digest::SHA1.hexdigest.
     #
     # The method and Proc are both called on demand.
     #
@@ -98,12 +99,13 @@ module Ramaze
     #   trait :auth_tagle => 'auth_table'
     #
     #   # Lambda that will be called upon demand
-    #   trait :auth_table => lambda{ {'manveru' => SHA1.hexdigest 'password'} }
+    #   trait :auth_table => lambda{ {'manveru' => Digest::SHA1.hexdigest 'password'} }
     #
     #   # Hash holding the data.
-    #   trait :auth_table => {'manveru' => SHA1.hexdigest('password')}
+    #   trait :auth_table => {'manveru' => Digest::SHA1.hexdigest('password')}
 
     def check_auth user, pass
+      return false if (not user or user.empty?) and (not pass or pass.empty?)
       auth_table = ancestral_trait[:auth_table] ||= {}
 
       auth_table = method(auth_table) if auth_table.is_a?(Symbol)

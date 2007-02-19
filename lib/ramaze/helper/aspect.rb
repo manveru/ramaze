@@ -189,11 +189,8 @@ module Ramaze
     # before/after your action and joins the results
 
     def new_render(action, *params)
-      p :new_render => [action, params]
       arity_for = lambda{|meth| method(meth).arity rescue -1 }
       post, pre = resolve_aspect(action).values_at(:post, :pre)
-
-      p :post => post, :pre => pre
 
       if pre
         arity = arity_for[pre].abs
