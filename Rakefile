@@ -147,6 +147,7 @@ desc "add copyright to all .rb files in the distribution"
 task 'add-copyright' do
   puts "adding copyright to files that don't have it currently"
   Dir['{lib,test}/**/*{.rb}'].each do |file|
+    next if file =~ /vendor|_darcs/
     lines = File.readlines(file).map{|l| l.chomp}
     copyright = [
       "#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com",
@@ -323,6 +324,7 @@ end
 desc "remove those annoying spaces at the end of lines"
 task 'fix-end-spaces' do
   Dir['{lib,test}/**/*.rb'].each do |file|
+    next if file =~ /vendor|_darcs/
     lines = File.readlines(file)
     new = lines.dup
     lines.each_with_index do |line, i|
