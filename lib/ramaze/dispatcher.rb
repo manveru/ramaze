@@ -75,7 +75,8 @@ module Ramaze
           end
         end
       rescue Object => ex
-        build_response(exception.message, STATUS_CODE[:internal_server_error])
+        error ex
+        build_response(ex.message, STATUS_CODE[:internal_server_error])
       end
 
       # Obtain the path requested from the request and search for a static
@@ -110,8 +111,6 @@ module Ramaze
 
       def handle_action path
         handler = Controller.handle(path)
-      rescue => ex
-        ex
       end
 
       def handle_file path
@@ -144,11 +143,7 @@ module Ramaze
         head = default_head.merge(head || response.head)
 
         response.out, response.code, response.head = out, code, head
-      rescue Object => ex
-        Informer.error ex
-        response
       end
-
 
       # Setup the Trinity (Request, Response, Session) and store them as
       # thread-variables in Thread.current
