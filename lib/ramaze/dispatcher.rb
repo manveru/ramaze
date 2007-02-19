@@ -74,6 +74,8 @@ module Ramaze
             build_response(exception.message, STATUS_CODE[:internal_server_error])
           end
         end
+      rescue Object => ex
+        build_response(exception.message, STATUS_CODE[:internal_server_error])
       end
 
       # Obtain the path requested from the request and search for a static
