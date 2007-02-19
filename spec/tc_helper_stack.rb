@@ -48,8 +48,4 @@ context "StackHelper" do
     ctx.eget('/bar?x=y').should == {'x' => 'y'}
     ctx.eget('/').should == {:logged_in => true, :STACK => []}
   end
-
-  specify "indirect posting fun" do
-    ctx.epost('/bar', :x => :y)['x'].should == 'y'
-  end
 end

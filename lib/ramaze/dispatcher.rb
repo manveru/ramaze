@@ -34,6 +34,7 @@ module Ramaze
         @orig_request, @orig_response = orig_request, orig_response
         setup_environment orig_response, orig_request
         respond
+        response
       rescue Object => exception
         error exception
         handle_error(exception)
@@ -67,13 +68,8 @@ module Ramaze
           build_response(exception.message, STATUS_CODE[:not_found])
         else
           if Global.error_page
-            req = Thread.current[:request]
-
-            unless ((req.request_uri.path = '/error') rescue false)
-              req.request.params['REQUEST_PATH'] = '/error'
-            end
-
-            handle_response
+            request.path_info = '/error'
+            respond
           else
             build_response(exception.message, STATUS_CODE[:internal_server_error])
           end
@@ -86,10 +82,10 @@ module Ramaze
       # Answers with a response
 
       def respond
-        path = request.request_path.squeeze('/')
+        path = request.path_info.squeeze('/')
         info "Request from #{request.remote_addr}: #{path}"
 
-        catch :respond do
+        catch(:respond) do
           filtered = filter(path)
 
           if filtered.is_a?(Exception)

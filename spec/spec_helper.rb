@@ -100,7 +100,7 @@ class Context
 
   def open url, hash = {}
     unless @history.empty?
-      hash = {'HTTP_REFERER' => @history.last}.merge(hash)
+      hash = {'REFERER' => @history.last}.merge(hash)
     end
     url = with_base(url)
     uri = "http://localhost:#{Global.port}#{url}"

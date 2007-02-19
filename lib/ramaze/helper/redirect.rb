@@ -36,7 +36,7 @@ module Ramaze
       response.code = status || STATUS_CODE[:see_other]
       response.out = %{Please follow <a href="#{target}">#{target}</a>!}
 
-      throw :respond
+      throw(:respond, response)
     end
 
     # redirect to the location the browser says it's coming from.
