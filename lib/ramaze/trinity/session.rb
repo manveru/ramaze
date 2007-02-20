@@ -32,6 +32,10 @@ class Ramaze::Session
     current.merge! hash
   end
 
+  def clear
+    current.clear
+  end
+
   # the current contents of session
 
   def current
