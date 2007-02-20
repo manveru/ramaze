@@ -51,6 +51,7 @@ module Ramaze
       end
 
       raw, title = hash.delete(:raw), hash.delete(:title)
+      params = {:class => hash.delete(:class), :id => hash.delete(:id)}
       opts = hash.inject('?'){|s,(k,v)| s << "#{k}=#{v};"}[0..-2]
       link = to.join('/').squeeze('/') << (opts.empty? ? '' : opts)
 
@@ -58,7 +59,8 @@ module Ramaze
         link
       else
         title ||= link.split('/').last.to_s.split('?').first || 'index'
-        %{<a href="#{link}">#{title}</a>}
+        params = params.inject(''){|s,(k,v)| s + (k and v ? %{ #{k}="#{v}"} : '')}
+        l = %{<a href="#{link}"#{params}>#{title}</a>}
       end
     end
 
