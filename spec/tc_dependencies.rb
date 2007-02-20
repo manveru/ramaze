@@ -3,6 +3,8 @@
 
 require 'spec/spec_helper'
 
+testcase_requires 'rubygems'
+
 context "dependencies" do
   specify "no gems" do
     gems = $:.grep(/gems/).reject{|g| g =~ /rspec/}
