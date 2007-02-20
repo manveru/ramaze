@@ -45,7 +45,7 @@ context "Testing Ezamar" do
 
   specify "should not respond to private methods" do
     %w[ session request response find_template handle_request trait test_private ].each do |action|
-      lambda{get("/ramaze/#{action}")}.should_raise OpenURI::HTTPError
+      lambda{get("/ramaze/#{action}")}.should_raise
     end
   end
 end

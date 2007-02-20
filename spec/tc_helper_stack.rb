@@ -22,9 +22,17 @@ class TCStackHelperController < Controller
     request.params.inspect
   end
 
+  def secure
+    logged_in? ? 'secret content' : 'please login'
+  end
+
   def login
     session[:logged_in] = true
     answer
+  end
+
+  def logout
+    session.clear
   end
 
   private
@@ -39,13 +47,20 @@ context "StackHelper" do
 
   ctx = Context.new
 
+  specify "conventional login" do
+    ctx.get('/secure').should == 'please login'
+    ctx.get('/login')
+    ctx.get('/secure').should == 'secret content'
+    ctx.get('/logout')
+  end
+
   specify "indirect login" do
     ctx.get('/foo').should == 'logged in'
     ctx.eget('/').should == {:logged_in => true, :STACK => []}
   end
 
   specify "indirect login with params" do
-    ctx.eget('/bar?x=y').should == {'x' => 'y'}
+    ctx.eget('/bar', 'x' => 'y').should == {'x' => 'y'}
     ctx.eget('/').should == {:logged_in => true, :STACK => []}
   end
 end

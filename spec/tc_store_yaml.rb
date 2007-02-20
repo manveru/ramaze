@@ -29,6 +29,17 @@ context "Store::YAML" do
     old_article.text.should == article.text
   end
 
+  specify "convenience" do
+    article_class = new_store :article
+    article_class.all.should.be.empty
+    article = article_class.new
+    article.name = 'the article'
+    article.save
+
+    article_class.keys.should == [:a]
+    article_class.all.should_not.be.empty
+  end
+
   specify "relations" do
     article_class = new_store :article
     author_class  = new_store :author

@@ -47,7 +47,7 @@ context "usual Session" do
   end
 
   specify "now a little bit with POST" do
-    ctx.epost('/post_set_session', :x => :y)['x'].should == 'y'
+    ctx.epost('/post_set_session', 'x' => 'y')['x'].should == 'y'
   end
 
   specify "snooping a bit around" do
