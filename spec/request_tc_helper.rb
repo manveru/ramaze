@@ -42,7 +42,8 @@ class TCRequestController < Controller
 end
 
 context "Request" do
-  ramaze ramaze_options.merge( :mapping => {'/' => TCRequestController})
+  options = ramaze_options rescue {:adapter => :webrick}
+  ramaze options.merge( :mapping => {'/' => TCRequestController})
 
   context "POST" do
     specify "give me the result of request.post?" do
@@ -87,7 +88,8 @@ context "Request" do
     end
 
     specify "give me back what i gave" do
-      get("/get_inspect?one=two&three=four").should == {'one' => 'two', 'three' => 'four'}.inspect
+      params = {'one' => 'two', 'three' => 'four'}
+      get("/get_inspect", params).should == params.inspect
     end
 
     specify "my ip" do
@@ -95,34 +97,27 @@ context "Request" do
     end
 
     specify "request[key]" do
-      get('test_get?foo=bar').should == 'bar'
-    end
-
-    specify "header" do
-      code, status = raw_get('/test_headers').status
-      code.to_i.should == 200
-      status.strip.should == 'OK'
-      raw_get('/test_headers').content_type.should == "text/html"
+      get('/test_get', 'foo' => 'bar').should == 'bar'
     end
   end
 
-  context "send_file" do
-    specify "send_file" do
+  context "send files" do
+    specify "threaded concurrently" do
       css_path = 'test_download.css'
       image_path = 'favicon.ico'
-      static_css = File.read("spec/public/#{css_path}")
-      static_image = File.read("spec/public/#{image_path}")
+      static_css = File.read("spec/public/#{css_path}").strip
+      static_image = File.read("spec/public/#{image_path}").strip
 
       images = []
       csses = []
       threads = []
 
-      times = 1
+      times = 100
 
       times.times do
         threads << Thread.new do
-          csses   << open("http://localhost:#{Global.port}/#{css_path}").read
-          images  << open("http://localhost:#{Global.port}/#{image_path}").read
+          csses  << get(css_path)
+          images << get(image_path)
         end
       end
 
