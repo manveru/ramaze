@@ -101,7 +101,15 @@ module Ramaze
       end
 
       def filter path
-        gotchas = ancestral_trait[:filters].map{|f| f[path] }.flatten.compact
+        gotchas = ancestral_trait[:filters].map do |f|
+          begin
+            f[path]
+          rescue Object => ex
+            ex
+          end
+        end
+
+        gotchas = gotchas.flatten.compact
 
         exceptions, non_exceptions = gotchas.partition{|g| g.is_a?(Exception)}
 
