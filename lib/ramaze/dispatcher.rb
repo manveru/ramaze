@@ -124,6 +124,7 @@ module Ramaze
       def handle_file path
         custom_publics = Global.controllers.map{|c| c.trait[:public]}.compact
         the_paths = $:.map{|way| (way/'public'/path) }
+        the_paths << (BASEDIR/'proto'/'public'/path)
         the_paths += custom_publics.map{|c| c/path   }
         file = the_paths.find{|way| File.file?(way)}
 
