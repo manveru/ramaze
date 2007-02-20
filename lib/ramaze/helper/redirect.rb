@@ -29,7 +29,7 @@ module Ramaze
     def redirect *target
       target = target.join('/')
 
-      response.head['Location'] = target
+      response.head['Location'] = R("/#{target}".squeeze('/'))
 
       hash = target.find{|h| h.is_a?(Hash)} and status = hash.delete(:status) rescue nil
 
