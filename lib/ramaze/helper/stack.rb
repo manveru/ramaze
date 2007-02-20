@@ -46,22 +46,20 @@ module Ramaze
     # on the session[:STACK]
 
     def call this
-      (session[:STACK] ||= []) << request.request_uri
-      redirect(this)
+      (session[:STACK] ||= []) << request.path_info
+      redirect(R(this))
     end
 
     # return to the last location on session[:STACK]
 
     def answer
-      redirect session[:STACK].pop if inside_stack?
+      redirect R(session[:STACK].pop) if inside_stack?
     end
 
     # check if the stack has something inside.
 
     def inside_stack?
-      not session[:STACK].empty?
-    rescue
-      false
+      session[:STACK].any? rescue false
     end
   end
 end
