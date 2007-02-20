@@ -1,7 +1,8 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'yaml/store'
+require 'yaml'
+require 'pstore'
 require 'fileutils'
 require 'set'
 
@@ -9,6 +10,30 @@ module Ramaze::Store
   module YAML
     def self.new(*args)
       Manager.new(*args)
+    end
+
+    class Store < PStore
+      def initialize( *o )
+        @opt = ::YAML::DEFAULTS.dup
+        if String === o.first
+          super(o.shift)
+        end
+        if o.last.is_a? Hash
+          @opt.update(o.pop)
+        end
+      end
+
+      def dump(table = nil)
+        @table.to_yaml(@opt)
+      end
+
+      def load(content)
+        ::YAML::load(content)
+      end
+
+      def load_file(file)
+        ::YAML::load(file)
+      end
     end
 
     class YAMLStoreWrapper
@@ -30,13 +55,13 @@ module Ramaze::Store
       end
 
       def to_yaml
-        @entities.dump(:x)
+        (@entities.instance_variable_get('@table') || {}).to_yaml
       end
 
       # loads the #to_yaml
 
       def original
-        ::YAML.load(to_yaml)
+        ::YAML.load_file(@store_filename) rescue {}
       end
 
       # available keys of the store
@@ -49,6 +74,10 @@ module Ramaze::Store
 
       def empty?
         keys.empty?
+      end
+
+      def all
+        original
       end
 
       def [](eid)
@@ -79,7 +108,7 @@ module Ramaze::Store
 
         FileUtils.rm_f(@store_filename) if options[:destroy]
 
-        @entities = ::YAML::Store.new(@store_filename)
+        @entities = Store.new(@store_filename)
       end
 
       def new
