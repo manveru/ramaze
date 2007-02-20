@@ -5,7 +5,7 @@ include Ramaze
 class MainController < Controller
   helper :cache
 
-  trait :cached_actions => [:index]
+  trait :actions_cached => [:index]
 
   def index
     calc = "100_000 ** 100_00"
@@ -16,7 +16,7 @@ class MainController < Controller
   end
 
   def invalidate
-    uncache_all
+    action_cache.clear
   end
 end
 
