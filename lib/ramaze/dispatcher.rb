@@ -17,8 +17,8 @@ module Ramaze
 
   module Dispatcher
     trait :filters => [
-            lambda{|path| handle_action path },
             lambda{|path| handle_file   path },
+            lambda{|path| handle_action path },
           ]
     class << self
       include Trinity
