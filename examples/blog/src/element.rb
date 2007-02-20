@@ -1,8 +1,13 @@
-class Page < Element
-  include Trinity
+class Page < Controller
+  attr_accessor :content
   helper :auth
 
+  def initialize content
+    @content = content
+  end
+
   def render
+    p :render => content
     %{
 <html>
   <head>
@@ -24,7 +29,7 @@ class Page < Element
       <span id="title">
         <a href="#{R :/}">#{@title || 'Blogging Ramaze'}</a>
       </span>
-      <?r if check_login ?>
+      <?r if logged_in? ?>
         <span id="login"> #{link R(:logout), :title => 'logout'} </span>
       <?r else ?>
         <span id="login"> #{link R(:login), :title => 'login'} </span>
@@ -35,13 +40,13 @@ class Page < Element
 
   def sidebar
     entries =
-      Entry.all.map do |e|
+      Entry.all.map do |eid, e|
       %{
         <div>
-          #{link R(:/, :view, e.oid), :title => e.title}
+          #{link R(:/, :view, eid), :title => e.title}
         </div>
       }
-    end
+      end
 
     %{
     <div id="sidebar">

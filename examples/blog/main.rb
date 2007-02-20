@@ -11,6 +11,6 @@ include Ramaze
 require 'src/controller'
 require 'src/element'
 
-Global.setup(YAML.load_file('conf/global.yaml'))
+Global.setup
 
 start

@@ -4,13 +4,15 @@
 class MainController < Controller
   helper :form, :auth, :aspect
 
+  trait :auth_table => {'manveru' => Digest::SHA1.hexdigest('password')}
+
   def index
     @title = 'Ramaze Blog'
-    @entries = Entry.all.reverse
+    @entries = Entry.keys.reverse.map{|k| Entry[k]}
   end
 
-  def view oid
-    @entry = Entry[oid.to_i]
+  def view eid
+    @entry = Entry[eid]
   end
 
   def new
@@ -18,25 +20,25 @@ class MainController < Controller
   end
 
   def add
-    entry = Entry.new.assign(request.params)
+    entry = Entry.new.merge!(request.params)
     entry.time = Time.now
     session[:result] = "#{entry.title} added successfully" if entry.save
     redirect :/
   end
 
-  def edit oid
-    @entry = Entry[oid.to_i]
+  def edit eid
+    @entry = Entry[eid]
   end
 
   def save
-    redirect_referer unless oid = request.params.delete('oid').to_i
-    entry = Entry[oid].assign(request.params)
+    redirect_referer unless eid = request.params.delete('eid')
+    entry = Entry[eid].merge!(request.params)
     session[:result] = "#{entry.title} saved successfully" if entry.save
     redirect :/
   end
 
-  def delete oid
-    if entry = Entry[oid.to_i]
+  def delete eid
+    if entry = Entry[eid]
       if entry.delete
         session[:result] = "#{entry.title} deleted successfully"
       else

@@ -1,6 +1,8 @@
 <Page>
   <form method="POST" action="#{R self, :save}">
     <input type="hidden" name="oid" value="#{@entry.oid}" />
-    #{form @entry, :deny => [/time/, /oid/]}
+    <input type="text" name="title" value="#{@entry.title}" />
+    <textarea name="text">#{@entry.text}</textarea>
+    <input type="submit" />
   </form>
 </Page>

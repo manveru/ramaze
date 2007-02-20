@@ -1,29 +1,14 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-begin
-  require 'rubygems'
-  gem 'facets', '=1.4.5'
-  require '/home/manveru/prog/projects/nitroproject/glycerin'
-rescue LoadError
-end
+require 'ramaze/store/yaml'
 
-require 'og'
+Entry = Ramaze::Store::YAML.new :entry
 
-class Comment
-  attr_accessor :text, String
-  attr_accessor :time, Time
-  attr_accessor :author_name, String
-  attr_accessor :author_email, String
-end
-
-class Entry
-  attr_accessor :title, String
-  attr_accessor :text,  String, :control => :textarea
-  attr_accessor :time,  Time
-  has_many Comment
-end
-
-unless defined? Entry.ogmanager
-  Og.setup
+if Entry.empty?
+  entry = Entry.new
+  entry.time = Time.now
+  entry.title = 'Nothing special'
+  entry.text = 'even less special'
+  entry.save
 end

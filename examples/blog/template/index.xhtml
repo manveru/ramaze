@@ -12,13 +12,13 @@
         #{BlueCloth.new(entry.text.to_s).to_html}
       </div>
       <div class="menu">
-        <?r if check_login ?>
-          #{link self, :delete, entry.oid, :title => 'Delete'}
-          #{link self, :edit, entry.oid, :title => 'Edit'}<br />
+        <?r if logged_in? ?>
+          #{link self, :delete, entry.eid, :title => 'Delete'}
+          #{link self, :edit, entry.eid, :title => 'Edit'}<br />
         <?r end ?>
         Entry #{@entries.size - i}/#{@entries.size}
       </div>
     </div>
   <?r end ?>
-  #{link(self, :new, :title => 'New Entry') if check_login}
+  #{link(self, :new, :title => 'New Entry') if logged_in?}
 </Page>
