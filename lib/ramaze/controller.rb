@@ -178,6 +178,8 @@ module Ramaze
       def cached_render action, *parameter
         key = [action, parameter].inspect
 
+        trait[:action_cache] ||= Global.cache.new
+
         if out = ancestral_trait[:action_cache][key]
           debug "Using Cached version for #{key}"
           return out
