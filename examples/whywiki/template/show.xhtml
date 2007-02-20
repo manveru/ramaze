@@ -1,6 +1,10 @@
 <html>
   <head>
     <title>MicroWiki #{@page}</title>
+    <style>
+      a.exists{ color: #00f; }
+      a.nonexists{ color: #f00; }
+    </style>
   </head>
     #{ link(R(self), :title => "&lt; Home") unless @page == "Home" }
   <body>

@@ -3,11 +3,6 @@
 
 # written as an example of how to implement the minimal _why wiki
 
-begin
-  require 'rubygems'
-rescue LoadError
-end
-
 require 'ramaze'
 require 'bluecloth'
 
@@ -25,7 +20,8 @@ class WikiController < Controller
     @text = Db[page].to_s
 
     @text.gsub!(/\[\[(.*?)\]\]/) do |m|
-      link( R(self, :show, CGI.escape($1)), :title => $1)
+      exists = Db[$1] ? 'exists' : 'nonexists'
+      link( R(self, :show, CGI.escape($1)), :title => $1, :class => exists)
     end
 
     @text = BlueCloth.new(@text).to_html
@@ -50,7 +46,6 @@ end
 
 Global.adapter = :mongrel
 #Global.tidy = true
-#Global.mode = :benchmark
 Global.mapping = {'/' => WikiController}
 
 start
