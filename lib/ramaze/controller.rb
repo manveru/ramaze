@@ -165,7 +165,7 @@ module Ramaze
 
         file = find_template(action)
 
-        engine = ancestral_trait[:engine] || engine_for(file)
+        engine = ancestral_trait[:engine] || engine_for(file) || Template::Ezamar
         options = {
           :file     => file,
           :binding  => controller.send(:send, :binding),
