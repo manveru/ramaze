@@ -147,7 +147,7 @@ module Ramaze
         if Global.cookies
           default_head['Set-Cookie'] = session.export
         else
-          head.delete('Set-Cookie')
+          head.delete('Set-Cookie') if head.respond_to?(:delete)
         end
 
         head = default_head.merge(head || response.head)
