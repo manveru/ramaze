@@ -8,7 +8,7 @@ include Ramaze
 class TCControllerEzamarController < Controller
   trait :template_root => 'spec/template/ezamar'
   def index
-    "The index"
+    @text = "World"
   end
 
   def sum first, second
@@ -31,7 +31,7 @@ context "Testing Ezamar" do
   ramaze(:mapping => {'/ezamar' => TCControllerEzamarController})
 
   specify "simple request to index" do
-    get('/ezamar').should == 'The index'
+    get('/ezamar').should == 'Hello, World!'
   end
 
   specify "summing two values" do
