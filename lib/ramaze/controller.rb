@@ -1,7 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'ramaze/helper'
+require 'ramaze/template'
 
 module Ramaze
 
@@ -142,8 +142,6 @@ module Ramaze
       # to the value of the current action.
 
       def render action, *parameter
-        file = find_template(action)
-
         trait[:actions_cached] ||= Set.new
 
         cache_indicators = [
@@ -163,9 +161,11 @@ module Ramaze
         controller = self.new
         controller.instance_variable_set('@action', action)
 
-        file = find_template(action)
+        Template::Ezamar
 
-        engine = ancestral_trait[:engine] || engine_for(file) || Template::Ezamar
+        file   = find_template(action)
+        engine = ancestral_trait[:engine] || engine_for(file)
+
         options = {
           :file     => file,
           :binding  => controller.send(:send, :binding),
@@ -238,6 +238,7 @@ module Ramaze
       # is used if none matches.
 
       def engine_for file
+        file = file.to_s
         extension = File.extname(file)
         trait[:template_extensions].invert[extension]
       rescue

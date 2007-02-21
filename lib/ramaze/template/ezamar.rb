@@ -9,9 +9,9 @@ module Ramaze::Template
 
   class Ezamar < Template
 
-    trait :transform_pipeline => [ Element, Morpher, self ]
-
     Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
+
+    trait :transform_pipeline => [ Element, Morpher, self ]
 
     class << self
 

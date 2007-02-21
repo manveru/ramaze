@@ -1,16 +1,15 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'ramaze/helper'
-
 # This module serves as a namespace for all templates, it will autoload
 # Amrita2, Erubis, Ezamar, Haml, Liquid and Markaby if you refer to them.
 
 module Ramaze
-  autoload(:Element, 'ramaze/template/ezamar/element')
-  autoload(:Morpher, 'ramaze/template/ezamar/morpher')
 
   module Template
+    autoload('Element', 'ramaze/template/ezamar/element')
+    autoload('Morpher', 'ramaze/template/ezamar/morpher')
+
     %w[ Amrita2 Erubis Ezamar Haml Liquid Markaby ].each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
     end
