@@ -2,6 +2,9 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 class MainController < Controller
+
+  trait :engine => Template::Ezamar
+
   def index
     @tasks = []
     TodoList.original.each do |title, parameters|
