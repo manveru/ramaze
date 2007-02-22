@@ -383,7 +383,7 @@ task 'build-readme' do
     chapters.each_slice(2) do |title, file|
       file = File.join('doc', 'readme_chunks', "#{file}.txt")
       chapter = File.read(file)
-      readme.puts "== #{title}", '', chapter
+      readme.puts "= #{title}", '', chapter
       readme.puts '', '' unless title == chapters[-2]
     end
   end
