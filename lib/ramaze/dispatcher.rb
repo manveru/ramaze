@@ -30,9 +30,8 @@ module Ramaze
       # thrown during processing of the request and #handle_error if
       # a problem occurs.
 
-      def handle orig_request, orig_response
-        @orig_request, @orig_response = orig_request, orig_response
-        setup_environment orig_response, orig_request
+      def handle rack_request, rack_response
+        setup_environment rack_request, rack_response
         respond
         response
       rescue Object => exception
@@ -95,7 +94,7 @@ module Ramaze
             error filtered
             return(handle_error(filtered))
           else
-            return(build_response filtered, 200)
+            return(build_response filtered, response.status)
           end
         end
       end
@@ -129,7 +128,7 @@ module Ramaze
         file = the_paths.find{|way| File.file?(way)}
 
         if file
-          response.head['Content-Type'] = Tool::MIME.type_for(file)
+          response['Content-Type'] = Tool::MIME.type_for(file)
           Informer.debug("Serving static: #{file}")
           File.open(file)
         end
@@ -139,20 +138,13 @@ module Ramaze
       # if Global.cookies is true (which it is by default) and set the default
       # Content-Type to 'text/plain'
 
-      def build_response out = '', code = STATUS_CODE[:internal_server_error], head = nil
-        default_head = {
-          'Content-Type' => 'text/html',
-        }
-
-        if Global.cookies
-          default_head['Set-Cookie'] = session.export
-        else
-          head.delete('Set-Cookie') if head.respond_to?(:delete)
+      def build_response body = '', status = STATUS_CODE[:internal_server_error], head = {}
+        response.set_cookie(Session::SESSION_KEY, session.session_id) if Global.cookies
+        head.each do |key, value|
+          response[key] = value
         end
 
-        head = default_head.merge(head || response.head)
-
-        response.out, response.code, response.head = out, code, head
+        response.body, response.status = body, status
       end
 
       # Setup the Trinity (Request, Response, Session) and store them as
@@ -161,11 +153,11 @@ module Ramaze
       #   Thread.current[:response] == Response.current
       #   Thread.current[:session]  == Session.current
 
-      def setup_environment orig_response, orig_request
+      def setup_environment rack_request, rack_response
         this = Thread.current
-        this[:request]  = Request.new(orig_request)
+        this[:request]  = Request.new(rack_request)
         this[:session]  = Session.new(request)
-        this[:response] = Response.new('', STATUS_CODE[:ok], 'Content-Type' => 'text/html')
+        this[:response] = rack_response
       end
     end
   end

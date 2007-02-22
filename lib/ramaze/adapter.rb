@@ -29,22 +29,22 @@ module Ramaze::Adapter
 
       @response = Thread.current[:response]
 
-      [@response.code, @response.head, self]
+      [@response.status, @response.header, self]
     end
 
     def respond env
-      Dispatcher.handle(::Rack::Request.new(env), nil)
+      Dispatcher.handle(::Rack::Request.new(env), ::Rack::Response.new)
     end
 
     def each
-      out = @response.out
+      body = @response.body
 
-      if out.respond_to?(:read)
-        until out.eof?
-          yield out.read(1024)
+      if body.respond_to?(:read)
+        until body.eof?
+          yield body.read(1024)
         end
       else
-        yield out
+        yield body
       end
     end
   end

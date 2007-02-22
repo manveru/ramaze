@@ -6,7 +6,7 @@ module Ramaze
   # RedirectHelper actually takes advantage of LinkHelper.link_raw to build the links
   # it redirects to.
   # It doesn't do much else than this:
-  #     setting a status-code of 303 and a head['Location'] = link
+  #     setting a status-code of 303 and a response['Location'] = link
   # returning some nice text for visitors who insist on ignoring those hints :P
   #
   # example of usage:
@@ -29,12 +29,16 @@ module Ramaze
     def redirect *target
       target = target.join('/')
 
-      response.head['Location'] = R("/#{target}".squeeze('/'))
+      #hash = target.find{|h| h.is_a?(Hash)} and status = hash.delete(:status) rescue nil
 
-      hash = target.find{|h| h.is_a?(Hash)} and status = hash.delete(:status) rescue nil
+      header = {
+        'Location' => R("/#{target}".squeeze('/'))
+      }.merge(response.header)
+      status ||= STATUS_CODE[:see_other]
+      body = %{Please follow <a href="#{target}">#{target}</a>!}
 
-      response.code = status || STATUS_CODE[:see_other]
-      response.out = %{Please follow <a href="#{target}">#{target}</a>!}
+
+      Dispatcher.build_response body, status, header
 
       throw(:respond, response)
     end
