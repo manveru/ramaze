@@ -23,6 +23,10 @@ BASEDIR = File.dirname(__FILE__)
 NAME = "ramaze"
 REV = File.read(".svn/entries")[/committed-rev="(d+)"/, 1] rescue nil
 VERS = ENV['VERSION'] || (Ramaze::VERSION + (REV ? ".#{REV}" : ""))
+COPYRIGHT = [
+  "#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com",
+  "# All files in this distribution are subject to the terms of the Ruby license."
+]
 CLEAN.include %w[
   **/.*.sw?
   *.gem
@@ -149,14 +153,10 @@ task 'add-copyright' do
   Dir['{lib,test}/**/*{.rb}'].each do |file|
     next if file =~ /vendor|_darcs/
     lines = File.readlines(file).map{|l| l.chomp}
-    copyright = [
-      "#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com",
-      "# All files in this distribution are subject to the terms of the Ruby license."
-    ]
-    unless lines.first(2) == copyright
+    unless lines.first(2) == COPYRIGHT
       puts "fixing #{file}"
       File.open(file, 'w+') do |f|
-        (copyright + lines).each do |line|
+        (COPYRIGHT + lines).each do |line|
           f.puts(line)
         end
       end
@@ -360,4 +360,37 @@ task 'request' do
       puts ex
     end
   end
+end
+
+desc "Compile the doc/README from the parts of doc/readme"
+task 'build-readme' do
+  require 'enumerator'
+
+  chapters = [
+    'About Ramaze',         'introduction',
+    'Features Overview',    'features',
+    'Basic Principles',     'principles',
+    'Installation',         'installing',
+    'Getting Started',      'getting_started',
+    'A couple of Examples', 'examples',
+    'How to find Help',     'getting_help',
+    'Appendix',             'appendix',
+  ]
+
+  File.open('doc/README', 'w+') do |readme|
+    readme.puts COPYRIGHT.map{|l| l[1..-1]}, ''
+
+    chapters.each_slice(2) do |title, file|
+      file = File.join('doc', 'readme_chunks', "#{file}.txt")
+      chapter = File.read(file)
+      readme.puts "== #{title}", '', chapter
+      readme.puts '', '' unless title == chapters[-2]
+    end
+  end
+end
+
+desc "Update rack and record"
+task "rack" do
+  sh "cp -r ../rack/ lib/ramaze/vendor/"
+  sh "darcs record --all --patch-name 'rack snapshot'"
 end
