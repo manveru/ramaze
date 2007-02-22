@@ -1,12 +1,18 @@
 class Context
   attr_reader :cookie
 
-  def initialize(url = '/', base = '/')
+  def initialize(url = '/', base = '/', &block)
     @base     = base
     @history  = []
     @http     = SimpleHttp.new(url2uri(url))
     @cookie   = get_cookie
     @http.request_headers['cookie'] = @cookie
+
+    story(&block) if block_given?
+  end
+
+  def story(&block)
+    instance_eval(&block) if block_given?
   end
 
   def get_cookie
