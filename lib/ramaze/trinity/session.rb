@@ -51,10 +51,6 @@ class Ramaze::Session
     Thread.main[:session_cache] ||= constant(Global.cache.to_s).new
   end
 
-  def export
-    "#{SESSION_KEY}=#{session_id}"
-  end
-
   def random_key
     h = [
       Time.now.to_f.to_s.reverse, rand,
