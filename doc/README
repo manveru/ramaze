@@ -1,7 +1,7 @@
-           Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
-  All files in this distribution are subject to the terms of the Ruby license.
+          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+ All files in this distribution are subject to the terms of the Ruby license.
 
-= Readme for Ramaze
+= About Ramaze
 
 Ramaze is a very simple and straight-forward web-framework.
 The philosophy of it could be expressed in a mix of KISS and POLS, trying to
@@ -32,56 +32,9 @@ Of course most other frameworks will introduce their own paradigms and special
 implementations, and this is the reason why it is not encouraged to directly
 require files from Ramaze, they are one working entity together, but with a few
 modifications it's your very own implementation and fits into your own project.
-Not to mention that introducing another web framework for your own would be
-quite odd ;)
 
 
-== Basic Principles of Ramaze
-
-There are some basic principles that Ramaze tries to follow:
-
-* Test everything
-
-  What use is a wonderful application if it doesn't work?
-
-
-* Document everything
-
-  Documentation is the glue between the code and the programmers brain
-
-
-* Keep It Super Simple (KISS)
-
-  Most things should be understandable after reading them once
-
-
-* Principle Of Least Surprise (POLS)
-
-  Going the way of ruby
-
-
-* Modular design
-
-  Making it as simple as possible to extract parts
-
-
-* Minimal dependencies
-
-  In case a dependency is not met use a simple fall-back instead
-
-
-* Provide as many examples as possible
-
-  Examples are a superior way of getting a quick start into everything
-
-
-* Open development
-
-  I happily accept all patches or feature-requests that you may have,
-  as long as they comply with these principles
-
-
-== Quick features overview
+= Features Overview
 
 Ramaze offers following features at the moment:
 
@@ -152,28 +105,52 @@ Ramaze offers following features at the moment:
   * Custom Error-handling
 
 
-== Getting started
+= Basic Principles
 
-Now that you have a vague idea of what you're about to get into you might just
-want to get a way to get up and running ASAP.
-Please read below for more information about installation.
+There are some basic principles that Ramaze tries to follow:
 
-Depending on what you are planning to do you can either just go and start
-reading the source or directly get some hands-on experience by trying some of
-the examples.
-Most things will require dependencies though. The basic functionality is
-provided by the WEBrick adapter and the Template::Ramaze, which just run out
-of the box. For more features you will have to install some templating-engines
-and mongrel (_very_ recommended). Ramaze will inform you when it needs further
-dependencies, so just go and try some things.
+* Test everything
 
-Some places to get started are:
-- Read the documentation.
-- Run and read the test cases.
-- Look at the examples and run/modify them.
+  What use is a wonderful application if it doesn't work?
 
 
-== Installing Ramaze
+* Document everything
+
+  Documentation is the glue between the code and the programmers brain
+
+
+* Keep It Super Simple (KISS)
+
+  Most things should be understandable after reading them once
+
+
+* Principle Of Least Surprise (POLS)
+
+  Going the way of ruby
+
+
+* Modular design
+
+  Making it as simple as possible to extract parts
+
+
+* Minimal dependencies
+
+  In case a dependency is not met use a simple fall-back instead
+
+
+* Provide as many examples as possible
+
+  Examples are a superior way of getting a quick start into everything
+
+
+* Open development
+
+  I happily accept all patches or feature-requests that you may have,
+  as long as they comply with these principles
+
+
+= Installation
 
 * via RubyGems
 
@@ -209,7 +186,29 @@ Some places to get started are:
   it.
 
 
-== Ramaze Examples
+= Getting Started
+
+Now that you have a vague idea of what you're about to get into you might just
+want to get a way to get up and running ASAP.
+Please read below for more information about installation.
+
+Depending on what you are planning to do you can either just go and start
+reading the source or directly get some hands-on experience by trying some of
+the examples.
+Most things will require dependencies though. The basic functionality is
+provided by the WEBrick adapter and the Template::Ramaze, which just run out
+of the box. For more features you will have to install some templating-engines
+and mongrel (_very_ recommended). Ramaze will inform you when it needs further
+dependencies, so just go and try some things.
+
+Some places to get started are:
+- Read the documentation.
+- Run and read the test cases.
+- Look at the examples and run/modify them.
+
+
+
+= A couple of Examples
 
 There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
@@ -250,7 +249,17 @@ Examples include:
   functionality in each template_*.rb file using a different engine.
 
 
-== good to know
+
+= How to find Help
+
+For help you can:
+
+- Visit us in the channel #ramaze on irc.freenode.net
+
+- Join the Mailinglist at http://ramaze.rubyforge.org
+
+
+= Appendix
 
 * Nicer Error-pages
   * Install coderay (it's a gem)
@@ -265,11 +274,3 @@ Examples include:
   
     You can easily cache your pages using the CacheHelper.
     Also, using MemCache gives you high-end performance and security.
-
-
-== Getting Help
-
-For help you can just join #ramaze on irc.freenode.net.
-
-Or mail me, at m [dot] fellinger [at] gmail [dot] com - I'm happy to provide
-help on anything related to web-development.
