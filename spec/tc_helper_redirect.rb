@@ -39,13 +39,17 @@ context "RedirectHelper" do
   end
 
   specify "calls" do
-    ctx.get('/redirection').should        == "TCRedirectHelperController"
-    ctx.get('/double_redirection').should == "TCRedirectHelperController"
+    ctx.story do
+      get('/redirection').should        == "TCRedirectHelperController"
+      get('/double_redirection').should == "TCRedirectHelperController"
+    end
   end
 
   specify "redirect to referer" do
-    ctx.get('/redirect_referer_action').should == 'TCRedirectHelperController'
-    ctx.get('/noop').should                    == 'noop'
-    ctx.get('/redirect_referer_action').should == 'noop'
+    ctx.story do
+      get('/redirect_referer_action').should == 'TCRedirectHelperController'
+      get('/noop').should                    == 'noop'
+      get('/redirect_referer_action').should == 'noop'
+    end
   end
 end

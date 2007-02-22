@@ -52,11 +52,13 @@ context "StackHelper" do
     ctx = Context.new('/', Global.mapping.invert[controller])
 
     specify "checking security" do
-      ctx.get('/secured').should == ''
-      ctx.post('/login', 'username' => 'manveru', 'password' => 'password')
-      ctx.get('/secured').should == 'Secret content'
-      ctx.get('/logout')
-      ctx.get('/secured').should == ''
+      Context.new('/', Global.mapping.invert[controller]) do
+        get('/secured').should == ''
+        post('/login', 'username' => 'manveru', 'password' => 'password')
+        get('/secured').should == 'Secret content'
+        get('/logout')
+        get('/secured').should == ''
+      end
     end
   end
 end

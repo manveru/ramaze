@@ -45,22 +45,26 @@ end
 context "StackHelper" do
   ramaze(:mapping => {'/' => TCStackHelperController})
 
-  ctx = Context.new
-
   specify "conventional login" do
-    ctx.get('/secure').should == 'please login'
-    ctx.get('/login')
-    ctx.get('/secure').should == 'secret content'
-    ctx.get('/logout')
+    Context.new do
+      get('/secure').should == 'please login'
+      get('/login')
+      get('/secure').should == 'secret content'
+      get('/logout')
+    end
   end
 
   specify "indirect login" do
-    ctx.get('/foo').should == 'logged in'
-    ctx.eget('/').should == {:logged_in => true, :STACK => []}
+    Context.new do
+      get('/foo').should == 'logged in'
+      eget('/').should == {:logged_in => true, :STACK => []}
+    end
   end
 
   specify "indirect login with params" do
-    ctx.eget('/bar', 'x' => 'y').should == {'x' => 'y'}
-    ctx.eget('/').should == {:logged_in => true, :STACK => []}
+    Context.new do
+      eget('/bar', 'x' => 'y').should == {'x' => 'y'}
+      eget('/').should == {:logged_in => true, :STACK => []}
+    end
   end
 end
