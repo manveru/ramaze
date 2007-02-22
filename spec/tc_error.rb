@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/spec_helper'
+require 'open-uri'
 
 include Ramaze
 
@@ -17,7 +18,7 @@ context "Error" do
 
     specify "wrong parameter" do
       get('/').should == 'TCErrorController'
-      get('/1').should =~ /NoAction/
+      lambda{ get('/1') }.should_raise RuntimeError, /Net::HTTPNotFound/
     end
   end
 end
