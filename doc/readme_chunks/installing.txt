@@ -1,0 +1,32 @@
+* via RubyGems
+
+  The simplest way of installing Ramaze is via 
+
+    $ gem install ramaze
+
+  in case you have RubyGems installed.
+  (this will work as soon as I have registered on RubyForge ;)
+
+* via install.rb
+
+  Ramaze provides a basic install.rb that should take care of the installation
+  you can use it like 
+
+    $ ruby install.rb
+
+  you may need root-privileges to do
+  that, depending on what options you provide.
+  (please note that I haven't tested the install.rb extensively yet, so if you
+  find some quirks, please send me patches or a simple note)
+
+* via darcs
+
+  To get the latest and sweetest, you can just pull from the repository and run
+  Ramaze that way.
+
+    $ darcs get http://manveru.mine.nu/ramaze
+
+  Please read the man page or `darcs help` for more information about updating
+  and creating your own patches.
+  This is at the moment the premier way to use Ramaze, since it is the way I use
+  it.

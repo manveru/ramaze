@@ -1,0 +1,67 @@
+Ramaze offers following features at the moment:
+
+* Adapters
+  * Mongrel
+    http://mongrel.rubyforge.org/
+    Mongrel is a fast HTTP library and server for Ruby that is intended for
+    hosting Ruby web applications of any kind using plain HTTP rather than
+    FastCGI or SCGI.
+
+  * WEBrick
+    http://www.webrick.org/
+    WEBrick is a Ruby library program to build HTTP servers.
+
+
+* Templates
+  * Amrita2
+
+    http://amrita2.rubyforge.org/
+    Amrita2 is a xml/xhtml template library for Ruby. It makes html documents
+    from a template and a model data.
+
+  * Erubis
+
+    http://rubyforge.org/projects/erubis
+    Erubis is a fast, secure, and very extensible implementation of eRuby.
+
+  * Haml
+
+    http://haml.hamptoncatlin.com/
+    Haml takes your gross, ugly templates and replaces them with veritable Haiku.
+
+  * Liquid
+
+    http://home.leetsoft.com/liquid
+    Liquid's syntax and parse model are inspired by Django templates, as well
+    as PHP's smarty.
+
+  * Markaby
+
+    http://code.whytheluckystiff.net/markaby/
+    Markaby means Markup as Ruby.
+
+  * Ezamar
+
+    A simple homage to Nitros templating. Please check out http://nitroproject.org
+    for more information.
+
+* Cache
+  * Hash
+  * YAML::Store
+  * MemCache
+
+* Helper
+  * Aspect
+  * Auth
+  * Cache
+  * Feed
+  * Form
+  * Link
+  * Redirect
+  * Stack
+
+* Various
+  * Sessions
+  * Global configuration system
+  * Simple request/response handling
+  * Custom Error-handling

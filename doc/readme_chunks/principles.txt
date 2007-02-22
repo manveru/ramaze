@@ -1,0 +1,41 @@
+There are some basic principles that Ramaze tries to follow:
+
+* Test everything
+
+  What use is a wonderful application if it doesn't work?
+
+
+* Document everything
+
+  Documentation is the glue between the code and the programmers brain
+
+
+* Keep It Super Simple (KISS)
+
+  Most things should be understandable after reading them once
+
+
+* Principle Of Least Surprise (POLS)
+
+  Going the way of ruby
+
+
+* Modular design
+
+  Making it as simple as possible to extract parts
+
+
+* Minimal dependencies
+
+  In case a dependency is not met use a simple fall-back instead
+
+
+* Provide as many examples as possible
+
+  Examples are a superior way of getting a quick start into everything
+
+
+* Open development
+
+  I happily accept all patches or feature-requests that you may have,
+  as long as they comply with these principles
