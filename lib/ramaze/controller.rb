@@ -280,6 +280,8 @@ module Ramaze
         [ lines, lines.object_id.abs, file, lineno, meth ]
       end
 
+      response.status = 404
+
       @backtrace = backtrace
       @colors = colors
       @title = title
