@@ -1,0 +1,33 @@
+There is a large number of people who made Ramaze possibe by their ongoing
+efforts in the world of open source and by encouraging and helping me.
+
+This list is by no means a full coverage of all these people, but I try to
+get a good coverage despite that.
+
+I would like to thank:
+
+* Yukihiro Matsumoto a.k.a matz
+
+    For giving the world Ruby and bringing fun back into programming.
+
+* Zed Shawn a.k.a. zedas
+
+    For developing Mongrel, Ramaze started out as a simple Hello World based
+    on that awesome server.
+
+* Christian Neukirchen a.k.a chris2
+
+    For building rack, which is just what the numerous web-developers had
+    anticipated and which will, with no doubt, change the world.
+
+* Pistos
+
+    For continious encouragment and building the first real webpage on Ramaze.
+    His bugreports were invaluable.
+
+* Thomas Sawyer a.k.a Trans
+
+    Dragging me deep into the rabbit-hole and showing me how awesome Ruby
+    truely is.
+
+    Also for working on facets and ratchets.

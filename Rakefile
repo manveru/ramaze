@@ -375,6 +375,7 @@ task 'build-readme' do
     'A couple of Examples', 'examples',
     'How to find Help',     'getting_help',
     'Appendix',             'appendix',
+    'And thanks to...',     'thanks',
   ]
 
   File.open('doc/README', 'w+') do |readme|

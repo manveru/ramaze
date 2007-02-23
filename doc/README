@@ -39,15 +39,28 @@ modifications it's your very own implementation and fits into your own project.
 Ramaze offers following features at the moment:
 
 * Adapters
-  * Mongrel
-    http://mongrel.rubyforge.org/
-    Mongrel is a fast HTTP library and server for Ruby that is intended for
-    hosting Ruby web applications of any kind using plain HTTP rather than
-    FastCGI or SCGI.
 
-  * WEBrick
-    http://www.webrick.org/
-    WEBrick is a Ruby library program to build HTTP servers.
+   Ramaze takes advantage of the rack library to provide a common way of
+   handling different ways to serve its content.
+
+   Rack supports at the moment:
+
+    * Mongrel
+
+      http://mongrel.rubyforge.org/
+      Mongrel is a fast HTTP library and server for Ruby that is intended for
+      hosting Ruby web applications of any kind using plain HTTP rather than
+      FastCGI or SCGI.
+
+    * WEBrick
+
+      http://www.webrick.org/
+      WEBrick is a Ruby library program to build HTTP servers.
+
+    * CGI
+
+      CGI is the Common Gateway Interface and is one of the most basic ways
+      to integrate into Webservers like Apache, Lighttpd or Nginx.
 
 
 * Templates
@@ -274,3 +287,40 @@ For help you can:
   
     You can easily cache your pages using the CacheHelper.
     Also, using MemCache gives you high-end performance and security.
+
+
+= And thanks to...
+
+There is a large number of people who made Ramaze possibe by their ongoing
+efforts in the world of open source and by encouraging and helping me.
+
+This list is by no means a full coverage of all these people, but I try to
+get a good coverage despite that.
+
+I would like to thank:
+
+* Yukihiro Matsumoto a.k.a matz
+
+    For giving the world Ruby and bringing fun back into programming.
+
+* Zed Shawn a.k.a. zedas
+
+    For developing Mongrel, Ramaze started out as a simple Hello World based
+    on that awesome server.
+
+* Christian Neukirchen a.k.a chris2
+
+    For building rack, which is just what the numerous web-developers had
+    anticipated and which will, with no doubt, change the world.
+
+* Pistos
+
+    For continious encouragment and building the first real webpage on Ramaze.
+    His bugreports were invaluable.
+
+* Thomas Sawyer a.k.a Trans
+
+    Dragging me deep into the rabbit-hole and showing me how awesome Ruby
+    truely is.
+
+    Also for working on facets and ratchets.
