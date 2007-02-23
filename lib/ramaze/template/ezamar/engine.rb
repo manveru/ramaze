@@ -2,8 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'digest/sha1'
-require 'ramaze/template/ezamar/element'
-require 'ramaze/template/ezamar/morpher'
 
 # Ezamar is a very simple (and at no means complete) reimplementation of the
 # Templating-engine found in Nitro.
@@ -12,6 +10,9 @@ require 'ramaze/template/ezamar/morpher'
 # differences, but it tries to keep the look and feel as close as possible.
 
 module Ezamar
+
+  require 'ramaze/template/ezamar/element'
+  require 'ramaze/template/ezamar/morpher'
 
   # This class is responsible for initializing and compiling the template.
 

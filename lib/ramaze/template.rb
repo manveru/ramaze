@@ -7,9 +7,6 @@
 module Ramaze
 
   module Template
-    autoload('Element', 'ramaze/template/ezamar/element')
-    autoload('Morpher', 'ramaze/template/ezamar/morpher')
-
     %w[ Amrita2 Erubis Ezamar Haml Liquid Markaby ].each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
     end

@@ -11,7 +11,7 @@ module Ramaze::Template
 
     Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
 
-    trait :transform_pipeline => [ Element, Morpher, self ]
+    trait :transform_pipeline => [ ::Ezamar::Element, ::Ezamar::Morpher, self ]
 
     class << self
 
@@ -68,15 +68,6 @@ module Ramaze::Template
 
       def render_action(controller, action, *params)
         ctrl_template = controller.send(action, *params).to_s
-=begin
-      rescue => e
-        Informer.error e unless e.message =~ /undefined method `#{Regexp.escape(action.to_s)}'/
-
-        unless caller.select{|bt| bt[/`render_action'/]}.size > 3
-          handle([action, *params].join('/'))
-          ctrl_template = Response.current.out
-        end
-=end
       end
 
       # go through the pipeline and call #transform on every object found there,
