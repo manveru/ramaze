@@ -26,6 +26,7 @@ require 'ramaze/inform'
 require 'ramaze/http_status'
 require 'ramaze/helper'
 require 'ramaze/controller'
+require 'ramaze/template/ezamar'
 require 'ramaze/adapter'
 require 'ramaze/version'
 

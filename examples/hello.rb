@@ -19,5 +19,4 @@ class MainController < Controller
   end
 end
 
-# use this to start your app if you don't want to use the `ramaze` bin
-# start
+start

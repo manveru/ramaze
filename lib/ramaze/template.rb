@@ -5,9 +5,9 @@
 # Amrita2, Erubis, Ezamar, Haml, Liquid and Markaby if you refer to them.
 
 module Ramaze
-
   module Template
-    %w[ Amrita2 Erubis Ezamar Haml Liquid Markaby ].each do |const|
+
+    %w[ Amrita2 Erubis Haml Liquid Markaby ].each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
     end
 

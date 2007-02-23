@@ -161,8 +161,6 @@ module Ramaze
         controller = self.new
         controller.instance_variable_set('@action', action)
 
-        Template::Ezamar
-
         file   = find_template(action)
         engine = ancestral_trait[:engine] || engine_for(file)
 
