@@ -39,31 +39,32 @@ class TCElementController < Controller
   end
 end
 
-class Page < Element
+class Page < Ezamar::Element
   def render
     %{ <wrap> #{content} </wrap> }
   end
 end
 
-class PageWithParams < Element
+
+class PageWithParams < Ezamar::Element
   def render
     @hash.inspect
   end
 end
 
-class PageLittle < Element
+class PageLittle < Ezamar::Element
   def render
     "little"
   end
 end
 
-class PageLittleWithParams < Element
+class PageLittleWithParams < Ezamar::Element
   def render
     @hash.inspect
   end
 end
 
-class PageWithTemplating < Element
+class PageWithTemplating < Ezamar::Element
   def render
     (1..@hash['times']).to_a.join(', ')
   end
