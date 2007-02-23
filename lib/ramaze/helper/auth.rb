@@ -34,8 +34,12 @@ module Ramaze
         session[:logged_in] = true
         inside_stack? ? answer : redirect( R(self) )
       else
+        if AUTH_ELEMENT and AUTH_ELEMENT.to_s.split.any?
+          open_element = "<#{AUTH_ELEMENT}>"
+          close_element = "</#{AUTH_ELEMENT}>"
+        end
         %{
-          <#{AUTH_ELEMENT}>
+          #{open_element}
             <form method="POST" action="#{R(self, :login)}"
               <ul style="list-style:none;">
                 <li>Username: <input type="text" name="username" /></li>
@@ -43,7 +47,7 @@ module Ramaze
                 <li><input type="submit" /></li>
               </ul>
             </form>
-          </#{AUTH_ELEMENT}>
+          #{close_element}
         }
       end
     end
