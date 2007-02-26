@@ -44,7 +44,7 @@ $stdout.sync = true
 total_specs = 0
 total_fails = 0
 failed      = {}
-specs       = Dir['spec/tc_*.rb'].sort
+specs       = Dir[File.join('spec', 'tc_*.rb')].sort
 width       = specs.sort_by{|s| s.size }.last.size
 
 result_format = lambda do |str|
