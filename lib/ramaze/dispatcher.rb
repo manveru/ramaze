@@ -20,6 +20,7 @@ module Ramaze
             lambda{|path| handle_file   path },
             lambda{|path| handle_action path },
           ]
+
     class << self
       include Trinity
 
@@ -35,7 +36,6 @@ module Ramaze
         respond
         response
       rescue Object => exception
-        error exception
         handle_error(exception)
       end
 
@@ -59,6 +59,7 @@ module Ramaze
       # anyway, the solution might be simple?
 
       def handle_error exception
+        error exception
         meth_debug :handle_error, exception
         Thread.current[:exception] = exception
 
@@ -89,31 +90,26 @@ module Ramaze
 
         catch(:respond) do
           filtered = filter(path)
-
-          if filtered.is_a?(Exception)
-            error filtered
-            return(handle_error(filtered))
-          else
-            return(build_response filtered, response.status)
-          end
+          return(build_response filtered, response.status)
         end
       end
 
       def filter path
-        gotchas = ancestral_trait[:filters].map do |f|
-          begin
-            f[path]
-          rescue Object => ex
-            ex
-          end
+        ancestral_trait[:filters].each do |filter|
+          filtered = run_filter(filter, path)
+
+          next unless filtered
+          return filtered unless filtered.is_a?(Exception)
+          last_error = filtered
         end
 
-        gotchas = gotchas.flatten.compact
+        handle_error last_error
+      end
 
-        exceptions, non_exceptions = gotchas.partition{|g| g.is_a?(Exception)}
-
-        possible = [non_exceptions, exceptions].compact.flatten
-        possible.first
+      def run_filter filter, path
+        filter[path]
+      rescue Object => ex
+        ex
       end
 
       def handle_action path
