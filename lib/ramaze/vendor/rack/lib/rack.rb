@@ -12,11 +12,13 @@ module Rack
     VERSION.join(".")
   end
 
+  autoload :Builder, "rack/builder"
   autoload :CommonLogger, "rack/commonlogger"
   autoload :File, "rack/file"
   autoload :ForwardRequest, "rack/recursive"
   autoload :Lint, "rack/lint"
   autoload :Recursive, "rack/recursive"
+  autoload :Reloader, "rack/reloader"
   autoload :ShowExceptions, "rack/showexceptions"
   autoload :URLMap, "rack/urlmap"
   autoload :Utils, "rack/utils"
@@ -31,6 +33,7 @@ module Rack
 
   module Handler
     autoload :CGI, "rack/handler/cgi"
+    autoload :FastCGI, "rack/handler/fastcgi"
     autoload :Mongrel, "rack/handler/mongrel"
     autoload :WEBrick, "rack/handler/webrick"
   end
