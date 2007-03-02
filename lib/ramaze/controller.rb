@@ -69,8 +69,8 @@ module Ramaze
           current = Regexp.escape(tracks.pop.to_s)
           paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
           paraction.delete('')
-          if controller = Ramaze::Global.mapping[current]
-            if controller.ancestral_trait[:actionless] or paraction == ['error']
+          if controller = Ramaze::Global.mapping[current] and controller.respond_to?(:render)
+            if paraction == ['error']
 
               action = paraction.shift
               params = paraction
