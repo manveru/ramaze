@@ -48,7 +48,7 @@ class Ramaze::Session
   # well.
 
   def sessions
-    Thread.main[:session_cache] ||= constant(Ramaze::Global.cache.to_s).new
+    Thread.main[:session_cache] ||= constant("::Ramaze::#{Ramaze::Global.cache}").new
   end
 
   def random_key
