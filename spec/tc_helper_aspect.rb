@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCAspectController < Controller
+class TCAspectController < Ramaze::Controller
   helper :aspect
 
   def pre_aspect() '<aspect>' end
@@ -26,7 +24,7 @@ class TCAspectController < Controller
   wrap :test_wrap, :wrap_aspect
 end
 
-class TCAspectAllController < Controller
+class TCAspectAllController < Ramaze::Controller
   helper :aspect
 
   def pre_aspect() '<pre>' end

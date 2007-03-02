@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCLinkHelperController < Controller
+class TCLinkHelperController < Ramaze::Controller
   helper :link
 
   def index

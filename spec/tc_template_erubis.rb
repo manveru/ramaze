@@ -5,11 +5,9 @@ require 'spec/spec_helper'
 
 testcase_requires 'erubis'
 
-include Ramaze
-
-class TCTemplateErubisController < Controller
+class TCTemplateErubisController < Ramaze::Controller
   trait :template_root => 'spec/template/erubis/'
-  trait :engine => Template::Erubis
+  trait :engine => Ramaze::Template::Erubis
 
   def index
     'Erubis Index'

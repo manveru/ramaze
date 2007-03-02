@@ -3,44 +3,42 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-context "Global" do
+context "Ramaze::Global" do
   specify "just simple assignment and retrive" do
-    Global.some = :xxx
-    Global.some.should == :xxx
+    Ramaze::Global.some = :xxx
+    Ramaze::Global.some.should == :xxx
   end
 
   specify "setup" do
-    Global.setup :a => :b
-    Global.a.should == :b
-    Global.some.should == :xxx
-    Global.setup :a => :c
-    Global.a.should == :c
+    Ramaze::Global.setup :a => :b
+    Ramaze::Global.a.should == :b
+    Ramaze::Global.some.should == :xxx
+    Ramaze::Global.setup :a => :c
+    Ramaze::Global.a.should == :c
   end
 
   specify "more neat stuff" do
-    Global.update :a => :d, :foo => :bar
-    Global.a.should == :c
-    Global.foo.should == :bar
+    Ramaze::Global.update :a => :d, :foo => :bar
+    Ramaze::Global.a.should == :c
+    Ramaze::Global.foo.should == :bar
   end
 
   specify "values_at" do
-    Global.values_at(:a, :foo).should == [:c, :bar]
+    Ramaze::Global.values_at(:a, :foo).should == [:c, :bar]
   end
 
   specify "getting thready" do
-    Global[:i] = 0
+    Ramaze::Global[:i] = 0
     Thread.main[:i] = 0
 
     (1..10).each do |i|
       Thread.new do
-        Global[:i] += i
+        Ramaze::Global[:i] += i
         Thread.main[:i] += i
       end
     end
 
-    Global[:i].should == Thread.main[:i]
-    Global[:i].should == 55
+    Ramaze::Global[:i].should == Thread.main[:i]
+    Ramaze::Global[:i].should == 55
   end
 end

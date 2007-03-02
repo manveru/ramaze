@@ -52,7 +52,7 @@ module Ramaze
       # Parameters are CGI.unescaped
 
       def resolve_controller path
-        meth_debug :resolve_controller, path
+        Informer.meth_debug :resolve_controller, path
         track = path.split('/')
         controller = false
         action = false
@@ -96,7 +96,7 @@ module Ramaze
       #   identical to def x(*a) for some odd reason
 
       def resolve_action controller, paraction
-        meth_debug :resolve_action, controller, paraction
+        Informer.meth_debug :resolve_action, controller, paraction
 
         meths =
           (controller.ancestors - [Kernel, Object]).inject([]) do |sum, klass|
@@ -179,11 +179,11 @@ module Ramaze
         trait[:action_cache] ||= Global.cache.new
 
         if out = ancestral_trait[:action_cache][key]
-          debug "Using Cached version for #{key}"
+          Informer.debug "Using Cached version for #{key}"
           return out
         end
 
-        debug "Compiling Action: #{action} #{parameter.join(', ')}"
+        Informer.debug "Compiling Action: #{action} #{parameter.join(', ')}"
         ancestral_trait[:action_cache][key] = uncached_render(action, *parameter)
       end
 

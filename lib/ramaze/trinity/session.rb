@@ -44,11 +44,11 @@ class Ramaze::Session
 
   # all the sessions currently stored, in case there are none yet it will
   # set the constant Ramaze::SessionCache and from then on start populating
-  # it with the sessions. SessionCache is an instance of Global.cache as
+  # it with the sessions. SessionCache is an instance of Ramaze::Global.cache as
   # well.
 
   def sessions
-    Thread.main[:session_cache] ||= constant(Global.cache.to_s).new
+    Thread.main[:session_cache] ||= constant(Ramaze::Global.cache.to_s).new
   end
 
   def random_key

@@ -3,10 +3,8 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCElementController < Controller
-  trait :engine => Template::Ezamar
+class TCElementController < Ramaze::Controller
+  trait :engine => Ramaze::Template::Ezamar
 
   def index
     "The index"

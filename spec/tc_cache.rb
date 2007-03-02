@@ -3,10 +3,8 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
 context "MemoryCache" do
-  cache = MemoryCache.new
+  cache = Ramaze::MemoryCache.new
 
   specify "delete" do
     cache.delete(:one)
@@ -29,7 +27,7 @@ context "MemoryCache" do
 end
 
 context "YAMLStoreCache" do
-  cache = YAMLStoreCache.new
+  cache = Ramaze::YAMLStoreCache.new
 
   specify "delete" do
     cache.delete(:one)
@@ -53,7 +51,7 @@ end
 
 begin
   context "MemcachedCache" do
-    cache = MemcachedCache.new
+    cache = Ramaze::MemcachedCache.new
 
     specify "delete" do
       cache.delete(:one)

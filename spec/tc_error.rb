@@ -4,9 +4,7 @@
 require 'spec/spec_helper'
 require 'open-uri'
 
-include Ramaze
-
-class TCErrorController < Controller
+class TCErrorController < Ramaze::Controller
   def index
     self.class.name
   end

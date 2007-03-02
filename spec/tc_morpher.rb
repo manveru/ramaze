@@ -3,12 +3,10 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
 begin
   require 'hpricot'
 
-class TCMorpherController < Controller
+class TCMorpherController < Ramaze::Controller
   def index
     self.class.name
   end

@@ -6,7 +6,7 @@ require 'liquid'
 module Ramaze::Template
   class Liquid < Template
 
-    Controller.register_engine self, %w[ liquid ]
+    Ramaze::Controller.register_engine self, %w[ liquid ]
 
     class << self
 

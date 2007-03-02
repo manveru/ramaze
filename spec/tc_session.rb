@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCSessionController < Controller
+class TCSessionController < Ramaze::Controller
   def index
     session.inspect
   end

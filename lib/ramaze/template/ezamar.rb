@@ -3,7 +3,8 @@
 
 require 'ramaze/template/ezamar/engine'
 
-module Ramaze::Template
+module Ramaze
+  module Template
 
   # Is responsible for compiling a template using the Ezamar templating engine.
 
@@ -88,4 +89,5 @@ module Ramaze::Template
       end
     end
   end
+end
 end

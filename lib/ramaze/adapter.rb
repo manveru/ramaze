@@ -20,7 +20,7 @@ module Ramaze::Adapter
     end
 
     def call(env)
-      if Global.inform_tags.include?(:benchmark)
+      if Ramaze::Global.inform_tags.include?(:benchmark)
         time = Benchmark.measure{ respond env }
         info "request took #{time.real}s"
       else
@@ -33,7 +33,7 @@ module Ramaze::Adapter
     end
 
     def respond env
-      Dispatcher.handle(::Rack::Request.new(env), ::Rack::Response.new)
+      Ramaze::Dispatcher.handle(::Rack::Request.new(env), ::Rack::Response.new)
     end
 
     def each

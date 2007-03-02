@@ -9,7 +9,7 @@ module Ramaze::Template
 
   class Erubis < Template
 
-    Controller.register_engine self, %w[ rhtml ]
+    Ramaze::Controller.register_engine self, %w[ rhtml ]
 
     class << self
 

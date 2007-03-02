@@ -5,11 +5,9 @@ require 'spec/spec_helper'
 
 testcase_requires 'markaby'
 
-include Ramaze
-
-class TCTemplateMarkabyController < Controller
+class TCTemplateMarkabyController < Ramaze::Controller
   trait :template_root => 'spec/template/markaby/'
-  trait :engine => Template::Markaby
+  trait :engine => Ramaze::Template::Markaby
 
   def index
     mab { h1 "Markaby Index" }
@@ -25,7 +23,7 @@ end
 
 context "Markaby" do
   ramaze(:mapping => {'/' => TCTemplateMarkabyController})
-  trait :engine => Template::Markaby
+  trait :engine => Ramaze::Template::Markaby
 
   def mab(&block)
     TCTemplateMarkabyController.new.send(:mab, &block)

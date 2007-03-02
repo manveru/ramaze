@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCAdapterController < Controller
+class TCAdapterController < Ramaze::Controller
   def index
     "The index"
   end

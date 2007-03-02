@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCParamsController < Controller
+class TCParamsController < Ramaze::Controller
   def index
     "index"
   end

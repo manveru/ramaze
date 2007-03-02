@@ -9,7 +9,7 @@ module Ramaze::Template
 
   class Amrita2 < Template
 
-    Controller.register_engine self, %w[ amrita ]
+    Ramaze::Controller.register_engine self, %w[ amrita ]
 
     class << self
 

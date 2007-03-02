@@ -59,8 +59,8 @@ module Ramaze
       # anyway, the solution might be simple?
 
       def handle_error exception
-        error exception
-        meth_debug :handle_error, exception
+        Informer.error exception
+        Informer.meth_debug :handle_error, exception
         Thread.current[:exception] = exception
 
         case exception
@@ -75,7 +75,7 @@ module Ramaze
           end
         end
       rescue Object => ex
-        error ex
+        Informer.error ex
         build_response(ex.message, STATUS_CODE[:internal_server_error])
       end
 
@@ -86,7 +86,7 @@ module Ramaze
 
       def respond
         path = request.path_info.squeeze('/')
-        info "Request from #{request.remote_addr}: #{path}"
+        Informer.info "Request from #{request.remote_addr}: #{path}"
 
         catch(:respond) do
           filtered = filter(path)
@@ -95,6 +95,7 @@ module Ramaze
       end
 
       def filter path
+        last_error = $!
         ancestral_trait[:filters].each do |filter|
           filtered = run_filter(filter, path)
 

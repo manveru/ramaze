@@ -3,11 +3,9 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCTemplateController < Controller
+class TCTemplateController < Ramaze::Controller
   trait :template_root => 'spec/template/ezamar'
-  trait :engine => Template::Ezamar
+  trait :engine => Ramaze::Template::Ezamar
 
   def index text
     @text = text

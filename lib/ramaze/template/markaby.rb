@@ -6,7 +6,7 @@ require 'markaby'
 module Ramaze::Template
   class Markaby < Template
 
-    Controller.register_engine self, %w[ mab ]
+    Ramaze::Controller.register_engine self, %w[ mab ]
 
     class << self
       # initializes the handling of a request on the controller.

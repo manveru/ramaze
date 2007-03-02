@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCControllerEzamarController < Controller
+class TCControllerEzamarController < Ramaze::Controller
   trait :template_root => 'spec/template/ezamar'
   def index
     @text = "World"

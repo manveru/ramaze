@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCCacheHelperController < Controller
+class TCCacheHelperController < Ramaze::Controller
   helper :cache
 
   trait :actions_cached => [:cached_action]

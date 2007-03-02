@@ -26,9 +26,7 @@ Logger.send(:class_variable_set, "@@global_logger", gulp_class.new)
 
 Og.start :destroy => true
 
-include Ramaze
-
-class TCFormHelperEntryController < Controller
+class TCFormHelperEntryController < Ramaze::Controller
   helper :form
 
   def index
@@ -56,7 +54,7 @@ class TCFormHelperEntryController < Controller
   end
 end
 
-class TCFormHelperEntryTimestampedController < Controller
+class TCFormHelperEntryTimestampedController < Ramaze::Controller
   helper :form
 
   def index
@@ -68,7 +66,7 @@ class TCFormHelperEntryTimestampedController < Controller
   end
 end
 
-class TCFormHelperEntryDatedController < Controller
+class TCFormHelperEntryDatedController < Ramaze::Controller
   helper :form
 
   def index

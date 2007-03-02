@@ -26,8 +26,6 @@ class With
   end
 end
 
-include Ramaze
-
 class Book < With
   include ReFeed
 

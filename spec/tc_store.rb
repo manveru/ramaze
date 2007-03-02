@@ -4,8 +4,6 @@
 require 'spec/spec_helper'
 require 'ramaze/store/default'
 
-include Ramaze
-
 context "initialize an Store" do
   db = 'db.yaml'
 
@@ -14,7 +12,7 @@ context "initialize an Store" do
   end
 
   specify "Store::Default.new" do
-    Books = Store::Default.new(db)
+    Books = Ramaze::Store::Default.new(db)
     Books.db.should.is_a?(YAML::Store)
   end
 

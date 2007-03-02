@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCStackHelperController < Controller
+class TCStackHelperController < Ramaze::Controller
   helper :stack
 
   def index

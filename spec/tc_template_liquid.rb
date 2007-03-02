@@ -5,8 +5,6 @@ require 'spec/spec_helper'
 
 testcase_requires 'liquid'
 
-include Ramaze
-
 module ProductsFilter
   def price(integer)
     sprintf("$%.2d USD", integer / 100.0)
@@ -26,9 +24,9 @@ module ProductsFilter
 end
 
 
-class TCTemplateLiquidController < Controller
+class TCTemplateLiquidController < Ramaze::Controller
   trait :template_root  => 'spec/template/liquid/'
-  trait :engine         => Template::Liquid
+  trait :engine         => Ramaze::Template::Liquid
   trait :liquid_options => { :filters => ProductsFilter }
 
   def index

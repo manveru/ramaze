@@ -5,11 +5,9 @@ require 'spec/spec_helper'
 
 testcase_requires 'ramaze/template/haml'
 
-include Ramaze
-
-class TCTemplateHamlController < Controller
+class TCTemplateHamlController < Ramaze::Controller
   trait :template_root => 'spec/template/haml/'
-  trait :engine => Template::Haml
+  trait :engine => Ramaze::Template::Haml
 
   helper :link
 

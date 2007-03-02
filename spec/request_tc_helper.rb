@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCRequestController < Controller
+class TCRequestController < Ramaze::Controller
   trait :public => 'spec/public'
 
   def is_post()   request.post?.to_s end

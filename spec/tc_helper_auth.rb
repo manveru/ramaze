@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCAuthHelperController < Controller
+class TCAuthHelperController < Ramaze::Controller
   helper :auth
 
   def index
@@ -49,10 +47,10 @@ context "StackHelper" do
     TCAuthMethodHelperController,
     TCAuthLambdaHelperController
   ].each do |controller|
-    ctx = Context.new('/', Global.mapping.invert[controller])
+    ctx = Context.new('/', Ramaze::Global.mapping.invert[controller])
 
     specify "checking security" do
-      Context.new('/', Global.mapping.invert[controller]) do
+      Context.new('/', Ramaze::Global.mapping.invert[controller]) do
         get('/secured').should == ''
         post('/login', 'username' => 'manveru', 'password' => 'password')
         get('/secured').should == 'Secret content'

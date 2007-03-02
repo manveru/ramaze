@@ -3,9 +3,7 @@
 
 require 'spec/spec_helper'
 
-include Ramaze
-
-class TCRedirectHelperController < Controller
+class TCRedirectHelperController < Ramaze::Controller
   helper :redirect
 
   def index
