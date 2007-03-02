@@ -25,9 +25,7 @@ context "Markaby" do
   ramaze(:mapping => {'/' => TCTemplateMarkabyController})
   trait :engine => Ramaze::Template::Markaby
 
-  def mab(&block)
-    TCTemplateMarkabyController.new.send(:mab, &block)
-  end
+  include Ramaze::Template::MarkabyMixin
 
   specify "index" do
     get('/').should == '<h1>Markaby Index</h1>'

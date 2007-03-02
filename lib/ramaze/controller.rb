@@ -25,6 +25,7 @@ module Ramaze
 
       def handle path
         controller, action, params = *resolve_controller(path)
+        action, params = path.gsub(/^\//, '').split('/').join('__'), [] unless action
         controller.render action, *params
       end
 
@@ -79,9 +80,6 @@ module Ramaze
             end
           end
         end
-
-        raise Ramaze::Error::NoController, "No Controller found for #{path}" unless controller
-        raise Ramaze::Error::NoAction, "No Action found for #{path}" unless action
 
         return controller, action, params
       end

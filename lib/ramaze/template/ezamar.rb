@@ -13,6 +13,7 @@ module Ramaze
     Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
 
     trait :transform_pipeline => [ ::Ezamar::Element, ::Ezamar::Morpher, self ]
+    trait :actionless => true
 
     class << self
 
@@ -21,17 +22,15 @@ module Ramaze
       # Uses Ezamar::Template to compile the template.
 
       def transform controller, options = {}
-        unless options.is_a?(Binding) # little hack to allow inclusion into the pipeline
+        if options.is_a?(Binding) # little hack to allow inclusion into the pipeline
+          template, bound = controller, options
+
+          ::Ezamar::Template.new(template).transform(bound)
+        else
           action, parameter, file, bound = *super
 
           real_transform controller, bound, file, action, *parameter
-        else
-          template, bound = controller, options
-          ::Ezamar::Template.new(template).transform(bound)
         end
-      rescue Object => ex
-        Informer.error ex
-        ''
       end
 
       # The actual transformation is done here.
@@ -45,7 +44,11 @@ module Ramaze
         file_template = file_template(file, controller)
         ctrl_template = render_action(controller, action, *params)
 
-        pipeline(alternate || file_template || ctrl_template, bound)
+        if to_transform = alternate || file_template || ctrl_template
+          pipeline(alternate || file_template || ctrl_template, bound)
+        else
+          raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
+        end
       end
 
       # See if a string is an actual file.
@@ -69,6 +72,8 @@ module Ramaze
 
       def render_action(controller, action, *params)
         ctrl_template = controller.send(action, *params).to_s
+      rescue NoMethodError
+        nil
       end
 
       # go through the pipeline and call #transform on every object found there,

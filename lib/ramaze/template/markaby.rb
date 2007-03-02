@@ -17,26 +17,28 @@ module Ramaze::Template
       def transform controller, options = {}
         action, parameter, file, bound = *super
 
-        controller.class.send(:include, MarkabyMixin) unless controller.class.ancestors === MarkabyMixin
+        unless controller.private_methods.include?(action)
+          controller.class.send(:include, MarkabyMixin) unless controller.class.ancestors === MarkabyMixin
 
-        reaction = controller.send(action, *parameter)
+          reaction = controller.send(action, *parameter)
 
-        mab = ::Markaby::Builder.new
-
-        template =
-          if file
-            ivs = {}
-            controller.instance_variables.each do |iv|
-              ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
+          mab = ::Markaby::Builder.new
+          template =
+            if file
+              ivs = {}
+              controller.instance_variables.each do |iv|
+                ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
+              end
+              controller.send(:mab, ivs) do
+                instance_eval(File.read(file))
+              end
+            elsif reaction.respond_to? :to_str
+              reaction
             end
-            controller.send(:mab, ivs) do
-              instance_eval(File.read(file))
-            end
-          elsif reaction.respond_to? :to_str
-            reaction
-          else
-            ''
-          end
+        end
+
+        return template if template
+        raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
       end
     end
   end
