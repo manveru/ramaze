@@ -26,6 +26,7 @@ module Ramaze
       def handle path
         controller, action, params = *resolve_controller(path)
         action, params = path.gsub(/^\//, '').split('/').join('__'), [] unless action
+        controller = self unless controller
         controller.render action, *params
       end
 
@@ -235,8 +236,9 @@ module Ramaze
 
       def engine_for file
         file = file.to_s
-        extension = File.extname(file)
-        trait[:template_extensions].invert[extension]
+        extension = File.extname(file).gsub(/^\./, '')
+        engines = trait[:template_extensions]
+        engines.find{|k,v| v == extension or [v].flatten.include?(extension)}.first
       rescue
         Template::Ezamar
       end

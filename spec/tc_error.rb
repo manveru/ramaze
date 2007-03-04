@@ -12,11 +12,18 @@ end
 
 context "Error" do
   context "in dispatcher" do
-    ramaze :mapping => {'/' => TCErrorController}, :error_page => true
+    ramaze :mapping => {'/' => TCErrorController }, :error_page => true
 
-    specify "wrong parameter" do
-      get('/').should == 'TCErrorController'
-      lambda{ get('/1') }.should_raise RuntimeError, /Net::HTTPNotFound/
+    specify "your illegal stuff" do
+      lambda{ get('/def/illegal') }.should_raise RuntimeError, /Net::HTTPNotFound/
+    end
+  end
+
+  context "no controller" do
+    Ramaze::Global.mapping = {}
+
+    specify "your illegal stuff" do
+      lambda{ get('/def/illegal') }.should_raise RuntimeError, /Net::HTTPNotFound/
     end
   end
 end
