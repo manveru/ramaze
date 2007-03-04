@@ -94,7 +94,8 @@ spec =
 
         s.add_dependency('rake', '>=0.7.1')
         s.add_dependency('rspec', '>=0.7.5.1')
-        #s.required_ruby_version = '>= 1.8.2'
+        s.add_dependency('rack', '>=0.1.0')
+        # s.required_ruby_version = '>= 1.8.5'
 
         s.files = RDOC_FILES + %w[Rakefile] + Dir["{examples,bin,doc,spec,lib}/**/*"]
 
@@ -151,7 +152,7 @@ desc "add copyright to all .rb files in the distribution"
 task 'add-copyright' do
   puts "adding copyright to files that don't have it currently"
   Dir['{lib,test}/**/*{.rb}'].each do |file|
-    next if file =~ /vendor|_darcs/
+    next if file =~ /_darcs/
     lines = File.readlines(file).map{|l| l.chomp}
     unless lines.first(2) == COPYRIGHT
       puts "fixing #{file}"
@@ -324,7 +325,7 @@ end
 desc "remove those annoying spaces at the end of lines"
 task 'fix-end-spaces' do
   Dir['{lib,test}/**/*.rb'].each do |file|
-    next if file =~ /vendor|_darcs/
+    next if file =~ /_darcs/
     lines = File.readlines(file)
     new = lines.dup
     lines.each_with_index do |line, i|
@@ -388,10 +389,4 @@ task 'build-readme' do
       readme.puts '', '' unless title == chapters[-2]
     end
   end
-end
-
-desc "Update rack and record"
-task "rack" do
-  sh "cp -r ../rack/ lib/ramaze/vendor/"
-  sh "darcs record --all --patch-name 'rack snapshot'"
 end
