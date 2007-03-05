@@ -89,8 +89,8 @@ module Ramaze
         Informer.info "Request from #{request.remote_addr}: #{path}"
 
         catch(:respond) do
-          filtered = filter(path)
-          return(build_response filtered, response.status)
+          filtered = [filter(path)].flatten.first
+          return build_response(filtered, response.status)
         end
       end
 
