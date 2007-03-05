@@ -21,6 +21,11 @@ module Ramaze
             lambda{|path| handle_action path },
           ]
 
+    trait :handle_error => {
+        Exception => '/error',
+        Ramaze::Error::NoAction => '/error',
+      }
+
     class << self
       include Trinity
 
@@ -63,9 +68,15 @@ module Ramaze
         Informer.meth_debug :handle_error, exception
         Thread.current[:exception] = exception
 
+        handle_error = trait[:handle_error]
+
         case exception
-        when nil #Error::NoAction, Error::NoController
-          build_response(exception.message, STATUS_CODE[:not_found])
+        when *handle_error.keys
+          error_path = handle_error[exception.class]
+          error_path ||= handle_error.find{|k,v| k === exception}.last
+
+          request.path_info = error_path
+          respond
         else
           if Global.error_page
             request.path_info = '/error'
