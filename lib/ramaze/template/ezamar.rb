@@ -72,7 +72,8 @@ module Ramaze
 
       def render_action(controller, action, *params)
         ctrl_template = controller.send(action, *params).to_s
-      rescue NoMethodError
+      rescue => ex
+        Informer.error(ex)
         nil
       end
 
