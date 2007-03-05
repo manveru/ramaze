@@ -56,6 +56,11 @@
 class Ezamar::Element
   attr_accessor :content
 
+  include Ramaze::Helper
+  extend Ramaze::Helper
+
+  helper :redirect, :link
+
   # this will be called by #transform, passes along the
   # stuff inside the tags for the element
 
