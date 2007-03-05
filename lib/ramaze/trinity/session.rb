@@ -36,6 +36,10 @@ class Ramaze::Session
     current.clear
   end
 
+  def delete key
+    current.delete(key)
+  end
+
   # the current contents of session
 
   def current
