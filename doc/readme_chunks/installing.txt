@@ -7,18 +7,6 @@
   in case you have RubyGems installed.
   (this will work as soon as I have registered on RubyForge ;)
 
-* via install.rb
-
-  Ramaze provides a basic install.rb that should take care of the installation
-  you can use it like 
-
-    $ ruby install.rb
-
-  you may need root-privileges to do
-  that, depending on what options you provide.
-  (please note that I haven't tested the install.rb extensively yet, so if you
-  find some quirks, please send me patches or a simple note)
-
 * via darcs
 
   To get the latest and sweetest, you can just pull from the repository and run
@@ -30,3 +18,24 @@
   and creating your own patches.
   This is at the moment the premier way to use Ramaze, since it is the way I use
   it.
+
+  Some hints for the usage of Darcs.
+
+  * use require 'ramaze' from everywhere
+
+    add a file to your site_ruby named 'ramaze.rb'
+    the content should be: "require '/path/to/darcs/repo/ramaze/lib/ramaze'"
+
+  * get the latest version (from inside the ramaze-directory)
+
+    $ darcs pull
+
+  * record a patch
+
+    $ darcs record
+
+  * output your patches into a bundle ready to be mailed (compress it before
+    sending to make sure it arrives in the way you sent it)
+
+    $ darcs send -o ramaze_bundle
+    $ gzip -c ramaze_bundle > ramaze_bundle.gz

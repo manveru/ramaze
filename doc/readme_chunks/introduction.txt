@@ -7,23 +7,12 @@ forgotten in a chase for new functionality and features. Ramaze only tries to
 give you the ultimate tools, but you have to use them yourself to achieve
 perfect custom-tailored results.
 
-Another interesting aspect is that Ramaze tries to provide as much reusable
-code as possible, as to encourage the use of its code in similar projects and
-to act as a single point of reference for projects using its components.
-This tries to tackle the problem that everybody who wants/needs to create a
-custom web framework always has to reimplement the most basic and common
-functionality.
+Another one of the goals during development of Ramaze was to make every part as
+modular and therefor reuasable as possible, not only to provide a basic
+understanding after the first glance, but also to make it as simple as possible
+to reuse parts of the code.
 
-So when for example someone wants a basic example of how to build a comfortable
-testing environment for a web framework it's hardly leading to the goal if this
-first has to be reinvented before even the basic testing can start.
-
-The same goes for the implementation of sessions or the request/response
-objects which are collected under the module Trinity. Or all the examples
-of real world-usage of the most popular templating-engines. Within a framework,
-not to mention the basic need for a Dispatcher.
-
-Of course most other frameworks will introduce their own paradigms and special
-implementations, and this is the reason why it is not encouraged to directly
-require files from Ramaze, they are one working entity together, but with a few
-modifications it's your very own implementation and fits into your own project.
+The original purpose of Ramaze was to act as a kind of framework to build
+web-frameworks, this was made obsolete by the introduction of rack, which
+provides this feature at a better level without trying to enforce any structural
+layout of the resulting framework.
