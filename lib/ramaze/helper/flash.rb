@@ -8,7 +8,7 @@ module Ramaze
     def flash
       session[:FLASH] ||= {}
 
-      flash_id = Thread.current.object_id + self.object_id
+      flash_id = Thread.current.object_id
 
       session[:FLASH][flash_id] ||= {}
       session[:FLASH].each do |id, value|
