@@ -147,12 +147,17 @@ module Ramaze
       # Content-Type to 'text/plain'
 
       def build_response body = '', status = STATUS_CODE[:internal_server_error], head = {}
-        response.set_cookie(Session::SESSION_KEY, session.session_id) if Global.cookies
+        set_cookie if Global.cookies
         head.each do |key, value|
           response[key] = value
         end
 
         response.body, response.status = body, status
+      end
+
+      def set_cookie
+        hash = {:value => session.session_id, :path => '/'}
+        response.set_cookie(Session::SESSION_KEY, hash)
       end
 
       # Setup the Trinity (Request, Response, Session) and store them as

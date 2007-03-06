@@ -5,20 +5,14 @@ class Context
     @base     = base
     @history  = []
     @http     = SimpleHttp.new(url2uri(url))
-    @cookie   = get_cookie
-    @http.request_headers['cookie'] = @cookie
+
+    get url
 
     story(&block) if block_given?
   end
 
   def story(&block)
     instance_eval(&block) if block_given?
-  end
-
-  def get_cookie
-    @http.get
-    @history << @http.uri
-    @http.response_headers['set-cookie']
   end
 
   def get url = '/', hash = {}
@@ -47,7 +41,7 @@ class Context
 
   def request method, url, hash = {}
     @http.uri = url2uri(url)
-    @http.request_headers['referer'] = @history.last.path
+    @http.request_headers['referer'] = @history.last.path rescue '/'
 
     if method == :get and not hash.empty?
       @http.uri.query = hash.inject([]){|s,(k,v)| s << "#{k}=#{v}"}.join('&')
@@ -57,7 +51,14 @@ class Context
     puts "#{method.to_s.upcase} => #{@http.uri}"
     response = @http.send(method, hash).strip
     @history << @http.uri
+    get_cookie
+
     response
+  end
+
+  def get_cookie
+    @cookie = @http.response_headers['set-cookie']
+    @http.request_headers['cookie'] = @cookie
   end
 
   def url2uri url

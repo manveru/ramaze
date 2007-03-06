@@ -49,6 +49,6 @@ context "usual Session" do
   end
 
   specify "snooping a bit around" do
-    ctx.cookie.split('=').size.should == 2
+    ctx.cookie.split('=').size.should == 3
   end
 end

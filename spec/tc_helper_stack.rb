@@ -4,7 +4,7 @@
 require 'spec/spec_helper'
 
 class TCStackHelperController < Ramaze::Controller
-  helper :stack
+  helper :stack, :aspect
 
   def index
     session.inspect
@@ -54,6 +54,7 @@ context "StackHelper" do
 
   specify "indirect login" do
     Context.new do
+      get('/foo').should == 'logged in'
       get('/foo').should == 'logged in'
       eget('/').should == {:logged_in => true, :STACK => []}
     end
