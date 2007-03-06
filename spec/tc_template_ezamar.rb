@@ -23,6 +23,11 @@ class TCTemplateController < Ramaze::Controller
     @args = args
     '<?r i = 2 ?>#{i * i} #{@args.inspect} on the table'
   end
+
+  def combined
+    @a = 'boo'
+    nil
+  end
 end
 
 
@@ -49,5 +54,11 @@ context "Ezamar" do
 
   specify "without method" do
     get('/file_only').should == "This is only the file"
+  end
+
+  specify "combined" do
+    1000.times do
+      get('/combined').should == 'boo'
+    end
   end
 end

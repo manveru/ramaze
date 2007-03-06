@@ -127,14 +127,15 @@ class Ezamar::Element
     #   <Page foo="true" />
 
     def finish_transform(klass, params, content)
-      instance = constant(klass).new(content) rescue nil
-
-      return unless instance and instance.respond_to?(:render)
+      instance = constant(klass).new(content)
 
       hash = demunge_passed_variables(params)
       instance.instance_variable_set("@hash", hash)
 
       instance.render
+    rescue => ex
+      Ramaze::Informer.debug(ex.message)
+      ''
     end
 
     # basically processes stuff like
