@@ -41,8 +41,19 @@ class TCParamsController < Ramaze::Controller
   end
 end
 
+class TCParamsController2 < Ramaze::Controller
+  def add(one, two = nil, three = nil)
+    "#{one}:#{two}:#{three}"
+  end
+end
+
 context "Simple Parameters" do
-  ramaze(:mapping => {'/' => TCParamsController})
+  ramaze(
+    :mapping => {
+        '/' => TCParamsController,
+        '/jo' => TCParamsController2
+      }
+  )
 
   specify "Should respond to no parameters given" do
     get('/no_params').should == "no params"
@@ -95,4 +106,20 @@ context "Simple Parameters" do
   specify "double double underscore lookup" do
     get('/cat1/cat11/cat111').should == 'cat1: cat11: cat111'
   end
+
+
+  specify "jo/add should raise with 0 parameters" do
+    lambda{ get('/jo/add') }.should_raise
+  end
+  
+  specify "add should raise with 4 parameters" do
+    lambda{ get('/jo/add/1/2/3/4') }.should_raise
+  end
+  
+  specify "add should not raise with 1-3 parameters" do
+    get('/jo/add/1').should == '1::'
+    get('/jo/add/1/2').should == '1:2:'
+    get('/jo/add/1/2/3').should == '1:2:3'
+  end
+  
 end
