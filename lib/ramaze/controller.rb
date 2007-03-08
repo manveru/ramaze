@@ -122,9 +122,7 @@ module Ramaze
 
             if params.size == arity
               return current, params
-            elsif arity < 0 and arity + params.size >= 0
-              return current, params
-            elsif arity == -1
+            elsif arity < 0
               return current, params
             end
           end
