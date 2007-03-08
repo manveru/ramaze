@@ -204,8 +204,8 @@ module Ramaze
       def find_template action, klass = self
         action = action.to_s
         custom_template = ancestral_trait["#{action}_template".intern]
-        action = custom_template if custom_template
-        action_converted = action.split('__').inject{|s,v| s/v}
+        action = custom_template.to_s if custom_template
+        action_converted = action.split('__').inject {|s,v| "#{s}/#{v}"}
 
         first_path =
           if template_root = klass.ancestral_trait[:template_root]
