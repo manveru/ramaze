@@ -80,7 +80,7 @@ specs.each do |spec|
 
         if f.nonzero?
           failed[spec] = hash
-          print((message << "#{ss} failed ]").red)
+          print((message << "#{f} failed ]").red)
         else
           print((message << "all passed ]").green)
         end
