@@ -37,11 +37,11 @@ context "usual Session" do
   end
 
   specify "change the session" do
-    ctx.eget('/set_session/foo/foobar').should == {'foo' => 'foobar'}
+    ctx.eget('/set_session/foo/foobar')['foo'].should == 'foobar'
   end
 
   specify "inspect the changed session" do
-    ctx.eget('/').should == {'foo' => 'foobar'}
+    ctx.eget('/')['foo'].should == 'foobar'
   end
 
   specify "now a little bit with POST" do

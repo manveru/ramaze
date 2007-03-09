@@ -81,13 +81,14 @@ class Ramaze::Session
   end
 
   def flash_finalize
-    current[:FLASH_PREVIOUS] = delete :FLASH
+    old = delete(:FLASH)
+    current[:FLASH_PREVIOUS] = old if old
   end
 end
 
 class Ramaze::SessionFlash
   def previous
-    session[:FLASH_PREVIOUS] ||= {}
+    session[:FLASH_PREVIOUS] || {}
   end
 
   def current
