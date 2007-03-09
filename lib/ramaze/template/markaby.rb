@@ -18,7 +18,8 @@ module Ramaze::Template
         action, parameter, file, bound = *super
 
         unless controller.private_methods.include?(action)
-          controller.class.send(:include, MarkabyMixin) unless controller.class.ancestors === MarkabyMixin
+          mixed_in = controller.class.ancestors === MarkabyMixin
+          controller.class.send(:include, MarkabyMixin) unless mixed_in
 
           reaction = controller.send(action, *parameter)
 
