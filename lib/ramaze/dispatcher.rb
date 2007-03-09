@@ -156,6 +156,7 @@ module Ramaze
       end
 
       def set_cookie
+        session.finalize
         hash = {:value => session.session_id, :path => '/'}
         response.set_cookie(Session::SESSION_KEY, hash)
       end

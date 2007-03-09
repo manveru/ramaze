@@ -35,11 +35,31 @@ class TCFlashHelperSecondController < Ramaze::Controller
   end
 end
 
+class TCFlashHelperThirdController < Ramaze::Controller
+  helper :flash
+
+  def index
+  end
+
+  def noop
+    'noop'
+  end
+  
+  def set par
+    flash[:e] = par
+  end
+
+  def retrieve
+    flash[:e]
+  end
+end
+
 context "FlashHelper" do
   ramaze :adapter => :mongrel,
     :mapping => {
-      '/' => TCFlashHelperFirstController,
-      '/second' => TCFlashHelperSecondController
+      '/'       => TCFlashHelperFirstController,
+      '/second' => TCFlashHelperSecondController,
+      '/third'  => TCFlashHelperThirdController
   }
 
   specify "twice" do
@@ -63,6 +83,21 @@ context "FlashHelper" do
       get('/second/first_here')
       get('/then_here').should == 'hey'
       get('/second/then_here').should == ''
+    end
+  end
+
+  specify "single" do
+    Context.new do
+      get('/third/set/foo').should == 'foo'
+    end
+  end
+  
+  specify "single" do
+    Context.new do
+      get('/third/set/foo').should == 'foo'
+      get('/third/retrieve').should == 'foo'
+      get('/third/retrieve').should == ''
+      get('/third/retrieve').should == ''
     end
   end
 end
