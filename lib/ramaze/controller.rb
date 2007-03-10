@@ -285,5 +285,11 @@ module Ramaze
     rescue LoadError => ex
       @coderay = false
     end
+
+    private
+
+    def render *args
+      self.class.handle(*args)
+    end
   end
 end
