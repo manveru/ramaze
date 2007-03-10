@@ -56,4 +56,16 @@ context "Store::YAML" do
     article.author.name.should == author.name
     author.article.name.should == article.name
   end
+
+  specify "delete" do
+    article_class = new_store :article
+
+    article = article_class['foo'] = {
+      :bar => :one
+    }
+
+    article_class['foo'].should == {:bar => :one}
+    article_class.delete 'foo'
+    article_class['foo'].should == nil
+  end
 end

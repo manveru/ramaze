@@ -97,6 +97,12 @@ module Ramaze::Store
           yield key, value
         end
       end
+
+      def delete eid
+        transaction do |e|
+          e[eid.to_s.to_sym] = nil
+        end
+      end
     end
 
     class Manager < YAMLStoreWrapper
