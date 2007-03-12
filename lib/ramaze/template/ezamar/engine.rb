@@ -75,9 +75,6 @@ module Ezamar
 
       args = @file ? [@file] : []
 
-      p :args => args
-      p :_binding_ => _binding_
-
       @last_result = eval(@compiled, _binding_, *args)
 
       @last_result.map! do |line|

@@ -24,7 +24,6 @@ module Ramaze
         def transform controller, options = {}
           if options.has_key?(:pipeline)
             template = ::Ezamar::Template.new(controller, options)
-            p :options => options
             template.transform(options[:binding])
           else
             action, parameter, file, bound = *super
