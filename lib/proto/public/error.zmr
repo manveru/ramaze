@@ -1,7 +1,11 @@
 <html>
   <head>
     <title>#{@title}</title>
-    <link rel="stylesheet" href="/css/coderay.css" />
+    <?r if @coderay ?>
+      <style>
+        #{CodeRay::Encoders[:html]::CSS.new.stylesheet}
+      </style>
+    <?r end ?>
     <link rel="stylesheet" href="/css/ramaze_error.css" />
     <script type="text/javascript" src="/js/jquery.js"></script>
   </head>
@@ -15,8 +19,8 @@
         <td>File</td><td>Line</td><td>Method</td>
       </tr>
       <?r @backtrace.each do |lines, hash, file, lineno, meth| ?>
-        <tr id="line_#{hash}" style="background:rgb(#{@colors.shift},70,60);">
-          <td>#{file}</td><td>#{lineno}</td><td>#{meth}</td>
+        <tr id="line_#{hash}" style="background:rgb(#{@colors.shift},200,200);">
+          <td>#{file}</td><td>#{lineno}</td><td><pre>#{meth}</pre></td>
         </tr>
         <tr id="source_#{hash}" style="display:none;">
           <td colspan="3">
@@ -28,19 +32,18 @@
                 <?r
                   if @coderay
                     code = lines.map{|no, code, cur| code}.join("\n")
-                    line = lines.first[0]
                     options = {
                       :wrap => :div,
                       :line_numbers => :inline,
-                      :line_number_start => line
+                      :line_number_start => (lineno.to_i - Global.inform_backtrace_size)
                       }
-                 ?>
-                  #{CodeRay.scan(code, :ruby).html(options)}
+                     ?>
+                     #{CodeRay.scan(code, :ruby).html(options)}
                 <?r else ?>
                   <?r lines.each do |llineno, lcode, lcurrent| ?>
                     <tr class="source" #{'style="background:#faa;"' if lcurrent}>
                       <td>#{llineno}</td>
-                      <td>#{lcode.rstrip}</td>
+                      <td><pre>#{lcode.rstrip}</pre></td>
                     </tr>
                   <?r end ?>
                 <?r end ?>

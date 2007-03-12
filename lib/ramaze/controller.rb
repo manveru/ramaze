@@ -263,7 +263,7 @@ module Ramaze
       title = error.message
 
       colors = []
-      min = 160
+      min = 200
       max = 255
       step = -((max - min) / backtrace.size).abs
       max.step(min, step) do |color|
@@ -280,7 +280,7 @@ module Ramaze
 
       @backtrace = backtrace
       @colors = colors
-      @title = title
+      @title = CGI.escapeHTML(title)
       require 'coderay'
       @coderay = true
     rescue LoadError => ex
