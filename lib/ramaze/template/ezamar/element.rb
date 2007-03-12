@@ -87,7 +87,8 @@ class Ezamar::Element
     # contains the parameters you gave the <Element> tag.
     # See above for an example of writing and using them.
 
-    def transform string = '', binding = nil
+    def transform string = '', options = {}
+      binding, path = options.values_at(:binding, :path)
       string = string.to_s
       matches = string.scan(/<([A-Z][a-zA-Z0-9]*)(.*?)?>/)
 

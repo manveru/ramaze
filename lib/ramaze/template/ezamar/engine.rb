@@ -17,15 +17,15 @@ module Ezamar
   # This class is responsible for initializing and compiling the template.
 
   class Template
-    attr_accessor :binding, :last_result, :file
+    attr_accessor :last_result, :file
     attr_reader :original
 
     # Start a new template with some string for your template
     # that's going to be transformed.
 
-    def initialize source, file = nil
+    def initialize source, options = {}
       @original = @source = source
-      @file = file
+      @binding, @file = options.values_at(:binding, :path)
       @file, @source = @source, File.read(@source) if File.file?(@source)
       @start_heredoc = "T" << Digest::SHA1.hexdigest(@source)
       @start_heredoc, @end_heredoc = "\n<<#{@start_heredoc}\n", "\n#{@start_heredoc}\n"
@@ -70,10 +70,15 @@ module Ezamar
     #
     #   Ezamar.new('#{@hello}').transform(binding)
 
-    def transform(_binding_ = binding)
+    def transform(_binding_ = @binding)
       @compiled = compile if old?
 
-      @last_result = eval(*[@compiled, _binding_, @file].compact)
+      args = @file ? [@file] : []
+
+      p :args => args
+      p :_binding_ => _binding_
+
+      @last_result = eval(@compiled, _binding_, *args)
 
       @last_result.map! do |line|
         line.to_s.chomp
