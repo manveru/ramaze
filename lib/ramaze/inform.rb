@@ -39,6 +39,8 @@ module Ramaze
 
     alias D debug
 
+    def debug?() inform_tag?(:debug) end
+
     # A little but powerful method to debug calls to methods.
     #
     #   def foo(*args)
@@ -73,6 +75,8 @@ module Ramaze
       log(Global.inform_prefix_info, message)
     end
 
+    def info?() inform_tag?(:info) end
+
     # Informing yourself about errors, you can pass it instances of Error
     # but also simple Strings.
     # (all that responds to :message/:backtrace or to_s)
@@ -102,6 +106,8 @@ module Ramaze
         end
       end
     end
+
+    def error?() inform_tag?(:error) end
 
     # This uses Global.inform_timestamp or a date in the format of
     #   %Y-%m-%d %H:%M:%S
@@ -154,7 +160,7 @@ module Ramaze
   class GlobalInformer
     include Inform
 
-    public :error, :info, :meth_debug, :debug
+    public :error, :error?, :info, :info?, :meth_debug, :debug, :debug?
 
     # this simply sends the parameters to #debug
 
