@@ -57,7 +57,7 @@ context "Ezamar" do
   end
 
   specify "combined" do
-    1000.times do
+    100.times do
       get('/combined').should == 'boo'
     end
   end

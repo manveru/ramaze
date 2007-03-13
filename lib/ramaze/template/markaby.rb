@@ -26,13 +26,7 @@ module Ramaze::Template
           mab = ::Markaby::Builder.new
           template =
             if file
-              ivs = {}
-              controller.instance_variables.each do |iv|
-                ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
-              end
-              controller.send(:mab, ivs) do
-                instance_eval(File.read(file))
-              end
+              transform_file(controller, file)
             elsif reaction.respond_to? :to_str
               reaction
             end
@@ -40,6 +34,19 @@ module Ramaze::Template
 
         return template if template
         raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
+      end
+
+      def transform_file controller, file
+        ivs = {}
+        controller.instance_variables.each do |iv|
+          ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
+        end
+        controller.send(:mab, ivs) do
+          instance_eval(File.read(file))
+        end
+      rescue Object => ex
+        puts ex
+        raise Ramaze::Error::Template, ex.message, ex.backtrace
       end
     end
   end

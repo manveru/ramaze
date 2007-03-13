@@ -28,6 +28,9 @@ module Ramaze
         action, params = path.gsub(/^\//, '').split('/').join('__'), [] unless action
         controller = self unless controller
         controller.render action, *params
+      rescue Ramaze::Error::Template => ex
+        puts ex
+        ''
       end
 
       # find out which controller should be used based on the path.
