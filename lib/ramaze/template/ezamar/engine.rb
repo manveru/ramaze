@@ -26,7 +26,6 @@ module Ezamar
     def initialize source, options = {}
       @original = @source = source
       @binding, @file = options.values_at(:binding, :path)
-      @file, @source = @source, File.read(@source) if File.file?(@source)
       @start_heredoc = "T" << Digest::SHA1.hexdigest(@source)
       @start_heredoc, @end_heredoc = "\n<<#{@start_heredoc}\n", "\n#{@start_heredoc}\n"
       @bufadd = "_out_ << "
