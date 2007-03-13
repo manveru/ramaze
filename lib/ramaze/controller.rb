@@ -202,9 +202,8 @@ module Ramaze
       # used instead.
 
       def find_template action, klass = self
-        action = action.to_s
         custom_template = ancestral_trait["#{action}_template".intern]
-        action = custom_template.to_s if custom_template
+        action = (custom_template ? custom_template : action).to_s
         action_converted = action.split('__').inject {|s,v| "#{s}/#{v}"}
 
         first_path =
