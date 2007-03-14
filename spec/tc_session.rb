@@ -22,33 +22,51 @@ end
 context "Session" do
   ramaze(:mapping => {'/' => TCSessionController})
 
-  ctx = Context.new
+  { :MemoryCache => :memory,
+    :YAMLStoreCache => :yaml_store,
+    :MemcachedCache => :memcached,
+  }.each do |cache, requirement|
+    begin
+      require "ramaze/cache/#{requirement}"
+    rescue LoadError => ex
+      puts ex
+      next
+    end
 
-  specify "Should give me an empty session" do
-    ctx.eget.should == {}
-  end
+    context cache.to_s do
 
-  specify "set some session-parameters" do
-    ctx.eget('/set_session/foo/bar').should == {'foo' => 'bar'}
-  end
+      Ramaze::Global.cache = cache
+      Thread.main[:session_cache] = nil
 
-  specify "inspect session again" do
-    ctx.eget('/').should == {'foo' => 'bar'}
-  end
+      ctx = Context.new
 
-  specify "change the session" do
-    ctx.eget('/set_session/foo/foobar')['foo'].should == 'foobar'
-  end
+      specify "Should give me an empty session" do
+        ctx.eget.should == {}
+      end
 
-  specify "inspect the changed session" do
-    ctx.eget('/')['foo'].should == 'foobar'
-  end
+      specify "set some session-parameters" do
+        ctx.eget('/set_session/foo/bar').should == {'foo' => 'bar'}
+      end
 
-  specify "now a little bit with POST" do
-    ctx.epost('/post_set_session', 'x' => 'y')['x'].should == 'y'
-  end
+      specify "inspect session again" do
+        ctx.eget('/').should == {'foo' => 'bar'}
+      end
 
-  specify "snooping a bit around" do
-    ctx.cookie.split('=').size.should == 3
+      specify "change the session" do
+        ctx.eget('/set_session/foo/foobar')['foo'].should == 'foobar'
+      end
+
+      specify "inspect the changed session" do
+        ctx.eget('/')['foo'].should == 'foobar'
+      end
+
+      specify "now a little bit with POST" do
+        ctx.epost('/post_set_session', 'x' => 'y')['x'].should == 'y'
+      end
+
+      specify "snooping a bit around" do
+        ctx.cookie.split('=').size.should == 3
+      end
+    end
   end
 end
