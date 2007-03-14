@@ -19,7 +19,7 @@ class TCSessionController < Ramaze::Controller
   end
 end
 
-context "usual Session" do
+context "Session" do
   ramaze(:mapping => {'/' => TCSessionController})
 
   ctx = Context.new
