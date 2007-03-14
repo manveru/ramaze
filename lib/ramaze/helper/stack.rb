@@ -59,7 +59,7 @@ module Ramaze
     # check if the stack has something inside.
 
     def inside_stack?
-      session[:STACK].any? rescue false
+      session[:STACK] and session[:STACK].any?
     end
   end
 end
