@@ -44,7 +44,7 @@ module Kernel
     last = current + size
     last = last > lines.size ? lines.size : last
 
-    log = lines[first..last]
+    log = lines[first..last] || []
 
     area = []
 
