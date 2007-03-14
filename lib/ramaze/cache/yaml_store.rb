@@ -23,7 +23,9 @@ module Ramaze
     # just a helper to use transactions.
 
     def transaction(&block)
-      @cache.transaction(&block)
+      @cache.transaction do
+        yield(@cache)
+      end
     end
 
     # catch everything else and use a transaction to send it.
