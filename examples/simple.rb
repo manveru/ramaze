@@ -54,7 +54,7 @@ class OtherController < Controller
   end
 end
 
-Global.mapping    = {
+Global.mapping = {
   '/'      => SimpleController,
   '/other' => OtherController
 }
