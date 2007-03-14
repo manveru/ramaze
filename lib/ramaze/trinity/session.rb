@@ -3,115 +3,121 @@
 
 require 'digest/sha2'
 
-class Ramaze::Session
-  SESSION_KEY = '_ramaze_session_id'
+module Ramaze
+  class TriggerHash
+    def initialize
+      @hash = {}
+    end
 
-  class << self
-    def current
-      Thread.current[:session]
+    def method_missing(*args, &block)
+      old = @hash.dup
+      result = @hash.send(*args, &block)
+      unless old == @hash
+        Thread.main[:session_cache][Session.current.session_id] = self
+      end
+      result
+    end
+
+    def inspect
+      @hash.inspect
     end
   end
 
-  def initialize request
-    @session_id = (request.cookies[SESSION_KEY] || random_key)
-    @session_flash = Ramaze::SessionFlash.new
+  class Session
+    attr_accessor :session_id
+    SESSION_KEY = '_ramaze_session_id'
+
+    class << self
+      def current
+        Thread.current[:session]
+      end
+    end
+
+    def initialize request
+      @session_id = (request.cookies[SESSION_KEY] || random_key)
+      @session_flash = Ramaze::SessionFlash.new
+
+      unless sessions
+        global_cache = Ramaze::Global.cache
+
+        if global_cache.respond_to?(:new)
+          cache = global_cache.new
+        else
+          cache = constant("::Ramaze::#{global_cache}")
+          cache = cache.new if cache.respond_to?(:new)
+        end
+
+        Thread.main[:session_cache] = cache
+      end
+    end
+
+    def method_missing(*args, &block)
+      current.send(*args, &block)
+    end
+
+    def current
+      sessions[session_id] ||= TriggerHash.new
+    end
+
+    def sessions
+      Thread.main[:session_cache]
+    end
+
+    def random_key
+      h = [
+        Time.now.to_f.to_s.reverse, rand,
+        Thread.current[:request].hash, rand,
+        Process.pid, rand,
+        object_id, rand
+      ].join
+      Digest::SHA256.hexdigest(h)
+    end
+
+    def flash
+      @session_flash
+    end
+
+    def finalize
+      flash_finalize
+    end
+
+    def flash_finalize
+      old = delete(:FLASH)
+      current[:FLASH_PREVIOUS] = old if old
+    end
+
+    def inspect
+      current.inspect
+    end
   end
 
-  def session_id
-    @session_id
-  end
+  class SessionFlash
+    def previous
+      session[:FLASH_PREVIOUS] || {}
+    end
 
-  def [](key)
-    current[key]
-  end
+    def current
+      session[:FLASH] ||= {}
+    end
 
-  def []=(key, value)
-    current[key] = value
-  end
+    def combined
+      previous.merge(current)
+    end
 
-  def merge!(hash = {})
-    current.merge! hash
-  end
+    def [](key)
+      combined[key]
+    end
 
-  def clear
-    current.clear
-  end
+    def []=(key, value)
+      current[key] = value
+    end
 
-  def delete key
-    current.delete(key)
-  end
+    def session
+      Ramaze::Session.current
+    end
 
-  # the current contents of session
-
-  def current
-    sessions[session_id] ||= {}
-  end
-
-  def flash
-    @session_flash
-  end
-
-  # all the sessions currently stored, in case there are none yet it will
-  # set the constant Ramaze::SessionCache and from then on start populating
-  # it with the sessions. SessionCache is an instance of Ramaze::Global.cache as
-  # well.
-
-  def sessions
-    Thread.main[:session_cache] ||= constant("::Ramaze::#{Ramaze::Global.cache}").new
-  end
-
-  def random_key
-    h = [
-      Time.now.to_f.to_s.reverse, rand,
-      Thread.current[:request].hash, rand,
-      Process.pid, rand,
-      object_id, rand
-    ].join
-    Digest::SHA512.hexdigest(h)
-  end
-
-  def inspect
-    tmp = current.clone
-    tmp.delete SESSION_KEY
-    tmp.inspect
-  end
-
-  def finalize
-    flash_finalize
-  end
-
-  def flash_finalize
-    old = delete(:FLASH)
-    current[:FLASH_PREVIOUS] = old if old
-  end
-end
-
-class Ramaze::SessionFlash
-  def previous
-    session[:FLASH_PREVIOUS] || {}
-  end
-
-  def current
-    session[:FLASH] ||= {}
-  end
-
-  def combined
-    previous.merge(current)
-  end
-
-  def [](key)
-    combined[key]
-  end
-
-  def []=(key, value)
-    current[key] = value
-  end
-
-  def session
-    Ramaze::Session.current
-  end
-
-  def inspect
-    combined.inspect
+    def inspect
+      combined.inspect
+    end
   end
 end
