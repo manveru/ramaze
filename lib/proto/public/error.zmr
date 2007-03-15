@@ -67,7 +67,7 @@
       ?>
       <div class="additional">
         <h3 id="show_#{hash}">#{title}</h3>
-        <pre style="display:none" id="is_#{hash}">#{content.pretty_inspect}</pre>
+        <pre style="display:none" id="is_#{hash}">#{CGI.escapeHTML(content.pretty_inspect)}</pre>
         <script type="text/javascript">
           $("h3#show_#{hash}").click(function(){$("pre#is_#{hash}").toggle()});
         </script>

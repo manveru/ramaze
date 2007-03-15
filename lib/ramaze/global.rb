@@ -113,6 +113,14 @@ module Ramaze
         yield(e)
       end
     end
+
+    def inspect
+      table.inspect
+    end
+
+    def pretty_inspect
+      table.pretty_inspect
+    end
   end
 
   Thread.current[:global] = GlobalStruct.new(GlobalStruct::DEFAULT)
