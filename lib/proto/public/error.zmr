@@ -12,7 +12,7 @@
   <body>
     <img id="logo" alt="Ramaze" src="/ramaze.png" />
 
-    <h1>#{CGI.escapeHTML(@title)}</h1>
+    <h1>#{@title}</h1>
 
     <table class="main">
       <tr class="head">
