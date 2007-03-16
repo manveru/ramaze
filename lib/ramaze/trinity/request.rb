@@ -7,20 +7,10 @@ require 'digest/md5'
 
 module Ramaze
 
-  # This class is used for processing the information coming in from a request
-  # to the dispatcher, it takes the original request-object, processes it and
-  # is later available in the controller or as Thread.current[:request]
-  #
-  # Please note that the implementation is lacking performance and security
-  # in favor of simplicity. Hopefully I (or some CGI-guru) will come along
-  # and implement this properly, until then consider it unsafe, but functional.
-  #
-  # Most information you will need is in the #params, which is a compound of
-  # all the information available from POST, GET, DELETE and PUT.
+  # The purpose of this class is to act as a simple wrapper for Rack::Request
+  # and provide some convinient methods for our own use.
 
   class Request
-    #attr_accessor :request, :post_query, :get_query, :puts_query, :get_query
-
     class << self
 
       # get the current request out of Thread.current[:request]
@@ -32,20 +22,32 @@ module Ramaze
       end
     end
 
-    # create a new instance of Request, takes the original request-object
-    # and runs #parse_queries to extract/process the information inside
+    # create a new instance of Request, takes the original Rack::Request
+    # instance
 
     def initialize request = {}
       @request = request
     end
 
+    # shortcut for request.params[key]
+
     def [](key)
-      @request.params[key]
+      params[key]
     end
 
+    # shortcut for request.params[key] = value
+
     def []=(key, value)
-      @request.params[key] = value
+      params[key] = value
     end
+
+    # like Hash#values_at
+
+    def values_at(*keys)
+      keys.map{|key| params[key] }
+    end
+
+    # the referer of the client or '/'
 
     def referer
       @request.env['HTTP_REFERER'] || '/'
