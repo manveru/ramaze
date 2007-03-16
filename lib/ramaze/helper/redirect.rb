@@ -26,13 +26,9 @@ module Ramaze
     #   redirect MainController, :foo
     #   redirect 'foo/bar'
 
-    def redirect *target
-      target = target.join('/')
-
-      #hash = target.find{|h| h.is_a?(Hash)} and status = hash.delete(:status) rescue nil
-
+    def redirect target
       header = {
-        'Location' => R("/#{target}".squeeze('/'))
+        'Location' => target
       }.merge(response.header)
       status ||= STATUS_CODE[:see_other]
       body = %{Please follow <a href="#{target}">#{target}</a>!}
