@@ -53,6 +53,8 @@ module Ramaze
       @request.env['HTTP_REFERER'] || '/'
     end
 
+    alias referrer referer
+
     # you can access the original @request via this method_missing,
     # first it tries to match your method with any of the HTTP parameters
     # then, in case that fails, it will relay to @request
