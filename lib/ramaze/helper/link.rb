@@ -78,5 +78,9 @@ module Ramaze
 
       link(*to)
     end
+
+    def Rs(*to)
+      R(self, *to)
+    end
   end
 end
