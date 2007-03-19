@@ -3,12 +3,15 @@
   <?r if @tasks.empty? ?>
     No Tasks
   <?r else ?>
-    <ul>
+    <table>
       <?r @tasks.each do |title, status, toggle, delete| ?>
-        <li>
-          #{title}: #{status} [ #{toggle} | #{delete} ]
-        </li>
+        <tr>
+          <td class="title">  #{title}  </td>
+          <td class="status"> #{status} </td>
+          <td class="toggle"> #{toggle} </td>
+          <td class="delete"> #{delete} </td>
+        </tr>
       <?r end ?>
-    </ul>
+    </table>
   <?r end ?>
 </Page>

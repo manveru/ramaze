@@ -3,16 +3,24 @@
 
 class Page < Ezamar::Element
   def render
-    %{
+    %(
     <html>
       <head>
         <title>TodoList</title>
+        <style>
+          table     { width:       100%;              }
+          tr        { background:  #efe; width: 100%; }
+          tr:hover  { background:  #dfd;              }
+          td.title  { font-weight: bold; width: 60%;  }
+          td.status { margin:      1em;               }
+          a         { color:       #3a3;              }
+        </style>
       </head>
       <body>
         <h1>#{@hash['title']}</h1>
         #{content}
       </body>
     </html>
-    }
+    )
   end
 end
