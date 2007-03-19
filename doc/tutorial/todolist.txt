@@ -497,4 +497,50 @@ Alright, now just go and look at the result in the browser, try changing
 the things inside the Element and look at how it behaves.
 
 
-to be continued...
+== Ninth Step, Prettify
+
+Let's structure the data inside the list a little bit, in this case into a table to get it line up properly and look actually structured.
+
+So, from what we have right now:
+
+  <ul>
+    <?r @tasks.each do |title, status, toggle, delete| ?>
+      <li>
+        #{title}: #{status} [ #{toggle} | #{delete} ]
+      </li>
+    <?r end ?>
+  </ul>
+
+To something like this:
+
+  <table>
+    <?r @tasks.each do |title, status, toggle, delete| ?>
+      <tr>
+        <td class="title">  #{title}  </td>
+        <td class="status"> #{status} </td>
+        <td class="toggle"> #{toggle} </td>
+        <td class="delete"> #{delete} </td>
+      </tr>
+    <?r end ?>
+  </table>
+
+And, since we have proper classes to address some style sheets, jump into the Page element and add some style sheet like that:
+
+  <head>
+    <title>TodoList</title>
+    <style>
+      table     { width:       100%;              }
+      tr        { background:  #efe; width: 100%; }
+      tr:hover  { background:  #dfd;              }
+      td.title  { font-weight: bold; width: 60%;  }
+      td.status { margin:      1em;               }
+      a         { color:       #3a3;              }
+    </style>
+  </head>
+
+That looks quite a bit nicer, right?
+And yes, if you don't like tables (though this is an entirely legit use in my opinion, you can just do it like you want, using nested lists or divs/spans, replacing the open/close and delete links with nice images and changing the style according to the status.
+
+I will leave this as an exercise to the reader.
+
+To be continued...
