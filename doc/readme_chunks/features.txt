@@ -68,8 +68,10 @@ Ramaze offers following features at the moment:
   * Auth
   * Cache
   * Feed
+  * Flash
   * Form
   * Link
+  * OpenID
   * Redirect
   * Stack
 
