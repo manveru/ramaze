@@ -180,7 +180,7 @@ end
 
 desc "run the specs and clean up afterwards"
 task :test do
-  sh "ruby #{File.dirname(__FILE__)}/spec/spec_all.rb"
+  ruby "#{File.dirname(__FILE__)}/spec/spec_all.rb"
   sh "rake clean"
 end
 
@@ -225,8 +225,8 @@ end
 
 desc "doc/README to doc/README.html"
 task 'readme2html' => 'gen-readme2html' do
-  FileUtils.cp('readme/files/doc/README.html', 'doc/README.html')
-  FileUtils.rm_rf('readme')
+  cp('readme/files/doc/README.html', 'doc/README.html')
+  rm_rf('readme')
 end
 
 desc "list all still undocumented methods"
@@ -289,7 +289,7 @@ end
 
 desc "generate doc/TODO from the TODO tags in the source"
 task 'todolist' do
-  list = `rake todo`.split("\n")[2..-1]
+  list = invoke('todo').split("\n")[2..-1]
   tasks = {}
   current = nil
 
