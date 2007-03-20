@@ -25,6 +25,16 @@ class TCRedirectHelperController < Ramaze::Controller
   def redirect_referer_action
     redirect_referer
   end
+
+  def no_actual_redirect
+    catch(:redirect){ redirection }
+    'foo'
+  end
+
+  def no_actual_double_redirect
+    catch(:redirect){ double_redirection }
+    'bar'
+  end
 end
 
 context "RedirectHelper" do
@@ -40,11 +50,14 @@ context "RedirectHelper" do
     ctx.story do
       get('/redirection').should        == "TCRedirectHelperController"
       get('/double_redirection').should == "TCRedirectHelperController"
+      get('/no_actual_redirect').should        == 'foo'
+      get('/no_actual_double_redirect').should == 'bar'
     end
   end
 
   specify "redirect to referer" do
     ctx.story do
+      get('/').should                        == 'TCRedirectHelperController'
       get('/redirect_referer_action').should == 'TCRedirectHelperController'
       get('/noop').should                    == 'noop'
       get('/redirect_referer_action').should == 'noop'
