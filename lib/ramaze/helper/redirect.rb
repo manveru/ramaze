@@ -22,15 +22,12 @@ module Ramaze
   module RedirectHelper
 
     # Usage:
-    #   redirect MainController
-    #   redirect MainController, :foo
+    #   redirect R(MainController)
+    #   redirect R(MainController, :foo)
     #   redirect 'foo/bar'
 
-    def redirect *params
-      opts = params.last.respond_to?(:to_hash) ? params.pop : {}
-
-      target = R(*params)
-
+    def redirect target, opts = {}
+      target = target.to_s
       head = {
         'Location' => target
       }.merge(response.header)
