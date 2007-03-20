@@ -32,7 +32,7 @@ module Ramaze
       # handle a request/response pair as given by the adapter.
       # has to answer with a response.
       #
-      # It is built so it will catch _all_ errors and exceptions
+      # It is built so it will rescue _all_ errors and exceptions
       # thrown during processing of the request and #handle_error if
       # a problem occurs.
 
