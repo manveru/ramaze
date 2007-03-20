@@ -42,9 +42,9 @@ RDOC_OPTS = %w[
   --op rdoc
   --line-numbers
   --inline-source
-  --main "doc/README"
+  --main doc/README
   --opname index.html
-  --title "Ramaze documentation"
+  --title "Ramaze\ documentation"
   --exclude "^(_darcs|spec|examples|bin|pkg)/"
   --exclude "lib/proto"
   --include "doc"
@@ -97,7 +97,7 @@ spec =
         s.add_dependency('rack', '>=0.1.0')
         # s.required_ruby_version = '>= 1.8.5'
 
-        s.files = RDOC_FILES + %w[Rakefile] + Dir["{examples,bin,doc,spec,lib}/**/*"]
+        s.files = (RDOC_FILES + %w[Rakefile] + Dir["{examples,bin,doc,spec,lib}/**/*"]).uniq
 
         # s.extensions = FileList["ext/**/extconf.rb"].to_a
     end
