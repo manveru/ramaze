@@ -12,26 +12,15 @@ forgotten in a chase for new functionality and features. Ramaze only tries to
 give you the ultimate tools, but you have to use them yourself to achieve
 perfect custom-tailored results.
 
-Another interesting aspect is that Ramaze tries to provide as much reusable
-code as possible, as to encourage the use of its code in similar projects and
-to act as a single point of reference for projects using its components.
-This tries to tackle the problem that everybody who wants/needs to create a
-custom web framework always has to reimplement the most basic and common
-functionality.
+Another one of the goals during development of Ramaze was to make every part as
+modular and therefor reuasable as possible, not only to provide a basic
+understanding after the first glance, but also to make it as simple as possible
+to reuse parts of the code.
 
-So when for example someone wants a basic example of how to build a comfortable
-testing environment for a web framework it's hardly leading to the goal if this
-first has to be reinvented before even the basic testing can start.
-
-The same goes for the implementation of sessions or the request/response
-objects which are collected under the module Trinity. Or all the examples
-of real world-usage of the most popular templating-engines. Within a framework,
-not to mention the basic need for a Dispatcher.
-
-Of course most other frameworks will introduce their own paradigms and special
-implementations, and this is the reason why it is not encouraged to directly
-require files from Ramaze, they are one working entity together, but with a few
-modifications it's your very own implementation and fits into your own project.
+The original purpose of Ramaze was to act as a kind of framework to build
+web-frameworks, this was made obsolete by the introduction of rack, which
+provides this feature at a better level without trying to enforce any structural
+layout of the resulting framework.
 
 
 = Features Overview
@@ -106,8 +95,10 @@ Ramaze offers following features at the moment:
   * Auth
   * Cache
   * Feed
+  * Flash
   * Form
   * Link
+  * OpenID
   * Redirect
   * Stack
 
@@ -174,18 +165,6 @@ There are some basic principles that Ramaze tries to follow:
   in case you have RubyGems installed.
   (this will work as soon as I have registered on RubyForge ;)
 
-* via install.rb
-
-  Ramaze provides a basic install.rb that should take care of the installation
-  you can use it like 
-
-    $ ruby install.rb
-
-  you may need root-privileges to do
-  that, depending on what options you provide.
-  (please note that I haven't tested the install.rb extensively yet, so if you
-  find some quirks, please send me patches or a simple note)
-
 * via darcs
 
   To get the latest and sweetest, you can just pull from the repository and run
@@ -197,6 +176,27 @@ There are some basic principles that Ramaze tries to follow:
   and creating your own patches.
   This is at the moment the premier way to use Ramaze, since it is the way I use
   it.
+
+  Some hints for the usage of Darcs.
+
+  * use require 'ramaze' from everywhere
+
+    add a file to your site_ruby named 'ramaze.rb'
+    the content should be: "require '/path/to/darcs/repo/ramaze/lib/ramaze'"
+
+  * get the latest version (from inside the ramaze-directory)
+
+    $ darcs pull
+
+  * record a patch
+
+    $ darcs record
+
+  * output your patches into a bundle ready to be mailed (compress it before
+    sending to make sure it arrives in the way you sent it)
+
+    $ darcs send -o ramaze_bundle
+    $ gzip -c ramaze_bundle > ramaze_bundle.gz
 
 
 = Getting Started
@@ -294,7 +294,7 @@ For help you can:
 There is a large number of people who made Ramaze possibe by their ongoing
 efforts in the world of open source and by encouraging and helping me.
 
-This list is by no means a full coverage of all these people, but I try to
+This list is by no means a full listing of all these people, but I try to
 get a good coverage despite that.
 
 I would like to thank:
@@ -318,9 +318,35 @@ I would like to thank:
     For continious encouragment and building the first real webpage on Ramaze.
     His bugreports were invaluable.
 
+* Jim Weirich
+
+    For Rake, which lifts off a lot of tasks from the shoulders of every
+    developer who uses it.
+
 * Thomas Sawyer a.k.a Trans
 
     Dragging me deep into the rabbit-hole and showing me how awesome Ruby
-    truely is.
+    truely is through his work on facets, ratchets and tons of other projects.
 
-    Also for working on facets and ratchets.
+* George Moschovitis a.k.a gmosx
+
+    For his tremendous efforts in the Nitro/Og framework, which is a source of
+    steady inspiration for Ramaze and brought me to Ruby in the first place.
+
+* Rob Levin a.k.a. lilo
+
+    He founded the most excellent Freenode IRC-network, where the most important
+    channels for rubyists are located (as is #ramaze).
+    May he rest in peace.
+
+* The guys (and gals) in the various channels on Freenode
+
+    As the people are way too many to be listed, here the channels that i call
+    my online home.
+    All the people in there deserve special thanks for getting me hooked to Ruby
+    and providing their help in a friendly and patient manner.
+
+    * #nitro
+    * #ruby-de
+    * #ruby-lang
+    * #rubyforce
