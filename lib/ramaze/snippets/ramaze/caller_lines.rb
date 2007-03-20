@@ -1,14 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-module Kernel
-  # Gives you back the file, line and method of the caller number i
-  # Example:
-  #   __caller_info__(1) # -> ['/usr/lib/ruby/1.8/irb/workspace.rb', '52', 'irb_binding']
-
-  def __caller_info__(i = 1)
-    file, line, meth = caller[i].scan(/(.*?):(\d+):in `(.*?)'/).first
-  end
+module Ramaze
 
   # Gives you some context around a specific line in a file.
   # the size argument works in both directions + the actual line,
@@ -33,7 +26,7 @@ module Kernel
   #     [ 124, "      @suspend_next = false",                       false ]
   #   ]
 
-  def __caller_lines__ file, line, size = 4
+  def self.caller_lines(file, line, size = 4)
     return [[0, file, true]] if file == '(eval)'
     lines = File.readlines(file)
     current = line.to_i - 1
