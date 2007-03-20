@@ -39,7 +39,6 @@ module Ramaze
       def handle rack_request, rack_response
         setup_environment rack_request, rack_response
         respond
-        response
       rescue Object => exception
         handle_error(exception)
       end
@@ -85,6 +84,8 @@ module Ramaze
             build_response(exception.message, STATUS_CODE[:internal_server_error])
           end
         end
+
+        respond
       rescue Object => ex
         Informer.error ex
         build_response(ex.message, STATUS_CODE[:internal_server_error])
@@ -121,7 +122,7 @@ module Ramaze
           last_error = filtered
         end
 
-        handle_error last_error
+        throw(:respond, handle_error(last_error))
       end
 
       def run_filter filter, path
