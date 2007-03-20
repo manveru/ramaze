@@ -13,9 +13,9 @@ module Ramaze
   #   redirect MainController
   #   redirect MainController, :foo
   #   redirect 'foo/bar'
+  #   redirect :index, :status => 309
   #
   # TODO:
-  #   - setting custom status-code, it ignores any preset ones at the moment
   #   - maybe some more options, like a delay
   #
 
@@ -26,11 +26,17 @@ module Ramaze
     #   redirect MainController, :foo
     #   redirect 'foo/bar'
 
-    def redirect target
+    def redirect *params
+      opts = params.last.respond_to?(:to_hash) ? params.pop : {}
+
+      target = R(*params)
+
       header = {
         'Location' => target
       }.merge(response.header)
-      status ||= STATUS_CODE[:see_other]
+
+      status = opts[:status] || STATUS_CODE[:see_other]
+
       body = %{Please follow <a href="#{target}">#{target}</a>!}
 
 

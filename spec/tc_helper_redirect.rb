@@ -15,11 +15,11 @@ class TCRedirectHelperController < Ramaze::Controller
   end
 
   def redirection
-    redirect R(:index)
+    redirect :index
   end
 
   def double_redirection
-    redirect R(:redirection)
+    redirect :redirection
   end
 
   def redirect_referer_action
