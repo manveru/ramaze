@@ -31,7 +31,7 @@ module Ramaze
 
       target = R(*params)
 
-      header = {
+      head = {
         'Location' => target
       }.merge(response.header)
 
@@ -40,9 +40,7 @@ module Ramaze
       body = %{Please follow <a href="#{target}">#{target}</a>!}
 
 
-      Dispatcher.build_response body, status, header
-
-      throw(:respond, response)
+      throw(:redirect, :body => body, :status => status, :head => head)
     end
 
     # redirect to the location the browser says it's coming from.

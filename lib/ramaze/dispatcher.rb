@@ -100,8 +100,14 @@ module Ramaze
         Informer.info "Request from #{request.remote_addr}: #{path}"
 
         catch(:respond) do
-          filtered = [filter(path)].flatten.first
-          return build_response(filtered, response.status)
+          redirection = catch(:redirect) do
+            filtered = [filter(path)].flatten.first
+            throw(:respond, build_response(filtered, response.status))
+          end
+
+          body, status, head = redirection.values_at(:body, :status, :head)
+          Informer.info("Redirect to `#{head['Location']}'")
+          throw(:respond, build_response(body, status, head))
         end
       end
 
@@ -153,6 +159,8 @@ module Ramaze
         end
 
         response.body, response.status = body, status
+
+        return response
       end
 
       def set_cookie
