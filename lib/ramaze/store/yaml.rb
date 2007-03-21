@@ -119,7 +119,16 @@ module Ramaze::Store
 
       def new
         entity = Entity.new
-        entity.instance_variable_set('@manager', self)
+        entity.manager = self
+        entity
+      end
+
+      def create_with hash = {}
+        entity = new
+        hash.each do |key, value|
+          entity.send("#{key}=", value)
+        end
+        entity.save
         entity
       end
 
