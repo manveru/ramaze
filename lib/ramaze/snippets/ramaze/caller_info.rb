@@ -9,6 +9,22 @@ module Ramaze
   #   # => ['/usr/lib/ruby/1.8/irb/workspace.rb', '52', 'irb_binding']
 
   def self.caller_info(i = 1)
-    file, line, meth = caller[i].scan(/(.*?):(\d+):in `(.*?)'/).first
+    file, line, meth = *parse_backtrace(caller[i])
+  end
+
+  # Parses one line of backtrace and tries to extract as much information
+  # as possible.
+  #
+  # Example:
+  #   line = "/web/repo/ramaze/lib/ramaze/dispatcher.rb:105:in `respond'"
+  #   Ramaze.parse_backtrace(line)
+  #   #=> ["/web/repo/ramaze/lib/ramaze/dispatcher.rb", "105", "respond"]
+
+  def self.parse_backtrace(line = '')
+    full = line.scan(/(.*?):(\d+):in `(.*?)'/).first
+    return full if full and full.all?
+    partial = line.scan(/(.*?):(\d+)/).first
+    return partial if partial and partial.all?
+    line
   end
 end

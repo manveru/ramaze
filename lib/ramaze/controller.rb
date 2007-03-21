@@ -273,7 +273,7 @@ module Ramaze
       end
 
       backtrace.map! do |line|
-        file, lineno, meth = *Ramaze.caller_info
+        file, lineno, meth = *Ramaze.parse_backtrace(line)
         backtrace_size = Ramaze::Global.inform_backtrace_size
         lines = Ramaze.caller_lines(file, lineno, backtrace_size)
 
