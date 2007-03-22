@@ -53,6 +53,8 @@ module Ramaze
         flash[:success] = 'OpenID - Verification done.'
       end
 
+      session.delete(:_openid_consumer_service)
+
       redirect session[:openid_entry]
     end
 
