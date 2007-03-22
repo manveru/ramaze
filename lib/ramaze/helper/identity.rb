@@ -2,11 +2,17 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'tmpdir'
-
 require 'openid'
 
 module Ramaze
-  module OpenidHelper
+
+  # This is called Identity to avoid collisions with the original openid.rb
+
+  module IdentityHelper
+    def self.included(klass)
+      klass.send(:helper, :flash)
+    end
+
     def openid_login_form
       %{
 <form method="GET" action="#{R(self, :openid_begin)}">
@@ -19,7 +25,7 @@ module Ramaze
     def openid_begin
       url = request['url']
       redirect_referrer if url.nil? or url.empty?
-      session[:openid_entry] = referrer
+      session[:openid_entry] = request.referrer
 
       openid_request = openid_consumer.begin(url)
       case openid_request.status
@@ -28,8 +34,7 @@ module Ramaze
 
         redirect_referrer
       when OpenID::SUCCESS
-        host, port   = Ramaze::Global.host, Ramaze::Global.port
-        root         = "http://#{host}:#{port}/"
+        root         = "http://#{request.http_host}/"
         return_to    = root[0..-2] + R(self, :openid_complete)
         redirect_url = openid_request.redirect_url(root, return_to)
 
@@ -44,6 +49,7 @@ module Ramaze
       when OpenID::FAILURE
         flash[:error] = 'OpenID - Verification failed.'
       when OpenID::SUCCESS
+        session[:openid_identity] = openid_response.identity_url
         flash[:success] = 'OpenID - Verification done.'
       end
 
@@ -58,6 +64,7 @@ module Ramaze
   end
 end
 
+
 openid_store_file = File.join(Dir.tmpdir, 'openid-store')
 
-Global.openid_store ||= OpenID::FilesystemStore.new(openid_store_file)
+Ramaze::Global.openid_store ||= OpenID::FilesystemStore.new(openid_store_file)
