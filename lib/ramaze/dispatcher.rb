@@ -145,7 +145,7 @@ module Ramaze
         if file
           response['Content-Type'] = Tool::MIME.type_for(file)
           Informer.debug("Serving static: #{file}")
-          File.open(file)
+          File.open(file, 'rb')
         end
       end
 
