@@ -43,10 +43,10 @@ module Ramaze
           file_template, path = file_template(file, controller)
           ctrl_template       = render_action(controller, action, *params)
 
-          if chosen = to_transform = alternate || file_template || ctrl_template
+          if chosen = alternate || file_template || ctrl_template
             pipeline(chosen, :binding => bound, :path => path)
           else
-            raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
+            raise_no_action(controller, action)
           end
         end
 
@@ -70,7 +70,15 @@ module Ramaze
         # Render an action, on a given controller with parameter
 
         def render_action(controller, action, *params)
-          ctrl_template = controller.send(action, *params).to_s
+          return controller.send(action, *params).to_s
+        rescue NoMethodError => ex
+          ourself = /undefined method `#{action}' for #<TCErrorController:/
+          raise_no_action(controller, action) unless ex.message =~ ourself
+          nil
+        end
+
+        def raise_no_action(controller, action)
+          raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
         end
 
         # go through the pipeline and call #transform on every object found there,
