@@ -28,7 +28,7 @@ module Ramaze
 
   def self.caller_lines(file, line, size = 4)
     return [[0, file, true]] if file == '(eval)'
-    lines = File.readlines(file)
+    lines = File.readlines(File.expand_path(file)) rescue []
     current = line.to_i - 1
 
     first = current - size
