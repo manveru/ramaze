@@ -142,8 +142,8 @@ module Ramaze
         compiled = %{[#{timestamp}] #{prefix}  #{message}}
         out =
           case Global.inform_to
-          when $stdout, :stderr, 'stdout' : $stdout
-          when $stdout, :stderr, 'stderr' : $stderr
+          when $stdout, :stdout, 'stdout' : $stdout
+          when $stderr, :stderr, 'stderr' : $stderr
           else
             File.open(Global.inform_to, 'ab+')
           end
