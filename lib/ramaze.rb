@@ -138,9 +138,11 @@ module Ramaze
   # closes the IO that Global.inform_to points to.
 
   def close_inform
-    if to = Global.inform_to and to.respond_to?(:close)
-      debug "close #{to.inspect}"
-      to.close until to.closed?
+    [Global.inform_to].flatten.each do |io|
+      if io = Global.inform_to and io.respond_to?(:close)
+        debug "close #{io.inspect}"
+        io.close until io.closed?
+      end
     end
   end
 
