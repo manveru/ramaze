@@ -15,26 +15,29 @@ end
 context "Error" do
   context "in dispatcher" do
     ramaze :mapping => {'/' => TCErrorController }, :error_page => true
-    Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error', }
 
     specify "your illegal stuff" do
-      get('/def/illegal').should == '404 - not found'
+      Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error', }
+
+      lambda{ get('/illegal') }.should_raise RuntimeError
     end
   end
 
   context "no controller" do
-    Ramaze::Global.mapping = {}
-    Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error', }
-
     specify "your illegal stuff" do
-      get('/def/illegal').should == '404 - not found'
+      Ramaze::Global.mapping = {}
+      Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error', }
+
+      lambda{ get('/illegal') }.should_raise RuntimeError
     end
   end
 
   context "only error page (custom)" do
-    Ramaze::Global.mapping = {'/' => TCErrorController }
-    Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error404', }
+    specify "custom static page" do
+      Ramaze::Global.mapping = {'/' => TCErrorController }
+      Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error404', }
 
-    get('/foo').should == '404 - not found'
+      lambda{ get('/foo') }.should_raise RuntimeError
+    end
   end
 end
