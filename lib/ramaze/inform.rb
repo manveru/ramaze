@@ -140,14 +140,24 @@ module Ramaze
     def log prefix, *messages
       [messages].flatten.each do |message|
         compiled = %{[#{timestamp}] #{prefix}  #{message}}
-        out =
-          case Global.inform_to
-          when $stdout, :stdout, 'stdout' : $stdout
-          when $stderr, :stderr, 'stderr' : $stderr
-          else
-            File.open(Global.inform_to, 'ab+')
-          end
-        out.puts(*compiled) unless (out.respond_to?(:closed?) and out.closed?)
+
+        pipes = Global.inform_pipes = pipify(Global.inform_to)
+
+        pipes.each do |pipe|
+          pipe.puts(*compiled) unless (pipe.respond_to?(:closed?) and pipe.closed?)
+        end
+      end
+    end
+
+    def pipify *ios
+      ios.flatten.map do |io|
+        case io
+        when :stdout, 'stdout' : $stdout
+        when :stderr, 'stderr' : $stderr
+        when IO : io
+        else
+          File.open(io.to_s, 'ab+')
+        end
       end
     end
 
