@@ -37,7 +37,7 @@ context "Error" do
       Ramaze::Global.mapping = {'/' => TCErrorController }
       Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error404', }
 
-      lambda{ get('/foo') }.should_raise RuntimeError
+      get('/foo').should == '404 - not found'
     end
   end
 end
