@@ -17,25 +17,16 @@ rescue LoadError
   end
 end
 
-begin
-  require 'term/ansicolor'
-  class String
-    include Term::ANSIColor
-  end
-rescue LoadError
-  puts "Please install term-ansicolor for better-looking results"
+class String
 
-  class String
-
-    # this will be set in case term/ansicolor cannot be
-    # required, just makes colorless output
-
-    def red() self end
-
-    # this will be set in case term/ansicolor cannot be
-    # required, just makes colorless output
-
-    def green() self end
+  {
+    :red => 31,
+    :green => 32,
+    :yellow => 33,
+  }.each do |key, value|
+    define_method key do
+      "\e[#{value}m" + self + "\e[0m"
+    end
   end
 end
 
