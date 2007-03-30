@@ -55,8 +55,7 @@ class TCFlashHelperThirdController < Ramaze::Controller
 end
 
 context "FlashHelper" do
-  ramaze :adapter => :mongrel,
-    :mapping => {
+  ramaze :mapping => {
       '/'       => TCFlashHelperFirstController,
       '/second' => TCFlashHelperSecondController,
       '/third'  => TCFlashHelperThirdController

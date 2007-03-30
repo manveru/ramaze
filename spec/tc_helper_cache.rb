@@ -36,7 +36,7 @@ class TCCacheHelperController < Ramaze::Controller
 end
 
 context "CacheHelper" do
-  ramaze(:adapter => :mongrel, :mapping => {'/' => TCCacheHelperController})
+  ramaze(:mapping => {'/' => TCCacheHelperController})
 
   specify "testrun" do
     get('/').should == 'TCCacheHelperController'
