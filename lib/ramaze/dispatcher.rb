@@ -57,6 +57,8 @@ module Ramaze
       # This feature is only available if your Global.error is true, which is
       # the default.
       #
+      #--
+      #
       # Yes, again, webrick _has_ to be really obscure, I searched for half an hour
       # and still have not the faintest idea how request_path is related to
       # request_uri...
@@ -74,8 +76,12 @@ module Ramaze
           error_path = handle_error[exception.class]
           error_path ||= handle_error.find{|k,v| k === exception}.last
 
-          request.path_info = error_path
-          respond
+          if exception.message =~ /`#{error_path.split('/').last}'/
+            build_response(exception.message, STATUS_CODE[:internal_server_error])
+          else
+            request.path_info = error_path
+            respond
+          end
         else
           if Global.error_page
             request.path_info = '/error'
@@ -85,7 +91,7 @@ module Ramaze
           end
         end
 
-        respond
+        response
       rescue Object => ex
         Informer.error ex
         build_response(ex.message, STATUS_CODE[:internal_server_error])
