@@ -64,8 +64,10 @@ specs.each do |spec|
     print result_format['failed'].red
 
   else
+    found = false
     stdout.each do |line|
       if line =~ /(\d+) specifications?, (\d+) failures?/
+        found = true
         s, f = $1.to_i, $2.to_i
         ss, sf = s.to_s.rjust(3), f.to_s.rjust(3)
 
@@ -76,11 +78,15 @@ specs.each do |spec|
 
         if f.nonzero?
           failed[spec] = hash
-          print((message << "#{f} failed ]").red)
+          print((message << "#{sf} failed ]").red)
         else
           print((message << "all passed ]").green)
         end
       end
+    end
+
+    unless found
+      print("[ please test standalone ]".red)
     end
   end
   puts
