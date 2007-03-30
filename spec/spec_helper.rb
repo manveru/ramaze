@@ -28,7 +28,7 @@ module Spec::Runner::ContextEval::ModuleMethods
   def ramaze_start hash = {}
     options = {
       :mode         => :debug,
-      :adapter      => :mongrel,
+      :adapter      => :webrick,
       :run_loose    => true,
       :error_page   => false,
       :port         => 7007,
