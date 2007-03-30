@@ -50,10 +50,20 @@ module Ramaze
     # the referer of the client or '/'
 
     def referer
-      @request.env['HTTP_REFERER'] || '/'
+      env['HTTP_REFERER'] || '/'
     end
 
     alias referrer referer
+
+    def fullpath
+      path = script_name + path_info
+      path << "?" << query_string  unless query_string.empty?
+      path
+    end
+
+    def env
+      @request.env
+    end
 
     # you can access the original @request via this method_missing,
     # first it tries to match your method with any of the HTTP parameters
@@ -62,7 +72,7 @@ module Ramaze
     def method_missing meth, *args, &block
       @request.send(meth, *args, &block)
     rescue
-      @request.env[meth.to_s.upcase]
+      env[meth.to_s.upcase]
     end
   end
 end

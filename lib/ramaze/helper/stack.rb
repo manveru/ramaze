@@ -46,7 +46,7 @@ module Ramaze
     # on the session[:STACK]
 
     def call this
-      (session[:STACK] ||= []) << request.request_uri
+      (session[:STACK] ||= []) << request.fullpath
       redirect(R(this))
     end
 
