@@ -4,6 +4,11 @@
 require 'pp'
 
 begin
+  require 'rubygems'
+rescue LoadError
+end
+
+begin
   require 'systemu'
 rescue LoadError
   puts "Please install systemu for better-looking results"
