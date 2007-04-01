@@ -412,10 +412,14 @@ task 'tutorial2html' do
         }
         code {
           background: #ddd;
+        }
+        pre code {
+          background: #ddd;
           width: 70%;
           display: block;
           margin: 1em;
           padding: 0.7em;
+          overflow: auto;
         }
       </style>
       <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
