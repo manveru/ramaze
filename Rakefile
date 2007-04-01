@@ -390,3 +390,38 @@ task 'build-readme' do
     end
   end
 end
+
+task 'tutorial2html' do
+  require 'bluecloth'
+
+  basefile = File.join('doc', 'tutorial', 'todolist')
+
+  content = File.read(basefile + '.txt')
+
+  html = BlueCloth.new(content).to_html
+
+  wrap = %{
+  <html>
+    <head>
+      <title>Ramaze Tutorial: Todolist</title>
+      <style>
+        body {
+          background: #eee;
+        }
+        code {
+          background: #ddd;
+          width: 70%;
+          display: block;
+          margin: 1em;
+          padding: 0.7em;
+        }
+      </style>
+    </head>
+    <body>
+      #{html}
+    </body>
+  </html>
+  }.strip
+
+  File.open(basefile + '.html', 'w+'){|f| f.puts(wrap) }
+end
