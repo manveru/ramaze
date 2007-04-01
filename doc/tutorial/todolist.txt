@@ -1,4 +1,4 @@
-= To-do List Tutorial
+# To-do List Tutorial
 
 Welcome to our official tutorial, the mandatory to-do list.
 I'm writing this while doing the steps to assure it will work for you.
@@ -23,7 +23,7 @@ RubyForge.
 Thanks in advance.
 The author of the tutorial, Michael 'manveru' Fellinger
 
-== First Step, Create
+## First Step, Create
 
 We are using `ramaze --create todolist` to create a new application.
 Ramaze will then create the directory and fill it with a skeleton of a quite
@@ -32,12 +32,12 @@ to-do list.
 
 So run:
 
-  $ ramaze --create todolist
+    $ ramaze --create todolist
 
 done.
 
 
-== Second Step, M, like Model
+## Second Step, M, like Model
 
 Ramaze comes at the moment only with a simple wrapper of the YAML::Store.
 So we are going to base this on the tools available, you can just do the same
@@ -48,24 +48,24 @@ YAML::Store already, so we are just gonna modify it a bit to use our wrapper.
 
 Instead of 'yaml/store' use:
 
-  require 'ramaze/store/default'
+    require 'ramaze/store/default'
 
 And further:
 
-  TodoList = Store::Default.new 'todolist.yaml'
+    TodoList = Store::Default.new 'todolist.yaml'
 
 To have a base to start off of, let's add some items as well.
 
-  {
-    'Laundry'     => {:done => false},
-    'Wash dishes' => {:done => false},
+    {
+      'Laundry'     => {:done => false},
+      'Wash dishes' => {:done => false},
 
-  }.each do |title, parameters|
-    TodoList[title] = parameters
-  end
+    }.each do |title, parameters|
+      TodoList[title] = parameters
+    end
 
 
-== Third Step, V, like View
+## Third Step, V, like View
 
 Now let's get our hands dirty and just edit the templates for our to-do list.
 
@@ -75,22 +75,22 @@ of Ramaze, called Ezamar.
 Let's put some things in there, I'll explain the syntax as we go, it's quite
 simple.
 
-  <html>
-    <head>
-      <title>TodoList</title>
-    </head>
-    <body>
-      <h1>TodoList</h1>
-      <ul>
-        <?r
-          TodoList.each do |title, parameters|
-            status = parameters[:done] ? 'done' : 'not done'
-          ?>
-          <li>#{title}: #{status}</li>
-        <?r end ?>
-      </ul>
-    </body>
-  </html>
+    <html>
+      <head>
+        <title>TodoList</title>
+      </head>
+      <body>
+        <h1>TodoList</h1>
+        <ul>
+          <?r
+            TodoList.each do |title, parameters|
+              status = parameters[:done] ? 'done' : 'not done'
+            ?>
+            <li>#{title}: #{status}</li>
+          <?r end ?>
+        </ul>
+      </body>
+    </html>
 
 I will assume that you are familiar with basic Ruby already, so let's
 concentrate on the things new here.
@@ -104,10 +104,10 @@ page.
 The whole Template would expand to something like this (only showing the
 interesting part)
 
-  <ul>
-    <li>Laundry: not done</li>
-    <li>Wash dishes: not done</li>
-  </ul>
+    <ul>
+      <li>Laundry: not done</li>
+      <li>Wash dishes: not done</li>
+    </ul>
 
 That wasn't too bad, huh?
 
@@ -124,7 +124,7 @@ now access it by browsing to http://localhost:7000/
 `ramaze --help` to see some other options.
 
 
-== Fourth Step, C, like Controller
+## Fourth Step, C, like Controller
 
 The last part of the MVC-paradigm is the Controller.
 
@@ -144,11 +144,11 @@ edit the file `src/controller/main.rb`.
 
 The contents of it are like following:
 
-  class MainController < Controller
-    def index
-      "Hello, World"
+    class MainController < Controller
+      def index
+        "Hello, World"
+      end
     end
-  end
 
 The only method right now is #index, with a simple and for the moment quite
 useless "Hello, World". The relationship between the methods on the controller
@@ -157,35 +157,35 @@ and the templates is 1:1, so the method #index is combined with the template
 
 Let's get back to editing and change the index-method to this:
 
-  def index
-    @tasks = TodoList.content
-    @tasks.each do |title, parameters|
-      status = parameters[:done] ? 'done' : 'not done'
-      @tasks[title] = status
+    def index
+      @tasks = TodoList.content
+      @tasks.each do |title, parameters|
+        status = parameters[:done] ? 'done' : 'not done'
+        @tasks[title] = status
+      end
     end
-  end
 
 This will take care of the logic inside the template, which now should be
 changed to do following:
 
-  <html>
-    <head>
-      <title>TodoList</title>
-    </head>
-    <body>
-      <h1>TodoList</h1>
-      <a href="/new">New Task</a>
-      <?r if @tasks.empty? ?>
-        No Tasks
-      <?r else ?>
-        <ul>
-          <?r @tasks.each do |title, status| ?>
-            <li>#{title}: #{status}</li>
-          <?r end ?>
-        </ul>
-      <?r end ?>
-    </body>
-  </html>
+    <html>
+      <head>
+        <title>TodoList</title>
+      </head>
+      <body>
+        <h1>TodoList</h1>
+        <a href="/new">New Task</a>
+        <?r if @tasks.empty? ?>
+          No Tasks
+        <?r else ?>
+          <ul>
+            <?r @tasks.each do |title, status| ?>
+              <li>#{title}: #{status}</li>
+            <?r end ?>
+          </ul>
+        <?r end ?>
+      </body>
+    </html>
 
 The rest of the template can stay the same.
 
@@ -198,31 +198,31 @@ Some things you should know:
 * Instance-variables defined in the Controller are available in the View.
 * The return-value of the Controller does not matter (in this case).
 
-== Fifth Step, getting dynamic
+## Fifth Step, getting dynamic
 
 We set out to build the ultimate to-do list, but there are still some things
 missing. First off, we want to add new tasks, so let's get that done.
 
 Add a link on the `template/index.xhtml` like this:
 
-  <h1>TodoList</h1>
-  <a href="/new">New Task</a>
+    <h1>TodoList</h1>
+    <a href="/new">New Task</a>
 
 Open a new file `template/new.xhtml` with a form to add a new task.
 
-  <html>
-    <head>
-      <title>TodoList</title>
-    </head>
-    <body>
-      <h1>New Task</h1>
-      <a href="/">Back to TodoList</a>
-      <form method="POST" action="create">
-        Task: <input type="text" name="title" /><br />
-        <inpyt type="submit" />
-      </form>
-    </body>
-  </html>
+    <html>
+      <head>
+        <title>TodoList</title>
+      </head>
+      <body>
+        <h1>New Task</h1>
+        <a href="/">Back to TodoList</a>
+        <form method="POST" action="create">
+          Task: <input type="text" name="title" /><br />
+          <inpyt type="submit" />
+        </form>
+      </body>
+    </html>
 
 We will not need a method for this on our controller, in fact, actions can
 consist of either method and template or only one of them. The Controller
@@ -244,11 +244,11 @@ OK, let's implement the action for #create, all we want to do is take the
 requests parameters and create a new task for it, this looks like following on
 your MainController.
 
-  def create
-    title = request['title']
-    TodoList[title] = {:done => false}
-    redirect R(self)
-  end
+    def create
+      title = request['title']
+      TodoList[title] = {:done => false}
+      redirect R(self)
+    end
 
 That's all folks!
 
@@ -258,7 +258,7 @@ and redirect back to the mapping of the current Controller ('/' in this case).
 Now you can create as many tasks as you want, please don't get overworked ;)
 
 
-== Sixth Step, open and close tasks
+## Sixth Step, open and close tasks
 
 Since the nature of tasks is to be done eventually
 we will need some way to mark it as done or open tasks again.
@@ -266,30 +266,30 @@ we will need some way to mark it as done or open tasks again.
 Jump into `template/index.xhtml` and do the following:
 
 
-  <?r @tasks.each do |title, status, toggle| ?>
-    <li>
-      #{title}: #{status} - #{toggle}
-    </li>
-  <?r end ?>
+    <?r @tasks.each do |title, status, toggle| ?>
+      <li>
+        #{title}: #{status} - #{toggle}
+      </li>
+    <?r end ?>
 
 We added a new element here, `toggle`, the Controller should give us
 a link to change the status corresponding to the status of the task, so off
 we go and change the index method on the controller once again:
 
-  def index
-    @tasks = []
-    TodoList.original.each do |title, parameters|
-      if parameters[:done]
-        status = 'done'
-        toggle = link( R( self, :open, CGI.escape(title) ), :title => 'Open Task' )
-      else
-        status = 'not done'
-        toggle = link( R( self, :close, CGI.escape(title) ), :title => 'Close Task' )
+    def index
+      @tasks = []
+      TodoList.original.each do |title, parameters|
+        if parameters[:done]
+          status = 'done'
+          toggle = link( R( self, :open, CGI.escape(title) ), :title => 'Open Task' )
+        else
+          status = 'not done'
+          toggle = link( R( self, :close, CGI.escape(title) ), :title => 'Close Task' )
+        end
+        @tasks << [title, status, toggle]
       end
-      @tasks << [title, status, toggle]
+      @tasks.sort!
     end
-    @tasks.sort!
-  end
 
 Wow, quite some new stuff here. Let me explain that in detail.
 
@@ -297,7 +297,7 @@ We first decide whether a task is done or not, then go on and provide a link to
 toggle the status, link and R are both methods that help you do that.
 the result will be something like:
 
-  <a href="/open/Wash+dishes">Close Task</a>
+    <a href="/open/Wash+dishes">Close Task</a>
 
 R actually is responsible to build the links href, for more information please
 take a look at the RDoc for LinkHelper.
@@ -308,55 +308,55 @@ now we use an array to hold our tasks and sort it.
 
 Now back again to `template/index.xhtml` and change it as follows:
 
-  <?r @tasks.each do |title, status, toggle| ?>
-    <li>
-      #{title}: #{status} [ #{toggle} ]
-    </li>
-  <?r end ?>
+    <?r @tasks.each do |title, status, toggle| ?>
+      <li>
+        #{title}: #{status} [ #{toggle} ]
+      </li>
+    <?r end ?>
 
 As usual, the things not changed are omitted for terseness.
 
 And as usual since the links for open and close don't lead anywhere, add the
 corresponding methods to the Controller:
 
-  def open title
-    task_status title, false
-    redirect R(self)
-  end
+    def open title
+      task_status title, false
+      redirect R(self)
+    end
 
-  def close title
-    task_status title, true
-    redirect R(self)
-  end
+    def close title
+      task_status title, true
+      redirect R(self)
+    end
 
-  private
+    private
 
-  def task_status title, status
-    task = TodoList[title]
-    task[:done] = status
-    TodoList[title] = task
-  end
+    def task_status title, status
+      task = TodoList[title]
+      task[:done] = status
+      TodoList[title] = task
+    end
 
 Oh, now what have we got here?
 private declares that methods from here on are only to be used within the
 Controller itself, we define an #task_status method that takes the title and
-status to be set so we don't have to repeat that code in #open and #close and
-follow the DRY (Don't repeat yourself) paradigm.
+status to be set so we don't have to repeat that code in _#open_ and _#close_
+and follow the DRY (Don't repeat yourself) paradigm.
 
 Another thing we have not encountered so far is that you can define your public
 methods to take parameters on their own, they will be calculated from requests.
 
-  '/open/Wash+dishes'
+    '/open/Wash+dishes'
 
 will translate into:
 
-  open('Wash dishes')
+    open('Wash dishes')
 
 Which in turn will call task_status('Wash dishes', false)
 
 That's it, go on and try it :)
 
-== Seventh Step, delete tasks
+## Seventh Step, delete tasks
 
 Well, creating, opening and closing work now, one of the things you will
 consider is to delete a task permanently.
@@ -364,23 +364,23 @@ consider is to delete a task permanently.
 This is just two little changes away, so let's add the link for deletion in our
 Controller:
 
-  delete = link( R( self, :delete, CGI.escape(title) ), :title => 'Delete' )
-  @tasks << [title, status, toggle, delete]
+    delete = link( R( self, :delete, CGI.escape(title) ), :title => 'Delete' )
+    @tasks << [title, status, toggle, delete]
 
 and an corresponding method while we're at it:
 
-  def delete title
-    TodoList.delete title
-    redirect R(self)
-  end
+    def delete title
+      TodoList.delete title
+      redirect R(self)
+    end
 
 Now jumping to `template/index.xhtml` again, change it so it shows the link:
 
-  <?r @tasks.each do |title, status, toggle, delete| ?>
-    <li>
-      #{title}: #{status} [ #{toggle} | #{delete} ]
-    </li>
-  <?r end ?>
+    <?r @tasks.each do |title, status, toggle, delete| ?>
+      <li>
+        #{title}: #{status} [ #{toggle} | #{delete} ]
+      </li>
+    <?r end ?>
 
 Voilà, you now have acquired the Certificate of Ramazeness, our accounting-
 section will contact you within the next few days.
@@ -389,32 +389,32 @@ Just kidding, but that really are the basics, in the next few steps I will
 explain some more advanced concepts of Ramaze and the templating.
 
 
-== Eight Step, Elements
+## Eight Step, Elements
 
-  <Page></Page>
+    <Page></Page>
 
 This is called an Element, Ramaze will go and search for a class that matches
-the name Page and responds to #render. Then it will go and hand the content in
+the name Page and responds to _#render_. Then it will go and hand the content in
 between to that Element.
 
 Sounds weird?
 
 Let us have a look at our templates, they all got some repetitive stuff, like:
 
-  <html>
-    <head>
-      <title>TodoList</title>
-    </head>
-    <body>
-      <h1>some title</h1>
-    </body>
-  </html>
+    <html>
+      <head>
+        <title>TodoList</title>
+      </head>
+      <body>
+        <h1>some title</h1>
+      </body>
+    </html>
 
 How about replacing that with something short and nice:
 
-  <Page title="TodoList">
-    your other content
-  </Page>
+    <Page title="TodoList">
+      your other content
+    </Page>
 
 Would be nice of course, and when you start having more templates it makes an
 awful lot of sense to change the enclosing stuff in one place.
@@ -423,43 +423,43 @@ So let's apply DRY here as well.
 
 Take a look at the `src/element/page.rb`
 
-  class Page < Element
-    def render
-      %{
-      <html>
-        <head>
-          <title>Welcome to Ramaze</title>
-        </head>
-        <body>
-          #{content}
-        </body>
-      </html>
-      }
+    class Page < Element
+      def render
+        %{
+        <html>
+          <head>
+            <title>Welcome to Ramaze</title>
+          </head>
+          <body>
+            #{content}
+          </body>
+        </html>
+        }
+      end
     end
-  end
 
 Alright, most things we need are in place already, the most important thing
-is the #content method that we call with #{content} inside the string in
-#render.
+is the _#content_ method that we call with _#{content}_ inside the string in
+_#render_.
 
 Just adopt it to your liking, I'll just use the things we had in our templates
 so far:
 
-  class Page < Element
-    def render
-      %{
-      <html>
-        <head>
-          <title>TodoList</title>
-        </head>
-        <body>
-          <h1>#{@hash['title']}</h1>
-          #{content}
-        </body>
-      </html>
-      }
+    class Page < Element
+      def render
+        %{
+        <html>
+          <head>
+            <title>TodoList</title>
+          </head>
+          <body>
+            <h1>#{@hash['title']}</h1>
+            #{content}
+          </body>
+        </html>
+        }
+      end
     end
-  end
 
 Please note that the @hash is filled with the things you pass as parameters
 to tye Page-tag.
@@ -468,75 +468,75 @@ And let's change our templates as well.
 
 First the `template/index.xhtml`
 
-  <Page title="TodoList">
-    <a href="/new">New Task</a>
-    <?r if @tasks.empty? ?>
-      No Tasks
-    <?r else ?>
-      <ul>
-        <?r @tasks.each do |title, status, toggle, delete| ?>
-          <li>
-            #{title}: #{status} [ #{toggle} | #{delete} ]
-          </li>
-        <?r end ?>
-      </ul>
-    <?r end ?>
-  </Page>
+    <Page title="TodoList">
+      <a href="/new">New Task</a>
+      <?r if @tasks.empty? ?>
+        No Tasks
+      <?r else ?>
+        <ul>
+          <?r @tasks.each do |title, status, toggle, delete| ?>
+            <li>
+              #{title}: #{status} [ #{toggle} | #{delete} ]
+            </li>
+          <?r end ?>
+        </ul>
+      <?r end ?>
+    </Page>
 
 and the `template/new.xhtml`
 
-  <Page title="New Task">
-    <a href="/">Back to TodoList</a>
-    <form method="POST" action="create">
-      Task: <input type="text" name="title" /><br />
-      <input type="submit" />
-    </form>
-  </Page>
+    <Page title="New Task">
+      <a href="/">Back to TodoList</a>
+      <form method="POST" action="create">
+        Task: <input type="text" name="title" /><br />
+        <input type="submit" />
+      </form>
+    </Page>
 
 Alright, now just go and look at the result in the browser, try changing
 the things inside the Element and look at how it behaves.
 
 
-== Ninth Step, Prettify
+## Ninth Step, Prettify
 
 Let's structure the data inside the list a little bit, in this case into a table to get it line up properly and look actually structured.
 
 So, from what we have right now:
 
-  <ul>
-    <?r @tasks.each do |title, status, toggle, delete| ?>
-      <li>
-        #{title}: #{status} [ #{toggle} | #{delete} ]
-      </li>
-    <?r end ?>
-  </ul>
+    <ul>
+      <?r @tasks.each do |title, status, toggle, delete| ?>
+        <li>
+          #{title}: #{status} [ #{toggle} | #{delete} ]
+        </li>
+      <?r end ?>
+    </ul>
 
 To something like this:
 
-  <table>
-    <?r @tasks.each do |title, status, toggle, delete| ?>
-      <tr>
-        <td class="title">  #{title}  </td>
-        <td class="status"> #{status} </td>
-        <td class="toggle"> #{toggle} </td>
-        <td class="delete"> #{delete} </td>
-      </tr>
-    <?r end ?>
-  </table>
+    <table>
+      <?r @tasks.each do |title, status, toggle, delete| ?>
+        <tr>
+          <td class="title">  #{title}  </td>
+          <td class="status"> #{status} </td>
+          <td class="toggle"> #{toggle} </td>
+          <td class="delete"> #{delete} </td>
+        </tr>
+      <?r end ?>
+    </table>
 
 And, since we have proper classes to address some style sheets, jump into the Page element and add some style sheet like that:
 
-  <head>
-    <title>TodoList</title>
-    <style>
-      table     { width:       100%;              }
-      tr        { background:  #efe; width: 100%; }
-      tr:hover  { background:  #dfd;              }
-      td.title  { font-weight: bold; width: 60%;  }
-      td.status { margin:      1em;               }
-      a         { color:       #3a3;              }
-    </style>
-  </head>
+    <head>
+      <title>TodoList</title>
+      <style>
+        table     { width:       100%;              }
+        tr        { background:  #efe; width: 100%; }
+        tr:hover  { background:  #dfd;              }
+        td.title  { font-weight: bold; width: 60%;  }
+        td.status { margin:      1em;               }
+        a         { color:       #3a3;              }
+      </style>
+    </head>
 
 That looks quite a bit nicer, right?
 And yes, if you don't like tables (though this is an entirely legit use in my opinion, you can just do it like you want, using nested lists or divs/spans, replacing the open/close and delete links with nice images and changing the style according to the status.
