@@ -401,6 +401,8 @@ task 'tutorial2html' do
   html = BlueCloth.new(content).to_html
 
   wrap = %{
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html>
     <head>
       <title>Ramaze Tutorial: Todolist</title>
@@ -416,6 +418,7 @@ task 'tutorial2html' do
           padding: 0.7em;
         }
       </style>
+      <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
     </head>
     <body>
       #{html}

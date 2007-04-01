@@ -389,7 +389,7 @@ Just kidding, but that really are the basics, in the next few steps I will
 explain some more advanced concepts of Ramaze and the templating.
 
 
-## Eight Step, Elements
+## Eighth Step, Elements
 
     <Page></Page>
 
