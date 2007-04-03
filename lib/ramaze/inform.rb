@@ -34,7 +34,7 @@ module Ramaze
 
     def debug *messages
       return unless inform_tag?(:debug)
-      log(Global.inform_prefix_debug, *messages.map{|m| m.inspect})
+      log :debug, *messages.map(&:inspect)
     end
 
     alias D debug
@@ -60,7 +60,7 @@ module Ramaze
 
     def meth_debug meth, *params
       return unless inform_tag?(:debug)
-      log(Global.inform_prefix_debug, "#{meth}(#{params.map{|pa| pa.inspect}.join(', ')})")
+      log :debug, "#{meth}(#{params.map{|pa| pa.inspect}.join(', ')})"
     end
 
     alias mD meth_debug
@@ -70,9 +70,11 @@ module Ramaze
     # Use of this method is mainly for things that are not overly verbose
     # but give you a general overview about what's happening.
 
-    def info message
+    def info *messages
       return unless inform_tag?(:info)
-      log(Global.inform_prefix_info, message)
+      messages.each do |message|
+        log :info, message
+      end
     end
 
     def info?() inform_tag?(:info) end
@@ -92,17 +94,16 @@ module Ramaze
 
     def error *messages
       return unless inform_tag?(:error)
-      prefix = Global.inform_prefix_error
       messages.each do |e|
         if e.respond_to?(:message) and e.respond_to?(:backtrace)
-          log prefix, e.message
+          log :error, e.message
           if (Global.inform_backtrace_for || Global.inform_tags).any?{|t| inform_tag?(t)}
             e.backtrace[0..10].each do |bt|
-              log prefix, bt
+              log :error, bt
             end
           end
         else
-          log prefix, e
+          log :error, e
         end
       end
     end
@@ -137,42 +138,45 @@ module Ramaze
     # To log to a file just do
     #   Global.inform_to = File.open('log.txt', 'a+')
 
-    def log prefix, *messages
-      [messages].flatten.each do |message|
-        with_color = %{[#{timestamp}] #{colorize(prefix)}  #{message}}
-        no_color   = %{[#{timestamp}] #{prefix}  #{message}}
+    def log tag, *messages
+      messages.flatten!
 
-        pipes = Global.inform_pipes = pipify(Global.inform_to)
+      pipify(Global.inform_to).each do |(do_color, pipe)|
+        next if pipe.respond_to?(:closed?) and pipe.closed?
 
-        pipes.each do |(color, pipe)|
-          color = :no_color unless Global.inform_color
-          text = color == :color ? with_color : no_color
-          pipe.puts(*text) unless (pipe.respond_to?(:closed?) and pipe.closed?)
+        prefix = colorize(tag, Global["inform_prefix_#{tag}"], do_color)
+
+        messages.each do |message|
+          pipe.puts(log_interpolate(prefix, message))
         end
       end
     end
 
-    def colorize prefix
-      prefix = prefix.to_s
+    def colorize tag, prefix, do_color
+      return prefix unless Global.inform_color and do_color
+      color = Global.inform_colors[tag] ||= :white
+      prefix.send(color)
+    end
 
-      case prefix
-      when Global.inform_prefix_error : prefix.red
-      when Global.inform_prefix_info  : prefix.green
-      when Global.inform_prefix_debug : prefix.yellow
-      end
+    def log_interpolate prefix, text, timestamp = timestamp
+      message = Global.inform_format.dup
+
+      { '%time' => timestamp, '%prefix' => prefix, '%text' => text
+      }.each{|from, to| message.gsub!(from, to) }
+
+      message
     end
 
     def pipify *ios
+      color, no_color = true, false
+
       ios.flatten.map do |io|
         case io
-        when STDOUT, :stdout, 'stdout'
-          [:color, STDOUT]
-        when STDERR, :stderr, 'stderr'
-          [:color, STDERR]
-        when IO
-          [:no_color, io]
+        when STDOUT, :stdout, 'stdout' : [ color, STDOUT ]
+        when STDERR, :stderr, 'stderr' : [ color, STDERR ]
+        when IO                        : [ no_color, io  ]
         else
-          [:no_color, File.open(io.to_s, 'ab+')]
+          [no_color, File.open(io.to_s, 'ab+')]
         end
       end
     end

@@ -51,11 +51,15 @@ module Ramaze
       :inform_to             => $stdout,
       :inform_color          => false,
       :inform_tags           => Set.new([:debug, :info, :error]),
+      :inform_format         => "[%time] %prefix  %text",
       :inform_backtrace_size => 10,
       :inform_timestamp      => "%Y-%m-%d %H:%M:%S",
       :inform_prefix_info    => 'INFO ',
       :inform_prefix_debug   => 'DEBUG',
       :inform_prefix_error   => 'ERROR',
+      :inform_colors         => { :info  => :green,
+                                  :debug => :yellow,
+                                  :error => :red, },
 
       :startup => [],
       :ramaze_startup => [
