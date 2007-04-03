@@ -38,9 +38,12 @@
 #                      updated files in your application
 # -r, --run-loose:: don't take control after startup.
 #                   this is useful for testcases.
+# -c, --console:: Start an IRB-like session.
+# --backtrace:: Show full backtrace at errors on start.
 # --cache:: use the simple caching based on the signature
 #           of your requests (experimental)
 # --tidy:: run Tool::Tidy over text/html output
+#
 #
 # -h, --help::      print this help
 # -v, --version::   print the version
@@ -54,7 +57,7 @@
 
 require 'ramaze'
 
-runner = ARGV.find{|file| File.file?(file)} || 'main.rb'
+runner = File.expand_path(ARGV.find{|file| File.file?(file)} || 'main.rb')
 
 begin
   require 'getoptlong'
@@ -86,6 +89,7 @@ begin
     [ '--run-loose',      '-r', GetoptLong::NO_ARGUMENT       ],
 
     [ '--console',        '-c', GetoptLong::NO_ARGUMENT       ],
+    [ '--backtrace',            GetoptLong::NO_ARGUMENT       ],
     [ '--help',           '-h', GetoptLong::NO_ARGUMENT       ],
     [ '--version',        '-v', GetoptLong::NO_ARGUMENT       ],
     [ '--copyright',            GetoptLong::NO_ARGUMENT       ],
@@ -127,15 +131,20 @@ begin
     when :template_root     : options[:template_root] = arg
     when :autoreload        : options[:autoreload] = arg.to_i
     when :run_loose         : options[:run_loose] = true
+    when :console           : options[:console] = true
+    when :backtrace         : options[:backtrace] = true
     end
   end
 
   begin
-    puts "running #{File.expand_path(runner)}"
+    puts "running #{runner}"
     require runner
-  rescue LoadError
-    puts "Cannot find #{runner}, please provide a file to execute"
-    puts "Example: $ ramaze myapp.rb"
+  rescue LoadError => ex
+    puts ex
+    puts ex.backtrace if options[:backtrace]
+    puts "Maybe i cannot find `#{runner}'"
+    puts "You could provide a file to execute like:"
+    puts "$ ramaze myapp.rb"
     exit
   end
 
