@@ -44,7 +44,12 @@ module Ramaze::Adapter
           yield body.read(1024)
         end
       else
-        yield body
+        if Global.tidy
+          require 'ramaze/tool/tidy'
+          yield Ramaze::Tool::Tidy.tidy(body)
+        else
+          yield body
+        end
       end
     end
   end

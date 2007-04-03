@@ -10,7 +10,22 @@ module Ramaze
     module Tidy
 
       # set this to define a custom path to your tidy.so
-      trait[:path] ||= `locate libtidy.so`.strip
+      trait[:paths] ||= %w[
+        /usr/lib/libtidy.so
+        /usr/local/lib/libtidy.so
+      ]
+
+      trait[:path] ||= nil
+
+      trait[:options] ||= {
+        :output_xml => true,
+        :input_encoding => :utf8,
+        :output_encoding => :utf8,
+        :indent_spaces => 2,
+        :indent => :auto,
+        :markup => :yes,
+        :wrap => 500
+      }
 
       # dirty html in, tidy html out
       # To activate Tidy for everything outgoing (given that it is of
@@ -37,20 +52,25 @@ module Ramaze
       def self.tidy html, options = {}
         require 'tidy'
 
-        ::Tidy.path = trait[:path]
+        unless found = trait[:path]
+          found = trait[:paths].find do |path|
+            File.exists?(path)
+          end
+          trait[:path] = found
+        end
 
-        defaults = {
-          :output_xml => true,
-          :input_encoding => :utf8,
-          :output_encoding => :utf8,
-          :indent_spaces => 2,
-          :indent => :auto,
-          :markup => :yes,
-          :wrap => 500
-        }
+        path = trait[:path]
+
+        unless path
+          Informer.error "Could not find `libtidy.so' in #{trait[:paths].inspect}"
+          return html
+        end
+
+        ::Tidy.path = path
 
         ::Tidy.open(:show_warnings => true) do |tidy|
-          defaults.merge(options).each do |key, value|
+          opts = trait[:options].merge(options)
+          opts.each do |key, value|
             tidy.options.send("#{key}=", value.to_s)
           end
           tidy.clean(html)
