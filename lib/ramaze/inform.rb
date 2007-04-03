@@ -197,7 +197,7 @@ module Ramaze
 
   # The usual instance of GlobalInformer, for example used for WEBrick
 
-  Informer = GlobalInformer.new
+  Informer = GlobalInformer.new unless defined?(Informer)
 
   include Inform
 end
