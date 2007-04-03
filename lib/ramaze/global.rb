@@ -49,6 +49,7 @@ module Ramaze
       :template_root  => 'template',
 
       :inform_to             => $stdout,
+      :inform_color          => false,
       :inform_tags           => Set.new([:debug, :info, :error]),
       :inform_backtrace_size => 10,
       :inform_timestamp      => "%Y-%m-%d %H:%M:%S",

@@ -139,24 +139,40 @@ module Ramaze
 
     def log prefix, *messages
       [messages].flatten.each do |message|
-        compiled = %{[#{timestamp}] #{prefix}  #{message}}
+        with_color = %{[#{timestamp}] #{colorize(prefix)}  #{message}}
+        no_color   = %{[#{timestamp}] #{prefix}  #{message}}
 
         pipes = Global.inform_pipes = pipify(Global.inform_to)
 
-        pipes.each do |pipe|
-          pipe.puts(*compiled) unless (pipe.respond_to?(:closed?) and pipe.closed?)
+        pipes.each do |(color, pipe)|
+          color = :no_color unless Global.inform_color
+          text = color == :color ? with_color : no_color
+          pipe.puts(*text) unless (pipe.respond_to?(:closed?) and pipe.closed?)
         end
+      end
+    end
+
+    def colorize prefix
+      prefix = prefix.to_s
+
+      case prefix
+      when Global.inform_prefix_error : prefix.red
+      when Global.inform_prefix_info  : prefix.green
+      when Global.inform_prefix_debug : prefix.yellow
       end
     end
 
     def pipify *ios
       ios.flatten.map do |io|
         case io
-        when :stdout, 'stdout' : $stdout
-        when :stderr, 'stderr' : $stderr
-        when IO : io
+        when STDOUT, :stdout, 'stdout'
+          [:color, STDOUT]
+        when STDERR, :stderr, 'stderr'
+          [:color, STDERR]
+        when IO
+          [:no_color, io]
         else
-          File.open(io.to_s, 'ab+')
+          [:no_color, File.open(io.to_s, 'ab+')]
         end
       end
     end
