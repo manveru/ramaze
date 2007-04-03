@@ -7,7 +7,6 @@ class Page < Controller
   end
 
   def render
-    p :render => content
     %{
 <html>
   <head>
