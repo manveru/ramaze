@@ -289,11 +289,11 @@ end
 
 desc "generate doc/TODO from the TODO tags in the source"
 task 'todolist' do
-  list = invoke('todo').split("\n")[2..-1]
+  list = `rake todo`
   tasks = {}
   current = nil
 
-  list.map do |line|
+  list.split("\n")[2..-1].each do |line|
     if line =~ /TODO/ or line.empty?
     elsif line =~ /^vim/
       current = line.split[1]
