@@ -66,7 +66,7 @@ module Ramaze
 
       def handle_error exception
         Informer.error exception
-        Informer.meth_debug :handle_error, exception
+        Informer.debug "handle_error(#{exception.inspect})"
         Thread.current[:exception] = exception
 
         handle_error = trait[:handle_error]

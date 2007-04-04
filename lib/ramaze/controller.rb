@@ -57,7 +57,7 @@ module Ramaze
       # Parameters are CGI.unescaped
 
       def resolve_controller path
-        Informer.meth_debug :resolve_controller, path
+        Informer.debug "resolve_controller(#{path.inspect})"
         track = path.split('/')
         controller = false
         action = false
@@ -98,7 +98,7 @@ module Ramaze
       #   identical to def x(*a) for some odd reason
 
       def resolve_action controller, paraction
-        Informer.meth_debug :resolve_action, controller, paraction
+        Informer.debug "resolve_action(#{controller.inspect}, #{paraction.inspect})"
 
         meths =
           (controller.ancestors - [Kernel, Object]).inject([]) do |sum, klass|
