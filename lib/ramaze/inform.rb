@@ -22,8 +22,8 @@ module Ramaze
   module Inform
     # the possible tags
     trait :tags => {
-      :debug  => lambda{|*m| m.map(&:inspect)},
-      :info   => lambda{|*m| m.map(&:to_s)},
+      :debug  => lambda{|*m| m.map{|o| o.inspect} },
+      :info   => lambda{|*m| m.map{|o| o.to_s}    },
       :error  => lambda do |m|
         if m.respond_to?(:exception)
           [ m.inspect,
