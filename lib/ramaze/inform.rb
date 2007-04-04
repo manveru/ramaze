@@ -21,94 +21,34 @@ module Ramaze
 
   module Inform
     # the possible tags
-    trait :tags => [:debug, :info, :error]
-
-    private
-
-    # general debugging information, this yields quite verbose information
-    # about how requests make their way through Ramaze.
-    #
-    # Use it for your own debugging purposes.
-    # All messages you pass to it are going to be inspected.
-    # it is aliased to #D for convenience.
-
-    def debug *messages
-      return unless inform_tag?(:debug)
-      log :debug, *messages.map(&:inspect)
-    end
-
-    alias D debug
-
-    def debug?() inform_tag?(:debug) end
-
-    # A little but powerful method to debug calls to methods.
-    #
-    #   def foo(*args)
-    #     meth_debug(:foo, args)
-    #   end
-    #
-    #   foo :bar
-    #
-    # Will give you
-    #
-    #   [2007-01-26 22:17:24] DEBUG  foo([:bar])
-    #
-    # It will also run inspect on all parameters you pass to it (only the
-    # method-name is processed with to_s)
-    #
-    # It is aliased to #mD
-
-    def meth_debug meth, *params
-      return unless inform_tag?(:debug)
-      log :debug, "#{meth}(#{params.map{|pa| pa.inspect}.join(', ')})"
-    end
-
-    alias mD meth_debug
-
-    # General information about startup, requests and other things.
-    #
-    # Use of this method is mainly for things that are not overly verbose
-    # but give you a general overview about what's happening.
-
-    def info *messages
-      return unless inform_tag?(:info)
-      messages.each do |message|
-        log :info, message
-      end
-    end
-
-    def info?() inform_tag?(:info) end
-
-    # Informing yourself about errors, you can pass it instances of Error
-    # but also simple Strings.
-    # (all that responds to :message/:backtrace or to_s)
-    #
-    # It will nicely truncate the backtrace to:
-    #   Global.inform_backtrace_size
-    # It will not differentiate its behaviour based on other tags, as
-    # having a full backtrace is the most valuable thing to fixing the issue.
-    #
-    # However, you can set a different behaviour by adding/removing tags from:
-    #   Global.inform_backtrace_for
-    # By default it just points to Global.inform_tags
-
-    def error *messages
-      return unless inform_tag?(:error)
-      messages.each do |e|
-        if e.respond_to?(:message) and e.respond_to?(:backtrace)
-          log :error, e.message
-          if (Global.inform_backtrace_for || Global.inform_tags).any?{|t| inform_tag?(t)}
-            e.backtrace[0..10].each do |bt|
-              log :error, bt
-            end
-          end
+    trait :tags => {
+      :debug  => lambda{|*m| m.map(&:inspect)},
+      :info   => lambda{|*m| m.map(&:to_s)},
+      :error  => lambda do |m|
+        if m.respond_to?(:exception)
+          [ m.inspect,
+            m.backtrace[0..Global.inform_backtrace_size]
+          ].flatten
         else
-          log :error, e
+          m
         end
       end
-    end
+    }
 
-    def error?() inform_tag?(:error) end
+    def rebuild_tags
+      trait[:tags].each do |tag, block|
+        define_method(tag) do |*messages|
+          return unless inform_tag?(tag)
+          log(tag, block[*messages])
+        end
+
+        define_method("#{tag}?") do
+          inform_tag?(tag)
+        end
+
+        private tag
+      end
+    end
 
     # This uses Global.inform_timestamp or a date in the format of
     #   %Y-%m-%d %H:%M:%S
@@ -182,6 +122,8 @@ module Ramaze
     end
 
     extend self
+
+    rebuild_tags
   end
 
   # This class acts as a object you can pass to any other logger, it's basically
@@ -190,7 +132,7 @@ module Ramaze
   class GlobalInformer
     include Inform
 
-    public :error, :error?, :info, :info?, :meth_debug, :debug, :debug?
+    public :error, :error?, :info, :info?, :debug, :debug?
 
     # this simply sends the parameters to #debug
 
