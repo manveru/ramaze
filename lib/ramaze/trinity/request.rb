@@ -4,13 +4,14 @@
 require 'cgi'
 require 'tmpdir'
 require 'digest/md5'
+require 'rack'
 
 module Ramaze
 
   # The purpose of this class is to act as a simple wrapper for Rack::Request
   # and provide some convinient methods for our own use.
 
-  class Request
+  class Request < ::Rack::Request
     class << self
 
       # get the current request out of Thread.current[:request]
@@ -20,13 +21,6 @@ module Ramaze
       def current
         Thread.current[:request]
       end
-    end
-
-    # create a new instance of Request, takes the original Rack::Request
-    # instance
-
-    def initialize request = {}
-      @request = request
     end
 
     # shortcut for request.params[key]
@@ -55,14 +49,12 @@ module Ramaze
 
     alias referrer referer
 
-    def fullpath
-      path = script_name + path_info
-      path << "?" << query_string  unless query_string.empty?
-      path
-    end
-
-    def env
-      @request.env
+    unless defined?(fullpath)
+      def fullpath
+        path = script_name + path_info
+        path << "?" << query_string  unless query_string.empty?
+        path
+      end
     end
 
     # you can access the original @request via this method_missing,
@@ -70,9 +62,9 @@ module Ramaze
     # then, in case that fails, it will relay to @request
 
     def method_missing meth, *args, &block
-      @request.send(meth, *args, &block)
-    rescue
-      env[meth.to_s.upcase]
+      key = meth.to_s.upcase
+      return env[key] if env.has_key?(key)
+      super
     end
   end
 end

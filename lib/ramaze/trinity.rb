@@ -18,21 +18,21 @@ module Ramaze
     #   Thread.current[:request]
 
     def request
-      Thread.current[:request]
+      Request.current
     end
 
     # same as
     #   Thread.current[:response]
 
     def response
-      Thread.current[:response]
+      Response.current
     end
 
     # same as
     #   Thread.current[:session]
 
     def session
-      Thread.current[:session]
+      Session.current
     end
   end
 end

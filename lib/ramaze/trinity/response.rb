@@ -2,11 +2,16 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  # get the current response out of Thread.current[:response]
-  #
-  # You can call this from everywhere with Ramaze::Response.current
+  class Response < ::Rack::Response
+    class << self
 
-  def self.Response
-    Thread.current[:response]
+      # get the current response out of Thread.current[:response]
+      #
+      # You can call this from everywhere with Ramaze::Response.current
+
+      def current
+        Thread.current[:response]
+      end
+    end
   end
 end

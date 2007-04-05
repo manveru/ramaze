@@ -184,7 +184,7 @@ module Ramaze
 
       def setup_environment rack_request, rack_response
         this = Thread.current
-        this[:request]  = Request.new(rack_request)
+        this[:request]  = rack_request
         this[:session]  = Session.new(request)
         this[:response] = rack_response
       end
