@@ -73,7 +73,11 @@ module Ramaze
           return controller.send(action, *params).to_s
         rescue NoMethodError => ex
           ourself = /undefined method `#{action}' for #<TCErrorController:/
-          raise_no_action(controller, action) unless ex.message =~ ourself
+          if ex.message =~ ourself
+            raise_no_action(controller, action)
+          else
+            Informer.error ex
+          end
           nil
         end
 
