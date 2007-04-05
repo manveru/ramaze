@@ -5,9 +5,6 @@ require 'ramaze/adapter'
 
 require 'mongrel'
 
-# for OSX compatibility
-Socket.do_not_reverse_lookup = true
-
 module Ramaze::Adapter
   class Mongrel < Base
     class << self
