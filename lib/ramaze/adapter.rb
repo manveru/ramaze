@@ -27,30 +27,22 @@ module Ramaze::Adapter
         respond env
       end
 
-      @response = Thread.current[:response]
+      finish
+    end
 
-      [@response.status, @response.header, self]
+    def finish
+      response = Thread.current[:response]
+      if Ramaze::Global.tidy and not response.body.respond_to?(:read)
+        require 'ramaze/too/tidy'
+        response.body = Ramaze::Tool::Tidy.tidy(body)
+      end
+
+      response.finish
     end
 
     def respond env
-      Ramaze::Dispatcher.handle(::Rack::Request.new(env), ::Rack::Response.new)
-    end
-
-    def each
-      body = @response.body
-
-      if body.respond_to?(:read)
-        until body.eof?
-          yield body.read(1024)
-        end
-      else
-        if Ramaze::Global.tidy
-          require 'ramaze/tool/tidy'
-          yield Ramaze::Tool::Tidy.tidy(body)
-        else
-          yield body
-        end
-      end
+      request, response = Ramaze::Request.new(env), Ramaze::Response.new
+      Ramaze::Dispatcher.handle(request, response)
     end
   end
 end
