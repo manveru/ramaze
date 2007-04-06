@@ -166,8 +166,7 @@ module Ramaze
   end
 
   # Setup the Controllers
-  # This autogenerates a mapping and also includes Ramaze::Controller
-  # in every found Controller.
+  # This autogenerates a mapping and does some munging/validation on the way
 
   def setup_controllers
     Global.mapping ||= {}
@@ -189,13 +188,14 @@ module Ramaze
 
     Global.mapping.merge!(mapping) if Global.mapping.empty?
 
-    # Now we make them to real Ramaze::Controller s :)
-    # also we set controller-variable as we go along, in case there
-    # is only one controller it ends up hooked on '/'
-    # otherwise we get some random one ...
+    Global.controllers.map!{|controller| constant(controller) }
 
-    Global.controllers.map! do |controller|
-      controller = constant(controller)
+    Global.controllers.each do |controller|
+      if path = controller.trait[:public]
+        unless File.directory?(path)
+          Informer.warn("#{controller} uses templating in #{path}, which does not exist")
+        end
+      end
     end
   end
 
