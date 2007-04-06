@@ -59,6 +59,7 @@ module Ramaze
       :inform_prefix_error   => 'ERROR',
       :inform_colors         => { :info  => :green,
                                   :debug => :yellow,
+                                  :warn  => :red,
                                   :error => :red, },
 
       :startup => [],
