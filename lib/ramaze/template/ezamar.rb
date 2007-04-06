@@ -39,9 +39,10 @@ module Ramaze
         # #pipeline
 
         def real_transform(controller, bound, file, action, *params)
-          alternate, path     = file_template(params.last, controller) if params.size == 1 and action == 'index'
-          file_template, path = file_template(file, controller)
-          ctrl_template       = render_action(controller, action, *params)
+          alternate, path = save{ file_template(params.last, controller) } if
+            params.size == 1 and action == 'index'
+          file_template, path = save{ file_template(file, controller) }
+          ctrl_template = save{ render_action(controller, action, *params) }
 
           if chosen = alternate || file_template || ctrl_template
             pipeline(chosen, :binding => bound, :path => path)
@@ -63,8 +64,6 @@ module Ramaze
             end
 
           return File.read(path), path
-        rescue
-          nil
         end
 
         # Render an action, on a given controller with parameter
@@ -102,6 +101,12 @@ module Ramaze
           transform_pipeline.inject(template) do |memo, current|
             current.transform(memo, opts)
           end
+        end
+
+        def save
+          yield
+        rescue
+          nil
         end
       end
     end
