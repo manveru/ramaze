@@ -26,13 +26,13 @@ module Ramaze
     # shortcut for request.params[key]
 
     def [](key)
-      params[key]
+      params[key.to_s]
     end
 
     # shortcut for request.params[key] = value
 
     def []=(key, value)
-      params[key] = value
+      params[key.to_s] = value
     end
 
     # like Hash#values_at
