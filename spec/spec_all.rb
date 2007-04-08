@@ -112,7 +112,8 @@ puts
 
 if failed.empty?
   puts "No failing specifications, let's add some tests!"
-  puts
+  exit 0
 else
   puts "These failed: #{failed.keys.join(', ')}"
+  exit 1
 end
