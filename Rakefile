@@ -322,6 +322,15 @@ task :patchsize do
   puts "shall i now play some Death-Metal for you?" if size == 666
 end
 
+desc "show who made how many patches"
+task :patchstat do
+  patches = `darcs changes`.split("\n").grep(/^\S/).map{|e| e.split.last}
+  committs = patches.inject(Hash.new(0)){|s,v| s[v] += 1; s}
+  committs.sort.each do |committer, patches|
+    puts "#{committer.ljust(25)}: #{patches}"
+  end
+end
+
 desc "remove those annoying spaces at the end of lines"
 task 'fix-end-spaces' do
   Dir['{lib,test}/**/*.rb'].each do |file|
