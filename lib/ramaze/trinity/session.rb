@@ -191,7 +191,9 @@ module Ramaze
     end
 
     def []=(key, value)
-      current[key] = value
+      prev = session[:FLASH] || {}
+      prev[key] = value
+      session[:FLASH] = prev
     end
 
     def inspect
