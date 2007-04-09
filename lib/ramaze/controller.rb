@@ -17,7 +17,7 @@ module Ramaze
 
     # Path to the ramaze-internal public directory for error-pages and the like.
     # It acts just as a shadow.
-    trait :public => ( ::Ramaze::BASEDIR / 'proto' / 'public' )
+    trait :ramaze_public => ( ::Ramaze::BASEDIR / 'proto' / 'public' )
 
     class << self
       include Ramaze::Helper
@@ -28,9 +28,6 @@ module Ramaze
         action, params = path.gsub(/^\//, '').split('/').join('__'), [] unless action
         controller = self unless controller
         controller.render action, *params
-      rescue Ramaze::Error::Template => ex
-        puts ex
-        ''
       end
 
       # find out which controller should be used based on the path.
@@ -206,6 +203,8 @@ module Ramaze
         custom_template = ancestral_trait["#{action}_template".intern]
         action = (custom_template ? custom_template : action).to_s
         action_converted = action.split('__').inject {|s,v| "#{s}/#{v}"}
+        klass_public = klass.ancestral_trait[:public]
+        ramaze_public = klass.ancestral_trait[:ramaze_public]
 
         first_path =
           if template_root = klass.ancestral_trait[:template_root]
@@ -216,11 +215,11 @@ module Ramaze
 
         extensions = [ancestral_trait[:template_extensions].values].flatten.uniq
 
-        paths = [ first_path, ancestral_trait[:public], ].
-                  map{|pa| [ pa / action, pa / action_converted ] }.
-                  flatten.map{|pa| File.expand_path(pa) }.join(',')
+        actions = [action, action_converted].compact
+        all_paths = [ first_path, klass_public, ramaze_public].compact
+        paths = all_paths.map{|pa| actions.map{|a| File.expand_path(pa / a) } }
 
-        glob = "{#{paths}}.{#{extensions.join(',')}}"
+        glob = "{#{paths.join(',')}}.{#{extensions.join(',')}}"
 
         possible = Dir[glob]
         possible.first
@@ -279,15 +278,17 @@ module Ramaze
         [ lines, lines.object_id.abs, file, lineno, meth ]
       end
 
-      response.status = 404
+      response.status = 500
 
       @backtrace = backtrace
       @colors = colors
       @title = CGI.escapeHTML(title)
       require 'coderay'
       @coderay = true
+      title
     rescue LoadError => ex
       @coderay = false
+      title
     end
 
     private

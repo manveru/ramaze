@@ -32,10 +32,6 @@ module Ramaze::Adapter
 
     def finish
       response = Thread.current[:response]
-      if Ramaze::Global.tidy and not response.body.respond_to?(:read)
-        require 'ramaze/too/tidy'
-        response.body = Ramaze::Tool::Tidy.tidy(body)
-      end
 
       response.finish
     end

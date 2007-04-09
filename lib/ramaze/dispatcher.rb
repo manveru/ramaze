@@ -4,112 +4,50 @@
 require 'timeout'
 require 'ramaze/tool/mime'
 
+require 'ramaze/dispatcher/action'
+require 'ramaze/dispatcher/error'
+require 'ramaze/dispatcher/file'
+
 module Ramaze
-
-  # The Dispatcher is the very heart of Ramaze itself.
-  #
-  # It will take requests and guide the request through all parts of the
-  # framework and your application.
-  #
-  # It is built in a way that lets you easily replace it with something you
-  # like better, since i'm very fond of the current implementation you can't
-  # find any examples of how this is done exactly yet.
-
   module Dispatcher
-    trait :filters => [
-            lambda{|path| handle_file   path },
-            lambda{|path| handle_action path },
-          ]
+
+    trait :dispatch => [
+      Dispatcher::File,
+      Dispatcher::Action,
+    ]
+
+    trait :post_dispatch => [
+      lambda{ |response|
+        break(response) if not Global.tidy or response.body.respond_to?(:read)
+        require 'ramaze/too/tidy'
+        response.body = Ramaze::Tool::Tidy.tidy(body)
+        response
+      }
+    ]
 
     trait :handle_error => {
-        Exception => '/error',
+        Exception               => '/error',
         Ramaze::Error::NoAction => '/error',
       }
 
     class << self
       include Trinity
 
-      # handle a request/response pair as given by the adapter.
-      # has to answer with a response.
-      #
-      # It is built so it will rescue _all_ errors and exceptions
-      # thrown during processing of the request and #handle_error if
-      # a problem occurs.
-
       def handle rack_request, rack_response
-        setup_environment rack_request, rack_response
-        respond
-      rescue Object => exception
-        handle_error(exception)
+        setup_environment(rack_request, rack_response)
+        post_dispatch(dispatch)
+      rescue Object => error
+        Dispatcher::Error.new(error).process
       end
 
-      # The handle_error method takes an exception and decides based on that
-      # how it is going to respond in case of an error.
-      #
-      # In future this will become more and more configurable, right now
-      # you can provide your own error-method and error.xhtml inside either
-      # your trait[:template_root] or trait[:public].
-      #
-      # As more and more error-classes are being added to Ramaze you will get
-      # the ability to define your own response-pages and/or behaviour like
-      # automatic redirects.
-      #
-      # This feature is only available if your Global.error is true, which is
-      # the default.
-      #
-      #--
-      #
-      # Yes, again, webrick _has_ to be really obscure, I searched for half an hour
-      # and still have not the faintest idea how request_path is related to
-      # request_uri...
-      # anyway, the solution might be simple?
-
-      def handle_error exception
-        Informer.error exception
-        Informer.debug "handle_error(#{exception.inspect})"
-        Thread.current[:exception] = exception
-
-        handle_error = trait[:handle_error]
-
-        case exception
-        when *handle_error.keys
-          error_path = handle_error[exception.class]
-          error_path ||= handle_error.find{|k,v| k === exception}.last
-
-          if exception.message =~ /`#{error_path.split('/').last}'/
-            build_response(exception.message, STATUS_CODE[:internal_server_error])
-          else
-            request.path_info = error_path
-            respond
-          end
-        else
-          if Global.error_page
-            request.path_info = '/error'
-            respond
-          else
-            build_response(exception.message, STATUS_CODE[:internal_server_error])
-          end
-        end
-
-        response
-      rescue Object => ex
-        Informer.error ex
-        build_response(ex.message, STATUS_CODE[:internal_server_error])
-      end
-
-      # Obtain the path requested from the request and search for a static
-      # file matching the request, #respond_file is called if it finds one,
-      # otherwise the path is given on to #respond_action.
-      # Answers with a response
-
-      def respond
+      def dispatch
         path = request.path_info.squeeze('/')
         Informer.info "Request from #{request.remote_addr}: #{path}"
 
         catch(:respond) do
           redirection = catch(:redirect) do
-            filtered = [filter(path)].flatten.first
-            throw(:respond, build_response(filtered, response.status))
+            found = filter(path)
+            throw(:respond, found)
           end
 
           body, status, head = redirection.values_at(:body, :status, :head)
@@ -118,48 +56,27 @@ module Ramaze
         end
       end
 
+      def post_dispatch response
+        trait[:post_dispatch].inject(response) do |resp, block|
+          block[resp]
+        end
+      end
+
+      def dispatch_to path
+        raise "Redirect to #{path} from #{path}" if request.path_info == path
+        request.path_info = path
+        dispatch
+      end
+
       def filter path
-        last_error = $!
-        ancestral_trait[:filters].each do |filter|
-          filtered = run_filter(filter, path)
-
-          next unless filtered
-          return filtered unless filtered.is_a?(Exception)
-          last_error = filtered
+        trait[:dispatch].each do |dispatcher|
+          result = dispatcher.new(path).process
+          return result if result
         end
-
-        throw(:respond, handle_error(last_error))
+        raise Ramaze::Error::NoAction, "No Dispatcher found for `#{path}'"
       end
 
-      def run_filter filter, path
-        filter[path]
-      rescue Object => ex
-        ex
-      end
-
-      def handle_action path
-        handler = Controller.handle(path)
-      end
-
-      def handle_file path
-        custom_publics = Global.controllers.map{|c| c.trait[:public]}.compact
-        the_paths = $:.map{|way| (way/'public'/path) }
-        the_paths << (BASEDIR/'proto'/'public'/path)
-        the_paths += custom_publics.map{|c| c/path   }
-        file = the_paths.find{|way| File.file?(way)}
-
-        if file
-          response['Content-Type'] = Tool::MIME.type_for(file)
-          Informer.debug("Serving static: #{file}")
-          File.open(file, 'rb')
-        end
-      end
-
-      # takes the content, code and head for a new response, will set the cookies
-      # if Global.cookies is true (which it is by default) and set the default
-      # Content-Type to 'text/plain'
-
-      def build_response body = '', status = STATUS_CODE[:internal_server_error], head = {}
+      def build_response body = response.body, status = response.status, head = response.header
         set_cookie if Global.cookies
         head.each do |key, value|
           response[key] = value

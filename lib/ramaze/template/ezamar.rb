@@ -39,10 +39,10 @@ module Ramaze
         # #pipeline
 
         def real_transform(controller, bound, file, action, *params)
-          alternate, path = save{ file_template(params.last, controller) } if
+          alternate, path = safe{ file_template(params.last, controller) } if
             params.size == 1 and action == 'index'
-          file_template, path = save{ file_template(file, controller) }
-          ctrl_template = save{ render_action(controller, action, *params) }
+          file_template, path = safe{ file_template(file, controller) }
+          ctrl_template = safe{ render_action(controller, action, *params) }
 
           if chosen = alternate || file_template || ctrl_template
             pipeline(chosen, :binding => bound, :path => path)
@@ -103,7 +103,7 @@ module Ramaze
           end
         end
 
-        def save
+        def safe
           yield
         rescue
           nil

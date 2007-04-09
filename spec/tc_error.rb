@@ -32,12 +32,12 @@ context "Error" do
     end
   end
 
-  context "only error page (custom)" do
-    specify "custom static page" do
+  context "error page" do
+    specify "custom static" do
       Ramaze::Global.mapping = {'/' => TCErrorController }
       Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error404', }
 
-      get('/foo').should == '404 - not found'
+      lambda{ get('/foo') }.should_raise RuntimeError
     end
   end
 end
