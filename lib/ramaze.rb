@@ -289,10 +289,11 @@ module Ramaze
   # that to the same (7000..7000)
 
   def parse_port port
-    if (from_port, to_port = port.to_s.split('..')).compact.size == 2
-      Global.ports = from_port.to_i..to_port.to_i
+    from_port, to_port = port.to_s.split('..')
+    if from_port and to_port
+      Global.ports = (from_port.to_i..to_port.to_i)
     else
-      Global.ports = from_port.to_i..from_port.to_i
+      Global.ports = (from_port.to_i..from_port.to_i)
     end
     Global.port = Global.ports.begin
   end

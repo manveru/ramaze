@@ -56,7 +56,7 @@ module Ramaze
       #
       # Parameters are CGI.unescaped
 
-      def resolve_controller path
+      def resolve_controller(path)
         Informer.debug "resolve_controller(#{path.inspect})"
         track = path.split('/')
         controller = false
@@ -80,7 +80,7 @@ module Ramaze
               params = paraction
               action = 'index' if action == nil
             else
-              action, params = resolve_action controller, paraction
+              action, params = resolve_action(controller, paraction)
             end
           end
         end
@@ -97,13 +97,11 @@ module Ramaze
       # - find a solution for def x(a = :a) which has arity -1
       #   identical to def x(*a) for some odd reason
 
-      def resolve_action controller, paraction
+      def resolve_action(controller, paraction)
         Informer.debug "resolve_action(#{controller.inspect}, #{paraction.inspect})"
 
-        meths =
-          (controller.ancestors - [Kernel, Object]).inject([]) do |sum, klass|
-            sum | (klass.is_a?(Module) ? klass.instance_methods(false) : sum)
-          end
+        ancs = (controller.ancestors - [Kernel, Object]).select{|a| a.is_a?(Module)}
+        meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
 
         track = paraction.dup
         tracks = []
@@ -165,10 +163,10 @@ module Ramaze
         engine = ancestral_trait[:engine] || engine_for(file)
 
         options = {
-          :file     => file,
-          :binding  => controller.send(:send, :binding),
-          :action => action,
-          :parameter => parameter,
+          :file       => file,
+          :binding    => controller.instance_eval{ binding },
+          :action     => action,
+          :parameter  => parameter,
         }
         engine.transform(controller, options)
       end
@@ -238,6 +236,7 @@ module Ramaze
         file = file.to_s
         extension = File.extname(file).gsub(/^\./, '')
         engines = trait[:template_extensions]
+        return Template::Ezamar if not engines or engines.empty?
         engines.find{|k,v| v == extension or [v].flatten.include?(extension)}.first
       rescue
         Template::Ezamar

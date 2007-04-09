@@ -54,7 +54,11 @@ class Object
   # {:three=>:drei, :two=>:zwei, :one=>:eins, :first=>:overwritten}
 
   def ancestral_trait
-    ancs = (ancestors rescue self.class.ancestors)
+    if respond_to?(:ancestors)
+      ancs = ancestors
+    else
+      ancs = self.class.ancestors
+    end
     ancs.reverse.inject({}){|s,v| s.merge(v.trait)}.merge(trait)
   end
 end
