@@ -37,7 +37,7 @@ module Ramaze
         setup_environment(rack_request, rack_response)
         post_dispatch(dispatch)
       rescue Object => error
-        Dispatcher::Error.new(error).process
+        Dispatcher::Error.process(error)
       end
 
       def dispatch
@@ -70,7 +70,7 @@ module Ramaze
 
       def filter path
         trait[:dispatch].each do |dispatcher|
-          result = dispatcher.new(path).process
+          result = dispatcher.process(path)
           return result if result
         end
         raise Ramaze::Error::NoAction, "No Dispatcher found for `#{path}'"
