@@ -30,6 +30,8 @@ require 'ramaze/template/ezamar'
 require 'ramaze/adapter'
 require 'ramaze/version'
 
+Thread.abort_on_exception = true
+
 module Ramaze
   include Inform
 
@@ -64,8 +66,6 @@ module Ramaze
     return unless ($0 == starter or options.delete(:force))
 
     init_global options
-
-    Thread.abort_on_exception = true
 
     return if options.delete(:fake_start)
 

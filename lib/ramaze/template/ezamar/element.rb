@@ -154,8 +154,10 @@ class Ezamar::Element
       string.scan(/\s?(.*?)="(.*?)"/).inject({}) do |hash, (key, value)|
         value =
         case value
-        when 'true'  : true
-        when 'false' : false
+        when 'true'
+          true
+        when 'false'
+          false
         else
           Integer(value) rescue Float(value) rescue value
         end

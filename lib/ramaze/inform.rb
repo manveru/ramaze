@@ -82,7 +82,7 @@ module Ramaze
     def log tag, *messages
       messages.flatten!
 
-      pipify(Global.inform_to).each do |(do_color, pipe)|
+      pipify(Global.inform_to).each do |do_color, pipe|
         next if pipe.respond_to?(:closed?) and pipe.closed?
 
         prefix = colorize(tag, Global["inform_prefix_#{tag}"], do_color)
@@ -113,9 +113,12 @@ module Ramaze
 
       ios.flatten.map do |io|
         case io
-        when STDOUT, :stdout, 'stdout' : [ color, STDOUT ]
-        when STDERR, :stderr, 'stderr' : [ color, STDERR ]
-        when IO                        : [ no_color, io  ]
+        when STDOUT, :stdout, 'stdout'
+          [ color, STDOUT ]
+        when STDERR, :stderr, 'stderr'
+          [ color, STDERR ]
+        when IO
+          [ no_color, io  ]
         else
           [no_color, File.open(io.to_s, 'ab+')]
         end
