@@ -7,7 +7,7 @@ testcase_requires 'rubygems'
 
 context "dependencies" do
   specify "no gems" do
-    gems = $:.grep(/gems/).reject{|g| g =~ /rspec|rack/}
+    gems = $:.grep(/gems/).reject{|g| g =~ /rspec|rack|systemu/}
     gems.should == []
   end
 end
