@@ -47,6 +47,7 @@ module Ramaze
       :run_loose      => false,
       :tidy           => false,
       :template_root  => 'template',
+      :inform         => lambda{ Ramaze::Inform.trait },
 
       :inform_to             => $stdout,
       :inform_color          => false,
@@ -112,6 +113,12 @@ module Ramaze
       table.values_at(*keys.map(&:to_sym))
     end
 
+    # all keys already set
+
+    def keys
+      table.keys
+    end
+
     # iterate over the GlobalStruct, no guarantee on the order.
 
     def each
@@ -126,6 +133,22 @@ module Ramaze
 
     def pretty_inspect
       table.pretty_inspect
+    end
+
+    def new_ostruct_member(name)
+      name = name.to_sym
+      unless self.respond_to?(name)
+        meta = class << self; self; end
+        meta.send(:define_method, name) {
+          sel = @table[name]
+          if sel.respond_to?(:call)
+            sel.call
+          else
+            sel
+          end
+        }
+        meta.send(:define_method, :"#{name}=") { |x| @table[name] = x }
+      end
     end
   end
 
