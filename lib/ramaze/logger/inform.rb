@@ -126,24 +126,5 @@ module Ramaze
     rebuild_tags
   end
 
-  # This class acts as a object you can pass to any other logger, it's basically
-  # just including Inform and making its methods public
-
-  class GlobalInformer
-    include Inform
-
-    public :error, :error?, :info, :info?, :debug, :debug?
-
-    # this simply sends the parameters to #debug
-
-    def <<(*str)
-      debug(*str)
-    end
-  end
-
-  # The usual instance of GlobalInformer, for example used for WEBrick
-
-  Informer = GlobalInformer.new unless defined?(Informer)
-
   include Inform
 end
