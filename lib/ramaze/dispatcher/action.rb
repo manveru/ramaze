@@ -1,10 +1,19 @@
+require 'ramaze/tool/tidy'
+
 module Ramaze
   module Dispatcher
     class Action
+
+      # The response is passed to each
+
+      trait :filter => [ Ramaze::Tool::Tidy ]
+
       class << self
         def process(path)
           body = Controller.handle(path)
-          Dispatcher.build_response(body)
+          response = Dispatcher.build_response(body)
+          filter = ancestral_trait[:filter]
+          filter.inject(response){|r,f| f.call(r) }
         end
       end
     end
