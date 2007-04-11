@@ -6,6 +6,8 @@ require 'spec/spec_helper'
 class TCAuthHelperController < Ramaze::Controller
   helper :auth
 
+  trait :automap => true
+
   def index
     self.class.name
   end
@@ -42,8 +44,7 @@ end
 
 context "StackHelper" do
   ramaze
-  [
-    TCAuthHashHelperController,
+  [ TCAuthHashHelperController,
     TCAuthMethodHelperController,
     TCAuthLambdaHelperController
   ].each do |controller|

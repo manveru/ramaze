@@ -146,25 +146,6 @@ module Ramaze
     end
   end
 
-  # first, search for all the classes that end with 'Controller'
-  # like FooController, BarController and so on
-  # then we search the classes within Ramaze::Controller as well
-
-  def find_controllers
-    Global.controllers ||= Set.new
-
-    Module.constants.each do |klass|
-      Global.controllers << constant(klass) if klass =~ /.+?Controller/
-    end
-
-    Ramaze::Controller.constants.each do |klass|
-      klass = constant("Ramaze::Controller::#{klass}")
-      Global.controllers << klass
-    end
-
-    debug "Found following Controllers: #{Global.controllers.inspect}"
-  end
-
   # Setup the Controllers
   # This autogenerates a mapping and does some munging/validation on the way
 
@@ -175,26 +156,11 @@ module Ramaze
       Global.mapping[route] = constant(controller.to_s)
     end
 
-    mapping = {}
-
-    Global.controllers.each do |c|
-      name = c.to_s.gsub('Controller', '').split('::').last
-      if %w[Main Base Index].include?(name)
-        mapping['/'] = c
-      else
-        mapping["/#{name.split('::').last.snake_case}"] = c
-      end
-    end
-
-    Global.mapping.merge!(mapping) if Global.mapping.empty?
-
-    Global.controllers.map!{|controller| constant(controller) }
-
     Global.controllers.each do |controller|
-      if path = controller.trait[:public]
-        unless File.directory?(path)
-          Informer.warn("#{controller} uses templating in #{path}, which does not exist")
-        end
+      if controller.ancestral_trait[:automap]
+        map = controller.mapping
+        Global.mapping[map] ||= controller
+        Informer.debug("mapped #{map} => #{controller}")
       end
     end
   end

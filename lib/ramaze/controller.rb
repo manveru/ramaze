@@ -19,9 +19,41 @@ module Ramaze
     # It acts just as a shadow.
     trait :ramaze_public => ( ::Ramaze::BASEDIR / 'proto' / 'public' )
 
+    # Whether or not to map this controller on startup automatically
+
+    trait :automap => true
+
+    # Place to map the Controller to, this is something like '/' or '/foo'
+
+    trait :map => nil
+
     class << self
       include Ramaze::Helper
       extend Ramaze::Helper
+
+      def inherited controller
+        Global.controllers ||= Set.new
+        Global.controllers << controller
+      end
+
+      def validate_sanity
+        if path = trait[:public]
+          unless File.directory?(path)
+            Informer.warn("#{controller} uses templating in #{path}, which does not exist")
+          end
+        end
+      end
+
+      def mapping
+        global_mapping = Global.mapping.invert[self]
+        return global_mapping if global_mapping
+        if map = ancestral_trait[:map]
+          map
+        else
+          name = self.to_s.gsub('Controller', '').split('::').last
+          %w[Main Base Index].include?(name) ? '/' : "/#{name.snake_case}"
+        end
+      end
 
       def handle path
         controller, action, params = *resolve_controller(path)

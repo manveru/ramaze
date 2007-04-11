@@ -65,7 +65,7 @@ module Ramaze
 
       :startup => [],
       :ramaze_startup => [
-          :find_controllers, :setup_controllers, :init_autoreload, :init_adapter
+          :setup_controllers, :init_autoreload, :init_adapter
         ],
 
       :shutdown => [],
