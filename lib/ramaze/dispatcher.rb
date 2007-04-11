@@ -16,15 +16,6 @@ module Ramaze
       Dispatcher::Action,
     ]
 
-    trait :post_dispatch => [
-      lambda{ |response|
-        break(response) if not Global.tidy or response.body.respond_to?(:read)
-        require 'ramaze/too/tidy'
-        response.body = Ramaze::Tool::Tidy.tidy(body)
-        response
-      }
-    ]
-
     trait :handle_error => {
         Exception               => '/error',
         Ramaze::Error::NoAction => '/error',
@@ -35,7 +26,7 @@ module Ramaze
 
       def handle rack_request, rack_response
         setup_environment(rack_request, rack_response)
-        post_dispatch(dispatch)
+        dispatch
       rescue Object => error
         Dispatcher::Error.process(error)
       end
@@ -53,12 +44,6 @@ module Ramaze
           body, status, head = redirection.values_at(:body, :status, :head)
           Informer.info("Redirect to `#{head['Location']}'")
           throw(:respond, build_response(body, status, head))
-        end
-      end
-
-      def post_dispatch response
-        trait[:post_dispatch].inject(response) do |resp, block|
-          block[resp]
         end
       end
 
