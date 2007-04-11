@@ -5,6 +5,62 @@ require 'set'
 
 module Ramaze
 
+  RELOAD_ENV = {
+    :glob => /#{Dir.pwd}|ramaze/
+  }
+
+  class << self
+    def reload interval = 1
+      Informer.debug "initialize automatic file reload every #{interval} seconds"
+
+      Thread.new do
+        this = Thread.current
+        this[:task] = :autoreload
+
+        mtimes = {}
+
+        loop do
+          to_reload = all_reload_files.reject do |file|
+            mtime = File.mtime(file)
+            mtimes[file] ||= mtime
+            mtimes[file] == mtime
+          end
+
+          to_reload.each do |file|
+            sleep(interval / files.size.to_f)
+            Ramaze::Informer.debug "reload #{file}"
+            mtimes[file] = mtime if safe_load(file)
+          end
+        end
+      end
+    end
+
+    def all_reload_files
+      env = RELOAD_ENV
+
+      files, paths = $LOADED_FEATURES, $LOAD_PATH
+
+      unless env[:files] == files and env[:paths] == paths
+        env[:files], env[:paths] = files.dup, paths.dup
+        env[:map] = files.map do |file|
+          possible = paths.map{|pa| File.join(pa.to_s, file.to_s) }
+          possible.find{|po| File.exists?(po) }
+        end
+        env[:map] = env[:map].compact.sort
+      end
+
+      env[:map].select{|f| f =~ env[:glob] }
+    end
+
+    def safe_load(file)
+      load(file)
+      true
+    rescue Object => ex
+      Informer.error(ex)
+      false
+    end
+  end
+
   # this method loops through all loaded/required files
   # and re-loads them when they are updated.
   # It takes one parameter, which is the interval in seconds
