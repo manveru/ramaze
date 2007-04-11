@@ -9,6 +9,8 @@ module Ramaze
 
     module Tidy
 
+      trait[:enable] ||= false
+
       # set this to define a custom path to your tidy.so
       trait[:paths] ||= %w[
         /usr/lib/libtidy.so
@@ -49,36 +51,44 @@ module Ramaze
       #     <body></body>
       #   </html>
 
-      def self.tidy html, options = {}
-        require 'tidy'
+      class << self
+        def tidy html, options = {}
+          require 'tidy'
 
-        unless found = trait[:path]
-          found = trait[:paths].find do |path|
-            File.exists?(path)
+          unless found = trait[:path]
+            found = trait[:paths].find do |path|
+              File.exists?(path)
+            end
+            trait[:path] = found
           end
-          trait[:path] = found
-        end
 
-        path = trait[:path]
+          path = trait[:path]
 
-        unless path
-          Informer.error "Could not find `libtidy.so' in #{trait[:paths].inspect}"
-          return html
-        end
-
-        ::Tidy.path = path
-
-        ::Tidy.open(:show_warnings => true) do |tidy|
-          opts = trait[:options].merge(options)
-          opts.each do |key, value|
-            tidy.options.send("#{key}=", value.to_s)
+          unless path
+            Informer.error "Could not find `libtidy.so' in #{trait[:paths].inspect}"
+            return html
           end
-          tidy.clean(html)
+
+          ::Tidy.path = path
+
+          ::Tidy.open(:show_warnings => true) do |tidy|
+            opts = trait[:options].merge(options)
+            opts.each do |key, value|
+              tidy.options.send("#{key}=", value.to_s)
+            end
+            tidy.clean(html)
+          end
+        rescue LoadError => ex
+          puts ex
+          puts "cannot load 'tidy', please `gem install tidy`"
+          puts "you can find it at http://tidy.rubyforge.org/"
         end
-      rescue LoadError => ex
-        puts ex
-        puts "cannot load 'tidy', please `gem install tidy`"
-        puts "you can find it at http://tidy.rubyforge.org/"
+
+        def call(response, options = {})
+          return response unless trait[:enable]
+          response.body = tidy(response.body, options)
+          response
+        end
       end
 
       # calls self#tidy
