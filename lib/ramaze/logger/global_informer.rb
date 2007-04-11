@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  
+
   # This class acts as a object you can pass to any other logger, it's basically
   # just including Inform and making its methods public
 
@@ -21,5 +21,5 @@ module Ramaze
   # The usual instance of GlobalInformer, for example used for WEBrick
 
   Informer = GlobalInformer.new
-  
+
 end
