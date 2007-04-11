@@ -45,9 +45,9 @@ module Ramaze
       :mapping        => {},
       :port           => 7000,
       :run_loose      => false,
-      :tidy           => false,
       :template_root  => 'template',
-      :inform         => lambda{ Ramaze::Inform.trait },
+      :inform         => lambda{ Ramaze::Inform.trait     },
+      :tidy           => lambda{ Ramaze::Tool::Tidy.trait },
 
       :inform_to             => $stdout,
       :inform_color          => false,
@@ -147,7 +147,14 @@ module Ramaze
             sel
           end
         }
-        meta.send(:define_method, :"#{name}=") { |x| @table[name] = x }
+        meta.send(:define_method, :"#{name}=") {|x|
+          sel = @table[name]
+          if sel.respond_to?(:call)
+            sel.call("#{name}=", x)
+          else
+            @table[name] = x
+          end
+        }
       end
     end
   end
