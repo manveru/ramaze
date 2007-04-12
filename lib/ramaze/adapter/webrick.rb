@@ -25,10 +25,10 @@ module Ramaze::Adapter
         options = {
           :Port => port,
           :BindAddress => host,
-          :Logger => Ramaze::Informer,
+          :Logger => Ramaze::Inform,
           :AccessLog => [
-            [Ramaze::Informer, WEBrick::AccessLog::COMMON_LOG_FORMAT],
-            [Ramaze::Informer, WEBrick::AccessLog::REFERER_LOG_FORMAT]
+            [Ramaze::Inform, WEBrick::AccessLog::COMMON_LOG_FORMAT],
+            [Ramaze::Inform, WEBrick::AccessLog::REFERER_LOG_FORMAT]
           ]
         }.merge(options)
 

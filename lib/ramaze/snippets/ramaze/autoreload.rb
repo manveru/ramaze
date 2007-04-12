@@ -11,7 +11,7 @@ module Ramaze
 
   class << self
     def reload interval = 1
-      Informer.debug "initialize automatic file reload every #{interval} seconds"
+      Inform.debug("initialize automatic file reload every #{interval} seconds")
 
       Thread.new do
         this = Thread.current
@@ -28,7 +28,7 @@ module Ramaze
 
           to_reload.each do |file|
             sleep(interval / files.size.to_f)
-            Ramaze::Informer.debug "reload #{file}"
+            Inform.debug("reload #{file}")
             mtimes[file] = mtime if safe_load(file)
           end
         end
@@ -56,7 +56,7 @@ module Ramaze
       load(file)
       true
     rescue Object => ex
-      Informer.error(ex)
+      Inform.error(ex)
       false
     end
   end
@@ -69,7 +69,7 @@ module Ramaze
   # and it will just restart the autoreloader.
 
   def self.autoreload interval = 10
-    debug "initialize autoreload with an interval of #{interval} seconds"
+    Inform.debug("initialize autoreload with an interval of #{interval} seconds")
 
     gatherer = Thread.new do
       this = Thread.current
@@ -110,7 +110,7 @@ module Ramaze
             current_time = File.mtime(file)
             if last_time = cache[file]
               unless last_time == current_time
-                Ramaze::Informer.info "autoreload #{file}"
+                Inform.info("autoreload #{file}")
                 load(file)
                 cache[file] = current_time
               end

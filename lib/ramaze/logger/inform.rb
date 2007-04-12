@@ -19,8 +19,10 @@ module Ramaze
   #
   # You can control what gets logged over this Set.
 
-  module Inform
+  class Informer
+
     # the possible tags
+
     trait :tags => {
       :debug  => lambda{|*m| m.map{|o| o.inspect} },
       :info   => lambda{|*m| m.map{|o| o.to_s}    },
@@ -32,7 +34,9 @@ module Ramaze
       end
     }
 
-    def rebuild_tags
+    # takes the trait[:tags] and generates methods out of them.
+
+    def self.rebuild_tags
       trait[:tags].each do |tag, block|
         define_method(tag) do |*messages|
           return unless inform_tag?(tag)
@@ -42,9 +46,13 @@ module Ramaze
         define_method("#{tag}?") do
           inform_tag?(tag)
         end
-
-        private tag
       end
+    end
+
+    # this simply sends the parameters to #debug
+
+    def <<(*str)
+      debug(*str)
     end
 
     # This uses Global.inform_timestamp or a date in the format of
@@ -120,11 +128,12 @@ module Ramaze
         end
       end
     end
-
-    extend self
-
-    rebuild_tags
   end
 
-  include Inform
+  # The instance of Informer, for example used for WEBrick
+
+  unless defined?(Inform)
+    Informer.rebuild_tags
+    Inform = Informer.new
+  end
 end

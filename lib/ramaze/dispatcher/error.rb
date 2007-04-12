@@ -6,8 +6,8 @@ module Ramaze
     class Error
       class << self
         def process error
-          Informer.error error
-          Informer.debug "handle_error(#{error.inspect})"
+          Inform.error(error)
+          Inform.debug("handle_error(#{error.inspect})")
           Thread.current[:exception] = error
 
           handle_error = Dispatcher.trait[:handle_error]
@@ -32,7 +32,7 @@ module Ramaze
             end
           end
         rescue Object => ex
-          Informer.error ex
+          Inform.error(ex)
           build_response(ex.message)
         end
 

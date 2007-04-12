@@ -11,7 +11,7 @@ module Ramaze::Adapter
   class Base
     class << self
       def stop
-        Informer.debug "Stopping #{self.class}"
+        Inform.debug("Stopping #{self.class}")
       end
 
       def call(env)
@@ -22,7 +22,7 @@ module Ramaze::Adapter
     def call(env)
       if Ramaze::Global.inform_tags.include?(:benchmark)
         time = Benchmark.measure{ respond env }
-        info "request took #{time.real}s"
+        Inform.info("request took #{time.real}s")
       else
         respond env
       end

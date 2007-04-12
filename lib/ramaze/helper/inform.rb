@@ -30,7 +30,7 @@ module Ramaze
     #   # ... rest of backtrace ...
 
     def inform tag, *args
-      Informer.send(tag, *args)
+      Inform.send(tag, *args)
     end
   end
 end

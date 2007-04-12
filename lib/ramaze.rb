@@ -33,7 +33,6 @@ require 'ramaze/version'
 Thread.abort_on_exception = true
 
 module Ramaze
-  include Inform
 
   # This initializes all the other stuff, Controller, Adapter and Global
   # which in turn kickstart Ramaze into duty.
@@ -69,7 +68,7 @@ module Ramaze
 
     return if options.delete(:fake_start)
 
-    info "Starting up Ramaze (Version #{VERSION})"
+    Inform.info "Starting up Ramaze (Version #{VERSION})"
 
     startup
   end
@@ -118,7 +117,7 @@ module Ramaze
         end
       rescue Object => ex
         exit if ex.is_a?(SystemExit)
-        error ex
+        Inform.error(ex)
       end
     end
   end
@@ -126,7 +125,7 @@ module Ramaze
   # kill all threads except Thread.main before #shutdown
 
   def kill_threads
-    info "Killing the Threads"
+    Inform.info("Killing the Threads")
     Global.adapter_klass.stop rescue nil
     (Thread.list - [Thread.main]).each do |thread|
       Timeout.timeout(2) do
@@ -140,7 +139,7 @@ module Ramaze
   def close_inform
     [Global.inform_to].flatten.each do |io|
       if io = Global.inform_to and io.respond_to?(:close)
-        debug "close #{io.inspect}"
+        Inform.debug("close #{io.inspect}")
         io.close until io.closed?
       end
     end
@@ -160,7 +159,7 @@ module Ramaze
       if controller.ancestral_trait[:automap]
         map = controller.mapping
         Global.mapping[map] ||= controller
-        Informer.debug("mapped #{map} => #{controller}")
+        Inform.debug("mapped #{map} => #{controller}")
       end
     end
   end
@@ -215,7 +214,7 @@ module Ramaze
     end
     Global.running_adapter.join unless Global.run_loose
   rescue Object => ex
-    debug ex.message unless ex.is_a? Interrupt
+    Inform.debug(ex.message) unless ex.is_a? Interrupt
     shutdown
   end
 
@@ -230,11 +229,11 @@ module Ramaze
     adapter_klass = Ramaze::Adapter.const_get(adapter.to_s.capitalize)
     Global.adapter_klass = adapter_klass
 
-    info "Found adapter: #{adapter_klass}, trying to connect to #{host}:#{port} ..."
+    Inform.info("Found adapter: #{adapter_klass}, trying to connect to #{host}:#{port} ...")
 
     parse_port(port)
     shutdown unless test_connections(host, Global.ports)
-    info "and we're running: #{host}:#{port}"
+    Inform.info("and we're running: #{host}:#{port}")
 
     adapter_klass.start host, Global.ports
   end
@@ -244,7 +243,7 @@ module Ramaze
   def require_adapter adapter
     require "ramaze/adapter" / adapter.to_s.downcase
   rescue LoadError => ex
-    puts ex
+    Inform.error(ex)
     puts "Please make sure you have an adapter called #{adapter}"
     shutdown
   end
@@ -277,7 +276,7 @@ module Ramaze
       TCPServer.open(host, port){ true }
     end
   rescue => ex
-    puts ex.message
+    Inform.error(ex)
     false
   end
   extend self

@@ -39,7 +39,7 @@ module Ramaze
       def validate_sanity
         if path = trait[:public]
           unless File.directory?(path)
-            Informer.warn("#{controller} uses templating in #{path}, which does not exist")
+            Inform.warn("#{controller} uses templating in #{path}, which does not exist")
           end
         end
       end
@@ -86,7 +86,7 @@ module Ramaze
       # Parameters are CGI.unescaped
 
       def resolve_controller(path)
-        Informer.debug "resolve_controller(#{path.inspect})"
+        Inform.debug("resolve_controller(#{path.inspect})")
         track = path.split('/')
         controller = false
         action = false
@@ -127,7 +127,7 @@ module Ramaze
       #   identical to def x(*a) for some odd reason
 
       def resolve_action(controller, paraction)
-        Informer.debug "resolve_action(#{controller.inspect}, #{paraction.inspect})"
+        Inform.debug("resolve_action(#{controller.inspect}, #{paraction.inspect})")
 
         ancs = (controller.ancestors - [Kernel, Object]).select{|a| a.is_a?(Module)}
         meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
@@ -206,11 +206,11 @@ module Ramaze
         trait[:action_cache] ||= Global.cache.new
 
         if out = ancestral_trait[:action_cache][key]
-          Informer.debug "Using Cached version for #{key}"
+          Inform.debug("Using Cached version for #{key}")
           return out
         end
 
-        Informer.debug "Compiling Action: #{action} #{parameter.join(', ')}"
+        Inform.debug("Compiling Action: #{action} #{parameter.join(', ')}")
         ancestral_trait[:action_cache][key] = uncached_render(action, *parameter)
       end
 

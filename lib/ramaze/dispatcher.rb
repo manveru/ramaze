@@ -33,7 +33,7 @@ module Ramaze
 
       def dispatch
         path = request.path_info.squeeze('/')
-        Informer.info "Request from #{request.remote_addr}: #{path}"
+        Inform.info("Request from #{request.remote_addr}: #{path}")
 
         catch(:respond) do
           redirection = catch(:redirect) do
@@ -42,7 +42,7 @@ module Ramaze
           end
 
           body, status, head = redirection.values_at(:body, :status, :head)
-          Informer.info("Redirect to `#{head['Location']}'")
+          Inform.info("Redirect to `#{head['Location']}'")
           throw(:respond, build_response(body, status, head))
         end
       end

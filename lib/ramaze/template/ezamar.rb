@@ -75,7 +75,7 @@ module Ramaze
           if ex.message =~ ourself
             raise_no_action(controller, action)
           else
-            Informer.error ex
+            Inform.error(ex)
           end
           nil
         end

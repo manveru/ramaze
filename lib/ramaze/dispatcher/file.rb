@@ -21,7 +21,7 @@ module Ramaze
           if file
             response = Response.current
             response['Content-Type'] = Tool::MIME.type_for(file)
-            Informer.debug("Serving static: #{file}")
+            Inform.debug("Serving static: #{file}")
             ::File.open(file, 'rb')
           end
         end

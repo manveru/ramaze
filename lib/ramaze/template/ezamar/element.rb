@@ -135,7 +135,7 @@ class Ezamar::Element
 
       instance.render
     rescue => ex
-      Ramaze::Informer.debug(ex.message)
+      Ramaze::Inform.debug(ex.message)
       ''
     end
 

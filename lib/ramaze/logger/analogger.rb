@@ -7,7 +7,7 @@ module Ramaze
 
   class Analogger < ::Swiftcore::Analogger::Client
 
-    [:warn, :debug, :info, :error].each do |meth|
+    Informer.trait[:tags].each do |meth|
       define_method(meth) do |*args|
         log(meth, args.join("\n")) if inform_tag?(meth)
       end
@@ -20,6 +20,6 @@ module Ramaze
 
   end
 
-  Informer = Analogger.new('walrus','127.0.0.1','6766')
+  Inform = Analogger.new('walrus','127.0.0.1','6766')
 
 end

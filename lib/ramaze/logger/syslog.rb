@@ -12,4 +12,4 @@ end
 
 Ramaze::Syslog = Syslog unless defined?(Ramaze::Syslog)
 
-Ramaze::Informer = Syslog.open
+Ramaze::Inform = Syslog.open

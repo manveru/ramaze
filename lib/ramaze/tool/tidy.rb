@@ -65,7 +65,7 @@ module Ramaze
           path = trait[:path]
 
           unless path
-            Informer.error "Could not find `libtidy.so' in #{trait[:paths].inspect}"
+            Inform.error("Could not find `libtidy.so' in #{trait[:paths].inspect}")
             return html
           end
 
