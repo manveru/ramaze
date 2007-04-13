@@ -48,9 +48,11 @@ result_format = lambda do |str|
   "[ #{str} ]"
 end
 
+inc = $:.map{|x|"-I#{x}"}.join(" ")
+
 specs.each do |spec|
   print "Running #{spec}... ".ljust(width + 20)
-  status, stdout, stderr = systemu("ruby #{spec}")
+  status, stdout, stderr = systemu("ruby #{inc} #{spec}")
   hash = {:status => status, :stdout => stdout, :stderr => stderr}
 
   if stdout =~ /Usually you should not worry about this failure, just install the/
