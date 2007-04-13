@@ -21,8 +21,7 @@ end
 # catches all the stuff Og sends to Logger,
 # i wished on could mute it otherwise
 
-gulp_class = Ramaze::GlobalInformer
-Logger.send(:class_variable_set, "@@global_logger", gulp_class.new)
+Logger.send(:class_variable_set, "@@global_logger", Ramaze::Inform)
 
 Og.start :destroy => true
 
