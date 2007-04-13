@@ -41,6 +41,7 @@ module Ramaze
       keys.map{|key| params[key] }
     end
 
+
     # the referer of the client or '/'
 
     def referer
@@ -54,6 +55,26 @@ module Ramaze
         path = script_name + path_info
         path << "?" << query_string  unless query_string.empty?
         path
+      end
+    end
+
+    unless defined?(rack_params)
+      alias rack_params params
+
+      def params
+        ps = rack_params
+        temp = Hash.new{|h,k| h[k] = {}}
+
+        ps.each do |key, value|
+          outer_key, inner_key = key.scan(/^(.+)\[(.*?)\]$/).first
+          if outer_key and inner_key
+            temp[outer_key][inner_key] = value
+          else
+            temp[key] = value
+          end
+        end
+
+        temp
       end
     end
 

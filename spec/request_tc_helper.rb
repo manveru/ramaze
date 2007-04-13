@@ -31,6 +31,13 @@ class TCRequestController < Ramaze::Controller
     request['foo']
   end
 
+  def test_post
+    [ request['foo'],
+      request['bar']['1'],
+      request['bar']['7'],
+    ].inspect
+  end
+
   def test_headers
   end
 
@@ -40,8 +47,8 @@ class TCRequestController < Ramaze::Controller
 end
 
 context "Request" do
-  options = ramaze_options rescue {:adapter => :webrick}
-  ramaze options.merge( :mapping => {'/' => TCRequestController})
+  options = ramaze_options rescue {}
+  ramaze options.merge(:mapping => {'/' => TCRequestController})
 
   context "POST" do
     specify "give me the result of request.post?" do
@@ -96,6 +103,8 @@ context "Request" do
 
     specify "request[key]" do
       get('/test_get', 'foo' => 'bar').should == 'bar'
+      post('/test_post', 'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben').should == 
+        ['null', 'eins', 'sieben'].inspect
     end
   end
 
@@ -110,7 +119,7 @@ context "Request" do
       csses = []
       threads = []
 
-      times = 100
+      times = 10
 
       times.times do
         threads << Thread.new do
