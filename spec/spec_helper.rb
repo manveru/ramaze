@@ -5,6 +5,9 @@ require 'timeout'
 
 $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..', 'lib')
 
+# $VERBOSE = 1
+$context_runner = false
+
 require 'ramaze'
 
 begin
