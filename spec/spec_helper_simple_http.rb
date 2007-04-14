@@ -335,8 +335,8 @@ class SimpleHttp
 	def do_http request
 		response = nil
 
-		http = Net::HTTP.new(@uri.host, @uri.port, @proxy_host,
-			@proxy_port, @proxy_user, @proxy_pwd)
+		http = Net::HTTP.new(@uri.host, @uri.port, proxy_host,
+			proxy_port, proxy_user, proxy_pwd)
 		http.use_ssl = @uri.scheme == 'https'
 	
 		# add custom request headers.
