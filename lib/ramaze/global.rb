@@ -6,26 +6,19 @@ require 'set'
 
 module Ramaze
   class GlobalStruct < OpenStruct
-    # autoreload    - Interval for autoreloading changed source in seconds
-    # adapter       - Webserver-adapter ( :mongrel | :webrick )
-    # cache         - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
-    # cache_actions - Finegrained caching based on actions (see CacheHelper)
-    # cache_all     - Naive caching for all responses ( true | false )
-    # error_page    - Show default errorpage with inspection and backtrace ( true | false )
-    # host          - Host to respond to ( '0.0.0.0' )
-    # mapping       - Route to controller map ( {} )
-    # port          - First port of the port-range the adapters run on. ( 7000 )
-    # run_loose     - Don't wait for the servers to finish, useful for testing ( true | false )
-    # tidy          - Run all text/html responses through Tidy ( true | false )
-    # template_root - Default directory for your templates.
-    #
-    # inform_to             - :stdout/'stdout'/$stderr (similar for stdout) or some path to a file
-    # inform_tags           - a Set with any of [ :debug, :info, :error ]
-    # inform_backtrace_size - size of backtrace to be logged (and show on error-page).
-    # inform_timestamp      - parameter for Time.strftime
-    # inform_prefix_info    - prefix for all the Inform#info messages
-    # inform_prefix_debug   - prefix for all the Inform#debug messages
-    # inform_prefix_error   - prefix for all the Inform#error messages
+    # autoreload     - Interval for autoreloading changed source in seconds
+    # adapter        - Webserver-adapter ( :mongrel | :webrick )
+    # cache          - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
+    # cache_actions  - Finegrained caching based on actions (see CacheHelper)
+    # cache_all      - Naive caching for all responses ( true | false )
+    # error_page     - Show default errorpage with inspection and backtrace ( true | false )
+    # host           - Host to respond to ( '0.0.0.0' )
+    # mapping        - Route to controller map ( {} )
+    # port           - First port of the port-range the adapters run on. ( 7000 )
+    # run_loose      - Don't wait for the servers to finish, useful for testing ( true | false )
+    # tidy           - Run all text/html responses through Tidy ( true | false )
+    # template_root  - Default directory for your templates.
+    # backtrace_size - size of backtrace to be logged (and shown on error-page).
     #
     # startup         - List of methods and lambdas that are executed on startup
     # ramaze_startup  - Internal list of methods and lambdas that are executed on startup
@@ -46,35 +39,30 @@ module Ramaze
       :port           => 7000,
       :run_loose      => false,
       :template_root  => 'template',
-      :inform         => lambda{ Ramaze::Inform.trait     },
+      :backtrace_size => 10,
+      :logger         => Ramaze::Informer,
+      :inform         => lambda{ Ramaze::Informer.trait   },
       :tidy           => lambda{ Ramaze::Tool::Tidy.trait },
-
-      :inform_to             => $stdout,
-      :inform_color          => false,
-      :inform_tags           => Set.new([:debug, :info, :error]),
-      :inform_format         => "[%time] %prefix  %text",
-      :inform_backtrace_size => 10,
-      :inform_timestamp      => "%Y-%m-%d %H:%M:%S",
-      :inform_prefix_info    => 'INFO ',
-      :inform_prefix_debug   => 'DEBUG',
-      :inform_prefix_error   => 'ERROR',
-      :inform_colors         => { :info  => :green,
-                                  :debug => :yellow,
-                                  :warn  => :red,
-                                  :error => :red, },
 
       :startup => [],
       :ramaze_startup => [
-          :setup_controllers, :init_autoreload, :init_adapter
-        ],
+        lambda{
+          Ramaze.const_set(:Inform, Global.logger.startup )
+          Inform.info("Starting up Ramaze (Version #{VERSION})")
+        },
+        :setup_controllers, :init_autoreload, :init_adapter
+      ],
 
       :shutdown => [],
       :ramaze_shutdown => [
         :kill_threads,
         :close_inform,
-        lambda{ puts "Shutdown Ramaze (it's save to kill me now if i hang)" },
+        lambda{
+          Informer.shutdown
+          puts("Shutdown Ramaze (it's save to kill me now if i hang)")
+        },
         :exit
-        ],
+      ],
     }
 
     # takes an hash of options and optionally an block that is evaled in this

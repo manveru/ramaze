@@ -3,8 +3,10 @@
 
 module Ramaze
 
-  # The module Inform is mainly used for Debugging and Logging.
+  # This classes responsibility is to provide a simple but powerful way to log
+  # the status of Ramaze.
   #
+  # It gives you a number of 
   # You can include/extend your objects with it and access its methods.
   # Please note that all methods are private, so you should use them only
   # within your object. The reasoning for making them private is simply
@@ -21,32 +23,88 @@ module Ramaze
 
   class Informer
 
-    # the possible tags
+    # :stdout/'stdout'/$stdout (similar for stdout) or some path to a file
+    trait :to => $stdout
+
+    # a Set with any of [ :debug, :info, :error ]
+    trait :tags => Set.new([:debug, :info, :error])
+
+    # This is how the final output is arranged.
+    trait :format => "[%time] %prefix  %text"
+    # parameter for Time.strftime
+    trait :timestamp => "%Y-%m-%d %H:%M:%S"
+
+    # prefix for all the Inform#info messages
+    trait :prefix_info => 'INFO '
+
+    # prefix for all the Inform#debug messages
+    trait :prefix_debug => 'DEBUG'
+
+    # prefix for all the Inform#error messages
+    trait :prefix_error => 'ERROR'
+
+    # Should the output to terminal have ANSI colors?
+    trait :color => false
+
+    # Which tag should be in what color
+    trait :colors => {
+      :info  => :green,
+      :debug => :yellow,
+      :warn  => :red,
+      :error => :red,
+    }
+
+    # the possible tags, run Informer::rebuild_tags after changes.
 
     trait :tags => {
       :debug  => lambda{|*m| m.map{|o| o.inspect} },
       :info   => lambda{|*m| m.map{|o| o.to_s}    },
       :warn   => lambda{|*m| m.map{|o| o.to_s}    },
       :error  => lambda do |m|
+        # puts caller
         break(m) unless m.respond_to?(:exception)
-        bt = m.backtrace[0..Global.inform_backtrace_size]
-        [ m.inspect ] + bt
+        bt = m.backtrace[0..Global.backtrace_size]
+        [ m.inspect ] #+ bt
       end
     }
 
-    # takes the trait[:tags] and generates methods out of them.
+    class << self
 
-    def self.rebuild_tags
-      trait[:tags].each do |tag, block|
-        define_method(tag) do |*messages|
-          return unless inform_tag?(tag)
-          log(tag, block[*messages])
-        end
+      # takes the trait[:tags] and generates methods out of them.
 
-        define_method("#{tag}?") do
-          inform_tag?(tag)
+      def rebuild_tags
+        trait[:tags].each do |tag, block|
+          define_method(tag) do |*messages|
+            return unless inform_tag?(tag)
+            log(tag, block[*messages])
+          end
+
+          define_method("#{tag}?") do
+            inform_tag?(tag)
+          end
         end
       end
+
+      # answers with an instance
+
+      def startup
+        self.new
+      end
+
+      # closes all open IOs in trait[:to]
+
+      def shutdown
+        [ancestral_trait[:to]].flatten.each do |io|
+          if io = ancestral_trait[:to] and io.respond_to?(:close)
+            Inform.debug("close #{io.inspect}")
+            io.close until io.closed?
+          end
+        end
+      end
+    end
+
+    def initialize
+      self.class.rebuild_tags
     end
 
     # this simply sends the parameters to #debug
@@ -60,14 +118,14 @@ module Ramaze
     #   # => "2007-01-19 21:09:32"
 
     def timestamp
-      mask = Global.inform_timestamp
+      mask = ancestral_trait[:timestamp]
       Time.now.strftime(mask || "%Y-%m-%d %H:%M:%S")
     end
 
     # is the given inform_tag in Global.inform_tags ?
 
     def inform_tag?(inform_tag)
-      Global.inform_tags.include?(inform_tag)
+      ancestral_trait[:tags].keys.include?(inform_tag)
     end
 
     # the common logging-method, you shouldn't have to call this yourself
@@ -86,10 +144,10 @@ module Ramaze
     def log tag, *messages
       messages.flatten!
 
-      pipify(Global.inform_to).each do |do_color, pipe|
+      pipify(ancestral_trait[:to]).each do |do_color, pipe|
         next if pipe.respond_to?(:closed?) and pipe.closed?
 
-        prefix = colorize(tag, Global["inform_prefix_#{tag}"], do_color)
+        prefix = colorize(tag, ancestral_trait["prefix_#{tag}".to_sym], do_color)
 
         messages.each do |message|
           pipe.puts(log_interpolate(prefix, message))
@@ -98,16 +156,16 @@ module Ramaze
     end
 
     def colorize tag, prefix, do_color
-      return prefix unless Global.inform_color and do_color
-      color = Global.inform_colors[tag] ||= :white
+      return prefix unless ancestral_trait[:color] and do_color
+      color = ancestral_trait[:colors][tag] ||= :white
       prefix.send(color)
     end
 
     def log_interpolate prefix, text, timestamp = timestamp
-      message = Global.inform_format.dup
+      message = ancestral_trait[:format].dup
 
-      { '%time' => timestamp, '%prefix' => prefix, '%text' => text
-      }.each{|from, to| message.gsub!(from, to) }
+      vars = { '%time' => timestamp, '%prefix' => prefix, '%text' => text }
+      vars.each{|from, to| message.gsub!(from, to) }
 
       message
     end
@@ -128,12 +186,5 @@ module Ramaze
         end
       end
     end
-  end
-
-  # The instance of Informer, for example used for WEBrick
-
-  unless defined?(Inform)
-    Informer.rebuild_tags
-    Inform = Informer.new
   end
 end

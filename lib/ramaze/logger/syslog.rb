@@ -7,9 +7,9 @@ module Syslog
   class << self
     alias_method :error, :err
     alias_method :warn, :warning
+
+    alias_method :startup, :open
   end
 end
 
 Ramaze::Syslog = Syslog unless defined?(Ramaze::Syslog)
-
-Ramaze::Inform = Syslog.open

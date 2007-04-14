@@ -74,8 +74,6 @@ module Ramaze
           ourself = /undefined method `#{action}' for #<TCErrorController:/
           if ex.message =~ ourself
             raise_no_action(controller, action)
-          else
-            Inform.error(ex)
           end
           nil
         end

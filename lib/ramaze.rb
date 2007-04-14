@@ -68,8 +68,6 @@ module Ramaze
 
     return if options.delete(:fake_start)
 
-    Inform.info "Starting up Ramaze (Version #{VERSION})"
-
     startup
   end
 
@@ -130,17 +128,6 @@ module Ramaze
     (Thread.list - [Thread.main]).each do |thread|
       Timeout.timeout(2) do
         thread.kill
-      end
-    end
-  end
-
-  # closes the IO that Global.inform_to points to.
-
-  def close_inform
-    [Global.inform_to].flatten.each do |io|
-      if io = Global.inform_to and io.respond_to?(:close)
-        Inform.debug("close #{io.inspect}")
-        io.close until io.closed?
       end
     end
   end

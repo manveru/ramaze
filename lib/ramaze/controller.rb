@@ -291,20 +291,21 @@ module Ramaze
 
     def error
       error = Thread.current[:exception]
-      backtrace = error.backtrace[0..20]
+      @backtrace = error.backtrace[0..20]
       title = error.message
 
-      colors = []
+      @colors = []
       min = 200
       max = 255
-      step = -((max - min) / backtrace.size).abs
+      step = -((max - min) / @backtrace.size).abs
       max.step(min, step) do |color|
-        colors << color
+        @colors << color
       end
 
-      backtrace.map! do |line|
+      backtrace_size = Ramaze::Global.backtrace_size
+
+      @backtrace.map! do |line|
         file, lineno, meth = *Ramaze.parse_backtrace(line)
-        backtrace_size = Ramaze::Global.inform_backtrace_size
         lines = Ramaze.caller_lines(file, lineno, backtrace_size)
 
         [ lines, lines.object_id.abs, file, lineno, meth ]
@@ -312,8 +313,6 @@ module Ramaze
 
       response.status = 500
 
-      @backtrace = backtrace
-      @colors = colors
       @title = CGI.escapeHTML(title)
       require 'coderay'
       @coderay = true
@@ -321,6 +320,8 @@ module Ramaze
     rescue LoadError => ex
       @coderay = false
       title
+    rescue Object => ex
+      Inform.error(ex)
     end
 
     private
