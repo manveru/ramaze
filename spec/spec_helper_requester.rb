@@ -1,10 +1,4 @@
 module Requester
-  def get url, hash = {}
-    http = SimpleHttp.new(url2uri(url))
-    p :GET => http.uri
-    response = http.get(hash).strip
-  end
-
   def get url = '/', hash = {}
     request(:get, url, hash)
   end
