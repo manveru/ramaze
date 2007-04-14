@@ -35,7 +35,7 @@
                     options = {
                       :wrap => :div,
                       :line_numbers => :inline,
-                      :line_number_start => (lineno.to_i - Global.inform_backtrace_size)
+                      :line_number_start => (lineno.to_i - Global.backtrace_size)
                       }
                      ?>
                      #{CodeRay.scan(code, :ruby).html(options)}
@@ -43,7 +43,7 @@
                   <?r lines.each do |llineno, lcode, lcurrent| ?>
                     <tr class="source" #{'style="background:#faa;"' if lcurrent}>
                       <td>#{llineno}</td>
-                      <td><pre>#{lcode.rstrip}</pre></td>
+                      <td><pre>#{lcode.to_s.rstrip}</pre></td>
                     </tr>
                   <?r end ?>
                 <?r end ?>
