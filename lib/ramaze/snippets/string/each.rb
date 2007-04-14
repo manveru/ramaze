@@ -2,5 +2,5 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 class String
-  alias each each_line unless defined?(each)
+  alias each each_line unless ''.respond_to?(:each)
 end
