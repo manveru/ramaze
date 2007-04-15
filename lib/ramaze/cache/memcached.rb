@@ -33,6 +33,9 @@ module Ramaze
 
     def method_missing(*args, &block)
       @cache.__send__(*args, &block)
+    rescue MemCache::MemCacheError => e
+      Ramaze::Inform.error e.to_s
+      nil
     end
 
     # out of some reason MemCache sometimes doesn't respond to

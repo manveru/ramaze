@@ -44,12 +44,13 @@ module Ramaze
       :inform         => lambda{ Ramaze::Informer.trait   },
       :tidy           => lambda{ Ramaze::Tool::Tidy.trait },
 
-      :startup => [],
-      :ramaze_startup => [
+      :startup => [
         lambda{
           Ramaze.const_set(:Inform, Global.logger.startup )
           Inform.info("Starting up Ramaze (Version #{VERSION})")
-        },
+        }
+      ],
+      :ramaze_startup => [
         :setup_controllers, :init_autoreload, :init_adapter
       ],
 

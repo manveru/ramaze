@@ -88,7 +88,7 @@ module Ramaze
       # answers with an instance
 
       def startup
-        self.new
+        @instance ||= self.new
       end
 
       # closes all open IOs in trait[:to]
