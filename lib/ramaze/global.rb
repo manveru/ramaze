@@ -29,6 +29,7 @@ module Ramaze
     DEFAULT = {
       :autoreload     => 5,
       :adapter        => :webrick,
+      :backtrace_size => 10,
       :cache          => MemoryCache,
       :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
       :cache_all      => false,
@@ -43,6 +44,7 @@ module Ramaze
       :logger         => Ramaze::Informer,
       :inform         => lambda{ Ramaze::Informer.trait   },
       :tidy           => lambda{ Ramaze::Tool::Tidy.trait },
+      :shutdown_trap  => 'SIGINT',
 
       :startup => [
         lambda{

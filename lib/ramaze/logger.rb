@@ -4,7 +4,7 @@
 require 'ramaze/logger/inform'
 
 module Ramaze
-  autoload :Analogger,      "ramaze/logger/analogger.rb"
-  autoload :Inform,         "ramaze/logger/inform.rb"
-  autoload :Syslog,         "ramaze/logger/syslog.rb"
+  autoload :Analogger, "ramaze/logger/analogger.rb"
+  autoload :Informer,  "ramaze/logger/inform.rb"
+  autoload :Syslog,    "ramaze/logger/syslog.rb"
 end

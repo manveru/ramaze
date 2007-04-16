@@ -127,6 +127,9 @@ module Ramaze
     Global.adapter_klass.stop rescue nil
     (Thread.list - [Thread.main]).each do |thread|
       Timeout.timeout(2) do
+        if thread[:adapter] and thread[:adapter].respond_to?(:shutdown)
+          thread[:adapter].shutdown
+        end
         thread.kill
       end
     end

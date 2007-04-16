@@ -33,8 +33,8 @@ module Ramaze::Adapter
         }.merge(options)
 
         Thread.new do
-          Thread.current[:task] = :webrick
-          Rack::Handler::WEBrick.run(self, options)
+          Thread.current[:adapter] =
+            Rack::Handler::WEBrick.run(self, options)
         end
       end
     end
