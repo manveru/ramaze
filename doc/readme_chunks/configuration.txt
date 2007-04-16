@@ -1,0 +1,99 @@
+This chapter covers how to do configuration in Ramaze for your application.
+
+### Global
+
+The object holding most configuration is called Global. It resides in the Ramaze
+module/name space.
+
+Global is a subclass of OpenStruct and behaves mostly like it, so you can assign
+your own key/value pairs to do your own configuration. Just ensure you don't
+change key/value pairs by accident that Ramaze itself uses (doing it intentional
+is OK of course).
+
+Before covering some of the available options let us see how to actually use it.
+
+For the examples shown here we will assume that you did include Ramaze
+into your main into your main name space. If you don't do that, just prefix
+Global with Ramaze so it is written Ramaze::Global.
+
+#### Basic assignment:
+
+  Global.ports = (7000..7010)
+
+if you do that before calling Ramaze::start Ramaze will spawn one server on each
+port in that Range. The first value of this Range is also assigned to
+Global.port during the startup procedure.
+
+#### Multiple assignment:
+
+  Global.setup :adapter => :mongrel,
+               :cache   => MemcachedCache
+
+So you can pass a Hash of all the options you want to change.
+In this case you would use Mongrel as the adapter and use memcached for your
+sessions and general caching.
+
+#### Block assignment:
+
+  Global.setup do |g|
+    g.error_page = false
+    g.host = '127.0.0.1'
+    g.port = 7070
+  end
+
+This method is similar to the hash-assignment, but may be preferred for some
+applications.
+
+
+### Global options
+
+Since this document is especially prone to be outdated at times make sure you
+check lib/ramaze/global.rb in case you run into trouble, we will try to keep at
+least the RDocs up to date. This update is from 2007/04/16.
+
+This listing is here to provide you with descriptions of the most common
+configurations in alphabetical order per section showing the default value next
+to the key.
+
+#### General Configuration:
+
+:autoreload => 5
+
+Autoreload is a nifty mechanism that takes advantage of the dynamics of Ruby,
+it's basically a Thread that runs in the background and polls for files in the
+application and framework that have changed (using mtime). The value specifies
+roughly how fast your changes are going to be loaded and should be a usual
+Fixnum.
+
+
+:adapter => :webrick
+
+The adapter is the server Ramaze runs to serve your application. This can be any
+of mongrel/webrick/fcgi/cgi, please note that so far neither fcgi nor cgi have
+received the necessary testing, but, as they are only wrappers around the
+underlying Rack library, should work fine. Both fcgi and mongrel require
+additional libraries to be installed, webrick and cgi run out of the box.
+Generally the most supported and recommended for deployment is Mongrel.
+
+:backtrace_size => 10
+
+This option doesn't have a large impact and is most likely left on its default
+value, it controls how long the backtrace shown in your log and on the error
+page should be.
+
+
+:cache => MemoryCache
+
+      :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
+      :cache_all      => false,
+      :cookies        => true,
+      :error_page     => true,
+      :host           => '0.0.0.0',
+      :inform         => lambda{ Ramaze::Informer.trait   },
+      :logger         => Ramaze::Informer,
+      :mapping        => {},
+      :port           => 7000,
+      :run_loose      => false,
+      :template_root  => 'template',
+      :tidy           => lambda{ Ramaze::Tool::Tidy.trait },
+
