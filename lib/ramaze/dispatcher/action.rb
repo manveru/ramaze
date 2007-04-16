@@ -2,14 +2,18 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze/tool/tidy'
+require 'ramaze/tool/localize'
 
 module Ramaze
   module Dispatcher
     class Action
 
-      # The response is passed to each
+      # The response is passed to each filter by sending .call(response) to it.
 
-      trait :filter => [ Ramaze::Tool::Tidy ]
+      trait :filter => [
+        Ramaze::Tool::Localize,
+        Ramaze::Tool::Tidy
+      ]
 
       class << self
         def process(path)
