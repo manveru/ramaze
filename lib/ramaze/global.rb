@@ -34,7 +34,7 @@ module Ramaze
       :cookies        => true,
       :error_page     => true,
       :host           => '0.0.0.0',
-      :inform         => lambda{ Ramaze::Informer.trait },
+      :informer       => lambda{ Ramaze::Informer.trait },
       :localize       => lambda{ Ramaze::Tool::Localize.trait },
       :logger         => Ramaze::Informer,
       :mapping        => {},
