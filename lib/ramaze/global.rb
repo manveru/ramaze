@@ -9,7 +9,6 @@ module Ramaze
     # autoreload     - Interval for autoreloading changed source in seconds
     # adapter        - Webserver-adapter ( :mongrel | :webrick )
     # cache          - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
-    # cache_actions  - Finegrained caching based on actions (see CacheHelper)
     # cache_all      - Naive caching for all responses ( true | false )
     # error_page     - Show default errorpage with inspection and backtrace ( true | false )
     # host           - Host to respond to ( '0.0.0.0' )
@@ -31,7 +30,6 @@ module Ramaze
       :adapter        => :webrick,
       :backtrace_size => 10,
       :cache          => MemoryCache,
-      :cache_actions  => Hash.new{|h,k| h[k] = Set.new},
       :cache_all      => false,
       :cookies        => true,
       :error_page     => true,
