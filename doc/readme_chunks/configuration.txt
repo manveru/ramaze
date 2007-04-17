@@ -177,10 +177,3 @@ location of the entry-file (usually main.rb)
 It is also worth to mention that inside this directory the `mapping` is used
 to locate templates for each controller, only the controller mapped to '/' uses
 the templates directly from the `template_root`
-
-
-todo:
-  traits
-  startup
-  :inform         => lambda{ Ramaze::Informer.trait   },
-  :tidy           => lambda{ Ramaze::Tool::Tidy.trait },
