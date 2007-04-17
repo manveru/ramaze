@@ -61,10 +61,9 @@ module Ramaze
       :info   => lambda{|*m| m.map{|o| o.to_s}    },
       :warn   => lambda{|*m| m.map{|o| o.to_s}    },
       :error  => lambda do |m|
-        # puts caller
         break(m) unless m.respond_to?(:exception)
         bt = m.backtrace[0..Global.backtrace_size]
-        [ m.inspect ] #+ bt
+        [ m.inspect ] + bt
       end
     }
 
