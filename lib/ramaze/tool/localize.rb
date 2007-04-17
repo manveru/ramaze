@@ -53,10 +53,7 @@ class Ramaze::Tool::Localize
       Ramaze::Inform.debug "localizing: #{locale} => '#{str}'"
 
       translate(locale, str)
-    rescue Object => ex
-      puts ex
-      puts ex.backtrace
-      exit!
+    rescue ex
       Ramaze::Inform.error(ex)
       str
     end
