@@ -180,7 +180,7 @@ end
 
 desc "run the specs and clean up afterwards"
 task :test do
-  ruby "#{File.dirname(__FILE__)}/spec/spec_all.rb"
+  ruby "#{File.dirname(__FILE__)}/spec/all.rb"
   sh "rake clean"
 end
 
