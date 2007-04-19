@@ -15,7 +15,7 @@
 #       %{
 #        <html>
 #          <h1>
-#            #{@hash['title']}
+#            #@title
 #          </h1>
 #          #{content}
 #        </html>
@@ -82,10 +82,6 @@ class Ezamar::Element
     # transforms all <Element> tags within the string, takes also
     # a binding to be compatible to the transform-pipeline, won't have
     # any use for it though.
-    #
-    # It also sets a instance-variable for you called @hash, which
-    # contains the parameters you gave the <Element> tag.
-    # See above for an example of writing and using them.
 
     def transform string = '', options = {}
       binding, path = options.values_at(:binding, :path)
@@ -120,8 +116,9 @@ class Ezamar::Element
     end
 
     # find the element, create an instance, pass it the content
-    # check if it responds to :render and set an instance-variable
-    # called @hash to hold the parameters passed to the element.
+    # check if it responds to :render and sets instance-variables
+    # that are named after the keys and hold the values of the parameters
+    # you passed to the Element
     #
     # Parameters look like:
     #   <Page foo="true"> bar </Page>
@@ -130,8 +127,9 @@ class Ezamar::Element
     def finish_transform(klass, params, content)
       instance = constant(klass).new(content)
 
-      hash = demunge_passed_variables(params)
-      instance.instance_variable_set("@hash", hash)
+      demunge_passed_variables(params).each do |key, value|
+        instance.instance_variable_set("@#{key}", value)
+      end
 
       instance.render
     rescue => ex

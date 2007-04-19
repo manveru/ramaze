@@ -46,7 +46,8 @@ end
 
 class PageWithParams < Ezamar::Element
   def render
-    @hash.inspect
+    ivs = (instance_variables - ['@content'])
+    ivs.inject({}){|s,v| s.merge(v => instance_variable_get(v)) }.inspect
   end
 end
 
@@ -58,13 +59,14 @@ end
 
 class PageLittleWithParams < Ezamar::Element
   def render
-    @hash.inspect
+    ivs = (instance_variables - ['@content'])
+    ivs.inject({}){|s,v| s.merge(v => instance_variable_get(v)) }.inspect
   end
 end
 
 class PageWithTemplating < Ezamar::Element
   def render
-    (1..@hash['times']).to_a.join(', ')
+    (1..@times).to_a.join(', ')
   end
 end
 
@@ -84,7 +86,7 @@ context "Element" do
   end
 
   specify "with_params" do
-    get('/with_params/one/two').should == {'one' => 'two'}.inspect
+    get('/with_params/one/two').should == {'@one' => 'two'}.inspect
   end
 
   specify "little" do
@@ -92,7 +94,7 @@ context "Element" do
   end
 
   specify "little params" do
-    get('/little_params/one/eins').should == {'one' => 'eins'}.inspect
+    get('/little_params/one/eins').should == {'@one' => 'eins'}.inspect
   end
 
   specify "templating" do

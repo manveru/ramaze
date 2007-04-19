@@ -16,7 +16,7 @@ class TCTemplateController < Ramaze::Controller
   end
 
   def nested key, value
-    @hash = {key => value}
+    instance_variable_set("@#{key}", value)
   end
 
   def internal *args
