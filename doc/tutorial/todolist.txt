@@ -453,7 +453,7 @@ so far:
             <title>TodoList</title>
           </head>
           <body>
-            <h1>#{@hash['title']}</h1>
+            <h1>#{@title}</h1>
             #{content}
           </body>
         </html>
@@ -461,8 +461,7 @@ so far:
       end
     end
 
-Please note that the @hash is filled with the things you pass as parameters
-to tye Page-tag.
+Please note that instance variables reflecting the parameters are set.
 
 And let's change our templates as well.
 
