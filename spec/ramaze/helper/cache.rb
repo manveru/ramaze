@@ -48,32 +48,22 @@ context "CacheHelper" do
   def uncache_actions() get('/uncache_actions') end
 
   specify "cached value" do
-    uncached  = cached_value
-
     3.times do
-      uncached.should == cached_value
+      lambda{ cached_value }.should_not change{ cached_value }
     end
 
-    old = cached_value
-
     3.times do
-      uncache_value
-      cached_value.should_not == old
+      lambda{ uncache_value }.should change{ cached_value }
     end
   end
 
   specify "cached action" do
-    uncached = cached_action
-
     3.times do
-      cached_action.should == uncached
+      lambda{ cached_action }.should_not change{ cached_action }
     end
 
-    old = cached_action
-
     3.times do
-      uncache_actions
-      cached_action.should_not == old
+      lambda{ uncache_actions }.should change{ cached_action }
     end
   end
 end
