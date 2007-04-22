@@ -1,0 +1,38 @@
+This is a one-time post to announce the creation of the Ramaze project, an open
+source web framework with the aim to be light and modular.
+Ramaze is already relatively stable and we decided that it is time to give it
+broader exposure to find new users and contributors.
+
+Home page: http://ramaze.rubyforge.org
+
+Features:
+  - Builds on top of the recently released Rack library, which provides easy use
+    of adapters like Mongrel, WEBrick, CGI or FCGI.
+
+  - Supports a wide range of templating-engines like:
+      Amrita2, Erubis, HAML, Liquid, Markaby and its own engine called Ezamar.
+
+  - Highly modular structure, you can just use the parts you like. This also
+      means that it's very simple to add your own customizations.
+
+  - A variety of helpers is already available, giving you things like advanced
+      caching, OpenID-authentication or aspect-oriented programming for your
+      controllers.
+
+  - It is possible to use the ORM you like, be it ActiveRecord, Og, Kansas or
+      something more simplistic like a wrapper around YAML::Store.
+
+  - Good Documentation. Although we don't have 100% documentation right now,
+      just about every part of Ramaze is covered with basic and advanced docs,
+      there is a variety of examples and a tutorial available.
+
+
+Features planned:
+  - Unified FormHelper for ORMs, making the framework mostly independent of the
+    underlying model.
+
+
+For more information please come to http://ramaze.rubyforge.org
+
+Thank you,
+Michael 'manveru' Fellinger
