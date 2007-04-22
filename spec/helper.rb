@@ -53,6 +53,10 @@ module Spec::Runner::ContextEval::ModuleMethods
   end
 end
 
+def browser(*args, &block)
+  Browser.new(*args, &block)
+end
+
 
 # require each of the following and rescue LoadError, telling you why it failed.
 

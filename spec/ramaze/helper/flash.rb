@@ -62,7 +62,7 @@ context "FlashHelper" do
   }
 
   specify "twice" do
-    Context.new('/') do
+    browser '/' do
       get('/first_here')
       get('/then_here').should == 'hey'
       get('/then_here').should == ''
@@ -74,7 +74,7 @@ context "FlashHelper" do
   end
 
   specify "over seperate controllers" do
-    Context.new do
+    browser do
       get('/first_here')
       get('/second/then_here').should == 'hey'
       get('/then_here').should == ''
@@ -86,13 +86,13 @@ context "FlashHelper" do
   end
 
   specify "single" do
-    Context.new do
+    browser do
       get('/third/set/foo').should == 'foo'
     end
   end
   
   specify "single" do
-    Context.new do
+    browser do
       get('/third/set/foo').should == 'foo'
       get('/third/retrieve').should == 'foo'
       get('/third/retrieve').should == ''

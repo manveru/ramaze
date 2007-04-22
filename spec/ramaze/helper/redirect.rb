@@ -40,14 +40,14 @@ end
 context "RedirectHelper" do
   ramaze(:mapping => {'/' => TCRedirectHelperController})
 
-  ctx = Context.new
+  b = Browser.new
 
   specify "testrun" do
-    ctx.get('/').should == "TCRedirectHelperController"
+    b.get('/').should == "TCRedirectHelperController"
   end
 
   specify "calls" do
-    ctx.story do
+    b.story do
       get('/redirection').should        == "TCRedirectHelperController"
       get('/double_redirection').should == "TCRedirectHelperController"
       get('/no_actual_redirect').should        == 'foo'
@@ -56,7 +56,7 @@ context "RedirectHelper" do
   end
 
   specify "redirect to referer" do
-    ctx.story do
+    b.story do
       get('/').should                        == 'TCRedirectHelperController'
       get('/redirect_referer_action').should == 'TCRedirectHelperController'
       get('/noop').should                    == 'noop'

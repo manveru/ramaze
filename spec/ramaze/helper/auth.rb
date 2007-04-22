@@ -48,10 +48,9 @@ context "StackHelper" do
     TCAuthMethodHelperController,
     TCAuthLambdaHelperController
   ].each do |controller|
-    ctx = Context.new('/', Ramaze::Global.mapping.invert[controller])
 
     specify controller.to_s do
-      Context.new('/', Ramaze::Global.mapping.invert[controller]) do
+      browser '/', Ramaze::Global.mapping.invert[controller] do
         get('/secured').should == ''
         post('/login', 'username' => 'manveru', 'password' => 'password')
         get('/secured').should == 'Secret content'

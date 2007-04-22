@@ -1,4 +1,4 @@
-class Context
+class Browser
   attr_reader :cookie
 
   def initialize(url = '/', base = '/', &block)

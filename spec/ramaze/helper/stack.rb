@@ -45,7 +45,7 @@ context "StackHelper" do
 
   specify "conventional login" do
 =begin
-    Context.new do
+    browser do
       get('/secure').should == 'please login'
       get('/login')
       get('/secure').should == 'secret content'
@@ -55,7 +55,7 @@ context "StackHelper" do
   end
 
   specify "indirect login" do
-    Context.new do
+    browser do
       get('/foo').should == 'logged in'
       get('/foo').should == 'logged in'
       eget('/').should == {:logged_in => true, :STACK => []}
@@ -63,7 +63,7 @@ context "StackHelper" do
   end
 
   specify "indirect login with params" do
-    Context.new do
+    browser do
       eget('/bar', 'x' => 'y').should == {'x' => 'y'}
       eget('/').should == {:logged_in => true, :STACK => []}
     end
