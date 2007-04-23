@@ -256,6 +256,7 @@ module Ramaze
   # test if a connection can be made at the specified host/ports.
 
   def test_connections host, ports
+    return true unless Global.test_connections
     ports.map{|port| connection_possible(host, port) }.all?
   end
 

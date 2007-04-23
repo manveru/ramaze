@@ -8,16 +8,16 @@ module Ramaze
   class GlobalStruct < OpenStruct
     # autoreload     - Interval for autoreloading changed source in seconds
     # adapter        - Webserver-adapter ( :mongrel | :webrick )
+    # backtrace_size - size of backtrace to be logged (and shown on error-page).
     # cache          - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
     # cache_all      - Naive caching for all responses ( true | false )
+    # cookies        - 
     # error_page     - Show default errorpage with inspection and backtrace ( true | false )
     # host           - Host to respond to ( '0.0.0.0' )
     # mapping        - Route to controller map ( {} )
     # port           - First port of the port-range the adapters run on. ( 7000 )
     # run_loose      - Don't wait for the servers to finish, useful for testing ( true | false )
-    # tidy           - Run all text/html responses through Tidy ( true | false )
     # template_root  - Default directory for your templates.
-    # backtrace_size - size of backtrace to be logged (and shown on error-page).
     #
     # startup         - List of methods and lambdas that are executed on startup
     # ramaze_startup  - Internal list of methods and lambdas that are executed on startup
@@ -26,23 +26,24 @@ module Ramaze
     # ramaze_shutdown - Internal list of methods and lambdas that are executed on shutdown
 
     DEFAULT = {
-      :autoreload     => 5,
-      :adapter        => :webrick,
-      :backtrace_size => 10,
-      :cache          => MemoryCache,
-      :cache_all      => false,
-      :cookies        => true,
-      :error_page     => true,
-      :host           => '0.0.0.0',
-      :informer       => lambda{ Ramaze::Informer.trait },
-      :localize       => lambda{ Ramaze::Tool::Localize.trait },
-      :logger         => Ramaze::Informer,
-      :mapping        => {},
-      :port           => 7000,
-      :run_loose      => false,
-      :template_root  => 'template',
-      :tidy           => lambda{ Ramaze::Tool::Tidy.trait },
-      :shutdown_trap  => 'SIGINT',
+      :autoreload       => 5,
+      :adapter          => :webrick,
+      :backtrace_size   => 10,
+      :cache            => MemoryCache,
+      :cache_all        => false,
+      :cookies          => true,
+      :error_page       => true,
+      :host             => '0.0.0.0',
+      :informer         => lambda{ Ramaze::Informer.trait },
+      :localize         => lambda{ Ramaze::Tool::Localize.trait },
+      :logger           => Ramaze::Informer,
+      :mapping          => {},
+      :port             => 7000,
+      :run_loose        => false,
+      :template_root    => 'template',
+      :tidy             => lambda{ Ramaze::Tool::Tidy.trait },
+      :test_connections => true,
+      :shutdown_trap    => 'SIGINT',
 
       :startup => [
         lambda{
