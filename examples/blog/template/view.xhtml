@@ -1,15 +1,15 @@
 <Page>
   <div class="blog_entry">
     <div class="title">
-      <div class="title">#{link self, :view, @entry.oid, :title => @entry.title}</div>
+      <div class="title">#{link self, :view, @entry.eid, :title => @entry.title}</div>
       <div class="date">#{@entry.time}</div> 
     </div>
     <div class="text">
       #{@entry.text}
     </div>
     <div class="menu">
-      #{link self, :delete, @entry.oid, :title => 'Delete'}
-      #{link self, :edit, @entry.oid, :title => 'Edit'}<br />
+      #{link self, :delete, @entry.eid, :title => 'Delete'}
+      #{link self, :edit, @entry.eid, :title => 'Edit'}<br />
     </div>
   </div>
 </Page>
