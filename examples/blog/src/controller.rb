@@ -22,7 +22,7 @@ class MainController < Controller
   def add
     entry = Entry.new.merge!(request.params)
     entry.time = Time.now
-    session[:result] = "#{entry.title} added successfully" if entry.save
+    session[:result] = "<em>#{entry.title}</em> added successfully" if entry.save
     redirect :/
   end
 
@@ -33,16 +33,16 @@ class MainController < Controller
   def save
     redirect_referer unless eid = request.params.delete('eid')
     entry = Entry[eid].merge!(request.params)
-    session[:result] = "#{entry.title} saved successfully" if entry.save
+    session[:result] = "<em>#{entry.title}</em> saved successfully" if entry.save
     redirect :/
   end
 
   def delete eid
     if entry = Entry[eid]
       if entry.delete
-        session[:result] = "#{entry.title} deleted successfully"
+        session[:result] = "<em>#{entry.title}</em> deleted successfully"
       else
-        session[:result] = "Couldn't delete #{entry.title}"
+        session[:result] = "Couldn't delete <em>#{entry.title}</em>"
       end
     end
     redirect_referer
