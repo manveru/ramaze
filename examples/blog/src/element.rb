@@ -12,8 +12,13 @@ class Page < Controller
   <head>
     <title>#{@title}</title>
     <link href="/screen.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript">
+    function removeResult() {
+      document.getElementById( 'result' ).style.display = "none";
+    }
+    </script>
   </head>
-  <body>
+  <body onload="javascipt:setTimeout('removeResult();',1500)">
     #{result}
     #{menu}
     #{sidebar}
@@ -25,8 +30,10 @@ class Page < Controller
 
   def result
     if session[:result]
-      result_message = %{<div class="result">#{session[:result]}</div>}
+      result_message = %{<div id="result">#{session[:result]}</div>}
       session[:result] = nil
+    else
+      result_message = %{<div id="result" style="display:none"></div>}
     end
     result_message
   end
