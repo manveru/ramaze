@@ -32,6 +32,19 @@ div#menu {
   font-size:      2em;
 }
 
+div.result {
+  text-align: center;
+  padding:        0.4em;
+  margin:         0;
+  background:     #444;
+  font-size:      0.8em;
+  border:         2px solid #666;
+  color:          white;
+  position:       absolute;
+  top:            0.5em;
+  left:           0.5em;
+}
+
 div#sidebar {
   width: 12%;
   height: 50%;

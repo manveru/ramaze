@@ -14,12 +14,21 @@ class Page < Controller
     <link href="/screen.css" type="text/css" rel="stylesheet">
   </head>
   <body>
+    #{result}
     #{menu}
     #{sidebar}
     #{content}
   </body>
 </html>
     }
+  end
+
+  def result
+    if session[:result]
+      result_message = %{<div class="result">#{session[:result]}</div>}
+      session[:result] = nil
+    end
+    result_message
   end
 
   def menu
