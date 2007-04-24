@@ -55,6 +55,10 @@ module Ramaze
 
     trait :finalize => [:finalize_flash]
 
+    trait :ip_cache => Hash.new{|h,k| h[k] = []}
+
+    trait :ip_cache_limit => 1000
+
     class << self
 
       # answers with Thread.current[:session] which holds the current session
@@ -75,6 +79,14 @@ module Ramaze
 
     def initialize request
       @session_id = (request.cookies[SESSION_KEY] || random_key)
+      ip_cache = ancestral_trait[:ip_cache]
+      ip = request.remote_addr
+      ip_cache[ip] << @session_id
+
+      if ip_cache[ip].size >= ancestral_trait[:ip_cache_limit]
+        sessions.delete(ip_cache[ip].shift)
+      end
+
       @flash = Ramaze::SessionFlash.new
 
       unless sessions
@@ -203,7 +215,7 @@ module Ramaze
     private
 
     def session
-      Ramaze::Session.current
+      Ramaze::Session.current || {}
     end
   end
 end
