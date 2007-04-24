@@ -44,6 +44,8 @@ class MainController < Controller
       else
         session[:result] = "Couldn't delete <em>#{entry.title}</em>"
       end
+    else
+      session[:result] = "Couldn't delete <em>#{eid}</em>, no such entry"
     end
     redirect_referer
   end
