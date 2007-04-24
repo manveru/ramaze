@@ -74,8 +74,9 @@ module Ramaze
           ourself = /undefined method `#{action}' for #<TCErrorController:/
           if ex.message =~ ourself
             raise_no_action(controller, action)
+          else
+            raise ex
           end
-          nil
         end
 
         def raise_no_action(controller, action)
@@ -103,7 +104,8 @@ module Ramaze
 
         def safe
           yield
-        rescue
+        rescue => ex
+          Inform.error(ex)
           nil
         end
       end
