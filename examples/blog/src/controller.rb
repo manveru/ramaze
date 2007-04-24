@@ -31,7 +31,7 @@ class MainController < Controller
   end
 
   def save
-    redirect_referer unless eid = request.params.delete('eid')
+    redirect_referer unless eid = request['eid']
     entry = Entry[eid].merge!(request.params)
     session[:result] = "<em>#{entry.title}</em> saved successfully" if entry.save
     redirect :/
