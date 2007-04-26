@@ -6,7 +6,7 @@ module Ramaze
   # This classes responsibility is to provide a simple but powerful way to log
   # the status of Ramaze.
   #
-  # It gives you a number of 
+  # It gives you a number of
   # You can include/extend your objects with it and access its methods.
   # Please note that all methods are private, so you should use them only
   # within your object. The reasoning for making them private is simply

@@ -11,7 +11,7 @@ module Ramaze
     # backtrace_size - size of backtrace to be logged (and shown on error-page).
     # cache          - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
     # cache_all      - Naive caching for all responses ( true | false )
-    # cookies        - 
+    # cookies        -
     # error_page     - Show default errorpage with inspection and backtrace ( true | false )
     # host           - Host to respond to ( '0.0.0.0' )
     # mapping        - Route to controller map ( {} )

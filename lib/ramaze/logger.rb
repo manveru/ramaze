@@ -9,6 +9,6 @@ module Ramaze
   autoload :Syslog,    "ramaze/logger/syslog.rb"
   autoload :Growl,     "ramaze/logger/growl.rb"
   autoload :Xosd,      "ramaze/logger/xosd.rb"
-  
+
   autoload :NotificationHub, "ramaze/logger/notification_hub.rb"
 end

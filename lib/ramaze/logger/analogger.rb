@@ -16,14 +16,14 @@ module Ramaze
       define_method(meth) do |*args|
         log(meth, args.join("\n"))
       end
-      
+
       define_method("#{meth}?") do |*args|
         inform_tag?(meth)
       end
     end
-    
+
     # Webrick
-    
+
     def <<(*args)
       log('debug', args.join("\n"))
     end
