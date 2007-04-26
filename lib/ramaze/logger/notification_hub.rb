@@ -4,50 +4,32 @@
 module Ramaze
 
   class NotificationHub
+    trait :loggers => Set.new([Informer])
+    trait :instances => {}
 
-    trait :loggers => {
-      Informer => Informer.trait[:tags]
-    }
-
-    def initialize(loggers)
-      @loggers = {}
-      loggers.each do |logger, types|
-        @loggers[logger.startup] = types.map! {|t| t.to_sym }
+    def method_missing(*args)
+      collect_loggers.each do |logger, instance|
+        instance.__send__(*args)
       end
+    rescue Object => ex
+      puts ex
+      puts ex.backtrace
     end
 
-    def log(type, *message)
-      @loggers.each do |logger, types|
-        logger.__send__(type, message) if types.include?(type)
-      end
-    end
+    def collect_loggers
+      t = ancestral_trait
 
-    Informer.trait[:tags].each do |meth,foo|
-      define_method(meth) do |*args|
-        log(meth, args.join("\n"))
+      t[:instances].delete_if{|k,v| not t[:loggers].include?(k)}
+
+      (t[:loggers].to_a - t[:instances].keys).each do |logger|
+        t[:instances][logger] = logger.startup
       end
 
-      define_method("#{meth}?") do |*args|
-        inform_tag?(meth)
-      end
+      t[:instances]
     end
 
-    # Webrick
-
-    def <<(*args)
-      log(:debug, args.join("\n"))
+    def self.startup
+      self.new
     end
-
-    class << self
-      def startup
-        @instance ||= new(trait[:loggers])
-      end
-    end
-
-    def inform_tag?(tag)
-      @loggers.values.flatte.include?(tag.to_sym)
-    end
-
   end
-
 end

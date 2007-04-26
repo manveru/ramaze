@@ -1,9 +1,61 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'libxosd2-ruby'
+require 'xosd'
 
 module Ramaze
+
+  class Xosd
+
+    trait :timeout => 3
+    trait :lines => 3
+
+    trait :colors => {
+      :error => "#FF0000",
+      :info => "#00FF00",
+      :warn => "#EAA61E",
+      :debug => "#FFFFFF"
+    }
+
+    Informer.trait[:tags].each do |meth,foo|
+      define_method(meth) do |*args|
+        log(meth, args.join("\n"))
+      end
+
+      define_method("#{meth}?") do |*args|
+        inform_tag?(meth)
+      end
+    end
+
+    def log(type, *args)
+      @osd.color = ancestral_trait[:colors][type.to_sym]
+
+      args.each_with_index do |arg, i|
+        @osd.display(arg, i)
+      end
+    end
+
+    def init_osd
+      @osd = ::Xosd.new(ancestral_trait[:lines])
+      @osd.valign = 'top'
+      @osd.vertical_offset = 20
+      @osd.align = 'center'
+      @osd.color = '#FFFFFF'
+      @osd.outline_color = '#000000'
+      @osd.outline_width = 1
+      @osd.font = "-*-*-*-*-*-*-24-*-*-*-*-*-*-*"
+      @osd.timeout = ancestral_trait[:timeout]
+    end
+
+    def self.startup
+      instance = self.new
+      instance.init_osd
+      instance
+    end
+  end
+end
+
+=begin
 
   class Xosd < ::Xosd
 
@@ -64,3 +116,4 @@ module Ramaze
   end
 
 end
+=end
