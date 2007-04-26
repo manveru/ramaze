@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'swiftcore/Analogger/Client'
+require 'ramaze/logger/inform'
 
 module Ramaze
 
@@ -21,6 +22,7 @@ module Ramaze
       end
     end
     
+    # Webrick
     
     def <<(*args)
       log('debug', args.join("\n"))
