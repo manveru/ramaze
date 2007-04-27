@@ -6,7 +6,7 @@ require 'spec/helper/wrap'
 base = File.expand_path(File.dirname(__FILE__)/'ramaze')
 
 files = Dir[base/'*.rb']
-files += %w[template store].map{|dir| Dir[base/dir/'*.rb']}.flatten
+files += %w[template store inform].map{|dir| Dir[base/dir/'*.rb']}.flatten
 files.dup.each do |file|
   dirname = base/File.basename(file, '.rb')
   if File.directory?(dirname)

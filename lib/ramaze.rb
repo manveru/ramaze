@@ -19,7 +19,7 @@ require 'ramaze/snippets'
 require 'ramaze/cache'
 require 'ramaze/trinity'
 require 'ramaze/error'
-require 'ramaze/logger'
+require 'ramaze/inform'
 require 'ramaze/global'
 require 'ramaze/dispatcher'
 require 'ramaze/gestalt'
@@ -68,6 +68,7 @@ module Ramaze
 
     return if options.delete(:fake_start)
 
+    Inform.info("Starting up Ramaze (Version #{VERSION})")
     startup
   end
 

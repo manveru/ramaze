@@ -4,7 +4,7 @@
 require 'spec/helper'
 require 'ramaze/tool/localize'
 require 'ramaze/trinity/session'
-require 'ramaze/logger'
+#require 'ramaze/inform'
 
 Ramaze::Tool::Localize.trait :enable    => true,
                              :file      => 'spec/ramaze/conf/locale_%s.yaml'.freeze,

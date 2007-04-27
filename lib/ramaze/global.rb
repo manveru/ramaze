@@ -9,6 +9,7 @@ module Ramaze
     # autoreload     - Interval for autoreloading changed source in seconds
     # adapter        - Webserver-adapter ( :mongrel | :webrick )
     # backtrace_size - size of backtrace to be logged (and shown on error-page).
+    # benchmarking   - enable timing of each request
     # cache          - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
     # cache_all      - Naive caching for all responses ( true | false )
     # cookies        -
@@ -29,14 +30,14 @@ module Ramaze
       :autoreload       => 5,
       :adapter          => :webrick,
       :backtrace_size   => 10,
+      :benchmarking     => false,
       :cache            => MemoryCache,
       :cache_all        => false,
       :cookies          => true,
       :error_page       => true,
       :host             => '0.0.0.0',
-      :informer         => lambda{ Ramaze::Informer.trait },
       :localize         => lambda{ Ramaze::Tool::Localize.trait },
-      :logger           => Ramaze::Informer,
+      :logger           => Ramaze::Informer.new($stdout),
       :mapping          => {},
       :port             => 7000,
       :run_loose        => false,
@@ -45,12 +46,7 @@ module Ramaze
       :test_connections => true,
       :shutdown_trap    => 'SIGINT',
 
-      :startup => [
-        lambda{
-          Ramaze.const_set(:Inform, Global.logger.startup )
-          Inform.info("Starting up Ramaze (Version #{VERSION})")
-        }
-      ],
+      :startup => [ ],
       :ramaze_startup => [
         :setup_controllers, :init_autoreload, :init_adapter
       ],
@@ -58,9 +54,8 @@ module Ramaze
       :shutdown => [],
       :ramaze_shutdown => [
         :kill_threads,
-        :close_inform,
         lambda{
-          Informer.shutdown
+          Inform.shutdown
           puts("Shutdown Ramaze (it's save to kill me now if i hang)")
         },
         :exit
