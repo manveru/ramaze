@@ -61,4 +61,12 @@ class Object
     end
     ancs.reverse.inject({}){|s,v| s.merge(v.trait)}.merge(trait)
   end
+
+  def class_trait
+    if respond_to?(:ancestors)
+      trait
+    else
+      self.class.trait
+    end
+  end
 end
