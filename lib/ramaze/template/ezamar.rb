@@ -56,14 +56,17 @@ module Ramaze
         # Answers with the contents and otherwise nil
 
         def file_template action_or_file, controller
+          action_or_file = action_or_file.to_s
           path =
             if File.file?(action_or_file)
               action_or_file
             else
-              Controller.find_template(action_or_file, controller)
+              Controller.find_template(action_or_file, controller).to_s
             end
 
           return File.read(path), path
+        rescue Errno::ENOENT
+          return nil, nil
         end
 
         # Render an action, on a given controller with parameter
@@ -105,6 +108,7 @@ module Ramaze
         def safe
           yield
         rescue => ex
+          Inform.error('Next message may not be critical')
           Inform.error(ex)
           nil
         end
