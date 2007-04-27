@@ -28,6 +28,8 @@ class SideBar < Ezamar::Element
 end
 
 class MainController < Controller
+  trait :map => '/'
+
   def index
     %{
     <Page title="Test">
