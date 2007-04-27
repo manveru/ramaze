@@ -147,8 +147,7 @@ module Ramaze
     end
 
     Global.controllers.each do |controller|
-      if controller.ancestral_trait[:automap]
-        map = controller.mapping
+      if map = controller.mapping
         Global.mapping[map] ||= controller
         Inform.debug("mapped #{map} => #{controller}")
       end

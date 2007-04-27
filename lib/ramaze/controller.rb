@@ -49,7 +49,7 @@ module Ramaze
         return global_mapping if global_mapping
         if map = ancestral_trait[:map]
           map
-        else
+        elsif trait[:automap]
           name = self.to_s.gsub('Controller', '').split('::').last
           %w[Main Base Index].include?(name) ? '/' : "/#{name.snake_case}"
         end
