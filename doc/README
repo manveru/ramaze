@@ -170,7 +170,7 @@ There are some basic principles that Ramaze tries to follow:
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
 
-    $ darcs get http://manveru.mine.nu/ramaze
+    $ darcs get --partial http://manveru.mine.nu/ramaze
 
   Please read the man page or `darcs help` for more information about updating
   and creating your own patches.
