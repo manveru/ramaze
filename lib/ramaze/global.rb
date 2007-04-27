@@ -46,7 +46,12 @@ module Ramaze
       :test_connections => true,
       :shutdown_trap    => 'SIGINT',
 
-      :startup => [ ],
+      :startup => [
+        lambda{
+          Ramaze::Inform = Global.logger unless defined?(Inform)
+          Inform.info("Starting up Ramaze (Version #{VERSION})")
+        }
+      ],
       :ramaze_startup => [
         :setup_controllers, :init_autoreload, :init_adapter
       ],

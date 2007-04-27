@@ -8,12 +8,3 @@ module Ramaze
   autoload :Xosd,      "ramaze/inform/xosd.rb"
   autoload :LogHub,    "ramaze/inform/hub.rb"
 end
-
-require 'ramaze/global'
-
-module Ramaze
-  # TODO: This is ugly, error-prone and actually
-  #       no good idea at all, but works for the moment.
-
-  Inform = Global.logger unless defined?(Inform)
-end

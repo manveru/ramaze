@@ -68,7 +68,6 @@ module Ramaze
 
     return if options.delete(:fake_start)
 
-    Inform.info("Starting up Ramaze (Version #{VERSION})")
     startup
   end
 
