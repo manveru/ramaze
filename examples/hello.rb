@@ -14,6 +14,7 @@ include Ramaze
 # in your browser
 
 class MainController < Controller
+  trait :map => '/'
   def index
     "Hello, World!"
   end
