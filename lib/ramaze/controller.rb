@@ -47,7 +47,7 @@ module Ramaze
       def mapping
         global_mapping = Global.mapping.invert[self]
         return global_mapping if global_mapping
-        if map = ancestral_trait[:map]
+        if map = class_trait[:map]
           map
         elsif trait[:automap]
           name = self.to_s.gsub('Controller', '').split('::').last
@@ -146,7 +146,7 @@ module Ramaze
 
         until action or tracks.empty?
           current = tracks.pop
-          if meths.include?(current) #or current = controller.ancestral_trait[:template_map][current]
+          if meths.include?(current) #or current = controller.class_trait[:template_map][current]
             arity = controller.instance_method(current).arity
             params = (paraction - current.split('__'))
 
@@ -173,8 +173,8 @@ module Ramaze
 
         cache_indicators = [
           Global.cache_all,
-          ancestral_trait[:cache_all],
-          ancestral_trait[:actions_cached].map{|k| k.to_s}.include?(action.to_s),
+          class_trait[:cache_all],
+          class_trait[:actions_cached].map{|k| k.to_s}.include?(action.to_s),
         ]
 
         if cache_indicators.any?
@@ -189,7 +189,7 @@ module Ramaze
         controller.instance_variable_set('@action', action)
 
         file   = find_template(action)
-        engine = ancestral_trait[:engine] || engine_for(file)
+        engine = select_engine(file)
 
         options = {
           :file       => file,
@@ -205,13 +205,13 @@ module Ramaze
 
         trait[:action_cache] ||= Global.cache.new
 
-        if out = ancestral_trait[:action_cache][key]
+        if out = class_trait[:action_cache][key]
           Inform.debug("Using Cached version for #{key}")
           return out
         end
 
         Inform.debug("Compiling Action: #{action} #{parameter.join(', ')}")
-        ancestral_trait[:action_cache][key] = uncached_render(action, *parameter)
+        class_trait[:action_cache][key] = uncached_render(action, *parameter)
       end
 
       # This finds the template for the given action on the current controller
@@ -232,20 +232,20 @@ module Ramaze
       # used instead.
 
       def find_template action, klass = self
-        custom_template = ancestral_trait["#{action}_template".intern]
+        custom_template = class_trait["#{action}_template".intern]
         action = (custom_template ? custom_template : action).to_s
         action_converted = action.split('__').inject {|s,v| "#{s}/#{v}"}
-        klass_public = klass.ancestral_trait[:public]
-        ramaze_public = klass.ancestral_trait[:ramaze_public]
+        klass_public = klass.class_trait[:public]
+        ramaze_public = klass.class_trait[:ramaze_public]
 
         first_path =
-          if template_root = klass.ancestral_trait[:template_root]
+          if template_root = klass.class_trait[:template_root]
             template_root
           else
             Global.template_root / Global.mapping.invert[self]
           end
 
-        extensions = [ancestral_trait[:template_extensions].values].flatten.uniq
+        extensions = Controller.trait[:template_extensions].keys
 
         actions = [action, action_converted].compact
         all_paths = [ first_path, klass_public, ramaze_public].compact
@@ -257,27 +257,26 @@ module Ramaze
         possible.first
       end
 
-      # lookup the trait[:template_extensions] for the extname of the filename
-      # you pass.
-      #
-      # Answers with the engine that matches the extension, Template::Ezamar
-      # is used if none matches.
+      def select_engine(file)
+        trait_engine = class_trait[:engine]
+        default = [trait_engine, Template::Ezamar].compact.first
+        return default unless file
 
-      def engine_for file
-        file = file.to_s
-        extension = File.extname(file).gsub(/^\./, '')
-        engines = trait[:template_extensions]
-        return Template::Ezamar if not engines or engines.empty?
-        engines.find{|k,v| v == extension or [v].flatten.include?(extension)}.first
-      rescue
-        Template::Ezamar
+        engines = Controller.trait[:template_extensions]
+        return default if engines.empty?
+
+        ext = File.extname(file).gsub(/^\./, '')
+        ext_engine = engines[ext]
+        return ext_engine ? ext_engine : default
       end
 
       # This method is called by templating-engines to register themselves with
       # a list of extensions that will be looked up on #render of an action.
 
       def register_engine engine, *extensions
-        trait[:template_extensions][engine] = [extensions].flatten.uniq
+        extensions.flatten.each do |ext|
+          trait[:template_extensions][ext] = engine
+        end
       end
     end
 
