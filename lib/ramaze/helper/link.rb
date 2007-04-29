@@ -40,7 +40,7 @@ module Ramaze
     #   link MainController, :foo, :title => 'a'  #=> '<a href="/minor/foo/bar">a</a>'
     #   link MainController, :foo => :bar         #=> '/?foo=bar'
 
-    def link *to
+    def Rlink *to
       hash = to.last.is_a?(Hash) ? to.pop : {}
 
       to = to.flatten
@@ -64,6 +64,8 @@ module Ramaze
       end
     end
 
+    alias link Rlink
+
     # Usage:
     #   R MainController, :foo        #=> '/foo'
     #   R MinorController, :foo       #=> '/minor/foo'
@@ -76,7 +78,7 @@ module Ramaze
         to << {:raw => true}
       end
 
-      link(*to)
+      Rlink(*to)
     end
 
     def Rs(*to)
