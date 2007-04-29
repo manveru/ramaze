@@ -9,6 +9,8 @@ class TCTemplateMarkabyController < Ramaze::Controller
   trait :template_root => 'spec/ramaze/template/markaby/'
   trait :engine => Ramaze::Template::Markaby
 
+  helper :markaby
+
   def index
     mab { h1 "Markaby Index" }
   end
@@ -23,9 +25,6 @@ end
 
 context "Markaby" do
   ramaze(:mapping => {'/' => TCTemplateMarkabyController})
-  trait :engine => Ramaze::Template::Markaby
-
-  include Ramaze::Template::MarkabyMixin
 
   specify "index" do
     get('/').should == '<h1>Markaby Index</h1>'
@@ -40,33 +39,6 @@ context "Markaby" do
   end
 
   specify "should not respond to mab" do
-    lambda{get('/mab')}.should_raise
-  end
-
-  specify "simple" do
-    mab{ hr }.should          == "<hr/>"
-    mab{ p 'foo' }.should     == "<p>foo</p>"
-    mab{ p { 'foo' } }.should == "<p>foo</p>"
-  end
-
-  specify "classes and ids" do
-    mab{ div.one '' }.should      == "<div class=\"one\"></div>"
-    mab{ div.one.two '' }.should  == "<div class=\"one two\"></div>"
-    mab{ div.three! '' }.should   == %{<div id="three"></div>}
-  end
-
-  specify "escaping" do
-    mab{ h1 'Apples & Oranges' }.should                   == "<h1>Apples &amp; Oranges</h1>"
-    mab{ h1 { 'Apples & Oranges' } }.should               == "<h1>Apples & Oranges</h1>"
-    mab{ h1 'Apples', :class => 'fruits&floots' }.should  == "<h1 class=\"fruits&amp;floots\">Apples</h1>"
-  end
-
-  specify "capturing" do
-    builder = Markaby::Builder.new
-    builder.to_s.should_be.empty
-    builder.capture { h1 'TEST' }.should == mab{ h1 "TEST" }
-    builder.to_s.should_be.empty
-    mab{ capture { h1 'hello world' }; nil }.should_be.empty
-    mab{ div { capture { h1 'TEST' } } }.should ==  mab { div { h1 'TEST' } }
+    lambda{ get('/mab') }.should_raise
   end
 end
