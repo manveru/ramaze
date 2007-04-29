@@ -10,16 +10,15 @@ module Ramaze
     def initialize(*loggers)
       @loggers = loggers
       @loggers.map! do |logger|
-        if logger.respond_to?(:new)
-          logger.new
-        else
-          logger
-        end
+        logger.is_a?(Class) ? logger.new : logger
       end
+      @loggers.delete_if {|x| x == self }
+      @loggers.uniq!
+      @loggers.compact!
     end
 
     def inform(tag, *args)
-      (@loggers - self).each do |logger|
+      @loggers.each do |logger|
         logger.inform(tag, *args)
       end
     end

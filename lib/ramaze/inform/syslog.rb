@@ -6,19 +6,22 @@ require 'syslog'
 module Ramaze
   class Syslog
     include ::Syslog
-    include Informing
 
     def initialize
-      if File.writeable?('/dev/log')
-        open
-      else
-        raise "Cannot open /dev/log - make sure you have the proper permissions"
-      end
+      open unless ::Syslog.opened?
     end
 
     alias error err
     alias warn warning
 
+    def inform(tag, *args)
+      self.__send__(tag, *args)
+    end
+
     public :error, :warn
+
+    def inspect
+      ::Syslog.inspect
+    end
   end
 end

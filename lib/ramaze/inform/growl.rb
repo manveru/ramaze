@@ -11,16 +11,18 @@ module Ramaze
       :host => 'localhost',
       :password => 'walrus',
       :all_notifies => %w[error warn debug info],
-      :default_notifies => %w[error warn info],
+      :default_notifies => %w[error warn info]
     }
 
     def initialize(options = {})
-      options = trait[:defaults].merge(options)
-      super(options.values_at(:host, :name, :all_notifies, :default_notifies, :pass)
+      options = class_trait[:defaults].merge(options).values_at(:host, :name, :all_notifies, :default_notifies, :password)
+      super(*options)
     end
 
     def inform(tag, *args)
-      notify(tag.to_s, tag.to_sym, args.join("\n"))
+      notify(tag.to_s, Time.now.strftime("%X"), args.join("\n")[0..100])
+    rescue Errno::EMSGSIZE
+      # Send size was to big (not really), ignore
     end
   end
 end
