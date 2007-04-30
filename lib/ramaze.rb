@@ -151,6 +151,9 @@ module Ramaze
         Inform.debug("mapped #{map} => #{controller}")
       end
     end
+
+    Inform.debug("found Controllers: #{Global.controllers.inspect}")
+    Inform.debug("mapped Controllers: #{Global.mapping.inspect}")
   end
 
   # Initialize the Kernel#autoreload with the value of Global.autoreload
