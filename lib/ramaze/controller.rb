@@ -55,6 +55,12 @@ module Ramaze
         end
       end
 
+      def map(*syms)
+        syms.each do |sym|
+          Global.mapping[sym.to_s] = self
+        end
+      end
+
       def handle path
         controller, action, params = *resolve_controller(path)
         action, params = path.gsub(/^\//, '').split('/').join('__'), [] unless action
