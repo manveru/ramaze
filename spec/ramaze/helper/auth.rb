@@ -4,9 +4,8 @@
 require 'spec/helper'
 
 class TCAuthHelperController < Ramaze::Controller
+  map '/'
   helper :auth
-
-  trait :automap => true
 
   def index
     self.class.name
@@ -23,12 +22,14 @@ class TCAuthHelperController < Ramaze::Controller
 end
 
 class TCAuthHashHelperController < TCAuthHelperController
+  map '/hash'
   trait :auth_table => {
       'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'
     }
 end
 
 class TCAuthMethodHelperController < TCAuthHelperController
+  map '/method'
   trait :auth_table => :auth_table
 
   def auth_table
@@ -37,6 +38,7 @@ class TCAuthMethodHelperController < TCAuthHelperController
 end
 
 class TCAuthLambdaHelperController < TCAuthHelperController
+  map '/lambda'
   trait :auth_table => lambda{
       { 'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8' }
     }
@@ -50,7 +52,7 @@ context "StackHelper" do
   ].each do |controller|
 
     specify controller.to_s do
-      browser '/', Ramaze::Global.mapping.invert[controller] do
+      browser('/', Ramaze::Global.mapping.invert[controller]) do
         get('/secured').should == ''
         post('/login', 'username' => 'manveru', 'password' => 'password')
         get('/secured').should == 'Secret content'
