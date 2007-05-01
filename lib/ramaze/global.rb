@@ -125,26 +125,40 @@ module Ramaze
       table.pretty_inspect
     end
 
+
+  def new_ostruct_member(name)
+    name = name.to_sym
+    unless self.respond_to?(name)
+      class << self; self; end.class_eval do
+        define_method(name) { @table[name] }
+        define_method(:"#{name}=") { |x| @table[name] = x }
+      end
+    end
+  end
+
     def new_ostruct_member(name)
       name = name.to_sym
       unless self.respond_to?(name)
-        meta = class << self; self; end
-        meta.send(:define_method, name) {
-          sel = @table[name]
-          if sel.respond_to?(:call)
-            sel.call
-          else
-            sel
+        meta = (class << self; self; end)
+        meta.class_eval do
+          define_method(name) do
+            sel = @table[name]
+            if sel.respond_to?(:call)
+              sel.call
+            else
+              sel
+            end
           end
-        }
-        meta.send(:define_method, :"#{name}=") {|x|
-          sel = @table[name]
-          if sel.respond_to?(:call)
-            sel.call("#{name}=", x)
-          else
-            @table[name] = x
+
+          define_method(:"#{name}=") do |x|
+            sel = @table[name]
+            if sel.respond_to?(:call)
+              sel.call("#{name}=", x)
+            else
+              @table[name] = x
+            end
           end
-        }
+        end
       end
     end
   end
