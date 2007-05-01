@@ -3,8 +3,6 @@
 
 require 'ramaze'
 
-include Ramaze
-
 # This is named MainController to automagically map it to '/'
 #   Global.mapping['/'] = MainController
 # would do the same thing.
@@ -13,11 +11,10 @@ include Ramaze
 # Hello, World!
 # in your browser
 
-class MainController < Controller
-  trait :map => '/'
+class MainController < Ramaze::Controller
+  map '/'
+
   def index
     "Hello, World!"
   end
 end
-
-start

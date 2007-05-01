@@ -28,7 +28,7 @@ class SideBar < Ezamar::Element
 end
 
 class MainController < Controller
-  trait :map => '/'
+  map '/'
 
   def index
     %{
@@ -41,5 +41,3 @@ class MainController < Controller
     }
   end
 end
-
-start

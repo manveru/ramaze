@@ -23,6 +23,8 @@ require 'ramaze'
 include Ramaze
 
 class SimpleController < Controller
+  map '/'
+
   def index
     "simple"
   end
@@ -49,14 +51,9 @@ class SimpleController < Controller
 end
 
 class OtherController < Controller
+  map '/other'
+
   def index
     "Hello, World from #{self.class.name}"
   end
 end
-
-Global.mapping = {
-  '/'      => SimpleController,
-  '/other' => OtherController
-}
-
-start
