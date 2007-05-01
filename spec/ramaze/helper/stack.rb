@@ -40,10 +40,10 @@ class TCStackHelperController < Ramaze::Controller
   end
 end
 
-context "StackHelper" do
+describe "StackHelper" do
   ramaze(:mapping => {'/' => TCStackHelperController})
 
-  specify "conventional login" do
+  it "conventional login" do
 =begin
     browser do
       get('/secure').should == 'please login'
@@ -54,7 +54,7 @@ context "StackHelper" do
 =end
   end
 
-  specify "indirect login" do
+  it "indirect login" do
     browser do
       get('/foo').should == 'logged in'
       get('/foo').should == 'logged in'
@@ -62,7 +62,7 @@ context "StackHelper" do
     end
   end
 
-  specify "indirect login with params" do
+  it "indirect login with params" do
     browser do
       eget('/bar', 'x' => 'y').should == {'x' => 'y'}
       eget('/').should == {:logged_in => true, :STACK => []}

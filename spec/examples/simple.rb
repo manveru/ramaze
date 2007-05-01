@@ -2,35 +2,35 @@ require 'spec/helper'
 
 require 'examples/simple'
 
-context 'Simple' do
+describe 'Simple' do
   ramaze
 
-  specify '/' do
+  it '/' do
     get('/').should == 'simple'
   end
 
-  specify '/simple' do
+  it '/simple' do
     get('/simple').should =~ /^#<Ramaze::Request/
   end
 
-  specify '/join' do
+  it '/join' do
     get('/join/foo/bar').should == 'foobar'
     get('/join/bar/baz').should == 'barbaz'
   end
 
-  specify '/join_all' do
+  it '/join_all' do
     get('/join_all/a/b/c/d/e/f').should == 'abcdef'
   end
 
-  specify '/sum' do
+  it '/sum' do
     get('/sum/1/2').should == '3'
   end
 
-  specify '/post_or_get' do
+  it '/post_or_get' do
     get('/post_or_get').should == 'GET'
   end
 
-  specify '/other' do
+  it '/other' do
     get('/other').should == "Hello, World from OtherController"
   end
 end

@@ -24,15 +24,15 @@ class TCLocalize < Ramaze::Controller
   end
 end
 
-context "Localize" do
-  ramaze :adapter => :mongrel
+describe "Localize" do
+  ramaze
 
-  specify "hello world" do
+  it "hello world" do
     get('/hello').should == 'Hello, World!'
     get('/hello/de').should == 'Hallo, Welt!'
   end
 
-  specify "advanced" do
+  it "advanced" do
     get('/advanced').should == 'this is a test'
     get('/advanced/de').should == 'Das ist ein Test'
   end

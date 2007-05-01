@@ -37,26 +37,26 @@ class TCAspectAllController < Ramaze::Controller
   post :all, :post_aspect
 end
 
-context "Aspect" do
+describe "Aspect" do
   ramaze(:mapping => {'/' => TCAspectController, '/all' => TCAspectAllController})
 
-  specify "pre" do
+  it "pre" do
     get('/test_pre').should == '<aspect>test pre'
   end
 
-  specify "post" do
+  it "post" do
     get('/test_post').should == 'test post</aspect>'
   end
 
-  specify "pre and post" do
+  it "pre and post" do
     get('/test').should == '<aspect>test</aspect>'
   end
 
-  specify "wrap" do
+  it "wrap" do
     get('/test_wrap').should == '<br />test wrap<br />'
   end
 
-  specify ":all" do
+  it ":all" do
     get('/all/test_all_first').should == '<pre>first</pre>'
     get('/all/test_all_second').should == '<pre>second</pre>'
   end

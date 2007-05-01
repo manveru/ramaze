@@ -4,24 +4,24 @@
 require 'spec/helper'
 require 'ramaze/store/default'
 
-context "initialize an Store" do
+describe "initialize an Store" do
   db = 'db.yaml'
 
   def add hash = {}
     Books.merge!(hash)
   end
 
-  specify "Store::Default.new" do
+  it "Store::Default.new" do
     Books = Ramaze::Store::Default.new(db)
     Books.db.should.is_a?(YAML::Store)
   end
 
-  specify "store and retrieve something" do
+  it "store and retrieve something" do
     add 'Pickaxe' => 'good book'
     Books['Pickaxe'].should == 'good book'
   end
 
-  specify "empty?" do
+  it "empty?" do
     add 'Pickaxe' => 'good book'
 
     Books.empty?.should == false
@@ -29,7 +29,7 @@ context "initialize an Store" do
     Books.empty?.should == true
   end
 
-  specify "size" do
+  it "size" do
     Books.size.should == 0
 
     {
@@ -42,7 +42,7 @@ context "initialize an Store" do
     end
   end
 
-  specify "Enumerable" do
+  it "Enumerable" do
     add 'Pickaxe' => 'good book', '1984' => 'scary'
 
     Books.each do |title, content|
@@ -51,7 +51,7 @@ context "initialize an Store" do
     end
   end
 
-  specify "merge and merge!" do
+  it "merge and merge!" do
     books = {'Pickaxe' => 'good book', '1984' => 'scary'}
     add books
 
@@ -68,7 +68,7 @@ context "initialize an Store" do
     Books.size.should == 3
   end
 
-  teardown do
+  after(:each) do
     FileUtils.rm db
   end
 end

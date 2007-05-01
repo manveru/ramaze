@@ -9,11 +9,11 @@ class TCAdapterController < Ramaze::Controller
   end
 end
 
-context "Adapter" do
+describe "Adapter" do
   ramaze ramaze_options.merge( :port => '7007..7010', :mapping => {'/' => TCAdapterController} )
 
-  context "multiple" do
-    specify "simple request" do
+  describe "multiple" do
+    it "simple request" do
       get('/').should == "The index"
     end
   end

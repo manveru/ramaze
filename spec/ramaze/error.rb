@@ -12,32 +12,32 @@ class TCErrorController < Ramaze::Controller
   end
 end
 
-context "Error" do
-  context "in dispatcher" do
+describe "Error" do
+  describe "in dispatcher" do
     ramaze :mapping => {'/' => TCErrorController }, :error_page => true
 
-    specify "your illegal stuff" do
+    it "your illegal stuff" do
       Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error', }
 
-      lambda{ get('/illegal') }.should_raise RuntimeError
+      lambda{ get('/illegal') }.should raise_error(RuntimeError)
     end
   end
 
-  context "no controller" do
-    specify "your illegal stuff" do
+  describe "no controller" do
+    it "your illegal stuff" do
       Ramaze::Global.mapping = {}
       Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error', }
 
-      lambda{ get('/illegal') }.should_raise RuntimeError
+      lambda{ get('/illegal') }.should raise_error(RuntimeError)
     end
   end
 
-  context "error page" do
-    specify "custom static" do
+  describe "error page" do
+    it "custom static" do
       Ramaze::Global.mapping = {'/' => TCErrorController }
       Ramaze::Dispatcher.trait[:handle_error] = { Exception => '/error404', }
 
-      lambda{ get('/foo') }.should_raise RuntimeError
+      lambda{ get('/foo') }.should raise_error(RuntimeError)
     end
   end
 end

@@ -54,14 +54,14 @@ class TCFlashHelperThirdController < Ramaze::Controller
   end
 end
 
-context "FlashHelper" do
+describe "FlashHelper" do
   ramaze :mapping => {
       '/'       => TCFlashHelperFirstController,
       '/second' => TCFlashHelperSecondController,
       '/third'  => TCFlashHelperThirdController
   }
 
-  specify "twice" do
+  it "twice" do
     browser '/' do
       get('/first_here')
       get('/then_here').should == 'hey'
@@ -73,7 +73,7 @@ context "FlashHelper" do
     end
   end
 
-  specify "over seperate controllers" do
+  it "over seperate controllers" do
     browser do
       get('/first_here')
       get('/second/then_here').should == 'hey'
@@ -85,13 +85,13 @@ context "FlashHelper" do
     end
   end
 
-  specify "single" do
+  it "single" do
     browser do
       get('/third/set/foo').should == 'foo'
     end
   end
   
-  specify "single" do
+  it "single" do
     browser do
       get('/third/set/foo').should == 'foo'
       get('/third/retrieve').should == 'foo'

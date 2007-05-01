@@ -4,17 +4,17 @@
 require 'spec/helper'
 require 'ramaze/store/yaml'
 
-context "Store::YAML" do
+describe "Store::YAML" do
   def new_store name
     Ramaze::Store::YAML.new(name, :destroy => true)
   end
 
-  specify "model" do
+  it "model" do
     article_class = new_store :article
     article_class.entities.should_not == nil
   end
 
-  specify "store and retrieve" do
+  it "store and retrieve" do
     article_class = new_store :article
     article = article_class.new
     article.title = 'the article'
@@ -29,18 +29,18 @@ context "Store::YAML" do
     old_article.text.should == article.text
   end
 
-  specify "convenience" do
+  it "convenience" do
     article_class = new_store :article
-    article_class.all.should.be.empty
+    article_class.all.should be_empty
     article = article_class.new
     article.name = 'the article'
     article.save
 
     article_class.keys.should == [:a]
-    article_class.all.should_not.be.empty
+    article_class.all.should_not be_empty
   end
 
-  specify "relations" do
+  it "relations" do
     article_class = new_store :article
     author_class  = new_store :author
 
@@ -57,7 +57,7 @@ context "Store::YAML" do
     author.article.name.should == article.name
   end
 
-  specify "delete" do
+  it "delete" do
     article_class = new_store :article
 
     article = article_class['foo'] = {

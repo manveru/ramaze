@@ -44,7 +44,7 @@ class TCAuthLambdaHelperController < TCAuthHelperController
     }
 end
 
-context "StackHelper" do
+describe "StackHelper" do
   ramaze
   [ TCAuthHashHelperController,
     TCAuthMethodHelperController,

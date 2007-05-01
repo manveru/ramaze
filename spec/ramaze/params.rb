@@ -47,7 +47,7 @@ class TCParamsController2 < Ramaze::Controller
   end
 end
 
-context "Simple Parameters" do
+describe "Simple Parameters" do
   ramaze(
     :mapping => {
         '/' => TCParamsController,
@@ -55,68 +55,68 @@ context "Simple Parameters" do
       }
   )
 
-  specify "Should respond to no parameters given" do
+  it "Should respond to no parameters given" do
     get('/no_params').should == "no params"
   end
 
-  specify "Should respond to only / with the index" do
+  it "Should respond to only / with the index" do
     get('/').should == "index"
   end
 
-  specify "call /bar though index doesn't take params" do
-    lambda{ get('/bar') }.should_raise #OpenURI::HTTPError
+  it "call /bar though index doesn't take params" do
+    lambda{ get('/bar') }.should raise_error #OpenURI::HTTPError
   end
 
-  specify "action that takes a single param" do
+  it "action that takes a single param" do
     get('/single_param/foo').should == "single param (foo)"
   end
 
-  specify "action that takes two params" do
+  it "action that takes two params" do
     get('/double_param/foo/bar').should == "double param (foo, bar)"
   end
 
-  specify "action that takes two params but we give only one" do
-    lambda{ get('/double_param/foo') }.should_raise #OpenURI::HTTPError
+  it "action that takes two params but we give only one" do
+    lambda{ get('/double_param/foo') }.should raise_error #OpenURI::HTTPError
   end
 
-  specify "action that takes all params" do
+  it "action that takes all params" do
     get('/all_params/foo/bar/foobar').should == "all params (foo, bar, foobar)"
   end
 
-  specify "action that takes all params but needs at least one" do
+  it "action that takes all params but needs at least one" do
     get('at_least_one/foo/bar/foobar').should == "at least one (foo, bar, foobar)"
   end
 
-  specify "action that takes all params but needs at least one (not given here)" do
-    lambda{ get('/at_least_one') }.should_raise #OpenURI::HTTPError
+  it "action that takes all params but needs at least one (not given here)" do
+    lambda{ get('/at_least_one') }.should raise_error #OpenURI::HTTPError
   end
 
-  specify "one default" do
+  it "one default" do
     get('/one_default').should == "one_default (default)"
   end
 
-  specify "one default" do
+  it "one default" do
     get('/one_default/my_default').should == "one_default (my_default)"
   end
 
-  specify "double underscore lookup" do
+  it "double underscore lookup" do
     get('/cat1/cat11').should == 'cat1: cat11'
   end
 
-  specify "double double underscore lookup" do
+  it "double double underscore lookup" do
     get('/cat1/cat11/cat111').should == 'cat1: cat11: cat111'
   end
 
 
-  specify "jo/add should raise with 0 parameters" do
-    lambda{ get('/jo/add') }.should_raise
+  it "jo/add should raise with 0 parameters" do
+    lambda{ get('/jo/add') }.should raise_error
   end
   
-  specify "add should raise with 4 parameters" do
-    lambda{ get('/jo/add/1/2/3/4') }.should_raise
+  it "add should raise with 4 parameters" do
+    lambda{ get('/jo/add/1/2/3/4') }.should raise_error
   end
   
-  specify "add should not raise with 1-3 parameters" do
+  it "add should not raise with 1-3 parameters" do
     get('/jo/add/1').should == '1::'
     get('/jo/add/1/2').should == '1:2:'
     get('/jo/add/1/2/3').should == '1:2:3'

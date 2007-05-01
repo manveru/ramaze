@@ -19,10 +19,10 @@ class TCTemplateHamlController < Ramaze::Controller
   end
 end
 
-context "Simply calling" do
+describe "Simply calling" do
   ramaze(:mapping => {'/' => TCTemplateHamlController})
 
-  specify "index" do
+  it "index" do
     get('/').should ==
 "<div id='contact'>
   <h1>Eugene Mumbai</h1>
@@ -33,7 +33,7 @@ context "Simply calling" do
 </div>"
   end
 
-  specify "variables in controller" do
+  it "variables in controller" do
     get('/with_vars').should ==
 %{<div id='content'>
   <div class='title'>

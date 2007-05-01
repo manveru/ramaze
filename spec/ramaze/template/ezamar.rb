@@ -31,32 +31,32 @@ class TCTemplateController < Ramaze::Controller
 end
 
 
-context "Ezamar" do
+describe "Ezamar" do
   ramaze(:mapping => {'/' => TCTemplateController})
 
-  specify "hello world" do
+  it "hello world" do
     get('/World').should == 'Hello, World!'
     get('/You').should == 'Hello, You!'
   end
 
-  specify "summing" do
+  it "summing" do
     get('/sum/1/2').should == '3'
   end
 
-  specify "nasty nested stuff" do
+  it "nasty nested stuff" do
     get('/nested/foo/bar').should == 'bar'
   end
 
-  specify "template inside controller" do
+  it "template inside controller" do
     get('/internal').should == '4 [] on the table'
     get('/internal/foo').should == '4 ["foo"] on the table'
   end
 
-  specify "without method" do
+  it "without method" do
     get('/file_only').should == "This is only the file"
   end
 
-  specify "combined" do
+  it "combined" do
     100.times do
       get('/combined').should == 'boo'
     end

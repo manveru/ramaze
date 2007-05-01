@@ -84,7 +84,7 @@ class SpecWrap
     total_failed = @done.inject(0){|s,v| s + v.failed }
     total_specs = total_failed + total_passed
 
-    puts "#{total_specs} specifications, #{total_failed} failures"
+    puts "#{total_specs} examples, #{total_failed} failures"
     puts
 
     if total_failed.nonzero?
@@ -92,7 +92,7 @@ class SpecWrap
       puts "These failed: #{failed.join(', ')}"
       exit 1
     else
-      puts("No failing specifications, let's add some tests!")
+      puts("No failing examples, let's add some tests!")
     end
   end
 
@@ -102,7 +102,7 @@ class SpecWrap
 end
 
 class SpecFile
-  attr_reader :file, :name, :passed, :failed
+  attr_reader :file, :name, :passed, :failed, :mark_passed
 
   def initialize file, name, term_width
     @file, @name, @term_width = file, name, term_width
@@ -134,6 +134,7 @@ class SpecFile
     total = f[@passed + @failed] rescue nil
     failed, passed = f[@failed], f[@passed]
     color = :red
+
     if total_failure?
       text = 'total failure'
     elsif failed?
@@ -141,8 +142,9 @@ class SpecFile
       if @stdout =~ /Usually you should not worry about this failure, just install the/
         lib = @stdout.scan(/^no such file to load -- (.*?)$/).flatten.first
         text = "needs #{lib}"
+        @mark_passed = true
       end
-    elsif succeeded?
+    elsif (not @mark_passed) and succeeded?
       color = :green
       text = "#{total} specs - all passed"
     end
@@ -164,7 +166,7 @@ class SpecFile
     @passed = 0
     @failed = 0
     found = false
-    @stdout.grep(/(\d+) specifications?, (\d+) failures?/)
+    @stdout.grep(/(\d+) examples?, (\d+) failures?/)
     @passed, @failed = $1.to_i, $2.to_i
   end
 
@@ -178,6 +180,7 @@ class SpecFile
 
   def succeeded?
     run unless @ran
+    return @mark_passed unless @mark_passed.nil?
     crits = [
       [@status.exitstatus.zero?, @stderr.empty?],
       [@passed, @failed],

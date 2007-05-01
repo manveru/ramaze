@@ -46,27 +46,27 @@ class TCRequestController < Ramaze::Controller
   end
 end
 
-context "Request" do
+describe "Request" do
   options = ramaze_options rescue {}
   ramaze options.merge(:mapping => {'/' => TCRequestController})
 
-  context "POST" do
-    specify "give me the result of request.post?" do
+  describe "POST" do
+    it "give me the result of request.post?" do
       post("is_post").should == 'true'
     end
 
-    specify "give me the result of request.get?" do
+    it "give me the result of request.get?" do
       post("is_get").should == 'false'
     end
 
     # this here has shown some odd errors... keep an eye on it.
-    specify "give me back what i gave" do
+    it "give me back what i gave" do
       post("post_inspect", 'this' => 'post').should == {"this" => "post"}.inspect
     end
   end
 
-  context "PUT" do
-    specify "put a ressource" do
+  describe "PUT" do
+    it "put a ressource" do
       image = 'favicon.ico'
       image_path = File.join('spec', 'ramaze', 'public', image)
       address = "http://localhost:7007/put_inspect/#{image}"
@@ -77,39 +77,39 @@ context "Request" do
     end
   end
 
-  context "DELETE" do
-    specify "delete a ressource" do
+  describe "DELETE" do
+    it "delete a ressource" do
       # find a way to test this one, even curl doesn't support it
     end
   end
 
-  context "GET" do
-    specify "give me the result of request.post?" do
+  describe "GET" do
+    it "give me the result of request.post?" do
       get("/is_post").should == 'false'
     end
 
-    specify "give me the result of request.get?" do
+    it "give me the result of request.get?" do
       get("/is_get").should == 'true'
     end
 
-    specify "give me back what i gave" do
+    it "give me back what i gave" do
       params = {'one' => 'two', 'three' => 'four'}
       get("/get_inspect", params).should == params.inspect
     end
 
-    specify "my ip" do
+    it "my ip" do
       get("/my_ip").should == '127.0.0.1'
     end
 
-    specify "request[key]" do
+    it "request[key]" do
       get('/test_get', 'foo' => 'bar').should == 'bar'
       post('/test_post', 'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben').should == 
         ['null', 'eins', 'sieben'].inspect
     end
   end
 
-  context "send files" do
-    specify "threaded concurrently" do
+  describe "send files" do
+    it "threaded concurrently" do
       css_path = 'test_download.css'
       image_path = 'favicon.ico'
       static_css = File.read("spec/ramaze/public/#{css_path}").strip

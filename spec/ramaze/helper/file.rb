@@ -8,10 +8,10 @@ class TCFileHelper < Ramaze::Controller
   end
 end
 
-context 'FileHelper' do
+describe 'FileHelper' do
   ramaze
 
-  specify 'serving a file' do
+  it 'serving a file' do
     get('/').should == File.read(__FILE__).strip
   end
 end

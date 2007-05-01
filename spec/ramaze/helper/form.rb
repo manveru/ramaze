@@ -77,61 +77,61 @@ class TCFormHelperEntryDatedController < Ramaze::Controller
   end
 end
 
-context "FormHelper" do
-  context "Entry" do
+describe "FormHelper" do
+  describe "Entry" do
     ramaze :mapping => {'/entry' => TCFormHelperEntryController}
 
-    specify "testrun" do
+    it "testrun" do
       get('/entry/').should == 'FormHelper Entry'
     end
 
-    specify "with submit" do
+    it "with submit" do
       get('/entry/form_with_submit').should ==
         %{title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
-    specify "without submit" do
+    it "without submit" do
       get('/entry/form_without_submit').should ==
         %{title: <input type="text" name="title" value="" />}
     end
 
-    specify "with title" do
+    it "with title" do
       get('/entry/form_with_title').should ==
         %{Title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
-    specify "without title" do
+    it "without title" do
       get('/entry/form_without_title').should ==
         %{<input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
-    specify "with oid" do
+    it "with oid" do
       get('/entry/form_with_oid').should ==
         %{title: <input type="text" name="title" value="" /><br />\noid: <input type="text" name="oid" value="0" /><br />\n<input type="submit" />}
     end
 
-    context "EntryTimestamped" do
+    describe "EntryTimestamped" do
       ramaze :fake_start => true, :mapping => {'/entry_timestamped' => TCFormHelperEntryTimestampedController}
 
-      specify "testrun" do
+      it "testrun" do
         get('/entry_timestamped/').should == "FormHelper EntryTimestamped"
       end
 
-      specify "with submit" do
+      it "with submit" do
         get('/entry_timestamped/form_with_submit').should ==
           "title: <input type=\"text\" name=\"title\" value=\"\" /><br />\n<input type=\"submit\" />"
       end
     end
 
-    context "EntryDated" do
+    describe "EntryDated" do
       ramaze :fake_start => true, :mapping => {'/entry_dated' => TCFormHelperEntryDatedController}
 
-      specify "testrun" do
+      it "testrun" do
         get('/entry_dated').should ==
           "FormHelper Dated"
       end
 
-      specify "with submit" do
+      it "with submit" do
         result = get('/entry_dated/form_with_submit')
         result.should =~ /date\[day\]/
         result.should =~ /date\[month\]/

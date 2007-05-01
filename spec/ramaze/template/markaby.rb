@@ -23,22 +23,22 @@ class TCTemplateMarkabyController < Ramaze::Controller
   end
 end
 
-context "Markaby" do
+describe "Markaby" do
   ramaze(:mapping => {'/' => TCTemplateMarkabyController})
 
-  specify "index" do
+  it "index" do
     get('/').should == '<h1>Markaby Index</h1>'
   end
 
-  specify "sum" do
+  it "sum" do
     get('/sum/1/2').should == '<div>3</div>'
   end
 
-  specify "external" do
+  it "external" do
     get('/external').should == "<html><head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/><title>Markaby Test</title></head><body><h1>Markaby Template</h1></body></html>"
   end
 
-  specify "should not respond to mab" do
-    lambda{ get('/mab') }.should_raise
+  it "should not respond to mab" do
+    lambda{ get('/mab') }.should raise_error
   end
 end

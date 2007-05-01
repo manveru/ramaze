@@ -3,13 +3,13 @@
 
 require 'spec/helper'
 
-context "Ramaze::Global" do
-  specify "just simple assignment and retrive" do
+describe "Ramaze::Global" do
+  it "just simple assignment and retrive" do
     Ramaze::Global.some = :xxx
     Ramaze::Global.some.should == :xxx
   end
 
-  specify "setup" do
+  it "setup" do
     Ramaze::Global.setup :a => :b
     Ramaze::Global.a.should == :b
     Ramaze::Global.some.should == :xxx
@@ -17,17 +17,17 @@ context "Ramaze::Global" do
     Ramaze::Global.a.should == :c
   end
 
-  specify "more neat stuff" do
+  it "more neat stuff" do
     Ramaze::Global.update :a => :d, :foo => :bar
     Ramaze::Global.a.should == :c
     Ramaze::Global.foo.should == :bar
   end
 
-  specify "values_at" do
+  it "values_at" do
     Ramaze::Global.values_at(:a, :foo).should == [:c, :bar]
   end
 
-  specify "getting thready" do
+  it "getting thready" do
     Ramaze::Global[:i] = 0
     Thread.main[:i] = 0
 

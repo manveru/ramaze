@@ -2,10 +2,10 @@ require 'spec/helper'
 
 require 'examples/hello'
 
-context 'Hello' do
+describe 'Hello' do
   ramaze
 
-  specify '/' do
+  it '/' do
     get('/').should == 'Hello, World!'
   end
 end

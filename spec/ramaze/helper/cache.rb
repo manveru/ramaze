@@ -35,10 +35,10 @@ class TCCacheHelperController < Ramaze::Controller
   end
 end
 
-context "CacheHelper" do
+describe "CacheHelper" do
   ramaze(:mapping => {'/' => TCCacheHelperController})
 
-  specify "testrun" do
+  it "testrun" do
     get('/').should == 'TCCacheHelperController'
   end
 
@@ -47,7 +47,7 @@ context "CacheHelper" do
   def cached_action() get('/cached_action') end
   def uncache_actions() get('/uncache_actions') end
 
-  specify "cached value" do
+  it "cached value" do
     3.times do
       lambda{ cached_value }.should_not change{ cached_value }
     end
@@ -57,7 +57,7 @@ context "CacheHelper" do
     end
   end
 
-  specify "cached action" do
+  it "cached action" do
     3.times do
       lambda{ cached_action }.should_not change{ cached_action }
     end

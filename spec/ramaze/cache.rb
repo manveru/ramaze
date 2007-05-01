@@ -3,72 +3,72 @@
 
 require 'spec/helper'
 
-context "MemoryCache" do
+describe "MemoryCache" do
   cache = Ramaze::MemoryCache.new
 
-  specify "delete" do
+  it "delete" do
     cache.delete(:one)
     cache.delete(:two)
   end
 
-  specify "set keys" do
+  it "set keys" do
     (cache[:one] = 'eins').should == "eins"
     (cache[:two] = 'zwei').should == "zwei"
   end
 
-  specify "read keys" do
+  it "read keys" do
     cache[:one].should == 'eins'
     cache[:two].should == 'zwei'
   end
 
-  specify "values_at" do
+  it "values_at" do
     cache.values_at(:one, :two).should == %w[eins zwei]
   end
 end
 
-context "YAMLStoreCache" do
+describe "YAMLStoreCache" do
   cache = Ramaze::YAMLStoreCache.new
 
-  specify "delete" do
+  it "delete" do
     cache.delete(:one)
     cache.delete(:two)
   end
 
-  specify "set keys" do
+  it "set keys" do
     (cache[:one] = 'eins').should == "eins"
     (cache[:two] = 'zwei').should == "zwei"
   end
 
-  specify "read keys" do
+  it "read keys" do
     cache[:one].should == 'eins'
     cache[:two].should == 'zwei'
   end
 
-  specify "values_at" do
+  it "values_at" do
     cache.values_at(:one, :two).should == %w[eins zwei]
   end
 end
 
 begin
-  context "MemcachedCache" do
+  describe "MemcachedCache" do
     cache = Ramaze::MemcachedCache.new
 
-    specify "delete" do
+    it "delete" do
       cache.delete(:one)
       cache.delete(:two)
     end
 
-    specify "set keys" do
+    it "set keys" do
       (cache[:one] = 'eins').should == "eins"
       (cache[:two] = 'zwei').should == "zwei"
     end
 
-    specify "read keys" do
+    it "read keys" do
       cache[:one].should == 'eins'
       cache[:two].should == 'zwei'
     end
 
-    specify "values_at" do
+    it "values_at" do
       cache.values_at(:one, :two).should == %w[eins zwei]
     end
   end

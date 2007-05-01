@@ -44,11 +44,11 @@ class User < With
   xml_accessor :books
 end
 
-context "ReFeed" do
-  context "User" do
+describe "ReFeed" do
+  describe "User" do
     user = User.with :name => 'manveru', :email => 'foo@bar.com'
 
-    specify "to_xml" do
+    it "to_xml" do
       xml = ( user.to_xml.hpricot/:user )
 
       xml.size.should == 1
@@ -57,11 +57,11 @@ context "ReFeed" do
     end
   end
 
-  context "Book" do
+  describe "Book" do
     book = Book.with :title => 'foo', :content => 'bar',
                      :isbn => 123456789012, :description => 'The Best Foo in the world!'
 
-    specify "to_xml" do
+    it "to_xml" do
       xml = ( book.to_xml.hpricot/:book )
 
       xml.size.should == 1
@@ -74,11 +74,11 @@ context "ReFeed" do
     end
   end
 
-  context "Book and User" do
+  describe "Book and User" do
     user = User.with :name => 'manveru', :email => 'foo@bar.com'
     book = Book.with :title => 'foo', :content => 'bar', :author => user
 
-    specify "to_xml" do
+    it "to_xml" do
       xml_book = ( book.to_xml.hpricot/:book )
       xml_user = xml_book.at(:user)
 
@@ -90,13 +90,13 @@ context "ReFeed" do
     end
   end
 
-  context "User and books" do
+  describe "User and books" do
     book1  = Book.with :title => 'foo', :content => 'bar'
     book2  = Book.with :title => 'foz', :content => 'baz'
     user      = User.with :name => 'manveru', :email => 'foo@bar.com',
     :books => [book1, book2]
 
-    specify "to_xml" do
+    it "to_xml" do
       xml       = ( user.to_xml.hpricot/:user )
       books  = ( xml/:book )
       first     = books.find{|a| a.at('title').inner_html == book1.title }
@@ -115,10 +115,10 @@ context "ReFeed" do
     end
   end
 
-  context "User from XML" do
+  describe "User from XML" do
     user = User.with :name => 'manveru', :email => 'foo@bar.com'
 
-    specify "from_xml" do
+    it "from_xml" do
       new_user = User.from_xml(user.to_xml)
       new_user.name.should == user.name
       new_user.email.should == user.email

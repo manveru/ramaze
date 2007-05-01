@@ -19,7 +19,7 @@ class TCSessionController < Ramaze::Controller
   end
 end
 
-context "Session" do
+describe "Session" do
   ramaze(:mapping => {'/' => TCSessionController})
 
   { :MemoryCache => :memory,
@@ -40,31 +40,31 @@ context "Session" do
 
       b = Browser.new
 
-      specify "Should give me an empty session" do
+      it "Should give me an empty session" do
         b.eget.should == {}
       end
 
-      specify "set some session-parameters" do
+      it "set some session-parameters" do
         b.eget('/set_session/foo/bar').should == {'foo' => 'bar'}
       end
 
-      specify "inspect session again" do
+      it "inspect session again" do
         b.eget('/').should == {'foo' => 'bar'}
       end
 
-      specify "change the session" do
+      it "change the session" do
         b.eget('/set_session/foo/foobar')['foo'].should == 'foobar'
       end
 
-      specify "inspect the changed session" do
+      it "inspect the changed session" do
         b.eget('/')['foo'].should == 'foobar'
       end
 
-      specify "now a little bit with POST" do
+      it "now a little bit with POST" do
         b.epost('/post_set_session', 'x' => 'y')['x'].should == 'y'
       end
 
-      specify "snooping a bit around" do
+      it "snooping a bit around" do
         b.cookie.split('=').size.should == 3
       end
     end

@@ -47,14 +47,14 @@ class TCTemplateLiquidController < Ramaze::Controller
   end
 end
 
-context "Liquid" do
+describe "Liquid" do
   ramaze(:mapping => {'/' => TCTemplateLiquidController})
 
-  specify "index" do
+  it "index" do
     get('/').should == "hi tobi"
   end
 
-  specify "products" do
+  it "products" do
     o = get('/products')
     o = o.split("\n").map{|l| l.strip!; l.empty? ? nil : l}.compact.join("\n")
     o.should == %{

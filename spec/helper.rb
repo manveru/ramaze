@@ -23,35 +23,28 @@ require 'spec/helper/context'
 
 include Requester
 
-module Spec::Runner::ContextEval::ModuleMethods
+# start up ramaze with a given hash of options
+# that will be merged with the default-options.
 
-  # start up ramaze with a given hash of options
-  # that will be merged with the default-options.
+def ramaze_start hash = {}
+  options = {
+    :mode         => :debug,
+    :adapter      => :webrick,
+    :run_loose    => true,
+    :error_page   => false,
+    :port         => 7007,
+    :host         => '127.0.0.1',
+    :force        => true,
+    :force_setup  => true,
+  }.merge(hash)
 
-  def ramaze_start hash = {}
-    options = {
-      :mode         => :debug,
-      :adapter      => :webrick,
-      :run_loose    => true,
-      :error_page   => false,
-      :port         => 7007,
-      :host         => '127.0.0.1',
-      :force        => true,
-      :force_setup  => true,
-    }.merge(hash)
-
-    Ramaze.start(options)
-  end
-
-  alias ramaze ramaze_start
-
-  # shutdown ramaze, this is not implemeted yet
-  # (and might never be due to limited possibilites)
-
-  def ramaze_teardown
-    #Ramaze.teardown
-  end
+  Ramaze.start(options)
 end
+
+alias ramaze ramaze_start
+
+# shutdown ramaze, this is not implemeted yet
+# (and might never be due to limited possibilites)
 
 def browser(*args, &block)
   Browser.new(*args, &block)

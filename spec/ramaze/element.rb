@@ -70,34 +70,34 @@ class PageWithTemplating < Ezamar::Element
   end
 end
 
-context "Element" do
+describe "Element" do
   ramaze(:mapping => {'/' => TCElementController})
 
-  specify "simple request" do
+  it "simple request" do
     get('/').should == "The index"
   end
 
-  specify "with element" do
+  it "with element" do
     get('/elementy').should == "<wrap> The index </wrap>"
   end
 
-  specify "nested element" do
+  it "nested element" do
     get('/nested').should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
   end
 
-  specify "with_params" do
+  it "with_params" do
     get('/with_params/one/two').should == {'@one' => 'two'}.inspect
   end
 
-  specify "little" do
+  it "little" do
     get('/little').should == 'little'
   end
 
-  specify "little params" do
+  it "little params" do
     get('/little_params/one/eins').should == {'@one' => 'eins'}.inspect
   end
 
-  specify "templating" do
+  it "templating" do
     get('/templating/10').should == (1..10).to_a.join(', ')
   end
 end

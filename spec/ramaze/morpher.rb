@@ -3,8 +3,7 @@
 
 require 'spec/helper'
 
-begin
-  require 'hpricot'
+testcase_requires 'hpricot'
 
 class TCMorpherController < Ramaze::Controller
   def index
@@ -49,40 +48,35 @@ class TCMorpherController < Ramaze::Controller
   end
 end
 
-context "Morpher" do
+describe "Morpher" do
   ramaze :mapping => {'/' => TCMorpherController}
 
-  specify "testrun" do
+  it "testrun" do
     get('/').should == 'TCMorpherController'
   end
 
-  specify "if" do
+  it "if" do
     get('/simple_if').should == '<p>orig</p>'
     get('/simple_if/bar').should == '<p>bar</p>'
   end
 
-  specify "unless" do
+  it "unless" do
     get('/simple_unless').should == '<p>orig</p>'
     get('/simple_unless/bar').should == '<p>bar</p>'
   end
 
-  specify "for" do
+  it "for" do
     get('/simple_for').should == "<div>0</div><div>1</div>"
     get('/simple_for/3').should == "<div>0</div><div>1</div><div>2</div><div>3</div>"
   end
 
-  specify "times" do
+  it "times" do
     get('/simple_times').should == "<div>0</div>"
     get('/simple_times/3').should == "<div>0</div><div>1</div><div>2</div>"
   end
 
-  specify "each" do
+  it "each" do
     get('/simple_each').should == ''
     get('/simple_each/1/2/3').should == "<div>1</div><div>2</div><div>3</div>"
   end
-end
-
-rescue LoadError => ex
-  puts ex
-  puts "Won't run #{__FILE__} unless you install hpricot"
 end

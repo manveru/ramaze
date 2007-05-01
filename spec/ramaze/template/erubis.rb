@@ -23,18 +23,18 @@ class TCTemplateErubisController < Ramaze::Controller
   end
 end
 
-context "Erubis" do
+describe "Erubis" do
   ramaze(:mapping => {'/' => TCTemplateErubisController})
 
-  specify "index" do
+  it "index" do
     get('/').should == 'Erubis Index'
   end
 
-  specify "sum" do
+  it "sum" do
     get('/sum/1/2').should == '3'
   end
 
-  specify "inline" do
+  it "inline" do
     get('/inline/foo/bar').should == %w[foo bar].inspect
   end
 end

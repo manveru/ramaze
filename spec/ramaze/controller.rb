@@ -26,25 +26,25 @@ class TCControllerEzamarController < Ramaze::Controller
   end
 end
 
-context "Testing Ezamar" do
+describe "Testing Ezamar" do
   ramaze(:mapping => {'/ezamar' => TCControllerEzamarController})
 
-  specify "simple request to index" do
+  it "simple request to index" do
     get('/ezamar').should == 'Hello, World!'
   end
 
-  specify "summing two values" do
+  it "summing two values" do
     get('/ezamar/sum/1/2').should == '3'
   end
 
-  specify "double underscore in templates" do
+  it "double underscore in templates" do
     get('/ezamar/some/long/action').should == 'some long action'
     get('/ezamar/another/long/action').should == 'another long action'
   end
 
-  specify "should not respond to private methods" do
+  it "should not respond to private methods" do
     %w[ session request response find_template handle_request trait test_private ].each do |action|
-      lambda{get("/ramaze/#{action}")}.should_raise
+      lambda{get("/ramaze/#{action}")}.should raise_error
     end
   end
 end

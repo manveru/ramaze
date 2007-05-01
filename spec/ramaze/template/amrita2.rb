@@ -19,10 +19,10 @@ class TCTemplateAmritaController < Ramaze::Controller
   end
 end
 
-context "Simply calling" do
+describe "Simply calling" do
   ramaze(:mapping => {'/' => TCTemplateAmritaController})
 
-  specify "should respond to /data" do
+  it "should respond to /data" do
     get('/data').should ==
 %{<html>
   <body>
