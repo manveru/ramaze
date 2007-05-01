@@ -16,6 +16,10 @@ rescue LoadError => ex
 end
 
 require 'spec'
+if Spec::VERSION::FULL_VERSION < "0.9.0 (r1868)"
+  puts "please update rspec >= 0.9.0"
+  exit 1
+end
 
 require 'spec/helper/simple_http'
 require 'spec/helper/requester'
