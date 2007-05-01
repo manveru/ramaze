@@ -154,10 +154,10 @@ task 'add-copyright' do
   Dir['{lib,test}/**/*{.rb}'].each do |file|
     next if file =~ /_darcs/
     lines = File.readlines(file).map{|l| l.chomp}
-    unless lines.first(2) == COPYRIGHT
+    unless lines.first(COPYRIGHT.size) == COPYRIGHT
       puts "fixing #{file}"
       File.open(file, 'w+') do |f|
-        (COPYRIGHT + lines).each do |line|
+        (COPYRIGHT + ["\n"] + lines).each do |line|
           f.puts(line)
         end
       end
