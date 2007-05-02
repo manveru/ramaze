@@ -11,24 +11,11 @@ mapping:
   /: :MainController
 
 
-host:        0.0.0.0
-tidy:        false
-cookies:     true
-error_page:  true
-autoreload:  5
+host:          0.0.0.0
+error_page:    true
+autoreload:    5
 
-cache:      :MemoryCache
-cache_all:  false
+cache:        :MemoryCache
+cache_all:    false
 
-inform_to:             "stdout"
-inform_timestamp:      "%Y-%m-%d %H:%M:%S"
-inform_prefix_error:   "ERROR"
-inform_prefix_debug:   "DEBUG"
-inform_prefix_info:    "INFO "
-inform_backtrace_size: 10
-
-inform_tags: !ruby/object:Set 
-  hash: 
-    :debug: true
-    :info:  true
-    :error: true
+benchmarking: false
