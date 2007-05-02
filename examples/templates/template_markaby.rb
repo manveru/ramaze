@@ -16,9 +16,7 @@ class MainController < Controller
   end
 
   def internal *args
-    @args = args
-    @request = request
-    mab do
+    mab :args => args, :request => request do
       html do
         head do
           title "Template::Markaby internal"
@@ -54,6 +52,7 @@ class MainController < Controller
 
   def external *args
     @args = args
+    @request = request
   end
 end
 

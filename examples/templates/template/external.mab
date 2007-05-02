@@ -6,14 +6,17 @@ html do
     h1 "The #{@action} Template for Markaby"
     a("Home", :href => R(:/))
     p do
-      %{
-        Here you can pass some stuff if you like, parameters are just passed like this:#{br}
-      #{link self, @action, :one, :title => 'external/one'; br}
-      #{link self, @action, :one, :two, :three, :title => 'external/one/two/three'; br}
-      #{link self, @action, :one, :foo => :bar, :title => 'external?foo=bar'; br}
-      }
+      text "Here you can pass some stuff if you like, parameters are just passed like this:"
+      br
+      a("external/one", :href => Rs(@action, :one))
+      br
+      a("external/one/two/three", :href => Rs(@action, :one, :two, :three))
+      br
+      a("external/one?foo=bar", :href => Rs(@action, :one, :foo => :bar))
+      br
     end
-    div "The arguments you have passed to this action are:" do
+    div do
+      text "The arguments you have passed to this action are:"
       if @args.empty?
         "none"
       else
@@ -22,6 +25,6 @@ html do
         end
       end
     end
-    div request.params.inspect
+    div @request.params.inspect
   end
 end
