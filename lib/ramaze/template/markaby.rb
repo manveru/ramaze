@@ -46,23 +46,3 @@ module Ramaze
     end
   end
 end
-
-=begin
-        unless controller.private_methods.include?(action)
-          mixed_in = controller.class.ancestors === MarkabyMixin
-          controller.class.send(:include, MarkabyMixin) unless mixed_in
-
-          reaction = controller.send(action, *parameter)
-
-          mab = ::Markaby::Builder.new
-          template =
-            if file
-              transform_file(controller, file)
-            elsif reaction.respond_to? :to_str
-              reaction
-            end
-        end
-
-        return template if template
-        raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
-=end
