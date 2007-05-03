@@ -3,7 +3,7 @@
 
 require 'ramaze/adapter'
 
-require 'webrick'
+require 'rack/handler/webrick'
 
 module WEBrick
   module HTTPServlet
