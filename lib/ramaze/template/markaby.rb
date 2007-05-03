@@ -21,13 +21,10 @@ module Ramaze
             reaction = controller.__send__(action, *parameter)
             template =
               if file
-                p 1
                 transform_file(controller, file)
               elsif reaction.respond_to?(:to_str)
-                p 2
                 reaction
               end
-            p :template => template
             return template if template
           end
 
