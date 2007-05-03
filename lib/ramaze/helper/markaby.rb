@@ -19,7 +19,7 @@ module Ramaze
       iv_hash = {}
       instance_variables.each do |iv|
         key, value = iv.gsub('@', '').to_sym, instance_variable_get(iv)
-        iv_hash[key] = value unless ivs
+        iv_hash[key] = value
       end
 
       builder.new(iv_hash.merge(ivs), helpers, &block).to_s
