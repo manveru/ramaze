@@ -441,3 +441,33 @@ task 'tutorial2html' do
 
   File.open(basefile + '.html', 'w+'){|f| f.puts(wrap) }
 end
+
+task 'authors' do
+  changes = `darcs changes`
+  authors = []
+  mapping = {}
+  author_map = {
+    'm.fellinger@gmail.com' => 'Michael Fellinger',
+    'manveru@weez-int.com'  => 'Michael Fellinger',
+    'clive@crous.co.za'     => 'Clive'
+  }
+  changes.split("\n").grep(/^\w/).each do |line|
+    splat  = line.split
+    author = splat[6..-1]
+    email  = author.pop
+    email.gsub!(/<(.*?)>/, '\1')
+    name   = author.join(' ')
+    name   = author_map[email] if name.empty?
+    mapping[name] = email
+  end
+
+  max = mapping.map{|k,v| k.size}.max
+
+  File.open('doc/AUTHORS', 'w+') do |fp|
+    fp.puts("Following persons have contributed to Ramaze:")
+    fp.puts
+    mapping.sort_by{|k,v| v}.each do |name, email|
+      fp.puts("#{name.ljust(max)} - #{email}")
+    end
+  end
+end
