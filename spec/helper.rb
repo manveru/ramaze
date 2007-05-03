@@ -16,8 +16,8 @@ rescue LoadError => ex
 end
 
 require 'spec'
-if Spec::VERSION::FULL_VERSION < "0.9.0 (r1868)"
-  puts "please update rspec >= 0.9.0"
+if Spec::VERSION::FULL_VERSION < "0.9.1 (r1880)"
+  puts "please update rspec >= 0.9.1"
   exit 1
 end
 
