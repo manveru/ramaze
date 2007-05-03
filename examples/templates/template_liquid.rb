@@ -6,14 +6,16 @@ require 'ramaze'
 include Ramaze
 
 class MainController < Controller
+  trait :template_root => (File.dirname(__FILE__)/'template')
   trait :engine => Template::Liquid
+
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end
 
   def liquid_hash(*args)
     {
-      'header'     => "The #{@action} Template",
+      'header'     => "The #{@action} Template for Liquid",
       'link_home'  => link( :/, :title => 'Home'),
       'link_one'   => link(self, @action, :one, :title => "#@action/one"),
       'link_two'   => link(self, @action, :one, :two, :three, :title => "#@action/one/two/three"),

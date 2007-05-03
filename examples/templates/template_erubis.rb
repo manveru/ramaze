@@ -6,8 +6,8 @@ require 'ramaze'
 include Ramaze
 
 class MainController < Controller
-
   trait :engine => Template::Erubis
+  trait :template_root => (File.dirname(__FILE__)/'template')
 
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
@@ -15,13 +15,13 @@ class MainController < Controller
 
   def internal *args
     @args = args
-    transform %q{
+    %q{
 <html>
   <head>
     <title>Template::Erubis internal</title>
   </head>
   <body>
-  <h1>The <%= @action %> Template</h1>
+  <h1>The <%= @action %> Template for Erubis</h1>
     <%= link :/, :title => 'Home' %>
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />

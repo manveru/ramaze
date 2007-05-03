@@ -7,7 +7,7 @@ include Ramaze
 
 class MainController < Controller
   trait :engine => Template::Markaby
-  trait :map => '/'
+  trait :template_root => (File.dirname(__FILE__)/'template')
 
   helper :markaby
 
@@ -16,7 +16,7 @@ class MainController < Controller
   end
 
   def internal *args
-    mab :args => args, :request => request do
+    mab :action => @action, :args => args, :request => request, this => self do
       html do
         head do
           title "Template::Markaby internal"
@@ -27,11 +27,11 @@ class MainController < Controller
           p do
             text "Here you can pass some stuff if you like, parameters are just passed like this:"
             br
-            a("external/one", :href => Rs(@action, :one))
+            a("external/one", :href => R(@this, @action, :one))
             br
-            a("external/one/two/three", :href => Rs(@action, :one, :two, :three))
+            a("external/one/two/three", :href => R(@this, @action, :one, :two, :three))
             br
-            a("external/one?foo=bar", :href => Rs(@action, :one, :foo => :bar))
+            a("external/one?foo=bar", :href => R(@this, @action, :one, :foo => :bar))
             br
           end
           div do

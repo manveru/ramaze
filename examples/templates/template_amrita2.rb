@@ -9,15 +9,15 @@ include Ramaze
 # implement the amrita2 example, man, this engine is awkward :P
 
 class MainController < Controller
-
   trait :engine => Template::Amrita2
+  trait :template_root => (File.dirname(__FILE__)/'template')
 
   def index
-    %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
+    %{ #{Rs()} | #{Rs(:internal)} | #{Rs(:external)} }
   end
 
   def title
-    "The #{@action} Template for Ramaze"
+    "The #@action Template for Amrita2"
   end
 
   def link_home
@@ -45,4 +45,4 @@ class MainController < Controller
   end
 end
 
-start
+Ramaze.start

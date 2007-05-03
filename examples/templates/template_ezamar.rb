@@ -6,8 +6,7 @@ require 'ramaze'
 include Ramaze
 
 class MainController < Controller
-
-  helper :link
+  trait :template_root => (File.dirname(__FILE__)/'template')
 
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
