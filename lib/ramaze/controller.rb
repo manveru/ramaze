@@ -251,16 +251,22 @@ module Ramaze
             Global.template_root / Global.mapping.invert[self]
           end
 
-        extensions = Controller.trait[:template_extensions].keys
-
         actions = [action, action_converted].compact
         all_paths = [ first_path, klass_public, ramaze_public].compact
         paths = all_paths.map{|pa| actions.map{|a| File.expand_path(pa / a) } }
 
-        glob = "{#{paths.join(',')}}.{#{extensions.join(',')}}"
+        glob = "{#{paths.join(',')}}.{#{extension_order.join(',')}}"
 
         possible = Dir[glob]
         possible.first
+      end
+
+      def extension_order
+        t_extensions = Controller.trait[:template_extensions]
+        engine = trait[:engine]
+        c_extensions = t_extensions.reject{|k,v| v != engine}.keys
+        all_extensions = t_extensions.keys
+        (c_extensions + all_extensions).uniq
       end
 
       def select_engine(file)
