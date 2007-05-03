@@ -13,7 +13,10 @@ layout = {
     'store'     => '*',
     'template'  => '*',
     },
-  'examples' => '*'
+  'examples' => {
+    '.' => '*',
+    'templates' => '*'
+  }
 }
 
 layout = SpecLayout.new(File.dirname(__FILE__), layout)
