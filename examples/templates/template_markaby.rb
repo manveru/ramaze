@@ -16,7 +16,7 @@ class MainController < Controller
   end
 
   def internal *args
-    mab :action => @action, :args => args, :request => request, this => self do
+    mab :action => @action, :args => args, :request => request, :this => self do
       html do
         head do
           title "Template::Markaby internal"
