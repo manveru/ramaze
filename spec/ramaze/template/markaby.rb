@@ -15,6 +15,16 @@ class TCTemplateMarkabyController < Ramaze::Controller
     mab { h1 "Markaby Index" }
   end
 
+  def links
+    mab do
+      ul do
+        li { a "Index page", :href => R(self,:index) }
+        li { a "Internal template", :href => R(self,:internal) }
+        li { a "External template", :href => R(self,:external) }
+      end
+    end
+  end
+
   def external
   end
 
@@ -28,6 +38,10 @@ describe "Markaby" do
 
   it "index" do
     get('/').should == '<h1>Markaby Index</h1>'
+  end
+
+  it "links" do
+    get('/links').should == '<ul><li><a href="/index">Index page</a></li><li><a href="/internal">Internal template</a></li><li><a href="/external">External template</a></li></ul>'
   end
 
   it "sum" do
