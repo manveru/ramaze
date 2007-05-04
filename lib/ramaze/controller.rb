@@ -109,14 +109,7 @@ module Ramaze
           paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
           paraction.delete('')
           if controller = Ramaze::Global.mapping[current] and controller.respond_to?(:render)
-            if paraction == ['error']
-
-              action = paraction.shift
-              params = paraction
-              action = 'index' if action == nil
-            else
-              action, params = resolve_action(controller, paraction)
-            end
+            action, params = resolve_action(controller, paraction)
           end
         end
 
