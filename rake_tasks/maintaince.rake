@@ -163,7 +163,7 @@ task 'authors' do
   author_map = {
     'm.fellinger@gmail.com' => 'Michael Fellinger',
     'manveru@weez-int.com'  => 'Michael Fellinger',
-    'clive@crous.co.za'     => 'Clive'
+    'clive@crous.co.za'     => 'Clive Crous'
   }
   changes.split("\n").grep(/^\w/).each do |line|
     splat  = line.split
