@@ -1,0 +1,19 @@
+<Blog title="bl_Og">
+  <h2>Editing entry</h2>
+  <div id="entries">
+    <div class="entry">
+      <form method="post" action="#{R self,:save}">
+        <input name="oid" type="hidden" value="#{@entry.oid}"/>
+        <div class="header">
+          <div class="title">
+            <input name="title" type="text" value="#{@entry.title}"/>
+          </div>
+        </div>
+        <div class="content">
+          <textarea name="content">#{@entry.content}</textarea>
+        </div>
+        <input type="submit" value="Update Entry"/>
+      </form>
+    </div>
+  </div>
+</Blog>

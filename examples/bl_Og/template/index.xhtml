@@ -1,0 +1,16 @@
+<Blog title="bl_Og">
+  <div id="actions">#{link self, :new, :title => 'new entry'}</div>
+  <div id="entries">
+    <?r @entries.each do |entry| ?>
+    <div class="entry">
+      <div class="header">
+        <div class="title">#{entry.title}</div>
+        <div class="created">Created: #{entry.created}</div>
+        <ul><li>#{link self, :edit, entry.oid, :title => 'edit'}</li><li>#{link self, :delete, entry.oid, :title => 'delete'}</li></ul>
+      </div>
+      <div class="content">#{entry.content}</div>
+      <div class="updated">Last updated: #{entry.updated}</div>
+    </div>
+    <?r end ?>
+  </div>
+</Blog>
