@@ -94,21 +94,23 @@ module Ramaze
       def resolve_controller(path)
         Inform.debug("resolve_controller(#{path.inspect})")
         track = path.split('/')
+        track.delete('')
+        mapping = Ramaze::Global.mapping
         controller = false
         action = false
         tracks = []
 
-        track.unshift '/'
-
         track.each do |atom|
-          tracks << (tracks.last.to_s / atom)
+          tracks << "#{tracks.last}/#{atom}"
         end
+
+        tracks.unshift('/')
 
         until controller and action or tracks.empty?
           current = Regexp.escape(tracks.pop.to_s)
-          paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
-          paraction.delete('')
-          if controller = Ramaze::Global.mapping[current] and controller.respond_to?(:render)
+          if controller = mapping[current]
+            paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
+            paraction.delete('')
             action, params = resolve_action(controller, paraction)
           end
         end
