@@ -52,31 +52,31 @@ describe "Morpher" do
   ramaze :mapping => {'/' => TCMorpherController}
 
   it "testrun" do
-    get('/').should == 'TCMorpherController'
+    get('/').body.should == 'TCMorpherController'
   end
 
   it "if" do
-    get('/simple_if').should == '<p>orig</p>'
-    get('/simple_if/bar').should == '<p>bar</p>'
+    get('/simple_if').body.should == '<p>orig</p>'
+    get('/simple_if/bar').body.should == '<p>bar</p>'
   end
 
   it "unless" do
-    get('/simple_unless').should == '<p>orig</p>'
-    get('/simple_unless/bar').should == '<p>bar</p>'
+    get('/simple_unless').body.should == '<p>orig</p>'
+    get('/simple_unless/bar').body.should == '<p>bar</p>'
   end
 
   it "for" do
-    get('/simple_for').should == "<div>0</div><div>1</div>"
-    get('/simple_for/3').should == "<div>0</div><div>1</div><div>2</div><div>3</div>"
+    get('/simple_for').body.should == "<div>0</div><div>1</div>"
+    get('/simple_for/3').body.should == "<div>0</div><div>1</div><div>2</div><div>3</div>"
   end
 
   it "times" do
-    get('/simple_times').should == "<div>0</div>"
-    get('/simple_times/3').should == "<div>0</div><div>1</div><div>2</div>"
+    get('/simple_times').body.should == "<div>0</div>"
+    get('/simple_times/3').body.should == "<div>0</div><div>1</div><div>2</div>"
   end
 
   it "each" do
-    get('/simple_each').should == ''
-    get('/simple_each/1/2/3').should == "<div>1</div><div>2</div><div>3</div>"
+    get('/simple_each').body.should == ''
+    get('/simple_each/1/2/3').body.should == "<div>1</div><div>2</div><div>3</div>"
   end
 end

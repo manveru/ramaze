@@ -82,31 +82,31 @@ describe "FormHelper" do
     ramaze :mapping => {'/entry' => TCFormHelperEntryController}
 
     it "testrun" do
-      get('/entry/').should == 'FormHelper Entry'
+      get('/entry/').body.should == 'FormHelper Entry'
     end
 
     it "with submit" do
-      get('/entry/form_with_submit').should ==
+      get('/entry/form_with_submit').body.should ==
         %{title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
     it "without submit" do
-      get('/entry/form_without_submit').should ==
+      get('/entry/form_without_submit').body.should ==
         %{title: <input type="text" name="title" value="" />}
     end
 
     it "with title" do
-      get('/entry/form_with_title').should ==
+      get('/entry/form_with_title').body.should ==
         %{Title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
     it "without title" do
-      get('/entry/form_without_title').should ==
+      get('/entry/form_without_title').body.should ==
         %{<input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
     it "with oid" do
-      get('/entry/form_with_oid').should ==
+      get('/entry/form_with_oid').body.should ==
         %{title: <input type="text" name="title" value="" /><br />\noid: <input type="text" name="oid" value="0" /><br />\n<input type="submit" />}
     end
 
@@ -114,11 +114,11 @@ describe "FormHelper" do
       ramaze :fake_start => true, :mapping => {'/entry_timestamped' => TCFormHelperEntryTimestampedController}
 
       it "testrun" do
-        get('/entry_timestamped/').should == "FormHelper EntryTimestamped"
+        get('/entry_timestamped/').body.should == "FormHelper EntryTimestamped"
       end
 
       it "with submit" do
-        get('/entry_timestamped/form_with_submit').should ==
+        get('/entry_timestamped/form_with_submit').body.should ==
           "title: <input type=\"text\" name=\"title\" value=\"\" /><br />\n<input type=\"submit\" />"
       end
     end
@@ -127,7 +127,7 @@ describe "FormHelper" do
       ramaze :fake_start => true, :mapping => {'/entry_dated' => TCFormHelperEntryDatedController}
 
       it "testrun" do
-        get('/entry_dated').should ==
+        get('/entry_dated').body.should ==
           "FormHelper Dated"
       end
 

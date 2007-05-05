@@ -41,23 +41,23 @@ describe "Aspect" do
   ramaze(:mapping => {'/' => TCAspectController, '/all' => TCAspectAllController})
 
   it "pre" do
-    get('/test_pre').should == '<aspect>test pre'
+    get('/test_pre').body.should == '<aspect>test pre'
   end
 
   it "post" do
-    get('/test_post').should == 'test post</aspect>'
+    get('/test_post').body.should == 'test post</aspect>'
   end
 
   it "pre and post" do
-    get('/test').should == '<aspect>test</aspect>'
+    get('/test').body.should == '<aspect>test</aspect>'
   end
 
   it "wrap" do
-    get('/test_wrap').should == '<br />test wrap<br />'
+    get('/test_wrap').body.should == '<br />test wrap<br />'
   end
 
   it ":all" do
-    get('/all/test_all_first').should == '<pre>first</pre>'
-    get('/all/test_all_second').should == '<pre>second</pre>'
+    get('/all/test_all_first').body.should == '<pre>first</pre>'
+    get('/all/test_all_second').body.should == '<pre>second</pre>'
   end
 end

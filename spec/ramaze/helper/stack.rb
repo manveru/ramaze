@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 class TCStackHelperController < Ramaze::Controller
+  map :/
   helper :stack, :aspect
 
   def index
@@ -41,17 +42,15 @@ class TCStackHelperController < Ramaze::Controller
 end
 
 describe "StackHelper" do
-  ramaze(:mapping => {'/' => TCStackHelperController})
+  ramaze(:adapter => :webrick)
 
   it "conventional login" do
-=begin
     browser do
       get('/secure').should == 'please login'
       get('/login')
       get('/secure').should == 'secret content'
       get('/logout')
     end
-=end
   end
 
   it "indirect login" do

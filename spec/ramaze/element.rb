@@ -74,30 +74,30 @@ describe "Element" do
   ramaze(:mapping => {'/' => TCElementController})
 
   it "simple request" do
-    get('/').should == "The index"
+    get('/').body.should == "The index"
   end
 
   it "with element" do
-    get('/elementy').should == "<wrap> The index </wrap>"
+    get('/elementy').body.should == "<wrap> The index </wrap>"
   end
 
   it "nested element" do
-    get('/nested').should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
+    get('/nested').body.should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
   end
 
   it "with_params" do
-    get('/with_params/one/two').should == {'@one' => 'two'}.inspect
+    get('/with_params/one/two').body.should == {'@one' => 'two'}.inspect
   end
 
   it "little" do
-    get('/little').should == 'little'
+    get('/little').body.should == 'little'
   end
 
   it "little params" do
-    get('/little_params/one/eins').should == {'@one' => 'eins'}.inspect
+    get('/little_params/one/eins').body.should == {'@one' => 'eins'}.inspect
   end
 
   it "templating" do
-    get('/templating/10').should == (1..10).to_a.join(', ')
+    get('/templating/10').body.should == (1..10).to_a.join(', ')
   end
 end

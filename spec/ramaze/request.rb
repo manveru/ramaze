@@ -52,16 +52,16 @@ describe "Request" do
 
   describe "POST" do
     it "give me the result of request.post?" do
-      post("is_post").should == 'true'
+      post("/is_post").body.should == 'true'
     end
 
     it "give me the result of request.get?" do
-      post("is_get").should == 'false'
+      post("/is_get").body.should == 'false'
     end
 
     # this here has shown some odd errors... keep an eye on it.
     it "give me back what i gave" do
-      post("post_inspect", 'this' => 'post').should == {"this" => "post"}.inspect
+      post("/post_inspect", 'this' => 'post').body.should == {"this" => "post"}.inspect
     end
   end
 
@@ -69,76 +69,59 @@ describe "Request" do
     it "put a ressource" do
       image = 'favicon.ico'
       image_path = File.join('spec', 'ramaze', 'public', image)
-      address = "http://localhost:7007/put_inspect/#{image}"
-      response = `curl -S -s -T #{image_path} #{address}`
+      address = "/put_inspect/#{image}"
+
       file = File.read(image_path)
 
-      response[1..-2].should == file
+      response = put(address, :input => file)
+      response.body[1..-2].should == file
     end
   end
 
   describe "DELETE" do
     it "delete a ressource" do
-      # find a way to test this one, even curl doesn't support it
+      delete('/is_delete').body.should == 'true'
     end
   end
 
   describe "GET" do
     it "give me the result of request.post?" do
-      get("/is_post").should == 'false'
+      get("/is_post").body.should == 'false'
     end
 
     it "give me the result of request.get?" do
-      get("/is_get").should == 'true'
+      get("/is_get").body.should == 'true'
     end
 
     it "give me back what i gave" do
       params = {'one' => 'two', 'three' => 'four'}
-      get("/get_inspect", params).should == params.inspect
+      get("/get_inspect", params).body.should == params.inspect
     end
 
     it "my ip" do
-      get("/my_ip").should == '127.0.0.1'
+      get("/my_ip").body.should == '127.0.0.1'
     end
 
     it "request[key]" do
-      get('/test_get', 'foo' => 'bar').should == 'bar'
-      post('/test_post', 'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben').should == 
+      get('/test_get', 'foo' => 'bar').body.should == 'bar'
+      post('/test_post', 'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben').body.should == 
         ['null', 'eins', 'sieben'].inspect
     end
   end
 
-  describe "send files" do
-    it "threaded concurrently" do
-      css_path = 'test_download.css'
-      image_path = 'favicon.ico'
-      static_css = File.read("spec/ramaze/public/#{css_path}").strip
-      static_image = File.read("spec/ramaze/public/#{image_path}").strip
+  describe "get files" do
+    it "binary" do
+      image_path = '/favicon.ico'
+      static_image = File.read("spec/ramaze/public#{image_path}")
 
-      images = []
-      csses = []
-      threads = []
+      get(image_path).body.should == static_image
+    end
 
-      times = 10
+    it 'plain test' do
+      css_path = '/test_download.css'
+      static_css = File.read("spec/ramaze/public#{css_path}").strip
 
-      times.times do
-        threads << Thread.new do
-          csses  << get(css_path)
-          images << get(image_path)
-        end
-      end
-
-      threads.each do |t|
-        t.join
-      end
-
-      images.each do |image|
-        image.should == static_image
-      end
-
-      csses.each do |css|
-        css.should == static_css
-      end
+      get(css_path).body.strip.should == static_css
     end
   end
 end

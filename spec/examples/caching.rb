@@ -12,12 +12,10 @@ describe 'Caching' do
     url = "/#{n1}/#{n2}"
     result_string = "Hello, i'm a little method with this calculation:\n#{n1} ** #{n2} = #{result}"
 
-    get(url).should == result_string
+    get(url).body.should == result_string
 
-    timeframe = Benchmark.realtime{ get(url).should == result_string }
-    timeframe += 0.2
-
-    lambda{ Timeout.timeout(timeframe){ get(url).should == result_string } }.should_not raise_error(Timeout::Error)
-    lambda{ Timeout.timeout(timeframe){ get('/').should_not != result_string } }.should raise_error(Timeout::Error)
+    intense_time = Benchmark.realtime{ get(url).body.should == result_string }
+    cached_already = Benchmark.realtime{ get(url) }
+    intense_time.should be > cached_already
   end
 end

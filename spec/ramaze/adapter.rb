@@ -14,7 +14,9 @@ describe "Adapter" do
 
   describe "multiple" do
     it "simple request" do
-      get('/').should == "The index"
+      browser do
+        get('/').should == "The index"
+      end
     end
   end
 end

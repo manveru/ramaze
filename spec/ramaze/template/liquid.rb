@@ -51,12 +51,12 @@ describe "Liquid" do
   ramaze(:mapping => {'/' => TCTemplateLiquidController})
 
   it "index" do
-    get('/').should == "hi tobi"
+    get('/').body.strip.should == "hi tobi"
   end
 
   it "products" do
     o = get('/products')
-    o = o.split("\n").map{|l| l.strip!; l.empty? ? nil : l}.compact.join("\n")
+    o = o.body.split("\n").map{|l| l.strip!; l.empty? ? nil : l}.compact.join("\n")
     o.should == %{
       <?xml version="1.0" encoding="utf-8"?>
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"

@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 class TCRedirectHelperController < Ramaze::Controller
+  map :/
   helper :redirect
 
   def index
@@ -38,7 +39,7 @@ class TCRedirectHelperController < Ramaze::Controller
 end
 
 describe "RedirectHelper" do
-  ramaze(:mapping => {'/' => TCRedirectHelperController})
+  ramaze(:adapter => :webrick)
 
   b = Browser.new
 

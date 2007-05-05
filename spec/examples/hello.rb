@@ -6,6 +6,6 @@ describe 'Hello' do
   ramaze
 
   it '/' do
-    get('/').should == 'Hello, World!'
+    get('/').body.should == 'Hello, World!'
   end
 end

@@ -63,7 +63,6 @@ module Ramaze
 
       def handle path
         controller, action, params = *resolve_controller(path)
-        action, params = path.gsub(/^\//, '').split('/').join('__'), [] unless action
         controller = self unless controller
         controller.render action, *params
       end
@@ -98,13 +97,17 @@ module Ramaze
         mapping = Ramaze::Global.mapping
         controller = false
         action = false
-        tracks = []
+        slash_tracks = []
+        down_tracks = []
 
         track.each do |atom|
-          tracks << "#{tracks.last}/#{atom}"
+          slash_tracks << "#{slash_tracks.last}/#{atom}"
+          down_tracks << "#{down_tracks.last}__#{atom}"
         end
 
-        tracks.unshift('/')
+        down_tracks.shift
+
+        tracks = ['/'] + slash_tracks + down_tracks
 
         until controller and action or tracks.empty?
           current = Regexp.escape(tracks.pop.to_s)
@@ -114,6 +117,9 @@ module Ramaze
             action, params = resolve_action(controller, paraction)
           end
         end
+
+        raise_no_controller(path) unless controller
+        raise_no_action(controller, path) unless action
 
         return controller, action, params
       end
@@ -130,7 +136,9 @@ module Ramaze
       def resolve_action(controller, paraction)
         Inform.debug("resolve_action(#{controller.inspect}, #{paraction.inspect})")
 
-        ancs = (controller.ancestors - [Kernel, Object]).select{|a| a.is_a?(Module)}
+        exclude = [Kernel, Object, Base64, Base64::Deprecated, PP::ObjectMixin]
+
+        ancs = (controller.ancestors - exclude).select{|a| a.is_a?(Module)}
         meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
 
         track = paraction.dup
@@ -156,6 +164,8 @@ module Ramaze
             elsif arity < 0
               return current, params
             end
+          elsif file = find_template(current, controller)
+            return current, params
           end
         end
       end
@@ -236,8 +246,8 @@ module Ramaze
         custom_template = class_trait["#{action}_template".intern]
         action = (custom_template ? custom_template : action).to_s
         action_converted = action.split('__').inject {|s,v| "#{s}/#{v}"}
-        klass_public = klass.class_trait[:public]
-        ramaze_public = klass.class_trait[:ramaze_public]
+        klass_public = klass.trait[:public]
+        ramaze_public = Controller.trait[:ramaze_public]
 
         first_path =
           if template_root = klass.class_trait[:template_root]
@@ -248,7 +258,7 @@ module Ramaze
 
         actions = [action, action_converted].compact
         all_paths = [ first_path, klass_public, ramaze_public].compact
-        paths = all_paths.map{|pa| actions.map{|a| File.expand_path(pa / a) } }
+        paths = all_paths.map{|pa| actions.map{|a| File.expand_path(pa / a) } }.flatten.uniq
 
         glob = "{#{paths.join(',')}}.{#{extension_order.join(',')}}"
 
@@ -285,6 +295,14 @@ module Ramaze
           trait[:template_extensions][ext] = engine
         end
       end
+
+      def raise_no_controller(path)
+        raise Ramaze::Error::NoController, "No Controller found for `#{path}'"
+      end
+
+      def raise_no_action(controller, action)
+        raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller}"
+      end
     end
 
     # the default error-page handler. you can overwrite this method
@@ -316,8 +334,6 @@ module Ramaze
 
         [ lines, lines.object_id.abs, file, lineno, meth ]
       end
-
-      response.status = 500
 
       @title = CGI.escapeHTML(title)
       require 'coderay'

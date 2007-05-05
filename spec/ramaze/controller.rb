@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 class TCControllerEzamarController < Ramaze::Controller
+  map :/
   trait :template_root => 'spec/ramaze/template/ezamar'
 
   def index
@@ -26,25 +27,33 @@ class TCControllerEzamarController < Ramaze::Controller
   end
 end
 
-describe "Testing Ezamar" do
-  ramaze(:mapping => {'/ezamar' => TCControllerEzamarController})
+describe "Controller" do
+  ramaze
 
   it "simple request to index" do
-    get('/ezamar').should == 'Hello, World!'
+    get('/').body.should == 'Hello, World!'
   end
 
   it "summing two values" do
-    get('/ezamar/sum/1/2').should == '3'
+    get('/sum/1/2').body.should == '3'
   end
 
   it "double underscore in templates" do
-    get('/ezamar/some/long/action').should == 'some long action'
-    get('/ezamar/another/long/action').should == 'another long action'
+    get('/some/long/action').body.should == 'some long action'
+    get('/another/long/action').body.should == 'another long action'
   end
 
-  it "should not respond to private methods" do
-    %w[ session request response find_template handle_request trait test_private ].each do |action|
-      lambda{get("/ramaze/#{action}")}.should raise_error
+  describe "should not respond to private methods" do
+    TCControllerEzamarController.private_methods.each do |action|
+      next if action =~ /\?$/ or action == '`'
+      it action do
+        path = "/#{action}"
+        response = get(path)
+        response.body.should_not =~ %r(<title>No Action found for `' on Class</title>)
+        message = "No Action found for `#{path}' on TCControllerEzamarController"
+        response.body.should =~ %r(<title>#{message}</title>)
+        response.status.should == 404
+      end
     end
   end
 end

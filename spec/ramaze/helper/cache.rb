@@ -39,13 +39,13 @@ describe "CacheHelper" do
   ramaze(:mapping => {'/' => TCCacheHelperController})
 
   it "testrun" do
-    get('/').should == 'TCCacheHelperController'
+    get('/').body.should == 'TCCacheHelperController'
   end
 
-  def cached_value() get('/cached_value') end
-  def uncache_value() get('/uncache_value') end
-  def cached_action() get('/cached_action') end
-  def uncache_actions() get('/uncache_actions') end
+  def cached_value() get('/cached_value').body end
+  def uncache_value() get('/uncache_value').body end
+  def cached_action() get('/cached_action').body end
+  def uncache_actions() get('/uncache_actions').body end
 
   it "cached value" do
     3.times do

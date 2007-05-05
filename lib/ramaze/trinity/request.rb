@@ -5,13 +5,14 @@ require 'cgi'
 require 'tmpdir'
 require 'digest/md5'
 require 'rack'
+require 'rack/request'
 
 module Ramaze
 
   # The purpose of this class is to act as a simple wrapper for Rack::Request
   # and provide some convinient methods for our own use.
 
-  class Request < ::Rack::Request
+  module Request
     class << self
 
       # get the current request out of Thread.current[:request]
@@ -50,34 +51,6 @@ module Ramaze
 
     alias referrer referer
 
-    unless defined?(fullpath)
-      def fullpath
-        path = script_name + path_info
-        path << "?" << query_string  unless query_string.empty?
-        path
-      end
-    end
-
-    unless defined?(rack_params)
-      alias rack_params params
-
-      def params
-        ps = rack_params
-        temp = Hash.new{|h,k| h[k] = {}}
-
-        ps.each do |key, value|
-          outer_key, inner_key = key.scan(/^(.+)\[(.*?)\]$/).first
-          if outer_key and inner_key
-            temp[outer_key][inner_key] = value
-          else
-            temp[key] = value
-          end
-        end
-
-        temp
-      end
-    end
-
     # you can access the original @request via this method_missing,
     # first it tries to match your method with any of the HTTP parameters
     # then, in case that fails, it will relay to @request
@@ -86,6 +59,38 @@ module Ramaze
       key = meth.to_s.upcase
       return env[key] if env.has_key?(key)
       super
+    end
+
+    def self.included(klass)
+      klass.class_eval do
+        unless defined?(fullpath)
+          def fullpath
+            path = script_name + path_info
+            path << "?" << query_string  unless query_string.empty?
+            path
+          end
+        end
+
+        unless defined?(rack_params)
+          alias rack_params params
+
+          def params
+            ps = rack_params
+            temp = Hash.new{|h,k| h[k] = {}}
+
+            ps.each do |key, value|
+              outer_key, inner_key = key.scan(/^(.+)\[(.*?)\]$/).first
+              if outer_key and inner_key
+                temp[outer_key][inner_key] = value
+              else
+                temp[key] = value
+              end
+            end
+
+            temp
+          end
+        end
+      end
     end
   end
 end

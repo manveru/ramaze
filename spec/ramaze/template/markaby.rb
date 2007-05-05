@@ -37,22 +37,23 @@ describe "Markaby" do
   ramaze(:mapping => {'/' => TCTemplateMarkabyController})
 
   it "index" do
-    get('/').should == '<h1>Markaby Index</h1>'
+    get('/').body.should == '<h1>Markaby Index</h1>'
   end
 
   it "links" do
-    get('/links').should == '<ul><li><a href="/index">Index page</a></li><li><a href="/internal">Internal template</a></li><li><a href="/external">External template</a></li></ul>'
+    get('/links').body.should == '<ul><li><a href="/index">Index page</a></li><li><a href="/internal">Internal template</a></li><li><a href="/external">External template</a></li></ul>'
   end
 
   it "sum" do
-    get('/sum/1/2').should == '<div>3</div>'
+    get('/sum/1/2').body.should == '<div>3</div>'
   end
 
   it "external" do
-    get('/external').should == "<html><head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/><title>Markaby Test</title></head><body><h1>Markaby Template</h1></body></html>"
+    get('/external').body.should == "<html><head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"/><title>Markaby Test</title></head><body><h1>Markaby Template</h1></body></html>"
   end
 
   it "should not respond to mab" do
-    lambda{ get('/mab') }.should raise_error
+    response = get('/mab')
+    response.status.should == 404
   end
 end

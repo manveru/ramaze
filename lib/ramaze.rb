@@ -16,18 +16,16 @@ require 'set'
 require 'pp'
 
 require 'ramaze/snippets'
-require 'ramaze/cache'
-require 'ramaze/trinity'
 require 'ramaze/error'
+require 'ramaze/cache'
 require 'ramaze/inform'
 require 'ramaze/global'
 require 'ramaze/dispatcher'
-require 'ramaze/gestalt'
-require 'ramaze/http_status'
 require 'ramaze/helper'
 require 'ramaze/controller'
 require 'ramaze/template/ezamar'
-require 'ramaze/adapter'
+require 'ramaze/http_status'
+require 'ramaze/gestalt'
 require 'ramaze/version'
 
 Thread.abort_on_exception = true
@@ -189,6 +187,11 @@ module Ramaze
   # Global.running_adapter
 
   def init_adapter
+    unless Global.adapter
+      Inform.info "No adapter will be used."
+      return
+    end
+
     (Thread.list - [Thread.current]).each do |thread|
       thread.kill if thread[:task] == :adapter
     end

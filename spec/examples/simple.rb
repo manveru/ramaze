@@ -5,32 +5,47 @@ require 'examples/simple'
 describe 'Simple' do
   ramaze
 
+  after :each do
+    @response.status.should == 200
+  end
+
   it '/' do
-    get('/').should == 'simple'
+    @response = get('/')
+    @response.body.should == 'simple'
   end
 
   it '/simple' do
-    get('/simple').should =~ /^#<Ramaze::Request/
+    @response = get('/simple')
+    @response.body.should =~ /^#<Rack::Request/
   end
 
-  it '/join' do
-    get('/join/foo/bar').should == 'foobar'
-    get('/join/bar/baz').should == 'barbaz'
+  it '/join/foo/bar' do
+    @response = get('/join/foo/bar')
+    @response.body.should == 'foobar'
+  end
+
+  it '/join/bar/baz' do
+    @response = get('/join/bar/baz')
+    @response.body.should == 'barbaz'
   end
 
   it '/join_all' do
-    get('/join_all/a/b/c/d/e/f').should == 'abcdef'
+    @response = get('/join_all/a/b/c/d/e/f')
+    @response.body.should == 'abcdef'
   end
 
   it '/sum' do
-    get('/sum/1/2').should == '3'
+    @response = get('/sum/1/2')
+    @response.body.should == '3'
   end
 
   it '/post_or_get' do
-    get('/post_or_get').should == 'GET'
+    @response = get('/post_or_get')
+    @response.body.should == 'GET'
   end
 
   it '/other' do
-    get('/other').should == "Hello, World from OtherController"
+    @response = get('/other')
+    @response.body.should == "Hello, World from OtherController"
   end
 end

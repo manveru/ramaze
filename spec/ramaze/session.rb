@@ -20,7 +20,7 @@ class TCSessionController < Ramaze::Controller
 end
 
 describe "Session" do
-  ramaze(:mapping => {'/' => TCSessionController})
+  ramaze(:adapter => :webrick, :mapping => {'/' => TCSessionController})
 
   { :MemoryCache => :memory,
     :YAMLStoreCache => :yaml_store,

@@ -2,6 +2,8 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'timeout'
+
+require 'ramaze/adapter'
 require 'ramaze/tool/mime'
 
 require 'ramaze/dispatcher/action'
@@ -17,8 +19,9 @@ module Ramaze
     ]
 
     trait :handle_error => {
-        Exception               => '/error',
-        Ramaze::Error::NoAction => '/error',
+        Exception                   => [500, '/error'],
+        Ramaze::Error::NoAction     => [404, '/error'],
+        Ramaze::Error::NoController => [404, '/error'],
       }
 
     class << self

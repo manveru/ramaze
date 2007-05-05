@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 class TCFlashHelperFirstController < Ramaze::Controller
+  map :/
   helper :flash
 
   def index
@@ -20,6 +21,7 @@ class TCFlashHelperFirstController < Ramaze::Controller
 end
 
 class TCFlashHelperSecondController < Ramaze::Controller
+  map '/second'
   helper :flash
 
   def index
@@ -36,6 +38,7 @@ class TCFlashHelperSecondController < Ramaze::Controller
 end
 
 class TCFlashHelperThirdController < Ramaze::Controller
+  map '/third'
   helper :flash
 
   def index
@@ -55,11 +58,7 @@ class TCFlashHelperThirdController < Ramaze::Controller
 end
 
 describe "FlashHelper" do
-  ramaze :mapping => {
-      '/'       => TCFlashHelperFirstController,
-      '/second' => TCFlashHelperSecondController,
-      '/third'  => TCFlashHelperThirdController
-  }
+  ramaze :adapter => :webrick
 
   it "twice" do
     browser '/' do

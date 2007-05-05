@@ -12,6 +12,6 @@ describe 'FileHelper' do
   ramaze
 
   it 'serving a file' do
-    get('/').should == File.read(__FILE__).strip
+    get('/').body.strip.should == File.read(__FILE__).strip
   end
 end

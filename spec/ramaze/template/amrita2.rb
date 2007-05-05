@@ -23,7 +23,7 @@ describe "Simply calling" do
   ramaze(:mapping => {'/' => TCTemplateAmritaController})
 
   it "should respond to /data" do
-    get('/data').should ==
+    get('/data').body.strip.should ==
 %{<html>
   <body>
     <h1>hello world</h1>

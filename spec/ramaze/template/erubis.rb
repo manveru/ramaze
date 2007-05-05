@@ -27,14 +27,14 @@ describe "Erubis" do
   ramaze(:mapping => {'/' => TCTemplateErubisController})
 
   it "index" do
-    get('/').should == 'Erubis Index'
+    get('/').body.should == 'Erubis Index'
   end
 
   it "sum" do
-    get('/sum/1/2').should == '3'
+    get('/sum/1/2').body.strip.should == '3'
   end
 
   it "inline" do
-    get('/inline/foo/bar').should == %w[foo bar].inspect
+    get('/inline/foo/bar').body.should == %w[foo bar].inspect
   end
 end

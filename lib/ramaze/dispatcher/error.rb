@@ -12,32 +12,19 @@ module Ramaze
 
           handle_error = Dispatcher.trait[:handle_error]
 
-          Response.current.status = STATUS_CODE[:internal_server_error]
+          key = error.class.ancestors.find{|a| handle_error[a]}
+          status, path = *handle_error[key || Exception]
 
-          case error
-          when *handle_error.keys
-            error_path = handle_error[error.class]
-            error_path ||= handle_error.find{|k,v| k === error}.last
+          Response.current.status = status
 
-            if error.message =~ /`#{error_path.split('/').last}'/
-              build_response(error.message)
-            else
-              Dispatcher.dispatch_to(error_path)
-            end
+          if error.message =~ /`#{path.split('/').last}'/
+            Dispatcher.build_response(error.message, status)
           else
-            if Global.error_page
-              Dispatcher.dispatch_to('/error')
-            else
-              build_response(error.message)
-            end
+            Dispatcher.dispatch_to(path)
           end
         rescue Object => ex
           Inform.error(ex)
-          build_response(ex.message)
-        end
-
-        def build_response *args
-          Dispatcher.build_response(*args)
+          Dispatcher.build_response(ex.message, status)
         end
       end
     end

@@ -45,7 +45,7 @@ class TCAuthLambdaHelperController < TCAuthHelperController
 end
 
 describe "StackHelper" do
-  ramaze
+  ramaze :adapter => :webrick
   [ TCAuthHashHelperController,
     TCAuthMethodHelperController,
     TCAuthLambdaHelperController

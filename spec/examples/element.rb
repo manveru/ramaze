@@ -6,7 +6,7 @@ describe 'Element' do
   ramaze
 
   it '/' do
-    r = get('/')
+    r = get('/').body
     r.should include('<title>examples/element</title>')
     r.should include('<h1>Test</h1>')
     r.should include('<a href="http://something.com">something</a>')

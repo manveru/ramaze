@@ -35,30 +35,30 @@ describe "Ezamar" do
   ramaze(:mapping => {'/' => TCTemplateController})
 
   it "hello world" do
-    get('/World').should == 'Hello, World!'
-    get('/You').should == 'Hello, You!'
+    get('/World').body.should == 'Hello, World!'
+    get('/You').body.should == 'Hello, You!'
   end
 
   it "summing" do
-    get('/sum/1/2').should == '3'
+    get('/sum/1/2').body.should == '3'
   end
 
   it "nasty nested stuff" do
-    get('/nested/foo/bar').should == 'bar'
+    get('/nested/foo/bar').body.should == 'bar'
   end
 
   it "template inside controller" do
-    get('/internal').should == '4 [] on the table'
-    get('/internal/foo').should == '4 ["foo"] on the table'
+    get('/internal').body.should == '4 [] on the table'
+    get('/internal/foo').body.should == '4 ["foo"] on the table'
   end
 
   it "without method" do
-    get('/file_only').should == "This is only the file"
+    get('/file_only').body.should == "This is only the file"
   end
 
   it "combined" do
     100.times do
-      get('/combined').should == 'boo'
+      get('/combined').body.should == 'boo'
     end
   end
 end

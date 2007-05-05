@@ -4,6 +4,7 @@
 require 'timeout'
 
 $:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..', 'lib')
+$:.unshift '/home/manveru/prog/projects/rack/lib'
 
 # $VERBOSE = 1
 $context_runner = false
@@ -21,11 +22,14 @@ if Spec::VERSION::FULL_VERSION < "0.9.1 (r1880)"
   exit 1
 end
 
+require 'spec/helper/mock_http'
 require 'spec/helper/simple_http'
 require 'spec/helper/requester'
 require 'spec/helper/context'
 
-include Requester
+Spec::Runner.configure do |config|
+  config.include MockHTTP
+end
 
 # start up ramaze with a given hash of options
 # that will be merged with the default-options.
@@ -33,7 +37,7 @@ include Requester
 def ramaze_start hash = {}
   options = {
     :mode         => :debug,
-    :adapter      => :webrick,
+    :adapter      => false,
     :run_loose    => true,
     :error_page   => false,
     :port         => 7007,

@@ -24,8 +24,8 @@ describe "LinkHelper" do
   this = TCLinkHelperController
 
   it "testrun" do
-    get.should == %{<a href="/">index</a>}
-    get('/index_with_title').should == %{<a href="/">Foo</a>}
+    get('/').body.should == %{<a href="/">index</a>}
+    get('/index_with_title').body.should == %{<a href="/">Foo</a>}
   end
 
   it "link" do

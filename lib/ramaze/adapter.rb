@@ -4,8 +4,18 @@
 require 'rack'
 require 'benchmark'
 
+require 'ramaze/trinity'
+
 # for OSX compatibility
 Socket.do_not_reverse_lookup = true
+
+class Rack::Request
+  include Ramaze::Request
+end
+
+class Rack::Response
+  include Ramaze::Response
+end
 
 module Ramaze::Adapter
   class Base
@@ -37,7 +47,7 @@ module Ramaze::Adapter
     end
 
     def respond env
-      request, response = Ramaze::Request.new(env), Ramaze::Response.new
+      request, response = Rack::Request.new(env), Rack::Response.new
       Ramaze::Dispatcher.handle(request, response)
     end
   end

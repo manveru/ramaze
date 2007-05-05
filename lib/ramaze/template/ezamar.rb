@@ -72,14 +72,9 @@ module Ramaze
         # Render an action, on a given controller with parameter
 
         def render_action(controller, action, *params)
-          return controller.send(action, *params).to_s
-        rescue NoMethodError => ex
-          ourself = /undefined method `#{action}' for #<TCErrorController:/
-          if ex.message =~ ourself
-            raise_no_action(controller, action)
-          else
-            raise ex
-          end
+          controller.send(action, *params).to_s
+        rescue => ex
+          raise(ex.class, ex.message, ex.backtrace[0])
         end
 
         def raise_no_action(controller, action)
@@ -108,7 +103,7 @@ module Ramaze
         def safe
           yield
         rescue => ex
-          Inform.error('Next message may not be critical')
+          Inform.error('The following Error occured while compiling the template')
           Inform.error(ex)
           nil
         end

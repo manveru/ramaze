@@ -23,7 +23,7 @@ describe "Simply calling" do
   ramaze(:mapping => {'/' => TCTemplateHamlController})
 
   it "index" do
-    get('/').should ==
+    get('/').body.strip.should ==
 "<div id='contact'>
   <h1>Eugene Mumbai</h1>
   <ul class='info'>
@@ -34,7 +34,7 @@ describe "Simply calling" do
   end
 
   it "variables in controller" do
-    get('/with_vars').should ==
+    get('/with_vars').body.strip.should ==
 %{<div id='content'>
   <div class='title'>
     <h1>Teen Wolf</h1>

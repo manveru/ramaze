@@ -28,12 +28,12 @@ describe "Localize" do
   ramaze
 
   it "hello world" do
-    get('/hello').should == 'Hello, World!'
-    get('/hello/de').should == 'Hallo, Welt!'
+    get('/hello').body.should == 'Hello, World!'
+    get('/hello/de').body.should == 'Hallo, Welt!'
   end
 
   it "advanced" do
-    get('/advanced').should == 'this is a test'
-    get('/advanced/de').should == 'Das ist ein Test'
+    get('/advanced').body.should == 'this is a test'
+    get('/advanced/de').body.should == 'Das ist ein Test'
   end
 end
