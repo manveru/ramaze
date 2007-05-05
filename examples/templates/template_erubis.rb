@@ -6,8 +6,8 @@ require 'ramaze'
 include Ramaze
 
 class MainController < Controller
+  trait :template_root => File.expand_path((File.dirname(__FILE__)/'template'))
   trait :engine => Template::Erubis
-  trait :template_root => (File.dirname(__FILE__)/'template')
 
   def index
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
