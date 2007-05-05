@@ -112,27 +112,45 @@ begin
     options[:inform_tags] = Set.new([:debug, :info, :error])
 
     case sopt
-    when :create            : create[arg]
-    when :help              : RDoc::ramazes_usage('Usage')
-    when :version           : puts("ramaze #{Ramaze::VERSION}") or exit
-    when :copyright         : RDoc::ramazes_usage('Copyright')
-    when *adapter           : options[:adapter] = sopt
+    when :create
+      create[arg]
+    when :help
+      RDoc::ramazes_usage('Usage')
+    when :version
+      puts("ramaze #{Ramaze::VERSION}") or exit
+    when :copyright
+      RDoc::ramazes_usage('Copyright')
+    when *adapter
+      options[:adapter] = sopt
 
-    when :benchmark         : options[:inform_tags] << :benchmark
-    when :debug             : options
-    when :stage             : options[:inform_tags].subtract [:debug]
-    when :live              : options[:inform_tags].subtract [:info, :debug]
-    when :silent            : options[:inform_tags].subtract options[:inform_tags]
+    when :benchmark
+      options[:inform_tags] << :benchmark
+    when :debug
+      options
+    when :stage
+      options[:inform_tags].subtract [:debug]
+    when :live
+      options[:inform_tags].subtract [:info, :debug]
+    when :silent
+      options[:inform_tags].subtract options[:inform_tags]
 
-    when :host              : options[:host] = arg
-    when :port              : options[:port] = arg
+    when :host
+      options[:host] = arg
+    when :port
+      options[:port] = arg
 
-    when :no_errorpage      : options[:error_page] = false
-    when :template_root     : options[:template_root] = arg
-    when :autoreload        : options[:autoreload] = arg.to_i
-    when :run_loose         : options[:run_loose] = true
-    when :console           : options[:console] = true
-    when :backtrace         : options[:backtrace] = true
+    when :no_errorpage
+      options[:error_page] = false
+    when :template_root
+      options[:template_root] = arg
+    when :autoreload
+      options[:autoreload] = arg.to_i
+    when :run_loose
+      options[:run_loose] = true
+    when :console
+      options[:console] = true
+    when :backtrace
+      options[:backtrace] = true
     end
   end
 
@@ -151,7 +169,7 @@ begin
   if options.delete(:console)
     options.merge!(:run_loose => true)
 
-    ARGV.clear # Avoid passing args to IRB 
+    ARGV.clear # Avoid passing args to IRB
 
     Ramaze.start(options)
 
