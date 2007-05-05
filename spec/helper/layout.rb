@@ -8,22 +8,20 @@ class SpecLayout
   end
 
   def run
-    build
     SpecWrap.new(@files).run
   end
 
-  def build
-    @files = gather(@base, @layout)
-    @files = clean(@files, @layout)
+  def gather
+    @files = gather_files(@base, @layout)
   end
 
-  def gather(base, layout)
+  def gather_files(base, layout)
     files = Set.new
     base = File.expand_path(base)
 
     layout.each do |key, value|
       if value.is_a?(Hash)
-        files += gather(base/key, value)
+        files += gather_files(base/key, value)
       else
         glob = base/key/"#{value}.rb"
         files += Dir[glob].map{|f| File.expand_path(f)}
@@ -33,11 +31,15 @@ class SpecLayout
     files.reject{|f| File.directory?(f)}
   end
 
-  def clean(files, layout)
+  def clean
+    @files = clean_files(@files, @layout)
+  end
+
+  def clean_files(files, layout)
     layout.each do |key, value|
       if value.is_a?(Hash)
-        clean(files, value)
-      else
+        clean_files(files, value)
+      elsif files
         files.dup.each do |file|
           name = File.basename(file, File.extname(file))
           dir = file.gsub(File.extname(file), '')

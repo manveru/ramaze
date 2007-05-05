@@ -20,4 +20,6 @@ layout = {
 }
 
 layout = SpecLayout.new(File.dirname(__FILE__), layout)
+layout.gather
+layout.clean
 layout.run
