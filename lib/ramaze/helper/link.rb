@@ -32,6 +32,8 @@ module Ramaze
 
   module LinkHelper
 
+    private
+
     # Usage:
     #   link MainController, :foo                 #=> '<a href="/foo">foo</a>'
     #   link MinorController, :foo                #=> '<a href="/minor/foo">foo</a>'

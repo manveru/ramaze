@@ -21,6 +21,8 @@ module Ramaze
 
   module RedirectHelper
 
+    private
+
     # Usage:
     #   redirect R(MainController)
     #   redirect R(MainController, :foo)
