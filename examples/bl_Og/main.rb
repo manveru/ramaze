@@ -1,4 +1,4 @@
-$DBG = true
+$DBG = true # turn on debugging in Og
 
 require 'ramaze'
 require 'og'
@@ -11,7 +11,7 @@ require 'src/controller'
 
 Og.setup :evolve_schema => :full
 
-Entry.create "Blog created", "Exiting news today, this blog was created!" if
+Entry.create "Blog created", "Exciting news today, this blog was created!" if
   Entry.count == 0
 
 start
