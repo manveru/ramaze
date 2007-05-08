@@ -10,7 +10,11 @@ module Ramaze::Template
     class << self
       def transform controller, options = {}
         action, parameter, file, bound = *super
-        [ controller.class, action, parameter.join('|'), file ].join ','
+        [ controller.class.name,
+          action,
+          parameter,
+          file
+        ].to_yaml
       end
     end
   end
@@ -18,7 +22,7 @@ end
 
 class TCTemplateController < Ramaze::Controller
   trait :engine => Ramaze::Template::TestTemplate
-  trait :template_root => 'spec/ramaze/template/ramaze/'
+  trait :template_root => (File.dirname(__FILE__)/:template/:ramaze)
 
   def index *args
   end
@@ -31,50 +35,52 @@ describe "testing ramaze template" do
   ramaze(:mapping => {'/' => TCTemplateController})
 
   def getpage page
-    controller,action,parameter,file=get( page ).body.split(',')
-    parameters = parameter ? parameter.split('|') : nil
-    parameters = nil if parameters and parameters.size == 0
-    [controller,action,parameters,file]
+    @controller, @action, @parameter, @file = YAML.load(get( page ).body)
   end
 
   it "Gets a blank page" do
-    controller,action,parameters,file=getpage("/index")
-    controller.should == "TCTemplateController"
-    action.should == "index"
-    parameters.should == nil
-    file.should == nil
+    getpage("/index")
+
+    @controller.should == "TCTemplateController"
+    @action.should == "index"
+    @parameter.should == []
+    @file.should == nil
   end
 
   it "Maps the index" do
-    controller,action,parameters,file=getpage("/")
-    controller.should == "TCTemplateController"
-    action.should == "index"
-    parameters.should == nil
-    file.should == nil
+    getpage("/")
+
+    @controller.should == "TCTemplateController"
+    @action.should == "index"
+    @parameter.should == []
+    @file.should == nil
   end
 
   it "Parses parameters" do
-    controller,action,parameters,file=getpage("/one/two/three")
-    controller.should == "TCTemplateController"
-    action.should == "index"
-    parameters.should == %w{one two three}
-    file.should == nil
+    getpage("/one/two/three")
+
+    @controller.should == "TCTemplateController"
+    @action.should == "index"
+    @parameter.should == %w{one two three}
+    @file.should == nil
   end
 
   it "Knows about other methods" do
-    controller,action,parameters,file=getpage("/some_other_method")
-    controller.should == "TCTemplateController"
-    action.should == "some_other_method"
-    parameters.should == nil
-    file.should == nil
+    getpage("/some_other_method")
+
+    @controller.should == "TCTemplateController"
+    @action.should == "some_other_method"
+    @parameter.should == []
+    @file.should == nil
   end
 
   it "Uses external template files" do
-    controller,action,parameters,file=getpage("/external")
-    controller.should == "TCTemplateController"
-    action.should == "external"
-    parameters.should == nil
-    file.should == File::expand_path('spec/ramaze/template/ramaze/external.test')
-  end
+    getpage("/external")
 
+    @controller.should == "TCTemplateController"
+    @action.should == "external"
+    @parameter.should == []
+    file = TCTemplateController.trait[:template_root]/'external.test'
+    @file.should == File.expand_path(file)
+  end
 end

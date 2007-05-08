@@ -19,12 +19,11 @@ layout = {
   }
 }
 
-manually_add = %w{ramaze/template}
+manually_add = %w[ramaze/template]
+manually_add.map!{|ma| File.expand_path("spec/#{ma}.rb") }
 
 layout = SpecLayout.new(File.dirname(__FILE__), layout)
 layout.gather
 layout.clean
-manually_add.each do |filename|
-  layout.files << File.expand_path( "spec/#{filename}.rb" )
-end
+layout.files += manually_add
 layout.run

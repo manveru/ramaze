@@ -28,7 +28,7 @@ class TCControllerEzamarController < Ramaze::Controller
 end
 
 describe "Controller" do
-  ramaze
+  ramaze :error_page => false
 
   it "simple request to index" do
     get('/').body.should == 'Hello, World!'
@@ -44,7 +44,7 @@ describe "Controller" do
   end
 
   describe "should not respond to private methods" do
-    TCControllerEzamarController.private_methods.each do |action|
+    TCControllerEzamarController.private_methods.sort.each do |action|
       next if action =~ /\?$/ or action == '`'
       it action do
         path = "/#{action}"

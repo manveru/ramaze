@@ -136,7 +136,7 @@ module Ramaze
       def resolve_action(controller, paraction)
         Inform.debug("resolve_action(#{controller.inspect}, #{paraction.inspect})")
 
-        exclude = [Kernel, Object, Base64, Base64::Deprecated, PP::ObjectMixin]
+        exclude = [Kernel, Object, PP::ObjectMixin]
 
         ancs = (controller.ancestors - exclude).select{|a| a.is_a?(Module)}
         meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
@@ -206,7 +206,7 @@ module Ramaze
           :file       => file,
           :binding    => controller.instance_eval{ binding },
           :action     => action,
-          :parameter  => parameter,
+          :parameter  => parameter.compact,
         }
         engine.transform(controller, options)
       end
