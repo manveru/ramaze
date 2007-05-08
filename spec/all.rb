@@ -12,6 +12,7 @@ layout = {
     'request'   => '*',
     'store'     => '*',
     'template'  => '*',
+    'controller' => '*'
     },
   'examples' => {
     '.' => '*',
