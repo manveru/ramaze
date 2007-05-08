@@ -138,6 +138,10 @@ module Ramaze
 
         exclude = [Kernel, Object, PP::ObjectMixin]
 
+        if defined?(::Spec)
+          exclude += [Base64::Deprecated, Base64, Spec::Expectations::ObjectExpectations]
+        end
+
         ancs = (controller.ancestors - exclude).select{|a| a.is_a?(Module)}
         meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
 
