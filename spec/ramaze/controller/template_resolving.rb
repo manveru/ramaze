@@ -17,6 +17,7 @@ class OtherController < MainController
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)
   end
+
   trait :greet__mom_template => '/greet'
 end
 
@@ -24,11 +25,11 @@ describe "Testing Template overriding" do
   ramaze(:mapping => {'/' => MainController, '/other' => OtherController})
 
   it "simple request to greet" do
-    get('/greet/asdf').should == '<html>asdf : Message</html>'
+    get('/greet/asdf').body.should == '<html>asdf : Message</html>'
   end
   
   it "referencing template from MainController" do
-    get('/other/greet/mom').should == '<html>Mom : Moms are cool!</html>'
+    get('/other/greet/mom').body.should == '<html>Mom : Moms are cool!</html>'
   end
 
 end
