@@ -83,7 +83,6 @@ module Ramaze
             action = controller.resolve_action(method, *params)
             template = action.template
             action.method ||= File.basename(template, File.extname(template)) if template
-            p action
             return controller, action if action.method
           end
         end
@@ -110,9 +109,11 @@ module Ramaze
 
         regexp = action.split(/\/|__/).map{|s| Regexp.escape(s) }
         regexp = /\/+#{regexp.join('(?:\/|__)')}(#{exts.join('|')})$/
-        paths = paths.grep(regexp).sort_by{|path| exts.index(File.extname(path))}
+          paths = paths.grep(regexp).sort_by{|path| exts.index(File.extname(path))}
 
-        exclude = [Kernel, Object, PP::ObjectMixin]
+        paths.each do |path|
+          path_ext = File.extname(path)
+          path_base = File.basename(path, path_ext)
 
           return path unless path_base.empty?
         end
