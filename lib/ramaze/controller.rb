@@ -5,6 +5,8 @@ require 'ramaze/template'
 
 module Ramaze
 
+  Action = Struct.new('Action', :template, :method, :params)
+
   # The Controller is responsible for combining and rendering actions.
 
   class Controller
