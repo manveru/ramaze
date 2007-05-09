@@ -84,7 +84,7 @@ module Ramaze
     end
 
     def Rs(*to)
-      R(self, *to)
+      R(Controller.current, *to)
     end
   end
 end
