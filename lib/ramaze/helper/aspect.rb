@@ -188,21 +188,23 @@ module Ramaze
     # it just searches for post and pre wrappers, calls them
     # before/after your action and joins the results
 
-    def new_render(action, *params)
+    def new_render(action)
       arity_for = lambda{|meth| method(meth).arity rescue -1 }
-      post, pre = resolve_aspect(action).values_at(:post, :pre)
+      post, pre = resolve_aspect(action.method).values_at(:post, :pre)
 
       if pre
         arity = arity_for[pre].abs
-        pre_content = old_render(pre, *params[0,arity])
+        pre_action = Action.new(action.template, pre, action.params)
+        pre_content = old_render(pre_action)
       end
 
       unless (pre_content.delete(:skip_next_aspects) rescue false)
-        content = old_render(action, *params)
+        content = old_render(action)
 
         if post
           arity = arity_for[post].abs
-          post_content = old_render(post, *params[0,arity])
+          post_action = Action.new(action.template, post, action.params)
+          post_content = old_render(post_action)
         end
       end
 
