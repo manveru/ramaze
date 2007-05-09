@@ -29,6 +29,8 @@ module Ramaze
 
     trait :map => nil
 
+    trait :exclude_action_modules => [Kernel, Object, PP::ObjectMixin]
+
     class << self
       include Ramaze::Helper
       extend Ramaze::Helper
@@ -63,212 +65,124 @@ module Ramaze
       end
 
       def handle path
-        controller, action, params = *resolve_controller(path)
-        controller = self unless controller
-        controller.render action, *params
+        controller, action = *resolve(path)
+        controller.render(action)
       end
 
-      # find out which controller should be used based on the path.
-      # it will answer [controller, action, params] or raise an
-      #
-      #   Ramaze::Error::NoController # if no controller is found
-      #   Ramaze::Error::NoAction     # if no action but a controller is found
-      #
-      # It actually uses #resolve_action on almost every combination of
-      # so-called paractions (yet unsplit but possible combination of action
-      # and parameters for the action)
-      #
-      # If your templating is action-less, which means it does not depend on
-      # methods on the controller, but rather on templates or just dynamically
-      # calculated stuff you can set trait[:actionless] for your templating.
-      #
-      # Please see the documentation for Ramaze::Template::Amrita2 for an more
-      # specific example of how it is used in practice.
-      #
-      # Further it uses the Global.mapping to look up the controller to be used.
-      #
-      # Also, the action '/' will be expanded to 'index'
-      #
-      # Parameters are CGI.unescaped
+      def resolve(path)
+        #Inform.debug("resolve_controller('#{path}')")
+        mapping     = Global.mapping
+        controllers = Global.controllers
 
-      def resolve_controller(path)
-        Inform.debug("resolve_controller(#{path.inspect})")
-        track = path.split('/')
-        track.delete('')
-        mapping = Ramaze::Global.mapping
-        controller = false
-        action = false
-        slash_tracks = []
-        down_tracks = []
+        raise_no_controller(path) if controllers.empty? or mapping.empty?
 
-        track.each do |atom|
-          slash_tracks << "#{slash_tracks.last}/#{atom}"
-          down_tracks << "#{down_tracks.last}__#{atom}"
-        end
+        class_trait[:pattern_for] ||= Hash.new{|h,k| h[k] = pattern_for(k)}
 
-        down_tracks.shift
-
-        tracks = ['/'] + slash_tracks + down_tracks
-
-        until controller and action or tracks.empty?
-          current = Regexp.escape(tracks.pop.to_s)
-          if controller = mapping[current]
-            paraction = path.gsub(/^#{current}/, '').split('/').map{|e| CGI.unescape(e)}
-            paraction.delete('')
-            action, params = resolve_action(controller, paraction)
+        class_trait[:pattern_for][path].each do |controller, method, params|
+          if controller = mapping[controller]
+            action = controller.resolve_action(method, *params)
+            template = action.template
+            action.method ||= File.basename(template, File.extname(template)) if template
+            p action
+            return controller, action if action.method
           end
         end
 
-        raise_no_controller(path) unless controller
-        raise_no_action(controller, path) unless action
-
-        return controller, action, params
+        raise_no_controller(path)
       end
 
-      # Resolve the method to be called and the number of parameters
-      # it will receive for a specific class (the controller) given the
-      # paraction (like 'foo/bar' => controller.call('foo', 'bar'))
-      # in case arity is 1 and a public instance-method named foo is defined.
-      #
-      # TODO:
-      # - find a solution for def x(a = :a) which has arity -1
-      #   identical to def x(*a) for some odd reason
+      def resolve_action(path, *parameter)
+        possible_path = trait["#{path}_template".to_sym]
+        template = resolve(possible_path).last.template if possible_path
 
-      def resolve_action(controller, paraction)
-        Inform.debug("resolve_action(#{controller.inspect}, #{paraction.inspect})")
+        method, params = resolve_method(path, *parameter)
+
+        if method or parameter.empty?
+          template ||= resolve_template(path)
+        end
+
+        Action.new(template, method, params)
+      end
+
+      def resolve_template(action)
+        paths = (class_trait[:template_paths] ||= template_paths)
+        exts = extension_order
+
+        regexp = action.split(/\/|__/).map{|s| Regexp.escape(s) }
+        regexp = /\/+#{regexp.join('(?:\/|__)')}(#{exts.join('|')})$/
+        paths = paths.grep(regexp).sort_by{|path| exts.index(File.extname(path))}
 
         exclude = [Kernel, Object, PP::ObjectMixin]
 
-        if defined?(::Spec)
-          exclude += [Base64::Deprecated, Base64, Spec::Expectations::ObjectExpectations]
+          return path unless path_base.empty?
         end
 
-        ancs = (controller.ancestors - exclude).select{|a| a.is_a?(Module)}
-        meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
-
-        track = paraction.dup
-        tracks = []
-        action = false
-
-        track.each do |atom|
-          atom = [tracks.last.to_s, atom]
-          atom.delete('')
-          tracks << atom.join('__')
-        end
-
-        tracks.unshift 'index'
-
-        until action or tracks.empty?
-          current = tracks.pop
-          if meths.include?(current) #or current = controller.class_trait[:template_map][current]
-            arity = controller.instance_method(current).arity
-            params = (paraction - current.split('__'))
-
-            if params.size == arity
-              return current, params
-            elsif arity < 0
-              return current, params
-            end
-          elsif file = find_template(current, controller)
-            return current, params
-          end
-        end
+        nil
       end
 
-      # The universal #render method that has to be provided by every
-      # prospective Controller, pass it your action and parameters.
-      #
-      # This is called upon by the Dispatcher, but you can use it in your
-      # Controller/View to get the contents of another action.
-      #
-      # It will set the instance-variable @action in the instance of itself
-      # to the value of the current action.
-
-      def render action, *parameter
-        trait[:actions_cached] ||= Set.new
-
-        cache_indicators = [
-          Global.cache_all,
-          class_trait[:cache_all],
-          class_trait[:actions_cached].map{|k| k.to_s}.include?(action.to_s),
-        ]
-
-        if cache_indicators.any?
-          cached_render(action, *parameter)
-        else
-          uncached_render(action, *parameter)
-        end
-      end
-
-      def uncached_render action, *parameter
-        controller = self.new
-        controller.instance_variable_set('@action', action)
-
-        file   = find_template(action)
-        engine = select_engine(file)
-
-        options = {
-          :file       => file,
-          :binding    => controller.instance_eval{ binding },
-          :action     => action,
-          :parameter  => parameter.compact,
-        }
-        engine.transform(controller, options)
-      end
-
-      def cached_render action, *parameter
-        key = [action, parameter].inspect
-
-        trait[:action_cache] ||= Global.cache.new
-
-        if out = class_trait[:action_cache][key]
-          Inform.debug("Using Cached version for #{key}")
-          return out
-        end
-
-        Inform.debug("Compiling Action: #{action} #{parameter.join(', ')}")
-        class_trait[:action_cache][key] = uncached_render(action, *parameter)
-      end
-
-      # This finds the template for the given action on the current controller
-      # there are some basic ways how you can provide an alternative path:
-      #
-      # Global.template_root = 'default/path'
-      #
-      # class FooController < Controller
-      #   trait :template_root => 'another/path'
-      #   trait :index_template => :foo
-      #
-      #   def index
-      #   end
-      # end
-      #
-      # One feature also used in the above example is the custom template for
-      # one action, in this case :index - now the template of :foo will be
-      # used instead.
-
-      def find_template action, klass = self
-        custom_template = class_trait["#{action}_template".intern]
-        action = (custom_template ? custom_template : action).to_s
-        action_converted = action.split('__').inject {|s,v| "#{s}/#{v}"}
-        klass_public = klass.trait[:public]
+      def template_paths
+        klass_public = trait[:public]
         ramaze_public = Controller.trait[:ramaze_public]
 
         first_path =
-          if template_root = klass.class_trait[:template_root]
+          if template_root = class_trait[:template_root]
             template_root
           else
             Global.template_root / Global.mapping.invert[self]
           end
+        paths = [ first_path, klass_public, ramaze_public].compact
 
-        actions = [action, action_converted].compact
-        all_paths = [ first_path, klass_public, ramaze_public].compact
-        paths = all_paths.map{|pa| actions.map{|a| File.expand_path(pa / a) } }.flatten.uniq
+        glob = "{#{paths.join(',')}}/**/*"
 
-        glob = "{#{paths.join(',')}}.{#{extension_order.join(',')}}"
+        Dir[glob].select{|f| File.file?(f)} #.map{|f| File.expand_path(f)}
+      end
 
-        possible = Dir[glob]
-        possible.first
+      def resolve_method(name, *params)
+        if method = action_methods.delete(name)
+          arity = instance_method(method).arity
+          if params.size == arity or arity < 0
+            return method, params
+          end
+        end
+        return nil, []
+      end
+
+      def action_methods
+        exclude = Controller.trait[:exclude_action_modules]
+
+        ancs = (ancestors - exclude).select{|a| a.is_a?(Module)}
+        ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
+      end
+
+      def pattern_for(path)
+        atoms = path.split('/').grep(/\S/)
+        atoms.unshift('')
+        patterns, joiners = [], ['/']
+
+        atoms.size.times do |enum|
+          enum += 1
+          joiners << '__' if enum == 3
+
+          joiners.each do |joinus|
+            pattern = atoms.dup
+
+            controller = pattern[0, enum].join(joinus)
+            controller.gsub!(/^__/, '/')
+            controller = "/" if controller == ""
+
+            pattern = pattern[enum..-1]
+            args, temp = [], []
+
+            patterns << [controller, 'index', atoms[enum..-1]]
+
+            until pattern.empty?
+              args << pattern.shift
+              patterns << [controller, args.join( '__' ), pattern.dup]
+            end
+          end
+        end
+
+        patterns.reverse!
       end
 
       def extension_order
@@ -276,8 +190,57 @@ module Ramaze
         engine = trait[:engine]
         c_extensions = t_extensions.reject{|k,v| v != engine}.keys
         all_extensions = t_extensions.keys
-        (c_extensions + all_extensions).uniq
+        (c_extensions + all_extensions).uniq.map{|e| ".#{e}"}
       end
+
+      def render(action = {})
+        action = Action.new(action.values_at(:template, :method, :params)) if action.is_a?(Hash)
+        action.method = action.method.to_s
+        trait[:actions_cached] ||= Set.new
+
+        cache_indicators = [
+          Global.cache_all,
+          class_trait[:cache_all],
+          class_trait[:actions_cached].map{|k| k.to_s}.include?(action.method),
+        ]
+
+        if cache_indicators.any?
+          cached_render(action)
+        else
+          uncached_render(action)
+        end
+      end
+
+      def uncached_render(action)
+        controller = self.new
+        controller.instance_variable_set('@action', action.method)
+
+        file   = action.template
+        engine = select_engine(file)
+        parameter = action.params
+
+        options = {
+          :file       => file,
+          :binding    => controller.instance_eval{ binding },
+          :action     => action.method,
+          :parameter  => parameter.compact,
+        }
+
+        engine.transform(controller, options)
+      end
+
+      def cached_render action
+        trait[:action_cache] ||= Global.cache.new
+
+        if out = class_trait[:action_cache][action]
+          Inform.debug("Using Cached version for #{action}")
+          return out
+        end
+
+        Inform.debug("Compiling Action: #{action}")
+        class_trait[:action_cache][action] = uncached_render(action)
+      end
+
 
       def select_engine(file)
         trait_engine = class_trait[:engine]
@@ -305,8 +268,8 @@ module Ramaze
         raise Ramaze::Error::NoController, "No Controller found for `#{path}'"
       end
 
-      def raise_no_action(controller, action)
-        raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller}"
+      def raise_no_action(controller, path)
+        raise Ramaze::Error::NoAction, "No Action found for `#{path}' on #{controller}"
       end
     end
 
