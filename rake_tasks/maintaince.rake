@@ -64,7 +64,7 @@ end
 
 desc "remove those annoying spaces at the end of lines"
 task 'fix-end-spaces' do
-  Dir['{lib,test}/**/*.rb'].each do |file|
+  Dir['{lib,spec}/**/*.rb'].each do |file|
     next if file =~ /_darcs/
     lines = File.readlines(file)
     new = lines.dup
