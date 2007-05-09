@@ -17,7 +17,7 @@ module Ramaze
 
           Response.current.status = status
 
-          if error.message =~ /`#{path.split('/').last}'/
+          unless error.message =~ /`#{path.split('/').last}'/ or Global.error_page
             Dispatcher.build_response(error.message, status)
           else
             Dispatcher.dispatch_to(path)
