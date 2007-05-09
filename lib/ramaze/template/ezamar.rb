@@ -55,16 +55,12 @@ module Ramaze
         #
         # Answers with the contents and otherwise nil
 
-        def file_template action_or_file, controller
-          action_or_file = action_or_file.to_s
-          path =
-            if File.file?(action_or_file)
-              action_or_file
-            else
-              Controller.find_template(action_or_file, controller).to_s
-            end
-
-          return File.read(path), path
+        def file_template file, controller
+          if file
+            return File.read(file), file
+          else
+            return nil, nil
+          end
         rescue Errno::ENOENT
           return nil, nil
         end
@@ -72,7 +68,7 @@ module Ramaze
         # Render an action, on a given controller with parameter
 
         def render_action(controller, action, *params)
-          controller.send(action, *params).to_s
+          controller.__send__(action, *params).to_s unless action.empty?
         rescue => ex
           raise(ex.class, ex.message, ex.backtrace[0])
         end
