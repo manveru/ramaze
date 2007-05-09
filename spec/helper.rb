@@ -31,6 +31,13 @@ Spec::Runner.configure do |config|
   config.include MockHTTP
 end
 
+
+if defined?(::Spec)
+  exclude = Ramaze::Controller.class_trait[:exclude_action_modules]
+  exclude += [Base64::Deprecated, Base64, Spec::Expectations::ObjectExpectations]
+  exclude << Spec::Mocks::Methods if defined?(Spec::Mock::Methods)
+end
+
 # start up ramaze with a given hash of options
 # that will be merged with the default-options.
 
