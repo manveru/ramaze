@@ -128,20 +128,13 @@ module Ramaze
       end
 
       def resolve_template(action)
-        paths, exts = template_paths, extension_order
+        action_converted = action.split('__').inject{|s,v| s/v}
+        actions = [action, action_converted].compact
 
-        regexp = action.split(/\/|__/).map{|s| Regexp.escape(s) }
-        regexp = /\/+#{regexp.join('(?:\/|__)')}(#{exts.join('|')})$/
-        paths = paths.grep(regexp).sort_by{|path| exts.index(File.extname(path))}
+        paths = template_paths.map{|pa| actions.map{|a| pa/a } }.flatten.uniq
+        glob = "{#{paths.join(',')}}.{#{extension_order.join(',')}}"
 
-        paths.each do |path|
-          path_ext = File.extname(path)
-          path_base = File.basename(path, path_ext)
-
-          return path unless path_base.empty?
-        end
-
-        nil
+        Dir[glob].first
       end
 
       def template_paths
@@ -154,11 +147,7 @@ module Ramaze
           else
             Global.template_root / Global.mapping.invert[self]
           end
-        paths = [ first_path, klass_public, ramaze_public].compact
-
-        glob = "{#{paths.join(',')}}/**/*"
-
-        Dir[glob].select{|f| File.file?(f)}
+        [ first_path, klass_public, ramaze_public].compact
       end
 
       def resolve_method(name, *params)
@@ -214,7 +203,7 @@ module Ramaze
         engine = trait[:engine]
         c_extensions = t_extensions.reject{|k,v| v != engine}.keys
         all_extensions = t_extensions.keys
-        (c_extensions + all_extensions).uniq.map{|e| ".#{e}"}
+        (c_extensions + all_extensions).uniq
       end
 
       def render(action = {})
