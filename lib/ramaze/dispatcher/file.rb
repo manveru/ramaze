@@ -6,17 +6,20 @@ module Ramaze
     class File
       class << self
         def process(path)
-          file = open_file(path)
-          return unless file
+          return unless file = open_file(path)
           Dispatcher.build_response(file, Ramaze::STATUS_CODE[:ok])
         end
 
+        def lookup_paths
+          [ (BASEDIR/'proto'/'public'),
+            Global.controllers.map{|c| c.trait[:public]},
+            './public'
+          ].flatten.select{|f| ::File.directory?(f.to_s)}.map{|f| ::File.expand_path(f)}
+        end
+
         def open_file(path)
-          custom_publics = Global.controllers.map{|c| c.trait[:public]}.compact
-          the_paths = $:.map{|way| (way/'public'/path) }
-          the_paths << (BASEDIR/'proto'/'public'/path)
-          the_paths += custom_publics.map{|c| c/path   }
-          file = the_paths.find{|way| ::File.file?(way)}
+          paths = lookup_paths.map{|pa| pa/path}
+          file = paths.find{|way| ::File.file?(way)}
 
           if file
             response = Response.current
