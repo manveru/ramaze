@@ -19,6 +19,19 @@ class OtherController < MainController
   end
 
   trait :greet__mom_template => '/greet'
+
+  def partial_stuff
+    render_partial('/greet/the/world', :foo => :bar)
+  end
+end
+
+class Ramaze::Controller
+  private
+
+  def render_partial(url, options = {})
+    body = Ramaze::Controller.handle(url)
+    body
+  end
 end
 
 describe "Testing Template overriding" do
@@ -31,5 +44,11 @@ describe "Testing Template overriding" do
   it "referencing template from MainController" do
     get('/other/greet/mom').body.should == '<html>Mom : Moms are cool!</html>'
   end
+end
 
+describe "render_partial" do
+  it 'greet' do
+    result = get('/other/partial_stuff')
+    result.body.should == '<html>the : world</html>'
+  end
 end

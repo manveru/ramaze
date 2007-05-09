@@ -73,6 +73,10 @@ module Ramaze
         end
       end
 
+      def current
+        Thread.current[:controller]
+      end
+
       def handle path
         controller, action = *resolve(path)
         controller.render(action)
@@ -232,6 +236,7 @@ module Ramaze
       def uncached_render(action)
         controller = self.new
         controller.instance_variable_set('@action', action.method)
+        Thread.current[:controller] = controller
 
         options = {
           :file       => action.template,
