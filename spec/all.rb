@@ -20,7 +20,9 @@ layout = {
   }
 }
 
-manually_add = %w[ramaze/template]
+manually_add = %w[
+  ramaze/template ramaze/controller
+]
 manually_add.map!{|ma| File.expand_path("spec/#{ma}.rb") }
 
 layout = SpecLayout.new(File.dirname(__FILE__), layout)
