@@ -10,7 +10,7 @@ module Ramaze
 
     # Cache for values returned from actions
 
-    trait :action_cache => Global.cache.new
+    trait :action_cache => Controller.trait[:action_cache]
 
     private
 
@@ -38,7 +38,7 @@ module Ramaze
     #   action_cache.delete_if{|key, value| key =~ /"index",/}
 
     def action_cache
-      ancestral_trait[:action_cache]
+      Controller.trait[:action_cache]
     end
 
     # This refers to the class-trait of cached actions, you can

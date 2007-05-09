@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 class TCAspectController < Ramaze::Controller
+  map '/'
   helper :aspect
 
   def pre_aspect() '<aspect>' end
@@ -25,6 +26,9 @@ class TCAspectController < Ramaze::Controller
 end
 
 class TCAspectAllController < Ramaze::Controller
+  map '/all'
+  trait :foo => :bar
+
   helper :aspect
 
   def pre_aspect() '<pre>' end
@@ -38,7 +42,11 @@ class TCAspectAllController < Ramaze::Controller
 end
 
 describe "Aspect" do
-  ramaze(:mapping => {'/' => TCAspectController, '/all' => TCAspectAllController})
+  ramaze(:error_page => false)
+
+  it "shouldn't overwrite traits on inclusion" do
+    TCAspectAllController.trait[:foo].should == :bar
+  end
 
   it "pre" do
     get('/test_pre').body.should == '<aspect>test pre'

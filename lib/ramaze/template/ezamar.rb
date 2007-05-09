@@ -39,15 +39,14 @@ module Ramaze
         # #pipeline
 
         def real_transform(controller, bound, file, action, *params)
-          alternate, path = safe{ file_template(params.last, controller) } if
-            params.size == 1 and action == 'index'
-          file_template, path = safe{ file_template(file, controller) }
-          ctrl_template = safe{ render_action(controller, action, *params) }
+          file_template = file_template(file)
+          ctrl_template = render_action(controller, action, *params)
 
-          if chosen = alternate || file_template || ctrl_template
-            pipeline(chosen, :binding => bound, :path => path)
+          if ctrl_template.respond_to?(:exception) and not file_template
+            raise ctrl_template
           else
-            raise_no_action(controller, action)
+            template = file_template || ctrl_template
+            pipeline(template, :binding => bound, :path => file)
           end
         end
 
@@ -55,14 +54,10 @@ module Ramaze
         #
         # Answers with the contents and otherwise nil
 
-        def file_template file, controller
-          if file
-            return File.read(file), file
-          else
-            return nil, nil
-          end
-        rescue Errno::ENOENT
-          return nil, nil
+        def file_template file
+          return File.read(file) if file
+        rescue Errno::ENOENT => ex
+          Inform.error(ex)
         end
 
         # Render an action, on a given controller with parameter
@@ -70,7 +65,7 @@ module Ramaze
         def render_action(controller, action, *params)
           controller.__send__(action, *params).to_s unless action.empty?
         rescue => ex
-          raise(ex.class, ex.message, ex.backtrace[0])
+          ex
         end
 
         def raise_no_action(controller, action)
@@ -94,14 +89,6 @@ module Ramaze
           transform_pipeline.inject(template) do |memo, current|
             current.transform(memo, opts)
           end
-        end
-
-        def safe
-          yield
-        rescue => ex
-          Inform.error('The following Error occured while compiling the template')
-          Inform.error(ex)
-          nil
         end
       end
     end

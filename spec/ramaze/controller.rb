@@ -139,21 +139,21 @@ describe "Controller" do
 
     it '/' do
       resolve('/').last.should ==
-        Ramaze::Action.new('spec/ramaze/template/ezamar/index.zmr', 'index', [])
+        Ramaze::Action.new('index', [],'spec/ramaze/template/ezamar/index.zmr')
     end
 
     it '/sum/1/2' do
       resolve('/sum/1/2').last.should ==
-        Ramaze::Action.new('spec/ramaze/template/ezamar/sum.zmr', 'sum', ['1', '2'])
+        Ramaze::Action.new('sum', ['1', '2'],'spec/ramaze/template/ezamar/sum.zmr')
     end
 
     it '/another/long/action' do
       resolve('/another/long/action').last.should ==
-        Ramaze::Action.new('spec/ramaze/template/ezamar/another/long/action.zmr', 'another__long__action', [])
+        Ramaze::Action.new('another__long__action', [], 'spec/ramaze/template/ezamar/another/long/action.zmr')
     end
     it '/some/long/action' do
       resolve('/some/long/action').last.should ==
-        Ramaze::Action.new('spec/ramaze/template/ezamar/some__long__action.zmr', 'some__long__action', [])
+        Ramaze::Action.new('some__long__action', [], 'spec/ramaze/template/ezamar/some__long__action.zmr')
     end
   end
 
@@ -176,7 +176,7 @@ describe "Controller" do
       it action do
         path = "/#{action}"
         response = get(path)
-        response.body.should =~ %r(No Controller found for `#{path}')
+        response.body.should =~ %r(No Action found for `#{path}' on TCControllerControlle)
         response.status.should == 404
       end
     end

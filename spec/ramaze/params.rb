@@ -88,7 +88,7 @@ describe "Simple Parameters" do
   end
 
   it "action that takes all params but needs at least one (not given here)" do
-    get('/at_least_one').status.should == 404
+    get('/at_least_one').status.should == 500
   end
 
   it "one default" do
@@ -109,11 +109,11 @@ describe "Simple Parameters" do
 
 
   it "jo/add should raise with 0 parameters" do
-    get('/jo/add').status.should == 404
+    get('/jo/add').status.should == 500
   end
 
   it "add should raise with 4 parameters" do
-    get('/jo/add/1/2/3/4').status.should == 404
+    get('/jo/add/1/2/3/4').status.should == 500
   end
 
   it "add should not raise with 1-3 parameters" do

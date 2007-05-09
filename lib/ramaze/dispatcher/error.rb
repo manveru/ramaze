@@ -15,13 +15,15 @@ module Ramaze
           key = error.class.ancestors.find{|a| handle_error[a]}
           status, path = *handle_error[key || Exception]
 
+          error_in_error = error.message =~ /`#{path.split('/').last}'/
+
           Response.current.status = status
 
-          unless error.message =~ /`#{path.split('/').last}'/ or Global.error_page
-            Dispatcher.build_response(error.message, status)
-          else
-            Dispatcher.dispatch_to(path)
+          unless error_in_error
+            return Dispatcher.dispatch_to(path) if path and Global.error_page
           end
+
+          Dispatcher.build_response(error.message, status)
         rescue Object => ex
           Inform.error(ex)
           Dispatcher.build_response(ex.message, status)

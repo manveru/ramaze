@@ -5,7 +5,8 @@ module Ramaze
   module Informing
     def tag_inform(tag, meth, *strings)
       strings.each do |string|
-        inform(tag, string.send(meth))
+        string = (string.respond_to?(:to_str) ? string : string.send(meth))
+        inform(tag, string)
       end
     end
 

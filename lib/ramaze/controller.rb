@@ -5,7 +5,11 @@ require 'ramaze/template'
 
 module Ramaze
 
-  Action = Struct.new('Action', :template, :method, :params)
+  class Action < Struct.new('Action', :method, :params, :template)
+    def to_s
+      %{#<Action method=#{method.inspect}, params=#{params.inspect} template=#{template.inspect}>}
+    end
+  end
 
   # The Controller is responsible for combining and rendering actions.
 
@@ -33,11 +37,14 @@ module Ramaze
 
     trait :pattern_cache => Hash.new{|h,k| h[k] = Controller.pattern_for(k) }
 
+    trait :action_cache  => Global.cache.new
+
     class << self
       include Ramaze::Helper
       extend Ramaze::Helper
 
       def inherited controller
+        controller.trait :actions_cached => Set.new
         Global.controllers << controller
       end
 
@@ -71,6 +78,15 @@ module Ramaze
         controller.render(action)
       end
 
+
+      # #ramaze - 9.5.2007
+      #
+      # manveru    | if no possible controller is found, it's a NoController error
+      # manveru    | that would be a 404 then
+      # Kashia     | aye
+      # manveru    | if some controller are found but no actions on them, it's NoAction Error for the first controller found, again, 404
+      # manveru    | everything further down is considered 500
+
       def resolve(path)
         #Inform.debug("resolve_controller('#{path}')")
         mapping     = Global.mapping
@@ -78,17 +94,23 @@ module Ramaze
 
         raise_no_controller(path) if controllers.empty? or mapping.empty?
 
-        patterns = Controller.trait[:pattern_cache]
+        patterns = Controller.trait[:pattern_cache][path]
+        first_controller = nil
 
-        patterns[path].each do |controller, method, params|
+        patterns.each do |controller, method, params|
           if controller = mapping[controller]
+            first_controller ||= controller
+
             action = controller.resolve_action(method, *params)
             template = action.template
+
             action.method ||= File.basename(template, File.extname(template)) if template
+
             return controller, action if action.method
           end
         end
 
+        raise_no_action(first_controller, path) if first_controller
         raise_no_controller(path)
       end
 
@@ -102,16 +124,15 @@ module Ramaze
           template ||= resolve_template(path)
         end
 
-        Action.new(template, method, params)
+        Action.new(method, params, template)
       end
 
       def resolve_template(action)
-        paths = (class_trait[:template_paths] ||= template_paths)
-        exts = extension_order
+        paths, exts = template_paths, extension_order
 
         regexp = action.split(/\/|__/).map{|s| Regexp.escape(s) }
         regexp = /\/+#{regexp.join('(?:\/|__)')}(#{exts.join('|')})$/
-          paths = paths.grep(regexp).sort_by{|path| exts.index(File.extname(path))}
+        paths = paths.grep(regexp).sort_by{|path| exts.index(File.extname(path))}
 
         paths.each do |path|
           path_ext = File.extname(path)
@@ -137,7 +158,7 @@ module Ramaze
 
         glob = "{#{paths.join(',')}}/**/*"
 
-        Dir[glob].select{|f| File.file?(f)} #.map{|f| File.expand_path(f)}
+        Dir[glob].select{|f| File.file?(f)}
       end
 
       def resolve_method(name, *params)
@@ -198,52 +219,53 @@ module Ramaze
 
       def render(action = {})
         action = Action.fill(action) if action.is_a?(Hash)
+        Inform.debug("The Action: #{action}")
+
         action.method = action.method.to_s
-        trait[:actions_cached] ||= Set.new
+        action.params.compact!
 
-        cache_indicators = [
-          Global.cache_all,
-          class_trait[:cache_all],
-          class_trait[:actions_cached].map{|k| k.to_s}.include?(action.method),
-        ]
-
-        if cache_indicators.any?
+        if cached?(action)
           cached_render(action)
         else
           uncached_render(action)
         end
       end
 
+      def cached?(action)
+        actions_cached = trait[:actions_cached]
+
+        [ Global.cache_all,
+          trait[:cache_all],
+          actions_cached.map{|k| k.to_s}.include?(action.method),
+        ].any?
+      end
+
       def uncached_render(action)
         controller = self.new
         controller.instance_variable_set('@action', action.method)
 
-        file   = action.template
-        engine = select_engine(file)
-        parameter = action.params
-
         options = {
-          :file       => file,
+          :file       => action.template,
           :binding    => controller.instance_eval{ binding },
           :action     => action.method,
-          :parameter  => parameter.compact,
+          :parameter  => action.params,
         }
 
+        engine = select_engine(options[:file])
         engine.transform(controller, options)
       end
 
       def cached_render action
-        trait[:action_cache] ||= Global.cache.new
+        action_cache = Controller.trait[:action_cache]
 
-        if out = class_trait[:action_cache][action]
+        if out = action_cache[action]
           Inform.debug("Using Cached version for #{action}")
           return out
         end
 
         Inform.debug("Compiling Action: #{action}")
-        class_trait[:action_cache][action] = uncached_render(action)
+        action_cache[action] = uncached_render(action)
       end
-
 
       def select_engine(file)
         trait_engine = class_trait[:engine]

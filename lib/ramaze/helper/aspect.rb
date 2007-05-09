@@ -20,7 +20,7 @@ module Ramaze
     def self.included(klass)
       # if we haven't been included yet...
       unless defined?(Traits[klass][:aspects]) and Traits[klass][:aspects]
-        Traits[klass] = {:aspects => {:pre => {}, :post => {}, :wrap => {}}}
+        klass.trait :aspects => {:pre => {}, :post => {}, :wrap => {}}
         unless defined?(klass.old_render)
           klass.class_eval do
             class << self
@@ -194,7 +194,7 @@ module Ramaze
 
       if pre
         arity = arity_for[pre].abs
-        pre_action = Action.new(action.template, pre, action.params)
+        pre_action = Action.new(pre, action.params, action.template)
         pre_content = old_render(pre_action)
       end
 
@@ -203,7 +203,7 @@ module Ramaze
 
         if post
           arity = arity_for[post].abs
-          post_action = Action.new(action.template, post, action.params)
+          post_action = Action.new(post, action.params, action.template)
           post_content = old_render(post_action)
         end
       end
