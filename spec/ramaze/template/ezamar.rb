@@ -57,8 +57,6 @@ describe "Ezamar" do
   end
 
   it "combined" do
-    100.times do
-      get('/combined').body.should == 'boo'
-    end
+    get('/combined').body.should == 'boo'
   end
 end

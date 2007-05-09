@@ -4,6 +4,8 @@
 require 'spec/helper'
 
 class TCRequestController < Ramaze::Controller
+  map '/'
+
   trait :public => 'spec/ramaze/public'
 
   def is_post()   request.post?.to_s end
