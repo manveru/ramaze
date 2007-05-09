@@ -34,7 +34,6 @@ module Ramaze
       extend Ramaze::Helper
 
       def inherited controller
-        Global.controllers ||= Set.new
         Global.controllers << controller
       end
 

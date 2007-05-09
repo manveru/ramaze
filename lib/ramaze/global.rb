@@ -33,6 +33,7 @@ module Ramaze
       :benchmarking     => false,
       :cache            => MemoryCache,
       :cache_all        => false,
+      :controllers      => Set.new,
       :cookies          => true,
       :error_page       => true,
       :host             => '0.0.0.0',
