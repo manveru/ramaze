@@ -31,6 +31,8 @@ module Ramaze
 
     trait :exclude_action_modules => [Kernel, Object, PP::ObjectMixin]
 
+    trait :pattern_cache => Hash.new{|h,k| h[k] = Controller.pattern_for(k) }
+
     class << self
       include Ramaze::Helper
       extend Ramaze::Helper
@@ -76,9 +78,9 @@ module Ramaze
 
         raise_no_controller(path) if controllers.empty? or mapping.empty?
 
-        class_trait[:pattern_for] ||= Hash.new{|h,k| h[k] = pattern_for(k)}
+        patterns = Controller.trait[:pattern_cache]
 
-        class_trait[:pattern_for][path].each do |controller, method, params|
+        patterns[path].each do |controller, method, params|
           if controller = mapping[controller]
             action = controller.resolve_action(method, *params)
             template = action.template
