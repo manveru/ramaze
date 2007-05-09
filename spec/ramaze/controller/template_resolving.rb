@@ -5,7 +5,7 @@ require 'spec/helper'
 
 class MainController < Ramaze::Controller
   trait :template_root => "#{File.expand_path(File.dirname(__FILE__))}/template"
-  
+
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"
   end
@@ -13,7 +13,7 @@ end
 
 class OtherController < MainController
   trait :template_root => "#{File.expand_path(File.dirname(__FILE__))}/template/other"
-  
+
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)
   end
@@ -27,7 +27,7 @@ describe "Testing Template overriding" do
   it "simple request to greet" do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'
   end
-  
+
   it "referencing template from MainController" do
     get('/other/greet/mom').body.should == '<html>Mom : Moms are cool!</html>'
   end

@@ -104,7 +104,7 @@ describe "Request" do
 
     it "request[key]" do
       get('/test_get', 'foo' => 'bar').body.should == 'bar'
-      post('/test_post', 'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben').body.should == 
+      post('/test_post', 'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben').body.should ==
         ['null', 'eins', 'sieben'].inspect
     end
   end

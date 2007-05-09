@@ -47,7 +47,7 @@ class TCFlashHelperThirdController < Ramaze::Controller
   def noop
     'noop'
   end
-  
+
   def set par
     flash[:e] = par
   end
@@ -89,7 +89,7 @@ describe "FlashHelper" do
       get('/third/set/foo').should == 'foo'
     end
   end
-  
+
   it "single" do
     browser do
       get('/third/set/foo').should == 'foo'

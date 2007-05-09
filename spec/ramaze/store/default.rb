@@ -64,7 +64,7 @@ describe "initialize an Store" do
     Books.merge!(bnw).should == books.merge(bnw)
 
     Books[bnw.keys.first].should == bnw.values.first
-    
+
     Books.size.should == 3
   end
 

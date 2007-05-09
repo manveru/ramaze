@@ -111,15 +111,14 @@ describe "Simple Parameters" do
   it "jo/add should raise with 0 parameters" do
     get('/jo/add').status.should == 404
   end
-  
+
   it "add should raise with 4 parameters" do
     get('/jo/add/1/2/3/4').status.should == 404
   end
-  
+
   it "add should not raise with 1-3 parameters" do
     get('/jo/add/1').body.should == '1::'
     get('/jo/add/1/2').body.should == '1:2:'
     get('/jo/add/1/2/3').body.should == '1:2:3'
   end
-  
 end

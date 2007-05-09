@@ -46,9 +46,9 @@ You can redistribute it and/or modify it under either the terms of the GPL
      files under the ./missing directory.  See each file for the copying
      condition.
 
-  5. The scripts and library files supplied as input to or produced as 
+  5. The scripts and library files supplied as input to or produced as
      output from the software do not automatically fall under the
-     copyright of the software, but belong to whomever generated them, 
+     copyright of the software, but belong to whomever generated them,
      and may be sold commercially, and may be aggregated with this
      software.
 
@@ -71,10 +71,10 @@ require 'base64'
 # complicated requests need to be made or default settings need to be
 # overriden, it's possible to instantiate `SimpleHttp` and use instance
 # methods `get` and `put`.
-#  
+#
 #
 # Features:
-# 
+#
 # * Handles Redirects automatically
 # * Proxy used transparently if http_proxy environment variable is
 #   set.
@@ -101,27 +101,27 @@ require 'base64'
 #		sh.request_headers= {'X-Special-Http-Header'=>'my-value'}
 #		sh.get
 class SimpleHttp
-	
+
 	VERSION='0.1.1'
 
 	attr_accessor :proxy_host, :proxy_port, :proxy_user, :proxy_pwd, :uri, :request_headers, :response_headers, :response_handlers, :follow_num_redirects
 
 	RESPONSE_HANDLERS = {
-		Net::HTTPResponse => lambda { |request, response, http| 
+		Net::HTTPResponse => lambda { |request, response, http|
 			response.each_header {|key, value|
-				http.response_headers[key]=value	
+				http.response_headers[key]=value
 			}
 			raise response.to_s
 		},
 		Net::HTTPSuccess => lambda { |request, response, http|
 			response.each_header {|key, value|
-				http.response_headers[key]=value	
+				http.response_headers[key]=value
 			}
 			return response.body
 		},
 		Net::HTTPRedirection => lambda { |request, response, http|
-			raise "too many redirects!" unless http.follow_num_redirects > 0	
-			
+			raise "too many redirects!" unless http.follow_num_redirects > 0
+
 			# create a new SimpleHttp for the location
 			# refered to decreasing the remaining redirects
 			# by one.
@@ -143,12 +143,12 @@ class SimpleHttp
 			# http doesn't permit redirects for methods
 			# other than GET of HEAD, so we complain in case
 			# we get them in response to a POST request. (Or
-			# anything other than GET, for that matter.) 
-			
+			# anything other than GET, for that matter.)
+
       case request
       when Net::HTTP::Get  : sh.get
       when Net::HTTP::Post : sh.post
-			else 
+			else
 				raise "Not a valid HTTP method for redirection: #{request.class}"
 			end
 		}
@@ -167,7 +167,7 @@ class SimpleHttp
 	# 	http = SimpleHttp.new "http://usr:pwd@www.example.com:1234"
 	def initialize uri
 		set_proxy ENV['http_proxy'] if ENV['http_proxy']
-						
+
 		if uri.class == String
 
 			unless uri =~ /^https?:\/\//
@@ -194,26 +194,26 @@ class SimpleHttp
 
 	end
 
-	# 
+	#
 	# Provides facilities to perform http basic authentication. You
 	# don't need to provide +usr+ and +pwd+ if they are already included
 	# in the uri, i.e. http://user:password@www.example.com/
 	#
-	
+
 	def basic_authentication usr, pwd
 		str = Base64.encode64("#{usr}:#{pwd}")
 		str = "Basic #{str}"
 		@request_headers["Authorization"]=str
 	end
-	
+
 	#
 	# this method can be used to register response handlers for specific
 	# http responses in case you need to override the default behaviour.
-	# Defaults are: 
+	# Defaults are:
 	#
-	# 	HTTPSuccess : return the body of the response 
+	# 	HTTPSuccess : return the body of the response
 	# 	HTTPRedirection : follow the redirection until success
-	# 	Others : raise an exception 
+	# 	Others : raise an exception
 	#
 	# `clazz` is the subclass of HTTPResponse (or HTTPResponse in case you
 	# want to define "default" behaviour) that you are registering the
@@ -225,42 +225,42 @@ class SimpleHttp
 	# and a reference to the instance of `SimpleHttp` that is executing the
 	# call.
 	#
-	# example: 
+	# example:
 	#
 	# 	# to override the default action of following a HTTP
 	# 	# redirect, you could register the folllowing handler:
 	#
-	# 	sh = SimpleHttp "www.example.com" 
-	# 	sh.register_response_handler Net::HTTPRedirection {|request, response, shttp| 
-	# 		response['location'] 
+	# 	sh = SimpleHttp "www.example.com"
+	# 	sh.register_response_handler Net::HTTPRedirection {|request, response, shttp|
+	# 		response['location']
 	# 	}
 	#
-	
+
 	def register_response_handler clazz, &block
 		c = clazz
 	       	while c != Object
 			# completely unnecessary sanity check to make sure parameter
 			# `clazz` is in fact a HTTPResponse ...
 			if c == Net::HTTPResponse
-				@response_handlers[clazz]=block 
+				@response_handlers[clazz]=block
 				return
 			end
 			c = c.superclass
 		end
 
-		raise "Trying to register a response handler for non-response class: #{clazz}"	
+		raise "Trying to register a response handler for non-response class: #{clazz}"
 	end
 
 	#
 	#	Set the proxy to use for the http request.
 	# 	Note that you don't need to set the proxy in case the
-	# 	`http_proxy` environment variable is set. To override 
-	#	previous proxy settings and connect directly, call 
+	# 	`http_proxy` environment variable is set. To override
+	#	previous proxy settings and connect directly, call
 	#	`set_proxy nil`
 	#
 	#	usage:
 	#		http = SimpleHttp.new "www.example.com"
-	#		
+	#
 	#		http.set_proxy "http://proxy:8000"
 	#	or:
 	#		http.set_proxy(URI.parse("http://proxy:8000"))
@@ -270,28 +270,28 @@ class SimpleHttp
 	#		http.set_proxy nil # to override previous proxy
 	#		settings and make the request directly.
 	#
-			
-	
+
+
 	def set_proxy proxy, port=nil, user=nil, pwd=nil
-		
-		
-		if !proxy	
-			@proxy_host=@proxy_port=@proxy_user=@proxy_pwd=nil 
+
+
+		if !proxy
+			@proxy_host=@proxy_port=@proxy_user=@proxy_pwd=nil
 			return
 		end
 
-		if proxy.class == String 
+		if proxy.class == String
 			if !port && !user && !pwd
 				proxy = URI.parse(proxy)
-			else 
+			else
 				@proxy_host= host
 				@proxy_port= port
 				@proxy_user= user
 				@proxy_pwd = pwd
 			end
 		end
-		
-		if proxy.class == URI::HTTP 
+
+		if proxy.class == URI::HTTP
 			@proxy_host= proxy.host
 			@proxy_port= proxy.port
 			@proxy_user= proxy.user
@@ -299,7 +299,7 @@ class SimpleHttp
 		end
 	end
 
-	# interal 
+	# interal
 	# Takes a HTTPResponse (or subclass) and determines how to
 	# handle the response. Default behaviour is:
 	#
@@ -310,10 +310,10 @@ class SimpleHttp
 	# the default behaviour can be overidden by registering a
 	# response handler using the `register_response_handler` method.
 	#
-	
+
 	def handle_response http_request, http_response
 		raise "Not a Net::HTTPResponse" unless http_response.is_a? Net::HTTPResponse
-		
+
 		c = http_response.class
 		while c!=Object
 			# the response_handlers hash contains a handler
@@ -323,11 +323,11 @@ class SimpleHttp
 			end
 
 			c=c.superclass
-		end	
+		end
 
 		# if we reached this place, no handler was registered
 		# for this response. default is to return the response.
-		
+
 		return http_response
 	end
 
@@ -338,9 +338,9 @@ class SimpleHttp
 		http = Net::HTTP.new(@uri.host, @uri.port, proxy_host,
 			proxy_port, proxy_user, proxy_pwd)
 		http.use_ssl = @uri.scheme == 'https'
-	
+
 		# add custom request headers.
-		
+
 		@request_headers.each {|key,value|
 			request[key]=value;
 		}
@@ -355,14 +355,14 @@ class SimpleHttp
 			s + [CGI::escape(key) + "=" + CGI::escape(value)]
     end.join('&')
 	end
-	
+
 	# Make a simple GET request to the provided URI.
 	#
 	# Example:
 	# 	puts(SimpleHttp.get("www.example.com"))
 	def self.get uri, query=nil
 		http = SimpleHttp.new uri
-		http.get query	
+		http.get query
 	end
 
 	# Make a POST request to the provided URI.
@@ -374,32 +374,32 @@ class SimpleHttp
 	# set the appriate content_type:
 	#
 	# 	SimpleHttp.post("http://www.example.com/", binary_data, "img/png")
-	 
+
 	def self.post uri, query=nil, content_type='application/x-www-form-urlencoded'
 		http = SimpleHttp.new uri
 		http.post query, content_type
 	end
-	
+
 	# Call the +get+ method as an instance method if you need to
 	# modify the default behaviour of the library, or set special
 	# headers:
 	#
 	# 	http = SimpleHttp.new "www.example.com"
 	# 	http.request_headers["X-Special"]="whatever"
-	# 	str = http.get 
+	# 	str = http.get
 	def get query = nil
 		if (query = make_query query)
 			@uri.query = @uri.query ? @uri.query+"&"+query : query
 		end
 		full_path = @uri.path + (@uri.query ? "?#{@uri.query}" : "")
-			
+
 		req = Net::HTTP::Get.new(full_path)
 		# puts Net::HTTP::Proxy(@proxy_host, @proxy_port, @proxy_user, @proxy_pwd).get(@uri)
 		do_http req
 	end
 
 	#
-	#	Post the query data to the url. 
+	#	Post the query data to the url.
 	#	The body of the request remains empty if query=nil.
 	#	In case `query` is a `Hash`, it's assumed that we are
 	#	sending a form.
@@ -416,7 +416,7 @@ class SimpleHttp
 
 		do_http req
 	end
-	
+
 end
 
 #ht = SimpleHttp.new "http://www.google.com/aldfksjaldskjfalskjfdlk"
