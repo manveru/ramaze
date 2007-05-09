@@ -15,7 +15,7 @@ describe 'Caching' do
     get(url).body.should == result_string
 
     intense_time = Benchmark.realtime{ get(url).body.should == result_string }
-    cached_already = Benchmark.realtime{ get(url) }
-    intense_time.should be > cached_already
+    cached_already = Benchmark.realtime{ 10.times{ get(url) } }
+    intense_time.should be > (cached_already / 10)
   end
 end
