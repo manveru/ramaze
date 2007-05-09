@@ -197,7 +197,7 @@ module Ramaze
       end
 
       def render(action = {})
-        action = Action.new(action.values_at(:template, :method, :params)) if action.is_a?(Hash)
+        action = Action.fill(action) if action.is_a?(Hash)
         action.method = action.method.to_s
         trait[:actions_cached] ||= Set.new
 
