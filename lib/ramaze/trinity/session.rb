@@ -132,7 +132,7 @@ module Ramaze
 
     def random_key
       h = [
-        Time.now.to_f.to_s.reverse, rand,
+        Time.now.to_f.to_s, rand,
         Thread.current[:request].hash, rand,
         Process.pid, rand,
         object_id, rand
