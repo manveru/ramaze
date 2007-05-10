@@ -63,6 +63,8 @@ module Ramaze
       messages.each do |message|
         @out.puts(log_interpolate(prefix, message))
       end
+
+      @out.flush if @out.respond_to?(:flush)
     end
 
     def log_interpolate prefix, text, time = timestamp
