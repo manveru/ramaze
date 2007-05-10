@@ -22,9 +22,9 @@ Features:
   - It is possible to use the ORM you like, be it ActiveRecord, Og, Kansas or
       something more simplistic like a wrapper around YAML::Store.
 
-  - Good Documentation. Although we don't have 100% documentation right now,
-      just about every part of Ramaze is covered with basic and advanced docs,
-      there is a variety of examples and a tutorial available.
+  - Good documentation: although we don't have 100% documentation right now,
+      just about every part of Ramaze is covered with basic and advanced docs.
+      There are a variety of examples and a tutorial available.
 
 
 Features planned:
