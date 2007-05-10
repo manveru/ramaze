@@ -21,8 +21,7 @@ module Ramaze
       :error => :red,
     }
 
-    def initialize(out = $stdout, colorize = true)
-      @colorize = colorize
+    def initialize(out = $stdout, colorize = nil)
       @out =
         case out
         when STDOUT, :stdout, 'stdout'
@@ -35,10 +34,12 @@ module Ramaze
           if out.respond_to?(:puts)
             out
           else
-            @colorize = false
+            colorize = false
             File.open(out.to_s, 'ab+')
           end
         end
+
+      @colorize = @out.tty? rescue false if colorize.nil?
     end
 
     def shutdown
@@ -52,17 +53,16 @@ module Ramaze
       return if closed?
       messages.flatten!
 
-      prefix = colorize(tag, tag.to_s.upcase.ljust(5))
+      prefix = tag.to_s.upcase.ljust(5)
+
+      if @colorize
+        color = class_trait[:colors][tag] ||= :white
+        prefix.replace prefix.send(color)
+      end
 
       messages.each do |message|
         @out.puts(log_interpolate(prefix, message))
       end
-    end
-
-    def colorize tag, prefix
-      return prefix unless @colorize
-      color = class_trait[:colors][tag] ||= :white
-      prefix.send(color)
     end
 
     def log_interpolate prefix, text, time = timestamp
