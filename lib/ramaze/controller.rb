@@ -119,6 +119,7 @@ module Ramaze
       end
 
       def resolve_action(path, *parameter)
+        path, parameter = path.to_s, parameter.map(&:to_s)
         possible_path = trait["#{path}_template".to_sym]
         template = resolve(possible_path).last.template if possible_path
 
@@ -132,6 +133,7 @@ module Ramaze
       end
 
       def resolve_template(action)
+        action = action.to_s
         action_converted = action.split('__').inject{|s,v| s/v}
         actions = [action, action_converted].compact
 

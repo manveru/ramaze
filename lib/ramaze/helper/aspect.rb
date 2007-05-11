@@ -194,7 +194,7 @@ module Ramaze
 
       if pre
         arity = arity_for[pre].abs
-        pre_action = Action.new(pre, action.params, action.template)
+        pre_action = resolve_action(pre, *action.params[0,arity])
         pre_content = old_render(pre_action)
       end
 
@@ -203,7 +203,7 @@ module Ramaze
 
         if post
           arity = arity_for[post].abs
-          post_action = Action.new(post, action.params, action.template)
+          post_action = resolve_action(post, *action.params[0,arity])
           post_content = old_render(post_action)
         end
       end
