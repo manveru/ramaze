@@ -4,6 +4,7 @@ Ramaze is already relatively stable and we decided that it is time to give it
 broader exposure to find new users and contributors.
 
 Home page: http://ramaze.rubyforge.org
+IRC: #ramaze on irc.freenode.net
 
 Features:
   - Builds on top of the recently released Rack library, which provides easy use
@@ -26,13 +27,21 @@ Features:
       just about every part of Ramaze is covered with basic and advanced docs.
       There are a variety of examples and a tutorial available.
 
+  - Friendly community: lastly, but still quite important, there are people from
+      all over the world using Ramaze, so you can get almost instant help and
+      info.
+
 
 Features planned:
   - Unified FormHelper for ORMs, making the framework mostly independent of the
-    underlying model.
+      underlying model.
+
+  - Improved configuration system, providing an way to totally change options
+      during runtime and link that with the CLI-parameter automatically.
 
 
-For more information please come to http://ramaze.rubyforge.org
+For more information please come to http://ramaze.rubyforge.org or ask directly
+on IRC (irc://irc.freenode.net/#ramaze)
 
 Thank you,
-Michael 'manveru' Fellinger
+Michael 'manveru' Fellinger and the Ramaze community
