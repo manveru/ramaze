@@ -8,7 +8,11 @@ module Ramaze
   class Analogger < ::Swiftcore::Analogger::Client
     include Informing
 
-    def initialize(name = 'walrus', host = '127.0.0.1', port = 6766)
+    trait :name => 'walrus'
+    trait :host => '127.0.0.1'
+    trait :port => 6766
+
+    def initialize(name = class_trait[:name], host = class_trait[:host], port = class_trait[:port])
       super
     end
 
