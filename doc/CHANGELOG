@@ -1,3 +1,1324 @@
+Fri May 11 21:08:56 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  tagged 0.1.0
+
+Fri May 11 20:55:21 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update README with latest chunks
+
+Fri May 11 20:52:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * some patches to the rake-stuff, BASEDIR was messed up and some other things were outdated
+
+Fri May 11 20:42:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove Tidy and Localize form the Action pipeline (fix the spec and remove some spaces)
+
+Fri May 11 20:30:11 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Update localization tool
+
+Fri May 11 19:20:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * a couple of updates for the readme_chunks
+
+Fri May 11 17:12:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * move bl_Og to blog
+
+Fri May 11 16:10:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the old blog example
+
+Fri May 11 16:01:05 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix a couple of bugs that the new controller stirred up, private methods are now really no actions anymore, fixing auth-helper and aspect-helper to respect that.
+
+Fri May 11 15:25:50 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update announcement
+
+Fri May 11 01:35:01 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove some spelling-mistakes in announcement
+
+Thu May 10 14:47:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * don't use an additional .reverse for the session-key
+
+Thu May 10 14:45:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Informer again, flush the output if possible, that makes it possible to tail -f if you pipe to a logfile
+
+Thu May 10 14:41:10 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * check for .tty? when deciding whether we should colorize or not.
+
+Thu May 10 14:30:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * intelligent logging of errors in Dispatcher::Error, omitting repeated backtraces
+
+Wed May  9 19:53:18 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Change Rs() to use Controller.current instead of self
+
+Wed May  9 19:42:54 JST 2007  m.fellinger@gmail.com
+  * add Controller::current and an experimental spec of how to do render_partial
+
+Wed May  9 19:31:36 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing Controller::template_paths and Controller::resolve_template
+
+Wed May  9 18:50:50 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * tons of small fixes and improvments, Inform.debug won't inspect anymore if it's already a string, proper error-handling with sweet 500's for the templating and specific 404s for not found controller or action, improved caching in Controller, fixed some bugs in the AspectHelper, fixed the cache-example spec, activated the error-specs again, added some (c), gave the Action Struct a nicer look.....
+
+Wed May  9 14:26:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add and use snippets/struct/fill
+
+Wed May  9 14:01:52 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * improve pattern_cache for Controller
+
+Wed May  9 13:16:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * make the caching spec a bit more robust
+
+Wed May  9 12:59:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing some weirdness and verbosity
+
+Tue May  8 16:14:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add workaround if we run specs and don't want their modules in our controller
+
+Wed May  9 12:53:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * disable two specs so we pass all specs - these are about error-handling but right now it's not clear what the distinction between 404 and 500 is anymore.
+
+Wed May  9 12:52:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * some minor changes
+
+Wed May  9 12:51:11 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * big extension of spec/ramaze/controller
+
+Wed May  9 12:50:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add ramaze/controller to the spec layout again
+
+Wed May  9 12:50:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing some spaces
+
+Wed May  9 12:49:53 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * include the spec dir to the fix-end-spaces task
+
+Wed May  9 12:48:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix/extend the template_resolving spec
+
+Wed May  9 12:47:32 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add some modules to ignore as actions in the spec/helper setup
+
+Wed May  9 12:46:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix template/ezamar file-lookup is done for it, no need to do it again
+
+Wed May  9 12:46:24 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix helper/aspect for the new Controller
+
+Wed May  9 12:45:40 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * better handling of Dispatcher::File - we should cache the lookup-paths
+
+Wed May  9 12:45:22 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * let the Dispatcher::Error respect Global.error_page
+
+Wed May  9 12:44:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * 90% rewrite of controller/action/template lookup in Controller
+
+Wed May  9 12:43:16 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * move Global.controllers setup into the DEFAULT of Global
+
+Wed May  9 12:41:28 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add the Action Struct, nothing fancy but it should act from now on as container for actions ramaze-wide, most likely we'll extend it with binding and optional controller, it only propagates inside controller.rb and helper/aspect.rb atm
+
+Wed May  9 12:41:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the proto/public/404.jpg we cannot distribute something that doesn't belong to us.
+
+Tue May  8 19:31:16 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Add 'template resolving' controller spec
+
+Tue May  8 16:00:58 JST 2007  m.fellinger@gmail.com
+  * some small updates on the previous patch
+
+Tue May  8 02:46:00 JST 2007  clive@crous.co.za
+  * Add a few specs for the base ramaze template class
+
+Sun May  6 19:08:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * doc and typo in bl_Og/main.rb
+
+Sun May  6 08:32:56 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * huge patch consisting of 171 hunks that provide huge improvments both to ramazes core and the whole spec-system, which is now mock-based
+
+Sun May  6 08:22:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing the template_root for the example templates
+
+Sun May  6 05:24:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * make some helper-methods private
+
+Sun May  6 04:56:06 JST 2007  m.fellinger@gmail.com
+  * make bin/ramaze compatible to ruby1.9
+
+Sat May  5 18:26:31 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * clean files of the SpecLayout in a seperate step
+
+Sat May  5 01:14:01 JST 2007  m.fellinger@gmail.com
+  * add example/bl_Og from entropy
+
+Fri May  4 21:02:41 JST 2007  clive@crous.co.za
+  * Add a spec for testing Markaby links
+
+Fri May  4 20:40:31 JST 2007  clive@crous.co.za
+  * Add my surname
+
+Fri May  4 17:04:16 JST 2007  m.fellinger@gmail.com
+  * improving performance in controller lookup
+
+Fri May  4 15:40:02 JST 2007  m.fellinger@gmail.com
+  * remove special handling of action 'error', it's not needed anymore
+
+Fri May  4 04:37:11 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * split up the Rakefile and put parts into rake_tasks
+
+Fri May  4 04:25:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add the rake authors task that generates the doc/AUTHORS
+
+Fri May  4 03:53:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add the template specs to the default specs
+
+Fri May  4 03:51:36 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * get rid of the failures we sometimes get for webrick by explicit require
+
+Fri May  4 03:48:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing extensions lookup order, it doesn't allow much modification yet, but should work for most common cases
+
+Fri May  4 03:45:10 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix the markaby example, 'this' should be a symbol
+
+Fri May  4 03:42:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the old template from the haml-example
+
+Fri May  4 02:47:19 JST 2007  m.fellinger@gmail.com
+  * update dependencies, rspec now 0.9.1
+
+Fri May  4 02:38:25 JST 2007  m.fellinger@gmail.com
+  * fixing the template examples and add specs
+
+Fri May  4 01:18:50 JST 2007  m.fellinger@gmail.com
+  * remove old stuff from Template::Markaby
+
+Fri May  4 01:14:52 JST 2007  m.fellinger@gmail.com
+  * fixing instances-variable passing for markaby
+
+Fri May  4 01:01:29 JST 2007  m.fellinger@gmail.com
+  * remove some of the debugging-code from markaby
+
+Fri May  4 00:57:01 JST 2007  m.fellinger@gmail.com
+  * fix automapping
+
+Wed May  2 15:09:42 JST 2007  m.fellinger@gmail.com
+  * update proto configs
+
+Thu May  3 01:56:24 JST 2007  m.fellinger@gmail.com
+  * fixing the markaby example
+
+Tue May  1 20:16:37 JST 2007  m.fellinger@gmail.com
+  * update spec/dependencies to include syntax
+
+Tue May  1 20:14:47 JST 2007  m.fellinger@gmail.com
+  * exit specs if rspec is < 0.9.0
+
+Tue May  1 20:01:50 JST 2007  m.fellinger@gmail.com
+  * add spec/helper/layout and use it in spec/all - this is hopefully the last in a series of refactorings for the spec-framework
+
+Tue May  1 20:00:17 JST 2007  m.fellinger@gmail.com
+  * add spec for inform/informer and inform/syslog
+
+Tue May  1 18:36:10 JST 2007  m.fellinger@gmail.com
+  * update dependency-versions for gemspec
+
+Tue May  1 17:55:55 JST 2007  m.fellinger@gmail.com
+  * convert specs from 0.8.x to 0.9
+
+Tue May  1 17:25:33 JST 2007  m.fellinger@gmail.com
+  * update global.rb for ruby1.9
+
+Tue May  1 16:09:00 JST 2007  m.fellinger@gmail.com
+  * update spec/all into a less hackish and easier configurable design, running all specs including examples
+
+Tue May  1 14:56:39 JST 2007  m.fellinger@gmail.com
+  * add helpers to spec/all
+
+Tue May  1 14:05:24 JST 2007  m.fellinger@gmail.com
+  * add spec for FileHelper
+
+Tue May  1 14:04:37 JST 2007  m.fellinger@gmail.com
+  * add (c) to FileHelper
+
+Tue May  1 14:03:39 JST 2007  m.fellinger@gmail.com
+  * updating Rakefile to add a newline after (c)
+
+Tue May  1 13:57:14 JST 2007  m.fellinger@gmail.com
+  * adding specs for a couple of the simple examples
+
+Tue May  1 01:06:56 JST 2007  m.fellinger@gmail.com
+  * adding FileHelper, no specs for it yet but added it to default-helpers
+
+Tue May  1 01:05:05 JST 2007  m.fellinger@gmail.com
+  * add Controller::map to make the 'trait :map => "/foo"' nicer, use it like: 'map "/foo", "/bar"'
+
+Tue May  1 01:02:50 JST 2007  m.fellinger@gmail.com
+  * adding some startup-information about controllers
+
+Sun Apr 29 22:31:16 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * small fixes to loggers
+
+Sun Apr 29 19:38:15 JST 2007  m.fellinger@gmail.com
+  * add the missing helper/markaby
+
+Sun Apr 29 19:36:58 JST 2007  m.fellinger@gmail.com
+  * minor rewrite of Template::Markaby and its spec
+
+Sun Apr 29 19:35:37 JST 2007  m.fellinger@gmail.com
+  * some modifications to make LinkHelper work with markaby, it's a bit ugly right now...
+
+Sun Apr 29 19:33:21 JST 2007  m.fellinger@gmail.com
+  * this improves the template-lookup and general performance of Controller, file-templates can now be handled by different engines based on the extension, if unknown or method-only the trait takes over. also replacing some ancestral_traits with more specific versiosn of class_trait/trait
+
+Sun Apr 29 19:32:08 JST 2007  m.fellinger@gmail.com
+  * improving example for markaby a bit, it's not working yet though, have to talk with the markaby-folks
+
+Sun Apr 29 18:49:11 JST 2007  m.fellinger@gmail.com
+  * fixing some (c)s
+
+Fri Apr 27 17:10:42 JST 2007  clive@crous.co.za
+  * use '--partial' for darcs get
+
+Sat Apr 28 02:33:31 JST 2007  m.fellinger@gmail.com
+  * putting Ramaze::Inform assignment into Global.setup again
+
+Fri Apr 27 22:14:18 JST 2007  m.fellinger@gmail.com
+  * move checking for automap into Controller
+
+Fri Apr 27 22:12:24 JST 2007  m.fellinger@gmail.com
+  * huge refactoring of logging, this needs extensive review
+
+Fri Apr 27 21:51:38 JST 2007  m.fellinger@gmail.com
+  * add map for examples/hello as well
+
+Fri Apr 27 21:49:49 JST 2007  m.fellinger@gmail.com
+  * fixing examples/element - we need mappings now
+
+Fri Apr 27 21:48:22 JST 2007  m.fellinger@gmail.com
+  * fixing a non-critical behaviour where Ezamar would throw an error if it cannot find a template but an action is there.
+
+Fri Apr 27 20:35:37 JST 2007  m.fellinger@gmail.com
+  * adding Object#class_trait for better lookup of traits defined in the class of the current instance
+
+Thu Apr 26 22:55:24 JST 2007  m.fellinger@gmail.com
+  * rewrite of notification_hub and xosd
+
+Thu Apr 26 21:35:36 JST 2007  m.fellinger@gmail.com
+  * removing the spaces that kashia introduced so nice in the last patch
+
+Thu Apr 26 21:28:34 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Add NotificationHub, Growl, Xosd Loggers
+  This is a preliminary patch, especially the Xosd is not tested.
+
+Wed Apr 25 08:30:56 JST 2007  m.fellinger@gmail.com
+  * better report about errors in the ezamar pipeline, please note that the browser will still show 'no such action', but the console will inform you about all real errors (this has to improve further)
+
+Wed Apr 25 08:29:35 JST 2007  m.fellinger@gmail.com
+  * little change in blog example
+
+Tue Apr 24 23:54:29 JST 2007  clive@crous.co.za
+  * Add a response message for deleting "no such entry" in the blog example
+
+Tue Apr 24 23:38:54 JST 2007  clive@crous.co.za
+  * session result message is by id instead of class in the blog example, and disappears after 1.5 seconds
+
+Tue Apr 24 22:41:05 JST 2007  clive@crous.co.za
+  * emphasise titles displayed within results for the blog example
+
+Tue Apr 24 22:29:56 JST 2007  clive@crous.co.za
+  * Show session result if applicable
+
+Tue Apr 24 21:57:33 JST 2007  clive@crous.co.za
+  * Replace all references to oid with eid in the blog example.
+
+Wed Apr 25 01:23:00 JST 2007  m.fellinger@gmail.com
+  * limit sessions to 1000 per IP, also makes inspecting ObjectSpace easier
+
+Tue Apr 24 07:55:08 JST 2007  m.fellinger@gmail.com
+  * add Global.test_connections to switch testing connections via TCPSocket on startup.
+
+Mon Apr 23 01:24:47 JST 2007  m.fellinger@gmail.com
+  * replace some stuff in spec for CacheHelper to be more readable
+
+Mon Apr 23 01:07:05 JST 2007  m.fellinger@gmail.com
+  * s/Context/Browser/ for specs, Context could be confused with the meaning of context of RSpec.
+
+Mon Apr 23 00:51:46 JST 2007  m.fellinger@gmail.com
+  * add doc/meta/announcement.txt as a template for announcements - would be thankful for reviews and corrections.
+
+Sun Apr 22 21:28:52 JST 2007  m.fellinger@gmail.com
+  * move configuration/internals from doc/readme_chunks to doc/meta
+
+Thu Apr 19 13:26:26 JST 2007  m.fellinger@gmail.com
+  * move out SpecWrap to spec/helper/wrap and add a little fix to commonize
+
+Thu Apr 19 17:45:08 JST 2007  m.fellinger@gmail.com
+  * fixing tutorial and examples/element
+
+Thu Apr 19 17:40:19 JST 2007  m.fellinger@gmail.com
+  * Element doesn't use @hash anymore, instead the keys are set to instance-variables directly, please take car, this causes breakage
+
+Wed Apr 18 18:06:57 JST 2007  m.fellinger@gmail.com
+  * total restructure of spec
+
+Tue Apr 17 22:05:01 JST 2007  m.fellinger@gmail.com
+  * remove the rescue Object from tool/localize
+
+Tue Apr 17 22:03:40 JST 2007  m.fellinger@gmail.com
+  * rename Global.inform to Global.informer to respect what class it is pointing to
+
+Tue Apr 17 22:00:30 JST 2007  m.fellinger@gmail.com
+  * add backtrace to Informer#error again
+
+Tue Apr 17 21:56:04 JST 2007  m.fellinger@gmail.com
+  * adding readme_chunks/internals.txt
+
+Tue Apr 17 14:54:01 JST 2007  m.fellinger@gmail.com
+  * update configuration.txt and remove useless :cache_actions from Global
+
+Mon Apr 16 23:05:03 JST 2007  m.fellinger@gmail.com
+  * add doc/readme_chunks/configuration.txt - just a first draft and to be completed
+
+Mon Apr 16 23:03:12 JST 2007  m.fellinger@gmail.com
+  * adding implementation and specs for tool/localize (we _need_ docs for that)
+
+Mon Apr 16 23:01:15 JST 2007  m.fellinger@gmail.com
+  * a couple of fixes and adding missing stuff to Global
+
+Sun Apr 15 20:01:50 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Logger fixes
+
+Sun Apr 15 07:07:27 JST 2007  m.fellinger@gmail.com
+  * define $context_runner
+
+Sun Apr 15 07:05:55 JST 2007  m.fellinger@gmail.com
+  * getting rid of warnings in SimpleHTTP
+
+Sun Apr 15 07:02:23 JST 2007  m.fellinger@gmail.com
+  * don't define #get twice in the spec requester
+
+Sun Apr 15 07:00:52 JST 2007  m.fellinger@gmail.com
+  * get rid of the warning about redefinition of aquire
+
+Sun Apr 15 06:59:47 JST 2007  m.fellinger@gmail.com
+  * get rid of the redefinition of #each... do an actual check first (for 1.9)
+
+Sun Apr 15 06:56:52 JST 2007  m.fellinger@gmail.com
+  * huge refactoring of the Inform system for better configurability, this changes lots of small things in lots of places, but nothing too invasive
+
+Sun Apr 15 06:55:28 JST 2007  m.fellinger@gmail.com
+  * adapt error.zmr to new inform system
+
+Fri Apr 13 10:57:34 JST 2007  m.fellinger@gmail.com
+  * add support for nested params
+
+Fri Apr 13 10:43:26 JST 2007  m.fellinger@gmail.com
+  * pass $: as -I over in spec_all
+
+Fri Apr 13 10:40:59 JST 2007  m.fellinger@gmail.com
+  * GlobalInformer Inform in the og-gulper
+
+Mon Apr  9 18:33:38 JST 2007  m.fellinger@gmail.com
+  * add systemu to optional dependencies
+
+Mon Apr  9 18:27:24 JST 2007  m.fellinger@gmail.com
+  * better implementation of String#each (for 1.9 only)
+
+Thu Apr 12 20:22:04 JST 2007  m.fellinger@gmail.com
+  * Informer => Inform
+
+Wed Apr 11 19:26:23 JST 2007  m.fellinger@gmail.com
+  * brand new controller lookup on startup - use YourController.mapping to get its mapping :)
+
+Wed Apr 11 18:40:59 JST 2007  m.fellinger@gmail.com
+  * fixing (c)
+
+Wed Apr 11 18:38:03 JST 2007  m.fellinger@gmail.com
+  * fixing logger.rb by adding Informer
+
+Wed Apr 11 17:42:09 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * add missing logger.rb for informer change
+
+Wed Apr 11 17:25:26 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Make logger configurable
+  Included loggers:
+  * GlobalInformer (standard)
+  * Analogger [Kirk Haines]
+  * Syslog
+
+Wed Apr 11 14:26:08 JST 2007  m.fellinger@gmail.com
+  * filter for Dispatcher::Action
+
+Wed Apr 11 14:23:44 JST 2007  m.fellinger@gmail.com
+  * new implementation of autoreload, not in usage yet, but it should boost performance and reliability (and avoid the awkward double-thread
+
+Wed Apr 11 13:22:31 JST 2007  m.fellinger@gmail.com
+  * replace the aquire with a verbose way... snippets were not added to the $:/$"
+
+Wed Apr 11 13:03:49 JST 2007  m.fellinger@gmail.com
+  * extending Global for setting and add a trait-link to tidy
+
+Wed Apr 11 13:01:29 JST 2007  m.fellinger@gmail.com
+  * better implementation of tidy... only use it for debugging, it's leaking memory
+
+Wed Apr 11 12:58:52 JST 2007  m.fellinger@gmail.com
+  * remove the post_dispatch from Dispatcher
+
+Tue Apr 10 13:58:08 JST 2007  m.fellinger@gmail.com
+  * a couple of changes in Global, we can now collect the traits inside Global transparently (finally modular configuration)
+
+Tue Apr 10 00:57:20 JST 2007  m.fellinger@gmail.com
+  * use class-methods instead of instantination in the Dispatcher for speed
+
+Mon Apr  9 21:25:49 JST 2007  m.fellinger@gmail.com
+  * extremly brutal refactoring of Dispatcher, it lacks a bit of elegance right now, but it is the right way
+
+Mon Apr  9 17:59:52 JST 2007  m.fellinger@gmail.com
+  * a couple of small changes for compatibility with 1.9
+
+Mon Apr  9 16:11:33 JST 2007  m.fellinger@gmail.com
+  * small refactoring for Inform#error
+
+Mon Apr  9 17:00:40 JST 2007  m.fellinger@gmail.com
+  * small fixes for YARV
+
+Mon Apr  9 06:36:11 JST 2007  m.fellinger@gmail.com
+  * exitstatus 0/1 for spec_all so the darcs hook can see if it's passing - finally automated recording-joy :)
+
+Mon Apr  9 06:34:29 JST 2007  m.fellinger@gmail.com
+  * darcs hook
+
+Sun Apr  8 19:11:03 JST 2007  m.fellinger@gmail.com
+  * fixing flash for memcached
+
+Sun Apr  8 19:10:48 JST 2007  m.fellinger@gmail.com
+  * add rake patchstat
+
+Sun Apr  8 02:33:23 JST 2007  m.fellinger@gmail.com
+  * allow request[:foo] to access request.params['foo']
+
+Sat Apr  7 01:24:10 JST 2007  m.fellinger@gmail.com
+  * add Inform::warn
+
+Sat Apr  7 01:23:38 JST 2007  m.fellinger@gmail.com
+  * check the template-dir mapping on startup for each controller
+
+Sat Apr  7 00:30:29 JST 2007  m.fellinger@gmail.com
+  * a bit more elaborate but much safer handling of exceptions in Ezamar
+
+Fri Apr  6 00:24:03 JST 2007  m.fellinger@gmail.com
+  * experiments in adapter.rb - please review
+
+Fri Apr  6 00:22:58 JST 2007  m.fellinger@gmail.com
+  * refactor of request/response/dispatcher/adapter (be careful, tidy broke)
+
+Thu Apr  5 14:19:20 JST 2007  m.fellinger@gmail.com
+  * little cleanup
+
+Fri Apr  6 04:06:52 JST 2007  m.fellinger@gmail.com
+  * better error-reporting for usual NoMethodError in controller/template
+
+Wed Apr  4 23:51:14 JST 2007  m.fellinger@gmail.com
+  * use normal blocks instead of Symbol#to_proc, there was some weird error in Informer#debug
+
+Wed Apr  4 23:50:54 JST 2007  m.fellinger@gmail.com
+  * fixing the usage of meth_debug, replacing it with normal debug
+
+Wed Apr  4 23:46:24 JST 2007  m.fellinger@gmail.com
+  * add helper/inform
+
+Wed Apr  4 13:21:22 JST 2007  m.fellinger@gmail.com
+  * yet another possible refactor of Inform, thinking about just using Informer instead, the modules functionality is not used anywhere.
+
+Wed Apr  4 01:39:37 JST 2007  m.fellinger@gmail.com
+  * adding --console and --backtrace as startup-options for the bin/ramaze, improving error-reports for gone-wrong requires on startup
+
+Tue Apr  3 21:13:19 JST 2007  m.fellinger@gmail.com
+  * update doc/TODO
+
+Tue Apr  3 21:12:51 JST 2007  m.fellinger@gmail.com
+  * fix rake task todolist
+
+Tue Apr  3 21:01:11 JST 2007  m.fellinger@gmail.com
+  * huge refactoring of Inform for better handling of colors and nicer code
+
+Tue Apr  3 20:57:22 JST 2007  m.fellinger@gmail.com
+  * remove some debugging from examples/blog
+
+Tue Apr  3 16:58:55 JST 2007  m.fellinger@gmail.com
+  * s/Global/Ramaze::Global in adapter.rb
+
+Tue Apr  3 15:23:02 JST 2007  m.fellinger@gmail.com
+  * add further colors/styles to snippets/string/color
+
+Tue Apr  3 15:22:35 JST 2007  m.fellinger@gmail.com
+  * avoid warning on reload of Inform / don't define Informer twice
+
+Tue Apr  3 15:17:42 JST 2007  m.fellinger@gmail.com
+  * added simple colorizer for Inform - can be activated by Global.inform_color = true / added String#red/yellow/green to snippets/String/color
+
+Tue Apr  3 15:14:54 JST 2007  m.fellinger@gmail.com
+  * restoring and improving functionality of Tool::Tidy, you can now output tidy HTML by setting Global.tidy = true | added ability to change the options and paths, no `locate` anymore
+
+Mon Apr  2 00:32:32 JST 2007  m.fellinger@gmail.com
+  tagged 0.0.9
+
+Mon Apr  2 00:31:45 JST 2007  m.fellinger@gmail.com
+  * 0.0.9
+
+Mon Apr  2 00:31:28 JST 2007  m.fellinger@gmail.com
+  * fixing (c)
+
+Sun Apr  1 19:14:36 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * beautify code block css in tutorial
+
+Sun Apr  1 18:39:20 JST 2007  m.fellinger@gmail.com
+  * typos, proper encoding and doctype for the tutorial
+
+Sun Apr  1 18:15:55 JST 2007  m.fellinger@gmail.com
+  * add tutorial/todolist.html
+
+Sun Apr  1 18:15:31 JST 2007  m.fellinger@gmail.com
+  * update tutorial/todolist - bluecloth instead of rdoc
+
+Sun Apr  1 18:15:09 JST 2007  m.fellinger@gmail.com
+  * update the principles chunk
+
+Sun Apr  1 18:13:34 JST 2007  m.fellinger@gmail.com
+  * add a tutorial2html to the rakefile
+
+Sat Mar 31 01:55:36 JST 2007  m.fellinger@gmail.com
+  * close all inform_to on exit
+
+Fri Mar 30 22:23:29 JST 2007  m.fellinger@gmail.com
+  * fixing the ramaze call in the two failing specs
+
+Fri Mar 30 22:22:55 JST 2007  m.fellinger@gmail.com
+  * define a new Request#fullpath (in latest rack, not yet released)
+
+Fri Mar 30 21:54:57 JST 2007  m.fellinger@gmail.com
+  * improving spec_all further, correct align of errors and information when a spec yields no usable output
+
+Fri Mar 30 21:40:28 JST 2007  m.fellinger@gmail.com
+  * change default in spec_helper to webrick instead of mongrel
+
+Fri Mar 30 21:24:03 JST 2007  m.fellinger@gmail.com
+  * add attempt to require rubygems to spec_all
+
+Fri Mar 30 21:08:13 JST 2007  m.fellinger@gmail.com
+  * add the spec/public/error404.xhtml and adapt the tc_error, static error-pages are now definetly working
+
+Fri Mar 30 21:06:59 JST 2007  m.fellinger@gmail.com
+  * replace Term::ANSIColor and the stubs with a small actual implementation
+
+Fri Mar 30 20:36:11 JST 2007  m.fellinger@gmail.com
+  * allow multiple 'pipes' for Global.inform_to, just give it an array (backwards-compatible)
+
+Fri Mar 30 20:35:59 JST 2007  m.fellinger@gmail.com
+  * updating tc_error
+
+Fri Mar 30 20:35:28 JST 2007  m.fellinger@gmail.com
+  * getting rid of a warning about redefining Traits
+
+Fri Mar 30 20:34:44 JST 2007  m.fellinger@gmail.com
+  * Sanitizing error-handling for non-existant static error-page
+
+Thu Mar 29 23:39:24 JST 2007  m.fellinger@gmail.com
+  * fixing Inform, it did wrong matching for $stderr/$stdout
+
+Mon Mar 26 23:25:25 JST 2007  m.fellinger@gmail.com
+  * add example for nitroform
+
+Mon Mar 26 23:24:58 JST 2007  m.fellinger@gmail.com
+  * add a first stub for helper/nitroform - there seem to be some odd problems
+
+Mon Mar 26 23:23:52 JST 2007  m.fellinger@gmail.com
+  * don't raise when we can't find the file wanted by caller_lines
+
+Sun Mar 25 01:03:01 JST 2007  m.fellinger@gmail.com
+  * fix Kernel#aquire (by lasso)
+
+Sat Mar 24 05:06:45 JST 2007  m.fellinger@gmail.com
+  * improve handling of missing actions, now raising NoActionError
+
+Fri Mar 23 06:16:18 JST 2007  m.fellinger@gmail.com
+  * fix serving static files on windows (hopefully)
+
+Thu Mar 22 13:09:26 JST 2007  m.fellinger@gmail.com
+  * remove the useless _openid_consumer_service from the session afterwards
+
+Thu Mar 22 13:09:12 JST 2007  m.fellinger@gmail.com
+  * add examples/identity
+
+Thu Mar 22 13:00:12 JST 2007  m.fellinger@gmail.com
+  * fixing IdentityHelper so that it works
+
+Thu Mar 22 12:59:45 JST 2007  m.fellinger@gmail.com
+  * move helper/openid to helper/identity
+
+Wed Mar 21 12:11:22 JST 2007  m.fellinger@gmail.com
+  * add ::create_with(hash) to store/yaml
+
+Wed Mar 21 12:11:02 JST 2007  m.fellinger@gmail.com
+  * show the real error from Template::Ezamar
+
+Wed Mar 21 12:10:21 JST 2007  m.fellinger@gmail.com
+  * make the error parsing a lot more robust and fault-tolerant
+
+Tue Mar 20 22:51:06 JST 2007  m.fellinger@gmail.com
+  * adapt Controller#error for the new caller_lines/caller_info
+
+Tue Mar 20 22:50:26 JST 2007  m.fellinger@gmail.com
+  * extracting caller_lines and put it into snippets/kernel/caller_lines - also small fixes in caller_info
+
+Tue Mar 20 22:50:10 JST 2007  m.fellinger@gmail.com
+  * small changes in Method#name
+
+Tue Mar 20 22:48:48 JST 2007  m.fellinger@gmail.com
+  * move snippets/kernel/caller_lines to snippets/ramaze/caller_lines
+
+Tue Mar 20 22:47:57 JST 2007  m.fellinger@gmail.com
+  * fixing problematic error response in dispatcher
+
+Tue Mar 20 22:12:08 JST 2007  m.fellinger@gmail.com
+  * remove Kernel#silently
+
+Tue Mar 20 22:10:34 JST 2007  m.fellinger@gmail.com
+  * require pp before patching pretty_inspect
+
+Tue Mar 20 22:10:01 JST 2007  m.fellinger@gmail.com
+  * move Method#name from snippets/kernel/method to snippets/method/name
+
+Tue Mar 20 22:09:30 JST 2007  m.fellinger@gmail.com
+  * remove Thread#dead?
+
+Tue Mar 20 22:09:16 JST 2007  m.fellinger@gmail.com
+  * remove snippets/kernel/rescue_require
+
+Tue Mar 20 22:08:39 JST 2007  m.fellinger@gmail.com
+  * move snippets/kernel/self_method => snippets/kernel/method
+
+Tue Mar 20 22:08:13 JST 2007  m.fellinger@gmail.com
+  * fix Rakefile so that it produces good gems again
+
+Tue Mar 20 22:07:16 JST 2007  m.fellinger@gmail.com
+  * move snippets/kernel/autoreload => snippets/ramaze/autoreload
+
+Tue Mar 20 18:46:40 JST 2007  m.fellinger@gmail.com
+  * don't R() the passed params to redirect and update docs
+
+Tue Mar 20 17:29:47 JST 2007  m.fellinger@gmail.com
+  * update tc_helper_redirect
+
+Tue Mar 20 17:08:58 JST 2007  m.fellinger@gmail.com
+  * better information about errors in templates
+
+Tue Mar 20 17:07:57 JST 2007  m.fellinger@gmail.com
+  * better handling of redirections, you can now catch(:redirect){ another_action } to prevent redirection from that path of execution
+
+Tue Mar 20 17:07:24 JST 2007  m.fellinger@gmail.com
+  * typo
+
+Tue Mar 20 15:53:12 JST 2007  m.fellinger@gmail.com
+  * support custom status-code in redirect and do R() automatically on the params
+
+Tue Mar 20 15:43:19 JST 2007  m.fellinger@gmail.com
+  * update Rakefile
+
+Tue Mar 20 15:23:35 JST 2007  m.fellinger@gmail.com
+  * add (c) to OpenidHelper
+
+Tue Mar 20 15:23:05 JST 2007  m.fellinger@gmail.com
+  * update README
+
+Mon Mar 19 16:21:01 JST 2007  m.fellinger@gmail.com
+  * update examples/todolist
+
+Mon Mar 19 16:20:42 JST 2007  m.fellinger@gmail.com
+  * update tutorial
+
+Mon Mar 19 15:58:41 JST 2007  m.fellinger@gmail.com
+  * small improvment to template/ezamar makes methodless actions work again.
+
+Mon Mar 19 15:45:14 JST 2007  m.fellinger@gmail.com
+  * remove helper/template_map
+
+Mon Mar 19 15:44:59 JST 2007  m.fellinger@gmail.com
+  * update feature-list
+
+Mon Mar 19 12:03:24 JST 2007  m.fellinger@gmail.com
+  * add a Rs method to LinkHelper to make the usual R(self, :foo) stuff into Rs(:foo) and update the tc_helper_stack
+
+Mon Mar 19 08:14:57 JST 2007  m.fellinger@gmail.com
+  * add first implementation of OpenidHelper (yet untested)
+
+Mon Mar 19 07:58:38 JST 2007  m.fellinger@gmail.com
+  * fix tc_helper_redirect
+
+Sat Mar 17 22:09:25 JST 2007  m.fellinger@gmail.com
+  * 0.0.8 as version
+
+Sat Mar 17 22:09:16 JST 2007  m.fellinger@gmail.com
+  * alias referrer referer
+
+Fri Mar 16 19:47:40 JST 2007  m.fellinger@gmail.com
+  * document CacheHelper
+
+Fri Mar 16 19:39:20 JST 2007  m.fellinger@gmail.com
+  * document FlashHelper
+
+Fri Mar 16 19:24:34 JST 2007  m.fellinger@gmail.com
+  * cleanup and docs for Ramaze::Request (add values_at for quick params-retrieval)
+
+Fri Mar 16 19:16:18 JST 2007  m.fellinger@gmail.com
+  * some cleanup and documentation for Trinity::Session, it also got a trait[:finalize] as a pipeline of what to do on finalize (finalize_flash only atm)
+
+Thu Mar 15 19:21:34 JST 2007  m.fellinger@gmail.com
+  * don't escape the @title of an error twice
+
+Fri Mar 16 16:17:45 JST 2007  m.fellinger@gmail.com
+  * less agressive redirect in R/link
+
+Thu Mar 15 14:57:33 JST 2007  m.fellinger@gmail.com
+  * proper inspect in the error-page and adding inspect/pretty_inspect to Global
+
+Wed Mar 14 23:09:46 JST 2007  m.fellinger@gmail.com
+  tagged 0.0.8
+
+Wed Mar 14 23:09:07 JST 2007  m.fellinger@gmail.com
+  * newline :)
+
+Wed Mar 14 21:44:25 JST 2007  m.fellinger@gmail.com
+  * checking all the caches in tc_session
+
+Wed Mar 14 21:43:59 JST 2007  m.fellinger@gmail.com
+  * nicer output of specs of helper_auth and tc_session
+
+Wed Mar 14 21:43:39 JST 2007  m.fellinger@gmail.com
+  * reimplement Trinity::Session
+
+Wed Mar 14 21:42:58 JST 2007  m.fellinger@gmail.com
+  * fixing the caller_lines bug
+
+Wed Mar 14 21:42:44 JST 2007  m.fellinger@gmail.com
+  * no rescue in StackHelper anymore
+
+Wed Mar 14 21:42:32 JST 2007  m.fellinger@gmail.com
+  * small fix in yaml_store
+
+Wed Mar 14 21:42:20 JST 2007  m.fellinger@gmail.com
+  * small nicety in examples/simple
+
+Wed Mar 14 15:45:30 JST 2007  m.fellinger@gmail.com
+  * add 'stubs' for CGI and FastCGI - they are not tested at all yet, suggestions for specs welcome
+
+Wed Mar 14 15:44:42 JST 2007  m.fellinger@gmail.com
+  * remove the actionview_stub from HAML, it's not needed with HAML 1.5 (make sure you upgrade though)
+
+Tue Mar 13 19:50:43 JST 2007  m.fellinger@gmail.com
+  * remove the ezamar-'feature' ;)
+
+Tue Mar 13 19:42:14 JST 2007  m.fellinger@gmail.com
+  * speed up the ezamar-spec a bit and proper errors for markaby
+
+Sun Mar 11 03:19:05 JST 2007  m.fellinger@gmail.com
+  * deleting entities in Store::YAML
+
+Sun Mar 11 03:07:10 JST 2007  m.fellinger@gmail.com
+  * possibility to #{render} in your controller/templates
+
+Sun Mar 11 01:25:15 JST 2007  m.fellinger@gmail.com
+  * escape the title of the error-page to show classes properly
+
+Sun Mar 11 00:08:38 JST 2007  m.fellinger@gmail.com
+  * small improvments to bin/ramaze - output of version and better info when there is nothing to start
+
+Tue Mar 13 13:46:23 JST 2007  m.fellinger@gmail.com
+  * small improvment in custom_template selection
+
+Mon Mar 12 22:41:55 JST 2007  m.fellinger@gmail.com
+  * remove debugging-statements
+
+Mon Mar 12 20:53:47 JST 2007  m.fellinger@gmail.com
+  * better error-reports from Ezamars transformation
+
+Mon Mar 12 20:53:31 JST 2007  m.fellinger@gmail.com
+  * no more errors about #debug? missing from WEBrick
+
+Mon Mar 12 20:53:07 JST 2007  m.fellinger@gmail.com
+  * improved error-page (minor fixes)
+
+Mon Mar 12 20:52:18 JST 2007  m.fellinger@gmail.com
+  * fixing the ezamar example
+
+Fri Mar  9 21:15:00 JST 2007  m.fellinger@gmail.com
+  * fixing spec_all to report the real number of failed specs
+
+Fri Mar  9 21:14:34 JST 2007  m.fellinger@gmail.com
+  * shorter line
+
+Fri Mar  9 19:25:03 JST 2007  m.fellinger@gmail.com
+  * don't assign a FLASH_PREVIOUS when we don't need to (also add a (c) to pretty_inspect)
+
+Fri Mar  9 19:08:55 JST 2007  m.fellinger@gmail.com
+  * fixing FlashHelper (with a new SessionFlash in trinity/session) put the new specs into the old tc_helper_flash
+
+Thu Mar  8 22:36:04 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * spec for flash, template finding fix
+  * trait :foo_template => :bar__foo did break
+  * added spec for flash, no fix
+
+Thu Mar  8 11:07:22 JST 2007  m.fellinger@gmail.com
+  * relax arity-sensitivity, it's impossbile to get right and shouldn't block correct parameter-sets
+
+Wed Mar  7 23:16:01 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * More specs for params
+
+Wed Mar  7 23:11:17 JST 2007  m.fellinger@gmail.com
+  * add fallback for pretty_inspect
+
+Wed Mar  7 07:01:32 JST 2007  m.fellinger@gmail.com
+  * fixing session-problem plus the specs
+
+Tue Mar  6 20:57:16 JST 2007  m.fellinger@gmail.com
+  * fixing the flash_id
+
+Tue Mar  6 20:09:13 JST 2007  m.fellinger@gmail.com
+  * informing you about missing elements
+
+Tue Mar  6 07:10:05 JST 2007  m.fellinger@gmail.com
+  * add rack in the tc_dependencies
+
+Mon Mar  5 22:48:06 JST 2007  m.fellinger@gmail.com
+  * new custom error-handling, tell me your exception and i tell you where you land
+
+Mon Mar  5 22:44:05 JST 2007  m.fellinger@gmail.com
+  * temporarily add Helper to Element
+
+Mon Mar  5 22:12:45 JST 2007  m.fellinger@gmail.com
+  * avoid malformed response from the controller
+
+Mon Mar  5 21:47:16 JST 2007  m.fellinger@gmail.com
+  * specs for FlashHelper
+
+Mon Mar  5 21:47:05 JST 2007  m.fellinger@gmail.com
+  * add ability to delete specific key from session
+
+Mon Mar  5 21:46:55 JST 2007  m.fellinger@gmail.com
+  * improve error-handling in Template::Ezamar
+
+Mon Mar  5 21:46:46 JST 2007  m.fellinger@gmail.com
+  * add FlashHelper
+
+Mon Mar  5 18:53:41 JST 2007  m.fellinger@gmail.com
+  * updating some readme chunks
+
+Sun Mar  4 22:53:11 JST 2007  m.fellinger@gmail.com
+  * handle the case when there are no controllers...
+
+Sun Mar  4 21:18:36 JST 2007  m.fellinger@gmail.com
+  * remove setup.rb since i don't provide any support for it.
+
+Sun Mar  4 21:05:37 JST 2007  m.fellinger@gmail.com
+  * update Rakefile (dependencies and some tasks)
+
+Sun Mar  4 21:01:19 JST 2007  m.fellinger@gmail.com
+  * change the require for rack, make sure you got the gem installed or it's in your path (or required already)
+
+Sun Mar  4 21:01:03 JST 2007  m.fellinger@gmail.com
+  * remove vendor/rack since rack has its release out now
+
+Sat Mar  3 04:35:51 JST 2007  m.fellinger@gmail.com
+  * controller has to respond to :render
+
+Sat Mar  3 04:35:07 JST 2007  m.fellinger@gmail.com
+  * fix lookup for the cache
+
+Sat Mar  3 02:38:25 JST 2007  m.fellinger@gmail.com
+  * improved error-handling, templating-engines take responsibility now
+
+Sat Mar  3 01:48:38 JST 2007  m.fellinger@gmail.com
+  * fix docs for examples/hello
+
+Fri Mar  2 17:49:11 JST 2007  m.fellinger@gmail.com
+  * proper namespacing, address everything under Ramaze, don't rely on the user to include Ramaze in the main-namespace
+
+Fri Mar  2 17:18:32 JST 2007  m.fellinger@gmail.com
+  * fixing namespace for Informer in adapter/webrick
+
+Wed Feb 28 23:06:19 JST 2007  m.fellinger@gmail.com
+  * rack snapshot
+
+Mon Feb 26 23:54:56 JST 2007  m.fellinger@gmail.com
+  * testrunner should work on windows
+
+Mon Feb 26 23:13:11 JST 2007  m.fellinger@gmail.com
+  * refactoring the filtering in dispatcher to return early results and do nicer error-handling
+
+Sat Feb 24 00:16:10 JST 2007  m.fellinger@gmail.com
+  * oh phrack, we just require template/ezamar on startup now... no more autorequire-magic :P
+
+Fri Feb 23 18:45:00 JST 2007  m.fellinger@gmail.com
+  * updates to the README
+
+Fri Feb 23 13:47:16 JST 2007  m.fellinger@gmail.com
+  * making it possible to go without Element in AuthHelper
+
+Fri Feb 23 13:46:53 JST 2007  m.fellinger@gmail.com
+  * fixing references to Element in proto and specs
+
+Fri Feb 23 13:46:39 JST 2007  m.fellinger@gmail.com
+  * fixing references to Element
+
+Fri Feb 23 13:45:32 JST 2007  m.fellinger@gmail.com
+  * Morpher and Element moved into module ::Ezamar - please do now class YourElement < Ezamar::Element - this is part of an ongoing effort to extract Ezamar for broader usage
+
+Thu Feb 22 20:56:22 JST 2007  m.fellinger@gmail.com
+  * new doc/README from the chunks
+
+Thu Feb 22 20:56:09 JST 2007  m.fellinger@gmail.com
+  * proper heading for README
+
+Thu Feb 22 20:55:25 JST 2007  m.fellinger@gmail.com
+  * splitting README into seperate files in doc/readme_chunks
+
+Thu Feb 22 20:54:53 JST 2007  m.fellinger@gmail.com
+  * add rake build-readme to build the README from the chunks in doc/readme_chunks
+
+Thu Feb 22 20:45:53 JST 2007  m.fellinger@gmail.com
+  * remove the fluff from trinity/response - soon to be removed altogether
+
+Thu Feb 22 20:40:10 JST 2007  m.fellinger@gmail.com
+  * Ramaze::Request => Rack::Request
+
+Thu Feb 22 20:39:57 JST 2007  m.fellinger@gmail.com
+  * set 404 in Controller#error
+
+Thu Feb 22 20:38:50 JST 2007  m.fellinger@gmail.com
+  * proper check for 404 in tc_error
+
+Thu Feb 22 14:58:45 JST 2007  m.fellinger@gmail.com
+  * adapt the specs to take advantage of Context#story
+
+Thu Feb 22 14:57:47 JST 2007  m.fellinger@gmail.com
+  * adding Context.new with block or Context#story to provide a way for consecutive requests inside a common context.
+
+Thu Feb 22 14:57:20 JST 2007  m.fellinger@gmail.com
+  * using request_uri instead of path_info for StackHelper to preserve params
+
+Thu Feb 22 08:37:01 JST 2007  m.fellinger@gmail.com
+  * rack snapshot
+
+Wed Feb 21 17:54:11 JST 2007  m.fellinger@gmail.com
+  * fixing spec/tc_controller
+
+Wed Feb 21 17:53:09 JST 2007  m.fellinger@gmail.com
+  * fixing the first-load-problem which was caused by complicated require-procedures.
+
+Wed Feb 21 17:52:39 JST 2007  m.fellinger@gmail.com
+  * fixing examples/todolist
+
+Wed Feb 21 13:18:33 JST 2007  m.fellinger@gmail.com
+  * fixing Global.cookies = false
+
+Wed Feb 21 10:16:49 JST 2007  m.fellinger@gmail.com
+  * snapshot rack
+
+Tue Feb 20 19:20:44 JST 2007  m.fellinger@gmail.com
+  * add doc/GPL
+
+Wed Feb 21 06:53:03 JST 2007  m.fellinger@gmail.com
+  * support link('/' :class => 'foo', :id => 'bar', :title => 'index')
+
+Wed Feb 21 06:52:34 JST 2007  m.fellinger@gmail.com
+  * small improvments in examples/whywiki
+
+Wed Feb 21 06:32:35 JST 2007  m.fellinger@gmail.com
+  * extending examples/element a bit
+
+Wed Feb 21 06:30:12 JST 2007  m.fellinger@gmail.com
+  * fixing examples/caching
+
+Wed Feb 21 06:24:57 JST 2007  m.fellinger@gmail.com
+  * hopefully fixing the issue of first-load problems
+
+Wed Feb 21 06:21:00 JST 2007  m.fellinger@gmail.com
+  * add lib/proto to the lookup-paths for static files
+
+Tue Feb 20 22:50:14 JST 2007  m.fellinger@gmail.com
+  * snapshot of rack
+
+Tue Feb 20 22:49:34 JST 2007  m.fellinger@gmail.com
+  * fixing filters, the third
+
+Tue Feb 20 19:07:30 JST 2007  m.fellinger@gmail.com
+  * change order of filter... again
+
+Tue Feb 20 19:06:12 JST 2007  m.fellinger@gmail.com
+  * change doc/COPYING
+
+Mon Feb 19 17:27:14 JST 2007  m.fellinger@gmail.com
+  * change filter-order for static files to take priority
+
+Mon Feb 19 17:19:22 JST 2007  m.fellinger@gmail.com
+  * turn off $VERBOSE again
+
+Tue Feb 20 14:57:41 JST 2007  m.fellinger@gmail.com
+  * adding a requirement for rubygems in tc_dependencies (if you don't have rubygems you don't have to worry about that anyway)
+
+Tue Feb 20 14:57:28 JST 2007  m.fellinger@gmail.com
+  * fixing Global.cache_all
+
+Tue Feb 20 14:46:11 JST 2007  m.fellinger@gmail.com
+  * multiple fixes in the examples/blog
+
+Tue Feb 20 14:45:14 JST 2007  m.fellinger@gmail.com
+  * adapting the various specs for the new context/request helper
+
+Tue Feb 20 14:44:06 JST 2007  m.fellinger@gmail.com
+  * switching the testing-system to a modified version of simple_http, much cleaner :)
+
+Tue Feb 20 14:43:11 JST 2007  m.fellinger@gmail.com
+  * refactoring request_tc_helper a little bit
+
+Tue Feb 20 14:42:40 JST 2007  m.fellinger@gmail.com
+  * adding session.clear
+
+Tue Feb 20 14:42:07 JST 2007  m.fellinger@gmail.com
+  * using our own YAML::Store for store/yaml + some other minor changes
+
+Tue Feb 20 14:41:47 JST 2007  m.fellinger@gmail.com
+  * fixing StackHelper
+
+Tue Feb 20 14:41:16 JST 2007  m.fellinger@gmail.com
+  * fixing RedirectHelper
+
+Sat Feb 17 04:27:30 JST 2007  m.fellinger@gmail.com
+  * fixing example/caching
+
+Tue Feb 20 00:29:47 JST 2007  m.fellinger@gmail.com
+  * fixing serving static files
+
+Mon Feb 19 23:59:19 JST 2007  m.fellinger@gmail.com
+  * fixing the fix for the fix for the error-bug
+
+Mon Feb 19 23:42:31 JST 2007  m.fellinger@gmail.com
+  * prevent endless error-erroring
+
+Mon Feb 19 14:39:55 JST 2007  m.fellinger@gmail.com
+  * removing cruft from trinity/session, some smaller changes in tc_helper_auth... still not working though (last spec failing, most likely due to our messed up Context)
+
+Mon Feb 19 13:33:58 JST 2007  manveru@weez-int.com
+  * fixing redirection and error-handling, removing cruft from trinity/request (who'd have thought that it would fit into one screenful one day)
+
+Mon Feb 19 13:33:29 JST 2007  manveru@weez-int.com
+  * ignore the new vendor/rack for fixes of copyright and spaces
+
+Mon Feb 19 12:45:35 JST 2007  manveru@weez-int.com
+  * adding rack under lib/ramaze/vendor/rack - until rack got its first release
+
+Mon Feb 19 08:00:59 JST 2007  m.fellinger@gmail.com
+  * fixing sessions and spec_helper, removing tc_request_rack
+
+Sun Feb 18 22:08:54 JST 2007  m.fellinger@gmail.com
+  * remove provisory rack-adapter, it's replaced by adapter/mongrel|webrick
+
+Sun Feb 18 19:32:29 JST 2007  m.fellinger@gmail.com
+  * Switch adapters to work with rack
+
+Sat Feb 17 06:12:10 JST 2007  Christian Neukirchen <chneukirchen@gmail.com>
+  * Add primitive Rack adapter
+
+Sat Feb 17 00:49:43 JST 2007  m.fellinger@gmail.com
+  * some small fixes and adding MIME-types :D
+
+Fri Feb 16 23:01:19 JST 2007  m.fellinger@gmail.com
+  * adding cleanup for tc_cache to Rakefile
+
+Fri Feb 16 23:00:47 JST 2007  m.fellinger@gmail.com
+  * implementing PUT/DELETE for WEBrick plus neccesary abstraction in trinity/request
+
+Fri Feb 16 22:59:12 JST 2007  m.fellinger@gmail.com
+  * adding the files neccesary for the up/download specs, splitting the tc_request into tc_request_mongrel and tc_request_webrick
+
+Fri Feb 16 21:31:46 JST 2007  m.fellinger@gmail.com
+  * add doc/ProjectInfo for coming switch to ratchets
+
+Fri Feb 16 21:27:02 JST 2007  m.fellinger@gmail.com
+  * major rewrite of dispatcher, affecting the controller-lookup and the adapters, this is much, much cleaner now, though not perfect yet - but the first step of many.
+
+Fri Feb 16 13:01:41 JST 2007  manveru@weez-int.com
+  * avoid repetition in the subclasses of Template
+
+Fri Feb 16 13:01:17 JST 2007  manveru@weez-int.com
+  * add spec/tc_dependencies to make sure we don't leak any gems into the vanilla ramaze
+
+Fri Feb 16 13:00:41 JST 2007  manveru@weez-int.com
+  * adding store/yaml for an abstracted version of YAML::Store + corresponding specs.
+
+Fri Feb 16 13:49:06 JST 2007  m.fellinger@gmail.com
+  * fixing the issues with send_file temporarily
+
+Tue Feb 13 18:39:23 JST 2007  m.fellinger@gmail.com
+  * add specs for methods on a controller like this__is__a__method which translates to this/is/a/method
+
+Thu Feb 15 23:58:48 JST 2007  m.fellinger@gmail.com
+  * temorarily deactivate the new template-mapping
+
+Thu Feb 15 23:49:33 JST 2007  m.fellinger@gmail.com
+  * fixing missing end
+
+Thu Feb 15 23:48:08 JST 2007  m.fellinger@gmail.com
+  * autoload Element/Morpher when referenced
+
+Thu Feb 15 19:13:31 JST 2007  manveru@weez-int.com
+  * removing the alias of Ramaze::start to Ramaze::new to avoid nasty bugs when Ramaze is included into Object
+
+Thu Feb 15 19:13:04 JST 2007  manveru@weez-int.com
+  * adding some more docs for templating
+
+Thu Feb 15 13:26:22 JST 2007  manveru@weez-int.com
+  * first partial implementation of template_maps
+
+Thu Feb 15 13:19:27 JST 2007  manveru@weez-int.com
+  * add support for actions of the double__underscore__way
+
+Wed Feb 14 19:31:45 JST 2007  manveru@weez-int.com
+  * updating FAQ
+
+Wed Feb 14 18:46:06 JST 2007  manveru@weez-int.com
+  * documenting another couple of classes
+
+Wed Feb 14 18:45:58 JST 2007  manveru@weez-int.com
+  * documenting dispatcher fully
+
+Wed Feb 14 18:45:48 JST 2007  manveru@weez-int.com
+  * documenting cache/memcached
+
+Wed Feb 14 18:45:36 JST 2007  manveru@weez-int.com
+  * adding further docs to adapter/mongrel
+
+Wed Feb 14 18:44:51 JST 2007  manveru@weez-int.com
+  * fixing AuthHelper
+
+Tue Feb 13 19:57:52 JST 2007  manveru@weez-int.com
+  * fixing the examples and adapting lib/proto for the new Controller
+
+Tue Feb 13 19:57:25 JST 2007  manveru@weez-int.com
+  * add xhtml as default extension for Ezamar
+
+Tue Feb 13 15:25:56 JST 2007  manveru@weez-int.com
+  * fixing flawed references to Template::Rezamar in the docs.
+
+Tue Feb 13 15:23:20 JST 2007  manveru@weez-int.com
+  * fixing the tutorial for new implementation
+
+Tue Feb 13 15:20:59 JST 2007  manveru@weez-int.com
+  * rescue the Timeout::Error we get when a request takes too long in a test.
+
+Tue Feb 13 15:20:25 JST 2007  manveru@weez-int.com
+  * documenting all undocumented methods, some classes/modules still lacking docs.
+
+Tue Feb 13 15:19:37 JST 2007  manveru@weez-int.com
+  * fixing AspectHelper and with that subsequently AuthHelper.
+
+Tue Feb 13 13:45:59 JST 2007  m.fellinger@gmail.com
+  * rewrite of spec/spec_all and fixing a typo in spec/spec_helper
+
+Tue Feb 13 08:56:06 JST 2007  m.fellinger@gmail.com
+  * make example/caching|hello|simple run again
+
+Tue Feb 13 08:55:49 JST 2007  m.fellinger@gmail.com
+  * execute(*tasks) instead of execute *tasks
+
+Tue Feb 13 08:55:10 JST 2007  m.fellinger@gmail.com
+  * get rid of warnings in ezamar/engine - it still should be written more elegant though.
+
+Tue Feb 13 08:54:48 JST 2007  m.fellinger@gmail.com
+  * don't require aquire twice.
+
+Tue Feb 13 08:53:56 JST 2007  m.fellinger@gmail.com
+  * had a double definition of the request_path method for webrick-requests.
+
+Tue Feb 13 08:53:13 JST 2007  m.fellinger@gmail.com
+  * set the default of bin/ramaze and spec_all to output warnings.
+
+Tue Feb 13 08:50:35 JST 2007  m.fellinger@gmail.com
+  * use our own methods for showing the usage, less hacky and avoids warnings
+
+Tue Feb 13 00:19:06 JST 2007  manveru@weez-int.com
+  * make AspectHelper not bail out at start.
+
+Tue Feb 13 00:18:44 JST 2007  manveru@weez-int.com
+  * define #current on the actual Response-object
+
+Tue Feb 13 00:12:46 JST 2007  manveru@weez-int.com
+  * This patch is HUGE, introducing real controllers and making the templating-engines even more uniform and modular, selection of the engine now based on file-extension or and/or a trait, fixing all tests (except AspectHelper and AuthHelper which relies on that), moving the Ezamar-engine out of the usual templating (so you can use it for your own evil plans) and quite some other stuff... this rewrite didn't work out to be very atomic, but the effects are.
+
+Tue Feb 13 00:11:52 JST 2007  manveru@weez-int.com
+  * make the rdoc-tasks a bit nicer and add doc/FAQ
+
+Mon Feb 12 13:01:14 JST 2007  manveru@weez-int.com
+  * add doc/FAQ
+
+Mon Feb 12 11:26:04 JST 2007  manveru@weez-int.com
+  * Ramaze::Template::Ramaze => Ramaze::Template::Ezamar - renaming the templating to get rid of confusion and provide a name to talk about when one means the templating.
+
+Mon Feb 12 10:21:56 JST 2007  manveru@weez-int.com
+  * add hint about installation to tutorial/todolist
+
+Sun Feb 11 07:23:07 JST 2007  m.fellinger@gmail.com
+  * remove allison from the repository again.
+
+Sat Feb 10 05:43:50 JST 2007  m.fellinger@gmail.com
+  * fixing specs for tc_helper_feed for broken hpricot
+
+Sat Feb 10 05:43:25 JST 2007  m.fellinger@gmail.com
+  * using ramaze/store/default for proto
+
+Sat Feb 10 00:02:14 JST 2007  manveru@weez-int.com
+  * fix issue when having a symbol as Global.cache for sessions.
+
+Sat Feb 10 00:01:56 JST 2007  manveru@weez-int.com
+  * better error-handling for Template::Ramaze
+
+Sat Feb 10 00:01:44 JST 2007  manveru@weez-int.com
+  * set @action for Template::Ramaze
+
+Sat Feb 10 00:00:54 JST 2007  manveru@weez-int.com
+  * extending Store::Default and adding corresponding specs and docs.
+
+Sat Feb 10 00:00:31 JST 2007  manveru@weez-int.com
+  * add the doc/tutorial/todolist.txt
+
+Fri Feb  9 23:59:58 JST 2007  manveru@weez-int.com
+  * add the example/todolist
+
+Fri Feb  9 20:44:06 JST 2007  manveru@weez-int.com
+  * add Store::Default#empty?
+
+Thu Feb  8 13:17:09 JST 2007  manveru@weez-int.com
+  * adding doc/INSTALL
+
+Thu Feb  8 13:14:09 JST 2007  manveru@weez-int.com
+  * fixing and extending amrita2 templating, adding the example for it.
+
+Tue Feb  6 22:52:03 JST 2007  manveru@weez-int.com
+  * fixing a bug in feed-helper and hiding a bug in current hpricot... (0.5) - need to file a bug-report :(
+
+Fri Feb  9 08:43:09 JST 2007  m.fellinger@gmail.com
+  * a bit nicer output if the test is skipped due to dependencies
+
+Fri Feb  9 08:42:48 JST 2007  m.fellinger@gmail.com
+  * add the testfile for send_file
+
+Fri Feb  9 08:41:57 JST 2007  m.fellinger@gmail.com
+  * fixing send_file for mongrel-adapter.
+
+Thu Feb  8 18:01:36 JST 2007  m.fellinger@gmail.com
+  tagged 0.0.7
+
+Thu Feb  8 18:01:22 JST 2007  m.fellinger@gmail.com
+  * update changelog
+
 Thu Feb  8 11:18:46 JST 2007  m.fellinger@gmail.com
   * this fixes some issues with rubygems/rdoc
 
@@ -15,9 +1336,6 @@ Wed Feb  7 19:37:10 JST 2007  m.fellinger@gmail.com
 
 Wed Feb  7 19:36:04 JST 2007  m.fellinger@gmail.com
   * added :distribute task and fixed a small typo
-
-Tue Feb  6 23:44:03 JST 2007  m.fellinger@gmail.com
-  * fixing typo in Rakefile
 
 Wed Feb  7 19:07:25 JST 2007  m.fellinger@gmail.com
   tagged 0.0.6
@@ -37,6 +1355,9 @@ Wed Feb  7 19:02:15 JST 2007  m.fellinger@gmail.com
 Wed Feb  7 19:00:52 JST 2007  m.fellinger@gmail.com
   * update changelog, fixing Rakefile and making bin/ramaze a bit nicer.
 
+Tue Feb  6 23:44:03 JST 2007  m.fellinger@gmail.com
+  * fixing typo in Rakefile
+
 Tue Feb  6 17:29:23 JST 2007  m.fellinger@gmail.com
   * adding documentation for all traits.
 
@@ -48,6 +1369,9 @@ Tue Feb  6 17:28:42 JST 2007  m.fellinger@gmail.com
 
 Tue Feb  6 17:28:25 JST 2007  m.fellinger@gmail.com
   * add rake allison for the improved allison rdoc-template
+
+Tue Feb  6 12:42:37 JST 2007  m.fellinger@gmail.com
+  * fixing minor typos in the README, removing ramaze.xcf and fixing require hpricot in tc_helper_feed
 
 Tue Feb  6 16:08:35 JST 2007  manveru@weez-int.com
   * add a post install message for the gem and add documentation for Tool::Create
@@ -66,9 +1390,6 @@ Sun Feb  4 23:34:54 JST 2007  manveru@weez-int.com
 
 Sun Feb  4 22:50:29 JST 2007  manveru@weez-int.com
   * finally make ramaze --create project work
-
-Tue Feb  6 12:42:37 JST 2007  m.fellinger@gmail.com
-  * fixing minor typos in the README, removing ramaze.xcf and fixing require hpricot in tc_helper_feed
 
 Mon Feb  5 11:30:34 JST 2007  m.fellinger@gmail.com
   * minor changes to README
@@ -163,6 +1484,12 @@ Fri Feb  2 20:20:46 JST 2007  m.fellinger@gmail.com
 Fri Feb  2 20:20:07 JST 2007  m.fellinger@gmail.com
   * a little bit nicer API in Dispatcher, but most importantly, fully documented!
 
+Thu Feb  1 17:26:41 JST 2007  m.fellinger@gmail.com
+  * something broke... now reading the template extra-early... this should give us better ways to do action-compiles later on...
+
+Thu Feb  1 16:48:13 JST 2007  m.fellinger@gmail.com
+  * Ramaze::Template::Element => Ramaze::Element
+
 Fri Feb  2 14:32:26 JST 2007  manveru@weez-int.com
   * first draft of documentation for dispatcher
 
@@ -216,12 +1543,6 @@ Thu Feb  1 20:39:36 JST 2007  manveru@weez-int.com
 
 Thu Feb  1 20:39:05 JST 2007  manveru@weez-int.com
   * simplify the code in helper.rb a little bit
-
-Thu Feb  1 17:26:41 JST 2007  m.fellinger@gmail.com
-  * something broke... now reading the template extra-early... this should give us better ways to do action-compiles later on...
-
-Thu Feb  1 16:48:13 JST 2007  m.fellinger@gmail.com
-  * Ramaze::Template::Element => Ramaze::Element
 
 Wed Jan 31 22:33:16 JST 2007  manveru@weez-int.com
   * small updates to the README again, adding some links.
@@ -364,6 +1685,9 @@ Mon Jan 29 20:05:39 JST 2007  m.fellinger@gmail.com
 Mon Jan 29 16:41:05 JST 2007  m.fellinger@gmail.com
   * Ramaze.autoreload instead of Kernel.autoreload
 
+Mon Jan 29 07:49:46 JST 2007  manveru@weez-int.com
+  * small change to make ancestral_trait work for the current instance as well.
+
 Mon Jan 29 15:03:28 JST 2007  manveru@weez-int.com
   * the adapter should return only one thread to watch...
 
@@ -375,9 +1699,6 @@ Mon Jan 29 14:55:46 JST 2007  manveru@weez-int.com
 
 Mon Jan 29 14:54:24 JST 2007  manveru@weez-int.com
   * first step in supporting startup for multiple servers at once (ramaze -p 7000..7010) via a new Global.ports that is taken from Global.port (which loses in significance... but it's only of value before startup anyway
-
-Mon Jan 29 07:49:46 JST 2007  manveru@weez-int.com
-  * small change to make ancestral_trait work for the current instance as well.
 
 Sun Jan 28 15:46:11 JST 2007  manveru@weez-int.com
   * add documentation and fix minor bugs in ramaze, ramaze/global and ramaze/inform
@@ -514,6 +1835,9 @@ Tue Jan 23 20:32:32 JST 2007  manveru@weez-int.com
 Tue Jan 23 20:30:41 JST 2007  manveru@weez-int.com
   * add test for headers in tc_request and add a method for raw_get that gives you the original object from open() back
 
+Sun Jan 21 03:16:56 JST 2007  manveru@weez-int.com
+  * remove cruft from helper/feed
+
 Mon Jan 22 21:25:19 JST 2007  manveru@weez-int.com
   * CrudHelper and testcase
 
@@ -543,9 +1867,6 @@ Mon Jan 22 14:40:10 JST 2007  manveru@weez-int.com
 
 Mon Jan 22 14:37:25 JST 2007  manveru@weez-int.com
   * reimplementation of Element, making code a bit cleaner (but longer... and possibly harder to understand?) also adding some tests for <Element />
-
-Sun Jan 21 03:16:56 JST 2007  manveru@weez-int.com
-  * remove cruft from helper/feed
 
 Fri Jan 19 21:39:52 JST 2007  manveru@weez-int.com
   * document lib/test/test_helper
@@ -604,6 +1925,12 @@ Fri Jan 19 00:11:04 JST 2007  manveru@weez-int.com
 Thu Jan 18 22:57:49 JST 2007  manveru@weez-int.com
   * fixing the controller-method-lookup
 
+Thu Jan 18 12:24:54 JST 2007  m.fellinger@gmail.com
+  * patching method-lookup for controllers... now it should be possible to expose public methods via helper-methods... have to test this first though.
+
+Wed Jan 17 11:56:21 JST 2007  m.fellinger@gmail.com
+  * rephrase message on startup...
+
 Thu Jan 18 22:44:18 JST 2007  manveru@weez-int.com
   * remove the useless invalidate_cache method from CacheHelper
 
@@ -645,12 +1972,6 @@ Thu Jan 18 13:34:29 JST 2007  manveru@weez-int.com
 
 Thu Jan 18 13:33:57 JST 2007  manveru@weez-int.com
   * rewrite FeedHelper, still not functional, but a lot nicer to build XML from objects
-
-Thu Jan 18 12:24:54 JST 2007  m.fellinger@gmail.com
-  * patching method-lookup for controllers... now it should be possible to expose public methods via helper-methods... have to test this first though.
-
-Wed Jan 17 11:56:21 JST 2007  m.fellinger@gmail.com
-  * rephrase message on startup...
 
 Wed Jan 17 00:18:30 JST 2007  manveru@weez-int.com
   * provide some info about where the adapter attempts to connect... also fix debugging-output in tests
@@ -739,21 +2060,6 @@ Sun Jan 14 06:52:54 JST 2007  manveru@weez-int.com
 Sun Jan 14 06:49:14 JST 2007  manveru@weez-int.com
   * finally added and integrated caching, possible caches for now are YAML::Store, usual Hash (for one instance only) and MemCache, the respective objects are YAMLStoreCache, MemoryCache and MemcachedCache, you can set them with Global.cache = respective_class before startup, there is no functionality yet to change this during runtime, but you could Ramaze.const_set('Cache', YourClass.new) since Ramze::Cache is the usual instance. See the testcases and documentation for more information on the usage
 
-Fri Jan 12 00:43:08 JST 2007  manveru@weez-int.com
-  * fix Rakefile
-
-Fri Jan 12 00:35:03 JST 2007  manveru@weez-int.com
-  * add some more tasks, :record and :changes (record calls changes)
-
-Fri Jan 12 00:28:19 JST 2007  manveru@weez-int.com
-  * added tasks changes-xml and changes-text to the Rakefile, stores the current changes into textual format for further use :)
-
-Tue Jan  9 14:19:11 JST 2007  manveru@weez-int.com
-  * add the template for the tc_template_ramaze
-
-Tue Jan  9 14:17:22 JST 2007  manveru@weez-int.com
-  * support template-only actions for Template::Ramaze, now you can just put a file with the appropiate name in your template-directory and it doesn't need a seperate method in your controller... this does not work yet with multiple arguments
-
 Sat Jan 13 07:12:07 JST 2007  manveru@weez-int.com
   * add tc_feed_helper
 
@@ -784,6 +2090,21 @@ Sat Jan 13 07:07:50 JST 2007  manveru@weez-int.com
 Thu Jan 11 23:00:53 JST 2007  manveru@weez-int.com
   * simple CacheHelper
 
+Fri Jan 12 00:43:08 JST 2007  manveru@weez-int.com
+  * fix Rakefile
+
+Fri Jan 12 00:35:03 JST 2007  manveru@weez-int.com
+  * add some more tasks, :record and :changes (record calls changes)
+
+Fri Jan 12 00:28:19 JST 2007  manveru@weez-int.com
+  * added tasks changes-xml and changes-text to the Rakefile, stores the current changes into textual format for further use :)
+
+Tue Jan  9 14:19:11 JST 2007  manveru@weez-int.com
+  * add the template for the tc_template_ramaze
+
+Tue Jan  9 14:17:22 JST 2007  manveru@weez-int.com
+  * support template-only actions for Template::Ramaze, now you can just put a file with the appropiate name in your template-directory and it doesn't need a seperate method in your controller... this does not work yet with multiple arguments
+
 Mon Jan  8 22:38:33 JST 2007  manveru@weez-int.com
   * stop some squeaking of the wheel and added a little comment of the why
 
@@ -792,6 +2113,9 @@ Mon Jan  8 17:38:21 JST 2007  manveru@weez-int.com
 
 Mon Jan  8 18:37:14 JST 2007  manveru@weez-int.com
   * check before undef method id in Feed::Bag, that makes it better suited for autoreload
+
+Mon Jan  8 18:15:30 JST 2007  manveru@weez-int.com
+  * escape the stuff we get (possibly dangerous)
 
 Mon Jan  8 16:28:02 JST 2007  manveru@weez-int.com
   * serious extension of TCFormHelper
@@ -813,9 +2137,6 @@ Mon Jan  8 16:25:22 JST 2007  manveru@weez-int.com
 
 Mon Jan  8 16:24:57 JST 2007  manveru@weez-int.com
   * little prettification in dispatcher
-
-Mon Jan  8 18:15:30 JST 2007  manveru@weez-int.com
-  * escape the stuff we get (possibly dangerous)
 
 Mon Jan  8 12:55:09 JST 2007  manveru@weez-int.com
   * fixed test (for rcov)
