@@ -7,6 +7,7 @@
   in case you have RubyGems installed.
   (this will work as soon as I have registered on RubyForge ;)
 
+
 * via darcs
 
   To get the latest and sweetest, you can just pull from the repository and run
@@ -39,3 +40,8 @@
 
     $ darcs send -o ramaze_bundle
     $ gzip -c ramaze_bundle > ramaze_bundle.gz
+
+
+* via install.rb
+
+  Support for install.rb has been canceled and the file removed.
