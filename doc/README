@@ -34,16 +34,14 @@ Ramaze offers following features at the moment:
 
    Rack supports at the moment:
 
-    * Mongrel
+    * [Mongrel](http://mongrel.rubyforge.org/)
 
-      http://mongrel.rubyforge.org/
       Mongrel is a fast HTTP library and server for Ruby that is intended for
       hosting Ruby web applications of any kind using plain HTTP rather than
       FastCGI or SCGI.
 
-    * WEBrick
+    * [WEBrick](http://www.webrick.org/)
 
-      http://www.webrick.org/
       WEBrick is a Ruby library program to build HTTP servers.
 
     * CGI
@@ -53,37 +51,31 @@ Ramaze offers following features at the moment:
 
 
 * Templates
-  * Amrita2
+  * [Amrita2](http://amrita2.rubyforge.org/)
 
-    http://amrita2.rubyforge.org/
     Amrita2 is a xml/xhtml template library for Ruby. It makes html documents
     from a template and a model data.
 
-  * Erubis
+  * [Erubis](http://rubyforge.org/projects/erubis)
 
-    http://rubyforge.org/projects/erubis
     Erubis is a fast, secure, and very extensible implementation of eRuby.
 
-  * Haml
+  * [Haml](http://haml.hamptoncatlin.com/)
 
-    http://haml.hamptoncatlin.com/
     Haml takes your gross, ugly templates and replaces them with veritable Haiku.
 
-  * Liquid
+  * [Liquid](http://home.leetsoft.com/liquid)
 
-    http://home.leetsoft.com/liquid
     Liquid's syntax and parse model are inspired by Django templates, as well
     as PHP's smarty.
 
-  * Markaby
+  * [Markaby](http://code.whytheluckystiff.net/markaby/)
 
-    http://code.whytheluckystiff.net/markaby/
     Markaby means Markup as Ruby.
 
   * Ezamar
 
-    A simple homage to Nitros templating. Please check out http://nitroproject.org
-    for more information.
+    A simple homage to [Nitro](http://nitroproject.org)s templating.
 
 * Cache
   * Hash
@@ -113,45 +105,60 @@ Ramaze offers following features at the moment:
 
 There are some basic principles that Ramaze tries to follow:
 
-* Test everything
+* KISS (Keep It Super Simple)
 
-  What use is a wonderful application if it doesn't work?
+  Ramaze doesn't introduce any major change of paradigm for everyone familiar
+  with Ruby and the basics of Web-development.
 
+* POLS (Principle Of Least Surprise)
 
-* Document everything
-
-  Documentation is the glue between the code and the programmers brain
-
-
-* Keep It Super Simple (KISS)
-
-  Most things should be understandable after reading them once
-
-
-* Principle Of Least Surprise (POLS)
-
-  Going the way of ruby
-
+  Ramaze tries to be intuitive and easy to learn. Most functionality is built in
+  a way to help, not to obfuscate or confuse.
 
 * Modular design
 
-  Making it as simple as possible to extract parts
+  Use what you want and how you want it.
 
+  Through Ruby Ramaze provides one of the most powerful programming-languages
+  available, giving you full control over your system.
+
+  Even the most essential parts of Ramaze can easily be replaced and/or modified
+  without losing the advantage of the whole framework. 
 
 * Minimal dependencies
 
-  In case a dependency is not met use a simple fall-back instead
+  Nothing besides Ruby is required for the basic features.
 
+  Of course you can take advantage of several wonderful libraries, but Ramaze is
+  built in a way to be run on any basic setup.
 
-* Provide as many examples as possible
+* Documentation
 
-  Examples are a superior way of getting a quick start into everything
+  Document everything, classes, modules, methods, configuration...
 
+  Through 100% documentation Ramaze gives the developer easy and solid
+  understanding of the underlying concepts and functionality.
 
 * Open development
 
-  I happily accept all patches or feature-requests that you may have,
-  as long as they comply with these principles
+  Everyone is welcome to contribute to Ramaze in the easiest way possible. The
+  repository is open for patches passing the Test-suite.
+
+* Examples
+
+  Everyone learns different, some only read the source, others browse
+  documentation, but everyone loves examples for a quick and painless start.
+
+  Ramaze addresses this need and offers a wide variety of examples of usage,
+  basic functionality, project-layout and more advanced applications.
+
+* Fully BDD (Behaviour Driven Design)
+
+  Ramaze has a very complete set of so-called specifications built by RSpec.
+  These specs define the way Ramaze has to behave.
+
+  The specs are checked every time a new patch is pushed into the repository,
+  deciding whether the changes the patch applies are valid and don't break the framework.
 
 
 = Installation
@@ -164,6 +171,7 @@ There are some basic principles that Ramaze tries to follow:
 
   in case you have RubyGems installed.
   (this will work as soon as I have registered on RubyForge ;)
+
 
 * via darcs
 
@@ -197,6 +205,11 @@ There are some basic principles that Ramaze tries to follow:
 
     $ darcs send -o ramaze_bundle
     $ gzip -c ramaze_bundle > ramaze_bundle.gz
+
+
+* via install.rb
+
+  Support for install.rb has been canceled and the file removed.
 
 
 = Getting Started
