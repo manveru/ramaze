@@ -2,9 +2,8 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-require 'ramaze/tool/localize'
-require 'ramaze/trinity/session'
-#require 'ramaze/inform'
+
+testcase_requires 'ya2yaml', 'ramaze/tool/localize'
 
 Ramaze::Tool::Localize.trait :enable    => true,
                              :file      => 'spec/ramaze/conf/locale_%s.yaml'.freeze,

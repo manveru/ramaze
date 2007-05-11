@@ -41,11 +41,11 @@ class Ramaze::Tool::Localize
 
     def localize_body(body, options)
       locale = session[:LOCALE] || set_session_locale
-      
+
       body.gsub!(trait[:regex]) do
         localize($1, locale)
       end
-      
+
       store(locale, trait[:default_language])
 
       body

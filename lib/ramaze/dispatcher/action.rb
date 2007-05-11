@@ -1,8 +1,8 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'ramaze/tool/tidy'
-require 'ramaze/tool/localize'
+# require 'ramaze/tool/tidy'
+# require 'ramaze/tool/localize'
 
 module Ramaze
   module Dispatcher
@@ -11,8 +11,8 @@ module Ramaze
       # The response is passed to each filter by sending .call(response) to it.
 
       trait :filter => [
-        Ramaze::Tool::Localize,
-        Ramaze::Tool::Tidy
+        # Ramaze::Tool::Localize,
+        # Ramaze::Tool::Tidy
       ]
 
       class << self
