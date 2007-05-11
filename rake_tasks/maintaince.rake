@@ -16,7 +16,7 @@ task 'add-copyright' do
 end
 
 desc "doc/README to html"
-Rake::RDocTask.new('gen-readme2html') do |rd|
+Rake::RDocTask.new('readme2html-build') do |rd|
   rd.options = %w[
     --quiet
     --opname readme.html
@@ -29,7 +29,7 @@ Rake::RDocTask.new('gen-readme2html') do |rd|
 end
 
 desc "doc/README to doc/README.html"
-task 'readme2html' => 'gen-readme2html' do
+task 'readme2html' => ['readme-build', 'readme2html-build'] do
   cp('readme/files/doc/README.html', 'doc/README.html')
   rm_rf('readme')
 end
@@ -87,7 +87,7 @@ task 'fix-end-spaces' do
 end
 
 desc "Compile the doc/README from the parts of doc/readme"
-task 'build-readme' do
+task 'readme-build' do
   require 'enumerator'
 
   chapters = [

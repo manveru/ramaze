@@ -127,7 +127,7 @@ end
 
 desc "show a todolist from all the TODO tags in the source"
 task :todo do
-  files = Dir[File.join(BASEDIR, '{lib,test}', '**/*.rb')]
+  files = Dir[File.join(BASEDIR, '{lib,spec}', '**/*.rb')]
 
   files.each do |file|
     lastline = todo = comment = long_comment = false
