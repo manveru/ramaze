@@ -2,14 +2,9 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze/template'
+require 'ramaze/action'
 
 module Ramaze
-
-  class Action < Struct.new('Action', :method, :params, :template)
-    def to_s
-      %{#<Action method=#{method.inspect}, params=#{params.inspect} template=#{template.inspect}>}
-    end
-  end
 
   # The Controller is responsible for combining and rendering actions.
 
