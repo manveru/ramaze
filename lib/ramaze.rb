@@ -27,6 +27,7 @@ require 'ramaze/template/ezamar'
 require 'ramaze/http_status'
 require 'ramaze/gestalt'
 require 'ramaze/version'
+require 'ramaze/sourcereload'
 
 Thread.abort_on_exception = true
 
@@ -34,7 +35,7 @@ module Ramaze
 
   # This initializes all the other stuff, Controller, Adapter and Global
   # which in turn kickstart Ramaze into duty.
-  # additionally it starts up the autoreload , which reloads all the stuff every
+  # additionally it starts up the sourcereload, which reloads all the stuff every
   # second in case it has changed.
   # please note that Ramaze will catch SIGINT (^C) and kill the running adapter
   # at that event, this provides a nice and clean way to shut down.
@@ -154,11 +155,12 @@ module Ramaze
     Inform.debug("mapped Controllers: #{Global.mapping.inspect}")
   end
 
-  # Initialize the Kernel#autoreload with the value of Global.autoreload
+  # Initialize the SourceReload with the value of Global.autoreload
 
-  def init_autoreload
-    return unless Global.autoreload
-    Ramaze.autoreload Global.autoreload
+  def init_sourcereload
+    interval = Global.sourcereload
+    return unless interval
+    Thread.main[:sourcereload] = SourceReload.start(interval)
   end
 
   # initialize the Global, setting a default-mapping if none is given yet.

@@ -6,7 +6,7 @@ require 'set'
 
 module Ramaze
   class GlobalStruct < OpenStruct
-    # autoreload     - Interval for autoreloading changed source in seconds
+    # sourcereload   - Interval in seconds to reload changed sources
     # adapter        - Webserver-adapter ( :mongrel | :webrick )
     # backtrace_size - size of backtrace to be logged (and shown on error-page).
     # benchmarking   - enable timing of each request
@@ -27,7 +27,7 @@ module Ramaze
     # ramaze_shutdown - Internal list of methods and lambdas that are executed on shutdown
 
     DEFAULT = {
-      :autoreload       => 5,
+      :sourcereload     => 5,
       :adapter          => :webrick,
       :backtrace_size   => 10,
       :benchmarking     => false,
@@ -54,7 +54,7 @@ module Ramaze
         }
       ],
       :ramaze_startup => [
-        :setup_controllers, :init_autoreload, :init_adapter
+        :setup_controllers, :init_sourcereload, :init_adapter
       ],
 
       :shutdown => [],
