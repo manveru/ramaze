@@ -35,16 +35,11 @@ spec_layout.each do |task_name, specs|
   task task_name => [:clean] do
     wrap = SpecWrap.new(*specs)
     wrap.run
-
-    Rake::Task[:clean].execute
   end
-
 end
 
 desc "Test all"
 task "test:all" => [:clean] do
   wrap = SpecWrap.new(*spec_layout.values.flatten)
   wrap.run
-
-  Rake::Task[:clean].execute
 end
