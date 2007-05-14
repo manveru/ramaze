@@ -1,17 +1,10 @@
 <html>
   <head>
     <title>#{@title}</title>
-    <?r if @coderay ?>
-      <style>
-        #{CodeRay::Encoders[:html]::CSS.new.stylesheet}
-      </style>
-    <?r end ?>
     <link rel="stylesheet" href="/css/ramaze_error.css" />
     <script type="text/javascript" src="/js/jquery.js"></script>
   </head>
   <body>
-    <img id="logo" alt="Ramaze" src="/ramaze.png" />
-
     <h1>#{@title}</h1>
 
     <table class="main">
@@ -27,25 +20,13 @@
             <div class="source">
               <table style="width:100%;">
                 <tr>
-                  <td colspan="2">vim #{file} +#{lineno}</td>
+                  <td colspan="2">#{@editor} #{file} +#{lineno}</td>
                 </tr>
-                <?r
-                  if @coderay
-                    code = lines.map{|no, code, cur| code}.join("\n")
-                    options = {
-                      :wrap => :div,
-                      :line_numbers => :inline,
-                      :line_number_start => (lineno.to_i - Global.backtrace_size)
-                      }
-                     ?>
-                     #{CodeRay.scan(code, :ruby).html(options)}
-                <?r else ?>
-                  <?r lines.each do |llineno, lcode, lcurrent| ?>
-                    <tr class="source" #{'style="background:#faa;"' if lcurrent}>
-                      <td>#{llineno}</td>
-                      <td><pre>#{lcode.to_s.rstrip}</pre></td>
-                    </tr>
-                  <?r end ?>
+                <?r lines.each do |llineno, lcode, lcurrent| ?>
+                  <tr class="source" #{'style="background:#faa;"' if lcurrent}>
+                    <td class="lineno">#{llineno}</td>
+                    <td class="code"><pre>#{lcode.to_s.rstrip}</pre></td>
+                  </tr>
                 <?r end ?>
               </table>
             </div>

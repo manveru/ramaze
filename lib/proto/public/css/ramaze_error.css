@@ -1,7 +1,3 @@
-img#logo {
-  float:left;
-}
-
 h1.main {
   text-align: center;
 }
@@ -39,4 +35,16 @@ tr.source_container div table tr.source {
 
 div.source {
   background: #fff;
+}
+
+tr.source {
+  font-size: 1.0em;
+}
+
+tr.source td.lineno {
+  font-size: 0.8em;
+}
+
+tr.source td.code pre {
+  height: 0.1em;
 }

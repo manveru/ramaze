@@ -322,11 +322,7 @@ module Ramaze
       end
 
       @title = CGI.escapeHTML(title)
-      require 'coderay'
-      @coderay = true
-      title
-    rescue LoadError => ex
-      @coderay = false
+      @editor = (ENV['EDITOR'] || 'vim')
       title
     rescue Object => ex
       Inform.error(ex)
