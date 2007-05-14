@@ -172,7 +172,7 @@ module Ramaze
         ancs = (ancestors - exclude).select{|a| a.is_a?(Module)}
         meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
         # fix for facets/more/paramix
-        meths - ancs
+        meths - ancs.map(&:to_s)
       end
 
       def pattern_for(path)
