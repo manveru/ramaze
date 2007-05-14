@@ -26,7 +26,8 @@ module Ramaze
     def reloader
       Thread.new do
         loop do
-          all_reload_files.each do |file|
+          files = all_reload_files
+          files.each do |file|
             mtime = mtime(file)
 
             next if (@mtimes[file] ||= mtime) == mtime
