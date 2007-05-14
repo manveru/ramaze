@@ -21,7 +21,7 @@ spec =
         s.add_dependency('rack', '>=0.1.0')
         # s.required_ruby_version = '>= 1.8.5'
 
-        s.files = (RDOC_FILES + %w[Rakefile] + Dir["{examples,bin,doc,spec,lib}/**/*"]).uniq
+        s.files = (RDOC_FILES + %w[Rakefile] + Dir["{examples,bin,doc,spec,lib,rake_tasks}/**/*"]).uniq
 
         # s.extensions = FileList["ext/**/extconf.rb"].to_a
     end

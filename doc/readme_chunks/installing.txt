@@ -5,7 +5,6 @@
     $ gem install ramaze
 
   in case you have RubyGems installed.
-  (this will work as soon as I have registered on RubyForge ;)
 
 
 * via darcs

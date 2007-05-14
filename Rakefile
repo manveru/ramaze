@@ -86,7 +86,7 @@ desc "create bzip2 and tarball"
 task :distribute => :gem do
   sh "rm -rf pkg/ramaze-#{VERS}"
   sh "mkdir -p pkg/ramaze-#{VERS}"
-  sh "cp -r {bin,doc,lib,examples,spec,Rakefile,setup.rb} pkg/ramaze-#{VERS}/"
+  sh "cp -r {bin,doc,lib,examples,spec,Rakefile,rake_tasks} pkg/ramaze-#{VERS}/"
 
   Dir.chdir('pkg') do |pwd|
     sh "tar -zcvf ramaze-#{VERS}.tar.gz ramaze-#{VERS}"
