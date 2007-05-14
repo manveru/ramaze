@@ -24,20 +24,29 @@ module Ramaze
         Ramaze::Error::NoController => [404, '/error'],
       }
 
+    trait :shield_cache => Global.cache.new
+
+    trait :shielded => [404]
+
     class << self
       include Trinity
 
       def handle rack_request, rack_response
         setup_environment(rack_request, rack_response)
-        dispatch
+
+        path = request.path_info.squeeze('/')
+        Inform.info("Request from #{request.remote_addr}: #{path}")
+
+        if Global.shield
+          shielded_dispatch(path)
+        else
+          dispatch(path)
+        end
       rescue Object => error
         Dispatcher::Error.process(error)
       end
 
-      def dispatch
-        path = request.path_info.squeeze('/')
-        Inform.info("Request from #{request.remote_addr}: #{path}")
-
+      def dispatch(path)
         catch(:respond) do
           redirection = catch(:redirect) do
             found = filter(path)
@@ -53,7 +62,26 @@ module Ramaze
       def dispatch_to path
         raise "Redirect to #{path} from #{path}" if request.path_info == path
         request.path_info = path
-        dispatch
+
+        if Global.shield
+          shielded_dispatch(path)
+        else
+          dispatch(path)
+        end
+      end
+
+      def shielded_dispatch(path)
+        shield_cache = trait[:shield_cache]
+        handled = shield_cache[path]
+        return handled if handled
+
+        dispatched = dispatch(path)
+
+        unless trait[:shielded].include?(dispatched.status)
+          dispatched
+        else
+          shield_cache[path] = dispatched
+        end
       end
 
       def filter path
