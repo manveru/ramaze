@@ -26,16 +26,16 @@ module Ramaze
     def reloader
       Thread.new do
         loop do
-          files = all_reload_files
-          files.each do |file|
+          all_reload_files.each do |file|
             mtime = mtime(file)
 
             next if (@mtimes[file] ||= mtime) == mtime
 
-            sleep(@interval / files.size.to_f)
             Inform.debug("reload #{file}")
             @mtimes[file] = mtime if safe_load(file)
           end
+
+          sleep(@interval)
         end
       end
     end

@@ -27,7 +27,7 @@ module Ramaze
     # ramaze_shutdown - Internal list of methods and lambdas that are executed on shutdown
 
     DEFAULT = {
-      :sourcereload     => 5,
+      :sourcereload     => 1,
       :adapter          => :webrick,
       :backtrace_size   => 10,
       :benchmarking     => false,
