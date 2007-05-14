@@ -15,9 +15,10 @@ require 'ramaze/version'
 load 'rake_tasks/conf.rake'
 load 'rake_tasks/gem.rake'
 load 'rake_tasks/maintaince.rake'
+load 'rake_tasks/spec.rake'
 
-desc "Packages up ramaze gem."
-task :default => [:test]
+task :default => ['test:all']
+task :test => ['test:all']
 
 desc "clean up temporary files and gems"
 task :package => [:clean]
@@ -62,12 +63,6 @@ Spec::Rake::SpecTask.new(:rcov_summary => :rcov_dir) do |t|
   t.spec_opts = ["--format", "html"]
   t.out = 'doc/output/tools/rcov/test.html'
   t.fail_on_error = false
-end
-
-desc "run the specs and clean up afterwards"
-task :test do
-  ruby "#{File.dirname(__FILE__)}/spec/all.rb"
-  sh "rake clean"
 end
 
 desc "generate rdoc"
