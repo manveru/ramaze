@@ -50,7 +50,7 @@ def ramaze_start hash = {}
     :port         => 7007,
     :host         => '127.0.0.1',
     :force        => true,
-    :force_setup  => true,
+    :origin       => :spec,
   }.merge(hash)
 
   Ramaze.start(options)

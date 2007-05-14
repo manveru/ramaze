@@ -63,10 +63,8 @@ module Ramaze
     starter = caller[0].split(':').first
     return unless ($0 == starter or options.delete(:force))
 
+    options[:origin] ||= :main
     init_global options
-
-    return if options.delete(:fake_start)
-
     startup
   end
 
@@ -165,13 +163,15 @@ module Ramaze
 
   # initialize the Global, setting a default-mapping if none is given yet.
   #
-  # You may pass :force_setup => true in your options if you want your options
-  # to override everything else set till now.
+  # It will check :origin to use Global.setup instead of Global.update and so
+  # override old settings.
+  # This is done for :origin being :console, :main or :spec
 
   def init_global options = {}
     tmp_mapping = Global.mapping || {}
 
-    if options.delete(:force_setup)
+    case options[:origin]
+    when :console, :main, :spec
       Global.setup(options)
     else
       Global.update(options)

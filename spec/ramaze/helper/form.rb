@@ -26,6 +26,7 @@ Logger.send(:class_variable_set, "@@global_logger", Ramaze::Informer.new)
 Og.start :destroy => true
 
 class TCFormHelperEntryController < Ramaze::Controller
+  map '/'
   helper :form
 
   def index
@@ -54,6 +55,7 @@ class TCFormHelperEntryController < Ramaze::Controller
 end
 
 class TCFormHelperEntryTimestampedController < Ramaze::Controller
+  map '/entry_timestamped'
   helper :form
 
   def index
@@ -66,6 +68,7 @@ class TCFormHelperEntryTimestampedController < Ramaze::Controller
 end
 
 class TCFormHelperEntryDatedController < Ramaze::Controller
+  map '/entry_dated'
   helper :form
 
   def index
@@ -111,8 +114,6 @@ describe "FormHelper" do
     end
 
     describe "EntryTimestamped" do
-      ramaze :fake_start => true, :mapping => {'/entry_timestamped' => TCFormHelperEntryTimestampedController}
-
       it "testrun" do
         get('/entry_timestamped/').body.should == "FormHelper EntryTimestamped"
       end
@@ -124,8 +125,6 @@ describe "FormHelper" do
     end
 
     describe "EntryDated" do
-      ramaze :fake_start => true, :mapping => {'/entry_dated' => TCFormHelperEntryDatedController}
-
       it "testrun" do
         get('/entry_dated').body.should ==
           "FormHelper Dated"

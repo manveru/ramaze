@@ -95,7 +95,7 @@ begin
     [ '--copyright',            GetoptLong::NO_ARGUMENT       ],
   ]
 
-  options = {:force_setup => true, :force => true}
+  options = {:origin => :console, :force => true}
 
   create = lambda do |app|
     require 'ramaze/tool/create'
