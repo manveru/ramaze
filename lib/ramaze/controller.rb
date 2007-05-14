@@ -170,7 +170,9 @@ module Ramaze
         exclude = Controller.trait[:exclude_action_modules]
 
         ancs = (ancestors - exclude).select{|a| a.is_a?(Module)}
-        ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
+        meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
+        # fix for facets/more/paramix
+        meths - ancs
       end
 
       def pattern_for(path)
