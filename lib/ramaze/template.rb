@@ -7,7 +7,7 @@
 module Ramaze
   module Template
 
-    %w[ Amrita2 Erubis Haml Liquid Markaby ].each do |const|
+    %w[ Amrita2 Erubis Haml Liquid Markaby Remarkably ].each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
     end
 

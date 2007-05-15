@@ -1,0 +1,30 @@
+html do
+  head do
+    title "Template::Remarkably external"
+  end
+  body do
+    h1 "The #{@action} Template for Remarkably"
+    a("Home", :href => R(:/))
+    P do
+      text "Here you can pass some stuff if you like, parameters are just passed like this:"
+      br
+      a("external/one", :href => Rs(@action, :one))
+      br
+      a("external/one/two/three", :href => Rs(@action, :one, :two, :three))
+      br
+      a("external/one?foo=bar", :href => Rs(@action, :one, :foo => :bar))
+      br
+    end
+    div do
+      text "The arguments you have passed to this action are:"
+      if @args.empty?
+        "none"
+      else
+        @args.each do |arg|
+          span arg
+        end
+      end
+    end
+    div @request.params.inspect
+  end
+end
