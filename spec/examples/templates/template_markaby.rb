@@ -1,5 +1,6 @@
 require 'spec/helper'
 
+testcase_requires 'markaby'
 require 'examples/templates/template_markaby'
 
 describe 'Template Markaby' do

@@ -1,5 +1,6 @@
 require 'spec/helper'
 
+testcase_requires 'amrita2'
 require 'examples/templates/template_amrita2'
 
 describe 'Template Amrita2' do

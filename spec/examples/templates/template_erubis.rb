@@ -1,5 +1,6 @@
 require 'spec/helper'
 
+testcase_requires 'erubis'
 require 'examples/templates/template_erubis'
 
 describe 'Template Erubis' do

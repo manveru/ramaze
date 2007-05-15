@@ -1,5 +1,6 @@
 require 'spec/helper'
 
+testcase_requires 'liquid'
 require 'examples/templates/template_liquid'
 
 describe 'Template Liquid' do
