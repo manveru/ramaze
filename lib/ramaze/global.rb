@@ -5,27 +5,69 @@ require 'ostruct'
 require 'set'
 
 module Ramaze
-  OPTIONS = {
-    :adapter          => :webrick,
-    :adapters         => Set.new,
-    :backtrace_size   => 10,
-    :benchmarking     => false,
-    :cache            => :memory,
-    :cache_all        => false,
-    :cookies          => true,
-    :controllers      => Set.new,
-    :error_page       => true,
-    :host             => '0.0.0.0',
-    :mapping          => {},
-    :port             => 7000,
-    :public_root      => ( BASEDIR / 'proto' / 'public' ),
-    :run_loose        => false,
-    :shield           => false,
-    :shutdown_trap    => 'SIGINT',
-    :sourcereload     => 3,
-    :test_connections => true,
-    :template_root    => 'template',
-  }
+  OPTIONS = {}
+
+  def self.o(doc, options = {})
+    options.delete :cli
+    OPTIONS.merge!(options)
+  end
+
+  o "Set the adapter Ramaze will run on.",
+    :adapter => :webrick, :cli => [:webrick, :mongrel]
+
+  o "All running threads of Adapter will be collected here.",
+    :adapters => Set.new
+
+  o "Set the size of Backtrace shown.",
+    :backtrace_size => 10, :cli => Fixnum
+
+  o "Turn benchmarking every request on.",
+    :benchmarking => false, :cli => false
+
+  o "Use this for general caching and as base for Cache.new.",
+    :cache => :memory, :cli => [:memory, :memcached, :yaml]
+
+  o "Turn on naive caching of all requests.",
+    :cache_all => false, :cli => false
+
+  o "Turn on cookies for all requests.",
+    :cookies => true, :cli => true
+
+  o "All subclasses of Controller are collected here.",
+    :controllers => Set.new
+
+  o "Turn on customized error pages.",
+    :error_page => true, :cli => true
+
+  o "Specify what IP Ramaze will respond to - 0.0.0.0 for all",
+    :host => "0.0.0.0", :cli => String
+
+  o "All paths to controllers are mapped here.",
+    :mapping => {}
+
+  o "Specify port: like 7000 or 7000..7010",
+    :port => 7000, :cli => [:port]
+
+  o "Specify the shadowing public directory (default in proto)",
+    :public_root => ( BASEDIR / 'proto' / 'public' )
+
+  o "Don't wait until all adapter-threads are finished or killed",
+    :run_loose => false, :cli => false
+
+  o "Turn on BF/DoS protection for error-responses",
+    :shield => false, :cli => false
+
+  o "What signal to trap to call Ramaze::shutdown",
+    :shutdown_trap => "SIGINT"
+
+  o "Interval in seconds of the background SourceReload",
+    :sourcereload => 3, :cli => Fixnum
+
+  o "Test before start if adapters will be able to connect",
+    :test_connections => true, :cli => true
+
+  o "Specify template root for dynamic files relative to main.rb",
+    :template_root => 'template'
 
   class GlobalStruct < Struct.new('Global', *OPTIONS.keys)
     ADAPTER_ALIAS = {
