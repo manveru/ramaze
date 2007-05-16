@@ -21,7 +21,7 @@ module Ramaze
               response
             end
             if result.kind_of? Controller
-              result.remarkably
+              result.to_s
             else
               result
             end
