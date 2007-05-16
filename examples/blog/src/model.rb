@@ -3,7 +3,6 @@ class Entry
   property :updated, Time
   property :title, String
   property :content, String
-  property :craig, String
   def initialize title, content
     @created=Time.now
     @updated=Time.now
