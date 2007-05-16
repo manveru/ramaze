@@ -22,7 +22,7 @@ module Ramaze
       instance.start
       Thread.main[:sourcereload] = instance
     end
-    
+
     def reloader
       Thread.new do
         loop do
