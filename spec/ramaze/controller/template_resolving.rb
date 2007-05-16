@@ -4,7 +4,7 @@
 require 'spec/helper'
 
 class MainController < Ramaze::Controller
-  trait :template_root => "#{File.expand_path(File.dirname(__FILE__))}/template"
+  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
 
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"
@@ -12,7 +12,7 @@ class MainController < Ramaze::Controller
 end
 
 class OtherController < MainController
-  trait :template_root => "#{File.expand_path(File.dirname(__FILE__))}/template/other"
+  template_root "#{File.expand_path(File.dirname(__FILE__))}/template/other"
 
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)

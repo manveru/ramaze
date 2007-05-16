@@ -1,27 +1,9 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'timeout'
+$:.unshift('/home/manveru/prog/projects/rack/lib')
 
-$:.unshift File.join(File.dirname(File.expand_path(__FILE__)), '..', 'lib')
-$:.unshift '/home/manveru/prog/projects/rack/lib'
-
-# $VERBOSE = 1
-$context_runner = false
-
-require 'ramaze'
-
-begin
-  require 'rubygems'
-rescue LoadError => ex
-end
-
-require 'spec'
-if Spec::VERSION::FULL_VERSION < "0.9.1 (r1880)"
-  puts "please update rspec >= 0.9.1"
-  exit 1
-end
-
+require 'spec/helper/minimal'
 require 'spec/helper/mock_http'
 require 'spec/helper/simple_http'
 require 'spec/helper/requester'

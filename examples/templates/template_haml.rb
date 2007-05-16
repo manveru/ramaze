@@ -6,7 +6,7 @@ require 'ramaze'
 include Ramaze
 
 class MainController < Controller
-  trait :template_root => File.expand_path((File.dirname(__FILE__)/'template'))
+  template_root File.expand_path((File.dirname(__FILE__)/'template'))
   trait :engine => Template::Haml
 
   def index

@@ -5,165 +5,115 @@ require 'ostruct'
 require 'set'
 
 module Ramaze
-  class GlobalStruct < OpenStruct
-    # sourcereload   - Interval in seconds to reload changed sources
-    # adapter        - Webserver-adapter ( :mongrel | :webrick )
-    # backtrace_size - size of backtrace to be logged (and shown on error-page).
-    # benchmarking   - enable timing of each request
-    # cache          - Cache to use   ( MemcachedCache | MemoryCache | YamlStoreCache )
-    # cache_all      - Naive caching for all responses ( true | false )
-    # cookies        -
-    # error_page     - Show default errorpage with inspection and backtrace ( true | false )
-    # host           - Host to respond to ( '0.0.0.0' )
-    # mapping        - Route to controller map ( {} )
-    # port           - First port of the port-range the adapters run on. ( 7000 )
-    # run_loose      - Don't wait for the servers to finish, useful for testing ( true | false )
-    # template_root  - Default directory for your templates.
-    #
-    # startup         - List of methods and lambdas that are executed on startup
-    # ramaze_startup  - Internal list of methods and lambdas that are executed on startup
-    #
-    # shutdown        - List of methods and lambdas that are executed on startup
-    # ramaze_shutdown - Internal list of methods and lambdas that are executed on shutdown
+  OPTIONS = {
+    :adapter          => :webrick,
+    :adapters         => Set.new,
+    :backtrace_size   => 10,
+    :benchmarking     => false,
+    :cache            => :memory,
+    :cache_all        => false,
+    :cookies          => true,
+    :controllers      => Set.new,
+    :error_page       => true,
+    :host             => '0.0.0.0',
+    :mapping          => {},
+    :port             => 7000,
+    :public_root      => ( BASEDIR / 'proto' / 'public' ),
+    :run_loose        => false,
+    :shield           => false,
+    :shutdown_trap    => 'SIGINT',
+    :sourcereload     => 3,
+    :test_connections => true,
+    :template_root    => 'template',
+  }
 
-    DEFAULT = {
-      :sourcereload     => 1,
-      :adapter          => :webrick,
-      :backtrace_size   => 10,
-      :benchmarking     => false,
-      :cache            => MemoryCache,
-      :cache_all        => false,
-      :controllers      => Set.new,
-      :cookies          => true,
-      :error_page       => true,
-      :host             => '0.0.0.0',
-      :localize         => lambda{ Ramaze::Tool::Localize.trait },
-      :logger           => Ramaze::Informer.new($stdout),
-      :mapping          => {},
-      :port             => 7000,
-      :run_loose        => false,
-      :template_root    => 'template',
-      :tidy             => lambda{ Ramaze::Tool::Tidy.trait },
-      :test_connections => true,
-      :shutdown_trap    => 'SIGINT',
-
-      :startup => [
-        lambda{
-          Ramaze::Inform = Global.logger unless defined?(Inform)
-          Inform.info("Starting up Ramaze (Version #{VERSION})")
-        }
-      ],
-      :ramaze_startup => [
-        :setup_controllers, :init_sourcereload, :init_adapter
-      ],
-
-      :shutdown => [],
-      :ramaze_shutdown => [
-        :kill_threads,
-        lambda{
-          Inform.shutdown
-          puts("Shutdown Ramaze (it's save to kill me now if i hang)")
-        },
-        :exit
-      ],
+  class GlobalStruct < Struct.new('Global', *OPTIONS.keys)
+    ADAPTER_ALIAS = {
+      :webrick => :WEBrick,
+      :mongrel => :Mongrel,
+      :cgi     => :CGI,
+      :fcgi    => :Fcgi,
     }
 
-    # takes an hash of options and optionally an block that is evaled in this
-    # instance of GlobalStruct.
+    CACHE_ALIAS = {
+      :memcached => :MemcachedCache,
+      :memory    => :MemoryCache,
+      :yaml      => :YAMLStoreCache,
+    }
 
-    def setup hash = {}, &block
-      Global.instance_eval(&block) if block_given?
-      table.merge!( hash.keys_to_sym )
+    class << self
+      def setup options = {}
+        self.fill(options)
+      end
     end
 
-    # just update the hash, not deleting values already set.
-    # again, takes a block, but your assignments may be
-    # overwritten if they existed before.
+    # Object wraps
 
-    def update hash = {}, &block
-      old_table = table.dup
-      Global.instance_eval(&block) if block_given?
-      table.merge!( hash.keys_to_sym.merge( old_table ) )
+    def adapter
+      if internal = self[:adapter]
+        class_name = ADAPTER_ALIAS[internal.to_sym]
+        require "ramaze/adapter/#{class_name.to_s.downcase}"
+        adapter = Ramaze::Adapter.const_get(class_name)
+      end
     end
 
-    # synonym to Global.key = value
-
-    def []=(key, value)
-      table[key.to_sym] = value
+    def cache
+      cache_name = self[:cache].to_sym
+      class_name = CACHE_ALIAS[cache_name] || cache_name
+      cache = Ramaze.const_get(class_name)
     end
 
-    # synonym for Global.key
+    def ports
+      return @ports if defined?(@ports)
+      from_port, to_port = self[:port].to_s.split('..')
 
-    def [](key)
-      table[key.to_sym]
+      ports =
+        if from_port and to_port
+          (from_port.to_i..to_port.to_i)
+        else
+          (from_port.to_i..from_port.to_i)
+        end
+
+      self[:port] = ports.begin
+      @ports = ports
     end
 
-    # get all the values for the given keys in the right order.
+    def sourcereload=(interval)
+      sri = Thread.main[:sourcereload]
+      sri.interval = interval
+      self[:sourcereload] = interval
+    end
+
+    # External helpers
 
     def values_at(*keys)
-      table.values_at(*keys.map(&:to_sym))
+      keys.map{|key| __send__(key)}
     end
 
-    # all keys already set
+    private # Internal helpers
 
-    def keys
-      table.keys
-    end
+    def create_member key, value = nil
+      @table ||= {}
+      key = key.to_sym
 
-    # iterate over the GlobalStruct, no guarantee on the order.
-
-    def each
-      table.each do |e|
-        yield(e)
+      (class << self; self; end).class_eval do
+        define_method(key){ @table[key] }
+        define_method("#{key}="){|val| @table[key] = val }
       end
-    end
 
-    def inspect
-      table.inspect
-    end
-
-    def pretty_inspect
-      table.pretty_inspect
-    end
-
-
-  def new_ostruct_member(name)
-    name = name.to_sym
-    unless self.respond_to?(name)
-      class << self; self; end.class_eval do
-        define_method(name) { @table[name] }
-        define_method(:"#{name}=") { |x| @table[name] = x }
-      end
+      @table[key] = value
     end
   end
 
-    def new_ostruct_member(name)
-      name = name.to_sym
-      unless self.respond_to?(name)
-        meta = (class << self; self; end)
-        meta.class_eval do
-          define_method(name) do
-            sel = @table[name]
-            if sel.respond_to?(:call)
-              sel.call
-            else
-              sel
-            end
-          end
+  Global = GlobalStruct.setup(OPTIONS)
 
-          define_method(:"#{name}=") do |x|
-            sel = @table[name]
-            if sel.respond_to?(:call)
-              sel.call("#{name}=", x)
-            else
-              @table[name] = x
-            end
-          end
-        end
+  def Global.startup(options = {})
+    options.each do |key, value|
+      if (method(key) rescue false)
+        self[key] = value
+      else
+        create_member(key, value)
       end
     end
   end
-
-  Thread.current[:global] = GlobalStruct.new(GlobalStruct::DEFAULT)
-  Global = Thread.current[:global]
 end

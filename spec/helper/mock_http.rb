@@ -1,8 +1,10 @@
 require 'ramaze'
 require 'rack/mock'
 
-module Ramaze::Adapter
-  class Fake < Ramaze::Adapter::Base
+module Ramaze
+  module Adapter
+    class Fake < Base
+    end
   end
 end
 

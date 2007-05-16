@@ -17,10 +17,10 @@ module Ramaze
       @thread = reloader
     end
 
-    def self.start(*args)
-      instance = new(*args)
+    def self.startup options = {}
+      instance = new(Global.sourcereload)
       instance.start
-      instance
+      Thread.main[:sourcereload] = instance
     end
     
     def reloader

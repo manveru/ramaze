@@ -3,6 +3,8 @@
 
 require 'spec/helper'
 
+testcase_requires 'ramaze/gestalt'
+
 describe "Gestalt" do
   def gestalt &block
     Ramaze::Gestalt.new(&block).to_s

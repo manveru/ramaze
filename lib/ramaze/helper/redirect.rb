@@ -34,7 +34,7 @@ module Ramaze
         'Location' => target
       }.merge(response.header)
 
-      status = opts[:status] || STATUS_CODE[:see_other]
+      status = opts[:status] || STATUS_CODE["See Other"]
 
       body = %{Please follow <a href="#{target}">#{target}</a>!}
 

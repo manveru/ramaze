@@ -18,10 +18,40 @@ limitations and features are.
 Ramaze is also the main module or so-called namespace that the framework lives
 in. It has 
 
-startup
-shutdown
-initial tasks
-exiting tasks
+Tasks on require
+
+* Inform
+  * LogHub.new(Informer)
+* Global
+  * GlobalStruct.new
+
+
+Tasks on startup
+
+* Global.startup
+  * passed options to Ramaze.start
+  * CLI options from bin/ramaze (treat as passed.merge)
+  * Global options set before startup (fake Global?)
+
+* Controller.startup
+  * mapping of all subclassed Controller
+  * validation of mapping
+  * validation of template_root
+
+* Adapter.startup
+  * interpret Global.adapter
+  * add every created adapter to Global.adapters
+
+* SourceReload.startup
+  * start with Global.reload_interval
+  * assign Global.sourcereload
+
+
+Tasks on shutdown
+
+* Adapter.shutdown (iterates Global.adapters)
+* Inform.shutdown (iterates all in LogHub)
+
 
 
 #### Global configuration

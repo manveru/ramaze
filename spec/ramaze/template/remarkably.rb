@@ -6,7 +6,7 @@ require 'spec/helper'
 testcase_requires 'remarkably'
 
 class TCTemplateRemarkablyController < Ramaze::Controller
-  trait :template_root => 'spec/ramaze/template/remarkably/'
+  template_root 'spec/ramaze/template/remarkably/'
   trait :engine => Ramaze::Template::Remarkably
 
   include Remarkably

@@ -1,6 +1,7 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'ramaze/helper'
 require 'ramaze/template'
 require 'ramaze/action'
 
@@ -16,10 +17,6 @@ module Ramaze
 
     trait :template_extensions => { }
 
-    # Path to the ramaze-internal public directory for error-pages and the like.
-    # It acts just as a shadow.
-    trait :ramaze_public => ( ::Ramaze::BASEDIR / 'proto' / 'public' )
-
     # Whether or not to map this controller on startup automatically
 
     trait :automap => true
@@ -32,7 +29,7 @@ module Ramaze
 
     trait :pattern_cache => Hash.new{|h,k| h[k] = Controller.pattern_for(k) }
 
-    trait :action_cache  => Global.cache.new
+    trait :action_cache  => Cache.new
 
     class << self
       include Ramaze::Helper
@@ -43,11 +40,27 @@ module Ramaze
         Global.controllers << controller
       end
 
-      def validate_sanity
-        if path = trait[:public]
-          unless File.directory?(path)
-            Inform.warn("#{controller} uses templating in #{path}, which does not exist")
+      def startup options = {}
+        Global.mapping ||= {}
+
+        Global.mapping.dup.each do |route, controller|
+          Global.mapping[route] = constant(controller.to_s)
+        end
+
+        Global.controllers.each do |controller|
+          if map = controller.mapping
+            Global.mapping[map] ||= controller
+            Inform.debug("mapped #{map} => #{controller}")
           end
+        end
+
+        Inform.debug("found Controllers: #{Global.controllers.inspect}")
+        Inform.debug("mapped Controllers: #{Global.mapping.inspect}")
+      end
+
+      def check_path(path, message)
+        unless File.directory?(path)
+          Inform.warn(message)
         end
       end
 
@@ -65,6 +78,26 @@ module Ramaze
       def map(*syms)
         syms.each do |sym|
           Global.mapping[sym.to_s] = self
+        end
+      end
+
+      def template_root path = nil
+        if path
+          message = "#{self}.template_root is #{path} which does not exist"
+          check_path(path, message)
+          @template_root = path
+        else
+          @template_root
+        end
+      end
+
+      def public_root path = nil
+        if path
+          message = "#{self}.public_root is #{path} which does not exist"
+          check_path(path, message)
+          @public_root = path
+        else
+          @public_root
         end
       end
 
@@ -139,16 +172,13 @@ module Ramaze
       end
 
       def template_paths
-        klass_public = trait[:public]
-        ramaze_public = Controller.trait[:ramaze_public]
-
         first_path =
-          if template_root = class_trait[:template_root]
+          if template_root = @template_root
             template_root
           else
             Global.template_root / Global.mapping.invert[self]
           end
-        [ first_path, klass_public, ramaze_public].compact
+        [ first_path, public_root, Global.public_root ].compact
       end
 
       def resolve_method(name, *params)

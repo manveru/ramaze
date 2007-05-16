@@ -6,7 +6,7 @@ module Ramaze
 
     # Cache for single key/value pairs
 
-    trait :value_cache  => Global.cache.new
+    trait :value_cache  => Cache.new
 
     # Cache for values returned from actions
 

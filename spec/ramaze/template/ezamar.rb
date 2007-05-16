@@ -4,7 +4,7 @@
 require 'spec/helper'
 
 class TCTemplateController < Ramaze::Controller
-  trait :template_root => 'spec/ramaze/template/ezamar'
+  template_root 'spec/ramaze/template/ezamar'
   trait :engine => Ramaze::Template::Ezamar
 
   def index text

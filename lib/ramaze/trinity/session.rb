@@ -75,7 +75,7 @@ module Ramaze
     # sets @session_id and @session_flash
     #
     # will set Thread.main[:session_cache] to an instance of
-    # Ramaze::Global.cache if no cache for the sessions is initialized yet
+    # Cache if no cache for the sessions is initialized yet
 
     def initialize request
       @session_id = (request.cookies[SESSION_KEY] || random_key)
@@ -89,18 +89,7 @@ module Ramaze
 
       @flash = Ramaze::SessionFlash.new
 
-      unless sessions
-        global_cache = Ramaze::Global.cache
-
-        if global_cache.respond_to?(:new)
-          cache = global_cache.new
-        else
-          cache = constant("::Ramaze::#{global_cache}")
-          cache = cache.new if cache.respond_to?(:new)
-        end
-
-        Thread.main[:session_cache] = cache
-      end
+      Thread.main[:session_cache] = Cache.new unless sessions
     end
 
     # relay all messages we don't understand to the currently active session

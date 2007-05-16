@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  module Response
+  class Response < ::Rack::Response
     class << self
 
       # get the current response out of Thread.current[:response]

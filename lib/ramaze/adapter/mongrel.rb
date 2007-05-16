@@ -5,24 +5,29 @@ require 'ramaze/adapter'
 
 require 'mongrel'
 
-module Ramaze::Adapter
-  class Mongrel < Base
-    class << self
-      def start host, ports
-        ports.map{|port| run_server(host, port) }.first
-      end
+module Ramaze
+  module Adapter
+    class Mongrel < Base
+      class << self
+        def start host, ports
+          ports.map do |port|
+            Global.adapters << run_server(host, port)
+          end
+        end
 
-      def run_server host, port
-        server = ::Mongrel::HttpServer.new(host, port)
-        server.register('/', ::Rack::Handler::Mongrel.new(self))
-        server.run
-      end
+        def run_server host, port
+          options = { :Host => host, :Port => port }
 
-      def stop
-      end
+          Thread.new do
+            ::Rack::Handler::Mongrel.run(self, options) do |server|
+              Thread.current[:adapter] = server
+            end
+          end
+        end
 
-      def call(env)
-        new.call(env)
+        def call(env)
+          new.call(env)
+        end
       end
     end
   end

@@ -22,7 +22,7 @@ end
 
 class TCTemplateController < Ramaze::Controller
   trait :engine => Ramaze::Template::TestTemplate
-  trait :template_root => (File.dirname(__FILE__)/:template/:ramaze)
+  template_root(File.dirname(__FILE__)/:template/:ramaze)
 
   def index *args
   end
@@ -80,7 +80,7 @@ describe "testing ramaze template" do
     @controller.should == "TCTemplateController"
     @action.should == "external"
     @parameter.should == []
-    file = TCTemplateController.trait[:template_root]/'external.test'
+    file = TCTemplateController.template_root/'external.test'
     @file.should == File.expand_path(file)
   end
 end

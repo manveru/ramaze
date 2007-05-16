@@ -14,27 +14,32 @@ module WEBrick
   end
 end
 
-module Ramaze::Adapter
-  class Webrick < Base
-    class << self
-      def start host, ports
-        ports.map{|port| run_server(host, port) }.first
-      end
+module Ramaze
+  module Adapter
+    class WEBrick < Base
+      class << self
+        def start host, ports
+          ports.map do |port|
+            Global.adapters << run_server(host, port)
+          end
+        end
 
-      def run_server host, port, options = {}
-        options = {
-          :Port => port,
-          :BindAddress => host,
-          :Logger => Ramaze::Inform,
-          :AccessLog => [
-            [Ramaze::Inform, WEBrick::AccessLog::COMMON_LOG_FORMAT],
-            [Ramaze::Inform, WEBrick::AccessLog::REFERER_LOG_FORMAT]
-          ]
-        }.merge(options)
+        def run_server host, port, options = {}
+          options = {
+            :Port        => port,
+            :BindAddress => host,
+            :Logger      => Inform,
+            :AccessLog   => [
+              [Inform, ::WEBrick::AccessLog::COMMON_LOG_FORMAT],
+              [Inform, ::WEBrick::AccessLog::REFERER_LOG_FORMAT]
+            ]
+          }.merge(options)
 
-        Thread.new do
-          Thread.current[:adapter] =
-            Rack::Handler::WEBrick.run(self, options)
+          Thread.new do
+            Rack::Handler::WEBrick.run(self, options) do |server|
+              Thread.current[:adapter] = server
+            end
+          end
         end
       end
     end

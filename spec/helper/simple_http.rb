@@ -342,10 +342,10 @@ class SimpleHttp
 		# add custom request headers.
 
 		@request_headers.each {|key,value|
-			request[key]=value;
+			request[key]=value
 		}
 
-		handle_response(request, http.request(request));
+		handle_response(request, http.request(request))
 	end
 
 	# internal

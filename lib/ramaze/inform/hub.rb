@@ -10,9 +10,9 @@ module Ramaze
     def initialize(*loggers)
       @loggers = loggers
       @loggers.map! do |logger|
+        next(nil) if logger == self
         logger.is_a?(Class) ? logger.new : logger
       end
-      @loggers.delete_if {|x| x == self }
       @loggers.uniq!
       @loggers.compact!
     end

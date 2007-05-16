@@ -6,9 +6,8 @@ require 'spec/helper'
 testcase_requires 'amrita2'
 
 class TCTemplateAmritaController < Ramaze::Controller
-  trait :template_root => 'spec/ramaze/template/amrita2/'
+  template_root 'spec/ramaze/template/amrita2/'
   trait :engine => Ramaze::Template::Amrita2
-  trait :actionless => true
 
   def title
     "hello world"

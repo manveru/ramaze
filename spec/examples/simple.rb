@@ -16,7 +16,7 @@ describe 'Simple' do
 
   it '/simple' do
     @response = get('/simple')
-    @response.body.should =~ /^#<Rack::Request/
+    @response.body.should =~ /^#<Ramaze::Request/
   end
 
   it '/join/foo/bar' do

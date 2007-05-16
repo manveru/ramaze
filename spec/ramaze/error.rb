@@ -6,7 +6,7 @@ require 'open-uri'
 
 class TCErrorController < Ramaze::Controller
   map :/
-  trait :public => 'spec/ramaze/public'
+  public_root 'spec/ramaze/public'
 
   def index
     self.class.name

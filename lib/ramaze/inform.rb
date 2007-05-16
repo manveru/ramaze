@@ -2,12 +2,16 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze/inform/informing'
+require 'ramaze/inform/hub'
+require 'ramaze/inform/informer'
 
 module Ramaze
   autoload :Analogger, "ramaze/inform/analogger.rb"
-  autoload :Informer,  "ramaze/inform/informer.rb"
   autoload :Syslog,    "ramaze/inform/syslog.rb"
   autoload :Growl,     "ramaze/inform/growl.rb"
   autoload :Xosd,      "ramaze/inform/xosd.rb"
-  autoload :LogHub,    "ramaze/inform/hub.rb"
+
+  unless defined?(Inform)
+    Inform = LogHub.new(Informer)
+  end
 end

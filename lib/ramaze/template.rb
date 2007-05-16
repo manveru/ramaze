@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 # This module serves as a namespace for all templates, it will autoload
-# Amrita2, Erubis, Ezamar, Haml, Liquid and Markaby if you refer to them.
+# Amrita2, Erubis, Haml, Liquid and Markaby if you refer to them.
 
 module Ramaze
   module Template

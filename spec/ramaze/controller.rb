@@ -5,7 +5,7 @@ require 'spec/helper'
 
 class TCControllerController < Ramaze::Controller
   map '/'
-  trait :template_root => 'spec/ramaze/template/ezamar'
+  template_root 'spec/ramaze/template/ezamar'
 
   def index
     @text = "World"
@@ -28,7 +28,7 @@ class TCControllerController < Ramaze::Controller
 end
 
 describe "Controller" do
-  ramaze :error_page => false
+  ramaze :error_page => false, :adapter => :mongrel
 
   describe 'dry specs' do
     describe 'pattern_for' do

@@ -82,34 +82,34 @@ end
 
 describe "FormHelper" do
   describe "Entry" do
-    ramaze :mapping => {'/entry' => TCFormHelperEntryController}
+    ramaze
 
     it "testrun" do
-      get('/entry/').body.should == 'FormHelper Entry'
+      get('/').body.should == 'FormHelper Entry'
     end
 
     it "with submit" do
-      get('/entry/form_with_submit').body.should ==
+      get('/form_with_submit').body.should ==
         %{title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
     it "without submit" do
-      get('/entry/form_without_submit').body.should ==
+      get('/form_without_submit').body.should ==
         %{title: <input type="text" name="title" value="" />}
     end
 
     it "with title" do
-      get('/entry/form_with_title').body.should ==
+      get('/form_with_title').body.should ==
         %{Title: <input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
     it "without title" do
-      get('/entry/form_without_title').body.should ==
+      get('/form_without_title').body.should ==
         %{<input type="text" name="title" value="" /><br />\n<input type="submit" />}
     end
 
     it "with oid" do
-      get('/entry/form_with_oid').body.should ==
+      get('/form_with_oid').body.should ==
         %{title: <input type="text" name="title" value="" /><br />\noid: <input type="text" name="oid" value="0" /><br />\n<input type="submit" />}
     end
 

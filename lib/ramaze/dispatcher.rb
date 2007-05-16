@@ -3,6 +3,7 @@
 
 require 'timeout'
 
+require 'ramaze/error'
 require 'ramaze/adapter'
 require 'ramaze/tool/mime'
 
@@ -19,14 +20,17 @@ module Ramaze
     ]
 
     trait :handle_error => {
-        Exception                   => [500, '/error'],
-        Ramaze::Error::NoAction     => [404, '/error'],
-        Ramaze::Error::NoController => [404, '/error'],
+        Exception =>
+          [ STATUS_CODE["Internal Server Error"], '/error' ],
+        Ramaze::Error::NoAction =>
+          [ STATUS_CODE["Not Found"], '/error' ],
+        Ramaze::Error::NoController =>
+          [ STATUS_CODE["Not Found"], '/error' ],
       }
 
-    trait :shield_cache => Global.cache.new
+    trait :shield_cache => Cache.new
 
-    trait :shielded => [404]
+    trait :shielded => [ STATUS_CODE["Not Found"] ]
 
     class << self
       include Trinity
