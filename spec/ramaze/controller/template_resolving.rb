@@ -17,8 +17,12 @@ class OtherController < MainController
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)
   end
-
   trait :greet__mom_template => '/greet'
+
+  def greet__other(one, two)
+    @greet = "Other"
+  end
+  trait :greet__other_template => '/other/greet/other'
 
   def partial_stuff
     render_partial('/greet/the/world', :foo => :bar)
@@ -44,6 +48,11 @@ describe "Testing Template overriding" do
   it "referencing template from MainController" do
     get('/other/greet/mom').body.should == '<html>Mom : Moms are cool!</html>'
   end
+
+  it "should accept template overrides with same name as controller" do
+    get('/other/greet/other/one/two').body.should == '<html>Other: Other</html>'
+  end
+
 end
 
 describe "render_partial" do
