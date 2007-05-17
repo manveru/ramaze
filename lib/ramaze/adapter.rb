@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'rack'
+require 'timeout'
 require 'benchmark'
 
 require 'rack/utils'
@@ -60,7 +61,7 @@ module Ramaze
           sleep 0.01 until Global.adapters.any?
         end
 
-        trap(Global.shutdown_trap){ exit }
+        setup_trap
         Global.adapters.each{|a| a.join} unless Global.run_loose
 
       rescue SystemExit
@@ -68,6 +69,19 @@ module Ramaze
       rescue Object => ex
         Inform.error(ex)
         Ramaze.shutdown
+      end
+
+      # TODO: solve this [insert cussing here] problem with rack
+      #       i really don't wanna have to do this
+      #       maybe override the default start of rack?
+
+      def setup_trap
+        Thread.new do
+          loop do
+            trap(Global.shutdown_trap){ Ramaze.shutdown }
+            sleep 1
+          end
+        end
       end
 
       def start_adapter
@@ -88,10 +102,15 @@ module Ramaze
       end
 
       def shutdown
-        Global.adapters.each do |adapter|
-          a = adapter[:adapter]
-          a.shutdown if a.respond_to?(:shutdown)
+        Timeout.timeout(1) do
+          Global.adapters.each do |adapter|
+            a = adapter[:adapter]
+            a.shutdown if a.respond_to?(:shutdown)
+          end
         end
+      rescue Timeout::Error
+        Global.adapters.each{|a| a.kill!}
+        exit!
       end
 
       def test_connections host, ports

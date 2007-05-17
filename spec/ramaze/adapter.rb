@@ -10,7 +10,7 @@ class TCAdapterController < Ramaze::Controller
 end
 
 describe "Adapter" do
-  ramaze ramaze_options.merge( :port => '7007..7010', :mapping => {'/' => TCAdapterController} )
+  ramaze ramaze_options.merge( :port => 7007, :spawn => 10, :mapping => {'/' => TCAdapterController} )
 
   describe "multiple" do
     it "simple request" do
