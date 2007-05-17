@@ -5,10 +5,13 @@ require 'yaml/store'
 module Ramaze
   class YAMLStoreCache
 
+    attr_accessor :file
+
     # create a new YAML::Store with the given file (which will be created if it
     # is not already there).
 
     def initialize(file = 'cache.yaml')
+      @file = file
       @cache = YAML::Store.new(file)
     end
 
@@ -17,6 +20,22 @@ module Ramaze
     def values_at(*keys)
       transaction do |y|
         keys.map{|k| y[k]}
+      end
+    end
+
+    def underlying_yaml
+      YAML.load_file(@file)
+    end
+
+    def clear
+      transaction do |y|
+        File.open(@file, 'w+'){|f| f.puts({}.to_yaml)}
+      end
+    end
+
+    def delete(key)
+      transaction do |y|
+        y.delete(key)
       end
     end
 

@@ -3,75 +3,62 @@
 
 require 'spec/helper'
 
-describe "MemoryCache" do
-  cache = Ramaze::MemoryCache.new
-
-  it "delete" do
-    cache.delete(:one)
-    cache.delete(:two)
-  end
-
-  it "set keys" do
-    (cache[:one] = 'eins').should == "eins"
-    (cache[:two] = 'zwei').should == "zwei"
-  end
-
-  it "read keys" do
-    cache[:one].should == 'eins'
-    cache[:two].should == 'zwei'
-  end
-
-  it "values_at" do
-    cache.values_at(:one, :two).should == %w[eins zwei]
-  end
-end
-
-describe "YAMLStoreCache" do
-  cache = Ramaze::YAMLStoreCache.new
-
-  it "delete" do
-    cache.delete(:one)
-    cache.delete(:two)
-  end
-
-  it "set keys" do
-    (cache[:one] = 'eins').should == "eins"
-    (cache[:two] = 'zwei').should == "zwei"
-  end
-
-  it "read keys" do
-    cache[:one].should == 'eins'
-    cache[:two].should == 'zwei'
-  end
-
-  it "values_at" do
-    cache.values_at(:one, :two).should == %w[eins zwei]
-  end
-end
+caches = {:memory => 'Hash', :yaml => 'Ramaze::YAMLStoreCache'}
 
 begin
-  describe "MemcachedCache" do
-    cache = Ramaze::MemcachedCache.new
+  require 'memcache'
+  caches[:memcached] = 'Ramaze::MemcachedCache'
+rescue LoadError
+  puts "skipping memcached"
+end
 
-    it "delete" do
-      cache.delete(:one)
-      cache.delete(:two)
+caches.each do |cache, name|
+  describe "#{name} setup" do
+    it "should be assignable to Global" do
+      Ramaze::Global.cache = cache
+      Ramaze::Global.cache.to_s.should == name
     end
 
-    it "set keys" do
-      (cache[:one] = 'eins').should == "eins"
-      (cache[:two] = 'zwei').should == "zwei"
-    end
-
-    it "read keys" do
-      cache[:one].should == 'eins'
-      cache[:two].should == 'zwei'
-    end
-
-    it "values_at" do
-      cache.values_at(:one, :two).should == %w[eins zwei]
+    it "should do .new" do
+      @cache = Ramaze::Global.cache.new
+      @cache.class.name.should == name
     end
   end
-rescue LoadError
-  puts "cannot run test for memcached"
+
+  describe "#{name} modification" do
+    setup do
+      Ramaze::Global.cache = cache
+      @cache = Ramaze::Global.cache.new
+    end
+
+    after :each do
+      @cache.clear
+    end
+
+    after :all do
+      FileUtils.rm(@cache.file) if cache == :yaml
+    end
+
+    it "should be assignable with #[]=" do
+      @cache[:foo] = :bar
+      @cache[:foo].should == :bar
+    end
+
+    it "should be retrievable with #[]" do
+      @cache[:yoh] = :bar
+      @cache[:yoh].should == :bar
+    end
+
+    it "should delete keys" do
+      @cache[:bar] = :duh
+      @cache.delete(:bar)
+      @cache[:bar].should be_nil
+    end
+
+    it "should show values for multiple keys" do
+      @cache[:baz] = :foo
+      @cache[:beh] = :feh
+      @cache.values_at(:baz, :beh).should == [:foo, :feh]
+    end
+  end
 end
