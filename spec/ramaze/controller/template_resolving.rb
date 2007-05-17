@@ -17,12 +17,12 @@ class OtherController < MainController
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)
   end
-  trait :greet__mom_template => '/greet'
+  trait :greet__mom_template => [MainController, 'greet']
 
   def greet__other(one, two)
     @greet = "Other"
   end
-  trait :greet__other_template => '/other/greet/other'
+  trait :greet__other_template => [self, 'greet/other']
 
   def partial_stuff
     render_partial('/greet/the/world', :foo => :bar)

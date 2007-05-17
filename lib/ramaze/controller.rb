@@ -148,8 +148,10 @@ module Ramaze
 
       def resolve_action(path, *parameter)
         path, parameter = path.to_s, parameter.map(&:to_s)
-        possible_path = trait["#{path}_template".to_sym]
-        template = resolve(possible_path).last.template if possible_path
+        if alternate_template = trait["#{path}_template".to_sym]
+          t_controller, t_path = *alternate_template
+          template = t_controller.resolve_template(t_path)
+        end
 
         method, params = resolve_method(path, *parameter)
 
