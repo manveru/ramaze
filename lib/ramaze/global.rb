@@ -5,10 +5,15 @@ require 'ostruct'
 require 'set'
 
 module Ramaze
-  OPTIONS = {}
+  CLIOption = Struct.new('CLIOption', :name, :default, :doc, :cli)
+  OPTIONS     = {}
+  CLI_OPTIONS = []
 
   def self.o(doc, options = {})
-    options.delete :cli
+    cli_given = options.has_key?(:cli)
+    cli = options.delete(:cli)
+    name, default = options.to_a.flatten
+    CLI_OPTIONS << CLIOption.new(name, default, doc, cli) if cli_given
     OPTIONS.merge!(options)
   end
 
@@ -19,7 +24,7 @@ module Ramaze
     :adapters => Set.new
 
   o "Set the size of Backtrace shown.",
-    :backtrace_size => 10, :cli => Fixnum
+    :backtrace_size => 10, :cli => 10
 
   o "Turn benchmarking every request on.",
     :benchmarking => false, :cli => false
@@ -36,17 +41,20 @@ module Ramaze
   o "All subclasses of Controller are collected here.",
     :controllers => Set.new
 
+  o "Start Ramaze within an IRB session",
+    :console => false, :cli => false
+
   o "Turn on customized error pages.",
     :error_page => true, :cli => true
 
   o "Specify what IP Ramaze will respond to - 0.0.0.0 for all",
-    :host => "0.0.0.0", :cli => String
+    :host => "0.0.0.0", :cli => '0.0.0.0'
 
   o "All paths to controllers are mapped here.",
     :mapping => {}
 
-  o "Specify port: like 7000 or 7000..7010",
-    :port => 7000, :cli => [:port]
+  o "Specify port",
+    :port => 7000, :cli => 7000
 
   o "Specify the shadowing public directory (default in proto)",
     :public_root => ( BASEDIR / 'proto' / 'public' )
@@ -64,7 +72,10 @@ module Ramaze
     :shutdown_trap => "SIGINT"
 
   o "Interval in seconds of the background SourceReload",
-    :sourcereload => 3, :cli => Fixnum
+    :sourcereload => 3, :cli => 3
+
+  o "How many adapters Ramaze should spawn.",
+    :spawn => 1, :cli => 1
 
   o "Test before start if adapters will be able to connect",
     :test_connections => true, :cli => true
@@ -109,18 +120,7 @@ module Ramaze
     end
 
     def ports
-      return @ports if defined?(@ports)
-      from_port, to_port = self[:port].to_s.split('..')
-
-      ports =
-        if from_port and to_port
-          (from_port.to_i..to_port.to_i)
-        else
-          (from_port.to_i..from_port.to_i)
-        end
-
-      self[:port] = ports.begin
-      @ports = ports
+      (port..(port + (spawn - 1)))
     end
 
     def sourcereload=(interval)

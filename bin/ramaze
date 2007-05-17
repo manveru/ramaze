@@ -1,170 +1,144 @@
 #!/usr/bin/env ruby
 
-# = Synopsis
-#
-# The commandline tool to control ramaze
-#
-# = Usage
-# ramaze [switches] startfile [arguments]
-#
-# --create:: create a new application based on proto
-#
-# -m, --mongrel:: use mongrel to process requests
-# -w, --webrick:: the default
-# -g, --cgi::     CGI
-# -f, --fcgi::    FastCGI
-#
-# -b, --benchmark:: inform about :error, :info, :debug, :benchmark
-# -d, --debug::     inform about :error, info, :debug
-# -t, --stage::     inform about :info, :error
-# -l, --live::      inform about :error
-# -s, --silent::    inform about nothing
-#
-# -a, --autoreload:: Set the interval at which autoreload searches
-#                    for changes in your files
-#
-# -o, --host::       which host should ramaze listen for requests
-#                    default is 0.0.0.0
-# -p, --port::       what port should ramaze use, like 80 or 7000..7005
-#                    default is 7000
-#
-# -n, --no-errorpage:: don't use the default errorpage of ramaze
-#                      helpful if you want to make sure noone can
-#                      ever see your code by accident or for testing
-# --template-root:: set a custom template-root for the whole
-#                   application, please note that ~ is not
-#                   expanded to your home-directory
-# -a, --autoreload=N:: set how frequent ramaze should search for
-#                      updated files in your application
-# -r, --run-loose:: don't take control after startup.
-#                   this is useful for testcases.
-# -c, --console:: Start an IRB-like session.
-# --backtrace:: Show full backtrace at errors on start.
-# --cache:: use the simple caching based on the signature
-#           of your requests (experimental)
-# --tidy:: run Tool::Tidy over text/html output
-#
-#
-# -h, --help::      print this help
-# -v, --version::   print the version
-# -c, --copyright:: print the copyright
-#
-# Please report bugs to <m.fellinger at gmail.com>
-#
-# = Copyright
-#            Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
-#   All files in this distribution are subject to the terms of the Ruby license.
+RAMAZE_BASE = File.join(File.dirname(__FILE__), '..', 'lib')
+RAMAZE_BASE.replace File.expand_path(RAMAZE_BASE)
 
-require 'ramaze'
+require File.join(RAMAZE_BASE, 'ramaze')
 
-runner = File.expand_path(ARGV.find{|file| File.file?(file)} || 'main.rb')
+RAMAZE_VERSION = "Ramaze Version #{Ramaze::VERSION}"
 
-begin
-  require 'getoptlong'
-  require 'rdoc/ri/ri_paths'
-  require 'rdoc/usage'
+require 'optparse'
+require 'ostruct'
+require 'abbrev'
 
-  # memo:
-  #   REQUIRED_ARGUMENT, NO_ARGUMENT, OPTIONAL_ARGUMENT
+options = {:origin => :console, :create => false, :force => true}
+cli_options = Ramaze::CLI_OPTIONS
+cli_abbrevs = cli_options.map{|o| o.name.to_s}.abbrev
+cli_abbrevs = Hash[*cli_abbrevs.select{|k,v| k.size == 1}.flatten].invert
 
-  opts = GetoptLong.new *[
-    [ '--create',               GetoptLong::REQUIRED_ARGUMENT ],
-    [ '--mongrel',        '-m', GetoptLong::NO_ARGUMENT       ],
-    [ '--webrick',        '-w', GetoptLong::NO_ARGUMENT       ],
-    [ '--cgi',            '-g', GetoptLong::NO_ARGUMENT       ],
-    [ '--fcgi',           '-f', GetoptLong::NO_ARGUMENT       ],
+assign = lambda{|opt, value| options[opt.name] = value}
 
-    [ '--debug',          '-d', GetoptLong::NO_ARGUMENT       ],
-    [ '--stage',          '-t', GetoptLong::NO_ARGUMENT       ],
-    [ '--live',           '-l', GetoptLong::NO_ARGUMENT       ],
-    [ '--silent',         '-s', GetoptLong::NO_ARGUMENT       ],
+opts = OptionParser.new do |opts|
+  ruby_version = "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]" 
+  ramaze_version = "#{RAMAZE_VERSION}, on #{ruby_version}"
 
-    [ '--host',           '-o', GetoptLong::REQUIRED_ARGUMENT ],
-    [ '--port',           '-p', GetoptLong::REQUIRED_ARGUMENT ],
+  opts.banner = "Usage: ramaze main.rb [OPTIONS]"
+  opts.define_head ramaze_version
 
-    [ '--benchmark',      '-b', GetoptLong::NO_ARGUMENT       ],
-    [ '--no-errorpage',   '-n', GetoptLong::NO_ARGUMENT       ],
-    [ '--template-root',        GetoptLong::REQUIRED_ARGUMENT ],
-    [ '--autoreload',     '-a', GetoptLong::REQUIRED_ARGUMENT ],
-    [ '--run-loose',      '-r', GetoptLong::NO_ARGUMENT       ],
-
-    [ '--console',        '-c', GetoptLong::NO_ARGUMENT       ],
-    [ '--backtrace',            GetoptLong::NO_ARGUMENT       ],
-    [ '--help',           '-h', GetoptLong::NO_ARGUMENT       ],
-    [ '--version',        '-v', GetoptLong::NO_ARGUMENT       ],
-    [ '--copyright',            GetoptLong::NO_ARGUMENT       ],
-  ]
-
-  options = {:origin => :console, :force => true}
-
-  create = lambda do |app|
-    require 'ramaze/tool/create'
-    Ramaze::Tool::Create.create(app)
-    exit
+  opts.on('--create PROJECT', "A new application based on proto.") do |input|
+    options[:create] = input
   end
 
-  adapter = Dir[Ramaze::BASEDIR/'ramaze'/'adapter'/'*.rb']
-  adapter.map!{|f| File.basename(f, File.extname(f)).to_sym}
+  cli_options.each do |option|
+    cli_name = option.name.to_s.gsub('_', '-')
+    short_option = cli_abbrevs[option.name.to_s]
+    short_option = '-' + short_option if short_option
+    long_option = '--' + cli_name
 
-  opts.each do |opt, arg|
-    sopt = opt[2..-1].gsub('-', '_').intern
+    case option.cli
+    when TrueClass
+      params = [short_option, "--[no-]#{cli_name}", option.doc]
+    when FalseClass
+      params = [short_option, long_option, option.doc]
+    when Numeric
+      params = [short_option, "#{long_option} NUM", Integer, option.doc]
+    when String
+      params = [short_option, "#{long_option} STRING", String, option.doc]
+    when Array
+      list = option.cli.map(&:to_s)
+      aliases = list.abbrev
+      list = "  (#{list.join(', ')})"
 
-    options[:inform_tags] = Set.new([:debug, :info, :error])
+      params = [short_option, long_option, option.cli, aliases, option.doc, list]
+    else
+      pp option
+      next
+    end
 
-    case sopt
-    when :create
-      create[arg]
-    when :help
-      RDoc::ramazes_usage('Usage')
-    when :version
-      puts("ramaze #{Ramaze::VERSION}") or exit
-    when :copyright
-      RDoc::ramazes_usage('Copyright')
-    when *adapter
-      options[:adapter] = sopt
+    options[option.name] = option.default
 
-    when :benchmark
-      options[:inform_tags] << :benchmark
-    when :debug
-      options
-    when :stage
-      options[:inform_tags].subtract [:debug]
-    when :live
-      options[:inform_tags].subtract [:info, :debug]
-    when :silent
-      options[:inform_tags].subtract options[:inform_tags]
-
-    when :host
-      options[:host] = arg
-    when :port
-      options[:port] = arg
-
-    when :no_errorpage
-      options[:error_page] = false
-    when :template_root
-      options[:template_root] = arg
-    when :autoreload
-      options[:autoreload] = arg.to_i
-    when :run_loose
-      options[:run_loose] = true
-    when :console
-      options[:console] = true
-    when :backtrace
-      options[:backtrace] = true
+    opts.on(*params.compact) do |input|
+      options[option.name] = input
     end
   end
 
-  begin
-    puts "running #{runner}"
-    require runner
-  rescue LoadError => ex
-    puts ex
-    puts ex.backtrace if options[:backtrace]
-    puts "Maybe i cannot find `#{runner}'"
-    puts "You could provide a file to execute like:"
-    puts "$ ramaze myapp.rb"
+  opts.separator ''
+  opts.separator 'Common options:'
+
+  # -? keeps -p for --port free
+  opts.on_tail('-?', '--help', 'Show this message') do
+    puts opts
     exit
   end
+
+  opts.on_tail('-v', '--version', "Show version") do
+    puts ramaze_version
+    exit
+  end
+end
+
+opts.parse!(ARGV)
+runner = (ARGV + ['main.rb']).find{|f| File.exists?(f)}
+
+if ARGV.empty? and not runner
+  puts opts
+  exit
+end
+
+def create_from_proto(project)
+  require 'ramaze/tool/create'
+  Ramaze::Tool::Create.create(project)
+end
+
+if project = options.delete(:create)
+  create_from_proto(project)
+  exit
+end
+
+begin
+  puts "running `#{runner}'"
+  require runner
+rescue LoadError => ex
+  puts ex
+  puts ex.backtrace
+  puts "Maybe i cannot find `#{runner}'"
+  puts "You could provide a file to execute like:"
+  puts "$ ramaze myapp.rb"
+  exit
+end
+
+if options.delete(:console)
+  options[:run_loose] = true
+  ARGV.clear # Avoid passing args to IRB
+
+  Ramaze.start(options)
+
+  require 'irb'
+  require 'irb/completion'
+
+  def exit; Ramaze.shutdown; end
+
+  ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
+  IRB.start
+  Ramaze.shutdown
+else
+  Ramaze.start(options)
+end
+
+
+=begin
+
+begin
+  puts "running #{runner}"
+  require runner
+rescue LoadError => ex
+  puts ex
+  puts ex.backtrace if options[:backtrace]
+  puts "Maybe i cannot find `#{runner}'"
+  puts "You could provide a file to execute like:"
+  puts "$ ramaze myapp.rb"
+  exit
+end
 
   if options.delete(:console)
     options.merge!(:run_loose => true)
@@ -189,3 +163,5 @@ begin
 rescue LoadError => ex
   puts ex
 end
+
+=end

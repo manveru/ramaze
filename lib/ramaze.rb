@@ -10,6 +10,7 @@ end
 Thread.abort_on_exception = true
 
 # Bootstrap
+require 'ramaze/version'
 require 'ramaze/snippets'
 require 'ramaze/inform'
 require 'ramaze/global'
@@ -50,7 +51,7 @@ module Ramaze
 
       puts("Shutdown Ramaze (it's save to kill me now if i hang)")
 
-      exit
+      exit!
     end
 
     alias start startup
