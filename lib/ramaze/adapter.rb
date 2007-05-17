@@ -6,6 +6,7 @@ require 'benchmark'
 
 require 'rack/utils'
 require 'ramaze/trinity'
+require 'ramaze/tool/record'
 
 # for OSX compatibility
 Socket.do_not_reverse_lookup = true
@@ -44,6 +45,9 @@ module Ramaze
 
       def respond env
         request, response = Request.new(env), Response.new
+        if filter = Global.record
+          Record << request if filter[request]
+        end
         Dispatcher.handle(request, response)
       end
     end # Base

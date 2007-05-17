@@ -51,7 +51,10 @@ module Ramaze
   o "Specify the shadowing public directory (default in proto)",
     :public_root => ( BASEDIR / 'proto' / 'public' )
 
-  o "Don't wait until all adapter-threads are finished or killed",
+  o "Record all Request objects by assigning a filtering Proc to me.",
+    :record => false
+
+  o "Don't wait until all adapter-threads are finished or killed.",
     :run_loose => false, :cli => false
 
   o "Turn on BF/DoS protection for error-responses",
