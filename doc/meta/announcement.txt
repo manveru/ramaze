@@ -6,12 +6,35 @@ broader exposure to find new users and contributors.
 Home page: http://ramaze.rubyforge.org
 IRC: #ramaze on irc.freenode.net
 
+New Features in Version 0.1.2: ( review and remove unimportant stuff )
+
+ - Restructuring of Ramaze internals, featuring a cleaner overall layout.
+
+ - Add Ramaze::Record to easily record requests fitting particular patterns.
+
+ - Support for the Remarkably templating engine.
+
+ - Adapted for Rack 0.1
+
+ - Easier caching.
+
+ - replacing autoreload with the almighty SourceReload.
+
+ - tiny DSL for settings.
+
+ - Global is now a Struct, no OpenStruct.
+
+ - Default logger is now LogHub with Inform
+
+ - Lightweight error-page.
+
 Features:
   - Builds on top of the recently released Rack library, which provides easy use
     of adapters like Mongrel, WEBrick, CGI or FCGI.
 
   - Supports a wide range of templating-engines like:
-      Amrita2, Erubis, HAML, Liquid, Markaby and its own engine called Ezamar.
+      Amrita2, Erubis, HAML, Liquid, Markaby Remarkably and its own engine
+      called Ezamar.
 
   - Highly modular structure, you can just use the parts you like. This also
       means that it's very simple to add your own customizations.
