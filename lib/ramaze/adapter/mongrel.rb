@@ -3,7 +3,7 @@
 
 require 'ramaze/adapter'
 
-require 'mongrel'
+require 'rack/handler/mongrel'
 
 module Ramaze
   module Adapter
