@@ -39,11 +39,12 @@ module Ramaze
 
       def params
         ps = rack_params
-        temp = Hash.new{|h,k| h[k] = {}}
+        temp = {}
 
         ps.each do |key, value|
           outer_key, inner_key = key.scan(/^(.+)\[(.*?)\]$/).first
           if outer_key and inner_key
+            temp[outer_key] ||= {}
             temp[outer_key][inner_key] = value
           else
             temp[key] = value

@@ -47,11 +47,18 @@ class TCParamsController2 < Ramaze::Controller
   end
 end
 
+class TCParamsController3 < Ramaze::Controller
+  def index(*args)
+    request.params['foo'].inspect
+  end
+end
+
 describe "Simple Parameters" do
   ramaze(
     :mapping => {
         '/' => TCParamsController,
-        '/jo' => TCParamsController2
+        '/jo' => TCParamsController2,
+        '/ma' => TCParamsController3
       }
   )
 
@@ -120,5 +127,9 @@ describe "Simple Parameters" do
     get('/jo/add/1').body.should == '1::'
     get('/jo/add/1/2').body.should == '1:2:'
     get('/jo/add/1/2/3').body.should == '1:2:3'
+  end
+
+  it '' do
+    get('/ma').body.should == 'nil'
   end
 end
