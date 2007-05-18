@@ -1,8 +1,6 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-$:.unshift('/home/manveru/prog/projects/rack/lib')
-
 require 'spec/helper/minimal'
 require 'spec/helper/mock_http'
 require 'spec/helper/simple_http'
