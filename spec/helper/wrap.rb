@@ -134,26 +134,23 @@ class SpecFile
     total = f[@passed + @failed] rescue nil
     failed, passed = f[@failed], f[@passed]
     color = :red
+    width = 22
 
     if total_failure?
-      text = 'total failure'
+      text = 'total failure'.center(width)
     elsif failed?
-      text = "#{total} specs - #{failed} failed"
+      text = "#{total} specs - #{failed} failed".rjust(width)
       if @stdout =~ /Usually you should not worry about this failure, just install the/
         lib = @stdout.scan(/^no such file to load -- (.*?)$/).flatten.first
-        text = "needs #{lib}"
+        text = "needs #{lib}".center(width)
         @mark_passed = true
       end
     elsif (not @mark_passed) and succeeded?
       color = :green
-      text = "#{total} specs - all passed"
+      text = "#{total} specs - all passed".rjust(width)
     end
 
-    text.strip!
-    text = (' ' + text + ' ').center(24)
-    text = "[#{text}]"
-
-    puts(text.send(color))
+    puts "[ #{text.send(color)} ]"
   end
 
   def long_summary
