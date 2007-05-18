@@ -101,6 +101,11 @@ module Ramaze
         end
       end
 
+      def template(this, from, that = nil)
+        from, that = self, from unless that
+        trait "#{this}_template" => [from, that.to_s]
+      end
+
       def current
         Thread.current[:controller]
       end
@@ -146,12 +151,9 @@ module Ramaze
         raise_no_controller(path)
       end
 
-      # TODO: Get rid of the usage of to_sym here, it's not safe
-      #       since Symbols are never GC'd
-
       def resolve_action(path, *parameter)
         path, parameter = path.to_s, parameter.map(&:to_s)
-        if alternate_template = trait["#{path}_template".to_sym]
+        if alternate_template = trait["#{path}_template"]
           t_controller, t_path = *alternate_template
           template = t_controller.resolve_template(t_path)
         end
