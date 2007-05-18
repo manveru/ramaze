@@ -80,18 +80,14 @@ end
 opts.parse!(ARGV)
 runner = (ARGV + ['main.rb']).find{|f| File.exists?(f)}
 
-if ARGV.empty? and not runner
-  puts opts
+if project = options.delete(:create)
+  require 'ramaze/tool/create'
+  Ramaze::Tool::Create.create(project)
   exit
 end
 
-def create_from_proto(project)
-  require 'ramaze/tool/create'
-  Ramaze::Tool::Create.create(project)
-end
-
-if project = options.delete(:create)
-  create_from_proto(project)
+if ARGV.empty? and not runner
+  puts opts
   exit
 end
 
