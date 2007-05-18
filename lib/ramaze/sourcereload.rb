@@ -7,7 +7,7 @@ module Ramaze
   class SourceReload
     attr_accessor :thread, :interval, :reload_glob, :map
 
-    def initialize interval = 1, reload_glob = /#{Dir.pwd}|ramaze/
+    def initialize interval = 1, reload_glob = %r{(^\./)|#{Dir.pwd}|ramaze}
       @interval, @reload_glob = interval, reload_glob
       @mtimes, @map = {}, []
     end

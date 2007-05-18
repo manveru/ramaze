@@ -59,3 +59,25 @@ module Ramaze
     end
   end
 end
+
+# add the MemCache#clear method
+
+class MemCache
+  def clear
+    raise MemCacheError, "Update of readonly cache" if @readonly
+
+    @servers.each do |server|
+      server.flush_all
+    end
+  end
+
+  class Server
+    def flush_all
+      @mutex.lock if @multithread
+
+      socket.write "flush_all\r\n"
+    ensure
+      @mutex.unlock if @multithread
+    end
+  end
+end
