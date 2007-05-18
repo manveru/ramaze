@@ -23,7 +23,6 @@ end
 
 def ramaze_start hash = {}
   options = {
-    :mode         => :debug,
     :adapter      => false,
     :run_loose    => true,
     :error_page   => false,
