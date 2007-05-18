@@ -8,6 +8,7 @@ require 'benchmark'
 require 'rack/utils'
 require 'ramaze/trinity'
 require 'ramaze/tool/record'
+require 'ramaze/adapter/base'
 
 # for OSX compatibility
 Socket.do_not_reverse_lookup = true
@@ -16,52 +17,14 @@ module Ramaze
   STATUS_CODE = Rack::Utils::HTTP_STATUS_CODES.invert
 
   module Adapter
-    class Base
-      class << self
-        def stop
-          Inform.debug("Stopping #{self.class}")
-        end
-
-        def call(env)
-          new.call(env)
-        end
-      end
-
-      def call(env)
-        if Ramaze::Global.benchmarking
-          time = Benchmark.measure{ respond env }
-          Inform.debug("request took #{time.real}s")
-        else
-          respond env
-        end
-
-        finish
-      end
-
-      def finish
-        response = Thread.current[:response]
-
-        response.finish
-      end
-
-      def respond env
-        request, response = Request.new(env), Response.new
-        if filter = Global.record
-          Record << request if filter[request]
-        end
-        Dispatcher.handle(request, response)
-      end
-    end # Base
-
-    class << self # Adapter
+    class << self
       def startup options = {}
         start_adapter
 
         Timeout.timeout(3) do
-          sleep 0.01 until Global.adapters.any?
+          sleep 0.01 until Global.adapters.list.any?
         end
 
-        setup_trap
         Global.adapters.each{|a| a.join} unless Global.run_loose
 
       rescue SystemExit
@@ -69,19 +32,6 @@ module Ramaze
       rescue Object => ex
         Inform.error(ex)
         Ramaze.shutdown
-      end
-
-      # TODO: solve this [insert cussing here] problem with rack
-      #       i really don't wanna have to do this
-      #       maybe override the default start of rack?
-
-      def setup_trap
-        Thread.new do
-          loop do
-            trap(Global.shutdown_trap){ Ramaze.shutdown }
-            sleep 1
-          end
-        end
       end
 
       def start_adapter
@@ -93,8 +43,8 @@ module Ramaze
 
           Inform.info("and we're running: #{host}:#{ports}")
           adapter.start(host, ports)
-        else
-          Global.adapters << :dummy
+        else # run dummy
+          Global.adapters.add Thread.new{ sleep }
           Inform.warn("Seems like Global.adapter is turned off", "Continue without adapter.")
         end
       rescue LoadError => ex
@@ -103,13 +53,13 @@ module Ramaze
 
       def shutdown
         Timeout.timeout(1) do
-          Global.adapters.each do |adapter|
+          Global.adapters.list.each do |adapter|
             a = adapter[:adapter]
             a.shutdown if a.respond_to?(:shutdown)
           end
         end
       rescue Timeout::Error
-        Global.adapters.each{|a| a.kill!}
+        Global.adapters.list.each{|a| a.kill!}
         exit!
       end
 
@@ -132,6 +82,6 @@ module Ramaze
         Inform.error(ex)
         false
       end
-    end # class << Adapter
-  end # Adapter
+    end
+  end
 end

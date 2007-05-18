@@ -18,12 +18,6 @@ module Ramaze
   module Adapter
     class WEBrick < Base
       class << self
-        def start host, ports
-          ports.map do |port|
-            Global.adapters << run_server(host, port)
-          end
-        end
-
         def run_server host, port, options = {}
           options = {
             :Port        => port,
@@ -35,10 +29,12 @@ module Ramaze
             ]
           }.merge(options)
 
-          Thread.new do
-            Rack::Handler::WEBrick.run(self, options) do |server|
-              Thread.current[:adapter] = server
-            end
+
+          server = ::WEBrick::HTTPServer.new(options)
+          server.mount("/", ::Rack::Handler::WEBrick, self)
+          thread = Thread.new(server) do |adapter|
+            Thread.current[:adapter] = adapter
+            adapter.start
           end
         end
       end
