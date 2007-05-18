@@ -44,6 +44,9 @@ module Ramaze
     o "All paths to controllers are mapped here.",
       :mapping => {}
 
+    o "The place ramaze was started from, useful mostly for debugging",
+      :origin => :main
+
     o "Specify port",
       :port => 7000, :cli => 7000
 
