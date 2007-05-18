@@ -146,6 +146,9 @@ module Ramaze
         raise_no_controller(path)
       end
 
+      # TODO: Get rid of the usage of to_sym here, it's not safe
+      #       since Symbols are never GC'd
+
       def resolve_action(path, *parameter)
         path, parameter = path.to_s, parameter.map(&:to_s)
         if alternate_template = trait["#{path}_template".to_sym]

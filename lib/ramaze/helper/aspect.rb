@@ -154,17 +154,17 @@ module Ramaze
     def enwrap(kind, key, meths, hash = {})
       wrapping =
       if key == :all
-        instance_methods(false).map{|im| im.to_sym}
+        instance_methods(false)
       else
         if ([] + key rescue nil)
-          key.map{|k| k.to_sym}
+          key.map{|k| k.to_s}
         else
-          [key.to_sym]
+          [key.to_s]
         end
       end
 
       if hash[:except]
-        wrapping -= [hash[:except]].flatten.map{|m| m.to_sym}
+        wrapping -= [hash[:except]].flatten.map(&:to_s)
       end
 
       wrapping.each do |meth|
@@ -175,7 +175,7 @@ module Ramaze
     # find the post and pre actions for the current class
 
     def resolve_aspect(action)
-      action = action.to_sym
+      action = action.to_s
       aspects = ancestral_trait[:aspects]
       {
         :pre  => aspects[:pre][action],
