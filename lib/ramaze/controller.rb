@@ -15,7 +15,7 @@ module Ramaze
 
     helper :redirect, :link, :file
 
-    trait :template_extensions => { }
+    trait[:template_extensions] ||= {}
 
     # Whether or not to map this controller on startup automatically
 
