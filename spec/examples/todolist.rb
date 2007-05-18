@@ -1,0 +1,105 @@
+require 'spec/helper'
+
+testcase_requires 'hpricot'
+
+$:.unshift 'examples/todolist'
+require 'main'
+
+# fix the paths to template and public for the spec
+class MainController
+  template_root 'examples/todolist/template'
+  public_root 'examples/todolist/public'
+end
+
+describe 'todolist' do
+  def h_get(*args)
+    Hpricot(get(*args).body)
+  end
+
+  def task_titles
+    doc = h_get('/')
+    doc.search("td[@class='title']").
+      map{|t| t.inner_html.strip}.sort
+  end
+
+  def tasks
+    (h_get('/')/:tr)
+  end
+
+  def spectask
+    tasks.find do |task|
+      (task/:td).find do |td|
+        td['class'] == 'title' and
+        td.inner_html.strip == 'spectask'
+      end
+    end
+  end
+
+  def spectask_status
+    spectask.search("td[@class='status']").inner_html.strip
+  end
+
+  it 'should start' do
+    ramaze :port => 7080
+    get('/').status.should == 200
+  end
+
+  it 'should have no empty mainpage' do
+    get('/').body.should_not be_nil
+  end
+
+  it 'should have two preset tasks' do
+    task_titles.should == %w[Laundry Wash\ dishes]
+  end
+
+  it 'should have a link to new tasks' do
+    doc = h_get('/')
+    link = (doc/:a).find{|a| a.inner_html == 'New Task'}
+    link['href'].should == '/new'
+  end
+
+  it 'should have a page to create new tasks' do
+    get('/new').body.should_not be_nil
+  end
+
+  it 'should have a form to create a tasks on the /new page' do
+    doc = h_get('/new')
+    form = doc.at :form
+    form.should_not be_nil
+    input = form.at(:input)
+    input['type'].should == 'text'
+    input['name'].should == 'title'
+  end
+
+  it 'should POST new task and redirect to /' do
+    result = post('/create', 'title' => 'spectask')
+    result.status.should == 303
+  end
+
+  it 'should show have the new task' do
+    task_titles.should include('spectask')
+  end
+
+  it 'should toggle the spectask' do
+    get('/close/spectask').status.should == 303
+    spectask.should_not be_nil
+    spectask_status.should == 'done'
+    get('/open/spectask').status.should == 303
+    spectask.should_not be_nil
+    spectask_status.should == 'not done'
+  end
+
+  it 'should raise on toggling a not existing task' do
+    get('/close/does_not_exist').status.should == 500
+    get('/open/does_not_exist').status.should == 500
+  end
+
+  it 'should delete the new task' do
+    get('/delete/spectask').status.should == 303
+    task_titles.should_not include('spectask')
+  end
+
+  after :all do
+    FileUtils.rm('todolist.db')
+  end
+end

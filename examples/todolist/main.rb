@@ -8,11 +8,3 @@ include Ramaze
 require 'src/controller/main'
 require 'src/element/page'
 require 'src/model'
-
-# mode selects the config-file.
-# benchmark | debug | stage | live | silent
-mode = 'debug'
-
-Global.setup YAML.load_file("conf/#{mode}.yaml")
-
-start
