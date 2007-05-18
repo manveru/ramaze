@@ -18,25 +18,40 @@ module Ramaze
     end
 
     def self.startup options = {}
-      instance = new(Global.sourcereload)
-      instance.start
+      interval = Global.sourcereload
+      instance = new(interval)
       Thread.main[:sourcereload] = instance
+      instance.reload # initial scan of all files
+      instance.start if interval
     end
 
     def reloader
       Thread.new do
         loop do
-          all_reload_files.each do |file|
-            mtime = mtime(file)
-
-            next if (@mtimes[file] ||= mtime) == mtime
-
-            Inform.debug("reload #{file}")
-            @mtimes[file] = mtime if safe_load(file)
-          end
-
+          reload
           sleep(@interval)
         end
+      end
+    end
+
+    # This method is quite handy if you want direct control over when your code is reloaded
+    #
+    # Usage example:
+    #
+    # trap :HUB do
+    #   Ramaze::Inform.info "reloading source"
+    #   Thread.main[:sourcereload].reload
+    # end
+    #
+
+    def reload
+      all_reload_files.each do |file|
+        mtime = mtime(file)
+
+        next if (@mtimes[file] ||= mtime) == mtime
+
+        Inform.debug("reload #{file}")
+        @mtimes[file] = mtime if safe_load(file)
       end
     end
 

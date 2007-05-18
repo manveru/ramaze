@@ -50,9 +50,9 @@ module Ramaze
     end
 
     def sourcereload=(interval)
-      sri = Thread.main[:sourcereload]
-      sri.interval = interval
       self[:sourcereload] = interval
+      sri = Thread.main[:sourcereload]
+      sri.interval = interval if sri
     end
 
     # External helpers

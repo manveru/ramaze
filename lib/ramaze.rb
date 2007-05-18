@@ -27,7 +27,7 @@ require 'ramaze/template/ezamar'
 
 module Ramaze
   trait :essentials => [
-    Global, Controller, Adapter, SourceReload
+    Global, Controller, SourceReload, Adapter
   ]
 
   class << self
