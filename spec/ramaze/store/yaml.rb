@@ -9,6 +9,11 @@ describe "Store::YAML" do
     Ramaze::Store::YAML.new(name, :destroy => true)
   end
 
+  after :all do
+    FileUtils.rm('article.yaml')
+    FileUtils.rm('author.yaml')
+  end
+
   it "model" do
     article_class = new_store :article
     article_class.entities.should_not == nil

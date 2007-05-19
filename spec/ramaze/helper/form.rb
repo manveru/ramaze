@@ -138,5 +138,9 @@ describe "FormHelper" do
         result.should =~ /<input type="submit" \/>/
       end
     end
+
+    after :all do
+      FileUtils.rm('data.db')
+    end
   end
 end
