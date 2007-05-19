@@ -26,23 +26,32 @@ require 'ramaze/dispatcher'
 require 'ramaze/template/ezamar'
 
 module Ramaze
+
+  # Each of these classes will be called ::startup upon Ramaze.startup
+
   trait :essentials => [
     Global, Controller, SourceReload, Adapter
   ]
 
   class << self
+
+    # The one place to start Ramaze, takes an Hash of options to pass on to
+    # each class in trait[:essentials] by calling ::startup on them.
+
     def startup options = {}
       Inform.info("Starting up Ramaze (Version #{VERSION})")
 
       starter = caller[0].split(':').first
       return unless ($0 == starter or options.delete(:force))
 
-      options[:origin] ||= :main
-
       trait[:essentials].each do |obj|
         obj.startup(options)
       end
     end
+
+    # This will be called when you hit ^C or send SIGINT.
+    # It sends ::shutdown to every class in trait[:essentials] and informs you
+    # when it is done
 
     def shutdown
       trait[:essentials].each do |obj|
