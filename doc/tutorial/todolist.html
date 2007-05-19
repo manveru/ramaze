@@ -86,8 +86,8 @@ YAML::Store already, so we are just gonna modify it a bit to use our wrapper.</p
   'Laundry'     =&gt; {:done =&gt; false},
   'Wash dishes' =&gt; {:done =&gt; false},
 
-}.each do |title, parameters|
-  TodoList[title] = parameters
+}.each do |title, value|
+  TodoList[title] = value
 end
 </code></pre>
 
@@ -109,8 +109,8 @@ simple.</p>
     &lt;h1&gt;TodoList&lt;/h1&gt;
     &lt;ul&gt;
       &lt;?r
-        TodoList.each do |title, parameters|
-          status = parameters[:done] ? 'done' : 'not done'
+        TodoList.each do |title, value|
+          status = value[:done] ? 'done' : 'not done'
         ?&gt;
         &lt;li&gt;#{title}: #{status}&lt;/li&gt;
       &lt;?r end ?&gt;
@@ -124,8 +124,8 @@ concentrate on the things new here.</p>
 
 <p><?r ?> defines an area of ruby-code. Late when the template is transformed into
 pure Ruby it will be evaluated. We iterate over the TodoList model and pass the
-title and parameters into a block. In that block we can just get the values
-of title and status (which we define based on the parameters) displayed on the
+title and value into a block. In that block we can just get the values
+of title and status (which we define based on the value) displayed on the
 page.</p>
 
 <p>The whole Template would expand to something like this (only showing the
@@ -187,8 +187,8 @@ and the templates is 1:1, so the method #index is combined with the template
 
 <pre><code>def index
   @tasks = TodoList.content
-  @tasks.each do |title, parameters|
-    status = parameters[:done] ? 'done' : 'not done'
+  @tasks.each do |title, value|
+    status = value[:done] ? 'done' : 'not done'
     @tasks[title] = status
   end
 end
@@ -312,8 +312,8 @@ we go and change the index method on the controller once again:</p>
 
 <pre><code>def index
   @tasks = []
-  TodoList.original.each do |title, parameters|
-    if parameters[:done]
+  TodoList.original.each do |title, value|
+    if value[:done]
       status = 'done'
       toggle = link( R( self, :open, CGI.escape(title) ), :title =&gt; 'Open Task' )
     else
@@ -546,7 +546,8 @@ the things inside the Element and look at how it behaves.</p>
 
 <h2>Ninth Step, Prettify</h2>
 
-<p>Let's structure the data inside the list a little bit, in this case into a table to get it line up properly and look actually structured.</p>
+<p>Let's structure the data inside the list a little bit, in this case into a table
+to get it line up properly and look actually structured.</p>
 
 <p>So, from what we have right now:</p>
 
@@ -573,7 +574,8 @@ the things inside the Element and look at how it behaves.</p>
 &lt;/table&gt;
 </code></pre>
 
-<p>And, since we have proper classes to address some style sheets, jump into the Page element and add some style sheet like that:</p>
+<p>And, since we have proper classes to address some style sheets, jump into the
+Page element and add some style sheet like that:</p>
 
 <pre><code>&lt;head&gt;
   &lt;title&gt;TodoList&lt;/title&gt;
@@ -588,11 +590,49 @@ the things inside the Element and look at how it behaves.</p>
 &lt;/head&gt;
 </code></pre>
 
-<p>That looks quite a bit nicer, right?
-And yes, if you don't like tables (though this is an entirely legit use in my opinion, you can just do it like you want, using nested lists or divs/spans, replacing the open/close and delete links with nice images and changing the style according to the status.</p>
+<p>That looks quite a bit nicer, right?  And yes, if you don't like tables (though
+this is an entirely legit use in my opinion, you can just do it like you want,
+using nested lists or divs/spans, replacing the open/close and delete links with
+nice images and changing the style according to the status.</p>
 
 <p>I will leave this as an exercise to the reader.</p>
 
-<p>To be continued...</p>
+<h2>Tenth Step, Configuration</h2>
+
+<p>To round up this tutorial a bit, let's introduce you to configuration in Ramaze.
+This will not go into full depth of possibilities or a total coverage of the
+options, since they are bound to change over time.</p>
+
+<p>First of all, the default port Ramaze runs on is 7000, but to make it a usual
+webserver it has to run on port 80.  So, let's add following line in your
+main.rb right after the lines of require you added before:</p>
+
+<pre><code>Ramaze::Global.port = 80
+</code></pre>
+
+<p>Alright, that wasn't that hard.
+Let's say now you also want to run Mongrel instead of WEBrick, to get nice a bit
+of performance:</p>
+
+<pre><code>Ramaze::Global.adapter = :mongrel
+</code></pre>
+
+<p>To do this in a DRY way you could also do following:</p>
+
+<pre><code>Ramaze::Global.setup do |g|
+  g.port = 80
+  g.adapter = :mongrel
+end
+</code></pre>
+
+<p>It seems to be quite common to put this configuration into seperate files so you
+can just require it on demand.  There are other, slightly stronger way to set
+options, which is either using flags on the ramaze executable, or like this:</p>
+
+<pre><code>Ramaze.start :port =&gt; 80, :adapter =&gt; :mongrel
+</code></pre>
+
+<p>We haven't started Ramaze directly as of yet, but this allows you to ignore the
+ramaze executable and just run your application.</p>
     </body>
   </html>
