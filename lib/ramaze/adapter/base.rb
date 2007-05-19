@@ -3,14 +3,25 @@
 
 module Ramaze
   module Adapter
+
+    # This class is holding common behaviour for its subclasses.
+
     class Base
       class << self
+
+        # For the specified host and for all given ports call run_server and
+        # add the returned thread to the Global.adapters ThreadGroup.
+        # Afterwards adds a trap for the value of Global.shutdown_trap which
+        # calls Ramaze.shutdown when triggered (usually by SIGINT).
+
         def start host, ports
-          ports.map do |port|
+          ports.each do |port|
             Global.adapters.add(run_server(host, port))
             trap(Global.shutdown_trap){ Ramaze.shutdown }
           end
         end
+
+        # Does nothing
 
         def stop
           Inform.debug("Stopping #{self.class}")
