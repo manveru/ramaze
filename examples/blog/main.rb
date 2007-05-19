@@ -14,4 +14,4 @@ Og.setup :evolve_schema => :full
 Entry.create "Blog created", "Exciting news today, this blog was created!" if
   Entry.count == 0
 
-start
+Ramaze.start

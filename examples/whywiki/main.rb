@@ -48,4 +48,4 @@ Global.adapter = :mongrel
 #Global.tidy = true
 Global.mapping = {'/' => WikiController}
 
-start
+Ramaze.start
