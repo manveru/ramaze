@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze/adapter'
-
+require 'webrick'
 require 'rack/handler/webrick'
 
 module WEBrick

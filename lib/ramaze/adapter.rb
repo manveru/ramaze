@@ -1,11 +1,13 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'rack'
+require 'socket'
 require 'timeout'
 require 'benchmark'
 
+require 'rack'
 require 'rack/utils'
+
 require 'ramaze/trinity'
 require 'ramaze/tool/record'
 require 'ramaze/adapter/base'
@@ -25,7 +27,7 @@ module Ramaze
           sleep 0.01 until Global.adapters.list.any?
         end
 
-        Global.adapters.each{|a| a.join} unless Global.run_loose
+        Global.adapters.list.each{|a| a.join} unless Global.run_loose
 
       rescue SystemExit
         Ramaze.shutdown
