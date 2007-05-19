@@ -6,10 +6,8 @@ This chapter covers how to do configuration in Ramaze for your application.
 The object holding most configuration is called Global. It resides in the Ramaze
 module/name space.
 
-Global is a subclass of OpenStruct and behaves mostly like it, so you can assign
-your own key/value pairs to do your own configuration. Just ensure you don't
-change key/value pairs by accident that Ramaze itself uses (doing it intentional
-is OK of course).
+Global is an instance of GlobalStruct, which itself is an instance of Struct.
+There have been some changes to it to suit its purpose.
 
 Before covering some of the available options let us see how to actually use it.
 
@@ -20,17 +18,15 @@ Global with Ramaze so it is written Ramaze::Global.
 
 #### Basic assignment:
 
-  Global.ports = (7000..7010)
+  Global.spawn = 10
 
-if you do that before calling Ramaze::start Ramaze will spawn one server on each
-port in that Range. The first value of this Range is also assigned to
-Global.port during the startup procedure.
+if you do that before calling Ramaze::start Ramaze will spawn the given number of servers.
 
 
 #### Multiple assignment:
 
   Global.setup :adapter => :mongrel,
-               :cache   => MemcachedCache
+               :cache   => :memcached
 
 So you can pass a Hash of all the options you want to change.
 In this case you would use Mongrel as the adapter and use memcached for your
@@ -61,24 +57,24 @@ useful to quickly test some configuration.
 
 ### Global options
 
-Since this document is especially prone to be outdated at times make sure you
-check lib/ramaze/global.rb in case you run into trouble, we will try to keep at
-least the RDocs up to date. This update is from 2007/04/16.
-
 This listing is here to provide you with descriptions of the most common
 configurations in alphabetical order per section showing the default value next
 to the key.
 
+This chapter has been shrunk a lot to cover only essentials, please look at
+lib/ramaze/global.rb to see all available options.
+
+Date of last update: 2007-05-20
 
 #### General Configuration:
 
-:autoreload => 5
+:sourcereload => 3
 
-Autoreload is a nifty mechanism that takes advantage of the dynamics of Ruby,
+SourceReload is a nifty mechanism that takes advantage of the dynamics of Ruby,
 it's basically a Thread that runs in the background and polls for files in the
 application and framework that have changed (using mtime). The value specifies
-roughly how fast your changes are going to be loaded and should be a usual
-Fixnum.
+roughly how fast your changes are going to be loaded and should be a number.
+If you set this to false, it will not start.
 
 
 :adapter => :webrick
@@ -91,19 +87,13 @@ additional libraries to be installed, webrick and cgi run out of the box.
 Generally the most supported and recommended for deployment is Mongrel.
 
 
-:backtrace_size => 10
+:cache => :memory
 
-This option doesn't have a large impact and is most likely left on its default
-value, it controls how long the backtrace shown in your log and on the error
-page should be.
-
-
-:cache => MemoryCache
-
+Possible: :memory, :memcached, :yaml
 The cache is one of the more important things for deployment, the default for
 this is MemoryCache, a simple Hash.
-The class you specify here is used throughout Ramaze to cache various things,
-like sessions, page- and value-caching.
+What you specify here will be used by Ramaze::Cache and is used throughout
+Ramaze to cache various things, like sessions, page- and value-caching.
 Included in Ramaze are the MemoryCache and YAMLStoreCache, after you install
 'memcached' you can also use the much more performant MemcachedCache that also
 makes it easy to use the same cache between different applications (sharing
@@ -138,13 +128,6 @@ want to use your own Error page and so you can safely disable this setting.
 
 Tell the adapter where it accepts requests from, 0.0.0.0 says that every
 IP will be accepted, 127.0.0.1 would accept only requests from loopback.
-
-
-:logger => Ramaze::Informer
-
-The logger is used during startup to set Ramaze::Inform, you may set this
-to Ramaze::Syslog or in case you have 'analogger' installed, you can use
- Ramaze::Analogger.
 
 
 :mapping => {}
