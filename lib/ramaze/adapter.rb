@@ -16,10 +16,25 @@ require 'ramaze/adapter/base'
 Socket.do_not_reverse_lookup = true
 
 module Ramaze
+
+  # Shortcut to the HTTP_STATUS_CODES of Rack::Utils
+  # inverted for easier access
+
   STATUS_CODE = Rack::Utils::HTTP_STATUS_CODES.invert
+
+  # This module holds all classes and methods related to the adapters like
+  # webrick or mongrel.
+  # It's responsible to start and stop them.
 
   module Adapter
     class << self
+
+      # Is called by Ramaze.startup and will first call start_adapter and wait
+      # up to 3 seconds for an adapter to appear.
+      # It will then wait for the adapters to finish If Global.run_loose is
+      # set or otherwise pass you on control which is useful for testing or IRB
+      # sessions.
+
       def startup options = {}
         start_adapter
 
@@ -35,6 +50,12 @@ module Ramaze
         Inform.error(ex)
         Ramaze.shutdown
       end
+
+      # Takes Global.adapter and starts if test_connections is positive that
+      # connections can be made to the specified host and ports.
+      # If you set Global.adapter to false it won't start any but deploy a
+      # dummy which is useful for testing purposes where you just send fake
+      # requests to Dispatcher.
 
       def start_adapter
         if adapter = Global.adapter
@@ -53,6 +74,9 @@ module Ramaze
         Inform.warn(ex, "Continue without adapter.")
       end
 
+      # Calls ::shutdown on all running adapters and waits up to 1 second for
+      # them to finish, then goes on to kill them and exit still.
+
       def shutdown
         Timeout.timeout(1) do
           Global.adapters.list.each do |adapter|
@@ -65,6 +89,9 @@ module Ramaze
         exit!
       end
 
+      # check the given host and ports via test_connection.
+      # Shuts down if no connection is possible.
+
       def test_connections host, ports
         return unless Global.test_connections
 
@@ -75,6 +102,9 @@ module Ramaze
           end
         end
       end
+
+      # Opens a TCPServer temporarily and returns true if a connection is
+      # possible and false if none can be made
 
       def test_connection host, port
         Timeout.timeout(1) do
