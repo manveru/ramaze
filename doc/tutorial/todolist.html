@@ -252,7 +252,7 @@ missing. First off, we want to add new tasks, so let's get that done.</p>
     &lt;a href="/"&gt;Back to TodoList&lt;/a&gt;
     &lt;form method="POST" action="create"&gt;
       Task: &lt;input type="text" name="title" /&gt;&lt;br /&gt;
-      &lt;inpyt type="submit" /&gt;
+      &lt;input type="submit" /&gt;
     &lt;/form&gt;
   &lt;/body&gt;
 &lt;/html&gt;
@@ -499,7 +499,7 @@ so far:</p>
         &lt;title&gt;TodoList&lt;/title&gt;
       &lt;/head&gt;
       &lt;body&gt;
-        &lt;h1&gt;#{@hash['title']}&lt;/h1&gt;
+        &lt;h1&gt;#{@title}&lt;/h1&gt;
         #{content}
       &lt;/body&gt;
     &lt;/html&gt;
@@ -508,8 +508,7 @@ so far:</p>
 end
 </code></pre>
 
-<p>Please note that the @hash is filled with the things you pass as parameters
-to tye Page-tag.</p>
+<p>Please note that instance variables reflecting the parameters are set.</p>
 
 <p>And let's change our templates as well.</p>
 

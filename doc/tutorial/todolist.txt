@@ -219,7 +219,7 @@ Open a new file `template/new.xhtml` with a form to add a new task.
         <a href="/">Back to TodoList</a>
         <form method="POST" action="create">
           Task: <input type="text" name="title" /><br />
-          <inpyt type="submit" />
+          <input type="submit" />
         </form>
       </body>
     </html>
