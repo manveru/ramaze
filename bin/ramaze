@@ -45,11 +45,11 @@ opts = OptionParser.new do |opts|
     when String
       params = [short_option, "#{long_option} STRING", String, option.doc]
     when Array
-      list = option.cli.map(&:to_s)
-      aliases = list.abbrev
-      list = "  (#{list.join(', ')})"
+      index = option.cli.map(&:to_s)
+      aliases = index.abbrev
+      list = "  (#{index.join(', ')})"
 
-      params = [short_option, long_option, option.cli, aliases, option.doc, list]
+      params = [short_option, "#{long_option} CHOICE", index, aliases, option.doc, list]
     else
       pp option
       next
