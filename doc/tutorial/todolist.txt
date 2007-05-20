@@ -1,5 +1,7 @@
 # To-do List Tutorial
 
+## Step Zero, Introduction
+
 Welcome to our official tutorial, the mandatory to-do list.
 I'm writing this while doing the steps to assure it will work for you.
 
@@ -19,6 +21,9 @@ drop by on IRC ( irc.freenode.org channel: #ramaze ).
 There is also a Mailing list available where you can keep yourself updated on
 what is going on with little effort, it is also located on the project-page at
 RubyForge.
+
+Additionally, we now have added tests for the resulting application that you
+can find in spec/examples/todolist.rb
 
 Thanks in advance.
 The author of the tutorial, Michael 'manveru' Fellinger
