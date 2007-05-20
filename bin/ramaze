@@ -16,16 +16,14 @@ cli_options = Ramaze::CLI_OPTIONS
 cli_abbrevs = cli_options.map{|o| o.name.to_s}.abbrev
 cli_abbrevs = Hash[*cli_abbrevs.select{|k,v| k.size == 1}.flatten].invert
 
-assign = lambda{|opt, value| options[opt.name] = value}
-
-opts = OptionParser.new do |opts|
+opts = OptionParser.new do |opt|
   ruby_version = "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]" 
   ramaze_version = "#{RAMAZE_VERSION}, on #{ruby_version}"
 
-  opts.banner = "Usage: ramaze main.rb [OPTIONS]"
-  opts.define_head ramaze_version
+  opt.banner = "Usage: ramaze main.rb [OPTIONS]"
+  opt.define_head ramaze_version
 
-  opts.on('--create PROJECT', "A new application based on proto.") do |input|
+  opt.on('--create PROJECT', "A new application based on proto.") do |input|
     options[:create] = input
   end
 
@@ -57,7 +55,7 @@ opts = OptionParser.new do |opts|
 
     options[option.name] = option.default
 
-    opts.on(*params.compact) do |input|
+    opt.on(*params.compact) do |input|
       options[option.name] = input
     end
   end
