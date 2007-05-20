@@ -12,7 +12,7 @@ Ramaze::Tool::Localize.trait :enable    => true,
 Ramaze::Dispatcher::Action.trait[:filter] << Ramaze::Tool::Localize
 
 class TCLocalize < Ramaze::Controller
-  trait :map => '/'
+  map '/'
 
   def hello lang = 'en'
     session[:LOCALE] = lang
