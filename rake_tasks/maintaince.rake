@@ -156,6 +156,45 @@ task 'tutorial2html' do
   File.open(basefile + '.html', 'w+'){|f| f.puts(wrap) }
 end
 
+task 'tutorial' => ['tutorial2html'] do
+  require 'hpricot'
+
+  system 'rake tutorial2html'
+
+  filename = 'doc/tutorial/todolist.html'
+  file = File.read(filename)
+  doc = Hpricot(file)
+
+  to_links = []
+
+  (doc/:h2).each do |h2|
+    text      = h2.inner_html
+    link_id   = text.gsub(' ', '_')
+    to_links << %{<a href="##{link_id}">#{text}</a>}
+    to_link   = %{<a name="#{link_id}"><h2>#{text}</h2></a>}
+
+    file.gsub!(h2.to_html, to_link)
+  end
+
+  links = to_links.join("<br />\n  ")
+  h1 = "<h1>To-do List Tutorial</h1>"
+  menu =
+%{
+  #{h1}
+
+<div class="menu">
+  <h3>Table of Contents</h3>
+  #{links}
+</div>
+}
+
+  file.gsub!(h1, menu)
+
+  File.open(filename, 'w+') do |f|
+    f.puts file
+  end
+end
+
 task 'authors' do
   changes = `darcs changes`
   authors = []
