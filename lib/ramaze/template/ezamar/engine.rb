@@ -23,9 +23,9 @@ module Ezamar
     # Start a new template with some string for your template
     # that's going to be transformed.
 
-    def initialize source, options = {}
-      @original = @source = source
-      @binding, @file = options.values_at(:binding, :path)
+    def initialize source, action = nil
+      @source = source
+      @binding, @file = action.values_at(:binding, :template) if action
       @start_heredoc = "T" << Digest::SHA1.hexdigest(@source)
       @start_heredoc, @end_heredoc = "\n<<#{@start_heredoc}\n", "\n#{@start_heredoc}\n"
       @bufadd = "_out_ << "

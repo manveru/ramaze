@@ -29,9 +29,7 @@ module Ramaze
             action = controller.resolve_action(method, *params)
             template = action.template
 
-            action.method ||= File.basename(template, File.extname(template)) if template
-
-            return controller, action if action.method
+            return controller, action if action.method or action.template
           end
         end
 
@@ -52,7 +50,8 @@ module Ramaze
           template ||= resolve_template(path)
         end
 
-        Action.new(method, params, template)
+        hash = {:method => method, :params => params, :template => template}
+        Action.fill(hash)
       end
 
       def resolve_template(action)

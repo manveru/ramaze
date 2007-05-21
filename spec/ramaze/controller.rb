@@ -113,15 +113,6 @@ describe "Controller" do
           patterns = Ramaze::Controller.pattern_for(path)
 
           describe path do
-=begin
-            puts
-            patterns.zip(correct).each do |pa, co|
-              p :pa => pa
-              p :co => co
-              puts
-            end
-            puts
-=end
             it(path){ patterns.should == correct }
             correct.zip(patterns).each do |(cc,cm,cp),(pc,pm,pp)|
               {cc,pc,cm,pm,cp,pp}.each{|a,b| a.should == b}
@@ -137,23 +128,27 @@ describe "Controller" do
       TCControllerController.resolve(path)
     end
 
+    def values(*url)
+      resolve(*url).last.values_at(:method, :params, :template)
+    end
+
     it '/' do
-      resolve('/').last.should ==
-        Ramaze::Action.new('index', [],'spec/ramaze/template/ezamar/index.zmr')
+      values('/').should ==
+        ['index', [], 'spec/ramaze/template/ezamar/index.zmr']
     end
 
     it '/sum/1/2' do
-      resolve('/sum/1/2').last.should ==
-        Ramaze::Action.new('sum', ['1', '2'],'spec/ramaze/template/ezamar/sum.zmr')
+      values('/sum/1/2').should ==
+        ['sum', ['1', '2'],'spec/ramaze/template/ezamar/sum.zmr']
     end
 
     it '/another/long/action' do
-      resolve('/another/long/action').last.should ==
-        Ramaze::Action.new('another__long__action', [], 'spec/ramaze/template/ezamar/another/long/action.zmr')
+      values('/another/long/action').should ==
+        ['another__long__action', [], 'spec/ramaze/template/ezamar/another/long/action.zmr']
     end
     it '/some/long/action' do
-      resolve('/some/long/action').last.should ==
-        Ramaze::Action.new('some__long__action', [], 'spec/ramaze/template/ezamar/some__long__action.zmr')
+      values('/some/long/action').should ==
+        ['some__long__action', [], 'spec/ramaze/template/ezamar/some__long__action.zmr']
     end
   end
 

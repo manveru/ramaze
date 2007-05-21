@@ -18,10 +18,10 @@ module Ramaze::Template
       # Builds a template out of the method on the controller and the
       # template-file.
 
-      def transform controller, options = {}
-        action, parameter, file, bound = *super
+      def transform action
+        controller, method, parameter, file, bound = *super
 
-        reaction = controller.send(action, *parameter)
+        reaction = controller.send(method, *parameter)
         template = reaction_or_file(reaction, file)
 
         return '' unless template

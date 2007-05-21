@@ -34,8 +34,8 @@ module Ramaze
           end
         end
 
-        def transform controller, options = {}
-          options.values_at(:action, :parameter, :file, :binding)
+        def transform action
+          action.values_at(:controller, :method, :params, :template, :binding)
         end
       end
     end

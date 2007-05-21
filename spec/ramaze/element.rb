@@ -73,31 +73,35 @@ end
 describe "Element" do
   ramaze(:mapping => {'/' => TCElementController})
 
+  def retrieve(*url)
+    get(*url).body.strip
+  end
+
   it "simple request" do
-    get('/').body.should == "The index"
+    retrieve('/').should == "The index"
   end
 
   it "with element" do
-    get('/elementy').body.should == "<wrap> The index </wrap>"
+    retrieve('/elementy').should == "<wrap> The index </wrap>"
   end
 
   it "nested element" do
-    get('/nested').body.should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
+    retrieve('/nested').should == "<wrap>  some stuff  <wrap> The index </wrap>  more stuff  </wrap>"
   end
 
   it "with_params" do
-    get('/with_params/one/two').body.should == {'@one' => 'two'}.inspect
+    retrieve('/with_params/one/two').should == {'@one' => 'two'}.inspect
   end
 
   it "little" do
-    get('/little').body.should == 'little'
+    retrieve('/little').should == 'little'
   end
 
   it "little params" do
-    get('/little_params/one/eins').body.should == {'@one' => 'eins'}.inspect
+    retrieve('/little_params/one/eins').should == {'@one' => 'eins'}.inspect
   end
 
   it "templating" do
-    get('/templating/10').body.should == (1..10).to_a.join(', ')
+    retrieve('/templating/10').should == (1..10).to_a.join(', ')
   end
 end

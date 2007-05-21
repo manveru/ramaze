@@ -7,9 +7,10 @@ require 'ramaze/template'
 module Ramaze::Template
   class TestTemplate < Template
     Ramaze::Controller.register_engine self, %w[ test ]
+
     class << self
-      def transform controller, options = {}
-        action, parameter, file, bound = *super
+      def transform action
+        controller, action, parameter, file, bound = *super
         [ controller.class.name,
           action,
           parameter,
@@ -78,9 +79,9 @@ describe "testing ramaze template" do
     getpage("/external")
 
     @controller.should == "TCTemplateController"
-    @action.should == "external"
+    @file.should =~ /external\.test$/
     @parameter.should == []
     file = TCTemplateController.template_root/'external.test'
-    @file.should == File.expand_path(file)
+    @file.should == file
   end
 end

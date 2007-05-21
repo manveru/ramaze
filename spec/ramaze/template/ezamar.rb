@@ -26,7 +26,6 @@ class TCTemplateController < Ramaze::Controller
 
   def combined
     @a = 'boo'
-    nil
   end
 end
 

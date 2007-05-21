@@ -15,8 +15,8 @@ module Ramaze
         # Also tries to render the template.
         # In Theory you can use this standalone, this has not been tested though.
 
-        def transform controller, options = {}
-          action, parameter, file, bound = *super
+        def transform action
+          controller, action, parameter, file, bound = *super
 
           reaction = controller.send(action, *parameter)
           template = reaction_or_file(reaction, file)

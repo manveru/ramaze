@@ -8,7 +8,7 @@ module Ramaze
         action = Action.fill(action) if action.is_a?(Hash)
         Inform.debug("The Action: #{action}")
 
-        action.method = action.method.to_s
+        action.method = action.method.to_s if action.method
         action.params.compact!
 
         if cached?(action)
@@ -29,18 +29,14 @@ module Ramaze
 
       def uncached_render(action)
         controller = self.new
-        controller.instance_variable_set('@action', action.method)
+        controller.instance_variable_set('@action', action)
         Thread.current[:controller] = controller
 
-        options = {
-          :file       => action.template,
-          :binding    => controller.instance_eval{ binding },
-          :action     => action.method,
-          :parameter  => action.params,
-        }
+        action.binding = controller.instance_eval{ binding }
+        action.controller = controller
 
-        engine = select_engine(options[:file])
-        engine.transform(controller, options)
+        engine = select_engine(action.template)
+        engine.transform(action)
       end
 
       def cached_render action

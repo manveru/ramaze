@@ -8,10 +8,10 @@ module Ramaze
     class Remarkably < Template
       Controller.register_engine self, %w[ rem ]
       class << self
-        def transform controller, options = {}
-          action, parameter, file, bound = *super
-          unless controller.private_methods.include?( action )
-            response = controller.send( action, *parameter )
+        def transform action
+          controller, method, parameter, file, bound = *super
+          unless controller.private_methods.include?( method )
+            response = controller.send( method, *parameter )
             result = if file
               controller.instance_eval do
                 args = parameter

@@ -22,10 +22,10 @@ module Ramaze::Template
       # if you pass the options it will merge the trait with them. (your options
       # override the defaults from trait[:haml_options]
 
-      def transform controller, options = {}
-        action, parameter, file, bound = *super
+      def transform action
+        controller, method, parameter, file, bound = *super
 
-        reaction = controller.send(action, *parameter)
+        reaction = controller.send(method, *parameter)
         template = reaction_or_file(reaction, file)
 
         return '' unless template

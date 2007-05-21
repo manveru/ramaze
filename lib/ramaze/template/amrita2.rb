@@ -13,16 +13,16 @@ module Ramaze::Template
 
     class << self
 
-      # Takes a controller and the options :action, :parameter, :file and :binding
+      # Takes an Action
       # The file is rendered using Amrita2::TemplateFile.
       # The Controller is used as the object for expansion.
       #
       # The parameters are set to @params in the controller before expansion.
 
-      def transform controller, options = {}
-        action, parameter, file, bound = *super
+      def transform action
+        controller, method, parameter, file, bound = *super
 
-        raise Ramaze::Error::Template, "No Template found for #{Request.current.request_path}" unless file
+        raise Ramaze::Error::Template, "No Template found for #{action}" unless file
 
         template = ::Amrita2::TemplateFile.new(file)
         out = ''

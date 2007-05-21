@@ -83,23 +83,22 @@ class Ezamar::Element
     # a binding to be compatible to the transform-pipeline, won't have
     # any use for it though.
 
-    def transform string = '', options = {}
-      binding, path = options.values_at(:binding, :path)
-      string = string.to_s
-      matches = string.scan(/<([A-Z][a-zA-Z0-9]*)(.*?)?>/)
+    def transform template, action
+      binding, path = action.values_at(:binding, :template)
+      matches = template.scan(/<([A-Z][a-zA-Z0-9]*)(.*?)?>/)
 
       matches.each do |(klass, params)|
         transformer = (params[-1,1] == '/' ? :without : :with)
-      string = send("transform_#{transformer}_content", string, klass)
+        template = send("transform_#{transformer}_content", template, klass)
       end
-      string
+      template
     end
 
     # transforms elements like:
     #   <Page> some content </Page>
 
-    def transform_with_content(string, klass)
-      string.gsub(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do |m|
+    def transform_with_content(template, klass)
+      template.gsub(/<#{klass}( .*?)?>(.*?)<\/#{klass}>/m) do |m|
         params, content = $1.to_s, $2.to_s
         finish_transform(klass, params, content)
       end
@@ -108,8 +107,8 @@ class Ezamar::Element
     # transforms elements like:
     #   <Page />
 
-    def transform_without_content(string, klass)
-      string.gsub(/<#{klass}( .*?)?\/>/) do |m|
+    def transform_without_content(template, klass)
+      template.gsub(/<#{klass}( .*?)?\/>/) do |m|
         params = $1.to_s
         finish_transform(klass, params, content = '')
       end
@@ -148,8 +147,8 @@ class Ezamar::Element
     #
     # Just remember, walk like a duck, talk like a duck.
 
-    def demunge_passed_variables(string)
-      string.scan(/\s?(.*?)="(.*?)"/).inject({}) do |hash, (key, value)|
+    def demunge_passed_variables(template)
+      template.scan(/\s?(.*?)="(.*?)"/).inject({}) do |hash, (key, value)|
         value =
         case value
         when 'true'

@@ -12,7 +12,12 @@ module Ramaze
 
       Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
 
-      trait :transform_pipeline => [ ::Ezamar::Element, ::Ezamar::Morpher, self ]
+      trait :transform_pipeline => [
+        [::Ezamar::Element, :transform        ],
+        [::Ezamar::Morpher, :transform        ],
+        [self,              :actual_transform ],
+      ]
+
       trait :actionless => true
 
       class << self
@@ -21,15 +26,22 @@ module Ramaze
         #
         # Uses Ezamar::Template to compile the template.
 
-        def transform controller, options = {}
-          if options.has_key?(:pipeline)
-            template = ::Ezamar::Template.new(controller, options)
-            template.transform(options[:binding])
-          else
-            action, parameter, file, bound = *super
+        def transform action
+          ctrl_template = render_method(action)
 
-            real_transform controller, bound, file, action, *parameter
-          end
+          template =
+            if file = action.template
+              File.read(file)
+            else
+              ctrl_template.to_s
+            end
+
+          pipeline(template.to_s, action)
+        end
+
+        def render_method(action)
+          return unless method = action.method
+          action.controller.__send__(method, *action.params)
         end
 
         # The actual transformation is done here.
@@ -38,38 +50,9 @@ module Ramaze
         # the controller and then deciding based on them what goes into the
         # #pipeline
 
-        def real_transform(controller, bound, file, action, *params)
-          file_template = file_template(file)
-          ctrl_template = render_action(controller, action, *params)
-
-          if ctrl_template.respond_to?(:exception) and not file_template
-            raise ctrl_template
-          else
-            template = file_template || ctrl_template
-            pipeline(template, :binding => bound, :path => file)
-          end
-        end
-
-        # See if a string is an actual file.
-        #
-        # Answers with the contents and otherwise nil
-
-        def file_template file
-          return File.read(file) if file
-        rescue Errno::ENOENT => ex
-          Inform.error(ex)
-        end
-
-        # Render an action, on a given controller with parameter
-
-        def render_action(controller, action, *params)
-          controller.__send__(action, *params).to_s unless action.empty?
-        rescue => ex
-          ex
-        end
-
-        def raise_no_action(controller, action)
-          raise Ramaze::Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
+        def actual_transform(template, action)
+          template = ::Ezamar::Template.new(template, action)
+          template.transform
         end
 
         # go through the pipeline and call #transform on every object found there,
@@ -81,14 +64,12 @@ module Ramaze
         # TODO
         #   - put the pipeline into the Controller for use with all templates.
 
-        def pipeline(template, options = {})
-          transform_pipeline = ancestral_trait[:transform_pipeline]
-          opts = options.reject{|k,v| [:template, :path, :binding].all?{|o| k != o}}
-          opts[:pipeline] = :true
-
-          transform_pipeline.inject(template) do |memo, current|
-            current.transform(memo, opts)
+        def pipeline(template, action)
+          class_trait[:transform_pipeline].each do |klass, method|
+            template = klass.send(method, template, action)
           end
+
+          template
         end
       end
     end
