@@ -88,7 +88,7 @@ end
 
 begin
   puts "running `#{runner}'"
-  require runner
+  require runner.to_s
 rescue LoadError => ex
   puts ex
   puts ex.backtrace
