@@ -7,7 +7,7 @@ module Ramaze
       class << self
         def process(path)
           return unless file = open_file(path)
-          Dispatcher.build_response(file, Ramaze::STATUS_CODE[:ok])
+          Dispatcher.build_response(file, Ramaze::STATUS_CODE['OK'])
         end
 
         def lookup_paths

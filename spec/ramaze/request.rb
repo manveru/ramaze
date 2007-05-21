@@ -116,14 +116,18 @@ describe "Request" do
       image_path = '/favicon.ico'
       static_image = File.read("spec/ramaze/public#{image_path}")
 
-      get(image_path).body.should == static_image
+      response = get(image_path)
+      response.status.should == 200
+      response.body.should == static_image
     end
 
     it 'plain test' do
       css_path = '/test_download.css'
       static_css = File.read("spec/ramaze/public#{css_path}").strip
 
-      get(css_path).body.strip.should == static_css
+      response = get(css_path)
+      response.status.should == 200
+      response.body.strip.should == static_css
     end
   end
 end
