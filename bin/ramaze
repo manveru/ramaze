@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 
-RAMAZE_BASE = File.join(File.dirname(__FILE__), '..', 'lib')
-RAMAZE_BASE.replace File.expand_path(RAMAZE_BASE)
-
-require File.join(RAMAZE_BASE, 'ramaze')
+require 'ramaze'
 
 RAMAZE_VERSION = "Ramaze Version #{Ramaze::VERSION}"
 
