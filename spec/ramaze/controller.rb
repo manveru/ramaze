@@ -28,7 +28,7 @@ class TCControllerController < Ramaze::Controller
 end
 
 describe "Controller" do
-  ramaze :error_page => false, :adapter => :mongrel
+  ramaze :error_page => false
 
   describe 'dry specs' do
     describe 'pattern_for' do
