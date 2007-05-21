@@ -17,7 +17,7 @@ class MainController < Controller
   end
 
   def title
-    "The #@action Template for Amrita2"
+    "The external Template for Amrita2"
   end
 
   def link_home
@@ -25,15 +25,15 @@ class MainController < Controller
   end
 
   def link_one
-      link self, @action, :one, :title => "#@action/one"
+    link Rs(:external, :one), :title => "/external/one"
   end
 
   def link_two
-      link self, @action, :one, :two, :three, :title => "#@action/one/two/three"
+    link Rs(:external, :one, :two, :three), :title => "/external/one/two/three"
   end
 
   def link_three
-      link self, @action, :one, :foo => :bar, :title => "#@action?foo=bar"
+    link Rs(:external, :one, :foo => :bar), :title => "/external?foo=bar"
   end
 
   def inspect_parameters

@@ -3,14 +3,12 @@
 
 require 'ramaze'
 
-include Ramaze
-
-class MainController < Controller
+class MainController < Ramaze::Controller
   template_root File.expand_path((File.dirname(__FILE__)/'template'))
-  trait :engine => Template::Erubis
+  trait :engine => Ramaze::Template::Erubis
 
   def index
-    %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
+    %{ #{link self.class} | #{link Rs(:internal)} | #{link Rs(:external)} }
   end
 
   def internal *args
@@ -21,13 +19,13 @@ class MainController < Controller
     <title>Template::Erubis internal</title>
   </head>
   <body>
-  <h1>The <%= @action %> Template for Erubis</h1>
+  <h1>The internal Template for Erubis</h1>
     <%= link :/, :title => 'Home' %>
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      <%= link self, @action, :one, :title => "#@action/one" %><br />
-      <%= link self, @action, :one, :two, :three, :title => "#@action/one/two/three" %><br />
-      <%= link self, @action, :one, :foo => :bar, :title => "#@action?foo=bar" %><br />
+      <%= link Rs(@place, :one), :title => "/#@place/one" %><br />
+      <%= link Rs(@place, :one, :two, :three), :title => "/#@place/one/two/three" %><br />
+      <%= link Rs(@place, :one, :foo => :bar), :title => "/#@place?foo=bar" %><br />
     </p>
     <div>
       The arguments you have passed to this action are:
@@ -49,5 +47,6 @@ class MainController < Controller
 
   def external *args
     @args = args
+    @place = :external
   end
 end

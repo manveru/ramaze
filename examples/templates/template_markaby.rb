@@ -12,32 +12,34 @@ class MainController < Controller
   helper :markaby
 
   def index
-    %{ #{Rlink self.class} | #{Rlink self.class, :internal} | #{Rlink self.class, :external} }
+    %{ #{Rlink Rs()} | #{Rlink Rs(:internal)} | #{Rlink Rs(:external)} }
   end
 
   def internal *args
-    mab :action => @action, :args => args, :request => request, :this => self do
+    options = {:place => :internal, :action => 'internal',
+      :args => args, :request => request, :this => self}
+    mab options do
       html do
         head do
-          title "Template::Markaby internal"
+          title "Template::Markaby #@place"
         end
         body do
-          h1 "The #{@action} Template for Markaby"
-          a("Home", :href => R(:/))
+          h1 "The #@place Template for Markaby"
+          a("Home", :href => R(@this))
           p do
             text "Here you can pass some stuff if you like, parameters are just passed like this:"
             br
-            a("external/one", :href => R(@this, @action, :one))
+            a("#@place/one", :href => R(@this, @place, :one))
             br
-            a("external/one/two/three", :href => R(@this, @action, :one, :two, :three))
+            a("#@place/one/two/three", :href => R(@this, @place, :one, :two, :three))
             br
-            a("external/one?foo=bar", :href => R(@this, @action, :one, :foo => :bar))
+            a("#@place/one?foo=bar", :href => R(@this, @place, :one, :foo => :bar))
             br
           end
           div do
             text "The arguments you have passed to this action are:" 
             if @args.empty?
-              "none"
+              text "none"
             else
               args.each do |arg|
                 span arg
@@ -53,6 +55,7 @@ class MainController < Controller
   def external *args
     @args = args
     @request = request
+    @place = :external
   end
 end
 

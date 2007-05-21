@@ -3,13 +3,13 @@
     <title>Template::Ezamar external</title>
   </head>
   <body>
-  <h1>The #{@action} Template for Ezamar</h1>
+  <h1>The external Template for Ezamar</h1>
     #{link :/, :title => 'Home'}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      #{link self, @action, :one, :title => "#@action/one"}<br />
-      #{link self, @action, :one, :two, :three, :title => "#@action/one/two/three"}<br />
-      #{link self, @action, :one, :foo => :bar, :title => "#@action?foo=bar"}<br />
+      #{link Rs(:external, :one), :title => "external/one"}<br />
+      #{link Rs(:external, :one, :two, :three), :title => "external/one/two/three"}<br />
+      #{link Rs(:external, :one, :foo => :bar), :title => "external?foo=bar"}<br />
     </p>
     <div>
       *args

@@ -18,13 +18,13 @@ class MainController < Ramaze::Controller
     <title>Template::Ezamar internal</title>
   </head>
   <body>
-  <h1>The #{@action} Template for Ezamar</h1>
+  <h1>The internal Template for Ezamar</h1>
     #{link :/, :title => 'Home'}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      #{link self, @action, :one, :title => "#@action/one"}<br />
-      #{link self, @action, :one, :two, :three, :title => "#@action/one/two/three"}<br />
-      #{link self, @action, :one, :foo => :bar, :title => "#@action?foo=bar"}<br />
+      #{link Rs(:internal, :one), :title => "/internal/one"}<br />
+      #{link Rs(:internal, :one, :two, :three), :title => "/internal/one/two/three"}<br />
+      #{link Rs(:internal, :one, :foo => :bar), :title => "/internal?foo=bar"}<br />
     </p>
     <div>
       The arguments you have passed to this action are:

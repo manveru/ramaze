@@ -16,21 +16,22 @@ class MainController < Controller
   end
 
   def internal *args
+    @place = :internal
     html do
       head do
         title "Template::Remarkably internal"
       end
       body do
-        h1 "The #{@action} Template for Remarkably"
+        h1 "The #@place Template for Remarkably"
         a("Home", :href => R(:/))
         P do
           text "Here you can pass some stuff if you like, parameters are just passed like this:"
           br
-          a("#{@action}/one", :href => Rs( @action, :one))
+          a("#@place/one", :href => Rs( @place, :one))
           br
-          a("#{@action}/one/two/three", :href => Rs( @action, :one, :two, :three))
+          a("#@place/one/two/three", :href => Rs( @place, :one, :two, :three))
           br
-          a("#{@action}/one?foo=bar", :href => Rs( @action, :one, :foo => :bar))
+          a("#@place/one?foo=bar", :href => Rs( @place, :one, :foo => :bar))
           br
         end
         div do
@@ -50,6 +51,7 @@ class MainController < Controller
 
   def external *args
     @args = args
+    @place = :external
     @request = request
   end
 end

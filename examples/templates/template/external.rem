@@ -1,26 +1,26 @@
 html do
   head do
-    title "Template::Remarkably external"
+    title "Template::Remarkably #@place"
   end
   body do
-    h1 "The #{@action} Template for Remarkably"
+    h1 "The #@place Template for Remarkably"
     a("Home", :href => R(:/))
     P do
       text "Here you can pass some stuff if you like, parameters are just passed like this:"
       br
-      a("external/one", :href => Rs(@action, :one))
+      a("#@place/one", :href => Rs( @place, :one))
       br
-      a("external/one/two/three", :href => Rs(@action, :one, :two, :three))
+      a("#@place/one/two/three", :href => Rs( @place, :one, :two, :three))
       br
-      a("external/one?foo=bar", :href => Rs(@action, :one, :foo => :bar))
+      a("#@place/one?foo=bar", :href => Rs( @place, :one, :foo => :bar))
       br
     end
     div do
-      text "The arguments you have passed to this action are:"
+      text "The arguments you have passed to this action are:" 
       if @args.empty?
         "none"
       else
-        @args.each do |arg|
+        args.each do |arg|
           span arg
         end
       end

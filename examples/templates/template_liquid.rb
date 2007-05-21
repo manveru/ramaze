@@ -13,13 +13,13 @@ class MainController < Controller
     %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
   end
 
-  def liquid_hash(*args)
+  def liquid_hash(place, *args)
     {
-      'header'     => "The #{@action} Template for Liquid",
-      'link_home'  => link( :/, :title => 'Home'),
-      'link_one'   => link(self, @action, :one, :title => "#@action/one"),
-      'link_two'   => link(self, @action, :one, :two, :three, :title => "#@action/one/two/three"),
-      'link_three' => link(self, @action, :one, :foo => :bar, :title => "#@action?foo=Bar"),
+      'header'     => "The #{place} Template for Liquid",
+      'link_home'  => link(:/, :title => 'Home'),
+      'link_one'   => link( Rs(place, :one), :title => "#{place}/one"),
+      'link_two'   => link( Rs(place, :one, :two, :three), :title => "#{place}/one/two/three"),
+      'link_three' => link( Rs(place, :one, :foo => :bar), :title => "#{place}?foo=Bar"),
       'args'       => args,
       'args_empty' => args.empty?,
       'params'     => request.params.inspect
@@ -28,7 +28,7 @@ class MainController < Controller
 
 
   def internal *args
-    @hash = liquid_hash(*args)
+    @hash = liquid_hash(:internal, *args)
     %q{
 <html>
   <head>
@@ -62,6 +62,6 @@ class MainController < Controller
   end
 
   def external *args
-    @hash = liquid_hash(*args)
+    @hash = liquid_hash(:external, *args)
   end
 end

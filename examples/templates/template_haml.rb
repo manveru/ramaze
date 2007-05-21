@@ -3,35 +3,34 @@
 
 require 'ramaze'
 
-include Ramaze
-
-class MainController < Controller
+class MainController < Ramaze::Controller
   template_root File.expand_path((File.dirname(__FILE__)/'template'))
-  trait :engine => Template::Haml
+  trait :engine => Ramaze::Template::Haml
 
   def index
-    %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
+    %{ #{link Rs()} | #{link Rs(:internal)} | #{link Rs(:external)} }
   end
 
   def internal *args
     @args = args
-    @title = "The #@action Template for Haml"
+    @place = :internal
+    @title = "The #@place Template for Haml"
 
     %q{
 %html
   %head
-    %title Template::Haml internal
+    %title= "Template::Haml #@place"
   %body
     %h1= @title
     = Rs(:/, :title => 'Home')
     %p
       Here you can pass some stuff if you like, parameters are just passed like this:
       %br/
-      = link( R(self, @action, :one), :title => "#@action/one")
+      = link( Rs(@place, :one), :title => "/#@place/one")
       %br/
-      = link( R(self, @action, :one, :two, :three), :title => "#@action/one/two/three")
+      = link( Rs(@place, :one, :two, :three), :title => "/#@place/one/two/three")
       %br/
-      = link( R(self, @action, :one, :foo => :bar), :title => "#@action/one?foo=bar")
+      = link( Rs(@place, :one, :foo => :bar), :title => "/#@place/one?foo=bar")
     %div 
       The arguments you have passed to this action are:
       - if @args.empty?
@@ -44,8 +43,9 @@ class MainController < Controller
   end
 
   def external *args
-    @title = "The #{@action} Template for Haml"
     @args = args
+    @place = :external
+    @title = "The #@place Template for Haml"
   end
 end
 
