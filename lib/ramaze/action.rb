@@ -3,12 +3,15 @@
 
 module Ramaze
 
-  # The Action holds information that is essential to render the action for a
-  # request.
+  unless defined?(Action) # prevent problems for SourceReload
 
-  class Action < Struct.new('Action', :method, :params, :template)
-    def to_s
+    # The Action holds information that is essential to render the action for a
+    # request.
+
+    class Action < Struct.new('Action', :method, :params, :template)
+      def to_s
       %{#<Action method=#{method.inspect}, params=#{params.inspect} template=#{template.inspect}>}
+      end
     end
   end
 end
