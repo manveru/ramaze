@@ -144,7 +144,7 @@ simple.</p>
 <p>I will assume that you are familiar with basic Ruby already, so let's
 concentrate on the things new here.</p>
 
-<p><?r ?> defines an area of ruby-code. Late when the template is transformed into
+<p><code>&lt;?r ?&gt;</code> defines an area of ruby-code. Late when the template is transformed into
 pure Ruby it will be evaluated. We iterate over the TodoList model and pass the
 title and value into a block. In that block we can just get the values
 of title and status (which we define based on the value) displayed on the
@@ -184,7 +184,7 @@ Editing the model every time would be quite tiresome and limited.</p>
 
 <p>In the way MVC is structured, the Controller provides the data in a nice way
 for the View, removing all of the data-preparation and most of the logic from
-the templates. This makes it firstly simple to change the fronted of your
+the templates. This makes it firstly simple to change the front end of your
 application and secondly provides excellent ways of changing the complete
 Structure of the Model or View independent from each other.</p>
 
