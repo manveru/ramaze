@@ -57,16 +57,16 @@ opts = OptionParser.new do |opt|
     end
   end
 
-  opts.separator ''
-  opts.separator 'Common options:'
+  opt.separator ''
+  opt.separator 'Common options:'
 
   # -? keeps -p for --port free
-  opts.on_tail('-?', '--help', 'Show this message') do
+  opt.on_tail('-?', '--help', 'Show this message') do
     puts opts
     exit
   end
 
-  opts.on_tail('-v', '--version', "Show version") do
+  opt.on_tail('-v', '--version', "Show version") do
     puts ramaze_version
     exit
   end
