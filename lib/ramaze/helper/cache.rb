@@ -3,22 +3,14 @@
 
 module Ramaze
   module CacheHelper
-
-    # Cache for single key/value pairs
-
-    trait :value_cache  => Cache.new
-
-    # Cache for values returned from actions
-
-    trait :action_cache => Controller.trait[:action_cache]
-
     private
 
     # use this to cache values in your controller and templates,
     # for example heavy calculations or time-consuming queries.
 
     def value_cache
-      ancestral_trait[:value_cache]
+      Cache.add(:value_cache) unless Cache::CACHES.has_key?(:value_cache)
+      Cache.value_cache
     end
 
     # holds the values returned on the first call to a cached action.
@@ -38,7 +30,7 @@ module Ramaze
     #   action_cache.delete_if{|key, value| key =~ /"index",/}
 
     def action_cache
-      Controller.trait[:action_cache]
+      Cache.actions
     end
 
     # This refers to the class-trait of cached actions, you can

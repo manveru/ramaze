@@ -33,8 +33,6 @@ module Ramaze
 
     trait :pattern_cache => Hash.new{|h,k| h[k] = Controller.pattern_for(k) }
 
-    trait :action_cache  => Cache.new
-
     class << self
       include Ramaze::Helper
       extend Ramaze::Helper
@@ -46,6 +44,8 @@ module Ramaze
 
       def startup options = {}
         Inform.debug("found Controllers: #{Global.controllers.inspect}")
+
+        Cache.add :actions, :patterns
 
         Global.controllers.each do |controller|
           if map = controller.mapping

@@ -19,7 +19,7 @@ module Ramaze
 
         raise_no_controller(path) if controllers.empty? or mapping.empty?
 
-        patterns = Controller.trait[:pattern_cache][path]
+        patterns = Cache.patterns[path] ||= pattern_for(path)
         first_controller = nil
 
         patterns.each do |controller, method, params|

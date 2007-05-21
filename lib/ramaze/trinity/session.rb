@@ -61,6 +61,13 @@ module Ramaze
 
     class << self
 
+      # called from Ramaze::startup and adds Cache.sessions if cookies are
+      # enabled
+
+      def startup(options = {})
+        Cache.add(:sessions) if Global.cookies
+      end
+
       # answers with Thread.current[:session] which holds the current session
       # set by the Dispatcher#setup_environment.
 
@@ -73,13 +80,10 @@ module Ramaze
     # given to us from Dispatcher#setup_environment.
     #
     # sets @session_id and @session_flash
-    #
-    # will set Thread.main[:session_cache] to an instance of
-    # Cache if no cache for the sessions is initialized yet
 
     def initialize request
       @session_id = (request.cookies[SESSION_KEY] || random_key)
-      ip_cache = ancestral_trait[:ip_cache]
+      ip_cache = class_trait[:ip_cache]
       ip = request.remote_addr
       ip_cache[ip] << @session_id
 
@@ -88,8 +92,6 @@ module Ramaze
       end
 
       @flash = Ramaze::SessionFlash.new
-
-      Thread.main[:session_cache] = Cache.new unless sessions
     end
 
     # relay all messages we don't understand to the currently active session
@@ -105,10 +107,10 @@ module Ramaze
       sessions[session_id] ||= SessionHash.new
     end
 
-    # shortcut to Thread.main[:session_cache]
+    # shortcut to Cache.sessions
 
     def sessions
-      Thread.main[:session_cache]
+      Cache.sessions
     end
 
     # generate a random (and hopefully unique) id for the current session.

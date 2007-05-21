@@ -44,7 +44,7 @@ module Ramaze
       end
 
       def cached_render action
-        action_cache = Controller.trait[:action_cache]
+        action_cache = Cache.actions
 
         if out = action_cache[action]
           Inform.debug("Using Cached version for #{action}")

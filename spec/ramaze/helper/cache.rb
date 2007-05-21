@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 class TCCacheHelperController < Ramaze::Controller
+  map '/'
   helper :cache
 
   trait :actions_cached => [:cached_action]
@@ -36,7 +37,7 @@ class TCCacheHelperController < Ramaze::Controller
 end
 
 describe "CacheHelper" do
-  ramaze(:mapping => {'/' => TCCacheHelperController})
+  ramaze
 
   it "testrun" do
     get('/').body.should == 'TCCacheHelperController'

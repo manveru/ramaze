@@ -28,7 +28,7 @@ module Ramaze
           [ STATUS_CODE["Not Found"], '/error' ],
       }
 
-    trait :shield_cache => Cache.new
+    Cache.add :shield
 
     trait :shielded => [ STATUS_CODE["Not Found"] ]
 
@@ -75,7 +75,7 @@ module Ramaze
       end
 
       def shielded_dispatch(path)
-        shield_cache = trait[:shield_cache]
+        shield_cache = Cache.shield
         handled = shield_cache[path]
         return handled if handled
 
