@@ -11,6 +11,23 @@ module Ramaze
   # for switching caching from one adapter to another.
 
   class Cache
+    include Enumerable
+    CACHES = {}
+
+    class << self
+      # This will define a method to access a new cache directly over
+      # sinleton-methods on Cache
+
+      def add *keys
+        keys.each do |key|
+          CACHES[key] = new
+          self.class.class_eval do
+            define_method(key){ CACHES[key] }
+          end
+        end
+      end
+    end
+
     def initialize(cache = Global.cache)
       @cache = cache.new
     end
@@ -21,6 +38,16 @@ module Ramaze
 
     def []=(key, value)
       @cache[key.to_s] = value
+    end
+
+    def each
+      @cache.each do |*a|
+        yield(*a)
+      end
+    end
+
+    def has_key?(key)
+      @cache.has_key?(key)
     end
 
     def clear
