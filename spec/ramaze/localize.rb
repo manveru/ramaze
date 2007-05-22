@@ -26,7 +26,30 @@ class TCLocalize < Ramaze::Controller
 end
 
 describe "Localize" do
-  ramaze
+  before :all do
+    @dir = File.join(File.dirname(__FILE__), 'conf')
+    FileUtils.mkdir_p(@dir)
+
+    dict = {
+      :de => {
+        'hello'  => 'Hallo, Welt!',
+        'this'   => 'Das',
+        'is'     => 'ist',
+        'a'      => 'ein',
+        'test'   => 'Test',
+      },
+      :en => {
+        'hello'  => 'Hello, World!',
+        'this'   => 'this',
+        'is'     => 'is',
+        'a'      => 'a',
+        'test'   => 'test',
+    } }
+    dict.each do |lang, dic|
+      File.open(@dir/"locale_#{lang}.yaml", 'w+'){|fp| fp.print(dic.to_yaml)}
+    end
+    ramaze
+  end
 
   it "hello world" do
     get('/hello').body.should == 'Hello, World!'
@@ -36,5 +59,9 @@ describe "Localize" do
   it "advanced" do
     get('/advanced').body.should == 'this is a test'
     get('/advanced/de').body.should == 'Das ist ein Test'
+  end
+
+  after :all do
+    FileUtils.rm_rf(@dir)
   end
 end
