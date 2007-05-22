@@ -83,8 +83,7 @@ class Ezamar::Element
     # a binding to be compatible to the transform-pipeline, won't have
     # any use for it though.
 
-    def transform template, action
-      binding, path = action.values_at(:binding, :template)
+    def transform template, binding, file = __FILE__
       matches = template.scan(/<([A-Z][a-zA-Z0-9]*)(.*?)?>/)
 
       matches.each do |(klass, params)|
