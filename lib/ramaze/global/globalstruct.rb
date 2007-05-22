@@ -22,6 +22,16 @@ module Ramaze
       end
     end
 
+    def startup(options = {})
+      options.each do |key, value|
+        if (method(key) rescue false)
+          self[key] = value
+        else
+          create_member(key, value)
+        end
+      end
+    end
+
     def setup(hash = {})
       hash.each do |key, value|
         self.send("#{key}=", value)
@@ -34,7 +44,7 @@ module Ramaze
     def adapter
       if internal = self[:adapter]
         class_name = ADAPTER_ALIAS[internal.to_sym]
-        require "ramaze/adapter/#{class_name.to_s.downcase}"
+        require("ramaze/adapter/"/class_name.to_s.downcase)
         adapter = Ramaze::Adapter.const_get(class_name)
       end
     end

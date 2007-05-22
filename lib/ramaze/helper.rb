@@ -23,7 +23,7 @@ module Ramaze
     def helper *syms
       syms.each do |sym|
         mod_name = sym.to_s.capitalize + 'Helper'
-        require "ramaze/helper/#{sym}"
+        require("ramaze/helper/"/sym)
         include ::Ramaze.const_get(mod_name)
         extend ::Ramaze.const_get(mod_name)
       end

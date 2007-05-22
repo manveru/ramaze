@@ -81,14 +81,4 @@ module Ramaze
   require 'ramaze/global/globalstruct'
 
   Global = GlobalStruct.setup(OPTIONS)
-
-  def Global.startup(options = {})
-    options.each do |key, value|
-      if (method(key) rescue false)
-        self[key] = value
-      else
-        create_member(key, value)
-      end
-    end
-  end
 end
