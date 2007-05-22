@@ -74,7 +74,7 @@ describe "Element" do
   ramaze(:mapping => {'/' => TCElementController})
 
   def retrieve(*url)
-    get(*url).body.strip
+    Ramaze::Controller.handle(*url).strip
   end
 
   it "simple request" do
