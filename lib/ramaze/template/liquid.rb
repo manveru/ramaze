@@ -16,16 +16,11 @@ module Ramaze
         # In Theory you can use this standalone, this has not been tested though.
 
         def transform action
-          controller, action, parameter, file, bound = *super
+          template = reaction_or_file(action)
 
-          reaction = controller.send(action, *parameter)
-          template = reaction_or_file(reaction, file)
-
-          return '' unless template
-
-          hash     = controller.instance_variable_get("@hash") || {}
+          hash     = action.controller.instance_variable_get("@hash") || {}
           template = ::Liquid::Template.parse(template)
-          options  = controller.ancestral_trait[:liquid_options]
+          options  = action.controller.ancestral_trait[:liquid_options]
 
           template.render(hash, options)
         end

@@ -26,16 +26,29 @@ module Ramaze
         #
         # Answers nil if none of both is valid.
 
-        def reaction_or_file reaction, file
-          if file
+        def reaction_or_file action
+          reaction = render_method(action)
+
+          if file = action.template
             File.read(file)
-          elsif reaction.respond_to? :to_str
-            reaction
+          else
+            reaction.to_s
           end
         end
 
-        def transform action
-          action.values_at(:controller, :method, :params, :template, :binding)
+        def result_and_file(action)
+          result = render_method(action)
+
+          if file = action.template
+            content = File.read(file)
+          end
+
+          [result, content]
+        end
+
+        def render_method(action)
+          return unless method = action.method
+          action.controller.__send__(method, *action.params)
         end
       end
     end

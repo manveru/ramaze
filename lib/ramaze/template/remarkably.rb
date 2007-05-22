@@ -7,24 +7,19 @@ module Ramaze
   module Template
     class Remarkably < Template
       Controller.register_engine self, %w[ rem ]
+
       class << self
         def transform action
-          controller, method, parameter, file, bound = *super
-          unless controller.private_methods.include?( method )
-            response = controller.send( method, *parameter )
-            result = if file
-              controller.instance_eval do
-                args = parameter
-                instance_eval File::read( file )
-              end
-            else
-              response
-            end
-            if result.kind_of? Controller
-              result.to_s
-            else
-              result
-            end
+          result, file = result_and_file(action)
+
+          result = transform_file(file, action) if file
+          result.to_s
+        end
+
+        def transform_file(file, action)
+          action.controller.instance_eval do
+            args = action.params
+            instance_eval(file)
           end
         end
       end

@@ -20,13 +20,13 @@ module Ramaze::Template
       # The parameters are set to @params in the controller before expansion.
 
       def transform action
-        controller, method, parameter, file, bound = *super
-
-        raise Ramaze::Error::Template, "No Template found for #{action}" unless file
+        controller, params, file =
+          action.controller, action.params, action.template
+        raise_no_action(action) unless file
 
         template = ::Amrita2::TemplateFile.new(file)
         out = ''
-        controller.instance_variable_set('@params', parameter)
+        controller.instance_variable_set('@params', params)
         template.expand(out, controller)
         out
       end

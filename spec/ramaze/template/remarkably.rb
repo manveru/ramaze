@@ -34,20 +34,24 @@ end
 describe "Remarkably" do
   ramaze(:mapping => {'/' => TCTemplateRemarkablyController})
 
+  def retrieve(*url)
+    Ramaze::Controller.handle(*url)
+  end
+
   it "index" do
-    get('/').body.should == '<h1>Remarkably Index</h1>'
+    retrieve('/').should == '<h1>Remarkably Index</h1>'
   end
 
   it "links" do
-    get('/links').body.should == '<ul><li><a href="/index">Index page</a></li><li><a href="/internal">Internal template</a></li><li><a href="/external">External template</a></li></ul>'
+    retrieve('/links').should == '<ul><li><a href="/index">Index page</a></li><li><a href="/internal">Internal template</a></li><li><a href="/external">External template</a></li></ul>'
   end
 
   it "sum" do
-    get('/sum/1/2').body.should == '<div>3</div>'
+    retrieve('/sum/1/2').should == '<div>3</div>'
   end
 
   it "external" do
-    get('/external').body.should == "<html><head><title>Remarkably Test</title></head><body><h1>Remarkably Template</h1></body></html>"
+    retrieve('/external').should == "<html><head><title>Remarkably Test</title></head><body><h1>Remarkably Template</h1></body></html>"
   end
 
 end

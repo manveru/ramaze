@@ -25,21 +25,9 @@ module Ramaze
         # Uses Ezamar::Template to compile the template.
 
         def transform action
-          ctrl_template = render_method(action)
-
-          template =
-            if file = action.template
-              File.read(file)
-            else
-              ctrl_template.to_s
-            end
+          template = reaction_or_file(action)
           file = (action.template || __FILE__)
           pipeline(template.to_s, action.binding, file)
-        end
-
-        def render_method(action)
-          return unless method = action.method
-          action.controller.__send__(method, *action.params)
         end
 
         # go through the pipeline and call #transform on every object found there,

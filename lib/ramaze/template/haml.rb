@@ -23,15 +23,12 @@ module Ramaze::Template
       # override the defaults from trait[:haml_options]
 
       def transform action
-        controller, method, parameter, file, bound = *super
-
-        reaction = controller.send(method, *parameter)
-        template = reaction_or_file(reaction, file)
+        template = reaction_or_file(action)
 
         return '' unless template
 
         haml = ::Haml::Engine.new(template, ancestral_trait[:haml_options])
-        haml.to_html(controller)
+        haml.to_html(action.controller)
       end
     end
   end

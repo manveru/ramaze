@@ -16,32 +16,26 @@ module Ramaze
         # In Theory you can use this standalone, this has not been tested though.
 
         def transform action
-          controller, action, parameter, file, bound = *super
+          result, file = result_and_file(action)
 
-          unless controller.private_methods.include?(action)
-            reaction = controller.__send__(action, *parameter)
-            template =
-              if file
-                transform_file(controller, file)
-              elsif reaction.respond_to?(:to_str)
-                reaction
-              end
-            return template if template
-          end
-
-          raise Error::NoAction, "No Action found for `#{action}' on #{controller.class}"
+          result = transform_file(file, action) if file
+          result.to_s
         end
 
-        def transform_file controller, file
-          ivs = {}
-          controller.instance_variables.each do |iv|
-            ivs[iv.gsub('@', '').to_sym] = controller.instance_variable_get(iv)
-          end
+        def transform_file file, action
+          controller = action.controller
+          ivs = extract_ivs(controller)
+
           controller.send(:mab, ivs) do
-            instance_eval(File.read(file))
+            instance_eval(file)
           end
-        rescue Object => ex
-          raise Error::Template, ex.message, ex.backtrace
+        end
+
+        def extract_ivs(controller)
+          controller.instance_variables.inject({}) do |hash, iv|
+            sym = iv.gsub('@', '').to_sym
+            hash.merge! sym => controller.instance_variable_get(iv)
+          end
         end
       end
     end

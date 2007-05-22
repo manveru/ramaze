@@ -10,12 +10,7 @@ module Ramaze::Template
 
     class << self
       def transform action
-        controller, action, parameter, file, bound = *super
-        [ controller.class.name,
-          action,
-          parameter,
-          file
-        ].to_yaml
+        action.values_at(:method, :params, :template).to_yaml
       end
     end
   end
@@ -40,51 +35,46 @@ describe "testing ramaze template" do
 
   def getpage page
     content = Ramaze::Controller.handle(page)
-    @controller, @action, @parameter, @file = YAML.load(content)
+    @action, @params, @file = YAML.load(content)
   end
 
   it "Gets a blank page" do
     getpage("/index")
 
-    @controller.should == "TCTemplateController"
     @action.should == "index"
-    @parameter.should == []
-    @file.should == nil
+    @params.should == []
+    @file.should be_nil
   end
 
   it "Maps the index" do
     getpage("/")
 
-    @controller.should == "TCTemplateController"
     @action.should == "index"
-    @parameter.should == []
-    @file.should == nil
+    @params.should == []
+    @file.should be_nil
   end
 
   it "Parses parameters" do
     getpage("/one/two/three")
 
-    @controller.should == "TCTemplateController"
     @action.should == "index"
-    @parameter.should == %w{one two three}
-    @file.should == nil
+    @params.should == %w{one two three}
+    @file.should be_nil
   end
 
   it "Knows about other methods" do
     getpage("/some_other_method")
 
-    @controller.should == "TCTemplateController"
     @action.should == "some_other_method"
-    @parameter.should == []
-    @file.should == nil
+    @params.should == []
+    @file.should be_nil
   end
 
   it "Uses external template files" do
     getpage("/external")
 
-    @controller.should == "TCTemplateController"
     @file.should =~ /external\.test$/
-    @parameter.should == []
+    @params.should == []
     file = TCTemplateController.template_root/'external.test'
     @file.should == file
   end
