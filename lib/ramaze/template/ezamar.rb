@@ -13,7 +13,7 @@ module Ramaze
       Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
 
       trait :transform_pipeline => [
-        ::Ezamar::Element, ::Ezamar::Morpher, ::Ezamar::Template
+        ::Ezamar::Element, ::Ezamar::Template
       ]
 
       trait :actionless => true

@@ -6,6 +6,8 @@ require 'spec/helper'
 testcase_requires 'hpricot'
 
 class TCMorpherController < Ramaze::Controller
+  map '/'
+
   def index
     self.class.name
   end
@@ -49,34 +51,43 @@ class TCMorpherController < Ramaze::Controller
 end
 
 describe "Morpher" do
-  ramaze :mapping => {'/' => TCMorpherController}
+  before :all do
+    ramaze
+    Ramaze::Template::Ezamar.trait[:transform_pipeline] = [
+      Ezamar::Element, Ezamar::Morpher, Ezamar::Template
+    ]
+  end
+
+  def clean_get(*url)
+    get(*url).body.split("\n").join.strip
+  end
 
   it "testrun" do
-    get('/').body.should == 'TCMorpherController'
+    clean_get('/').should == 'TCMorpherController'
   end
 
   it "if" do
-    get('/simple_if').body.should == '<p>orig</p>'
-    get('/simple_if/bar').body.should == '<p>bar</p>'
+    clean_get('/simple_if').should == '<p>orig</p>'
+    clean_get('/simple_if/bar').should == '<p>bar</p>'
   end
 
   it "unless" do
-    get('/simple_unless').body.should == '<p>orig</p>'
-    get('/simple_unless/bar').body.should == '<p>bar</p>'
+    clean_get('/simple_unless').should == '<p>orig</p>'
+    clean_get('/simple_unless/bar').should == '<p>bar</p>'
   end
 
   it "for" do
-    get('/simple_for').body.should == "<div>0</div><div>1</div>"
-    get('/simple_for/3').body.should == "<div>0</div><div>1</div><div>2</div><div>3</div>"
+    clean_get('/simple_for').should == "<div>0</div><div>1</div>"
+    clean_get('/simple_for/3').should == "<div>0</div><div>1</div><div>2</div><div>3</div>"
   end
 
   it "times" do
-    get('/simple_times').body.should == "<div>0</div>"
-    get('/simple_times/3').body.should == "<div>0</div><div>1</div><div>2</div>"
+    clean_get('/simple_times').should == "<div>0</div>"
+    clean_get('/simple_times/3').should == "<div>0</div><div>1</div><div>2</div>"
   end
 
   it "each" do
-    get('/simple_each').body.should == ''
-    get('/simple_each/1/2/3').body.should == "<div>1</div><div>2</div><div>3</div>"
+    clean_get('/simple_each').should == ''
+    clean_get('/simple_each/1/2/3').should == "<div>1</div><div>2</div><div>3</div>"
   end
 end
