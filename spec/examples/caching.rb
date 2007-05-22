@@ -6,7 +6,7 @@ describe 'Caching' do
   ramaze
 
   it '/' do
-    n1 = 10_0000
+    n1 = 10_000
     n2 = 10_000
     result = n1 ** n2
     url = "/#{n1}/#{n2}"
