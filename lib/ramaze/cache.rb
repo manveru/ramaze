@@ -14,16 +14,14 @@ module Ramaze
     include Enumerable
     CACHES = {}
 
-    class << self
-      # This will define a method to access a new cache directly over
-      # sinleton-methods on Cache
+    # This will define a method to access a new cache directly over
+    # sinleton-methods on Cache
 
-      def add *keys
-        keys.each do |key|
-          CACHES[key] = new
-          self.class.class_eval do
-            define_method(key){ CACHES[key] }
-          end
+    def self.add *keys
+      keys.each do |key|
+        CACHES[key] = new
+        self.class.class_eval do
+          define_method(key){ CACHES[key] }
         end
       end
     end
@@ -40,23 +38,17 @@ module Ramaze
       @cache[key.to_s] = value
     end
 
-    def each
-      @cache.each do |*a|
-        yield(*a)
-      end
-    end
-
-    def has_key?(key)
-      @cache.has_key?(key)
-    end
-
-    def clear
-      @cache.clear
-    end
-
     def delete(*args)
       args.each do |arg|
         @cache.delete(arg.to_s)
+      end
+    end
+
+    def method_missing(meth, *args, &block)
+      if @cache.respond_to?(meth)
+        @cache.send(meth, *args, &block)
+      else
+        super
       end
     end
   end
