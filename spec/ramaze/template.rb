@@ -22,6 +22,7 @@ module Ramaze::Template
 end
 
 class TCTemplateController < Ramaze::Controller
+  map '/'
   trait :engine => Ramaze::Template::TestTemplate
   template_root(File.dirname(__FILE__)/:template/:ramaze)
 
@@ -33,10 +34,13 @@ class TCTemplateController < Ramaze::Controller
 end
 
 describe "testing ramaze template" do
-  ramaze(:mapping => {'/' => TCTemplateController})
+  before :all do
+    ramaze
+  end
 
   def getpage page
-    @controller, @action, @parameter, @file = YAML.load(get( page ).body)
+    content = Ramaze::Controller.handle(page)
+    @controller, @action, @parameter, @file = YAML.load(content)
   end
 
   it "Gets a blank page" do
