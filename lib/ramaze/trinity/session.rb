@@ -22,7 +22,7 @@ module Ramaze
       old = @hash.dup
       result = @hash.send(*args, &block)
       unless old == @hash
-        Session.current.sessions[Session.current.session_id] = self
+        Cache.sessions[Session.current.session_id] = self
       end
       result
     end
@@ -53,11 +53,9 @@ module Ramaze
 
     SESSION_KEY = '_ramaze_session_id'
 
-    trait :finalize => [:finalize_flash]
+    IP_CACHE = Hash.new{|h,k| h[k] = []}
 
-    trait :ip_cache => Hash.new{|h,k| h[k] = []}
-
-    trait :ip_cache_limit => 1000
+    IP_CACHE_LIMIT = 1000
 
     class << self
 
@@ -83,11 +81,11 @@ module Ramaze
 
     def initialize request
       @session_id = (request.cookies[SESSION_KEY] || random_key)
-      ip_cache = class_trait[:ip_cache]
+      ip_cache = IP_CACHE
       ip = request.remote_addr
       ip_cache[ip] << @session_id
 
-      if ip_cache[ip].size >= ancestral_trait[:ip_cache_limit]
+      if ip_cache[ip].size > IP_CACHE_LIMIT
         sessions.delete(ip_cache[ip].shift)
       end
 
@@ -131,20 +129,9 @@ module Ramaze
       Digest::SHA256.hexdigest(h)
     end
 
-    # send each element of the trait[:finalize]
-    # this is at the moment used for flash_finalize.
-
-    def finalize
-      ancestral_trait[:finalize].each do |meth|
-        send meth
-      end
-    end
-
     def inspect
       current.inspect
     end
-
-    private
 
     # at the end of a request delete the current[:FLASH] and assign it to
     # current[:FLASH_PREVIOUS]
@@ -152,7 +139,7 @@ module Ramaze
     # this is needed so flash can iterate over requests
     # and always just keep the current and previous key/value pairs.
 
-    def finalize_flash
+    def finalize
       old = delete(:FLASH)
       current[:FLASH_PREVIOUS] = old if old
     end
