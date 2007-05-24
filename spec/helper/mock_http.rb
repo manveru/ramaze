@@ -18,34 +18,30 @@ module MockHTTP
     :port => 80
   )
 
-  def get(path, query = {})
-    uri = create_url(path, query)
-    mock_request.get(uri, DEFAULTS)
+  FISHING = {
+    :input => :input,
+    :referrer => 'HTTP_REFERER',
+    :referer => 'HTTP_REFERER',
+    :cookie => 'HTTP_COOKIE',
+  }
+
+  MOCK_REQUEST = ::Rack::MockRequest.new(Ramaze::Adapter::Fake)
+
+  def get(*args)    mock_request(:get,    *args) end
+  def put(*args)    mock_request(:put,    *args) end
+  def post(*args)   mock_request(:post,   *args) end
+  def delete(*args) mock_request(:delete, *args) end
+
+  def mock_request(meth, path, query = {})
+    uri, options = process_request(path, query)
+    MOCK_REQUEST.send(meth, uri, DEFAULTS.merge(options))
   end
 
-  def post(path, query = {})
-    input = query.delete(:input)
-    uri = create_url(path, query)
-    if input
-      mock_request.post(uri, DEFAULTS.merge(:input => input))
-    else
-      mock_request.post(uri, DEFAULTS)
-    end
-  end
-
-  def put(path, query = {})
-    input = query.delete(:input)
-    uri = create_url(path, query)
-    if input
-      mock_request.put(uri, DEFAULTS.merge(:input => input))
-    else
-      mock_request.put(uri, DEFAULTS)
-    end
-  end
-
-  def delete(path, query = {})
-    uri = create_url(path, query)
-    mock_request.delete(uri, DEFAULTS)
+  def process_request(path, query)
+    options = {}
+    FISHING.each{|key, value|
+      options[value] = query.delete(key)}
+    [create_url(path, query), options]
   end
 
   def create_url(path, query)
@@ -61,8 +57,4 @@ module MockHTTP
 			s + [CGI::escape(key) + "=" + CGI::escape(value)]
     end.join('&')
 	end
-
-  def mock_request
-    ::Rack::MockRequest.new(Ramaze::Adapter::Fake)
-  end
 end
