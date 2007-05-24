@@ -25,6 +25,8 @@ RubyForge.
 Additionally, we now have added tests for the resulting application that you
 can find in spec/examples/todolist.rb
 
+Date of last update: Thu May 24 20:53:49 JST 2007
+
 Thanks in advance.
 The author of the tutorial, Michael 'manveru' Fellinger
 
@@ -252,12 +254,12 @@ your MainController.
     def create
       title = request['title']
       TodoList[title] = {:done => false}
-      redirect R(self)
+      redirect Rs()
     end
 
 That's all folks!
 
-we get the title from the request-object, put it into our TodoList as undone
+We get the title from the request-object, put it into our TodoList as undone
 and redirect back to the mapping of the current Controller ('/' in this case).
 
 Now you can create as many tasks as you want, please don't get overworked ;)
@@ -286,10 +288,10 @@ we go and change the index method on the controller once again:
       TodoList.original.each do |title, value|
         if value[:done]
           status = 'done'
-          toggle = link( R( self, :open, CGI.escape(title) ), :title => 'Open Task' )
+          toggle = link( Rs(:open, title), :title => 'Open Task' )
         else
           status = 'not done'
-          toggle = link( R( self, :close, CGI.escape(title) ), :title => 'Close Task' )
+          toggle = link( Rs(:close, title), :title => 'Close Task' )
         end
         @tasks << [title, status, toggle]
       end
@@ -299,12 +301,12 @@ we go and change the index method on the controller once again:
 Wow, quite some new stuff here. Let me explain that in detail.
 
 We first decide whether a task is done or not, then go on and provide a link to
-toggle the status, link and R are both methods that help you do that.
-the result will be something like:
+toggle the status, link and Rs are both methods that help you do that.
+The result will be something like:
 
     <a href="/open/Wash+dishes">Close Task</a>
 
-R actually is responsible to build the links href, for more information please
+Rs actually is responsible to build the links href, for more information please
 take a look at the RDoc for LinkHelper.
 
 Also, you might have noticed that the tasks were changing order on every reload,
@@ -326,12 +328,12 @@ corresponding methods to the Controller:
 
     def open title
       task_status title, false
-      redirect R(self)
+      redirect Rs()
     end
 
     def close title
       task_status title, true
-      redirect R(self)
+      redirect Rs()
     end
 
     private
@@ -343,9 +345,9 @@ corresponding methods to the Controller:
     end
 
 Oh, now what have we got here?
-private declares that methods from here on are only to be used within the
+`private` declares that methods from here on are only to be used within the
 Controller itself, we define an #task_status method that takes the title and
-status to be set so we don't have to repeat that code in _#open_ and _#close_
+status to be set so we don't have to repeat that code in `#open` and `#close`
 and follow the DRY (Don't repeat yourself) paradigm.
 
 Another thing we have not encountered so far is that you can define your public
@@ -369,14 +371,14 @@ consider is to delete a task permanently.
 This is just two little changes away, so let's add the link for deletion in our
 Controller:
 
-    delete = link( R( self, :delete, CGI.escape(title) ), :title => 'Delete' )
+    delete = link( Rs( :delete, title ), :title => 'Delete' )
     @tasks << [title, status, toggle, delete]
 
 and an corresponding method while we're at it:
 
     def delete title
       TodoList.delete title
-      redirect R(self)
+      redirect Rs()
     end
 
 Now jumping to `template/index.xhtml` again, change it so it shows the link:
@@ -577,7 +579,7 @@ To do this in a DRY way you could also do following:
       g.adapter = :mongrel
     end
 
-It seems to be quite common to put this configuration into seperate files so you
+It seems to be quite common to put this configuration into separate files so you
 can just require it on demand.  There are other, slightly stronger way to set
 options, which is either using flags on the ramaze executable, or like this:
 
@@ -585,3 +587,167 @@ options, which is either using flags on the ramaze executable, or like this:
 
 We haven't started Ramaze directly as of yet, but this allows you to ignore the
 ramaze executable and just run your application.
+
+
+## Eleventh Step, Refactor with AspectHelper
+
+Now, if you take a closer look at the Controller you will see:
+
+    def create
+      title = request['title']
+      TodoList[title] = {:done => false}
+      redirect R(self)
+    end
+
+    def open title
+      task_status title, false
+      redirect R(self)
+    end
+
+    def close title
+      task_status title, true
+      redirect R(self)
+    end
+
+    def delete title
+      TodoList.delete title
+      redirect R(self)
+    end
+
+We did some refactoring before, by introducing `#task_status`, but here we have
+repetition again: `redirect Rs()` _after_ each method did its job.
+
+However, we can take advantage of one of the helpers Ramaze offers, the
+AspectHelper.
+It allows you to easily wrap actions in your controller with other methods
+
+In your Controller, replace the previous chunk with following:
+
+    def create
+      title = request['title']
+      TodoList[title] = {:done => false}
+    end
+
+    def open title
+      task_status title, false
+    end
+
+    def close title
+      task_status title, true
+    end
+
+    def delete title
+      TodoList.delete title
+    end
+
+    helper :aspect
+    after [:create, :open, :close, :delete], :redirect_index
+
+    def redirect_index
+      redirect Rs()
+    end
+
+Alright, that looks a lot nicer already and is definitely easier to maintain.
+Please note that the `#redirect_index` method should not be private, as it is a
+usual action that will just run after the others.
+
+There is a symmetrical `#before` aspect that you could take advantage of as well,
+and in case you want to add required authentication for all actions of a
+Controller you could use `:all` instead of an array of action-names.
+
+
+## Twelfth Step, Validation and Errors
+
+Right now, all kinds of things could still go wrong when you do things like
+creating tasks with no title at all or try to open/close a task that does not
+exist. So in this step we will add some little checks for these cases.
+
+First we head over to the Controller again and take a look at `#create`:
+
+    def create
+      title = request['title']
+      TodoList[title] = {:done => false}
+    end
+
+Here we just create a new task, no matter what we get. Every seasoned
+web-developer would advise you to be suspicious about all the input you receive
+from your users, so let's apply this advice.
+
+    def create
+      if title = request['title']
+        title.strip!
+        if title.empty?
+          error("Please enter a title")
+          redirect '/new'
+        end
+        TodoList[title] = {:done => false}
+      end
+    end
+
+First of all we check if we got a request with a value for 'title', if we get
+none we just let the aspect kick in that will redirect the browser to the index.
+Next we strip the title of all spaces around it so we can check if it is empty.
+We will talk about the specifics of our error-handling now.
+
+Ramaze has a helper called FlashHelper, that will keep a hash associated with
+the session for one request, afterwards the hash is thrown away. This is
+specifically useful for giving the user feedback while keeping a stateless
+approach.
+
+Let me show you our `#error` method (it goes in the private section to
+`#task_status`):
+
+    def error(message)
+      flash[:error] = message
+    end
+
+Duh, you may say, wouldn't that fit in the one line instead of the call to
+`#error`?
+Indeed, it would, but let me remind you, we have no checks for changing the
+status of a task yet. We will need error-handling there as well, so we just keep
+our code DRY and maintainable by collecting shared behaviour in small pieces.
+
+Now on to the `#task_status`:
+
+    def task_status title, status
+      unless task = TodoList[title]
+        error "No such Task: `#{title}'"
+        redirect_referer
+      end
+
+      task[:done] = status
+      TodoList[title] = task
+    end
+
+That used to look like this:
+
+    def task_status title, status
+      task = TodoList[title]
+      task[:done] = status
+      TodoList[title] = task
+    end
+
+So in fact all we added is a check whether a task already exists, set an
+error-message in case it doesn't and redirect to wherever the browser came from.
+
+But what about actually showing the error-messages we so carefully set? Well,
+where do we change the view? Right, in the templates. But both templates we have
+so far (index and new) share this behaviour, so let's head over to the Element
+and add in the right place:
+
+    <body>
+      <h1>#{@title}</h1>
+      <?r if flash[:error] ?>
+        <div class="error">
+          \\#{flash[:error]}
+        </div>
+      <?r end ?>
+      #{content}
+    </body>
+
+The only thing special about it is the `\\#{flash[:error]}`, we have to escape
+the `#` so it won't evaluate this immediately but wait until it is really
+rendered.
+You can add some nifty style if you like.
+
+To be continued...

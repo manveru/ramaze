@@ -27,17 +27,21 @@
 
 <div class="menu">
   <h3>Table of Contents</h3>
-  <a href="#Step_Zero,_Introduction">Step Zero, Introduction</a><br />
-  <a href="#First_Step,_Create">First Step, Create</a><br />
-  <a href="#Second_Step,_M,_like_Model">Second Step, M, like Model</a><br />
-  <a href="#Third_Step,_V,_like_View">Third Step, V, like View</a><br />
-  <a href="#Fourth_Step,_C,_like_Controller">Fourth Step, C, like Controller</a><br />
-  <a href="#Fifth_Step,_getting_dynamic">Fifth Step, getting dynamic</a><br />
-  <a href="#Sixth_Step,_open_and_close_tasks">Sixth Step, open and close tasks</a><br />
-  <a href="#Seventh_Step,_delete_tasks">Seventh Step, delete tasks</a><br />
-  <a href="#Eighth_Step,_Elements">Eighth Step, Elements</a><br />
-  <a href="#Ninth_Step,_Prettify">Ninth Step, Prettify</a><br />
-  <a href="#Tenth_Step,_Configuration">Tenth Step, Configuration</a>
+  <li>
+    <ol><a href="#Step_Zero,_Introduction">Step Zero, Introduction</a></ol>
+    <ol><a href="#First_Step,_Create">First Step, Create</a></ol>
+    <ol><a href="#Second_Step,_M,_like_Model">Second Step, M, like Model</a></ol>
+    <ol><a href="#Third_Step,_V,_like_View">Third Step, V, like View</a></ol>
+    <ol><a href="#Fourth_Step,_C,_like_Controller">Fourth Step, C, like Controller</a></ol>
+    <ol><a href="#Fifth_Step,_getting_dynamic">Fifth Step, getting dynamic</a></ol>
+    <ol><a href="#Sixth_Step,_open_and_close_tasks">Sixth Step, open and close tasks</a></ol>
+    <ol><a href="#Seventh_Step,_delete_tasks">Seventh Step, delete tasks</a></ol>
+    <ol><a href="#Eighth_Step,_Elements">Eighth Step, Elements</a></ol>
+    <ol><a href="#Ninth_Step,_Prettify">Ninth Step, Prettify</a></ol>
+    <ol><a href="#Tenth_Step,_Configuration">Tenth Step, Configuration</a></ol>
+    <ol><a href="#Eleventh_Step,_Refactor_with_AspectHelper">Eleventh Step, Refactor with AspectHelper</a></ol>
+    <ol><a href="#Twelfth_Step,_Validation_and_Errors">Twelfth Step, Validation and Errors</a></ol>
+  </li>
 </div>
 
 
@@ -303,13 +307,13 @@ your MainController.</p>
 <pre><code>def create
   title = request['title']
   TodoList[title] = {:done =&gt; false}
-  redirect R(self)
+  redirect Rs()
 end
 </code></pre>
 
 <p>That's all folks!</p>
 
-<p>we get the title from the request-object, put it into our TodoList as undone
+<p>We get the title from the request-object, put it into our TodoList as undone
 and redirect back to the mapping of the current Controller ('/' in this case).</p>
 
 <p>Now you can create as many tasks as you want, please don't get overworked ;)</p>
@@ -337,10 +341,10 @@ we go and change the index method on the controller once again:</p>
   TodoList.original.each do |title, value|
     if value[:done]
       status = 'done'
-      toggle = link( R( self, :open, CGI.escape(title) ), :title =&gt; 'Open Task' )
+      toggle = link( Rs(:open, title), :title =&gt; 'Open Task' )
     else
       status = 'not done'
-      toggle = link( R( self, :close, CGI.escape(title) ), :title =&gt; 'Close Task' )
+      toggle = link( Rs(:close, title), :title =&gt; 'Close Task' )
     end
     @tasks &lt;&lt; [title, status, toggle]
   end
@@ -351,13 +355,13 @@ end
 <p>Wow, quite some new stuff here. Let me explain that in detail.</p>
 
 <p>We first decide whether a task is done or not, then go on and provide a link to
-toggle the status, link and R are both methods that help you do that.
-the result will be something like:</p>
+toggle the status, link and Rs are both methods that help you do that.
+The result will be something like:</p>
 
 <pre><code>&lt;a href="/open/Wash+dishes"&gt;Close Task&lt;/a&gt;
 </code></pre>
 
-<p>R actually is responsible to build the links href, for more information please
+<p>Rs actually is responsible to build the links href, for more information please
 take a look at the RDoc for LinkHelper.</p>
 
 <p>Also, you might have noticed that the tasks were changing order on every reload,
@@ -380,12 +384,12 @@ corresponding methods to the Controller:</p>
 
 <pre><code>def open title
   task_status title, false
-  redirect R(self)
+  redirect Rs()
 end
 
 def close title
   task_status title, true
-  redirect R(self)
+  redirect Rs()
 end
 
 private
@@ -398,9 +402,9 @@ end
 </code></pre>
 
 <p>Oh, now what have we got here?
-private declares that methods from here on are only to be used within the
+<code>private</code> declares that methods from here on are only to be used within the
 Controller itself, we define an #task_status method that takes the title and
-status to be set so we don't have to repeat that code in <em>#open</em> and <em>#close</em>
+status to be set so we don't have to repeat that code in <code>#open</code> and <code>#close</code>
 and follow the DRY (Don't repeat yourself) paradigm.</p>
 
 <p>Another thing we have not encountered so far is that you can define your public
@@ -414,7 +418,7 @@ methods to take parameters on their own, they will be calculated from requests.<
 <pre><code>open('Wash dishes')
 </code></pre>
 
-<p>Which in turn will call task_status('Wash dishes', false)</p>
+<p>Which in turn will call <code>task_status('Wash dishes', false)</code></p>
 
 <p>That's it, go on and try it :)</p>
 
@@ -426,7 +430,7 @@ consider is to delete a task permanently.</p>
 <p>This is just two little changes away, so let's add the link for deletion in our
 Controller:</p>
 
-<pre><code>delete = link( R( self, :delete, CGI.escape(title) ), :title =&gt; 'Delete' )
+<pre><code>delete = link( Rs( :delete, title ), :title =&gt; 'Delete' )
 @tasks &lt;&lt; [title, status, toggle, delete]
 </code></pre>
 
@@ -434,7 +438,7 @@ Controller:</p>
 
 <pre><code>def delete title
   TodoList.delete title
-  redirect R(self)
+  redirect Rs()
 end
 </code></pre>
 
@@ -459,7 +463,7 @@ explain some more advanced concepts of Ramaze and the templating.</p>
 </code></pre>
 
 <p>This is called an Element, Ramaze will go and search for a class that matches
-the name Page and responds to <em>#render</em>. Then it will go and hand the content in
+the name Page and responds to <code>#render</code>. Then it will go and hand the content in
 between to that Element.</p>
 
 <p>Sounds weird?</p>
@@ -507,8 +511,8 @@ end
 </code></pre>
 
 <p>Alright, most things we need are in place already, the most important thing
-is the <em>#content</em> method that we call with <em>#{content}</em> inside the string in
-<em>#render</em>.</p>
+is the <code>#content</code> method that we call with <code>#{content}</code> inside the string in
+<code>#render</code>.</p>
 
 <p>Just adopt it to your liking, I'll just use the things we had in our templates
 so far:</p>
@@ -647,7 +651,7 @@ of performance:</p>
 end
 </code></pre>
 
-<p>It seems to be quite common to put this configuration into seperate files so you
+<p>It seems to be quite common to put this configuration into separate files so you
 can just require it on demand.  There are other, slightly stronger way to set
 options, which is either using flags on the ramaze executable, or like this:</p>
 
@@ -656,5 +660,175 @@ options, which is either using flags on the ramaze executable, or like this:</p>
 
 <p>We haven't started Ramaze directly as of yet, but this allows you to ignore the
 ramaze executable and just run your application.</p>
+
+<a name="Eleventh_Step,_Refactor_with_AspectHelper"><h2>Eleventh Step, Refactor with AspectHelper</h2></a>
+
+<p>Now, if you take a closer look at the Controller you will see:</p>
+
+<pre><code>def create
+  title = request['title']
+  TodoList[title] = {:done =&gt; false}
+  redirect R(self)
+end
+
+def open title
+  task_status title, false
+  redirect R(self)
+end
+
+def close title
+  task_status title, true
+  redirect R(self)
+end
+
+def delete title
+  TodoList.delete title
+  redirect R(self)
+end
+</code></pre>
+
+<p>We did some refactoring before, by introducing <code>#task_status</code>, but here we have
+repetition again: <code>redirect Rs()</code> <em>after</em> each method did its job.</p>
+
+<p>However, we can take advantage of one of the helpers Ramaze offers, the
+AspectHelper.
+It allows you to easily wrap actions in your controller with other methods</p>
+
+<p>In your Controller, replace the previous chunk with following:</p>
+
+<pre><code>def create
+  title = request['title']
+  TodoList[title] = {:done =&gt; false}
+end
+
+def open title
+  task_status title, false
+end
+
+def close title
+  task_status title, true
+end
+
+def delete title
+  TodoList.delete title
+end
+
+helper :aspect
+after [:create, :open, :close, :delete], :redirect_index
+
+def redirect_index
+  redirect Rs()
+end
+</code></pre>
+
+<p>Alright, that looks a lot nicer already and is definitely easier to maintain.
+Please note that the <code>#redirect_index</code> method should not be private, as it is a
+usual action that will just run after the others.</p>
+
+<p>There is a symmetrical <code>#before</code> aspect that you could take advantage of as well,
+and in case you want to add required authentication for all actions of a
+Controller you could use <code>:all</code> instead of an array of action-names.</p>
+
+<a name="Twelfth_Step,_Validation_and_Errors"><h2>Twelfth Step, Validation and Errors</h2></a>
+
+<p>Right now, all kinds of things could still go wrong when you do things like
+creating tasks with no title at all or try to open/close a task that does not
+exist. So in this step we will add some little checks for these cases.</p>
+
+<p>First we head over to the Controller again and take a look at <code>#create</code>:</p>
+
+<pre><code>def create
+  title = request['title']
+  TodoList[title] = {:done =&gt; false}
+end
+</code></pre>
+
+<p>Here we just create a new task, no matter what we get. Every seasoned
+web-developer would advise you to be suspicious about all the input you receive
+from your users, so let's apply this advice.</p>
+
+<pre><code>def create
+  if title = request['title']
+    title.strip!
+    if title.empty?
+      error("Please enter a title")
+      redirect '/new'
+    end
+    TodoList[title] = {:done =&gt; false}
+  end
+end
+</code></pre>
+
+<p>First of all we check if we got a request with a value for 'title', if we get
+none we just let the aspect kick in that will redirect the browser to the index.
+Next we strip the title of all spaces around it so we can check if it is empty.
+We will talk about the specifics of our error-handling now.</p>
+
+<p>Ramaze has a helper called FlashHelper, that will keep a hash associated with
+the session for one request, afterwards the hash is thrown away. This is
+specifically useful for giving the user feedback while keeping a stateless
+approach.</p>
+
+<p>Let me show you our <code>#error</code> method (it goes in the private section to
+<code>#task_status</code>):</p>
+
+<pre><code>def error(message)
+  flash[:error] = message
+end
+</code></pre>
+
+<p>Duh, you may say, wouldn't that fit in the one line instead of the call to
+<code>#error</code>?
+Indeed, it would, but let me remind you, we have no checks for changing the
+status of a task yet. We will need error-handling there as well, so we just keep
+our code DRY and maintainable by collecting shared behaviour in small pieces.</p>
+
+<p>Now on to the <code>#task_status</code>:</p>
+
+<pre><code>def task_status title, status
+  unless task = TodoList[title]
+    error "No such Task: `#{title}'"
+    redirect_referer
+  end
+
+  task[:done] = status
+  TodoList[title] = task
+end
+</code></pre>
+
+<p>That used to look like this:</p>
+
+<pre><code>def task_status title, status
+  task = TodoList[title]
+  task[:done] = status
+  TodoList[title] = task
+end
+</code></pre>
+
+<p>So in fact all we added is a check whether a task already exists, set an
+error-message in case it doesn't and redirect to wherever the browser came from.</p>
+
+<p>But what about actually showing the error-messages we so carefully set? Well,
+where do we change the view? Right, in the templates. But both templates we have
+so far (index and new) share this behaviour, so let's head over to the Element
+and add in the right place:</p>
+
+<pre><code>&lt;body&gt;
+  &lt;h1&gt;#{@title}&lt;/h1&gt;
+  &lt;?r if flash[:error] ?&gt;
+    &lt;div class="error"&gt;
+      \#{flash[:error]}
+    &lt;/div&gt;
+  &lt;?r end ?&gt;
+  #{content}
+&lt;/body&gt;
+</code></pre>
+
+<p>The only thing special about it is the <code>\#{flash[:error]}</code>, we have to escape
+the <code>#</code> so it won't evaluate this immediately but wait until it is really
+rendered.
+You can add some nifty style if you like.</p>
+
+<p>To be continued...</p>
     </body>
   </html>
