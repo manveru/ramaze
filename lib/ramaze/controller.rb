@@ -17,7 +17,7 @@ module Ramaze
     include Ramaze::Helper
     extend Ramaze::Helper
 
-    helper :redirect, :link, :file
+    helper :redirect, :link, :file, :flash, :cgi
 
     trait[:template_extensions] ||= {}
 
