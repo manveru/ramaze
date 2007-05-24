@@ -119,7 +119,7 @@ task 'tutorial2html' do
 
   basefile = File.join('doc', 'tutorial', 'todolist')
 
-  content = File.read(basefile + '.txt')
+  content = File.read(basefile + '.mkd')
 
   html = BlueCloth.new(content).to_html
 
