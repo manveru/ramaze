@@ -39,6 +39,13 @@ describe 'todolist' do
     spectask.search("td[@class='status']").inner_html.strip
   end
 
+  def error_on_page(url, response)
+    doc = h_get(url, :cookie => response.headers['Set-Cookie'])
+
+    error = doc.search("div[@class='error']")
+    error.inner_html.strip
+  end
+
   it 'should start' do
     ramaze :port => 7080
     get('/').status.should == 200
@@ -89,9 +96,13 @@ describe 'todolist' do
     spectask_status.should == 'not done'
   end
 
-  it 'should raise on toggling a not existing task' do
-    get('/close/does_not_exist').status.should == 500
-    get('/open/does_not_exist').status.should == 500
+  it 'should raise on modifying a not existing task' do
+    %w[open close].each do |action|
+      response = get("/#{action}/nothere", :referrer => "/")
+      response.status.should == 303
+      response.original_headers['Location'].should == '/'
+      error_on_page('/', response).should == "No such Task: `nothere'"
+    end
   end
 
   it 'should delete the new task' do
@@ -99,7 +110,16 @@ describe 'todolist' do
     task_titles.should_not include('spectask')
   end
 
+  it 'should not create empty tasks but show a subtle error message' do
+    response = post('/create', 'title' => '', :referrer => "/new")
+
+    response.status.should == 303
+    response.original_headers['Location'].should == '/new'
+
+    error_on_page('/new', response).should == 'Please enter a title'
+  end
+
   after :all do
-    FileUtils.rm('todolist.db')
+    FileUtils.rm('todolist.db') rescue nil
   end
 end
