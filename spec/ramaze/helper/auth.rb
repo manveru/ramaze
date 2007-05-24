@@ -18,7 +18,7 @@ class TCAuthHelperController < Ramaze::Controller
   def secured
     "Secret content"
   end
-  pre :secured, :login_required
+  before(:secured){ login_required }
 end
 
 class TCAuthHashHelperController < TCAuthHelperController

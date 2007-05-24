@@ -35,8 +35,21 @@ module Ramaze
         action.binding = controller.instance_eval{ binding }
         action.controller = controller
 
+        before = before_process(action)
+
         engine = select_engine(action.template)
-        engine.transform(action)
+        answer = engine.transform(action)
+
+        after = after_process(action)
+        [before, answer, after].join
+      end
+
+      def before_process(action)
+        ''
+      end
+
+      def after_process(action)
+        ''
       end
 
       def cached_render action

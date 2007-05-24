@@ -44,7 +44,7 @@ class MainController < Controller
     TodoList.delete title
   end
 
-  after [:create, :open, :close, :delete], :redirect_index
+  after(:create, :open, :close, :delete){ redirect_index }
 
   def redirect_index
     redirect(Rs())

@@ -13,199 +13,62 @@ module Ramaze
   # want this feature it shouldn't have too large impact ;)
 
   module AspectHelper
-
-    # define the trait[:aspects] for the class that includes us
-    # also prepare hijacking of the :render method
-
     def self.included(klass)
-      # if we haven't been included yet...
-      unless defined?(Traits[klass][:aspects]) and Traits[klass][:aspects]
-        klass.trait :aspects => {:pre => {}, :post => {}, :wrap => {}}
-        unless defined?(klass.old_render)
-          klass.class_eval do
-            class << self
-              include AspectHelperMixin
-              alias_method :old_render, :render
-              alias_method :render, :new_render
-
-              public :render
-            end
-          end
-        end
-      end
+      klass.trait[:aspects] ||= { :before => {}, :after => {} }
     end
-  end
 
-  # This is the actual Module to be included into the Controller you call
-  #   helper :aspect
-  # from.
-  #
-  # The reason for that is to avoid recursion of inclusion in AspectHelper
-  # which does the aliasing and predefinition of the traits for the aspects.
-
-  module AspectHelperMixin
     private
 
-    # define pre-aspect which calls render(:your_pre_aspect)
-    # and appends it on your default action
-    # please note, that if you give can define
-    #   pre :all, :all_, :except => [:action1, :action2]
-    #   pre :all, :all_, :except => :action
-    # however, due to the nature of this helper, only action that have been
-    # defined so far are wrapped by the :all.
-    # methods that are in the :except (which is not mandatory) are ignored.
-    #
-    # the notion :all_ is a nice reminder that it is a pre-wrapper, you don't
-    # have to use the underscore, it's just my way to do it.
-    #
-    # Also, be careful, since :all will wrap other wraps that have been defined
-    # so far as well.
-    # Usually i don't think it's a good thing that order defines
-    # behaviour, but in this case it gives you quite powerful control
-    # over the whole process. Just watch out:
-    #   With great power comes great responsibility
-    #
-    # Example:
-    #   class FooController < Controller
-    #
-    #     def index
-    #       'foo'
-    #     end
-    #     pre :index, :_index
-    #
-    #     def other
-    #       'foo'
-    #     end
-    #     pre :all, :all_, :except => :index
-    #
-    #     def _index
-    #       'I will be put before your action'
-    #     end
-    #
-    #     def _all
-    #       '<pre>'
-    #     end
-    #   end
-
-    def pre(*opts)
-      enwrap(:pre, *opts)
-    end
-    alias before pre
-
-    # define post-aspect which calls render(:your_post_aspect)
-    # and appends it on your default action
-    # please note, that if you give can define
-    #   post :all, :all_, :except => [:action1, :action2]
-    #   post :all, :all_, :except => :action
-    # however, due to the nature of this helper, only action that have been
-    # defined so far are wrapped by the :all.
-    # methods that are in the :except (which is not mandatory) are ignored.
-    #
-    # the notion :all_ is a nice reminder that it is a post-wrapper, you don't
-    # have to use the underscore, it's just my way to do it.
-    #
-    # Also, be careful, since :all will wrap other wraps that have been defined
-    # so far as well.
-    # Usually i don't think it's a good thing that order defines
-    # behaviour, but in this case it gives you quite powerful control
-    # over the whole process. Just watch out:
-    #   With great power comes great responsibility
-    #
-    # Example:
-    #   class FooController < Controller
-    #
-    #     def index
-    #       'foo'
-    #     end
-    #     post :index, :index_
-    #
-    #     def other
-    #       'foo'
-    #     end
-    #     pre :all, :all_, :except => :index
-    #
-    #     def index_
-    #       'I will be put after your action'
-    #     end
-    #
-    #     def all_
-    #       '</pre>'
-    #     end
-    #   end
-
-    def post(*opts)
-      enwrap(:post, *opts)
-    end
-    alias after post
-
-    # a shortcut that combines pre and post
-    # same syntax as pre/post, just a linesaver
-
-    def wrap(*opts)
-      pre(*opts)
-      post(*opts)
-    end
-
-    # you shouldn't have to call this method directly
-    # however, if you really, really want to:
-    #
-    # enwrap(:post, :index, :my_post_method, :except => :bar
-
-    def enwrap(kind, key, meths, hash = {})
-      wrapping =
-      if key == :all
-        instance_methods(false)
-      else
-        [key].flatten.map{|k| k.to_s}
-      end
-
-      if hash[:except]
-        wrapping -= [hash[:except]].flatten.map(&:to_s)
-      end
-
-      wrapping.each do |meth|
-        ancestral_trait[:aspects][kind][meth] = meths
+    def before(*meths, &block)
+      aspects = trait[:aspects][:before]
+      meths.each do |meth|
+        aspects[meth.to_s] = block
       end
     end
+    alias pre before
 
-    # find the post and pre actions for the current class
+    def before_all(&block)
+      meths = instance_methods(false)
+      before(*meths, &block)
+    end
+    alias pre_all before_all
 
-    def resolve_aspect(action)
-      action = action.to_s
-      aspects = ancestral_trait[:aspects]
-      {
-        :pre  => aspects[:pre][action],
-        :post => aspects[:post][action]
-      }
+    def after(*meths, &block)
+      aspects = trait[:aspects][:after]
+      meths.each do |meth|
+        aspects[meth.to_s] = block
+      end
+    end
+    alias post after
+
+    def after_all(&block)
+      meths = instance_methods(false)
+      after(*meths, &block)
+    end
+    alias post_all after_all
+
+    def wrap(*meths, &block)
+      before(*meths, &block)
+      after(*meths, &block)
     end
 
-    # this will be exchanged for the :render method which is aliased
-    # to old_render
-    # it just searches for post and pre wrappers, calls them
-    # before/after your action and joins the results
-
-    def new_render(action)
-      arity_for  = lambda{|meth| action.controller.method(meth).arity }
-      params_for = lambda{|arity, para| arity < 0 ? para : para[0, arity] }
-      post, pre = resolve_aspect(action.method).values_at(:post, :pre)
-
-      if pre
-        params = params_for[arity_for[pre], action.params]
-        pre_action = resolve_action(pre, *params)
-        pre_content = old_render(pre_action)
-      end
-
-      unless (pre_content.delete(:skip_next_aspects) rescue false)
-        content = old_render(action)
-
-        if post
-          params = params_for[arity_for[post], action.params]
-          post_action = resolve_action(post, *params)
-          post_content = old_render(post_action)
-        end
-      end
-
-      [pre_content, content, post_content].join
+    def wrap_all(&block)
+      meths = instance_methods(false)
+      wrap(*meths, &block)
     end
+
+    def before_process(action)
+      block = ancestral_trait[:aspects][:before][action.method]
+      before = action.controller.instance_eval(&block) if block
+      before
+    end
+
+    def after_process(action)
+      block = ancestral_trait[:aspects][:after][action.method]
+      after = action.controller.instance_eval(&block) if block
+      after
+    end
+
+    module_function :before_process, :after_process
   end
 end

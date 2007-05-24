@@ -5,49 +5,57 @@ require 'spec/helper'
 
 class TCAspectController < Ramaze::Controller
   map '/'
+  trait :foo => :bar
   helper :aspect
 
-  def pre_aspect() '<aspect>' end
-  def post_aspect() '</aspect>' end
-  def wrap_aspect() '<br />' end
+  def test_before() 'test before' end
+  before(:test_before){ '<aspect>' }
 
-  def test() 'test' end
-  pre :test, :pre_aspect
-  post :test, :post_aspect
-
-  def test_pre() 'test pre' end
-  pre :test_pre, :pre_aspect
-
-  def test_post() 'test post' end
-  post :test_post, :post_aspect
+  def test_after() 'test after' end
+  after(:test_after){ '</aspect>' }
 
   def test_wrap() 'test wrap' end
-  wrap :test_wrap, :wrap_aspect
+  wrap(:test_wrap){ '<br />' }
 end
 
 class TCAspectAllController < Ramaze::Controller
   map '/all'
-  trait :foo => :bar
 
   helper :aspect
-
-  def pre_aspect() '<pre>' end
-  def post_aspect() '</pre>' end
 
   def test_all_first() 'first' end
   def test_all_second() 'second' end
 
-  pre :all, :pre_aspect
-  post :all, :post_aspect
+  before_all{ '<pre>' }
+  after_all{ '</pre>' }
 end
 
-describe "Aspect" do
+describe "AspectHelper" do
   ramaze(:error_page => false)
 
   it "shouldn't overwrite traits on inclusion" do
-    TCAspectAllController.trait[:foo].should == :bar
+    TCAspectController.trait[:foo].should == :bar
   end
 
+  it 'should use before' do
+    get('/test_before').body.should == '<aspect>test before'
+  end
+
+  it 'should use after' do
+    get('/test_after').body.should == 'test after</aspect>'
+  end
+
+  it 'should use wrap' do
+    get('/test_wrap').body.should == '<br />test wrap<br />'
+  end
+
+  it 'should before_all and after_all' do
+    get('/all/test_all_first').body.should == '<pre>first</pre>'
+    get('/all/test_all_second').body.should == '<pre>second</pre>'
+  end
+end
+
+=begin
   it "pre" do
     get('/test_pre').body.should == '<aspect>test pre'
   end
@@ -69,3 +77,4 @@ describe "Aspect" do
     get('/all/test_all_second').body.should == '<pre>second</pre>'
   end
 end
+=end

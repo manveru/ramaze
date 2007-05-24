@@ -641,7 +641,7 @@ In your Controller, replace the previous chunk with following:
     end
 
     helper :aspect
-    after [:create, :open, :close, :delete], :redirect_index
+    after(:create, :open, :close, :delete){ redirect_index }
 
     def redirect_index
       redirect Rs()
@@ -653,7 +653,7 @@ usual action that will just run after the others.
 
 There is a symmetrical `#before` aspect that you could take advantage of as well,
 and in case you want to add required authentication for all actions of a
-Controller you could use `:all` instead of an array of action-names.
+Controller you could use `#before_all` instead of a list of action-names.
 
 
 ## Twelfth Step, Validation and Errors
