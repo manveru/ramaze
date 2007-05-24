@@ -156,11 +156,7 @@ module Ramaze
       if key == :all
         instance_methods(false)
       else
-        if ([] + key rescue nil)
-          key.map{|k| k.to_s}
-        else
-          [key.to_s]
-        end
+        [key].flatten.map{|k| k.to_s}
       end
 
       if hash[:except]
@@ -189,12 +185,13 @@ module Ramaze
     # before/after your action and joins the results
 
     def new_render(action)
-      arity_for = lambda{|meth| method(meth).arity rescue -1 }
+      arity_for  = lambda{|meth| action.controller.method(meth).arity }
+      params_for = lambda{|arity, para| arity < 0 ? para : para[0, arity] }
       post, pre = resolve_aspect(action.method).values_at(:post, :pre)
 
       if pre
-        arity = arity_for[pre].abs
-        pre_action = resolve_action(pre, *action.params[0,arity])
+        params = params_for[arity_for[pre], action.params]
+        pre_action = resolve_action(pre, *params)
         pre_content = old_render(pre_action)
       end
 
@@ -202,8 +199,8 @@ module Ramaze
         content = old_render(action)
 
         if post
-          arity = arity_for[post].abs
-          post_action = resolve_action(post, *action.params[0,arity])
+          params = params_for[arity_for[post], action.params]
+          post_action = resolve_action(post, *params)
           post_content = old_render(post_action)
         end
       end
