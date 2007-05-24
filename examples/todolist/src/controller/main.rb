@@ -22,9 +22,14 @@ class MainController < Controller
   end
 
   def create
-    title = request['title']
-    TodoList[title] = {:done => false}
-    redirect R(self)
+    if title = request['title']
+      title.strip!
+      if title.empty?
+        error("Please enter a title")
+        redirect '/new'
+      end
+      TodoList[title] = {:done => false}
+    end
   end
 
   def open title
@@ -39,14 +44,24 @@ class MainController < Controller
     TodoList.delete title
   end
 
-  def error
-    @foo = 'bar'
+  after [:create, :open, :close, :delete], :redirect_index
+
+  def redirect_index
+    redirect(Rs())
   end
 
   private
 
+  def error(message)
+    flash[:error] = message
+  end
+
   def task_status title, status
-    task = TodoList[title]
+    unless task = TodoList[title]
+      error "No such Task: `#{title}'"
+      redirect_referer
+    end
+
     task[:done] = status
     TodoList[title] = task
   end

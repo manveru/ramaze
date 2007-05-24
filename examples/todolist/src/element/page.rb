@@ -18,6 +18,11 @@ class Page < Ezamar::Element
       </head>
       <body>
         <h1>#{@title}</h1>
+        <?r if flash[:error] ?>
+          <div class="error">
+            \#{flash[:error]}
+          </div>
+        <?r end ?>
         #{content}
       </body>
     </html>

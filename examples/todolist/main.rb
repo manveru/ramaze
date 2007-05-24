@@ -8,3 +8,5 @@ include Ramaze
 require 'src/controller/main'
 require 'src/element/page'
 require 'src/model'
+
+Ramaze.start
