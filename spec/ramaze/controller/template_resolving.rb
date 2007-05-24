@@ -9,6 +9,13 @@ class MainController < Ramaze::Controller
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"
   end
+
+  def list
+    @obj = @action.method
+  end
+  alias_method :index, :list
+  template :index, 'list'
+
 end
 
 class OtherController < MainController
@@ -51,6 +58,14 @@ describe "Testing Template overriding" do
 
   it "should accept template overrides with same name as controller" do
     get('/other/greet/other/one/two').body.should == '<html>Other: Other</html>'
+  end
+
+  it "setting template for non-existant :index action should not arbitrary parameters" do
+    get('/list').body.should == '<html>list</html>'
+
+    response = get('/non_existant_method')
+    response.status.should == 404
+    response.body.should =~ %r(No Action found for `/foobar' on TCErrorController)
   end
 
 end
