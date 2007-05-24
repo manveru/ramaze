@@ -176,7 +176,7 @@ task 'tutorial' => ['tutorial2html'] do
     file.gsub!(h2.to_html, to_link)
   end
 
-  links = to_links.join("<br />\n  ")
+  links = to_links.join("</ol>\n    <ol>")
   h1 = "<h1>To-do List Tutorial</h1>"
   menu =
 %{
@@ -184,7 +184,9 @@ task 'tutorial' => ['tutorial2html'] do
 
 <div class="menu">
   <h3>Table of Contents</h3>
-  #{links}
+  <li>
+    <ol>#{links}</ol>
+  </li>
 </div>
 }
 
