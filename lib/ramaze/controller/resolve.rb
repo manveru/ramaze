@@ -29,7 +29,9 @@ module Ramaze
             action = controller.resolve_action(method, *params)
             template = action.template
 
-            return controller, action if action.method or action.template
+            valid_action = (action.method or (params.empty? && action.template))
+
+            return controller, action if valid_action
           end
         end
 

@@ -65,7 +65,7 @@ describe "Testing Template overriding" do
 
     response = get('/non_existant_method')
     response.status.should == 404
-    response.body.should =~ %r(No Action found for `/foobar' on TCErrorController)
+    response.body.should =~ %r(No Action found for `/non_existant_method' on MainController)
   end
 
 end
