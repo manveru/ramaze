@@ -1,8 +1,6 @@
 require 'spec/helper'
 
-testcase_requires 'remarkably'
-
-testcase_requires 'remarkably'
+testcase_requires 'remarkably/engines/html'
 require 'examples/templates/template_remarkably'
 
 describe 'Template Remarkably' do
