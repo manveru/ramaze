@@ -357,7 +357,7 @@ will translate into:
 
     open('Wash dishes')
 
-Which in turn will call task_status('Wash dishes', false)
+Which in turn will call `task_status('Wash dishes', false)`
 
 That's it, go on and try it :)
 
@@ -399,7 +399,7 @@ explain some more advanced concepts of Ramaze and the templating.
     <Page></Page>
 
 This is called an Element, Ramaze will go and search for a class that matches
-the name Page and responds to _#render_. Then it will go and hand the content in
+the name Page and responds to `#render`. Then it will go and hand the content in
 between to that Element.
 
 Sounds weird?
@@ -444,8 +444,8 @@ Take a look at the `src/element/page.rb`
     end
 
 Alright, most things we need are in place already, the most important thing
-is the _#content_ method that we call with _#{content}_ inside the string in
-_#render_.
+is the `#content` method that we call with `#{content}` inside the string in
+`#render`.
 
 Just adopt it to your liking, I'll just use the things we had in our templates
 so far:
