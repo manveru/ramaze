@@ -3,19 +3,19 @@
 
 class MainController < Controller
 
-  trait :engine => Template::Ezamar
+  helper :aspect
 
   def index
     @tasks = []
     TodoList.original.each do |title, parameters|
       if parameters[:done]
         status = 'done'
-        toggle = link( R( self, :open, CGI.escape(title) ), :title => 'Open Task' )
+        toggle = link( Rs(:open, title ), :title => 'Open Task' )
       else
         status = 'not done'
-        toggle = link( R( self, :close, CGI.escape(title) ), :title => 'Close Task' )
+        toggle = link( Rs(:close, title ), :title => 'Close Task' )
       end
-      delete = link( R( self, :delete, CGI.escape(title) ), :title => 'Delete' )
+      delete = link( Rs(:delete, title ), :title => 'Delete' )
       @tasks << [title, status, toggle, delete]
     end
     @tasks.sort!
@@ -29,17 +29,14 @@ class MainController < Controller
 
   def open title
     task_status title, false
-    redirect R(self)
   end
 
   def close title
     task_status title, true
-    redirect R(self)
   end
 
   def delete title
     TodoList.delete title
-    redirect R(self)
   end
 
   def error
