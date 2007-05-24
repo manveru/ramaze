@@ -12,6 +12,10 @@ module Ramaze
       def to_s
         %{#<Action method=#{method.inspect}, params=#{params.inspect} template=#{template.inspect}>}
       end
+
+      def params=(*par)
+        self[:params] = par.map{|pa| CGI.unescape(pa)}
+      end
     end
   end
 end
