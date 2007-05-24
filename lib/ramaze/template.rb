@@ -21,10 +21,6 @@ module Ramaze
 
         # pass it the results of the method of the controller
         # and a possible file, it will see if the file is an actual file
-        # and otherwise answer the contents of the response from the controller
-        # if it responds to :to_str.
-        #
-        # Answers nil if none of both is valid.
 
         def reaction_or_file action
           reaction = render_method(action)
