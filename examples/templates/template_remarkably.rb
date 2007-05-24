@@ -9,7 +9,7 @@ class MainController < Controller
   template_root File.expand_path((File.dirname(__FILE__)/'template'))
   trait :engine => Template::Remarkably
 
-  include Remarkably
+  include Remarkably::Common
 
   def index
     %{ #{Rlink self.class} | #{Rlink self.class, :internal} | #{Rlink self.class, :external} }

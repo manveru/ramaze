@@ -4,12 +4,13 @@
 require 'spec/helper'
 
 testcase_requires 'remarkably'
+require 'remarkably/engines/html'
 
 class TCTemplateRemarkablyController < Ramaze::Controller
   template_root 'spec/ramaze/template/remarkably/'
   trait :engine => Ramaze::Template::Remarkably
 
-  include Remarkably
+  include Remarkably::Common
 
   def index
     h1 "Remarkably Index"
