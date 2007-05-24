@@ -37,6 +37,34 @@ module Ramaze
     unless defined?(rack_params)
       alias rack_params params
 
+      # Wrapping Request#params to support a one-level hash notation.
+      # It doesn't support anything really fancy, so be conservative in its use.
+      #
+      # Example Usage:
+      #
+      #  # Template:
+      #
+      #  <form action="/paste">
+      #    <input type="text" name="paste[name]" />
+      #    <input type="text" name="paste[syntax]" />
+      #    <input type="submit" />
+      #  </form>
+      #
+      #  # In your Controller:
+      #
+      #  def paste
+      #    name, syntax = request.params['paste'].values_at('name', 'syntax')
+      #    paste = Paste.create_with(:name => name, :syntax => syntax)
+      #    redirect '/'
+      #  end
+      #
+      #  # Or, easier:
+      #
+      #  def paste
+      #    paste = Paste.create_with(request.params)
+      #    redirect '/'
+      #  end
+
       def params
         ps = rack_params
         temp = {}
