@@ -58,7 +58,7 @@ module Ramaze
         obj.shutdown if obj.respond_to?(:shutdown)
       end
 
-      puts("Shutdown Ramaze (it's save to kill me now if i hang)")
+      puts("Shutdown Ramaze (it's safe to kill me now if i hang)")
 
       exit!
     end
