@@ -10,12 +10,12 @@ class MainController < Controller
     TodoList.original.each do |title, parameters|
       if parameters[:done]
         status = 'done'
-        toggle = link( Rs(:open, title ), :title => 'Open Task' )
+        toggle = link( Rs(:open, escape(title) ), :title => 'Open Task' )
       else
         status = 'not done'
-        toggle = link( Rs(:close, title ), :title => 'Close Task' )
+        toggle = link( Rs(:close, escape(title) ), :title => 'Close Task' )
       end
-      delete = link( Rs(:delete, title ), :title => 'Delete' )
+      delete = link( Rs(:delete, escape(title) ), :title => 'Delete' )
       @tasks << [title, status, toggle, delete]
     end
     @tasks.sort!

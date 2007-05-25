@@ -9,7 +9,11 @@ class Struct
   # # => #<struct Struct::Action template=nil, method=:meth, params=[1]>
 
   def self.fill(hash = {})
-    values = hash.values_at(*members.map{|m| m.to_sym})
-    new(*values)
+    instance = new
+    hash.each do |key, value|
+      next unless members.include?(key.to_s)
+      instance.send("#{key}=", value)
+    end
+    instance
   end
 end
