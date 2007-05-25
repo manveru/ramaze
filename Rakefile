@@ -66,7 +66,7 @@ Spec::Rake::SpecTask.new(:rcov_summary => :rcov_dir) do |t|
 end
 
 desc "generate rdoc"
-task :rdoc => :clean do
+task :rdoc => [:clean, :readme2html] do
   sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
 end
 
