@@ -3,6 +3,8 @@
 
 require 'pp'
 
+# Extensions for Kernel
+
 module Kernel
   unless defined?(pretty_inspect)
     # returns a pretty printed object as a string.

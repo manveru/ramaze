@@ -3,6 +3,8 @@
 
 Traits = Hash.new{|h,k| h[k] = {}} unless defined?(Traits)
 
+# Extensions for Object
+
 class Object
 
   # Adds a method to Object to annotate your objects with certain traits.
@@ -61,6 +63,8 @@ class Object
     end
     ancs.reverse.inject({}){|s,v| s.merge(v.trait)}.merge(trait)
   end
+
+  # trait for self.class
 
   def class_trait
     if respond_to?(:ancestors)

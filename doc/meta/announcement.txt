@@ -1,10 +1,17 @@
-This is a one-time post to announce the creation of the Ramaze project, an open
-source web framework with the aim to be light and modular.
-Ramaze is already relatively stable and we decided that it is time to give it
-broader exposure to find new users and contributors.
+This time we are proud to announce Version 0.1.2 of the Ramaze framework, an
+open source web framework with the aim to be light and modular.
+
+Since the 0.1.0 release we have made a lot of progress and the overall API has
+mostly settled down. An extensive set of tests is covering almost every detail
+of the implementation and usage.
+
+It is developed by by several people and already in production-use at some
+companies.
+
 
 Home page: http://ramaze.rubyforge.org
 IRC: #ramaze on irc.freenode.net
+
 
 New Features in Version 0.1.2: ( review and remove unimportant stuff )
 
@@ -14,7 +21,7 @@ New Features in Version 0.1.2: ( review and remove unimportant stuff )
 
  - Support for the Remarkably templating engine.
 
- - Adapted for Rack 0.1
+ - Adapted for Rack 0.2
 
  - Easier caching.
 
@@ -28,12 +35,27 @@ New Features in Version 0.1.2: ( review and remove unimportant stuff )
 
  - Lightweight error-page.
 
+ - Central API for caches.
+
+ - Reviewed and largely improved tutorial and examples.
+
+ - Even less patches to the Ruby core, mostly for compatibility with the
+   upcoming Ruby 1.9 and tested with older versions down to 1.8.2.
+
+ - Largely improved Spec-framework for any kind of web-application.
+
+ - Through some benchmarking and refactoring the overall speed has improved
+   around the factor 2.
+
+A complete Changelog is available at [ insert URL ]
+
+
 Features:
   - Builds on top of the recently released Rack library, which provides easy use
     of adapters like Mongrel, WEBrick, CGI or FCGI.
 
   - Supports a wide range of templating-engines like:
-      Amrita2, Erubis, HAML, Liquid, Markaby Remarkably and its own engine
+      Amrita2, Erubis, HAML, Liquid, Markaby, Remarkably and its own engine
       called Ezamar.
 
   - Highly modular structure, you can just use the parts you like. This also
@@ -59,9 +81,7 @@ Features planned:
   - Unified FormHelper for ORMs, making the framework mostly independent of the
       underlying model.
 
-  - Improved configuration system, providing an way to totally change options
-      during runtime and link that with the CLI-parameter automatically.
-
+  - Support for distributed deployment over DRb.
 
 For more information please come to http://ramaze.rubyforge.org or ask directly
 on IRC (irc://irc.freenode.net/#ramaze)

@@ -2,14 +2,21 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # This helper is providing easy access to a couple of Caches to use for
+  # smaller amounts of data.
+
   module CacheHelper
+    def self.included(klass)
+      Cache.add(:value_cache) unless Cache::CACHES.has_key?(:value_cache)
+    end
+
     private
 
     # use this to cache values in your controller and templates,
     # for example heavy calculations or time-consuming queries.
 
     def value_cache
-      Cache.add(:value_cache) unless Cache::CACHES.has_key?(:value_cache)
       Cache.value_cache
     end
 

@@ -22,6 +22,11 @@ Ramaze offers following features at the moment:
       CGI is the Common Gateway Interface and is one of the most basic ways
       to integrate into Webservers like Apache, Lighttpd or Nginx.
 
+    * FCGI
+
+      Improvment of CGI as it doesn't start up a new connection to Ramaze on
+      every request.
+
 
 * Templates
   * [Amrita2](http://amrita2.rubyforge.org/)
@@ -42,13 +47,18 @@ Ramaze offers following features at the moment:
     Liquid's syntax and parse model are inspired by Django templates, as well
     as PHP's smarty.
 
+  * [Remarkably](http://rubyforge.org/projects/remarkably)
+
+    Remarkably is a very tiny Markaby-like XML builder
+
   * [Markaby](http://code.whytheluckystiff.net/markaby/)
 
     Markaby means Markup as Ruby.
 
   * Ezamar
 
-    A simple homage to [Nitro](http://nitroproject.org)s templating.
+    A simple homage to [Nitro](http://nitroproject.org)s templating, is shipped
+    together with Ramaze.
 
 * Cache
   * Hash
@@ -56,19 +66,78 @@ Ramaze offers following features at the moment:
   * MemCache
 
 * Helper
-  * Aspect
-  * Auth
-  * Cache
-  * Feed
-  * Flash
-  * Form
-  * Link
-  * OpenID
-  * Redirect
-  * Stack
+  * Active by default 
+    * CGI
+
+      Shortcuts for escape/unescape of the CGI module.
+
+    * File
+
+      Helps you serving files from your Controller.
+
+    * Flash
+
+      Store a couple of values for one request associated with a session.
+
+    * Link
+
+      Easier linking to the various parts of your applications Controllers and
+      Actions.
+
+    * Redirect
+
+      Easy redirection.
+
+  * Optional
+    * Aspect
+
+      Allows you to wrap different Actions on your Controller with code.
+
+    * Auth
+
+      Simple way to add basic authentication.
+
+    * Cache
+
+      Easy caching Actions and values.
+
+    * Feed
+
+      Programmatically generate feeds from any Class.
+
+    * Form
+
+      In development, help appreciated.
+
+    * Identity
+
+      For ease of use of the OpenID authentication mechanism.
+
+    * Inform
+
+      Wrapping the functionality of Ramazes logging facilities.
+
+    * Markaby
+
+      Allows you to use Markaby in your Controller without having it as the
+      default templating engine.
+
+    * Nitroform
+
+      Hooks up on nitros form builder to help you creating forms from Og
+      objects.
+
+    * OpenID
+
+      Authentication via OpenID made easy.
+
+    * Stack
+
+      Allows you to use a call/answer mechanism for things like redirection to the
+      site a user entered login-forms from.
 
 * Various
   * Sessions
   * Global configuration system
   * Simple request/response handling
-  * Custom Error-handling
+  * Custom sophisticated Error-handling

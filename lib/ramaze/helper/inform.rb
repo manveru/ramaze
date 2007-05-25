@@ -2,6 +2,9 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # Easy access to Inform
+
   module InformHelper
 
     private
