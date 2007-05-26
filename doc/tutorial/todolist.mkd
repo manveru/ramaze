@@ -280,10 +280,10 @@ we go and change the index method on the controller once again:
       TodoList.original.each do |title, value|
         if value[:done]
           status = 'done'
-          toggle = link( Rs(:open, title), :title => 'Open Task' )
+          toggle = A('Open Task', :href => Rs(:open, title))
         else
           status = 'not done'
-          toggle = link( Rs(:close, title), :title => 'Close Task' )
+          toggle = A('Close Task', :href => Rs(:close, title))
         end
         @tasks << [title, status, toggle]
       end
@@ -293,7 +293,7 @@ we go and change the index method on the controller once again:
 Wow, quite some new stuff here. Let me explain that in detail.
 
 We first decide whether a task is done or not, then go on and provide a link to
-toggle the status, link and Rs are both methods that help you do that.
+toggle the status, A and Rs are both methods that help you do that.
 The result will be something like:
 
     <a href="/open/Wash+dishes">Close Task</a>
@@ -363,7 +363,7 @@ consider is to delete a task permanently.
 This is just two little changes away, so let's add the link for deletion in our
 Controller:
 
-    delete = link( Rs( :delete, title ), :title => 'Delete' )
+    delete = A('Delete', :href => Rs(:delete, title))
     @tasks << [title, status, toggle, delete]
 
 and an corresponding method while we're at it:

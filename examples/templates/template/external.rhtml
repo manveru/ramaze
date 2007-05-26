@@ -1,15 +1,15 @@
 <html>
   <head>
-    <title>Template::Erubis <%= @place %></title>
+    <title>Template::Erubis internal</title>
   </head>
   <body>
-    <h1>The <%= @place %> Template for Erubis</h1>
-    <%= link :/, :title => 'Home' %>
+  <h1>The internal Template for Erubis</h1>
+    <%= A('Home', :href => :/) %>
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      <%= link Rs(@place, :one), :title => "#@place/one" %><br />
-      <%= link Rs(@place, :one, :two, :three), :title => "#@place/one/two/three" %><br />
-      <%= link Rs(@place, :one, :foo => :bar), :title => "#@place?foo=bar" %><br />
+      <%= A("/#@place/one") %><br />
+      <%= A("#@place/two/three") %><br />
+      <%= A("#@place/one?foo=bar") %><br />
     </p>
     <div>
       The arguments you have passed to this action are:
@@ -26,4 +26,3 @@
     </div>
   </body>
 </html>
-

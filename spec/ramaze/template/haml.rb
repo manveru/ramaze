@@ -38,7 +38,7 @@ describe "Simply calling" do
 %{<div id='content'>
   <div class='title'>
     <h1>Teen Wolf</h1>
-    <a href="Home">Home</a>
+    <a href="/Home">Home</a>
   </div>
 </div>}
   end

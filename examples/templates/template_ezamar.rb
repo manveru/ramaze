@@ -7,7 +7,7 @@ class MainController < Ramaze::Controller
   template_root File.expand_path((File.dirname(__FILE__)/'template'))
 
   def index
-    %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
+    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
   end
 
   def internal *args
@@ -19,12 +19,12 @@ class MainController < Ramaze::Controller
   </head>
   <body>
   <h1>The internal Template for Ezamar</h1>
-    #{link :/, :title => 'Home'}
+    #{A 'Home', :href => :/}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      #{link Rs(:internal, :one), :title => "/internal/one"}<br />
-      #{link Rs(:internal, :one, :two, :three), :title => "/internal/one/two/three"}<br />
-      #{link Rs(:internal, :one, :foo => :bar), :title => "/internal?foo=bar"}<br />
+      #{A("internal/one")}<br />
+      #{A("internal/one/two/three")}<br />
+      #{A("internal/one?foo=bar")}<br />
     </p>
     <div>
       The arguments you have passed to this action are:

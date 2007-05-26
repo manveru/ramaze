@@ -2,55 +2,32 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
+require 'ramaze/helper/link'
 
-class TCLinkHelperController < Ramaze::Controller
-  helper :link
+class TCLink < Ramaze::Controller
+  map '/'
+end
 
-  def index
-    link self
-  end
+describe "A" do
+  include Ramaze::LinkHelper
 
-  def index_with_title
-    link self, :title => 'Foo'
+  it 'should build links' do
+    A('title', :href => '/').should == %(<a href="/">title</a>)
+    A('title', :href => '/foo').should == %(<a href="/foo">title</a>)
+
+    a = A('title', :href => '/foo', :class => :none)
+    a.should =~ /class="none"/
+    a.should =~ /href="\/foo"/
   end
 end
 
-
-describe "LinkHelper" do
-  ramaze(:mapping => {'/' => TCLinkHelperController})
-
+describe 'R' do
   include Ramaze::LinkHelper
 
-  this = TCLinkHelperController
-
-  it "testrun" do
-    get('/').body.should == %{<a href="/">index</a>}
-    get('/index_with_title').body.should == %{<a href="/">Foo</a>}
-  end
-
-  it "link" do
-    link(:foo).should       == %{<a href="foo">foo</a>}
-    link(:foo, :bar).should == %{<a href="foo/bar">bar</a>}
-    link(this, :bar).should == %{<a href="/bar">bar</a>}
-    link('/foo/bar').should == %{<a href="/foo/bar">bar</a>}
-  end
-
-  it "link with title" do
-    link(:foo, :title => 'bar').should == %{<a href="foo">bar</a>}
-  end
-
-  it "link with get-parameters" do
-    link(:foo, :first => :bar, :title => 'bar').should == %{<a href="foo?first=bar">bar</a>}
-    l = link(:foo, :first => :bar, :second => :foobar)
-    m = l.match(%r{<a href="foo\?(.*?)=(.*?);(.*?)=(.*?)">(.*?)</a>}).to_a
-    m.shift
-    m.pop.should == 'foo'
-    Hash[*m].should == {'first' => 'bar', 'second' => 'foobar'}
-  end
-
-  it "R" do
-    R(this).should == '/'
-    R(this, :foo).should == '/foo'
-    R(this, :foo, :bar => :one).should == '/foo?bar=one'
+  it 'should build urls' do
+    R(TCLink).should == '/'
+    R(TCLink, :foo).should == '/foo'
+    R(TCLink, :foo, :bar).should == '/foo/bar'
+    R(TCLink, :foo, :bar => :baz).should == '/foo?bar=baz'
   end
 end

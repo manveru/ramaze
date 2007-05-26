@@ -4,7 +4,7 @@ html do
   end
   body do
     h1 "The #@place Template for Remarkably"
-    a("Home", :href => R(:/))
+    a("Home", :href => R(@place))
     P do
       text "Here you can pass some stuff if you like, parameters are just passed like this:"
       br
@@ -18,7 +18,7 @@ html do
     div do
       text "The arguments you have passed to this action are:" 
       if @args.empty?
-        "none"
+        text "none"
       else
         args.each do |arg|
           span arg

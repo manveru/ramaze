@@ -8,7 +8,7 @@ describe 'Template Erubis' do
 
   it '/' do
     get('/').body.strip.should ==
-      "<a href=\"/\">index</a> | <a href=\"/internal\">internal</a> | <a href=\"/external\">external</a>"
+      "<a href=\"/\">Home</a> | <a href=\"/internal\">internal</a> | <a href=\"/external\">external</a>"
   end
 
   %w[/internal /external].each do |url|

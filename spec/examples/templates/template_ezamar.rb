@@ -7,7 +7,7 @@ describe 'Template Ezamar' do
 
   it '/' do
     get('/').body.should ==
-      "<a href=\"/\">index</a> | <a href=\"/internal\">internal</a> | <a href=\"/external\">external</a>"
+      "<a href=\"/\">Home</a> | <a href=\"/internal\">internal</a> | <a href=\"/external\">external</a>"
   end
 
   %w[/internal /external].each do |url|

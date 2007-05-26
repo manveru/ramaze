@@ -34,57 +34,41 @@ module Ramaze
 
     private
 
-    # Usage:
-    #   link MainController, :foo                 #=> '<a href="/foo">foo</a>'
-    #   link MinorController, :foo                #=> '<a href="/minor/foo">foo</a>'
-    #   link MinorController, :foo, :bar          #=> '<a href="/minor/foo/bar">bar</a>'
-    #   link MainController, :foo, :raw => true   #=> '/foo'
-    #   link MainController, :foo, :title => 'a'  #=> '<a href="/minor/foo/bar">a</a>'
-    #   link MainController, :foo => :bar         #=> '/?foo=bar'
+    def A(title, hash = {})
+      hash[:href] ||= Rs(title)
+      hash[:href].to_s.gsub!(/[^\/]+/){|m| CGI.escape(m) }
 
-    def Rlink *to
-      hash = to.last.is_a?(Hash) ? to.pop : {}
+      args = ['']
+      hash.each{|k,v| args << %(#{k}="#{v}") if k and v }
 
-      to = to.flatten
+      %(<a#{args.join(' ')}>#{title || hash[:href]}</a>)
+    end
 
-      to.map! do |t|
-        t = t.class if not t.respond_to?(:transform) and t.is_a?(Controller)
-        Global.mapping.invert[t] || t
+    def R(*atoms)
+      args, atoms = atoms.partition{|a| a.is_a?(Hash) }
+      args = args.flatten.inject{|s,v| s.merge!(v) }
+
+      map = Global.mapping.invert
+      atoms.map! do |atom|
+        if atom.respond_to?(:new)
+          map[atom] || atom
+        else
+          map[atom.class] || atom
+        end
       end
 
-      raw, title = hash.delete(:raw), hash.delete(:title)
-      params = {:class => hash.delete(:class), :id => hash.delete(:id)}
-      opts = hash.inject('?'){|s,(k,v)| s << "#{k}=#{v};"}[0..-2]
-      link = to.join('/').squeeze('/') << (opts.empty? ? '' : opts)
+      front = atoms.join('/').squeeze('/')
 
-      if raw
-        link
+      if args
+        rear = args.inject('?'){|s,(k,v)| s << "#{k}=#{v};"}[0..-2]
+        front + rear
       else
-        title ||= link.split('/').last.to_s.split('?').first || 'index'
-        params = params.inject(''){|s,(k,v)| s + (k and v ? %{ #{k}="#{v}"} : '')}
-        l = %{<a href="#{link}"#{params}>#{title}</a>}
+        front
       end
     end
 
-    alias link Rlink
-
-    # Usage:
-    #   R MainController, :foo        #=> '/foo'
-    #   R MinorController, :foo       #=> '/minor/foo'
-    #   R MinorController, :foo, :bar #=> '/minor/foo/bar'
-
-    def R *to
-      if to.last.is_a?(Hash)
-        to.last[:raw] = true
-      else
-        to << {:raw => true}
-      end
-
-      Rlink(*to)
-    end
-
-    def Rs(*to)
-      R(Controller.current, *to)
+    def Rs(*atoms)
+      R(self, *atoms)
     end
   end
 end

@@ -10,16 +10,16 @@ class MainController < Controller
   trait :engine => Template::Liquid
 
   def index
-    %{ #{link self.class} | #{link self.class, :internal} | #{link self.class, :external} }
+    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
   end
 
   def liquid_hash(place, *args)
     {
       'header'     => "The #{place} Template for Liquid",
-      'link_home'  => link(:/, :title => 'Home'),
-      'link_one'   => link( Rs(place, :one), :title => "#{place}/one"),
-      'link_two'   => link( Rs(place, :one, :two, :three), :title => "#{place}/one/two/three"),
-      'link_three' => link( Rs(place, :one, :foo => :bar), :title => "#{place}?foo=Bar"),
+      'link_home'  => A('Home', :href => :/),
+      'link_one'   => A("#{place}/one"),
+      'link_two'   => A("#{place}/one/two/three"),
+      'link_three' => A("#{place}?foo=Bar"),
       'args'       => args,
       'args_empty' => args.empty?,
       'params'     => request.params.inspect

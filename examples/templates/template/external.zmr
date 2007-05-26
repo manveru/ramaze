@@ -1,20 +1,24 @@
 <html>
   <head>
-    <title>Template::Ezamar external</title>
+    <title>Template::Ezamar internal</title>
   </head>
   <body>
-  <h1>The external Template for Ezamar</h1>
-    #{link :/, :title => 'Home'}
+  <h1>The internal Template for Ezamar</h1>
+    #{A 'Home', :href => :/}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      #{link Rs(:external, :one), :title => "external/one"}<br />
-      #{link Rs(:external, :one, :two, :three), :title => "external/one/two/three"}<br />
-      #{link Rs(:external, :one, :foo => :bar), :title => "external?foo=bar"}<br />
+      #{A("internal/one")}<br />
+      #{A("internal/one/two/three")}<br />
+      #{A("internal/one?foo=bar")}<br />
     </p>
     <div>
-      *args
-      <?r @args.each do |arg| ?>
-        <span>#{arg}</span>
+      The arguments you have passed to this action are:
+      <?r if @args.empty? ?>
+        none
+      <?r else ?>
+        <?r @args.each do |arg| ?>
+          <span>#{arg}</span>
+        <?r end ?>
       <?r end ?>
     </div>
     <div>

@@ -6,14 +6,14 @@ require 'ramaze'
 include Ramaze
 
 # TODO:
-# implement the amrita2 example, man, this engine is awkward :P
+#   - implement the amrita2 example, man, this engine is awkward :P
 
 class MainController < Controller
   template_root File.expand_path((File.dirname(__FILE__)/'template'))
   trait :engine => Template::Amrita2
 
   def index
-    %{ #{Rs()} | #{Rs(:internal)} | #{Rs(:external)} }
+    %{ #{A(Rs())} | #{Rs(:internal)} | #{Rs(:external)} }
   end
 
   def title
@@ -21,19 +21,19 @@ class MainController < Controller
   end
 
   def link_home
-    link :/, :title => 'Home'
+    A('Home', :href => '/')
   end
 
   def link_one
-    link Rs(:external, :one), :title => "/external/one"
+    A('/external/one', :href => Rs(:external, :one))
   end
 
   def link_two
-    link Rs(:external, :one, :two, :three), :title => "/external/one/two/three"
+    A("/external/one/two/three", :href => Rs(:external, :one, :two, :three))
   end
 
   def link_three
-    link Rs(:external, :one, :foo => :bar), :title => "/external?foo=bar"
+    A("/external?foo=bar", :href => Rs(:external, :one, :foo => :bar))
   end
 
   def inspect_parameters

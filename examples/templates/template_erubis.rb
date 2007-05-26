@@ -8,11 +8,12 @@ class MainController < Ramaze::Controller
   trait :engine => Ramaze::Template::Erubis
 
   def index
-    %{ #{link self.class} | #{link Rs(:internal)} | #{link Rs(:external)} }
+    %{ #{A('Home', :href => :/)} | #{A(:internal)} | #{A(:external)} }
   end
 
   def internal *args
     @args = args
+    @place = :internal
     %q{
 <html>
   <head>
@@ -20,12 +21,12 @@ class MainController < Ramaze::Controller
   </head>
   <body>
   <h1>The internal Template for Erubis</h1>
-    <%= link :/, :title => 'Home' %>
+    <%= A('Home', :href => :/) %>
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      <%= link Rs(@place, :one), :title => "/#@place/one" %><br />
-      <%= link Rs(@place, :one, :two, :three), :title => "/#@place/one/two/three" %><br />
-      <%= link Rs(@place, :one, :foo => :bar), :title => "/#@place?foo=bar" %><br />
+      <%= A("/#@place/one") %><br />
+      <%= A("#@place/two/three") %><br />
+      <%= A("#@place/one?foo=bar") %><br />
     </p>
     <div>
       The arguments you have passed to this action are:

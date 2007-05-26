@@ -8,7 +8,7 @@ class MainController < Ramaze::Controller
   trait :engine => Ramaze::Template::Haml
 
   def index
-    %{ #{link Rs()} | #{link Rs(:internal)} | #{link Rs(:external)} }
+    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
   end
 
   def internal *args
@@ -22,15 +22,15 @@ class MainController < Ramaze::Controller
     %title= "Template::Haml #@place"
   %body
     %h1= @title
-    = Rs(:/, :title => 'Home')
+    = A('Home', :href => :/)
     %p
       Here you can pass some stuff if you like, parameters are just passed like this:
       %br/
-      = link( Rs(@place, :one), :title => "/#@place/one")
+      = A("#@place/one")
       %br/
-      = link( Rs(@place, :one, :two, :three), :title => "/#@place/one/two/three")
+      = A("#@place/one/two/three")
       %br/
-      = link( Rs(@place, :one, :foo => :bar), :title => "/#@place/one?foo=bar")
+      = A("#@place/one?foo=bar")
     %div 
       The arguments you have passed to this action are:
       - if @args.empty?

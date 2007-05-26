@@ -10,12 +10,12 @@ class MainController < Controller
     TodoList.original.each do |title, parameters|
       if parameters[:done]
         status = 'done'
-        toggle = link( Rs(:open, escape(title) ), :title => 'Open Task' )
+        toggle = A('Open Task', :href => Rs(:open, title))
       else
         status = 'not done'
-        toggle = link( Rs(:close, escape(title) ), :title => 'Close Task' )
+        toggle = A('Close Task', :href => Rs(:close, title))
       end
-      delete = link( Rs(:delete, escape(title) ), :title => 'Delete' )
+      delete = A('Delete', :href => Rs(:delete, title))
       @tasks << [title, status, toggle, delete]
     end
     @tasks.sort!
@@ -57,6 +57,7 @@ class MainController < Controller
   end
 
   def task_status title, status
+    p title
     unless task = TodoList[title]
       error "No such Task: `#{title}'"
       redirect_referer

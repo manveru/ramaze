@@ -12,7 +12,7 @@ class MainController < Controller
   helper :markaby
 
   def index
-    %{ #{Rlink Rs()} | #{Rlink Rs(:internal)} | #{Rlink Rs(:external)} }
+    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
   end
 
   def internal *args
