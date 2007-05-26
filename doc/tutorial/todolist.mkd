@@ -181,7 +181,6 @@ changed to do following:
       </head>
       <body>
         <h1>TodoList</h1>
-        <a href="/new">New Task</a>
         <?r if @tasks.empty? ?>
           No Tasks
         <?r else ?>
@@ -247,7 +246,13 @@ moment, the request and response and the contents of the session. This is very
 useful for debugging and development, you can provide your own set of
 error-pages before going into production (or deactivate them fully) though.
 
-OK, let's implement the action for #create, all we want to do is take the
+To learn more about how errors are handled internally, please read the
+lib/ramaze/dispatcher.rb and lib/ramaze/dispatcher/error.rb
+
+If you are too lazy to visit these and figure them out, you can just place your
+own error.xhtml into the template folder and see what happens.
+
+OK, let's implement the action for `#create`, all we want to do is take the
 requests parameters and create a new task for it, this looks like following on
 your MainController.
 
@@ -275,7 +280,7 @@ Jump into `template/index.xhtml` and do the following:
 
     <?r @tasks.each do |title, status, toggle| ?>
       <li>
-        #{title}: #{status} - #{toggle}
+        #{title}: #{status} - [ #{toggle} ]
       </li>
     <?r end ?>
 
@@ -346,7 +351,7 @@ corresponding methods to the Controller:
 
 Oh, now what have we got here?
 `private` declares that methods from here on are only to be used within the
-Controller itself, we define an #task_status method that takes the title and
+Controller itself, we define an `#task_status` method that takes the title and
 status to be set so we don't have to repeat that code in `#open` and `#close`
 and follow the DRY (Don't repeat yourself) paradigm.
 
@@ -430,7 +435,7 @@ So let's apply DRY here as well.
 
 Take a look at the `src/element/page.rb`
 
-    class Page < Element
+    class Page < Ezamar::Element
       def render
         %{
         <html>
@@ -452,7 +457,7 @@ is the `#content` method that we call with `#{content}` inside the string in
 Just adopt it to your liking, I'll just use the things we had in our templates
 so far:
 
-    class Page < Element
+    class Page < Ezamar::Element
       def render
         %{
         <html>
