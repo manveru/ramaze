@@ -50,8 +50,6 @@ opts = OptionParser.new do |opt|
       next
     end
 
-    options[option.name] = option.default
-
     opt.on(*params.compact) do |input|
       options[option.name] = input
     end
