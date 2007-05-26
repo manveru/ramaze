@@ -70,6 +70,8 @@ RubyForge.</p>
 <p>Additionally, we now have added tests for the resulting application that you
 can find in spec/examples/todolist.rb</p>
 
+<p>Date of last update: Thu May 24 20:53:49 JST 2007</p>
+
 <p>Thanks in advance.
 The author of the tutorial, Michael 'manveru' Fellinger</p>
 
@@ -91,17 +93,9 @@ to-do list.</p>
 
 <p>Ramaze comes at the moment only with a simple wrapper of the YAML::Store.
 So we are going to base this on the tools available, you can just do the same
-with your ORM or database of choice.</p>
+with your ORM or database-library of choice.</p>
 
-<p>So first, edit the <code>src/model.rb</code>, it is filled with the definition of a simple
-YAML::Store already, so we are just gonna modify it a bit to use our wrapper.</p>
-
-<p>Instead of 'yaml/store' use:</p>
-
-<pre><code>require 'ramaze/store/default'
-</code></pre>
-
-<p>And further:</p>
+<p>So first, edit the <code>src/model.rb</code> to fit better into our application:</p>
 
 <pre><code>TodoList = Store::Default.new 'todolist.yaml'
 </code></pre>
@@ -204,9 +198,9 @@ edit the file <code>src/controller/main.rb</code>.</p>
 end
 </code></pre>
 
-<p>The only method right now is #index, with a simple and for the moment quite
+<p>The only method right now is <code>#index</code>, with a simple and for the moment quite
 useless "Hello, World". The relationship between the methods on the controller
-and the templates is 1:1, so the method #index is combined with the template
+and the templates is 1:1, so the method <code>#index</code> is combined with the template
 <code>index.xhtml</code>. This combination is called an <code>action</code>.</p>
 
 <p>Let's get back to editing and change the index-method to this:</p>
@@ -229,7 +223,6 @@ changed to do following:</p>
   &lt;/head&gt;
   &lt;body&gt;
     &lt;h1&gt;TodoList&lt;/h1&gt;
-    &lt;a href="/new"&gt;New Task&lt;/a&gt;
     &lt;?r if @tasks.empty? ?&gt;
       No Tasks
     &lt;?r else ?&gt;
@@ -300,7 +293,7 @@ moment, the request and response and the contents of the session. This is very
 useful for debugging and development, you can provide your own set of
 error-pages before going into production (or deactivate them fully) though.</p>
 
-<p>OK, let's implement the action for #create, all we want to do is take the
+<p>OK, let's implement the action for <code>#create</code>, all we want to do is take the
 requests parameters and create a new task for it, this looks like following on
 your MainController.</p>
 
@@ -327,7 +320,7 @@ we will need some way to mark it as done or open tasks again.</p>
 
 <pre><code>&lt;?r @tasks.each do |title, status, toggle| ?&gt;
   &lt;li&gt;
-    #{title}: #{status} - #{toggle}
+    #{title}: #{status} - [ #{toggle} ]
   &lt;/li&gt;
 &lt;?r end ?&gt;
 </code></pre>
@@ -403,7 +396,7 @@ end
 
 <p>Oh, now what have we got here?
 <code>private</code> declares that methods from here on are only to be used within the
-Controller itself, we define an #task_status method that takes the title and
+Controller itself, we define an <code>#task_status</code> method that takes the title and
 status to be set so we don't have to repeat that code in <code>#open</code> and <code>#close</code>
 and follow the DRY (Don't repeat yourself) paradigm.</p>
 
@@ -494,7 +487,7 @@ awful lot of sense to change the enclosing stuff in one place.</p>
 
 <p>Take a look at the <code>src/element/page.rb</code></p>
 
-<pre><code>class Page &lt; Element
+<pre><code>class Page &lt; Ezamar::Element
   def render
     %{
     &lt;html&gt;
@@ -517,7 +510,7 @@ is the <code>#content</code> method that we call with <code>#{content}</code> in
 <p>Just adopt it to your liking, I'll just use the things we had in our templates
 so far:</p>
 
-<pre><code>class Page &lt; Element
+<pre><code>class Page &lt; Ezamar::Element
   def render
     %{
     &lt;html&gt;
@@ -714,7 +707,7 @@ def delete title
 end
 
 helper :aspect
-after [:create, :open, :close, :delete], :redirect_index
+after(:create, :open, :close, :delete){ redirect_index }
 
 def redirect_index
   redirect Rs()
@@ -727,7 +720,7 @@ usual action that will just run after the others.</p>
 
 <p>There is a symmetrical <code>#before</code> aspect that you could take advantage of as well,
 and in case you want to add required authentication for all actions of a
-Controller you could use <code>:all</code> instead of an array of action-names.</p>
+Controller you could use <code>#before_all</code> instead of a list of action-names.</p>
 
 <a name="Twelfth_Step,_Validation_and_Errors"><h2>Twelfth Step, Validation and Errors</h2></a>
 
