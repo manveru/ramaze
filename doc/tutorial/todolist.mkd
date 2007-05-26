@@ -48,16 +48,9 @@ done.
 
 Ramaze comes at the moment only with a simple wrapper of the YAML::Store.
 So we are going to base this on the tools available, you can just do the same
-with your ORM or database of choice.
+with your ORM or database-library of choice.
 
-So first, edit the `src/model.rb`, it is filled with the definition of a simple
-YAML::Store already, so we are just gonna modify it a bit to use our wrapper.
-
-Instead of 'yaml/store' use:
-
-    require 'ramaze/store/default'
-
-And further:
+So first, edit the `src/model.rb` to fit better into our application:
 
     TodoList = Store::Default.new 'todolist.yaml'
 
@@ -157,9 +150,9 @@ The contents of it are like following:
       end
     end
 
-The only method right now is #index, with a simple and for the moment quite
+The only method right now is `#index`, with a simple and for the moment quite
 useless "Hello, World". The relationship between the methods on the controller
-and the templates is 1:1, so the method #index is combined with the template
+and the templates is 1:1, so the method `#index` is combined with the template
 `index.xhtml`. This combination is called an `action`.
 
 Let's get back to editing and change the index-method to this:
@@ -245,12 +238,6 @@ It will show you the back trace and what state the application is in at the
 moment, the request and response and the contents of the session. This is very
 useful for debugging and development, you can provide your own set of
 error-pages before going into production (or deactivate them fully) though.
-
-To learn more about how errors are handled internally, please read the
-lib/ramaze/dispatcher.rb and lib/ramaze/dispatcher/error.rb
-
-If you are too lazy to visit these and figure them out, you can just place your
-own error.xhtml into the template folder and see what happens.
 
 OK, let's implement the action for `#create`, all we want to do is take the
 requests parameters and create a new task for it, this looks like following on
