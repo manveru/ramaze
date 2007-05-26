@@ -4,35 +4,25 @@
 module Ramaze
   # LinkHelper is included into the Controller by default
   #
-  # this helper tries to get along without any major magic, the only 'magic'
-  # thing is that it looks up controller-paths if you pass it a controller
-  # the text shown is always the last segmet of the finished link from split('/')
-  #
-  # usage is pretty much shown in test/tc_helper
-  # however, to give you some idea of how it actually works, some examples:
-  #
-  # link MainController, :foo                 #=> '<a href="/foo">foo</a>'
-  # link MinorController, :foo                #=> '<a href="/minor/foo">foo</a>'
-  # link MinorController, :foo, :bar          #=> '<a href="/minor/foo/bar">bar</a>'
-  # link MainController, :foo, :raw => true   #=> '/foo'
-  # link MainController, :foo => :bar         #=> '/?foo=bar'
-  #
-  # link_raw MainController, :foo             #=> '/foo'
-  # link_raw MinorController, :foo            #=> '/minor/foo'
-  # link_raw MinorController, :foo, :bar      #=> '/minor/foo/bar'
-  #
-  # TODO:
-  #   - handling of no passed parameters
-  #   - setting imagelinks
-  #   - setting of id or class
-  #   - taking advantae of Gestalt to build links
-  #   - lots of other minor niceties, for the moment i'm only concerned to keep
-  #     it as simple as possible
-  #
+  # Usage is pretty much shown in test/tc_helper and the rdocs below.
 
   module LinkHelper
 
     private
+
+    # Builds a basic <a> tag.
+    #
+    # `title` is mandatory, the second hash of options will be transformed into
+    # arguments of the tag, :href is a special case and its segments will be
+    # CGI.escaped.
+    #
+    # If you pass no :href, the title will be run through Rs and its result is
+    # used instead. If you really want an empty href, use :href => ''
+    #
+    # Usage:
+    #   A('title')                  #=> <a href="/title">title</a>
+    #   A('foo/bar')                #=> <a href="/foo/bar">foo/bar</a>
+    #   A('Home' :href => Rs(:/))   #=> <a href="/foo/bar">foo/bar</a>
 
     def A(title, hash = {})
       hash[:href] ||= Rs(title)
@@ -43,6 +33,23 @@ module Ramaze
 
       %(<a#{args.join(' ')}>#{title || hash[:href]}</a>)
     end
+
+    # Builds links out of segments.
+    #
+    # Pass it strings, symbols, controllers and it will produce a link out of
+    # it. Paths to Controllers are obtained from Global.mapping.
+    #
+    # For brevity, the mapping for the example below is following:
+    #   { MC => '/', OC => '/o', ODC => '/od' }
+    #
+    # Usage:
+    #   R(MC) #=> '/'
+    #   R(OC) #=> '/o'
+    #   R(ODC) #=> '/od'
+    #   R(MC, :foo) #=> '/foo'
+    #   R(OC, :foo) #=> '/o/foo'
+    #   R(ODC, :foo) #=> '/od/foo'
+    #   R(MC, :foo, :bar => :x) #=> '/foo?bar=x'
 
     def R(*atoms)
       args, atoms = atoms.partition{|a| a.is_a?(Hash) }
@@ -66,6 +73,8 @@ module Ramaze
         front
       end
     end
+
+    # Uses R with self as first element.
 
     def Rs(*atoms)
       R(self, *atoms)
