@@ -1,5 +1,388 @@
-Fri May 11 21:08:56 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+Sun May 27 05:47:01 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Version 0.1.1
+
+Sun May 27 05:45:10 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update todlist.html
+
+Sun May 27 05:37:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * rdocs for LinkHelper
+
+Sun May 27 05:21:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * rewrite of LinkHelper, link() is gone, use A() instead, will add some rdocs on usage.
+
+Sun May 27 00:39:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * synchronize tutorial html-version
+
+Sun May 27 00:38:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * another update of tutorial
+
+Sat May 26 23:52:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * some fixes to the tutorial
+
+Fri May 25 20:39:54 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * rake rdoc should generate the readme
+
+Fri May 25 20:38:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add some docs, update announcement and README
+
+Sat May 26 05:59:26 JST 2007  clive@crous.co.za
+  * Correct a minor typo/spelling error in shutdown message
+
+Sat May 26 21:35:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix the precendence of startup-options: bin/ramaze > Ramaze.start > Global.option
+
+Sat May 26 02:18:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * params assigned to Action should be unescaped automatically
+
+Fri May 25 01:46:51 JST 2007  clive@crous.co.za
+  * Cleanup some Remarkably requires
+
+Fri May 25 01:24:23 JST 2007  clive@crous.co.za
+  * "Update Remarkably usage for Remarkably-0.5.0"
+
+Fri May 25 00:14:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * make the template+arbitary-params fail (i.e. make the spec pass)
+
+Thu May 24 23:35:28 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Spec for templates accepting arbitrary parameters
+  (failing for now)
+
+Thu May 24 22:16:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * this is a patch with rather large impact. I rewrote the whole aspect-business to get a much cleaner solution, aspects are now simple blocks and the hooks have been integrated in Controller (don't do anything by default, so unless you use AspectHelper the impact is near zero). Also removed the various monkeypatches of Method and Kernel#method since we don't use them anyway. updated tutorial and specs.
+
+Thu May 24 20:56:53 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * extend the specs for the todolist example to match the current status
+
+Thu May 24 20:56:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * tutorial should have a list instead of a simple <br /> separated linklist
+
+Thu May 24 20:56:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove some wrong docs
+
+Thu May 24 20:55:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * adds the CgiHelper and extens the default helpers by :flash and :cgi
+
+Thu May 24 20:54:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * automatically unescape params in Action.params when they are set
+
+Thu May 24 20:54:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update doc/tutorial/todolist.*
+
+Thu May 24 20:41:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * last step improving todolist example
+
+Thu May 24 20:14:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * first fix for todolist example
+
+Thu May 24 19:13:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * some small fixes for todolist.mkd
+
+Thu May 24 17:00:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * move doc/tutorial/todolist.txt to .mkd so i can finally have automatic synatx in vim :)
+
+Thu May 24 14:45:50 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix AspectHelper, it had errors with negative arity
+
+Thu May 24 14:43:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add support for cookies and referrer to MockHTTP
+
+Thu May 24 14:25:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add some docs for our override of Request#params
+
+Wed May 23 09:06:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * clean up the todolist example a bit
+
+Wed May 23 08:23:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * some fixes to get rid of rdoc warnings
+
+Tue May 22 22:52:26 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * this is the last stage of the templating-refactor.
+
+Tue May 22 21:45:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * improve Ramaze::Cache a bit, adding method_missing so you can use the advanced features of your cache
+
+Tue May 22 21:44:40 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * speed up element spec
+
+Tue May 22 21:17:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * speed up template spec
+
+Tue May 22 21:14:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * speed up controller spec
+
+Tue May 22 21:14:02 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * speed up params spec
+
+Tue May 22 18:04:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * finally fix the localize spec, properly
+
+Tue May 15 17:42:06 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Remove yaml files for localizations
+
+Tue May 22 17:34:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * speed up the examples/chaching spec
+
+Tue May 22 17:22:27 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * This removes Ezamar::Morpher from the templating-pipeline of Ezamar, if you don't know what Morpher is, ignore this :) [yay, another speedup]
+
+Tue May 22 15:16:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix serious memory-leak, yeah, it's sessions and traits again...
+
+Tue May 22 15:14:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * make Ezamar even faster
+
+Tue May 22 07:10:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove usage of mongrel-adapter from the controller spec
+
+Tue May 22 07:05:49 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove snippets/rdoc/usage_no_exit, it's not needed with the new bin/ramaze
+
+Tue May 22 07:03:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add Struct#values_at
+
+Tue May 22 00:52:28 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * and finally, the little big templating-refactor, passing the real action rather than an hash to the transform-method of the engine. The most impact has the change of @action in a controller to the real action rather than a (propably wrong) action-name and that Ezamar pipeline specifies a nested array of class and method to call on the class.
+
+Tue May 22 00:01:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * unify all examples for templates, preparation for big templating-refactor
+
+Mon May 21 20:31:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the dusty, old, deprecated, unneeded and nasty yaml files from proto, this time for real.
+
+Mon May 21 20:25:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * minor fix for bin/ramaze
+
+Mon May 21 20:19:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * yet another fix for bin/ramaze
+
+Mon May 21 20:15:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * no bulky RAMZE_BASE in the bin/ramaze anymore, just require ramaze
+
+Mon May 21 18:02:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add check for defined?(Action)
+
+Mon May 21 14:11:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * use the new functionality of Cache all over Ramaze, makes a ton of trait lookups unnessecary and the total caches available in a single place.
+
+Mon May 21 14:07:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * make Cache Enumerable, add #each, #has_key? and ::add to add new global caches that are easily accessable
+
+Mon May 21 20:10:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing some typos in tutorial
+
+Mon May 21 17:45:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix Dispatcher::File and add spec for missing response-code due to an evil mix of racks status-code hash and rubys nil.to_i => 0
+
+Sun May 20 22:23:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix localize spec
+
+Sun May 20 16:13:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add the tutorial task for rake
+
+Sun May 20 16:13:33 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add some (c) for the controller split
+
+Sun May 20 16:13:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * tutorial/todolist.html has a neat little menu with ToC now
+
+Sun May 20 16:08:55 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update of tutorial/todolist
+
+Sun May 20 16:08:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * a little cleanup for bin/ramaze
+
+Sun May 20 03:10:19 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * don't create a new instance of the adapter for every request, we use singleton-methods only - may improve performance :)
+
+Sun May 20 03:08:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * improve examples/hello
+
+Sun May 20 03:06:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * documentation for ramaze/adapter/base.rb
+
+Sun May 20 01:45:33 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * document ramaze/action.rb and ramaze/adapter.rb
+
+Sun May 20 01:34:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * document lib/ramaze.rb
+
+Sun May 20 01:29:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update the meta-doc for configuration
+
+Sun May 20 01:15:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add a chapter about configuration to the tutorial
+
+Sun May 20 01:13:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add some cleanup to the cache specs
+
+Sun May 20 01:11:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * split up Controller and move the parts in the ramaze/controller directory
+
+Sat May 19 19:42:24 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * additional fix to bin/ramaze, it didn't work with '-a m' to select adapters.
+
+Sat May 19 18:26:49 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Ramaze doesn't extend itself anymore, so you have to explicitly write 'Ramaze.start' instead of 'include Ramaze; start' - is that good?
+
+Sat May 19 18:17:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * minor update for tutorial
+
+Sat May 19 18:16:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * a couple of additional requires for socket and yaml, mongrel and webrick. fixing a small bug that arose when we switched to ThreadGroup.
+
+Sat May 19 03:47:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add MemCache#clear and fix SourceReload for files from ./
+
+Fri May 18 23:29:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * improve output of SpecWrap a little bit for the controller spec (the one with 125 specs)
+
+Fri May 18 23:10:10 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * a couple of changes for adapter, better usage of Adapter::Base, moving it into ramaze/adapter/base, got rid of racks trap in a rather clean way and change Global.adapters from Set to ThreadGroup which gives us as well easier and cleaner control.
+
+Fri May 18 22:43:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix lib/proto as well
+
+Fri May 18 22:40:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix examples/todolist and add a quite good spec for it
+
+Fri May 18 21:41:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add to Global.origin
+
+Fri May 18 21:40:50 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the old /conf files from proto and example/todolist
+
+Fri May 18 21:36:49 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * we ain't got no modes anymore
+
+Fri May 18 21:29:16 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix bin/ramaze --create
+
+Fri May 18 21:21:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * require rack/handler/mongrel instead of mongrel directly
+
+Fri May 18 20:28:55 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing random vanishing of template_extensions
+
+Fri May 18 20:20:22 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * spec and corresponding fix for the "i've got an empty hash in my request.params['foo']" problem
+
+Fri May 18 19:49:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * switch trait _template to Controller::template
+
+Fri May 18 18:25:36 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove an added path that was only useful for me
+
+Fri May 18 18:23:40 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * SourceReload just got a lot mightier.
+
+Fri May 18 14:48:26 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * split up global.rb into global.rb global/dsl.rb and global/globalstruct.rb - introducing the clean GlobalDSL :)
+
+Fri May 18 14:22:50 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove some of the to_sym usage and the Hash#keys_to_sym(!) from snippets. One spot still left, but we need a wrapper for it first.
+
+Thu May 17 22:46:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * due to the annoying trap of rack we'll define a new trap every second now, gotta fix that later on, but continuations and trap are two nasty beasts... maybe we should patch rack for this somehow (chris2 won't - asked already).
+
+Thu May 17 22:46:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove some cruft from bin/ramaze
+
+Thu May 17 22:40:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Total rewrite of bin/ramaze based on optparse, which turns out to be nearly perfect for our usecase. Try it, read it, be astonished! (the DSL in Global finally is put to use now as well)
+
+Thu May 17 20:04:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update the announcement.txt to keep track of features - we'll just add them here and remove what is not important or accurate prior to the next public release on 0.1.2
+
+Thu May 17 19:53:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add Ramaze::Record to easily record requests made that fit a particular pattern.
+
+Thu May 17 17:20:33 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing the trait _template spec and implementation to avoid recursion
+
+Thu May 17 16:50:49 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * various fixes to Cache and adding spec for the new layout of it.
+
+Thu May 17 01:40:22 JST 2007  clive@crous.co.za
+  * Change the Remarkably Template usage to cater for Remarkably version 0.4.0 and higher
+
+Thu May 17 01:29:19 JST 2007  clive@crous.co.za
+  * Remove an accidentally added piece of debug code.
+
+Thu May 17 00:22:39 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Add small spec for template resolving of traits
+
+Wed May 16 23:49:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add migration info for patch 1111
+
+Wed May 16 22:50:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * first attempt at a DSL for Global + docs + CLI
+
+Wed May 16 22:44:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * minor fixes
+
+Tue May 15 18:35:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add testcase_requires for the templating examples
+
+Wed May 16 20:47:11 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * H.U.G.E. refactoring of the core of Ramaze, beware! don't try this at work! will assemble a change-guide tonight.
+
+Tue May 15 17:40:05 JST 2007  clive@crous.co.za
+  * Add Remarkably templates
+
+Mon May 14 22:58:40 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * make the error.zmr a lot simpler, remove the logo, don't use CodeRay and use ENV['EDITOR'] instead of vim (if set) - also some improvments to the stylesheet regarding the <pre> tags
+
+Mon May 14 22:36:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the post-clean tasks for specs, they are never run since darcs relies on exit-status and so SpecWrap exits before they can be done
+
+Mon May 14 22:33:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix the :force_setup setting and rename it to :origin, it was only used in this way in spec/ramaze/helper/form and with the new spec-system this is not needed anymore, gives us nicer handling of CLI/app/spec options
+
+Mon May 14 22:18:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * restructure spec tasks, check `rake -T` for the new tasks
+
+Mon May 14 22:06:07 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove spec/ramaze/dependencies - it's not exactly helpful anymore
+
+Mon May 14 20:27:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * some small fixes
+
+Mon May 14 19:57:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * don't base SourceReload on a sleep of @interval/files.size, rather sleep fixed @interval (which is now by default 1)
+
+Mon May 14 18:26:21 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix SourceReload
+
+Mon May 14 12:41:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Global.shield - a security-net for the Dispatcher to respond fast to repeated errors without first going down the controller (rendering the error-page still takes ages)
+
+Sat May 12 23:14:21 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * move Action out of Controller into ramaze/action.rb
+
+Mon May 14 17:11:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix for the params-fix
+
+Mon May 14 16:12:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add fix for paramix if Og is used
+
+Sat May 12 22:41:31 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * introducing SourceReload instead of old autoreload
+
+Sat May 12 05:00:32 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Make Analogger trait-configurable again
+  Makes it play better together with LogHub
+
+Fri May 11 21:12:31 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   tagged 0.1.0
+
+Fri May 11 21:12:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update CHANGELOG
+
+Fri May 11 21:11:52 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Version 0.1.0
+
+Fri May 11 21:10:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix localize spec
 
 Fri May 11 20:55:21 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * update README with latest chunks
@@ -67,9 +450,6 @@ Wed May  9 13:16:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Wed May  9 12:59:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * fixing some weirdness and verbosity
 
-Tue May  8 16:14:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * add workaround if we run specs and don't want their modules in our controller
-
 Wed May  9 12:53:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * disable two specs so we pass all specs - these are about error-handling but right now it's not clear what the distinction between 404 and 500 is anymore.
 
@@ -120,6 +500,9 @@ Wed May  9 12:41:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 
 Tue May  8 19:31:16 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Add 'template resolving' controller spec
+
+Tue May  8 16:14:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add workaround if we run specs and don't want their modules in our controller
 
 Tue May  8 16:00:58 JST 2007  m.fellinger@gmail.com
   * some small updates on the previous patch
