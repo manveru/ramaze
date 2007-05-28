@@ -11,7 +11,7 @@ module Ramaze
     # For your own usage you should use another namespace.
 
     def initialize(host = 'localhost', port = '11211', namespace = 'ramaze')
-      @cache = MemCache.new("#{host}:#{port}", :namespace => namespace)
+      @cache = MemCache.new("#{host}:#{port}", :namespace => namespace, :multithread => true)
     end
 
     # please read the documentation of memcache-client for further methods.
@@ -73,11 +73,7 @@ class MemCache
 
   class Server
     def flush_all
-      @mutex.lock if @multithread
-
       socket.write "flush_all\r\n"
-    ensure
-      @mutex.unlock if @multithread
     end
   end
 end
