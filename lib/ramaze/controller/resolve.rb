@@ -74,7 +74,7 @@ module Ramaze
           else
             Global.template_root / Global.mapping.invert[self]
           end
-        [ first_path, public_root, Global.public_root ].compact
+        [ first_path, Global.public_root, Global.public_proto ].compact
       end
 
       def resolve_method(name, *params)

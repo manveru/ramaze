@@ -6,8 +6,6 @@ require 'spec/helper'
 class TCRequestController < Ramaze::Controller
   map '/'
 
-  trait :public => 'spec/ramaze/public'
-
   def is_post()   request.post?.to_s end
   def is_get()    request.get?.to_s end
   def is_put()    request.put?.to_s end
@@ -50,7 +48,7 @@ end
 
 describe "Request" do
   options = ramaze_options rescue {}
-  ramaze options.merge(:mapping => {'/' => TCRequestController})
+  ramaze options.merge(:public_root => 'spec/ramaze/public')
 
   describe "POST" do
     it "give me the result of request.post?" do

@@ -6,7 +6,6 @@ require 'open-uri'
 
 class TCErrorController < Ramaze::Controller
   map :/
-  public_root 'spec/ramaze/public'
 
   def index
     self.class.name
@@ -18,7 +17,7 @@ class TCErrorController < Ramaze::Controller
 end
 
 describe "Error" do
-  ramaze :error_page => true
+  ramaze :error_page => true, :public_root => 'spec/ramaze/public'
 
   describe "Throwing Error" do
     it 'erroring' do

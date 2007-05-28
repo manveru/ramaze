@@ -8,7 +8,6 @@ require 'main'
 # fix the paths to template and public for the spec
 class MainController
   template_root 'examples/todolist/template'
-  public_root 'examples/todolist/public'
 end
 
 describe 'todolist' do
@@ -47,7 +46,7 @@ describe 'todolist' do
   end
 
   it 'should start' do
-    ramaze :port => 7080
+    ramaze :public_root => 'examples/todolist/public', :port => 7080
     get('/').status.should == 200
   end
 

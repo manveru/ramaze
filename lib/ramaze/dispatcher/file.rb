@@ -11,10 +11,7 @@ module Ramaze
         end
 
         def lookup_paths
-          [ (BASEDIR/'proto'/'public'),
-            Global.controllers.map{|c| c.trait[:public]},
-            './public'
-          ].flatten.select{|f| ::File.directory?(f.to_s)}.map{|f| ::File.expand_path(f)}
+          [ Global.public_proto, Global.public_root ].flatten
         end
 
         def open_file(path)

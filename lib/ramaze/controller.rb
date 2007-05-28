@@ -86,16 +86,6 @@ module Ramaze
         end
       end
 
-      def public_root path = nil
-        if path
-          message = "#{self}.public_root is #{path} which does not exist"
-          check_path(path, message)
-          @public_root = path
-        else
-          @public_root
-        end
-      end
-
       def template(this, from, that = nil)
         from, that = self, from unless that
         trait "#{this}_template" => [from, that.to_s]
