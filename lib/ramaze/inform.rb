@@ -5,6 +5,14 @@ require 'ramaze/inform/informing'
 require 'ramaze/inform/hub'
 require 'ramaze/inform/informer'
 
+begin
+  require 'win32console' if RUBY_PLATFORM =~ /win32/i
+rescue LoadError => ex
+  puts ex
+  puts "For nice colors on windows, please `gem install win32console`"
+  Ramaze::Informer.trait[:colorize] = false
+end
+
 module Ramaze
   autoload :Analogger, "ramaze/inform/analogger.rb"
   autoload :Syslog,    "ramaze/inform/syslog.rb"

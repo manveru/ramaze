@@ -5,7 +5,10 @@ module Ramaze
   class Informer
     include Informing
 
-    attr_accessor :colorize, :out
+    attr_accessor :out, :colorize
+
+    # Should Ramaze try to use colors?
+    trait :colorize => true
 
     # parameter for Time.now.strftime
     trait :timestamp => "%Y-%m-%d %H:%M:%S"
@@ -14,14 +17,16 @@ module Ramaze
     trait :format => "[%time] %prefix  %text"
 
     # Which tag should be in what color
-    trait :colors => {
+    COLORS = {
       :info  => :green,
       :debug => :yellow,
       :warn  => :red,
       :error => :red,
     }
 
-    def initialize(out = $stdout, colorize = nil)
+    def initialize(out = $stdout)
+      @colorize = false
+
       @out =
         case out
         when STDOUT, :stdout, 'stdout'
@@ -34,12 +39,13 @@ module Ramaze
           if out.respond_to?(:puts)
             out
           else
-            colorize = false
             File.open(out.to_s, 'ab+')
           end
         end
 
-      @colorize = @out.tty? rescue false if colorize.nil?
+      if @out.respond_to?(:tty?) and class_trait[:colorize]
+        @colorize = @out.tty?
+      end
     end
 
     def shutdown
@@ -56,7 +62,7 @@ module Ramaze
       prefix = tag.to_s.upcase.ljust(5)
 
       if @colorize
-        color = class_trait[:colors][tag] ||= :white
+        color = COLORS[tag] ||= :white
         prefix.replace prefix.send(color)
       end
 

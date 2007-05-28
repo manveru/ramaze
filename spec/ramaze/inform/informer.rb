@@ -4,8 +4,8 @@ describe 'Informer' do
   before(:each) do
     @out = []
     def @out.puts(*args) push(*args) end
+    Ramaze::Informer.trait[:colorize] = false
     @inform = Ramaze::Informer.new(@out)
-    @inform.colorize = false
   end
 
   def format(tag, string)
