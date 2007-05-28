@@ -226,3 +226,21 @@ task 'authors' do
     end
   end
 end
+
+task 'release' => ['distribute'] do
+  sh 'rubyforge login'
+  sh 'rubyforge add_release ramaze ramaze #{VERS} pkg/ramaze-#{VERS}.gem'
+
+  require 'open-uri'
+  require 'hpricot'
+
+  url = "http://rubyforge.org/frs/?group_id=3034"
+  doc = Hpricot(open(url))
+  a = (doc/:a).find{|a| a[:href] =~ /release_id/}
+
+  version = a.inner_html
+  release_id = Hash[*a[:href].split('?').last.split('=').flatten]['release_id']
+
+  sh "rubyforge add_file ramaze ramaze #{release_id} pkg/ramaze-#{VERS}.tar.gz"
+  sh "rubyforge add_file ramaze ramaze #{release_id} pkg/ramaze-#{VERS}.tar.bz2"
+end

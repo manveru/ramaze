@@ -20,9 +20,6 @@ load 'rake_tasks/spec.rake'
 task :default => ['test:all']
 task :test => ['test:all']
 
-desc "clean up temporary files and gems"
-task :package => [:clean]
-
 desc "sanitize the code and darcs record"
 task :record => ['fix-end-spaces', 'add-copyright'] do
   sh "darcs record"
