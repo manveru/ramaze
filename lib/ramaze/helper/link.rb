@@ -52,7 +52,7 @@ module Ramaze
     #   R(MC, :foo, :bar => :x) #=> '/foo?bar=x'
 
     def R(*atoms)
-      args, atoms = atoms.partition{|a| a.is_a?(Hash) }
+      args, atoms = atoms.flatten.partition{|a| a.is_a?(Hash) }
       args = args.flatten.inject{|s,v| s.merge!(v) }
 
       map = Global.mapping.invert
