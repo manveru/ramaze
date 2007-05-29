@@ -19,7 +19,7 @@ module Ramaze
 
     helper :redirect, :link, :file, :flash, :cgi
 
-    trait[:template_extensions] ||= {}
+    TEMPLATE_ENGINES = []
 
     # Whether or not to map this controller on startup automatically
 

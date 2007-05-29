@@ -69,11 +69,11 @@ module Ramaze
         default = [trait_engine, Template::Ezamar].compact.first
         return default unless file
 
-        engines = Controller.trait[:template_extensions]
+        engines = Controller::TEMPLATE_ENGINES
         return default if engines.empty?
 
         ext = File.extname(file).gsub(/^\./, '')
-        ext_engine = engines[ext]
+        ext_engine = engines.find{|e| e.last.include?(ext)}.first
         return ext_engine ? ext_engine : default
       end
 
@@ -81,9 +81,7 @@ module Ramaze
       # a list of extensions that will be looked up on #render of an action.
 
       def register_engine engine, *extensions
-        extensions.flatten.each do |ext|
-          trait[:template_extensions][ext] = engine
-        end
+        TEMPLATE_ENGINES << [engine, extensions.flatten.uniq.compact]
       end
     end
   end

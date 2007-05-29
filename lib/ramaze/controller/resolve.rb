@@ -128,10 +128,10 @@ module Ramaze
       end
 
       def extension_order
-        t_extensions = Controller.trait[:template_extensions]
+        t_extensions = Controller::TEMPLATE_ENGINES
         engine = trait[:engine]
-        c_extensions = t_extensions.reject{|k,v| v != engine}.keys
-        all_extensions = t_extensions.keys
+        c_extensions = t_extensions.select{|k,v| k == engine}.map{|k,v| v}.flatten
+        all_extensions = t_extensions.map{|k,v| v}.flatten
         (c_extensions + all_extensions).uniq
       end
 
