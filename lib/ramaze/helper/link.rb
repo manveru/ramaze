@@ -74,10 +74,10 @@ module Ramaze
       end
     end
 
-    # Uses R with self as first element.
+    # Uses R with Controller.current as first element.
 
     def Rs(*atoms)
-      R(self, *atoms)
+      R(Controller.current, *atoms)
     end
   end
 end
