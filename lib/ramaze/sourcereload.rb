@@ -34,6 +34,9 @@ module Ramaze
       end
     end
 
+    def before_reload
+    end
+
     # This method is quite handy if you want direct control over when your code is reloaded
     #
     # Usage example:
@@ -45,6 +48,7 @@ module Ramaze
     #
 
     def reload
+      before_reload
       all_reload_files.each do |file|
         mtime = mtime(file)
 
@@ -53,6 +57,10 @@ module Ramaze
         Inform.debug("reload #{file}")
         @mtimes[file] = mtime if safe_load(file)
       end
+      after_reload
+    end
+
+    def after_reload
     end
 
     def all_reload_files
