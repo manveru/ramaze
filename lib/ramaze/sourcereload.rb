@@ -86,12 +86,21 @@ module Ramaze
       false
     end
 
+    def before_save_load(file)
+    end
+
     def safe_load(file)
+      before_save_load(file)
       load(file)
+      after_save_load(file, :succeed)
       true
     rescue Object => ex
       Inform.error(ex)
+      after_save_load(file, :failed)
       false
+    end
+
+    def after_save_load(file, status)
     end
   end
 end
