@@ -13,6 +13,8 @@ module Ramaze
         %{#<Action method=#{method.inspect}, params=#{params.inspect} template=#{template.inspect}>}
       end
 
+      # runs all parameters assinged through flatten and CGI.unescape
+
       def params=(*par)
         self[:params] = par.flatten.map{|pa| CGI.unescape(pa)}
       end
