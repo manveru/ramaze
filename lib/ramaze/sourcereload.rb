@@ -81,13 +81,13 @@ module Ramaze
     end
 
     def safe_load(file)
-      SourceReloadHooks.before_save_load(file)
+      SourceReloadHooks.before_safe_load(file)
       load(file)
-      after_save_load(file, :succeed)
+      SourceReloadHooks.after_safe_load_succeed(file)
       true
     rescue Object => ex
       Inform.error(ex)
-      SourceReloadHooks.after_save_load(file, ex)
+      SourceReloadHooks.after_safe_load_failed(file, ex)
       false
     end
   end
@@ -95,18 +95,21 @@ module Ramaze
   # Holds hooks that are called before and after #reload and #safe_load
 
   module SourceReloadHooks
-    class << self
-      def before_reload
-      end
+    module_function
 
-      def after_reload
-      end
+    def before_reload
+    end
 
-      def before_safe_load(file)
-      end
+    def after_reload
+    end
 
-      def after_safe_load(file, succeed_or_error)
-      end
+    def before_safe_load(file)
+    end
+
+    def after_safe_load_succeed(file)
+    end
+
+    def after_safe_load_failed(file, error)
     end
   end
 end
