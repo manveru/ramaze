@@ -1,7 +1,7 @@
 == FAQ, Frequently asked Questions
 
 = How do you pronounce Ramaze?
-  
+
 There are two ways Ramaze is usually pronounced, the one that is most common
 the moment is like the English `amaze` with a prefixed `r`.
 
@@ -65,13 +65,13 @@ always change the whole framework to fit your needs.
    small wrapper around KirbyBase is in progress.
 
    For the time being you can use anything you like, currently tested ORMs are
-   ActiveRecord and Og.
+   ActiveRecord, Kansas and Og.
 
 - View
 
    Ramaze offers a plethora of Templating-engines that you can use in your
-   View, including Amrita2, Erubis (ERB), HAML, Liquid, Markaby and the 
-   default, called Ezamar.
+   View, including Amrita2, Erubis (ERB), HAML, Liquid, Remarkably, Markaby and
+   the default, called Ezamar.
 
    The View in Ramaze is tightly coupled with the Controller, that means that
    your Controller is a subclass of the Templating you will use for the
@@ -80,7 +80,7 @@ always change the whole framework to fit your needs.
 - Controller
 
    That's the smallest but most central part of every Ramaze-application.
-   
+
    The Controllers act as small dispatcher for your View, by looking up which
    templating-engine to use and by providing methods that in compound with
    the templates are called actions.
@@ -89,4 +89,4 @@ always change the whole framework to fit your needs.
    layout of your URLs.
 
    Many helpers provide you pragmatic ways of adding
-   things like aspects, feeds, redirects and the like. 
+   things like aspects, feeds, redirects and the like.
