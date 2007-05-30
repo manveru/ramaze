@@ -34,9 +34,6 @@ module Ramaze
       end
     end
 
-    def before_reload
-    end
-
     # This method is quite handy if you want direct control over when your code is reloaded
     #
     # Usage example:
@@ -48,7 +45,7 @@ module Ramaze
     #
 
     def reload
-      before_reload
+      SourceReloadHooks.before_reload
       all_reload_files.each do |file|
         mtime = mtime(file)
 
@@ -57,10 +54,7 @@ module Ramaze
         Inform.debug("reload #{file}")
         @mtimes[file] = mtime if safe_load(file)
       end
-      after_reload
-    end
-
-    def after_reload
+      SourceReloadHooks.after_reload
     end
 
     def all_reload_files
@@ -86,21 +80,33 @@ module Ramaze
       false
     end
 
-    def before_save_load(file)
-    end
-
     def safe_load(file)
-      before_save_load(file)
+      SourceReloadHooks.before_save_load(file)
       load(file)
       after_save_load(file, :succeed)
       true
     rescue Object => ex
       Inform.error(ex)
-      after_save_load(file, :failed)
+      SourceReloadHooks.after_save_load(file, ex)
       false
     end
+  end
 
-    def after_save_load(file, status)
+  # Holds hooks that are called before and after #reload and #safe_load
+
+  module SourceReloadHooks
+    class << self
+      def before_reload
+      end
+
+      def after_reload
+      end
+
+      def before_safe_load(file)
+      end
+
+      def after_safe_load(file, succeed_or_error)
+      end
     end
   end
 end
