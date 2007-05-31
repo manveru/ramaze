@@ -53,9 +53,13 @@ module Ramaze
 
     SESSION_KEY = '_ramaze_session_id'
 
-    IP_CACHE = Hash.new{|h,k| h[k] = []}
+    # Holds counter for IPs
 
-    IP_CACHE_LIMIT = 1000
+    IP_COUNT = Hash.new{|h,k| h[k] = []}
+
+    # Limit the number of sessions one IP is allowed to hold.
+
+    IP_COUNT_LIMIT = 1000
 
     class << self
 
@@ -81,12 +85,12 @@ module Ramaze
 
     def initialize request
       @session_id = (request.cookies[SESSION_KEY] || random_key)
-      ip_cache = IP_CACHE
-      ip = request.remote_addr
-      ip_cache[ip] << @session_id
 
-      if ip_cache[ip].size > IP_CACHE_LIMIT
-        sessions.delete(ip_cache[ip].shift)
+      ip = request.remote_addr
+      IP_COUNT[ip] << @session_id
+
+      if IP_COUNT[ip].size > IP_COUNT_LIMIT
+        sessions.delete(IP_COUNT[ip].shift)
       end
 
       @flash = Ramaze::SessionFlash.new
@@ -129,6 +133,8 @@ module Ramaze
       Digest::SHA256.hexdigest(h)
     end
 
+    # Inspect on Session.current
+
     def inspect
       current.inspect
     end
@@ -140,7 +146,7 @@ module Ramaze
     # and always just keep the current and previous key/value pairs.
 
     def finalize
-      old = delete(:FLASH)
+      old = current.delete(:FLASH)
       current[:FLASH_PREVIOUS] = old if old
     end
   end
@@ -176,9 +182,13 @@ module Ramaze
       previous.merge(current)
     end
 
+    # flash[key] in your Controller
+
     def [](key)
       combined[key]
     end
+
+    # flash[key] = value in your Controller
 
     def []=(key, value)
       prev = session[:FLASH] || {}
@@ -186,14 +196,18 @@ module Ramaze
       session[:FLASH] = prev
     end
 
+    # Inspects the combined SessionFlash
+
     def inspect
       combined.inspect
     end
 
     private
 
+    # Session.current or {}
+
     def session
-      Ramaze::Session.current || {}
+      Session.current || {}
     end
   end
 end
