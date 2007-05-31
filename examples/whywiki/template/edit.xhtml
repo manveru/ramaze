@@ -2,7 +2,7 @@
   <head>
     <title>MicroWiki Edit #{@page}</title>
   </head>
-    #{ link(R(self), :title => "&lt; Home") }
+    #{ A("&lt; Home", :href => R(self)) }
   <body>
     <h1>Edit #{@page}</h1>
     <form method="POST" action="#{R(self, :save)}">

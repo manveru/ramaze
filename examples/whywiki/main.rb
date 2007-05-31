@@ -16,7 +16,7 @@ class WikiController < Controller
   end
 
   def show page = 'Home'
-    @page = page
+    @page = CGI.unescape(page)
     @text = Db[page].to_s
 
     @text.gsub!(/\[\[(.*?)\]\]/) do |m|
@@ -28,7 +28,7 @@ class WikiController < Controller
   end
 
   def edit page = 'Home'
-    @page = page
+    @page = CGI.unescape(page)
     @text = Db[page]
   end
 
