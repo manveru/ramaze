@@ -19,18 +19,16 @@ module Ramaze
 
       class << self
 
-        # pass it the results of the method of the controller
-        # and a possible file, it will see if the file is an actual file
+        # calls result_and_file with the given action and returns the first of
+        # the result of the controller or content of the file.
 
         def reaction_or_file action
-          reaction = render_method(action)
-
-          if file = action.template
-            File.read(file)
-          else
-            reaction.to_s
-          end
+          result_and_file(action).reverse.compact.first
         end
+
+        # Takes an Action and returns the result from sending the action.method
+        # to the controller via render_method and reads the contents of the file
+        # if given.
 
         def result_and_file(action)
           result = render_method(action)
@@ -41,6 +39,10 @@ module Ramaze
 
           [result, content]
         end
+
+        # returns nil if no method is on the action, otherwise it will send the
+        # action and optional parameters to the controller via __send__ and
+        # return the unaltered result
 
         def render_method(action)
           return unless method = action.method
