@@ -52,8 +52,7 @@ module Ramaze
           template ||= resolve_template(path)
         end
 
-        hash = {:method => method, :params => params, :template => template}
-        Action.fill(hash)
+        Action.new(method, params, template)
       end
 
       def resolve_template(action)
