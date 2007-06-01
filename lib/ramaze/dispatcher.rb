@@ -14,19 +14,9 @@ require 'ramaze/dispatcher/file'
 module Ramaze
   module Dispatcher
 
-    trait :dispatch => [
-      Dispatcher::File,
-      Dispatcher::Action,
-    ]
+    # requests are passed to every
 
-    trait :handle_error => {
-        Exception =>
-          [ STATUS_CODE["Internal Server Error"], '/error' ],
-        Ramaze::Error::NoAction =>
-          [ STATUS_CODE["Not Found"], '/error' ],
-        Ramaze::Error::NoController =>
-          [ STATUS_CODE["Not Found"], '/error' ],
-      }
+    FILTER = [ Dispatcher::File, Dispatcher::Action ]
 
     Cache.add :shield
 
@@ -89,12 +79,14 @@ module Ramaze
       end
 
       def filter path
-        trait[:dispatch].each do |dispatcher|
+        FILTER.each do |dispatcher|
           result = dispatcher.process(path)
           return result if result
         end
         raise Ramaze::Error::NoAction, "No Dispatcher found for `#{path}'"
       end
+
+      # build a response, default values are from the current response.
 
       def build_response body = response.body, status = response.status, head = response.header
         set_cookie if Global.cookies
@@ -106,6 +98,9 @@ module Ramaze
 
         return response
       end
+
+      # finalizes the session and assigns the key to the response via
+      # set_cookie.
 
       def set_cookie
         session.finalize

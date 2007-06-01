@@ -19,44 +19,44 @@ end
 describe "Error" do
   ramaze :error_page => true, :public_root => 'spec/ramaze/public'
 
-  describe "Throwing Error" do
-    it 'erroring' do
-      response = get('/erroring')
-      response.status.should == 500
-      regex = %r(undefined local variable or method `blah' for .*?TCErrorController)
-      response.body.should =~ regex
-    end
+  before :all do
+    require 'ramaze/dispatcher/error'
+    @handle_error = Ramaze::Dispatcher::Error::HANDLE_ERROR
   end
 
-  describe "No Action" do
-    it 'default' do
-      response = get('/foobar')
-      response.status.should == 404
-      response.body.should =~ %r(No Action found for `/foobar' on TCErrorController)
-    end
-
-    it "No Action custom" do
-      Ramaze::Dispatcher.trait[:handle_error] = { Exception => [500, '/error'] }
-
-      response = get('/illegal')
-      response.status.should == 500
-      response.body.should =~ %r(No Action found for `/illegal' on TCErrorController)
-    end
-  end
-
-  it "No Controller" do
-    Ramaze::Global.should_receive(:mapping).twice.and_return{ {} }
-    Ramaze::Dispatcher.trait[:handle_error].should_receive(:[]).twice.
-      with(Ramaze::Error::NoController).and_return{ [500, '/error'] }
-    response = get('/illegal')
+  it 'should throw errors from rendering' do
+    response = get('/erroring')
     response.status.should == 500
+    regex = %r(undefined local variable or method `blah' for .*?TCErrorController)
+    response.body.should =~ regex
+  end
+
+  it 'should give 404 when no action is found' do
+    response = get('/illegal')
+    response.status.should == 404
+    response.body.should =~ %r(No Action found for `/foobar' on TCErrorController)
+  end
+
+  it "should give custom status when no action is found" do
+    @handle_error.should_receive(:[]).twice.
+      with(Ramaze::Error::NoAction).and_return{ [707, '/error'] }
+
+    response = get('/illegal')
+    response.status.should == 707
+    response.body.should =~ %r(No Action found for `/illegal' on TCErrorController)
+  end
+
+  it "should give 500 when no controller is found" do
+    Ramaze::Global.should_receive(:mapping).twice.and_return{ {} }
+    response = get('/illegal')
+    response.status.should == 404
     response.body.should =~ %r(No Controller found for `/error')
   end
 
-  it "Custom Static" do
-    Ramaze::Dispatcher.trait[:handle_error].should_receive(:[]).twice.
+  it "should return custom error page" do
+    @handle_error.should_receive(:[]).twice.
       with(Ramaze::Error::NoAction).and_return{ [404, '/error404'] }
-    response = get('/foo')
+    response = get('/illegal')
     response.status.should == 404
     response.body.should == '404 - not found'
   end

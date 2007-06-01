@@ -9,7 +9,7 @@ Ramaze::Tool::Localize.trait :enable    => true,
                              :file      => 'spec/ramaze/conf/locale_%s.yaml'.freeze,
                              :languages => %w[en de]
 
-Ramaze::Dispatcher::Action.trait[:filter] << Ramaze::Tool::Localize
+Ramaze::Dispatcher::Action::FILTER << Ramaze::Tool::Localize
 
 class TCLocalize < Ramaze::Controller
   map '/'

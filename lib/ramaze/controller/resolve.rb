@@ -134,9 +134,13 @@ module Ramaze
         (c_extensions + all_extensions).uniq
       end
 
+      # Raises Ramaze::Error::NoController
+
       def raise_no_controller(path)
         raise Ramaze::Error::NoController, "No Controller found for `#{path}'"
       end
+
+      # Raises Ramaze::Error::NoAction
 
       def raise_no_action(controller, path)
         raise Ramaze::Error::NoAction, "No Action found for `#{path}' on #{controller}"

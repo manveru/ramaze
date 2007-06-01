@@ -10,7 +10,7 @@ module Ramaze
 
       # The response is passed to each filter by sending .call(response) to it.
 
-      trait :filter => [
+      FILTER = [
         # Ramaze::Tool::Localize,
         # Ramaze::Tool::Tidy
       ]
@@ -19,8 +19,7 @@ module Ramaze
         def process(path)
           body = Controller.handle(path)
           response = Dispatcher.build_response(body)
-          filter = ancestral_trait[:filter]
-          filter.inject(response){|r,f| f.call(r) }
+          FILTER.inject(response){|r,f| f.call(r) }
         end
       end
     end

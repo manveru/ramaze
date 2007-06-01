@@ -4,6 +4,12 @@
 module Ramaze
   module Dispatcher
     class Error
+      HANDLE_ERROR = {
+                          Exception => [ 500, '/error' ],
+            Ramaze::Error::NoAction => [ 404, '/error' ],
+        Ramaze::Error::NoController => [ 404, '/error' ],
+      }
+
       class << self
         trait :last_error => nil
 
@@ -11,10 +17,9 @@ module Ramaze
           log_error(error)
 
           Thread.current[:exception] = error
-          handle_error = Dispatcher.trait[:handle_error]
 
-          key = error.class.ancestors.find{|a| handle_error[a]}
-          status, path = *handle_error[key || Exception]
+          key = error.class.ancestors.find{|a| HANDLE_ERROR[a]}
+          status, path = *HANDLE_ERROR[key || Exception]
 
           unless error.message =~ %r(`#{path.split('/').last}')
             Response.current.status = status
