@@ -47,7 +47,7 @@ module Ramaze
 
     def call this
       (session[:STACK] ||= []) << request.fullpath
-      redirect(R(this))
+      redirect this
     end
 
     # return to the last location on session[:STACK]

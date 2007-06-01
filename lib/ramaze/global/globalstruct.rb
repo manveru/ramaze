@@ -56,7 +56,7 @@ module Ramaze
     end
 
     def ports
-      (port..(port + (spawn - 1)))
+      (port.to_i..(port.to_i + (spawn.to_i - 1)))
     end
 
     def sourcereload=(interval)
@@ -70,8 +70,6 @@ module Ramaze
     def values_at(*keys)
       keys.map{|key| __send__(key)}
     end
-
-    private # Internal helpers
 
     def create_member key, value = nil
       Inform.warn "Create #{key}=#{value.inspect} on Global"

@@ -5,17 +5,17 @@ module Ramaze
 
   # The general Namespace for Ramazes Errorclasses
 
-  module Error
+  class Error < StandardError
     # No action found on Controller
-    class NoAction < StandardError; end
+    class NoAction < Error; end
 
     # No Controller found for request
-    class NoController < StandardError; end
+    class NoController < Error; end
 
     # Wrong parameter count for action
-    class WrongParameterCount < StandardError; end
+    class WrongParameterCount < Error; end
 
     # Error while transformation in template
-    class Template < StandardError; end
+    class Template < Error; end
   end
 end

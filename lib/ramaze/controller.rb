@@ -21,7 +21,7 @@ module Ramaze
 
     # Place register_engine puts the class and extensions for templating engines
 
-    TEMPLATE_ENGINES = []
+    TEMPLATE_ENGINES = [] unless defined?(TEMPLATE_ENGINES)
 
     # Whether or not to map this controller on startup automatically
 
