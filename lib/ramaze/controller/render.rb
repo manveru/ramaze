@@ -9,6 +9,33 @@ module Ramaze
       # takes an Hash or Action and goes on to determine whether this action is
       # cached. Depending on that it will call either
       # Controller::cached_render(action) or Controller::uncached_render(action)
+      #
+      # Usage:
+      #
+      #   class Foo < Ramaze::Controller
+      #     def bar
+      #       'duh'
+      #     end
+      #
+      #     def foobar that
+      #       that
+      #     end
+      #   end
+      #
+      #   # Calling with Hash
+      #
+      #   Foo.render(:method => :bar)
+      #   # => 'duh'
+      #   Foo.render(:method => :foobar, :params => ['that'])
+      #   # => 'that'
+      #
+      #   # Calling with Action
+      #
+      #   Foo.render(Action.new(:bar, []))
+      #   # => 'duh'
+      #   Foo.render(Action.new(:bar, ['that']))
+      #
+      # Please take a look at lib/ramaze/action.rb for more information on possible parameters.
 
       def render(action = {})
         action = Action.fill(action) if action.is_a?(Hash)
