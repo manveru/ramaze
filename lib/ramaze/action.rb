@@ -16,7 +16,7 @@ module Ramaze
       # runs all parameters assinged through flatten and CGI.unescape
 
       def params=(*par)
-        self[:params] = par.flatten.map{|pa| CGI.unescape(pa)}
+        self[:params] = par.flatten.map{|pa| CGI.unescape(pa.to_s)}
       end
     end
   end

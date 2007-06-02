@@ -15,6 +15,7 @@ module Ramaze
         Inform.debug("The Action: #{action}")
 
         action.method = action.method.to_s if action.method
+        action.params ||= []
         action.params.compact!
 
         if cached?(action)
