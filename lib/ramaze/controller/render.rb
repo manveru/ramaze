@@ -121,8 +121,7 @@ module Ramaze
       # engine a template or Controller has to be processed with.
 
       def select_engine(file)
-        trait_engine = class_trait[:engine]
-        default = [trait_engine, Template::Ezamar].compact.first
+        default = class_trait.fetch(:engine, Template::Ezamar)
         return default unless file
 
         engines = Controller::TEMPLATE_ENGINES
