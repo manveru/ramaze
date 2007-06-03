@@ -45,17 +45,17 @@ module Ramaze
         action.params ||= []
         action.params.compact!
 
-        if cached?(action)
+        if should_cache?(action)
           cached_render(action)
         else
           uncached_render(action)
         end
       end
 
-      # Checks whether an action is cached, please see the source for the exact
-      # criteria.
+      # Checks whether an action should be cached, please see the source for
+      # the exact criteria.
 
-      def cached?(action)
+      def should_cache?(action)
         actions_cached = trait[:actions_cached]
 
         [ Global.cache_all,
