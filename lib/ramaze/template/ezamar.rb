@@ -12,11 +12,7 @@ module Ramaze
 
       Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
 
-      trait :transform_pipeline => [
-        ::Ezamar::Element, ::Ezamar::Template
-      ]
-
-      trait :actionless => true
+      TRANSFORM_PIPELINE = [ ::Ezamar::Element, ::Ezamar::Template ]
 
       class << self
 
@@ -40,7 +36,7 @@ module Ramaze
         #   - put the pipeline into the Controller for use with all templates.
 
         def pipeline(template, binding, file)
-          class_trait[:transform_pipeline].each do |klass|
+          TRANSFORM_PIPELINE.each do |klass|
             template = klass.transform(template, binding, file)
           end
 

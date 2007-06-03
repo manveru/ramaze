@@ -18,7 +18,7 @@ require 'ramaze/template/ezamar/engine'
 #
 # If you want to turn this functionality off, either remove Morpher
 # from:
-#   Ramaze::Template::Ezamar.trait[:transform_pipeline]
+#   Ramaze::Template::Ezamar::TRANSFORM_PIPELINE
 # or do:
 #   Ramaze::Morpher.trait[:morphs] = {}
 #
