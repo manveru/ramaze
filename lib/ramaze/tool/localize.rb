@@ -26,6 +26,11 @@ class Ramaze::Tool::Localize
   # Browsers may send different keys for the same language, this allows you to
   # do some coercion between what you use as keys and what the browser sends.
   trait :mapping => { 'en-us' => 'en', 'ja' => 'jp'}
+  
+  # When this is set to false, it will not save newly collected translatable 
+  # strings to disk.  Disable this for production use, as it slows the
+  # application down.
+  trait :collect => true
 
   class << self
 
@@ -46,7 +51,7 @@ class Ramaze::Tool::Localize
         localize($1, locale)
       end
 
-      store(locale, trait[:default_language])
+      store(locale, trait[:default_language]) if trait[:collect]
 
       body
     end
@@ -60,9 +65,12 @@ class Ramaze::Tool::Localize
 
       if dict[locale] && trans = dict[locale][str]
         #
-      elsif trans = dict[default_language][str]
+      elsif dict[default_language] && trans = dict[default_language][str]
+        dict[locale] ||= {}
         dict[locale][str] = str
       else
+        dict[locale] ||= {}
+        dict[default_language] ||= {}
         dict[locale][str] = str
         dict[default_language][str] = str
       end
@@ -121,8 +129,8 @@ class Ramaze::Tool::Localize
           fd.write data
         end
       end
-    rescue Errno::ENOENT
-      # bleargh
+    rescue Errno::ENOENT => e
+      Ramaze::Inform.error e
     end
   end
 end
