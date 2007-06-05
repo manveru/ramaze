@@ -204,7 +204,9 @@ task 'authors' do
   author_map = {
     'm.fellinger@gmail.com' => 'Michael Fellinger',
     'manveru@weez-int.com'  => 'Michael Fellinger',
-    'clive@crous.co.za'     => 'Clive Crous'
+    'clive@crous.co.za'     => 'Clive Crous',
+    'blueonyx@dev-area.net' => 'Martin Hilbig',
+    'rff.rff@gmail.com'     => 'Gabriele Renzi',
   }
   changes.split("\n").grep(/^\w/).each do |line|
     splat  = line.split
@@ -215,6 +217,7 @@ task 'authors' do
     name   = author_map[email] if name.empty?
     mapping[name] = email
   end
+  pp mapping
 
   max = mapping.map{|k,v| k.size}.max
 
