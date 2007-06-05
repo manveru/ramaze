@@ -26,8 +26,8 @@ class Ramaze::Tool::Localize
   # Browsers may send different keys for the same language, this allows you to
   # do some coercion between what you use as keys and what the browser sends.
   trait :mapping => { 'en-us' => 'en', 'ja' => 'jp'}
-  
-  # When this is set to false, it will not save newly collected translatable 
+
+  # When this is set to false, it will not save newly collected translatable
   # strings to disk.  Disable this for production use, as it slows the
   # application down.
   trait :collect => true

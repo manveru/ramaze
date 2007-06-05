@@ -1,16 +1,15 @@
 desc "add copyright to all .rb files in the distribution"
 task 'add-copyright' do
   puts "adding copyright to files that don't have it currently"
+  puts COPYRIGHT
+  puts
   Dir['{lib,test}/**/*{.rb}'].each do |file|
     next if file =~ /_darcs/
     lines = File.readlines(file).map{|l| l.chomp}
     unless lines.first(COPYRIGHT.size) == COPYRIGHT
-      puts "fixing #{file}"
-      File.open(file, 'w+') do |f|
-        (COPYRIGHT + ["\n"] + lines).each do |line|
-          f.puts(line)
-        end
-      end
+      puts "#{file} seems to need attention, first 4 lines:"
+      puts lines[0..3]
+      puts
     end
   end
 end
