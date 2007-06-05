@@ -179,3 +179,17 @@ task 'request' do
     end
   end
 end
+
+desc "runs all the testdocs (not functional yet)"
+task "testdoc" do
+  require '../testdoc/lib/testdoc'
+  Dir['lib/ramaze/helper/*.rb'].each do |file|
+    p file
+    begin
+      require file
+      TestDoc.rspec_run(file)
+    rescue Object => ex
+      puts ex
+    end
+  end
+end
