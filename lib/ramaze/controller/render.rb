@@ -73,7 +73,7 @@ module Ramaze
       # select_engine(action.template) and call ::transform(action) on it.
 
       def uncached_render(action)
-        controller = self.new
+        controller = (action.controller ||= self.new)
         controller.instance_variable_set('@action', action)
         Thread.current[:controller] = controller
 

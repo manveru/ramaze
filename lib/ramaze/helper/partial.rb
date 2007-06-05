@@ -2,6 +2,7 @@ module Ramaze
   module PartialHelper
 
     private
+    module_function
 
     # Renders a url 'inline'.
     #
@@ -19,7 +20,13 @@ module Ramaze
       options.keys.each {|x| request.params[x] = saved[x] }
     end
 
-    module_function :render_partial
+    def render_template(file, options = {})
+      options = {
+        :controller => self,
+        :template_root => self.class.template_root
+      }.merge(options)
+      options[:template] ||= (options[:template_root]/file)
+      self.class.render(options)
+    end
   end
-
 end
