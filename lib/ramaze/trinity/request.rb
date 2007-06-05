@@ -40,6 +40,9 @@ module Ramaze
       # Wrapping Request#params to support a one-level hash notation.
       # It doesn't support anything really fancy, so be conservative in its use.
       #
+      # See if following provides something useful for us:
+      # http://redhanded.hobix.com/2006/01/25.html
+      #
       # Example Usage:
       #
       #  # Template:
@@ -66,20 +69,21 @@ module Ramaze
       #  end
 
       def params
-        ps = rack_params
-        temp = {}
+        return @ramaze_params if @ramaze_params
+        @rack_params ||= rack_params
+        @ramaze_params = {}
 
-        ps.each do |key, value|
+        @rack_params.each do |key, value|
           outer_key, inner_key = key.scan(/^(.+)\[(.*?)\]$/).first
           if outer_key and inner_key
-            temp[outer_key] ||= {}
-            temp[outer_key][inner_key] = value
+            @ramaze_params[outer_key] ||= {}
+            @ramaze_params[outer_key][inner_key] = value
           else
-            temp[key] = value
+            @ramaze_params[key] = value
           end
         end
 
-        temp
+        @ramaze_params
       end
     end
   end
