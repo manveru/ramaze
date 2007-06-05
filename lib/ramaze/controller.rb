@@ -85,7 +85,7 @@ module Ramaze
         return global_mapping if global_mapping
         if ancestral_trait[:automap]
           name = self.to_s.gsub('Controller', '').split('::').last
-          %w[Main Base Index].include?(name) ? '/' : "/#{name.snake_case}"
+          name == 'Main' ? '/' : "/#{name.snake_case}"
         end
       end
 
