@@ -80,13 +80,12 @@ module Ramaze
         action.binding = controller.instance_eval{ binding }
         action.controller = controller
 
-        before = before_process(action)
-
         engine = select_engine(action.template)
-        answer = engine.transform(action)
 
-        after = after_process(action)
-        [before, answer, after].join
+        [ before_process(action),
+          engine.transform(action),
+          after_process(action)
+        ].join
       end
 
       # Hook for AspectHelper
