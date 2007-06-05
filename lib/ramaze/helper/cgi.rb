@@ -10,14 +10,32 @@ module Ramaze
 
     # shortcut for CGI.escape
 
-    def escape(*args)
+    def url_encode(*args)
       CGI.escape(*args)
     end
 
     # shortcut for CGI.unescape
 
-    def unescape(*args)
-      CGI.escape(*args)
+    def url_decode(*args)
+      CGI.unescape(*args)
     end
+
+    # shortcut for GCI.escapeHTML
+
+    def escape_html(string)
+      CGI.escapeHTML(string)
+    end
+
+    # shortcut for GCI.unescapeHTML
+    
+    def unescape_html(string)
+      CGI.unescapeHTML(string)
+    end
+
+    # one-letter versions help in case like #{h foo.inspect}
+    # ERb/ERuby/Rails compatible 
+    alias h escape_html
+    alias u url_encode
+
   end
 end
