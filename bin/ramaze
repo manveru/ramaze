@@ -80,8 +80,7 @@ if project = options.delete(:create)
 end
 
 if ARGV.empty? and not runner
-  puts opts
-  exit
+  abort(opts)
 end
 
 begin
@@ -105,7 +104,7 @@ if options.delete(:console)
   require 'irb'
   require 'irb/completion'
 
-  def exit; Ramaze.shutdown; end
+  def exit() Ramaze.shutdown end
 
   ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
   IRB.start
