@@ -22,7 +22,7 @@ module Ramaze
     # Usage:
     #   A('title')                  #=> <a href="/title">title</a>
     #   A('foo/bar')                #=> <a href="/foo/bar">foo/bar</a>
-    #   A('Home' :href => Rs(:/))   #=> <a href="/foo/bar">Home</a>
+    #   A('Home', :href => Rs(:/))  #=> <a href="/foo/bar">Home</a>
 
     def A(title, hash = {})
       hash[:href] ||= Rs(title)
