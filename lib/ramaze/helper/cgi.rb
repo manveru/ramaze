@@ -22,19 +22,19 @@ module Ramaze
 
     # shortcut for GCI.escapeHTML
 
-    def escape_html(string)
+    def html_escape(string)
       CGI.escapeHTML(string)
     end
 
     # shortcut for GCI.unescapeHTML
     
-    def unescape_html(string)
+    def html_unescape(string)
       CGI.unescapeHTML(string)
     end
 
     # one-letter versions help in case like #{h foo.inspect}
     # ERb/ERuby/Rails compatible 
-    alias h escape_html
+    alias h html_escape
     alias u url_encode
 
   end
