@@ -1,11 +1,20 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'ramaze/adapter'
-require 'mongrel'
-require 'rack/handler/mongrel'
-
 module Ramaze
+  if ENV['SWIFT']
+    require 'swiftcore/swiftiplied_mongrel'
+    Inform.debug "Using Swiftiplied Mongrel"
+  elsif ENV['EVENT']
+    require 'swiftcore/evented_mongrel'
+    Inform.debug "Using Evented Mongrel"
+  else
+    require 'mongrel'
+  end
+
+  require 'ramaze/adapter'
+  require 'rack/handler/mongrel'
+
   module Adapter
     class Mongrel < Base
       class << self
