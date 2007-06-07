@@ -9,7 +9,8 @@ module Ramaze
 
     def initialize interval = 1, reload_glob = %r{(^\./)|#{Dir.pwd}|ramaze}
       @interval, @reload_glob = interval, reload_glob
-      @mtimes, @map = {}, []
+      @map, @files, @paths = [], [], []
+      @mtimes = {}
     end
 
     def start
