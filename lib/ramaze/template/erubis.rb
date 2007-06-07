@@ -3,27 +3,40 @@
 
 require 'erubis'
 
-module Ramaze::Template
+module Ramaze
+  module Template
 
-  # Is responsible for compiling a template using the Erubis templating engine.
+    # Is responsible for compiling a template using the Erubis templating engine.
 
-  class Erubis < Template
+    class Erubis < Template
 
-    Ramaze::Controller.register_engine self, %w[ rhtml ]
+      Ramaze::Controller.register_engine self, %w[ rhtml ]
 
-    class << self
+      class << self
 
-      # Takes a controller and the options :action, :parameter, :file and :binding
-      #
-      # Builds a template out of the method on the controller and the
-      # template-file.
+        # Takes a controller and the options :action, :parameter, :file and :binding
+        #
+        # Builds a template out of the method on the controller and the
+        # template-file.
 
-      def transform action
-        template = reaction_or_file(action)
+        def transform action
+          template = reaction_or_file(action)
+          hash = action.hash
 
-        eruby = ::Erubis::Eruby.new(template)
-        eruby.init_evaluator(:filename => (action.template || __FILE__))
-        eruby.result(action.binding)
+          eruby =
+            if Global.compile
+              Template::COMPILED[hash] ||= compile(action, template)
+            else
+              compile(action, template)
+            end
+          eruby.result(action.binding)
+        end
+
+        def compile(action, template)
+          eruby = ::Erubis::Eruby.new(template)
+          eruby.init_evaluator(:filename => (action.template || __FILE__))
+          eruby
+        end
       end
     end
   end
