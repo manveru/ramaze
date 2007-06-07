@@ -17,6 +17,8 @@ module Ramaze
     class Template
       include Ramaze::Helper
 
+      COMPILED = {}
+
       class << self
 
         # calls result_and_file with the given action and returns the first of

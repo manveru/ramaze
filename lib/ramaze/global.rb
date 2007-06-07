@@ -29,6 +29,9 @@ module Ramaze
     o "Turn on cookies for all requests.",
       :cookies => true, :cli => true
 
+    o "Compile Templates",
+      :compile => false, :cli => false
+
     o "All subclasses of Controller are collected here.",
       :controllers => Set.new
 
