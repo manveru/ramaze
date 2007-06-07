@@ -12,28 +12,19 @@ module Ramaze
       #
       # Usage:
       #
-      #   class Foo < Ramaze::Controller
-      #     def bar
-      #       'duh'
-      #     end
-      #
-      #     def foobar that
-      #       that
-      #     end
-      #   end
-      #
-      #   # Calling with Hash
-      #
-      #   Foo.render(:method => :bar)
-      #   # => 'duh'
-      #   Foo.render(:method => :foobar, :params => ['that'])
-      #   # => 'that'
-      #
-      #   # Calling with Action
-      #
-      #   Foo.render(Action.new(:bar, []))
-      #   # => 'duh'
-      #   Foo.render(Action.new(:bar, ['that']))
+      #  > # Calling with Hash
+      #  >
+      #  > Foo.render(:method => :bar)
+      #  #> 'duh'
+      #  > Foo.render(:method => :foobar, :params => ['that'])
+      #  #> 'that'
+      #  >
+      #  > # Calling with Action
+      #  >
+      #  > Foo.render(Ramaze::Action.new(:bar, []))
+      #  #> 'duh'
+      #  > Foo.render(Ramaze::Action.new(:foobar, ['this']))
+      #  #> 'this'
       #
       # Please take a look at lib/ramaze/action.rb for more information on possible parameters.
 
