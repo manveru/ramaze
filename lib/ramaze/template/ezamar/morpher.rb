@@ -106,7 +106,7 @@ class Ezamar::Morpher
   # TODO:
   #   - Add pure Ruby implementation as a fall-back.
 
-  def self.transform template, action, file = __FILE__
+  def self.transform(template)
     morphs =
       trait[:morphs].map{|k,v| [k.to_s, v.to_s]}.select do |(k,v)|
         template.to_s.include?("#{k}=")
@@ -145,7 +145,7 @@ class Ezamar::Morpher
     # replace this method with a stub that only returns the template.
 
     self.class_eval do
-      def self.transform(template, action)
+      def self.transform(template)
         template
       end
     end

@@ -55,7 +55,7 @@ describe "Morpher" do
     ramaze
     pipeline = Ramaze::Template::Ezamar::TRANSFORM_PIPELINE
     pipeline.clear
-    pipeline.push(Ezamar::Element, Ezamar::Morpher, Ezamar::Template)
+    pipeline.push(Ezamar::Element, Ezamar::Morpher)
   end
 
   def clean_get(*url)

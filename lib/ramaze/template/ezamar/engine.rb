@@ -17,47 +17,54 @@ module Ezamar
   # This class is responsible for initializing and compiling the template.
 
   class Template
-    class << self
+    def initialize(template, options = {})
+      @template, @options = template, options
+      compile
+    end
 
-      # All ye who seek magic, look elsewhere, this method is ASAP (as simple as possible)
-      #
-      # There are some simple gsubs that build a final template which is evaluated
-      #
-      # The rules are following:
-      # <?r rubycode ?>
-      #   evaluate the code inside the tag, this is considered XHTML-valid and so is the
-      #   preferred method for executing code inside your templates.
-      #   The return-value is ignored
-      # <% rubycode %>
-      #   The same as <?r ?>, ERB-style and not valid XHTML, but should give someone who
-      #   is already familiar with ERB some common ground
-      # #{ rubycode }
-      #   You know this from normal ruby already and it's actually nothing else.
-      #   Interpolation at the position in the template, isn't any special taggy format
-      #   and therefor safe to use.
-      # <%= rubycode %>
-      #   The result of this will be interpolated at the position in the template.
-      #   Not valid XHTML either.
-      #
-      # TODO
-      #   - provide C version or maybe use erbuis
+    # All ye who seek magic, look elsewhere, this method is ASAP (as simple as possible)
+    #
+    # There are some simple gsubs that build a final template which is evaluated
+    #
+    # The rules are following:
+    # <?r rubycode ?>
+    #   evaluate the code inside the tag, this is considered XHTML-valid and so is the
+    #   preferred method for executing code inside your templates.
+    #   The return-value is ignored
+    # <% rubycode %>
+    #   The same as <?r ?>, ERB-style and not valid XHTML, but should give someone who
+    #   is already familiar with ERB some common ground
+    # #{ rubycode }
+    #   You know this from normal ruby already and it's actually nothing else.
+    #   Interpolation at the position in the template, isn't any special taggy format
+    #   and therefor safe to use.
+    # <%= rubycode %>
+    #   The result of this will be interpolated at the position in the template.
+    #   Not valid XHTML either.
+    #
+    # TODO
+    #   - provide C version or maybe use erbuis
 
-      def transform(template, binding, file = __FILE__)
-        start_heredoc = "T" << Digest::SHA1.hexdigest(template)
-        start_heredoc, end_heredoc = "\n<<#{start_heredoc}\n", "\n#{start_heredoc}\n"
-        bufadd = "_out_ << "
+    def compile
+      temp = @template.dup
+      start_heredoc = "T" << Digest::SHA1.hexdigest(temp)
+      start_heredoc, end_heredoc = "\n<<#{start_heredoc}\n", "\n#{start_heredoc}\n"
+      bufadd = "_out_ << "
 
-        template.gsub!(/<%\s+(.*?)\s+%>/m,
+      temp.gsub!(/<%\s+(.*?)\s+%>/m,
             "#{end_heredoc} \\1; #{bufadd} #{start_heredoc}")
-        template.gsub!(/<\?r\s+(.*?)\s+\?>/m,
+      temp.gsub!(/<\?r\s+(.*?)\s+\?>/m,
             "#{end_heredoc} \\1; #{bufadd} #{start_heredoc}")
-        template.gsub!(/<%=\s+(.*?)\s+%>/m,
+      temp.gsub!(/<%=\s+(.*?)\s+%>/m,
             "#{end_heredoc} #{bufadd} (\\1); #{bufadd} #{start_heredoc}")
 
-        template = "_out_ = ''; #{bufadd} #{start_heredoc} #{template} #{end_heredoc}; _out_"
+      @compiled = "_out_ = ''
+      #{bufadd} #{start_heredoc} #{temp} #{end_heredoc}
+      _out_"
+    end
 
-        eval(template, binding, file).strip
-      end
+    def result(binding)
+      eval(@compiled, binding, @options[:file]).strip
     end
   end
 end
