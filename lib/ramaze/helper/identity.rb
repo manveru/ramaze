@@ -6,6 +6,9 @@ require 'openid'
 
 module Ramaze
 
+  openid_store_file = File.join(Dir.tmpdir, 'openid-store')
+  OpenIDStore = OpenID::FilesystemStore.new(openid_store_file)
+
   # This is called Identity to avoid collisions with the original openid.rb
 
   module IdentityHelper
@@ -61,12 +64,7 @@ module Ramaze
     private
 
     def openid_consumer
-      OpenID::Consumer.new(session, Ramaze::Global.openid_store)
+      OpenID::Consumer.new(session, Ramaze::OpenIDStore)
     end
   end
 end
-
-
-openid_store_file = File.join(Dir.tmpdir, 'openid-store')
-
-Ramaze::Global.openid_store ||= OpenID::FilesystemStore.new(openid_store_file)
