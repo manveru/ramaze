@@ -16,7 +16,7 @@ module Ramaze
 
     # requests are passed to every
 
-    FILTER = [ Dispatcher::File, Dispatcher::Action ]
+    FILTER = [ Dispatcher::File, Dispatcher::Action ] unless defined?(FILTER)
 
     Cache.add :shield
 

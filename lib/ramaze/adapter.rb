@@ -85,7 +85,8 @@ module Ramaze
           end
         end
       rescue Timeout::Error
-        Global.adapters.list.each{|a| a.kill!}
+        Global.adapters.list.each{|a| a.kill! }
+        # Hard exit! because it won't be able to kill Webrick otherwise
         exit!
       end
 

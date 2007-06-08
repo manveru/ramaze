@@ -3,8 +3,6 @@
 
 require 'spec/helper'
 
-testcase_requires 'og/collection'
-
 class TC_PagerController < Ramaze::Controller
   map '/'
   helper :pager

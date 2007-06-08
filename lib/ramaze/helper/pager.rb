@@ -31,8 +31,6 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-require "og/collection"
-
 module Ramaze
 
 # Displays a collection of entitities in multiple pages.
@@ -46,6 +44,8 @@ module Ramaze
 # interaction.
 
 class Pager
+  include Ramaze::LinkHelper
+
   # Items per page.
 
   trait :limit => 10
@@ -248,15 +248,8 @@ private
   # Generate the target URI.
 
   def target_uri(page)
-    uri = @request.request_uri.to_s
-
-    if uri =~ /[?;]#{@key}=(\d*)/
-      return uri.gsub(/([?;]#{@key}=)\d*/) { |m| "#$1#{page}" }
-    elsif uri =~ /\?/
-      return "#{uri};#{@key}=#{page}"
-    else
-      return "#{uri}?#{@key}=#{page}"
-    end
+    params = Request.current.params.dup.update(@key => page)
+    Rs(Controller.current.action.method, params)
   end
 
 end
@@ -299,18 +292,22 @@ private
         pager = Pager.new(request, limit, items.size, pager_key)
         items = items.slice(pager.offset, pager.limit[:limit])
         return items, pager
+    end
 
+    if defined?(Og)
+      case items
       when Og::Collection
         pager = Pager.new(request, limit, items.count, pager_key)
         options.update(pager.limit)
         items = items.reload(options)
         return items, pager
 
-      when Class
+      when Og::Mixin
         pager = Pager.new(request, limit, items.count(options), pager_key)
         options.update(pager.limit)
         items = items.all(options)
         return items, pager
+      end
     end
   end
 
