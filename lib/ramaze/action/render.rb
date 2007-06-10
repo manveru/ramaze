@@ -34,10 +34,11 @@ module Ramaze
     end
 
     def should_cache?
-      actions_cached = (controller.trait[:actions_cached] ||= [])
+      ctrait = controller.trait
+      actions_cached = ctrait[:actions_cached]
 
       [ Global.cache_all,
-        trait[:cache_all],
+        ctrait[:cache_all],
         actions_cached.map{|k| k.to_s}.include?(method),
       ].any?
     end
