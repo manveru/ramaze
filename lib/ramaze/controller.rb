@@ -131,7 +131,8 @@ module Ramaze
       # Return Controller of current Action
 
       def current
-        Thread.current[:controller]
+        action = Action.current
+        action.instance || action.controller
       end
 
       # Entering point for Dispatcher, first Controller::resolve(path) and then
