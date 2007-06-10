@@ -6,7 +6,6 @@ require 'ramaze/template'
 require 'ramaze/action'
 
 require 'ramaze/controller/resolve'
-require 'ramaze/controller/render'
 require 'ramaze/controller/error'
 
 module Ramaze
