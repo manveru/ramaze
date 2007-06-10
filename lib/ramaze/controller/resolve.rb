@@ -31,7 +31,7 @@ module Ramaze
 
             valid_action = (action.method or (params.empty? && action.template))
 
-            return controller, action if valid_action
+            return action if valid_action
           end
         end
 
@@ -52,7 +52,7 @@ module Ramaze
           template ||= resolve_template(path)
         end
 
-        Action.new(method, params, template)
+        Action.new(method, params, template, self)
       end
 
       def resolve_template(action)
@@ -127,7 +127,7 @@ module Ramaze
       end
 
       def extension_order
-        t_extensions = Controller::TEMPLATE_ENGINES
+        t_extensions = Template::ENGINES
         engine = trait[:engine]
         c_extensions = t_extensions.select{|k,v| k == engine}.map{|k,v| v}.flatten
         all_extensions = t_extensions.map{|k,v| v}.flatten

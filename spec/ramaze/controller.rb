@@ -37,7 +37,7 @@ describe "Controller" do
   end
 
   def values(*url)
-    resolve(*url).last.values_at(:method, :params, :template)
+    resolve(*url).values_at(:method, :params, :template)
   end
 
   before :all do

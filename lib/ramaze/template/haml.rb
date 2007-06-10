@@ -13,7 +13,7 @@ module Ramaze
         :locals => {}
       }
 
-      Ramaze::Controller.register_engine self, %w[ haml ]
+      ENGINES[self] = %w[ haml ]
 
       class << self
 
@@ -28,16 +28,16 @@ module Ramaze
 
           return '' unless template
 
-          hash = action.hash
+          hash = action.relaxed_hash
 
           haml =
             if Global.compile
-              Template::COMPILED[hash] ||= compile(template)
+              COMPILED[hash] ||= compile(template)
             else
               compile(template)
             end
 
-          haml.to_html(action.controller)
+          haml.to_html(action.instance)
         end
 
         def compile(template)

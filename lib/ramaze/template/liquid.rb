@@ -6,7 +6,8 @@ require 'liquid'
 module Ramaze
   module Template
     class Liquid < Template
-      Controller.register_engine self, %w[ liquid ]
+
+      ENGINES[self] = %w[ liquid ]
 
       class << self
 
@@ -18,9 +19,10 @@ module Ramaze
         def transform action
           template = reaction_or_file(action)
 
-          hash     = action.controller.instance_variable_get("@hash") || {}
+          instance = action.instance
+          hash     = instance.instance_variable_get("@hash") || {}
           template = ::Liquid::Template.parse(template)
-          options  = action.controller.ancestral_trait[:liquid_options]
+          options  = instance.ancestral_trait[:liquid_options]
 
           template.render(hash, options)
         end

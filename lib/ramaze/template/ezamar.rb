@@ -10,24 +10,36 @@ module Ramaze
 
     class Ezamar < Template
 
-      Ramaze::Controller.register_engine self, %w[ xhtml zmr ]
+      ENGINES[self] = %w[ xhtml zmr ]
 
       TRANSFORM_PIPELINE = [ ::Ezamar::Element ]
 
       class << self
 
         def transform action
-          template = reaction_or_file(action).to_s
-          hash = action.hash
-
           ezamar =
             if Global.compile
-              Template::COMPILED[hash] ||= compile(action, template)
+              compiled_transform(action)
             else
-              compile(action, template)
+              direct_transform(action)
             end
 
           ezamar.result(action.binding)
+        end
+
+        def compiled_transform(action)
+          hash = action.relaxed_hash
+          cache = Template::COMPILED
+          if ezamar = cache[hash]
+            ezamar
+          else
+            cache[hash] = direct_transform(action)
+          end
+        end
+
+        def direct_transform(action)
+          template = reaction_or_file(action).to_s
+          compile(action, template)
         end
 
         def compile(action, template)

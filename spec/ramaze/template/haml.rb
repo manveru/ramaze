@@ -6,6 +6,7 @@ require 'spec/helper'
 testcase_requires 'ramaze/template/haml'
 
 class TCTemplateHamlController < Ramaze::Controller
+  map '/'
   template_root 'spec/ramaze/template/haml/'
   trait :engine => Ramaze::Template::Haml
 
@@ -20,7 +21,7 @@ class TCTemplateHamlController < Ramaze::Controller
 end
 
 describe "Simply calling" do
-  ramaze(:mapping => {'/' => TCTemplateHamlController})
+  ramaze(:compile => true)
 
   it "index" do
     get('/').body.strip.should ==

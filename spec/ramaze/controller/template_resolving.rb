@@ -11,7 +11,7 @@ class MainController < Ramaze::Controller
   end
 
   def list
-    @obj = @action.method
+    @obj = Ramaze::Action.current.method
   end
   alias_method :index, :list
   template :index, 'list'

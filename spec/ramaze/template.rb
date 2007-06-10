@@ -4,13 +4,15 @@
 require 'spec/helper'
 require 'ramaze/template'
 
-module Ramaze::Template
-  class TestTemplate < Template
-    Ramaze::Controller.register_engine self, %w[ test ]
+module Ramaze
+  module Template
+    class TestTemplate < Template
+      ENGINES[self] = %w[ test ]
 
-    class << self
-      def transform action
-        action.values_at(:method, :params, :template).to_yaml
+      class << self
+        def transform action
+          action.values_at(:method, :params, :template).to_yaml
+        end
       end
     end
   end

@@ -3,32 +3,33 @@
 
 require 'amrita2/template'
 
-module Ramaze::Template
+module Ramaze
+  module Template
+    # Is responsible for compiling a template using the Amrita2 templating engine.
 
-  # Is responsible for compiling a template using the Amrita2 templating engine.
+    class Amrita2 < Template
 
-  class Amrita2 < Template
+      ENGINES[self] = %w[ amrita amr ]
 
-    Ramaze::Controller.register_engine self, %w[ amrita ]
+      class << self
 
-    class << self
+        # Takes an Action
+        # The file is rendered using Amrita2::TemplateFile.
+        # The Controller is used as the object for expansion.
+        #
+        # The parameters are set to @params in the controller before expansion.
 
-      # Takes an Action
-      # The file is rendered using Amrita2::TemplateFile.
-      # The Controller is used as the object for expansion.
-      #
-      # The parameters are set to @params in the controller before expansion.
+        def transform action
+          instance, params, file =
+            action.instance, action.params, action.template
+          raise_no_action(action) unless file
 
-      def transform action
-        controller, params, file =
-          action.controller, action.params, action.template
-        raise_no_action(action) unless file
-
-        template = ::Amrita2::TemplateFile.new(file)
-        out = ''
-        controller.instance_variable_set('@params', params)
-        template.expand(out, controller)
-        out
+          template = ::Amrita2::TemplateFile.new(file)
+          out = ''
+          instance.instance_variable_set('@params', params)
+          template.expand(out, instance)
+          out
+        end
       end
     end
   end

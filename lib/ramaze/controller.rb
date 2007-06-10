@@ -19,10 +19,6 @@ module Ramaze
 
     helper :redirect, :link, :file, :flash, :cgi
 
-    # Place register_engine puts the class and extensions for templating engines
-
-    TEMPLATE_ENGINES = [] unless defined?(TEMPLATE_ENGINES)
-
     # Whether or not to map this controller on startup automatically
 
     trait[:automap] ||= true
@@ -143,8 +139,8 @@ module Ramaze
       # renders the resulting Action.
 
       def handle path
-        controller, action = *resolve(path)
-        controller.render(action)
+        action = resolve(path)
+        action.render
       end
     end
 

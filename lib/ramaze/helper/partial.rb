@@ -24,12 +24,14 @@ module Ramaze
     end
 
     def render_template(file, options = {})
-      options = {
-        :controller => self,
-        :template_root => self.class.template_root
-      }.merge(options)
-      options[:template] ||= (options[:template_root]/file)
-      self.class.render(options)
+      current = Action.current
+      options[:binding]     ||= current.binding
+      options[:controller]  ||= current.controller
+      options[:instance]    ||= current.instance
+      options[:template] = (options[:controller].template_root/file)
+
+      action = Ramaze::Action(options)
+      action.render
     end
   end
 end

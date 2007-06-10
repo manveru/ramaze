@@ -56,19 +56,17 @@ module Ramaze
       meths = instance_methods(false)
       wrap(*meths, &block)
     end
+  end
 
-    def before_process(action)
-      block = ancestral_trait[:aspects][:before][action.method]
-      before = action.controller.instance_eval(&block) if block
-      before
+  class Action
+    def before_process
+      block = controller.ancestral_trait[:aspects][:before][method]
+      instance.instance_eval(&block) if block
     end
 
-    def after_process(action)
-      block = ancestral_trait[:aspects][:after][action.method]
-      after = action.controller.instance_eval(&block) if block
-      after
+    def after_process
+      block = controller.ancestral_trait[:aspects][:after][method]
+      instance.instance_eval(&block) if block
     end
-
-    module_function :before_process, :after_process
   end
 end

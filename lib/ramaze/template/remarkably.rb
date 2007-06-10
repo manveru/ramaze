@@ -6,7 +6,7 @@ require 'remarkably/engines/html'
 module Ramaze
   module Template
     class Remarkably < Template
-      Controller.register_engine self, %w[ rem ]
+      ENGINES[self] = %w[ rem ]
 
       class << self
         def transform action
@@ -17,7 +17,7 @@ module Ramaze
         end
 
         def transform_file(file, action)
-          action.controller.instance_eval do
+          action.instance.instance_eval do
             args = action.params
             instance_eval(file)
           end

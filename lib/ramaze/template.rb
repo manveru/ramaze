@@ -7,6 +7,12 @@
 module Ramaze
   module Template
 
+    COMPILED = {} unless defined?(COMPILED)
+
+    # Place register_engine puts the class and extensions for templating engines
+
+    ENGINES = {} unless defined?(ENGINES)
+
     %w[ Amrita2 Erubis Haml Liquid Markaby Remarkably ].each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
     end
@@ -16,8 +22,6 @@ module Ramaze
 
     class Template
       include Ramaze::Helper
-
-      COMPILED = {}
 
       class << self
 
@@ -48,7 +52,7 @@ module Ramaze
 
         def render_method(action)
           return unless method = action.method
-          action.controller.__send__(method, *action.params)
+          action.instance.__send__(method, *action.params)
         end
       end
     end

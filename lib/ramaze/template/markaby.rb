@@ -6,7 +6,7 @@ require 'markaby'
 module Ramaze
   module Template
     class Markaby < Template
-      Controller.register_engine self, %w[ mab ]
+      ENGINES[self] = %w[ mab ]
 
       class << self
 
@@ -23,10 +23,10 @@ module Ramaze
         end
 
         def transform_file file, action
-          controller = action.controller
-          ivs = extract_ivs(controller)
+          instance = action.instance
+          ivs = extract_ivs(instance)
 
-          controller.send(:mab, ivs) do
+          instance.send(:mab, ivs) do
             instance_eval(file)
           end
         end
