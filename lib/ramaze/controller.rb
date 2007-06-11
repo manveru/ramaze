@@ -53,7 +53,7 @@ module Ramaze
       def startup options = {}
         Inform.debug("found Controllers: #{Global.controllers.inspect}")
 
-        Cache.add :actions, :patterns
+        Cache.add :actions, :patterns, :resolved
 
         Global.controllers.each do |controller|
           if map = controller.mapping

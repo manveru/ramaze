@@ -46,8 +46,8 @@ describe "Error" do
     response.body.should =~ %r(No Action found for `/illegal' on TCErrorController)
   end
 
-  it "should give 500 when no controller is found" do
-    Ramaze::Global.should_receive(:mapping).twice.and_return{ {} }
+  it "should give 404 when no controller is found" do
+    Ramaze::Global.should_receive(:mapping).once.and_return{ {} }
     response = get('/illegal')
     response.status.should == 404
     response.body.should =~ %r(No Controller found for `/error')

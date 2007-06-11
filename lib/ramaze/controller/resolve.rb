@@ -13,6 +13,10 @@ module Ramaze
       # manveru: everything further down is considered 500
 
       def resolve(path)
+        if found = Cache.resolved[path]
+          return found
+        end
+
         #Inform.debug("resolve_controller('#{path}')")
         mapping     = Global.mapping
         controllers = Global.controllers
@@ -31,7 +35,7 @@ module Ramaze
 
             valid_action = (action.method or (params.empty? && action.template))
 
-            return action if valid_action
+            return Cache.resolved[path] = action if valid_action
           end
         end
 
