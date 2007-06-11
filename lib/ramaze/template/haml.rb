@@ -28,15 +28,7 @@ module Ramaze
 
           return '' unless template
 
-          hash = action.relaxed_hash
-
-          haml =
-            if Global.compile
-              COMPILED[hash] ||= compile(template)
-            else
-              compile(template)
-            end
-
+          haml = compile(template)
           haml.to_html(action.instance)
         end
 

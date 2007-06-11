@@ -17,29 +17,9 @@ module Ramaze
       class << self
 
         def transform action
-          ezamar =
-            if Global.compile
-              compiled_transform(action)
-            else
-              direct_transform(action)
-            end
-
-          ezamar.result(action.binding)
-        end
-
-        def compiled_transform(action)
-          hash = action.relaxed_hash
-          cache = Cache.compiled
-          if ezamar = cache[hash]
-            ezamar
-          else
-            cache[hash] = direct_transform(action)
-          end
-        end
-
-        def direct_transform(action)
           template = reaction_or_file(action).to_s
-          compile(action, template)
+          ezamar = compile(action, template)
+          ezamar.result(action.binding)
         end
 
         def compile(action, template)

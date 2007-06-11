@@ -21,14 +21,8 @@ module Ramaze
 
         def transform action
           template = reaction_or_file(action)
-          hash = action.hash
 
-          eruby =
-            if Global.compile
-              Template::COMPILED[hash] ||= compile(action, template)
-            else
-              compile(action, template)
-            end
+          eruby = compile(action, template)
           eruby.result(action.binding)
         end
 
