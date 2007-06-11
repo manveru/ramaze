@@ -17,7 +17,6 @@ module Ramaze
           return found
         end
 
-        #Inform.debug("resolve_controller('#{path}')")
         mapping     = Global.mapping
         controllers = Global.controllers
 

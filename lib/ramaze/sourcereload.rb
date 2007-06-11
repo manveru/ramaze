@@ -108,7 +108,8 @@ module Ramaze
     end
 
     def after_safe_load_succeed(file)
-      Ramaze::Template::COMPILED.clear
+      Cache.compiled.clear
+      Cache.resolved.clear
     end
 
     def after_safe_load_failed(file, error)

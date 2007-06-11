@@ -12,18 +12,27 @@ module Ramaze
 
   class Cache
     include Enumerable
-    CACHES = {}
+    CACHES = {} unless defined?(CACHES)
 
-    # This will define a method to access a new cache directly over
-    # sinleton-methods on Cache
+    class << self
 
-    def self.add *keys
-      keys.each do |key|
-        CACHES[key] = new
-        self.class.class_eval do
-          define_method(key){ CACHES[key] }
-        end
+      def startup(options)
+        Cache.add :compiled, :actions, :patterns, :resolved, :shield
       end
+
+      # This will define a method to access a new cache directly over
+      # sinleton-methods on Cache
+
+      def add *keys
+        keys.each do |key|
+          CACHES[key] = new
+          self.class.class_eval do
+            define_method(key){ CACHES[key] }
+          end
+        end
+        Inform.debug("Added caches for: #{keys.join(', ')}")
+      end
+
     end
 
     def initialize(cache = Global.cache)

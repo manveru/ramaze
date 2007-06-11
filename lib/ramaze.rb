@@ -30,7 +30,7 @@ module Ramaze
   # Each of these classes will be called ::startup upon Ramaze.startup
 
   trait :essentials => [
-    Global, Controller, Session, SourceReload, Adapter
+    Global, Cache, Controller, Session, SourceReload, Adapter
   ]
 
   class << self

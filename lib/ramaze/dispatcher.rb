@@ -18,8 +18,6 @@ module Ramaze
 
     FILTER = [ Dispatcher::File, Dispatcher::Action ] unless defined?(FILTER)
 
-    Cache.add :shield
-
     trait :shielded => [ STATUS_CODE["Not Found"] ]
 
     class << self

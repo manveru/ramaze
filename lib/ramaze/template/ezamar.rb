@@ -29,7 +29,7 @@ module Ramaze
 
         def compiled_transform(action)
           hash = action.relaxed_hash
-          cache = Template::COMPILED
+          cache = Cache.compiled
           if ezamar = cache[hash]
             ezamar
           else
