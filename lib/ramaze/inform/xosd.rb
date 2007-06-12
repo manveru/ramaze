@@ -18,10 +18,10 @@ module Ramaze
       :debug => "#FFFFFF"
     }
 
-    def initialize
+    def initialize font_size = 24
       super(class_trait[:lines])
 
-      self.font            = "-*-*-*-*-*-*-24-*-*-*-*-*-*-*"
+      self.font            = "-*-*-*-*-*-*-#{font_size}-*-*-*-*-*-*-*"
       self.align           = 'center'
       self.color           = '#FFFFFF'
       self.valign          = 'top'
