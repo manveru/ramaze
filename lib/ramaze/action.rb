@@ -5,10 +5,10 @@ module Ramaze
 
   unless defined?(Action) # prevent problems for SourceReload
 
+    members = %w[method params template controller path binding engine instance]
+
     # The Action holds information that is essential to render the action for a
     # request.
-
-    members = %w[method params template controller path binding engine instance]
 
     class Action < Struct.new('Action', *members)
     end
@@ -18,6 +18,10 @@ module Ramaze
 
   class Action
     class << self
+
+      # Instantiate with given Hash, takes both string/symbol keys.
+      # Only keys that match members of the Action-Struct are used.
+
       def fill(hash = {})
         i = new
         members.each do |key|
@@ -26,29 +30,39 @@ module Ramaze
         i
       end
 
+      # Thread.current[:action] returns the instance of Action you are currently in.
+
       def current
         Thread.current[:action]
       end
     end
 
+    # nicer representation of the Action
+
     def to_s
       %{#<Action method=#{method.inspect}, params=#{params.inspect} template=#{template.inspect}>}
     end
+
+    # Set the method, will be converted to a string and set to nil if empty.
 
     def method=(meth)
       meth = meth.to_s
       self[:method] = (meth.empty? ? nil : meth)
     end
 
-    # runs all parameters assinged through flatten and CGI.unescape
+    # runs all parameters assigned through flatten and CGI::unescape
 
     def params=(*par)
       self[:params] = par.flatten.compact.map{|pa| CGI.unescape(pa.to_s)}
     end
 
+    # Use this as key for caches.
+
     def relaxed_hash
       [controller, method, params, template, path].hash
     end
+
+    # A Hash representation of Action
 
     def to_hash
       hash = {}
@@ -56,8 +70,9 @@ module Ramaze
       hash
     end
 
-    # Determines based on trait :engine and the template extensions which
-    # engine a template or Controller has to be processed with.
+    # Determines based on controller.trait[:engine] and the template extensions
+    # which engine has to be used.
+    # Defaults to Template::Ezamar
 
     def engine
       return self[:engine] if self[:engine]
@@ -73,9 +88,13 @@ module Ramaze
       self[:engine] = (ext_engine || default)
     end
 
+    # Returns an instance of controller, will be cached on first access.
+
     def instance
       self[:instance] ||= controller.new
     end
+
+    # Returns a binding of the instance, will be cached on first access.
 
     def binding
       self[:binding] ||= instance.instance_eval{ binding }
@@ -91,6 +110,8 @@ module Ramaze
     def after_process
     end
   end
+
+  # Shortcut to create new instances of Action via Action::fill
 
   def self.Action(hash = {})
     Action.fill(hash)

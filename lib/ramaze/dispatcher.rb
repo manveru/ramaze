@@ -76,6 +76,10 @@ module Ramaze
         end
       end
 
+      # Calls .process(path) on every class in Dispatcher::FILTER until one
+      # returns something else than false/nil.
+      # Raises NoAction otherwise.
+
       def filter path
         FILTER.each do |dispatcher|
           result = dispatcher.process(path)

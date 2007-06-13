@@ -3,6 +3,14 @@
 
 module Ramaze
   class Action
+
+    # Render this instance of Action, this will (eventually) pass itself to
+    # Action#engine.transform
+    # Usage, given that Foo is a Controller and has the method/template
+    # for index:
+    #  > Action(:controller => Foo).render
+    #  #> 'bar'
+
     def render
       Inform.debug("The Action: #{self}")
       Thread.current[:action] = self
