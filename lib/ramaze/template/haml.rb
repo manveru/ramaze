@@ -17,16 +17,19 @@ module Ramaze
 
       class << self
 
-        # Transform any String via Haml, takes optionally an hash with the haml_options
-        # that you can set also by
+        # Transform any String via Haml, takes optionally an hash with the
+        # haml_options that you can set also by
         #   trait :haml_options => {}
-        # if you pass the options it will merge the trait with them. (your options
-        # override the defaults from trait[:haml_options]
+        # if you pass the options it will merge the trait with them. (your
+        # options override the defaults from trait[:haml_options]
 
         def transform action
           haml = wrap_compile(action)
           haml.to_html(action.instance)
         end
+
+        # Instantiates Haml::Engine with the template and haml_options from
+        # the trait.
 
         def compile(action, template)
           ::Haml::Engine.new(template, ancestral_trait[:haml_options])

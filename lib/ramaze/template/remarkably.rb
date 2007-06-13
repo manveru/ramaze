@@ -9,17 +9,23 @@ module Ramaze
       ENGINES[self] = %w[ rem ]
 
       class << self
+
+        # Entry point for Action#render
+
         def transform action
           result, file = result_and_file(action)
 
-          result = transform_file(file, action) if file
+          result = transform_string(file, action) if file
           result.to_s
         end
 
-        def transform_file(file, action)
+        # Takes a string and action, sets args to action.args and then proceeds
+        # to instance_eval the string inside the action.instance
+
+        def transform_string(string, action)
           action.instance.instance_eval do
             args = action.params
-            instance_eval(file)
+            instance_eval(string)
           end
         end
       end

@@ -17,8 +17,8 @@ module Ramaze
       autoload(const, "ramaze/template/#{const.downcase}")
     end
 
-    # The superclass for all templates, doesn't do much more than including
-    # Ramaze::Helper and defining #reaction_or_file
+    # The superclass for all templates, contains the shared behaviour of
+    # the templates and includes Ramaze::Helper
 
     class Template
       include Ramaze::Helper
@@ -54,6 +54,9 @@ module Ramaze
           return unless method = action.method
           action.instance.__send__(method, *action.params)
         end
+
+        # This is a wrapper to use Global.compile without even thinking about it.
+        # Don't use it if your engine is not based on a compile/eval principle.
 
         def wrap_compile(action, template = nil)
           template ||= reaction_or_file(action).to_s

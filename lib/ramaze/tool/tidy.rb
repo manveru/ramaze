@@ -29,29 +29,30 @@ module Ramaze
         :wrap => 500
       }
 
-      # dirty html in, tidy html out
-      # To activate Tidy for everything outgoing (given that it is of
-      # Content-Type text/html) set
-      #   Global.tidy = true
-      # there is almost no speed-tradeoff but makes debugging a much
-      # nicer experience ;)
-      #
-      # Example:
-      #
-      #  include Ramaze::Tool::Tidy
-      #  puts tidy('<html></html>')
-      #
-      #  # results in something like:
-      #
-      #   <html>
-      #     <head>
-      #       <meta name="generator" content="HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org" />
-      #       <title></title>
-      #     </head>
-      #     <body></body>
-      #   </html>
-
       class << self
+
+        # dirty html in, tidy html out
+        # To activate Tidy for everything outgoing (given that it is of
+        # Content-Type text/html) set
+        #   Global.tidy = true
+        # there is almost no speed-tradeoff but makes debugging a much
+        # nicer experience ;)
+        #
+        # Example:
+        #
+        #  include Ramaze::Tool::Tidy
+        #  puts tidy('<html></html>')
+        #
+        #  # results in something like:
+        #
+        #   <html>
+        #     <head>
+        #       <meta name="generator" content="HTML Tidy for Linux/x86 (vers 1 September 2005), see www.w3.org" />
+        #       <title></title>
+        #     </head>
+        #     <body></body>
+        #   </html>
+
         def tidy html, options = {}
           require 'tidy'
 
@@ -84,6 +85,8 @@ module Ramaze
           puts "you can find it at http://tidy.rubyforge.org/"
         end
 
+        # Enables being plugged into Dispatcher::Action::FILTER
+
         def call(response, options = {})
           return response unless trait[:enable]
           response.body = tidy(response.body, options)
@@ -91,7 +94,7 @@ module Ramaze
         end
       end
 
-      # calls self#tidy
+      # calls Tidy::tidy
 
       def tidy html, options = {}
         Ramaze::Tool::Tidy.tidy(html, options)

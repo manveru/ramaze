@@ -27,6 +27,8 @@ module Ramaze
       result
     end
 
+    # Calls #inspect on the wrapped @hash
+
     def inspect
       @hash.inspect
     end

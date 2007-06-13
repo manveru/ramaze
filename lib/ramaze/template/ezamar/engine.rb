@@ -63,6 +63,8 @@ module Ezamar
       _out_"
     end
 
+    # Takes a binding and evals it with the previously set options.
+
     def result(binding)
       eval(@compiled, binding, @options[:file]).strip
     end

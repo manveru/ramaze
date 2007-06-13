@@ -14,17 +14,15 @@ module Ramaze
 
       class << self
 
-        # Takes a controller and the options :action, :parameter, :file and
-        # :binding
-        #
-        # Builds a template out of the method on the controller and the
-        # template-file.
+        # Entry-point for Action#render
 
         def transform action
           eruby = wrap_compile(action)
           eruby.result(action.binding)
         end
 
+        # Creates an instance of ::Erubis::Eruby, sets the filename
+        # from the template and returns the instance.
         def compile(action, template)
           eruby = ::Erubis::Eruby.new(template)
           eruby.init_evaluator(:filename => (action.template || __FILE__))

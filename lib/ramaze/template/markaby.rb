@@ -10,26 +10,29 @@ module Ramaze
 
       class << self
 
-        # initializes the handling of a request on the controller.
-        # Creates a new instances of itself and sends the action and params.
-        # Also tries to render the template.
-        # In Theory you can use this standalone, this has not been tested though.
+        # Entry point for Action#render
 
         def transform action
           result, file = result_and_file(action)
 
-          result = transform_file(file, action) if file
+          result = transform_string(file, action) if file
           result.to_s
         end
 
-        def transform_file file, action
+        # Takes a string and action, instance_evals the string inside a mab
+        # block that gets the instance_variables of the original
+        # action.instance passed.
+
+        def transform_string string, action
           instance = action.instance
           ivs = extract_ivs(instance)
 
           instance.send(:mab, ivs) do
-            instance_eval(file)
+            instance_eval(string)
           end
         end
+
+        # Generate a hash from instance-variables
 
         def extract_ivs(controller)
           controller.instance_variables.inject({}) do |hash, iv|

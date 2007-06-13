@@ -21,6 +21,9 @@ module Ramaze
           ezamar.result(action.binding)
         end
 
+        # Compile a template, applying all transformations from the pipeline
+        # and returning an instance of ::Ezamar::Template
+
         def compile(action, template)
           file = (action.template || __FILE__)
 
