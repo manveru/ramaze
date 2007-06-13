@@ -15,6 +15,7 @@ end
 
 module Ramaze
   autoload :Analogger, "ramaze/inform/analogger.rb"
+  autoload :Knotify,   "ramaze/inform/knotify.rb"
   autoload :Syslog,    "ramaze/inform/syslog.rb"
   autoload :Growl,     "ramaze/inform/growl.rb"
   autoload :Xosd,      "ramaze/inform/xosd.rb"
