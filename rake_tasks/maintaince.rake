@@ -246,3 +246,77 @@ task 'release' => ['distribute'] do
   sh "rubyforge add_file ramaze ramaze #{release_id} pkg/ramaze-#{VERS}.tar.gz"
   sh "rubyforge add_file ramaze ramaze #{release_id} pkg/ramaze-#{VERS}.tar.bz2"
 end
+
+desc "list all undocumented methods"
+task 'undocumented' do
+  require 'strscan'
+  require 'term/ansicolor'
+
+  class String
+    include Term::ANSIColor
+  end
+
+  class SimpleDoc
+    def initialize(string)
+      @s = StringScanner.new(string)
+    end
+
+    def scan
+      comment = false
+      total, missing = [], []
+      until @s.eos?
+        unless @s.scan(/^\s*#.*/)
+          comment = true if @s.scan(/^=begin$/)
+          comment = false if comment and @s.scan(/^=end$/)
+
+          unless comment
+            if @s.scan(/(?:class ).*/)
+              #p @s.matched
+            elsif @s.scan(/(?:module ).*/)
+              #p @s.matched
+            elsif @s.scan(/(?:def )[\w?!*+\/-]+(?=[\(\s])/)
+              total << @s.matched.split.last
+              prev = @s.pre_match.split("\n")
+              prev.delete_if{|s| s.strip.empty?}
+              unless prev.last =~ /^\s*#.*/
+                missing << @s.matched.split.last
+              end
+            else
+              @s.scan(/./m)
+            end
+          end
+        end
+      end
+
+      return total, missing
+    end
+  end
+
+  all = {}
+  files = Dir['lib/**/*.rb']
+
+  files.each do |file|
+    t, m = SimpleDoc.new(File.read(file)).scan
+    all[file] = [t, m]
+  end
+
+  failed = all.reject{|k,(t,m)| m.size == 0}
+
+  max = failed.keys.sort_by{|f| f.size}.last.size
+
+  colors = {
+    (0..25  ) => :blue,
+    (25..50 ) => :green,
+    (50..75 ) => :yellow,
+    (75..100) => :red,
+  }
+
+  failed.sort.each do |file, (t, m)|
+    ts, ms = t.size, m.size
+    tss, mss = ts.to_s, ms.to_s
+    ratio = ((ms.to_f/ts)*100).to_i
+    color = colors.find{|k,v| k.include?(ratio)}.last
+    puts "#{file.ljust(max)}\t[#{[mss, tss].join('/').center(8)}]".send(color)
+    puts m.join(', ')
+  end
+end

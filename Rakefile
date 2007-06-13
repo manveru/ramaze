@@ -88,35 +88,6 @@ task :distribute => :gem do
   sh "rm -rf pkg/ramaze-#{VERS}"
 end
 
-
-desc "list all still undocumented methods"
-task :undocumented do
-  files = Dir[File.join('lib', '**', '*.rb')]
-
-  files.each do |file|
-    puts file
-    lines_till_here = []
-    lines = File.readlines(file).map{|line| line.chomp}
-
-    lines.each do |line|
-      if line =~ /def /
-        indent = line =~ /[^\s]/
-        e = lines_till_here.reverse.find{|l| l =~ /end/}
-        i = lines_till_here.reverse.index(e)
-        lines_till_here = lines_till_here[-(i + 1)..-1] if i
-        unless lines_till_here.any?{|l| l =~ /^\s*#/} or lines_till_here.empty?
-          puts lines_till_here
-          puts line
-          puts "#{' ' * indent}..."
-          puts e
-        end
-      lines_till_here.clear
-      end
-      lines_till_here << line
-    end
-  end
-end
-
 desc "show a todolist from all the TODO tags in the source"
 task :todo do
   files = Dir[File.join(BASEDIR, '{lib,spec}', '**/*.rb')]
