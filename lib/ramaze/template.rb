@@ -54,6 +54,16 @@ module Ramaze
           return unless method = action.method
           action.instance.__send__(method, *action.params)
         end
+
+        def wrap_compile(action, template = nil)
+          template ||= reaction_or_file(action).to_s
+
+          if Global.compile
+            Cache.compiled[action.relaxed_hash] ||= compile(action, template)
+          else
+            compile(action, template)
+          end
+        end
       end
     end
   end

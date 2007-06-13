@@ -8,7 +8,7 @@ module Ramaze
     # The Action holds information that is essential to render the action for a
     # request.
 
-    members = %w[method params template controller binding engine instance]
+    members = %w[method params template controller path binding engine instance]
 
     class Action < Struct.new('Action', *members)
     end
@@ -47,7 +47,7 @@ module Ramaze
     end
 
     def relaxed_hash
-      [controller, method, params, template].hash
+      [controller, method, params, template, path].hash
     end
 
     def to_hash

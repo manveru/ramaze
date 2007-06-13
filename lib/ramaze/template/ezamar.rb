@@ -17,8 +17,7 @@ module Ramaze
       class << self
 
         def transform action
-          template = reaction_or_file(action).to_s
-          ezamar = compile(action, template)
+          ezamar = wrap_compile(action)
           ezamar.result(action.binding)
         end
 

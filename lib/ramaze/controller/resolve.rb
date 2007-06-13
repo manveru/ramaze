@@ -55,7 +55,7 @@ module Ramaze
           template ||= resolve_template(path)
         end
 
-        Action.new(method, params, template, self)
+        Action.new(method, params, template, self, path)
       end
 
       def resolve_template(action)

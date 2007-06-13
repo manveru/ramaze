@@ -18,7 +18,7 @@ class TC_PagerController < Ramaze::Controller
 end
 
 describe "StackHelper" do
-  ramaze(:adapter => :webrick)
+  before(:all){ ramaze }
 
   it "conventional login" do
     get('/page').body.should == '[1, 2]'

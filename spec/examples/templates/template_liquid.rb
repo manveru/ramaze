@@ -13,10 +13,13 @@ describe 'Template Liquid' do
 
   %w[/internal /external].each do |url|
     it url do
-      html = get(url).body
+      name = url.gsub(/^\//, '')
+      response = get(url)
+      response.status.should == 200
+      html = response.body
       html.should_not == nil
-      html.should =~ %r{<title>Template::Liquid (internal|external)</title>}
-      html.should =~ %r{<h1>The (internal|external) Template for Liquid</h1>}
+      html.should =~ %r(<title>Template::Liquid #{name}</title>)
+      html.should =~ %r(<h1>The #{name} Template for Liquid</h1>)
     end
   end
 end

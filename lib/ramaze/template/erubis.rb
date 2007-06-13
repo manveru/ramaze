@@ -14,15 +14,14 @@ module Ramaze
 
       class << self
 
-        # Takes a controller and the options :action, :parameter, :file and :binding
+        # Takes a controller and the options :action, :parameter, :file and
+        # :binding
         #
         # Builds a template out of the method on the controller and the
         # template-file.
 
         def transform action
-          template = reaction_or_file(action)
-
-          eruby = compile(action, template)
+          eruby = wrap_compile(action)
           eruby.result(action.binding)
         end
 
