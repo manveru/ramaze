@@ -2,40 +2,74 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'xosd'
+require 'thread'
 
 module Ramaze
 
   class Xosd < ::Xosd
+    attr_accessor :options
+
     include Informing
 
-    trait :timeout => 3
-    trait :lines => 3
-
-    trait :colors => {
-      :error => "#FF0000",
-      :info => "#00FF00",
-      :warn => "#EAA61E",
-      :debug => "#FFFFFF"
+    DEFAULT = {
+      :font_size       => 20,
+      :font            => "-*-*-*-*-*-*-%d-*-*-*-*-*-*-*",
+      :align           => 'center',
+      :color           => '#FFFFFF',
+      :lines           => 3,
+      :valign          => 'top',
+      :timeout         => 3,
+      :outline_color   => "#000000",
+      :outline_width   => 1,
+      :vertical_offset => 20,
+      :colors => {
+        :error => "#FF0000",
+        :info => "#00FF00",
+        :warn => "#EAA61E",
+        :debug => "#FFFF00"
+      },
     }
 
-    def initialize font_size = 24
-      super(class_trait[:lines])
+    # keys to ignore when setting the options to the instance.
+    IGNORE = [:colors, :font_size, :lines]
 
-      self.font            = "-*-*-*-*-*-*-#{font_size}-*-*-*-*-*-*-*"
-      self.align           = 'center'
-      self.color           = '#FFFFFF'
-      self.valign          = 'top'
-      self.timeout         = class_trait[:timeout]
-      self.outline_color   = "#000000"
-      self.outline_width   = 1
-      self.vertical_offset = 20
+    # Here new messages are pushed to eventually displaying them.
+    QUEUE = Queue.new
+
+    def initialize(options = {})
+      @options = DEFAULT.merge(options)
+
+      super(@options[:lines])
+
+      @options.each do |key, value|
+        next if IGNORE.include?(key)
+        value %= @options[:font_size] if key == :font
+        send("#{key}=", value)
+      end
+
+      Thread.new(self) do |xosd|
+        loop do
+          items = []
+          lines = xosd.options[:lines]
+          items << QUEUE.shift until QUEUE.empty? or items.size >= lines
+
+          unless items.empty?
+            # pad up with empty lines to avoid dragging around old messages.
+            items << [:info, ' '] until items.size >= lines
+
+            items.each_with_index do |(tag, message), i|
+              xosd.color = xosd.options[:colors][tag.to_sym]
+              xosd.display(message, i)
+            end
+          end
+          sleep xosd.options[:timeout]
+        end
+      end
     end
 
-    def inform(tag, *args)
-      self.color = class_trait[:colors][tag.to_sym]
-
-      args.each_with_index do |arg, i|
-        display(arg, i)
+    def inform(tag, *messages)
+      messages.each do |message|
+        QUEUE << [tag, message]
       end
     end
   end
