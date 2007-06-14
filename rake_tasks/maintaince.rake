@@ -319,4 +319,11 @@ task 'undocumented' do
     puts "#{file.ljust(max)}\t[#{[mss, tss].join('/').center(8)}]".send(color)
     puts m.join(', ')
   end
+
+  puts
+  puts "The colors mean percentages of documentation (ratio of undocumented methods to total):"
+  colors.sort_by{|k,v| k.begin}.each do |r, color|
+    print "[#{r.inspect}] ".send(color)
+  end
+  puts
 end
