@@ -22,7 +22,7 @@ module Ramaze
       # Instantiate with given Hash, takes both string/symbol keys.
       # Only keys that match members of the Action-Struct are used.
 
-      def fill(hash = {})
+      def create(hash = {})
         i = new
         members.each do |key|
           i.send("#{key}=", (hash[key] || hash[key.to_sym]))
@@ -40,7 +40,8 @@ module Ramaze
     # nicer representation of the Action
 
     def to_s
-      %{#<Action method=#{method.inspect}, params=#{params.inspect} template=#{template.inspect}>}
+      m, p, t = method.inspect, params.inspect, template.inspect
+      %{#<Action method=#{m}, params=#{p} template=#{t}>}
     end
 
     # Set the method, will be converted to a string and set to nil if empty.
@@ -114,6 +115,6 @@ module Ramaze
   # Shortcut to create new instances of Action via Action::fill
 
   def self.Action(hash = {})
-    Action.fill(hash)
+    Action.create(hash)
   end
 end
