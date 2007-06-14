@@ -15,6 +15,9 @@ class MainController < Controller
     @welcome = "Welcome to Ramaze!"
   end
 
+  # the string returned at the end of the function is used as the html body
+  # if there is no template for the action. if there is a template, the string
+  # is silently ignored
   def notemplate
     "there is no template associated with this action"
   end

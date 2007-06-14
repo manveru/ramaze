@@ -16,6 +16,8 @@ module Ramaze
 
       class << self
 
+        # Transforms an action into the XHTML code for parsing and returns
+        # the result
         def transform action
           ezamar = wrap_compile(action)
           ezamar.result(action.binding)
