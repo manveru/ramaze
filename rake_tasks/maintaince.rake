@@ -248,7 +248,7 @@ task 'release' => ['distribute'] do
 end
 
 desc "list all undocumented methods"
-task 'undocumented' do
+task 'undocumented-module' do
   require 'strscan'
   require 'term/ansicolor'
 
@@ -311,19 +311,42 @@ task 'undocumented' do
     (75..100) => :red,
   }
 
+  puts "\nAll undocumented methods\n\n"
+  
   failed.sort.each do |file, (t, m)|
     ts, ms = t.size, m.size
     tss, mss = ts.to_s, ms.to_s
     ratio = ((ms.to_f/ts)*100).to_i
     color = colors.find{|k,v| k.include?(ratio)}.last
-    puts "#{file.ljust(max)}\t[#{[mss, tss].join('/').center(8)}]".send(color)
-    puts m.join(', ')
+    complete = ms.to_f/ts.to_f
+    mthc = "method"
+    if ratio != 100
+      puts "#{file.ljust(max)}\t[#{[mss, tss].join('/').center(8)}]".send(color)
+      mthc = "methods" if ts > 1
+      if $VERBOSE
+        puts "Of #{tss} #{mthc}, #{mss} still needs documenting (#{100 - ratio}% documented, #{ratio}% undocumented)".send(color)
+        mthc = "method"
+        mthc = "methods" if ms > 1
+        print "#{mthc.capitalize}: "
+      end
+      puts m.join(', ')
+      puts
+    end
   end
 
-  puts
-  puts "The colors mean percentages of documentation (ratio of undocumented methods to total):"
+  puts "The colors mean percentages of documentation left (ratio of undocumented methods to total):"
   colors.sort_by{|k,v| k.begin}.each do |r, color|
     print "[#{r.inspect}] ".send(color)
   end
   puts
+end
+
+task 'undocumented' do
+	$VERBOSE = false
+	Rake::Task['undocumented-module'].execute
+end
+
+task 'undocumented-verbose' do
+	$VERBOSE = true
+	Rake::Task['undocumented-module'].execute
 end
