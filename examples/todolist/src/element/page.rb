@@ -3,7 +3,7 @@
 
 class Page < Ezamar::Element
   def render
-    %(
+    %{
     <html>
       <head>
         <title>TodoList</title>
@@ -26,6 +26,6 @@ class Page < Ezamar::Element
         #{content}
       </body>
     </html>
-    )
+    }
   end
 end

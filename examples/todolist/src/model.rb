@@ -9,6 +9,6 @@ TodoList = Ramaze::Store::Default.new('todolist.db')
   'Laundry'     => {:done => false},
   'Wash dishes' => {:done => false},
 
-}.each do |task, parameters|
-  TodoList[task] = parameters
+}.each do |title, value|
+  TodoList[title] = value
 end

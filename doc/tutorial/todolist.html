@@ -70,7 +70,7 @@ RubyForge.</p>
 <p>Additionally, we now have added tests for the resulting application that you
 can find in spec/examples/todolist.rb</p>
 
-<p>Date of last update: Thu May 24 20:53:49 JST 2007</p>
+<p>Date of last update: Thu Jun 14 13:25:45 JST 2007</p>
 
 <p>Thanks in advance.
 The author of the tutorial, Michael 'manveru' Fellinger</p>
@@ -97,10 +97,10 @@ with your ORM or database-library of choice.</p>
 
 <p>So first, edit the <code>src/model.rb</code> to fit better into our application:</p>
 
-<pre><code>TodoList = Store::Default.new 'todolist.yaml'
+<pre><code>TodoList = Store::Default.new('todolist.yaml')
 </code></pre>
 
-<p>To have a base to start off of, let's add some items as well.</p>
+<p>Let's add some items as well to have a base to start from.</p>
 
 <pre><code>{
   'Laundry'     =&gt; {:done =&gt; false},
@@ -117,6 +117,8 @@ end
 
 <p>Start with editing <code>template/index.xhtml</code>, it is using the default templating
 of Ramaze, called Ezamar.</p>
+
+<p>The index.xhtml currently contains a default welcome page, remove the contents.</p>
 
 <p>Let's put some things in there, I'll explain the syntax as we go, it's quite
 simple.</p>
@@ -139,12 +141,12 @@ simple.</p>
 &lt;/html&gt;
 </code></pre>
 
-<p>I will assume that you are familiar with basic Ruby already, so let's
+<p>I will assume that you are familiar with basic Ruby already, so we will
 concentrate on the things new here.</p>
 
-<p><code>&lt;?r ?&gt;</code> defines an area of ruby-code. Late when the template is transformed into
-pure Ruby it will be evaluated. We iterate over the TodoList model and pass the
-title and value into a block. In that block we can just get the values
+<p><code>&lt;?r ?&gt;</code> defines an area of ruby-code. Later, when the template is transformed
+into pure Ruby it will be evaluated. We iterate over the TodoList model and
+pass the title and value into a block. In that block we can just get the values
 of title and status (which we define based on the value) displayed on the
 page.</p>
 
@@ -193,20 +195,24 @@ edit the file <code>src/controller/main.rb</code>.</p>
 
 <pre><code>class MainController &lt; Controller
   def index
-    "Hello, World"
+    @welcome = "Welcome to Ramaze!"
+  end
+
+  def notemplate
+    "there is no template associated with this action"
   end
 end
 </code></pre>
 
-<p>The only method right now is <code>#index</code>, with a simple and for the moment quite
-useless "Hello, World". The relationship between the methods on the controller
-and the templates is 1:1, so the method <code>#index</code> is combined with the template
-<code>index.xhtml</code>. This combination is called an <code>action</code>.</p>
+<p>The only methods right now are <code>#index</code> and <code>#notemplate</code>.
+The relationship between the methods on the controller and the templates is
+1:1, so the method <code>#index</code> is combined with the template <code>index.xhtml</code>. This
+combination is called an <code>action</code>.</p>
 
-<p>Let's get back to editing and change the index-method to this:</p>
+<p>Let's get back to editing and change the method <code>#index</code> to this:</p>
 
 <pre><code>def index
-  @tasks = TodoList.content
+  @tasks = TodoList.original
   @tasks.each do |title, value|
     status = value[:done] ? 'done' : 'not done'
     @tasks[title] = status
@@ -246,7 +252,7 @@ Tasks it will say so.</p>
 
 <ul>
 <li>Instance-variables defined in the Controller are available in the View.</li>
-<li>The return-value of the Controller does not matter (in this case).</li>
+<li>The return-value of the Controller does not matter if a template is present.</li>
 </ul>
 
 <a name="Fifth_Step,_getting_dynamic"><h2>Fifth Step, getting dynamic</h2></a>
@@ -279,8 +285,7 @@ missing. First off, we want to add new tasks, so let's get that done.</p>
 
 <p>We will not need a method for this on our controller, in fact, actions can
 consist of either method and template or only one of them. The Controller
-can act as a View and the View as Controller (if it returns a String and there
-is no template).</p>
+can act as a View and the View can work like you may know it from PHP.</p>
 
 <p>If you try to use this form you will notice that we have not yet defined a way
 to actually create the task.</p>
@@ -361,18 +366,7 @@ take a look at the RDoc for LinkHelper.</p>
 which is because we were using an Hash, which are per definition unsorted, so
 now we use an array to hold our tasks and sort it.</p>
 
-<p>Now back again to <code>template/index.xhtml</code> and change it as follows:</p>
-
-<pre><code>&lt;?r @tasks.each do |title, status, toggle| ?&gt;
-  &lt;li&gt;
-    #{title}: #{status} [ #{toggle} ]
-  &lt;/li&gt;
-&lt;?r end ?&gt;
-</code></pre>
-
-<p>As usual, the things not changed are omitted for terseness.</p>
-
-<p>And as usual since the links for open and close don't lead anywhere, add the
+<p>As usual since the links for open and close don't lead anywhere, add the
 corresponding methods to the Controller:</p>
 
 <pre><code>def open title
@@ -444,11 +438,10 @@ end
 &lt;?r end ?&gt;
 </code></pre>
 
-<p>Voilà, you now have acquired the Certificate of Ramazeness, our accounting-
-section will contact you within the next few days.</p>
+<p>Voilà, you now have acquired the Certificate of Ramazeness.</p>
 
 <p>Just kidding, but that really are the basics, in the next few steps I will
-explain some more advanced concepts of Ramaze and the templating.</p>
+explain some more advanced concepts of Ramaze and Ezamar.</p>
 
 <a name="Eighth_Step,_Elements"><h2>Eighth Step, Elements</h2></a>
 
@@ -461,7 +454,7 @@ between to that Element.</p>
 
 <p>Sounds weird?</p>
 
-<p>Let us have a look at our templates, they all got some repetitive stuff, like:</p>
+<p>Let us have a look at our templates, they got some repetitive stuff, like:</p>
 
 <pre><code>&lt;html&gt;
   &lt;head&gt;
@@ -473,7 +466,7 @@ between to that Element.</p>
 &lt;/html&gt;
 </code></pre>
 
-<p>How about replacing that with something short and nice:</p>
+<p>How about replacing that with something short and reusable:</p>
 
 <pre><code>&lt;Page title="TodoList"&gt;
   your other content
@@ -481,7 +474,7 @@ between to that Element.</p>
 </code></pre>
 
 <p>Would be nice of course, and when you start having more templates it makes an
-awful lot of sense to change the enclosing stuff in one place.</p>
+awful lot of sense being able to change the enclosing stuff in one place.</p>
 
 <p>So let's apply DRY here as well.</p>
 
@@ -565,7 +558,7 @@ the things inside the Element and look at how it behaves.</p>
 
 <a name="Ninth_Step,_Prettify"><h2>Ninth Step, Prettify</h2></a>
 
-<p>Let's structure the data inside the list a little bit, in this case into a table
+<p>We structure the data inside the list a little bit, in this case into a table,
 to get it line up properly and look actually structured.</p>
 
 <p>So, from what we have right now:</p>
@@ -594,7 +587,7 @@ to get it line up properly and look actually structured.</p>
 </code></pre>
 
 <p>And, since we have proper classes to address some style sheets, jump into the
-Page element and add some style sheet like that:</p>
+Page element and add some style sheet:</p>
 
 <pre><code>&lt;head&gt;
   &lt;title&gt;TodoList&lt;/title&gt;
@@ -610,7 +603,7 @@ Page element and add some style sheet like that:</p>
 </code></pre>
 
 <p>That looks quite a bit nicer, right?  And yes, if you don't like tables (though
-this is an entirely legit use in my opinion, you can just do it like you want,
+this is an entirely legit use in my opinion) you can just do it like you want,
 using nested lists or divs/spans, replacing the open/close and delete links with
 nice images and changing the style according to the status.</p>
 
@@ -652,7 +645,7 @@ options, which is either using flags on the ramaze executable, or like this:</p>
 </code></pre>
 
 <p>We haven't started Ramaze directly as of yet, but this allows you to ignore the
-ramaze executable and just run your application.</p>
+ramaze executable and just run your application by <code>ruby main.rb</code>.</p>
 
 <a name="Eleventh_Step,_Refactor_with_AspectHelper"><h2>Eleventh Step, Refactor with AspectHelper</h2></a>
 
@@ -707,20 +700,15 @@ def delete title
 end
 
 helper :aspect
-after(:create, :open, :close, :delete){ redirect_index }
-
-def redirect_index
-  redirect Rs()
-end
+after(:create, :open, :close, :delete){ redirect(Rs()) }
 </code></pre>
 
-<p>Alright, that looks a lot nicer already and is definitely easier to maintain.
-Please note that the <code>#redirect_index</code> method should not be private, as it is a
-usual action that will just run after the others.</p>
+<p>Alright, that looks a lot nicer already and is definitely easier to maintain.</p>
 
-<p>There is a symmetrical <code>#before</code> aspect that you could take advantage of as well,
-and in case you want to add required authentication for all actions of a
-Controller you could use <code>#before_all</code> instead of a list of action-names.</p>
+<p>There is a symmetrical <code>before</code> aspect that you could take advantage of as
+well, and in case you want to add required authentication for all actions of a
+Controller you could use <code>before_all</code> and <code>after_all</code> instead of a list of
+action-names.</p>
 
 <a name="Twelfth_Step,_Validation_and_Errors"><h2>Twelfth Step, Validation and Errors</h2></a>
 
@@ -744,7 +732,7 @@ from your users, so let's apply this advice.</p>
   if title = request['title']
     title.strip!
     if title.empty?
-      error("Please enter a title")
+      failed("Please enter a title")
       redirect '/new'
     end
     TodoList[title] = {:done =&gt; false}
@@ -762,16 +750,16 @@ the session for one request, afterwards the hash is thrown away. This is
 specifically useful for giving the user feedback while keeping a stateless
 approach.</p>
 
-<p>Let me show you our <code>#error</code> method (it goes in the private section to
+<p>Let me show you our <code>#failed</code> method (it goes in the private section to
 <code>#task_status</code>):</p>
 
-<pre><code>def error(message)
+<pre><code>def failed(message)
   flash[:error] = message
 end
 </code></pre>
 
 <p>Duh, you may say, wouldn't that fit in the one line instead of the call to
-<code>#error</code>?
+<code>#failed</code>?
 Indeed, it would, but let me remind you, we have no checks for changing the
 status of a task yet. We will need error-handling there as well, so we just keep
 our code DRY and maintainable by collecting shared behaviour in small pieces.</p>
@@ -780,7 +768,7 @@ our code DRY and maintainable by collecting shared behaviour in small pieces.</p
 
 <pre><code>def task_status title, status
   unless task = TodoList[title]
-    error "No such Task: `#{title}'"
+    failed "No such Task: `#{title}'"
     redirect_referer
   end
 
@@ -803,7 +791,7 @@ error-message in case it doesn't and redirect to wherever the browser came from.
 
 <p>But what about actually showing the error-messages we so carefully set? Well,
 where do we change the view? Right, in the templates. But both templates we have
-so far (index and new) share this behaviour, so let's head over to the Element
+so far (index and new) share this behaviour, so we head over to the Element
 and add in the right place:</p>
 
 <pre><code>&lt;body&gt;
@@ -820,7 +808,9 @@ and add in the right place:</p>
 <p>The only thing special about it is the <code>\#{flash[:error]}</code>, we have to escape
 the <code>#</code> so it won't evaluate this immediately but wait until it is really
 rendered.
-You can add some nifty style if you like.</p>
+As a note, If you read this as pure markaby, the double backslash is to output
+properly to HTML, just use one instead.
+Again, you can add some nifty style for that.</p>
 
 <p>To be continued...</p>
     </body>
