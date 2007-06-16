@@ -13,7 +13,7 @@ Home page: http://ramaze.rubyforge.org
 IRC: #ramaze on irc.freenode.net
 
 
-New Features in Version 0.1.2: ( review and remove unimportant stuff )
+New Features in Version 0.1.2:
 
  - Restructuring of Ramaze internals, featuring a cleaner overall layout.
 
@@ -25,19 +25,11 @@ New Features in Version 0.1.2: ( review and remove unimportant stuff )
 
  - Easier caching.
 
- - replacing autoreload with the almighty SourceReload.
+ - replacing autoreload with a general SourceReload class.
 
  - tiny DSL for settings.
 
- - Global is now a Struct, no OpenStruct.
-
- - Default logger is now LogHub with Inform
-
- - Lightweight error-page.
-
- - Central API for caches.
-
- - Reviewed and largely improved tutorial and examples.
+ - Reviewed and largely improved tutorial and tested examples.
 
  - Even less patches to the Ruby core, mostly for compatibility with the
    upcoming Ruby 1.9 and tested with older versions down to 1.8.2.
@@ -45,9 +37,9 @@ New Features in Version 0.1.2: ( review and remove unimportant stuff )
  - Largely improved Spec-framework for any kind of web-application.
 
  - Through some benchmarking and refactoring the overall speed has improved
-   around the factor 2.
+   around the factor 2-3.
 
-A complete Changelog is available at [ insert URL ]
+A complete Changelog is available at http://manveru.mine.nu/ramaze/doc/CHANGELOG
 
 
 Features:
@@ -76,12 +68,6 @@ Features:
       all over the world using Ramaze, so you can get almost instant help and
       info.
 
-
-Features planned:
-  - Unified FormHelper for ORMs, making the framework mostly independent of the
-      underlying model.
-
-  - Support for distributed deployment over DRb.
 
 For more information please come to http://ramaze.rubyforge.org or ask directly
 on IRC (irc://irc.freenode.net/#ramaze)
