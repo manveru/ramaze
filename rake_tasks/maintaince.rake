@@ -201,11 +201,12 @@ task 'authors' do
   authors = []
   mapping = {}
   author_map = {
-    'm.fellinger@gmail.com' => 'Michael Fellinger',
-    'manveru@weez-int.com'  => 'Michael Fellinger',
-    'clive@crous.co.za'     => 'Clive Crous',
-    'blueonyx@dev-area.net' => 'Martin Hilbig',
-    'rff.rff@gmail.com'     => 'Gabriele Renzi',
+    'm.fellinger@gmail.com'            => 'Michael Fellinger',
+    'manveru@weez-int.com'             => 'Michael Fellinger',
+    'clive@crous.co.za'                => 'Clive Crous',
+    'blueonyx@dev-area.net'            => 'Martin Hilbig',
+    'rff.rff@gmail.com'                => 'Gabriele Renzi',
+    'comp.lang.zenix+ramaze@gmail.com' => 'zenix',
   }
   changes.split("\n").grep(/^\w/).each do |line|
     splat  = line.split
@@ -221,9 +222,9 @@ task 'authors' do
   max = mapping.map{|k,v| k.size}.max
 
   File.open('doc/AUTHORS', 'w+') do |fp|
-    fp.puts("Following persons have contributed to Ramaze:")
+    fp.puts("Following persons (in alphabetical order) have contributed to Ramaze:")
     fp.puts
-    mapping.sort_by{|k,v| v}.each do |name, email|
+    mapping.sort_by{|k,v| k}.each do |name, email|
       fp.puts("#{name.ljust(max)} - #{email}")
     end
   end
