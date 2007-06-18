@@ -11,7 +11,7 @@ module Ramaze
         end
 
         def lookup_paths
-          [ Global.public_proto, Global.public_root ].flatten
+          [ Global.public_root, Global.public_proto ].flatten
         end
 
         def open_file(path)
