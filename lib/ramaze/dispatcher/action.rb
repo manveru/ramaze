@@ -20,6 +20,8 @@ module Ramaze
           body = Controller.handle(path)
           response = Dispatcher.build_response(body)
           FILTER.inject(response){|r,f| f.call(r) }
+        rescue Ramaze::Error => ex
+          ex
         end
       end
     end

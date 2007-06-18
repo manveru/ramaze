@@ -78,14 +78,14 @@ module Ramaze
 
       # Calls .process(path) on every class in Dispatcher::FILTER until one
       # returns something else than false/nil.
-      # Raises NoAction otherwise.
 
       def filter path
+        result = nil
         FILTER.each do |dispatcher|
           result = dispatcher.process(path)
-          return result if result
+          return result if result and not result.respond_to?(:exception)
         end
-        raise Ramaze::Error::NoAction, "No Dispatcher found for `#{path}'"
+        Dispatcher::Error.process(result)
       end
 
       # build a response, default values are from the current response.
