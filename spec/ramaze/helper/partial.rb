@@ -9,7 +9,7 @@ class TCPartialHelperController < Ramaze::Controller
   template_root(File.dirname(__FILE__)/:template)
 
   def index
-    '<http><head><title>#{render_partial("/title")}</title></head></http>'
+    '<html><head><title>#{render_partial("/title")}</title></head></html>'
   end
 
   def title
@@ -29,7 +29,7 @@ describe "PartialHelper" do
   end
 
   it "should render partials" do
-    get('/').body.should == '<http><head><title>Title</title></head></http>'
+    get('/').body.should == '<html><head><title>Title</title></head></html>'
   end
 
   it 'should be able to render a template in the current scope' do

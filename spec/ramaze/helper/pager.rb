@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-class TC_PagerController < Ramaze::Controller
+class TCPagerController < Ramaze::Controller
   map '/'
   helper :pager
 
@@ -17,10 +17,10 @@ class TC_PagerController < Ramaze::Controller
 
 end
 
-describe "StackHelper" do
+describe "PagerHelper" do
   before(:all){ ramaze }
 
-  it "conventional login" do
+  it "should be paginated" do
     get('/page').body.should == '[1, 2]'
     get("/page", Ramaze::Pager.trait[:key] => '2').body.should == '[3, 4]'
   end
