@@ -22,6 +22,11 @@ module Ramaze
       end
     end
 
+    # Return the cached output of the action if it exists, otherwise do a
+    # normal Action#uncached_render and store the output in the Cache.actions.
+    # Action#cached_render is only called if Action#should_cache? returns
+    # true.
+
     def cached_render
       action_cache = Cache.actions
 
@@ -34,12 +39,18 @@ module Ramaze
       action_cache[relaxed_hash] = uncached_render
     end
 
+    # The 'normal' rendering process. Passes the Action instance to
+    # Action#engine.transform, which returns the output of the action.
+
     def uncached_render
       [ before_process,
         engine.transform(self),
         after_process,
       ].join
     end
+
+    # return true if the action is flagged for caching. Called by
+    # Action#render.
 
     def should_cache?
       ctrait = controller.trait

@@ -16,6 +16,10 @@ module Ramaze
 
     class << self
 
+      # Initializes the Cache for the general caches Ramaze uses.
+      # Cache#startup is called by Ramaze#startup, when initializing the
+      # Ramaze.trait(:essentials).
+
       def startup(options)
         Cache.add :compiled, :actions, :patterns, :resolved, :shield
       end
@@ -35,6 +39,8 @@ module Ramaze
 
     end
 
+    # Initializes the cache, defined by Global.cache
+
     def initialize(cache = Global.cache)
       @cache = cache.new
     end
@@ -47,11 +53,16 @@ module Ramaze
       @cache[key.to_s] = value
     end
 
+    # deletes the keys of each argument passed from Cache instance.
+
     def delete(*args)
       args.each do |arg|
         @cache.delete(arg.to_s)
       end
     end
+
+    # method_missing tries to handle undefined method calls. Should it fail,
+    # it passes it to super for proper error handling.
 
     def method_missing(meth, *args, &block)
       if @cache.respond_to?(meth)

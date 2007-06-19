@@ -27,11 +27,15 @@ module Ramaze
       YAML.load_file(@file)
     end
 
+    # clears the YAML::Store based cache, by emptying the YAML file.
+
     def clear
       transaction do |y|
         File.open(@file, 'w+'){|f| f.puts({}.to_yaml)}
       end
     end
+
+    # Deletes the key from YAML::Store based cache.
 
     def delete(key)
       transaction do |y|
