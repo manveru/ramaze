@@ -13,6 +13,119 @@ Let's outline the realms that Ramaze works in as to show what the current
 limitations and features are.
 
 
+#### Life of a request/response cycle
+
+This is a small summary of how a request creates a response in the
+examples/hello.rb and webrick (to keep it simple and short).
+All files referenced here are in lib/ramaze/ unless indicated otherwise.
+We don't explain the startup/shutdown process, only what happens from request to
+the eventual response.
+
+Browser sends request, webrick receives it and hands the ENV over to our rack
+handler (adapter/webrick.rb and adapter/base.rb).
+There it gets converted into a Ramaze::Request (trinity/request.rb) and
+a new blank Ramaze::Response (trinity/response.rb) is created.
+These two objects are then sent to Dispatcher::handle (dispatcher.rb).
+
+This all happens inside a new Thread, which is what Ramaze takes advantage of by
+assigning Thread-variables. You can see this now in
+Dispatcher::setup_environment which sets :request/:session/:response in
+Thread.current.
+
+After that, Dispatcher::dispatch is called with the path from request.path_info
+which in turn takes every class/module set in Dispatcher::FILTER and calls
+::process with the path.
+
+
+##### First, `/favicon.ico` (for most browsers)
+
+The first in FILTER is Dispatcher::File (dispatcher/file.rb) which searches
+Global.public_root and afterwards Global.public_proto for a matching file on
+this path. In our example the file found is a favicon.ico from
+Global.public_proto.
+
+The contents of FILTER have to return a Ramaze::Response, either the (possibly
+modified) original (Dispatcher::build_response helps with that) or a totally new
+one.
+
+In our case, Dispatcher::File uses build_response with an opened filehandler as
+body, '200 OK' as status and the Content-Type set to what Tool::MIME.type_for
+tells it is the correct mimetype for this file.
+
+
+##### Second, `/hello`
+
+We start in the processing of FILTER, since the previous steps are the same for
+every request.
+
+Here we now get only a nil value back from Dispatcher::File since no file in our
+two public directories exists for the given path.
+
+So, this time, Dispatcher::Action is called via ::process and the first thing
+this dispatcher does is trying to set the body of the request to the answer of
+Controller.handle (controller.rb) for the given path.
+
+Controller::handle doesn't do much either, but calls Controller::resolve
+(controller/resolve.rb) for the path.
+
+Here we get now into the guts of Ramaze, despite our efforts it's no easy
+reading since the underlying theory is a bit complex and many edge-cases have to
+be solved.
+
+Let me try to quickly sketch what happens here, maybe we can add a chapter about
+this aspect of Ramaze later.
+
+First we generate a pattern of how the requested path could fit into our
+controller and template structure. `/hello` only has 3 possible outcomes:
+
+Controller on '/', template or method `hello`
+Controller on '/', method `index` with parameter `hello`
+Controller on '/hello', method or template `index`
+
+After matching (in the order we wrote here) these possibilities against your
+application we get only one possibility, MainController on '/' with method
+`index`.
+
+The result is stored into an instance of Action and cached for repeated lookups,
+then passed back into Dispatcher::handle which subsequently calls Action#render
+(action/render.rb) on it.
+
+From here, Thread.current[:action] gets set and #uncached_render is called. This
+calls #before_process which only has effects if you have the AspectHelper
+activated and next on comes engine.transform with self as parameter.
+#engine is a method that figures out which engine this Action has to be rendered
+with, according to things like trait[:engine] in your controller and the
+extension of a template. In this case we have neither and the default engine
+Template::Ezamar (template/ezamar.rb) is used.
+
+So off we go, to Template::Ezamar::transform with the current instance of Action
+as parameter.
+
+::transform first calls ::wrap_compile which is inherited from Template
+(template.rb) and manages caching of compiled templates, calling ::compile with
+the action and template.
+
+The template again is retrieved through two attempts, firstly, we always call
+the method (if specified from Controller::resolve) on the controller, we
+temporarily store its result and replace it if a path for a template is set with
+the contents of the file on this path. The result of this is the final template
+that is ready for compilation.
+
+In the case of Ezamar, we first walk the TRANSFORM_PIPELINE (only
+Ezamar::Element (template/ezamar/element.rb) with ::transform and pass each the
+template for manipulation. In the example we don't have any elements, so we get
+back what we gave and generate a new instance of Ezamar::Template
+(template/ezamar/engine.rb) with the template and a path that indicates eval
+where we currently are supposed to be (templates path or the transformer).
+
+This instance is passed back to Ezamar::transform and we call #result with the
+actions binding (retrieved from earlier instantiation of the controller and
+subsequently eval `binding` inside of it).
+
+Now it's all done, we have got our body for the response which will be sent back
+to our handler as body.
+
+
 #### The Ramaze module
 
 Ramaze is also the main module or so-called namespace that the framework lives
@@ -26,31 +139,55 @@ Tasks on require
   * GlobalStruct.new
 
 
-Tasks on startup
+Tasks on startup as defined in Ramaze.trait[:internals] in lib/ramaze.rb
 
-* Global.startup
+* Global::startup
   * passed options to Ramaze.start
   * CLI options from bin/ramaze (treat as passed.merge)
   * Global options set before startup (fake Global?)
 
-* Controller.startup
+* Cache::startup
+  * adds the following caches via Cache.add:
+    * compiled
+      If Global.compile is set true this cache is used to store the compiled
+      templates.
+
+    * actions
+      Caching compiled actions.
+      
+    * patterns
+      This is used in Controller::resolve to cache the generated patterns for a
+      path.
+
+    * resolved
+      Caching the resolved but not yet compiled actions by their path.
+
+    * shield
+      Caching the generated errors for the path, so on repeated erronous
+      requests no new error-page has to be generated.
+
+* Controller::startup
   * mapping of all subclassed Controller
   * validation of mapping
   * validation of template_root
 
-* Adapter.startup
-  * interpret Global.adapter
-  * add every created adapter to Global.adapters
+* Session::startup
+  * adds Cache.sessions if Global.sessions is true
+    This cache is used to store all sessions with their session-id as key.
 
-* SourceReload.startup
+* SourceReload::startup
   * start with Global.reload_interval
   * assign Global.sourcereload
+
+* Adapter::startup
+  * interpret Global.adapter
+  * add every created adapter to Global.adapters
 
 
 Tasks on shutdown
 
-* Adapter.shutdown (iterates Global.adapters)
-* Inform.shutdown (iterates all in LogHub)
+* Adapter::shutdown (iterates Global.adapters)
+* Inform::shutdown (iterates all in LogHub)
 
 
 
