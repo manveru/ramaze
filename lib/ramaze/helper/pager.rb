@@ -249,7 +249,7 @@ private
 
   def target_uri(page)
     params = Request.current.params.dup.update(@key => page)
-    Rs(Controller.current.action.method, params)
+    Rs(Action.current.method, params)
   end
 
 end
