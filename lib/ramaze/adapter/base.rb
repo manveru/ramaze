@@ -27,22 +27,26 @@ module Ramaze
           Inform.debug("Stopping #{self.class}")
         end
 
+        # This is called by Rack with the usual env, subsequently calls
+        # ::respond with it.
+        #
+        # The method itself acts just as a wrapper for benchmarking and then
+        # calls .finish on the current response after ::respond has finished.
+
         def call(env)
           if Ramaze::Global.benchmarking
-            time = Benchmark.measure{ respond env }
+            time = Benchmark.measure{ respond(env) }
             Inform.debug("request took #{time.real}s")
           else
             respond env
           end
 
-          finish
+          Thread.current[:response].finish
         end
 
-        def finish
-          response = Thread.current[:response]
-
-          response.finish
-        end
+        # Initializes Request with env and an empty Response. Records the
+        # request into Ramaze::Record if Global.record is true.
+        # Then goes on and calls Dispatcher::handle with request and response.
 
         def respond env
           request, response = Request.new(env), Response.new

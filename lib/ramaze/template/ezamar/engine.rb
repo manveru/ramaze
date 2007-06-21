@@ -17,6 +17,11 @@ module Ezamar
   # This class is responsible for initializing and compiling the template.
 
   class Template
+
+    # Take a template (anything that responds to ::to_str) and options.
+    # At the moment the only option used is :file, which is used to tell
+    # Kernel::eval how to produce better backtraces.
+
     def initialize(template, options = {})
       @template, @options = template, options
       compile

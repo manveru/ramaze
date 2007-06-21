@@ -23,6 +23,8 @@ module Ramaze
       end
     end
 
+    # Loads @file into memory via YAML::load_file
+
     def underlying_yaml
       YAML.load_file(@file)
     end

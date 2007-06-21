@@ -23,6 +23,10 @@ module Ramaze
       options.keys.each {|x| request.params[x] = saved[x] }
     end
 
+    # Generate from a filename in template_root of the given (or current)
+    # controller a new action.
+    # Any option you don't pass is instead taken from Action.current
+
     def render_template(file, options = {})
       current = Action.current
       options[:binding]     ||= current.binding

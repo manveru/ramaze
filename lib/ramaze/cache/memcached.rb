@@ -79,6 +79,9 @@ class MemCache
   # MemCache#clear can be used for clearing out all MemCache servers.
 
   class Server
+
+    # Serverside implementation of the #clear functionality for MemCache
+
     def flush_all
       socket.write "flush_all\r\n"
     end

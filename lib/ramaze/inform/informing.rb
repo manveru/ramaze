@@ -15,9 +15,15 @@ module Ramaze
   #   end
 
   module Informing
-    def tag_inform(tag, meth, *strings)
-      strings.each do |string|
-        string = (string.respond_to?(:to_str) ? string : string.send(meth))
+
+    # Takes the tag (:warn|:debug|:error|:info) and the name of a method to be
+    # called upon elements of msgs that don't respond to :to_str
+    # Goes on and sends the tag and transformed messages each to the #inform method.
+    # If you include this module you have to define #inform or it will raise.
+
+    def tag_inform(tag, meth, *msgs)
+      msgs.each do |msg|
+        string = (msg.respond_to?(:to_str) ? msg : msg.send(meth))
         inform(tag, string)
       end
     end

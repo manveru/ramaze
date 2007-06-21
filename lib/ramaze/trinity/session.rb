@@ -11,6 +11,9 @@ module Ramaze
   # are stored, about updates.
 
   class SessionHash
+
+    # Sets @hash to an empty Hash
+
     def initialize
       @hash = {}
     end
