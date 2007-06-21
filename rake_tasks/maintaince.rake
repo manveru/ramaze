@@ -267,7 +267,7 @@ task 'undocumented-module' do
       total, missing = [], []
       until @s.eos?
         unless @s.scan(/^\s*#.*/)
-          comment = true if @s.scan(/^=begin$/)
+          comment = true if @s.scan(/^=begin[^$]*$/)
           comment = false if comment and @s.scan(/^=end$/)
 
           unless comment
