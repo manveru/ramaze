@@ -4,6 +4,7 @@
 # The main namespace for Ramaze
 module Ramaze
   BASEDIR = File.dirname(File.expand_path(__FILE__))
+  SEEED = $0.dup
   $:.unshift BASEDIR
 end
 
@@ -42,10 +43,13 @@ module Ramaze
       Inform.info("Starting up Ramaze (Version #{VERSION})")
 
       starter = caller[0].split(':').first
-      return unless ($0 == starter or options.delete(:force))
 
-      trait[:essentials].each do |obj|
-        obj.startup(options)
+      if $0 == starter or options.delete(:force)
+        SEEED.replace(starter)
+
+        trait[:essentials].each do |obj|
+          obj.startup(options)
+        end
       end
     end
 
