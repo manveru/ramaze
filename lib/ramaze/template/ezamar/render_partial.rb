@@ -11,7 +11,7 @@ module Ezamar
     # Other options than `src` will be transformed to session parameters for the
     # rendered action to use.
 
-    def self.transform(template, action, file = __FILE__)
+    def self.transform(template)
       template.gsub!(/<render (.*?) \/>/) do |m|
         args = Hash[*$1.scan(/(\S+)=["'](.*?)["']/).flatten]
         if src = args.delete('src')
