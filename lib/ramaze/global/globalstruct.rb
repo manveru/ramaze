@@ -2,7 +2,13 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  class GlobalStruct < Struct.new('Global', *OPTIONS.keys)
+  unless defined?(GlobalStruct) # prevent problems for SourceReload
+    class GlobalStruct < Struct.new('Global', *OPTIONS.keys)
+    end
+  end
+
+  class GlobalStruct
+
     ADAPTER_ALIAS = {
       :webrick => :WEBrick,
       :mongrel => :Mongrel,
