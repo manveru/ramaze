@@ -111,7 +111,7 @@ class Pager
 
   # Return the index of the previous page.
 
-  def previous_page
+  def prev_page
     [@page - 1, 1].max
   end
 
@@ -121,17 +121,10 @@ class Pager
     [@page + 1, @page_count].min
   end
 
-  # A set of helpers to create links to common pages.
-
-  for target in [:first, :last, :previous, :next]
-    eval %{
-      def link_#{target}_page
-        target_uri(#{target}_page)
-      end
-      alias_method :#{target}_page_uri, :link_#{target}_page
-      alias_method :#{target}_page_href, :link_#{target}_page
-    }
-  end
+  def link_first_page; target_uri(first_page); end
+  def link_last_page; target_uri(last_page); end
+  def link_prev_page; target_uri(prev_page); end
+  def link_next_page; target_uri(next_page); end
 
   # Iterator
 
@@ -209,14 +202,14 @@ class Pager
     unless first_page?
       nav << %{
         <div class="first"><a href="#{first_page_href}">First</a></div>
-        <div class="previous"><a href="#{previous_page_href}">Previous</a></div>
+        <div class="previous"><a href="#{link_prev_page}">Previous</a></div>
       }
     end
 
     unless last_page?
       nav << %{
-        <div class="last"><a href="#{last_page_href}">Last</a></div>
-        <div class="next"><a href="#{next_page_href}">Next</a></div>
+        <div class="last"><a href="#{link_last_page}">Last</a></div>
+        <div class="next"><a href="#{link_next_page}">Next</a></div>
       }
     end
 
