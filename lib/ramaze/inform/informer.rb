@@ -5,7 +5,7 @@ module Ramaze
   class Informer
     include Informing
 
-    attr_accessor :out, :colorize
+    attr_accessor :out, :colorize, :log_levels
 
     # Should Ramaze try to use colors?
     trait :colorize => true
@@ -24,7 +24,7 @@ module Ramaze
       :error => :red,
     }
 
-    def initialize(out = $stdout)
+    def initialize(out = $stdout, log_levels = [:debug, :error, :info, :warn])
       @colorize = false
 
       @out =
@@ -46,6 +46,8 @@ module Ramaze
       if @out.respond_to?(:tty?) and class_trait[:colorize]
         @colorize = @out.tty?
       end
+
+      @log_levels = log_levels
     end
 
     def shutdown
@@ -56,7 +58,7 @@ module Ramaze
     end
 
     def inform tag, *messages
-      return if closed?
+      return if closed? || !@log_levels.include?(tag)
       messages.flatten!
 
       prefix = tag.to_s.upcase.ljust(5)
