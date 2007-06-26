@@ -11,6 +11,7 @@ module Ramaze
     # For your own usage you should use another namespace.
 
     def initialize(host = 'localhost', port = '11211', namespace = SEEED)
+      namespace = Digest::SHA1.hexdigest(namespace)[0..16]
       @cache = MemCache.new("#{host}:#{port}", :namespace => namespace, :multithread => true)
     end
 
