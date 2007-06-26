@@ -201,7 +201,7 @@ class Pager
 
     unless first_page?
       nav << %{
-        <div class="first"><a href="#{first_page_href}">First</a></div>
+        <div class="first"><a href="#{link_first_page}">First</a></div>
         <div class="previous"><a href="#{link_prev_page}">Previous</a></div>
       }
     end
