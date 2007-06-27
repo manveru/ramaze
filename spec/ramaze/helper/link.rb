@@ -31,3 +31,18 @@ describe 'R' do
     R(TCLink, :foo, :bar => :baz).should == '/foo?bar=baz'
   end
 end
+
+describe 'breadcrumbs' do
+  include Ramaze::LinkHelper
+
+  it 'should lay out breadcrumbs' do
+    breadcrumbs('/file/dir/listing/is/cool').
+      should == [
+      "<a href=\"/file\">file</a>",
+      "<a href=\"/file/dir\">dir</a>",
+      "<a href=\"/file/dir/listing\">listing</a>",
+      "<a href=\"/file/dir/listing/is\">is</a>",
+      "<a href=\"/file/dir/listing/is/cool\">cool</a>"
+    ].join('/')
+  end
+end

@@ -79,5 +79,12 @@ module Ramaze
     def Rs(*atoms)
       R(Controller.current, *atoms)
     end
+
+    def breadcrumbs(path, split = '/', join = '/')
+      atoms = path.split(split).reject{|a| a.empty?}
+      crumbs = atoms.inject([]){|s,v| s << [s.last,v]}
+      bread = crumbs.map{|a| A(a[-1], :href=>(a*'/'))}
+      bread.join(join)
+    end
   end
 end
