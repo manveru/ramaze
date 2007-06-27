@@ -15,13 +15,13 @@ module Ramaze
     def render_partial(url, options = {})
       saved = {}
       options.keys.each {|x| saved[x] = request.params[x] }
-      saved_controller = Thread.current[:controller]
+      saved_action = Thread.current[:action]
 
       request.params.update(options)
 
       Controller.handle(url)
     ensure
-      Thread.current[:controller] = saved_controller
+      Thread.current[:action] = saved_action
       options.keys.each {|x| request.params[x] = saved[x] }
     end
 
