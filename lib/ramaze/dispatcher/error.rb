@@ -42,6 +42,11 @@ module Ramaze
             Inform.error(error)
           end
         end
+
+        def current
+          Thread.current[:exception]
+        end
+
       end
     end
   end

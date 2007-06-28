@@ -8,11 +8,11 @@ module Ramaze
     #
     # Error-pages can be in whatever the templating-engine of your controller
     # is set to.
-    #   Thread.current[:exception]
+    #   Ramaze::Dispatcher::Error.current
     # holds the exception thrown.
 
     def error
-      error = Thread.current[:exception]
+      error = Ramaze::Dispatcher::Error.current
       @backtrace = error.backtrace[0..20]
       title = error.message
 
