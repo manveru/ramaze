@@ -16,6 +16,7 @@ require 'ramaze/snippets'
 require 'ramaze/inform'
 require 'ramaze/global'
 require 'ramaze/cache'
+require 'ramaze/tool'
 
 # Startup
 require 'ramaze/controller'
