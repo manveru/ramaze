@@ -10,15 +10,10 @@ module Ramaze
           Dispatcher.build_response(file, Ramaze::STATUS_CODE['OK'])
         end
 
-        def lookup_paths
-          [ Global.public_root, Global.public_proto ].flatten
-        end
-
         def open_file(path)
-          paths = lookup_paths.map{|pa| pa/path}
-          file = paths.find{|way| ::File.file?(way)}
+          file = Global.public_root/path
 
-          if file
+          if ::File.file?(file)
             response = Response.current
             response['Content-Type'] = Tool::MIME.type_for(file)
             Inform.debug("Serving static: #{file}")

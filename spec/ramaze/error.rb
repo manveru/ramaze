@@ -32,7 +32,7 @@ describe "Error" do
   end
 
   it 'should give 404 when no action is found' do
-    response = get('/illegal')
+    response = get('/foobar')
     response.status.should == 404
     response.body.should =~ %r(No Action found for `/foobar' on TCErrorController)
   end
@@ -50,7 +50,7 @@ describe "Error" do
     Ramaze::Global.should_receive(:mapping).once.and_return{ {} }
     response = get('/illegal')
     response.status.should == 404
-    response.body.should =~ %r(No Controller found for `/error')
+    response.body.should =~ %r(No Controller found for `/illegal')
   end
 
   it "should return custom error page" do

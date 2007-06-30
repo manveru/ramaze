@@ -53,9 +53,6 @@ module Ramaze
     o "Specify port",
       :port => 7000, :cli => 7000
 
-    o "Specify the shadowing public directory (default in proto)",
-      :public_proto => ( BASEDIR / 'proto' / 'public' )
-
     o "Specify the public directory of your application serving static files",
       :public_root => File.expand_path('./public')
 

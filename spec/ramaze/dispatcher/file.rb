@@ -16,12 +16,6 @@ describe 'Dispatcher::File' do
     re_css.status.should == 200
   end
 
-  it 'should serve from Global.public_proto' do
-    file = (Ramaze::Global.public_proto/'error.zmr')
-    original = File.read(file)
-    get('/error.zmr').body.should == original
-  end
-
   it 'should give priority to Global.public_root' do
     file = (@public_root/'favicon.ico')
     original = File.read(file)

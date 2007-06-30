@@ -75,7 +75,7 @@ module Ramaze
 
       def template_paths
         @template_root ||= Global.template_root / Global.mapping.invert[self]
-        [ @template_root, Global.public_root, Global.public_proto ].compact
+        [ @template_root, Global.public_root ].compact
       end
 
       def resolve_method(name, *params)
