@@ -6,7 +6,7 @@ describe 'Action() basics' do
 
     action.params.should == []
     action.method.should be_nil
-    action.template.should be_nil 
+    action.template.should be_nil
   end
 
   it 'should sanitize parameters' do
