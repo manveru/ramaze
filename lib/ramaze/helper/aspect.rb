@@ -60,12 +60,14 @@ module Ramaze
 
   class Action
     def before_process
-      block = controller.ancestral_trait[:aspects][:before][method]
+      return unless aspects = controller.ancestral_trait[:aspects]
+      block = aspects[:before][method]
       instance.instance_eval(&block) if block
     end
 
     def after_process
-      block = controller.ancestral_trait[:aspects][:after][method]
+      return unless aspects = controller.ancestral_trait[:aspects]
+      block = aspects[:after][method]
       instance.instance_eval(&block) if block
     end
   end
