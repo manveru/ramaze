@@ -70,7 +70,7 @@ module Ramaze
       end
 
       # if trait[:automap] is set and controller is not in Global.mapping yet
-      # this will build a new default mapping-point, (Main|Base|Index)* are put
+      # this will build a new default mapping-point, MainController is put
       # at '/' by default.
 
       def mapping
