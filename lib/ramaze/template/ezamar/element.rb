@@ -123,7 +123,13 @@ class Ezamar::Element
     #   <Page foo="true" />
 
     def finish_transform(klass, params, content)
-      instance = constant(klass).new(content)
+      scope =
+        if Ramaze::Action.current
+          Ramaze::Action.current.controller
+        else
+          self.class
+        end
+      instance = scope.constant(klass).new(content)
 
       demunge_passed_variables(params).each do |key, value|
         instance.instance_variable_set("@#{key}", value)
