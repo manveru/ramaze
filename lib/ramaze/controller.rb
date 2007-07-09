@@ -90,6 +90,12 @@ module Ramaze
         end
       end
 
+      # Returns the Controller at a mapped path.
+
+      def at(mapping)
+        Global.mapping[mapping.to_s]
+      end
+
       # Define a template_root for Controller, returns the current template_root
       # if no argument is given.
       # Runs every given path through Controller::check_path
