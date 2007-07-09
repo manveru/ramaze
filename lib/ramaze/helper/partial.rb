@@ -14,15 +14,15 @@ module Ramaze
 
     def render_partial(url, options = {})
       saved = {}
-      options.keys.each {|x| saved[x] = request.params[x] }
+      options.keys.each {|x| saved[x] = Request.current.params[x] }
       saved_action = Thread.current[:action]
 
-      request.params.update(options)
+      Request.current.params.update(options)
 
       Controller.handle(url)
     ensure
       Thread.current[:action] = saved_action
-      options.keys.each {|x| request.params[x] = saved[x] }
+      options.keys.each {|x| Request.current.params[x] = saved[x] }
     end
 
     # Generate from a filename in template_root of the given (or current)

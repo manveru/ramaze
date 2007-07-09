@@ -2,9 +2,11 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze/template/ezamar/engine'
+require 'ramaze/helper/partial'
 
 module Ezamar
   class RenderPartial
+    extend Ramaze::PartialHelper
 
     # Renders <render src="/path" [optional="option", ...]> in place.
     #
@@ -15,7 +17,7 @@ module Ezamar
       template.gsub!(/<render (.*?) \/>/) do |m|
         args = Hash[*$1.scan(/(\S+)=["'](.*?)["']/).flatten]
         if src = args.delete('src')
-          PartialHelper.render_partial(src, args)
+          render_partial(src, args)
         end
       end
 
