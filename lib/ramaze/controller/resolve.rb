@@ -17,7 +17,7 @@ module Ramaze
           if found.respond_to?(:relaxed_hash)
             return found
           else
-            Informer.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
+            Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
             Cache.resolved.delete path
           end
         end
