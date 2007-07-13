@@ -13,8 +13,14 @@ module Ramaze
 
     def error
       error = Ramaze::Dispatcher::Error.current
-      @backtrace = error.backtrace[0..20]
       title = error.message
+
+      unless Action.current.template
+        response['Content-Type'] = 'text/plain'
+        return [title, "", error.backtrace].flatten.join("\n")
+      end
+
+      @backtrace = error.backtrace[0..20]
 
       @colors = []
       min = 200

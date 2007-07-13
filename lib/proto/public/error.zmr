@@ -7,6 +7,9 @@
   <body>
     <h1>#{@title}</h1>
 
+    <p>The backtrace gives filenames and line numbers for all parts of the call stack.<br />
+    Click on any of them to view the surrounding source code.</p>
+
     <table class="main">
       <tr class="head">
         <td>File</td><td>Line</td><td>Method</td>
