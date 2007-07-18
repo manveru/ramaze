@@ -105,28 +105,24 @@ module Ramaze
       def pattern_for(path)
         atoms = path.split('/').grep(/\S/)
         atoms.unshift('')
-        patterns, joiners = [], ['/']
+        patterns, joiner = [], '/'
 
         atoms.size.times do |enum|
           enum += 1
-          joiners << '__' if enum == 3
+          pattern = atoms.dup
 
-          joiners.each do |joinus|
-            pattern = atoms.dup
+          controller = pattern[0, enum].join(joiner)
+          controller.gsub!(/^__/, '/')
+          controller = "/" if controller == ""
 
-            controller = pattern[0, enum].join(joinus)
-            controller.gsub!(/^__/, '/')
-            controller = "/" if controller == ""
+          pattern = pattern[enum..-1]
+          args, temp = [], []
 
-            pattern = pattern[enum..-1]
-            args, temp = [], []
+          patterns << [controller, 'index', atoms[enum..-1]]
 
-            patterns << [controller, 'index', atoms[enum..-1]]
-
-            until pattern.empty?
-              args << pattern.shift
-              patterns << [controller, args.join( '__' ), pattern.dup]
-            end
+          until pattern.empty?
+            args << pattern.shift
+            patterns << [controller, args.join( '__' ), pattern.dup]
           end
         end
 

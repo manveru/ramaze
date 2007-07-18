@@ -54,7 +54,6 @@ describe "Controller" do
       ],
 
       '/foo/bar' => [
-        ["/foo__bar", "index",    []],
         ["/foo/bar",  "index",    []],
 
         ["/foo",      "bar",      []],
@@ -67,11 +66,7 @@ describe "Controller" do
 
       '/foo/bar/baz' => [
 
-        ['/foo__bar__baz', 'index',         []],
         ['/foo/bar/baz',   'index',         []],
-
-        ['/foo__bar',      'baz',           []],
-        ['/foo__bar',      'index',         ['baz']],
 
         ['/foo/bar',       'baz',           []],
         ['/foo/bar',       'index',         ['baz']],
@@ -87,19 +82,10 @@ describe "Controller" do
       ],
 
       '/foo/bar/baz/oof' => [
-        ['/foo__bar__baz__oof', 'index',               []],
-
         ['/foo/bar/baz/oof',    'index',               []],
-
-        ['/foo__bar__baz',      'oof',                 []],
-        ['/foo__bar__baz',      'index',               ['oof']],
 
         ['/foo/bar/baz',        'oof',                 []],
         ['/foo/bar/baz',        'index',               ['oof']],
-
-        ['/foo__bar',           'baz__oof',            []],
-        ['/foo__bar',           'baz',                 ['oof']],
-        ['/foo__bar',           'index',               ['baz', 'oof']],
 
         ['/foo/bar',            'baz__oof',            []],
         ['/foo/bar',            'baz',                 ['oof']],
