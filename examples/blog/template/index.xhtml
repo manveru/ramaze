@@ -1,12 +1,15 @@
 <Blog title="bl_Og">
-  <div id="actions">#{link self, :new, :title => 'new entry'}</div>
+  <div id="actions">#{A 'new entry', :href => Rs(:new)}</div>
   <div id="entries">
     <?r @entries.each do |entry| ?>
     <div class="entry">
       <div class="header">
         <div class="title">#{entry.title}</div>
         <div class="created">Created: #{entry.created}</div>
-        <ul><li>#{link self, :edit, entry.oid, :title => 'edit'}</li><li>#{link self, :delete, entry.oid, :title => 'delete'}</li></ul>
+        <ul>
+					<li>#{A 'edit', :href => Rs(:edit, entry.oid)}</li>
+					<li>#{A 'delete', :href => Rs(:delete, entry.oid)}</li>
+				</ul>
       </div>
       <div class="content">#{entry.content}</div>
       <div class="updated">Last updated: #{entry.updated}</div>
