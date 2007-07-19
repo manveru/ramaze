@@ -13,13 +13,23 @@ module Ramaze
       class << self
         trait :last_error => nil
 
-        def process error
+        def process(error, metainfo = {})
           log_error(error)
 
           Thread.current[:exception] = error
 
           key = error.class.ancestors.find{|a| HANDLE_ERROR[a]}
           status, path = *HANDLE_ERROR[key || Exception]
+          status ||= 500
+
+          if controller = metainfo[:controller]
+            begin
+              action = Controller.resolve(controller.mapping + path)
+              return Dispatcher.build_response(action.render, status)
+            rescue Ramaze::Error
+              Inform.debug("No custom error page found on #{controller}, going to #{path}")
+            end
+          end
 
           unless error.message =~ %r(`#{path.split('/').last}')
             Response.current.status = status
@@ -29,7 +39,7 @@ module Ramaze
           Dispatcher.build_response(error.message, status)
         rescue Object => ex
           Inform.error(ex)
-          Dispatcher.build_response(ex.message, status || 500)
+          Dispatcher.build_response(ex.message, status)
         end
 
         def log_error error

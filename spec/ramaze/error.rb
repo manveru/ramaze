@@ -16,12 +16,26 @@ class TCErrorController < Ramaze::Controller
   end
 end
 
+class TCErrorCustomController < Ramaze::Controller
+  map "/custom"
+
+  def error
+    "The error page of custom"
+  end
+end
+
 describe "Error" do
   ramaze :error_page => true, :public_root => 'spec/ramaze/public'
 
   before :all do
     require 'ramaze/dispatcher/error'
     @handle_error = Ramaze::Dispatcher::Error::HANDLE_ERROR
+  end
+
+  it 'should resolve custom error pages per controller' do
+    response = get("/custom/does_not_exist")
+    response.status.should == 404
+    response.body.should == "The error page of custom"
   end
 
   it 'should throw errors from rendering' do
@@ -41,22 +55,22 @@ describe "Error" do
     @handle_error.should_receive(:[]).twice.
       with(Ramaze::Error::NoAction).and_return{ [707, '/error'] }
 
-    response = get('/illegal')
+    response = get('/illegal1')
     response.status.should == 707
-    response.body.should =~ %r(No Action found for `/illegal' on TCErrorController)
+    response.body.should =~ %r(No Action found for `/illegal1' on TCErrorController)
   end
 
   it "should give 404 when no controller is found" do
-    Ramaze::Global.should_receive(:mapping).once.and_return{ {} }
-    response = get('/illegal')
+    Ramaze::Global.should_receive(:mapping).exactly(3).times.and_return{ {} }
+    response = get('/illegal2')
     response.status.should == 404
-    response.body.should =~ %r(No Controller found for `/illegal')
+    response.body.should =~ %r(No Controller found for `/illegal2')
   end
 
   it "should return custom error page" do
     @handle_error.should_receive(:[]).twice.
       with(Ramaze::Error::NoAction).and_return{ [404, '/error404'] }
-    response = get('/illegal')
+    response = get('/illegal3')
     response.status.should == 404
     response.body.should == '404 - not found'
   end

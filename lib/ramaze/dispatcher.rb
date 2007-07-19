@@ -35,7 +35,7 @@ module Ramaze
           dispatch(path)
         end
       rescue Object => error
-        Dispatcher::Error.process(error)
+        Dispatcher::Error.process(error, :path => path, :request => request)
       end
 
       def dispatch(path)
@@ -85,7 +85,12 @@ module Ramaze
           result = dispatcher.process(path)
           return result if result and not result.respond_to?(:exception)
         end
-        Dispatcher::Error.process(result)
+
+        meta = {
+          :path => path,
+          :controller => Thread.current[:failed_controller]
+        }
+        Dispatcher::Error.process(result, meta)
       end
 
       # build a response, default values are from the current response.
