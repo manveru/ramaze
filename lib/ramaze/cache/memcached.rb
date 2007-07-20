@@ -3,6 +3,10 @@
 require 'memcache'
 
 module Ramaze
+
+  # Cache based on the memcache library which utilizes the memcache-daemon to
+  # store key/value pairs in namespaces.
+
   class MemcachedCache
 
     # Create a new MemcachedCache with host, port and a namespace that defaults

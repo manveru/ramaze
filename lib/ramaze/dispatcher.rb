@@ -12,6 +12,10 @@ require 'ramaze/dispatcher/error'
 require 'ramaze/dispatcher/file'
 
 module Ramaze
+
+  # The Dispatcher receives requests from adapters and sets up the proper environment
+  # to process them and respond.
+
   module Dispatcher
 
     # requests are passed to every

@@ -2,6 +2,10 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # A minimal logger for Ramaze, supports files, CLI, colors and some
+  # customization.
+
   class Informer
     include Informing
 

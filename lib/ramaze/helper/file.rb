@@ -2,6 +2,9 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # Helper for quickly push out files with the proper mimetype.
+
   module FileHelper
     private
 

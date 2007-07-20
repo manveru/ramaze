@@ -5,6 +5,9 @@
 # Amrita2, Erubis, Haml, Liquid and Markaby if you refer to them.
 
 module Ramaze
+
+  # Namespace for templating.
+
   module Template
 
     COMPILED = {} unless defined?(COMPILED)

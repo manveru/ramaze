@@ -2,6 +2,9 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # Allows you to use some shortcuts for markaby in your Controller.
+
   module MarkabyHelper
     private
 

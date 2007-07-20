@@ -3,6 +3,10 @@
 require 'yaml/store'
 
 module Ramaze
+
+  # Cache based on _whys YAML::Store, which uses PStore to serialize objects
+  # as YAML in a thread-safe manner.
+
   class YAMLStoreCache
 
     attr_accessor :file
