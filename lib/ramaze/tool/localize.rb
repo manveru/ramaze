@@ -48,7 +48,7 @@ class Ramaze::Tool::Localize
       locale = session[:LOCALE] || set_session_locale
 
       body.gsub!(trait[:regex]) do
-        localize($1, locale)
+        localize($1, locale) unless $1.to_s.empty?
       end
 
       store(locale, trait[:default_language]) if trait[:collect]
