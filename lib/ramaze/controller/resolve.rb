@@ -37,7 +37,7 @@ module Ramaze
             action = controller.resolve_action(method, *params)
             template = action.template
 
-            valid_action = (action.method or (params.empty? && action.template))
+            valid_action = (action.method or (params.empty? && template))
 
             return Cache.resolved[path] = action if valid_action
           end
