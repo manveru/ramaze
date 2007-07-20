@@ -14,6 +14,8 @@ module Ramaze
     include Enumerable
     CACHES = {} unless defined?(CACHES)
 
+    attr_accessor :cache
+
     class << self
 
       # Initializes the Cache for the general caches Ramaze uses.
@@ -25,11 +27,16 @@ module Ramaze
       end
 
       # This will define a method to access a new cache directly over
-      # sinleton-methods on Cache
+      # singleton-methods on Cache.
+      #---
+      # The @cache_name is internally used for caches which do not save
+      # different caches in different namespaces, for example memcached.
+      #+++
 
       def add *keys
         keys.each do |key|
           CACHES[key] = new
+          CACHES[key].instance_variable_set("@cache_name", key)
           self.class.class_eval do
             define_method(key){ CACHES[key] }
           end
@@ -46,30 +53,27 @@ module Ramaze
     end
 
     def [](key)
-      @cache[key.to_s]
+      @cache["#{@cache_name}:#{key}"]
     end
 
     def []=(key, value)
-      @cache[key.to_s] = value
+      @cache["#{@cache_name}:#{key}"] = value
     end
 
     # deletes the keys of each argument passed from Cache instance.
 
     def delete(*args)
       args.each do |arg|
-        @cache.delete(arg.to_s)
+        @cache.delete("#{@cache_name}:#{arg}")
       end
     end
 
-    # method_missing tries to handle undefined method calls. Should it fail,
-    # it passes it to super for proper error handling.
+    def clear
+      @cache.clear
+    end
 
-    def method_missing(meth, *args, &block)
-      if @cache.respond_to?(meth)
-        @cache.send(meth, *args, &block)
-      else
-        super
-      end
+    def values_at(*args)
+      @cache.values_at(*args.map {|key| "#{@cache_name}:#{key}" })
     end
   end
 end
