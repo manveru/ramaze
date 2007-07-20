@@ -153,17 +153,17 @@ class Ezamar::Element
     # Just remember, walk like a duck, talk like a duck.
 
     def demunge_passed_variables(template)
-      template.scan(/\s?(.*?)="(.*?)"/).inject({}) do |hash, (key, value)|
+      template.scan(/\s?(.*?)=["'](.*?)["']/).inject({}) do |hash, (key, value)|
         value =
-        case value
-        when 'true'
-          true
-        when 'false'
-          false
-        else
-          Integer(value) rescue Float(value) rescue value
-        end
-      hash.merge key => value
+          case value
+          when 'true'
+            true
+          when 'false'
+            false
+          else
+            Integer(value) rescue Float(value) rescue value
+          end
+        hash.merge key => value
       end
     end
   end
