@@ -3,13 +3,17 @@
 
 module Ramaze
 
+  # Informer for the Knotify notfication system used on KDE.
+  # Doesn't need any special libraries.
+
   class Knotify
     include Informing
 
     trait :present => 16
 
-    # Please see for more information:
+    # Please see for more information on the API used here:
     # http://lukeplant.me.uk/articles.php?id=3
+
     def inform(tag, *messages)
       present = class_trait[:present]
       tag = tag.to_s.capitalize

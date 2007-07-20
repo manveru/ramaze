@@ -4,6 +4,9 @@
 require 'ruby-growl'
 
 module Ramaze
+
+  # Informer for the growl notification system on OSX.
+
   class Growl < ::Growl
 
     trait :defaults => {
@@ -18,6 +21,8 @@ module Ramaze
       options = class_trait[:defaults].merge(options).values_at(:host, :name, :all_notifies, :default_notifies, :password)
       super(*options)
     end
+
+    # integration to Informing
 
     def inform(tag, *args)
       notify(tag.to_s, Time.now.strftime("%X"), args.join("\n")[0..100])

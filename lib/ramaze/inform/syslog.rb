@@ -4,6 +4,9 @@
 require 'syslog'
 
 module Ramaze
+
+  # Informer for Syslog from rubys standard-library.
+
   class Syslog
     include ::Syslog
 

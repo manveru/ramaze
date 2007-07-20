@@ -4,6 +4,10 @@
 require 'set'
 
 module Ramaze
+
+  # Bundles different informer instances and sends incoming messages to each.
+  # This is the default with Informer as only member.
+
   class LogHub
     include Informing
 
@@ -20,6 +24,8 @@ module Ramaze
       @loggers.uniq!
       @loggers.compact!
     end
+
+    # integration to Informing
 
     def inform(tag, *args)
       return if @ignored_tags.include?(tag)

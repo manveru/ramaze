@@ -6,6 +6,11 @@ require 'thread'
 
 module Ramaze
 
+  # Informer for the XOSD notification system for X11.
+  #
+  # You can install the ruby-bindings with:
+  #   gem install xosd.
+
   class Xosd < ::Xosd
     attr_accessor :options
 
@@ -35,6 +40,8 @@ module Ramaze
 
     # Here new messages are pushed to eventually displaying them.
     QUEUE = Queue.new
+
+    # Create a new instance, valid options are in DEFAULT
 
     def initialize(options = {})
       @options = DEFAULT.merge(options)
