@@ -60,5 +60,16 @@ caches.each do |cache, name|
       @cache[:beh] = :feh
       @cache.values_at(:baz, :beh).should == [:foo, :feh]
     end
+
+    it "different cache namespaces should not overlap" do
+      Ramaze::Cache.add :foo
+      Ramaze::Cache.add :bar
+
+      key = "foobar"
+      Ramaze::Cache.foo[key] = 'foo'
+      Ramaze::Cache.bar[key] = 'bar'
+
+      Ramaze::Cache.foo[key].should_not == Ramaze::Cache.bar[key]
+    end
   end
 end
