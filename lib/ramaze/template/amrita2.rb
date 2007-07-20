@@ -5,7 +5,9 @@ require 'amrita2/template'
 
 module Ramaze
   module Template
+
     # Is responsible for compiling a template using the Amrita2 templating engine.
+    # Can be found at: http://rubyforge.org/projects/amrita2
 
     class Amrita2 < Template
 

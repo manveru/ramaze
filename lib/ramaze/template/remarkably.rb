@@ -5,6 +5,10 @@ require 'remarkably/engines/html'
 
 module Ramaze
   module Template
+
+    # Is responsible for compiling a template using the Remarkably templating engine.
+    # Can be found at: http://rubyforge.org/projects/remarkably
+
     class Remarkably < Template
       ENGINES[self] = %w[ rem ]
 

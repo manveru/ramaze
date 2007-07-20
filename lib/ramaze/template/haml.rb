@@ -5,6 +5,10 @@ require 'haml/engine'
 
 module Ramaze
   module Template
+
+    # Is responsible for compiling a template using the Haml templating engine.
+    # Can be found at: http://haml.hamptoncatlin.com/
+
     class Haml < Template
 
       # Custom HAML-options for your controller to be merged.

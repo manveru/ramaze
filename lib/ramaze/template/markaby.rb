@@ -5,6 +5,10 @@ require 'markaby'
 
 module Ramaze
   module Template
+
+    # Is responsible for compiling a template using the Markaby templating engine.
+    # Can be found at: http://code.whytheluckystiff.net/markaby/
+
     class Markaby < Template
       ENGINES[self] = %w[ mab ]
 

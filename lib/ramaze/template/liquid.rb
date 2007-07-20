@@ -5,6 +5,10 @@ require 'liquid'
 
 module Ramaze
   module Template
+
+    # Is responsible for compiling a template using the Liquid templating engine.
+    # Can be found at: http://home.leetsoft.com/liquid
+
     class Liquid < Template
 
       ENGINES[self] = %w[ liquid ]

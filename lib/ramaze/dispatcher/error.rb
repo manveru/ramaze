@@ -3,6 +3,13 @@
 
 module Ramaze
   module Dispatcher
+
+    # Last resort dispatcher, tries to recover as much information as possible
+    # from the past request and takes the appropiate actions.
+    #
+    # You can configure it over the HANDLE_ERROR constant or by defining error
+    # actions in your controllers.
+
     class Error
       HANDLE_ERROR = {
                           Exception => [ 500, '/error' ],

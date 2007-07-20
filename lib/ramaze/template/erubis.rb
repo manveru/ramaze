@@ -7,6 +7,7 @@ module Ramaze
   module Template
 
     # Is responsible for compiling a template using the Erubis templating engine.
+    # Can be found at: http://rubyforge.org/projects/erubis
 
     class Erubis < Template
 
