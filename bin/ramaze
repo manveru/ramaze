@@ -80,7 +80,7 @@ if project = options.delete(:create)
 end
 
 if ARGV.empty? and not runner
-  abort(opts)
+  abort(opts.to_s)
 end
 
 begin
