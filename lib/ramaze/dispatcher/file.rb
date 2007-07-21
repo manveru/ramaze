@@ -3,12 +3,23 @@
 
 module Ramaze
   module Dispatcher
+
+    # First of the dispatchers, looks up the public path and serves the
+    # file if found.
+
     class File
       class << self
+
+        # Entry point from Dispatcher::filter.
+        # searches for the file and builds a response with status 200 if found.
+
         def process(path)
           return unless file = open_file(path)
           Dispatcher.build_response(file, Ramaze::STATUS_CODE['OK'])
         end
+
+        # returns file-handle with the open file on success, setting the
+        # Content-Type as found in Tool::MIME
 
         def open_file(path)
           file = Global.public_root/path

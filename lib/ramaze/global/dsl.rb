@@ -6,11 +6,20 @@ module Ramaze
   OPTIONS     = {}
   CLI_OPTIONS = []
 
+  # DSL for specifying Globap options before initializing Global
+
   module GlobalDSL
     class << self
+
+      # The method that takes the block containing the DSL, used like in
+      # lib/ramaze/global.rb
+
       def option_dsl(&block)
         instance_eval(&block)
       end
+
+      # Takes a doc-string and then the option as hash, another :cli key can
+      # be given that will expose this option via the bin/ramaze.
 
       def o(doc, options = {})
         cli_given = options.has_key?(:cli)

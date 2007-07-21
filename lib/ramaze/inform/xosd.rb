@@ -41,7 +41,10 @@ module Ramaze
     # Here new messages are pushed to eventually displaying them.
     QUEUE = Queue.new
 
-    # Create a new instance, valid options are in DEFAULT
+    # Create a new instance, valid options are in DEFAULT.
+    # In the background a new thread will be running that checks the QUEUE
+    # and processes all messages that are being sent to it.
+    # This is done to make output nicer and readable.
 
     def initialize(options = {})
       @options = DEFAULT.merge(options)
@@ -73,6 +76,8 @@ module Ramaze
         end
       end
     end
+
+    # pushes all messages it gets on the QUEUE for further processing.
 
     def inform(tag, *messages)
       messages.each do |message|

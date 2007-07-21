@@ -14,6 +14,9 @@ module Ramaze
     attr_accessor :loggers
     attr_accessor :ignored_tags
 
+    # Takes a list of instances or classes (which will be initialized) and that
+    # are added to @loggers. All messages are then sent to each member.
+
     def initialize(*loggers)
       @loggers = loggers
       @ignored_tags = Set.new

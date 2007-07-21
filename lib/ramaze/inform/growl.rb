@@ -17,6 +17,8 @@ module Ramaze
       :default_notifies => %w[error warn info]
     }
 
+    # Takes the options from the default trait for merging.
+
     def initialize(options = {})
       options = class_trait[:defaults].merge(options).values_at(:host, :name, :all_notifies, :default_notifies, :password)
       super(*options)

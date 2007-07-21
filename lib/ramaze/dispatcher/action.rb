@@ -13,6 +13,11 @@ module Ramaze
       ]
 
       class << self
+
+        # Takes path, asks Controller to handle it and builds a response on
+        # success. The response is then passed to each member of FILTER for
+        # post-processing.
+
         def process(path)
           body = Controller.handle(path)
           response = Dispatcher.build_response(body)

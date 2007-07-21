@@ -80,6 +80,19 @@ module Ramaze
       R(Controller.current, *atoms)
     end
 
+    # Give it a path with character to split at and one to join the crumbs with.
+    # It will generate a list of links that act as pointers to previous pages on
+    # this path.
+    #
+    # Example:
+    #   breadcrumbs('/path/to/somewhere')
+    #
+    #   # results in this, newlines added for readability:
+    #
+    #   <a href="/path">path</a>/
+    #   <a href="/path/to">to</a>/
+    #   <a href="/path/to/somewhere">somewhere</a>
+
     def breadcrumbs(path, split = '/', join = '/')
       atoms = path.split(split).reject{|a| a.empty?}
       crumbs = atoms.inject([]){|s,v| s << [s.last,v]}
