@@ -1,3 +1,176 @@
+Sat Jul 21 22:08:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  tagged 0.1.3
+
+Sat Jul 21 22:04:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Version 0.1.3
+
+Sat Jul 21 22:03:12 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * some minor changes
+
+Sat Jul 21 22:02:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update announcement
+
+Sat Jul 21 19:28:05 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Document a bunch of methods/classes/modules
+
+Sat Jul 21 19:00:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * rawiki is now wiktacular, fixed some bugs, added some features, HTML escapes fine now.
+
+Fri Jul 20 14:54:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * documentation for dispatcher/error and the templating engines.
+
+Fri Jul 20 14:46:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Some more class/module docs.
+
+Fri Jul 20 14:33:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Documenting the inform/* informers.
+
+Fri Jul 20 21:53:45 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Add a spec for recent cache patch (namespaces for caches)
+
+Fri Jul 20 21:53:32 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * don't translate empty strings (localize)
+
+Fri Jul 20 21:52:52 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Allow <Page js='foo'> as well as <Page js="foo">
+
+Fri Jul 20 21:51:52 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * small visual enhancement in resolve.rb
+
+Fri Jul 20 21:50:21 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add rawiki example
+
+Fri Jul 20 16:36:09 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Revise cache, add cache-name to key, remove method missing
+  .[] .[]= .delete .clear .values_at
+  These are now the only operations supported by Cache, if you need more, use
+  the Cache#cache to get the underlying object.
+
+Fri Jul 20 03:06:18 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Fix blog example, link is removed in favour of A
+
+Thu Jul 19 22:58:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Refining error-handling, now controllers are asked for a (also configurable) error-page if they have no action.
+
+Thu Jul 19 01:34:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove __ urls, saves us one iteration for each uri over 3 segments long :P
+
+Sat Jul 14 04:21:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * jQuery 1.1.3.1
+
+Sat Jul 14 01:46:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Warn if no mappings are done.
+
+Sat Jul 14 01:24:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Alternative error-page if error-template missing and hint about clicking backtraces.
+
+Fri Jul 13 08:45:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Two minor fixes for proto
+
+Thu Jul 12 20:22:14 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * bugfix, Inform not Informer
+
+Mon Jul  9 22:57:17 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Add a Controller.at(mapping) method to nicely get to a mapped controller when you only have a path.
+
+Thu Jul 12 08:51:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the japanese COPYING, it's outdated and won't be read by anyone
+
+Mon Jul  9 22:19:31 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Partial suddenly needs Request.current instead of request O.o
+
+Mon Jul  9 22:14:56 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Scope for Elements is now the current controller
+  This makes overriding of Elements easy.
+  For example you have a top ::Page element and one in FooController::Page,
+  the FooController::Page will be used when rendering actions from FooController
+  and all other controllers will fall back to the default ::Page element.
+
+Mon Jul  9 22:13:10 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Protect Aspects when called on a controller which doesn't have the aspect helper included
+
+Mon Jul  9 21:57:30 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * docfix, Base/IndexController don't get mapped to / anymore
+
+Wed Jul  4 17:57:57 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Sanitize Cache.resolved before blindly using what it gives us, better error-tolerance (for memcache as far as we know), oh, and removed some spaces at EOL
+
+Sun Jul  1 02:49:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove Global.public_proto, make sure you copy over the error.xhtml if you need it..
+
+Fri Jun 29 17:56:51 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Add tool.rb to make autoload possible
+
+Thu Jun 28 22:01:39 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Follow the .current scheme with errors too, Ramaze::Dispatcher::Error.current
+
+Wed Jun 27 03:31:08 JST 2007  Lars Olsson <lasso@lassoweb.se>
+  * informer_log_levels
+  This patch adds a "filter" to the Informer class which allows for better 
+  separation of logs. For instance, you could log debug information at 
+  standard output while having another Informer logging all errors to a 
+  file.
+
+Wed Jun 27 23:36:28 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * migrate previous render_partial fix to post 0.1.2
+
+Tue Jun 26 22:49:09 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * use hash of SEEED for memcached namespace
+
+Tue Jun 26 22:14:18 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * [Pager] Overlooked one link
+
+Wed Jun 27 16:58:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * implementation and spec for LinkHelper#breadcrumbs
+
+Sun Jun 24 06:49:31 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Remove eval in Pager, add new testcase
+
+Thu Jun 21 23:05:29 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Fix render_parial transformer
+
+Thu Jun 21 22:28:32 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * fix up render_partial
+
+Fri Jun 22 01:46:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Some code-beautification and complete docs for all files in this patch.
+
+Fri Jun 22 01:34:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing parser of `rake undocumented` to recognize '=begin rdoc' as comment as well.
+
+Fri Jun 22 15:40:54 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * don't make a new Struct for GlobalStruct, causes problems with reloading.
+
+Thu Jun 21 23:04:53 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * fix Pager (0.1.2 migration leftover)
+
+Thu Jun 21 16:55:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add Ramaze::SEEED which contains the file Ramaze.start was called from. Now used as key for memcached namespace.
+
+Wed Jun 20 01:20:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update AUTHORS - welcome tmm1! :)
+
+Wed Jun 20 00:56:41 JST 2007  Aman Gupta <ramaze@tmm1.net>
+  * minor spec cleanups
+
+Tue Jun 19 14:23:26 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Describe the way of request/response in doc/meta/internals.txt (for rikur and all the other curious folks out there)
+
+Tue Jun 19 15:13:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Documented some undocumented methods. (by Riku R[_\c3_][_\a4_]s[_\c3_][_\a4_]en <riku@helloit.fi>)
+
+Mon Jun 18 14:07:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make dispatching continue after Dispatcher::Action fails, just return the last available error if all dispatchers fail.
+
+Tue Jun 19 00:05:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Global.public_root has precedence over Global.public_proto
+
+Sun Jun 17 06:51:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  tagged 0.1.2
+
+Sun Jun 17 06:50:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update CHANGELOG
+
 Sun Jun 17 06:50:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Version 0.1.2
 
