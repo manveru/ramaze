@@ -70,7 +70,7 @@ end
 desc "generate improved allison-rdoc"
 task :allison => :clean do
   opts = RDOC_OPTS
-  opts << %w[--template 'doc/allison/allison.rb']
+  opts << %w[--template '/home/manveru/prog/projects/allison/allison.rb']
   sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
 end
 
