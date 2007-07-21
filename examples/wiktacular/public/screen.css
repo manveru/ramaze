@@ -4,13 +4,15 @@ body {
 
 a {
   text-decoration: none;
-  color: #113;
+  color: #224;
+}
+a:hover {
+  text-decoration: underline overline;
+  color: #335;
 }
 
 a:before { content:"[ "; }
 a:after { content:" ]"; }
-a:hover:before { content:"| "; }
-a:hover:after { content:" |"; }
 
 h1 { font-size: 1.5em; }
 h2 { font-size: 1.4em; }

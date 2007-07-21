@@ -29,6 +29,11 @@ class MainController < Ramaze::Controller
     redirect Rs(handle)
   end
 
+  def delete handle
+    WikiEntry[handle].delete
+    redirect_referer
+  end
+
   def save
     redirect_referer unless request.post?
     handle = request['handle']

@@ -3,8 +3,8 @@ class Page < Ezamar::Element
     %{
 <html>
   <head>
-    <title>RaWiKi</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="/display.css" />
+    <title>Wiktacular</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="/screen.css" />
   </head>
   <body>
     }
@@ -39,6 +39,7 @@ class Page < Ezamar::Element
       <a href="/edit/\#@handle">Edit</a>
       <a href="/delete/\#@handle">Delete</a>
       <a href="/revert/\#@handle">Revert</a>
+      <a href="/unrevert/\#@handle">Unrevert</a>
     </div>
     <div id="content">
       #{content}
@@ -57,7 +58,7 @@ class Page < Ezamar::Element
     
   def footer
 %{
-    <div id="copyright">&copy; 2007 by Ramaze</div>
+    <div id="copyright">Wiktacular is powered by <a href="http://ramaze.rubyforge.org/">Ramaze</a></div>
   </body>
 </html>
 }

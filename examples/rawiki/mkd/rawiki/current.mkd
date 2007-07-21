@@ -1,3 +1,0 @@
-# RaWiKi
-
-RaWiKi is the engine powering this wiki.

@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'cgi'
 
 class WikiEntry
   class << self
@@ -61,7 +62,7 @@ class WikiEntry
   end
 
   def content
-    File.read(@current) if exists?
+    CGI.unescapeHTML(File.read(@current)) if exists?
   end
 
   def timestamp
@@ -82,7 +83,7 @@ class EntryView
     def mkd2html text
       html = BlueCloth.new(text).to_html
       html.gsub!(/\[\[(.*?)\]\]/) do |m|
-        exists = self.class[$1] ? 'exists' : 'nonexists'
+        exists = WikiEntry[$1] ? 'exists' : 'nonexists'
       %{<a href="/#{CGI.escape($1)}" class="#{exists}">#{$1}</a>}
       end
       html
