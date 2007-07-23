@@ -36,4 +36,11 @@
       <coordinates>8.447204,49.028928,0</coordinates>
     </Point>
   </Placemark>
+  <Placemark>
+    <name>zenix</name>
+    <description>--</description>
+    <Point>
+      <coordinates>-77.183338,39.137049,0</coordinates>
+    </Point>
+  </Placemark>
 </kml>
