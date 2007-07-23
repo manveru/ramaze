@@ -2,7 +2,9 @@
 <kml xmlns="http://earth.google.com/kml/2.1">
   <Placemark>
     <name>manveru</name>
-    <description>Tokyo, Japan</description>
+    <description><![CDATA[ <img src="http://manveru.mine.nu/public/me.png"><br>
+          Tokyo, Japan ]]>
+      </description>
     <Point>
       <coordinates>139.667846,35.614759</coordinates>
     </Point>
@@ -19,6 +21,13 @@
     <description>--</description>
     <Point>
       <coordinates>-122.266881,47.682765,0</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Kashia</name>
+    <description>--</description>
+    <Point>
+      <coordinates>8.447204,49.028928,0</coordinates>
     </Point>
   </Placemark>
 </kml>
