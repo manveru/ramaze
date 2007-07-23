@@ -11,7 +11,12 @@
   </Placemark>
   <Placemark>
     <name>Pistos</name>
-    <description>--</description>
+    <description>
+    <![CDATA[
+        Toronto, Canada<br />
+        <a href="http://blog.purepistos.net">blog.purepistos.net</a>
+    ]]>
+    </description>
     <Point>
       <coordinates>-79.386985,43.642515,0</coordinates>
     </Point>
