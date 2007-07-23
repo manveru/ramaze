@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+  <Placemark>
+    <name>manveru</name>
+    <description>Tokyo, Japan</description>
+    <Point>
+      <coordinates>139.667846,35.614759</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Pistos</name>
+    <description>--</description>
+    <Point>
+      <coordinates>-79.386985,43.642515,0</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>MonoDelDiablo</name>
+    <description>--</description>
+    <Point>
+      <coordinates>-122.266881,47.682765,0</coordinates>
+    </Point>
+  </Placemark>
+</kml>
