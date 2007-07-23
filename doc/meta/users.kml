@@ -2,7 +2,7 @@
 <kml xmlns="http://earth.google.com/kml/2.1">
   <Placemark>
     <name>manveru</name>
-    <description><![CDATA[ <img src="http://manveru.mine.nu/public/me.png"><br>
+    <description><![CDATA[ <img src="http://manveru.mine.nu/public/me.png" /><br />
           Tokyo, Japan ]]>
       </description>
     <Point>
@@ -41,6 +41,15 @@
     <description>--</description>
     <Point>
       <coordinates>-77.183338,39.137049,0</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>tmm1</name>
+    <description><![CDATA[ <img src="http://tmm1.net/me.jpg" /><br />
+          Boston, Massachussetts ]]>
+      </description>
+    <Point>
+      <coordinates>-71.084371,42.365975,0</coordinates>
     </Point>
   </Placemark>
 </kml>
