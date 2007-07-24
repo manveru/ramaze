@@ -47,7 +47,6 @@ module Ramaze
     end
 
     # Initializes the cache, defined by Global.cache
-
     def initialize(cache = Global.cache)
       @cache = cache.new
     end
@@ -61,19 +60,20 @@ module Ramaze
     end
 
     # deletes the keys of each argument passed from Cache instance.
-
     def delete(*args)
       args.each do |arg|
         @cache.delete("#{@cache_name}:#{arg}")
       end
     end
 
+    # Empty this cache
     def clear
       @cache.clear
     end
 
-    def values_at(*args)
-      @cache.values_at(*args.map {|key| "#{@cache_name}:#{key}" })
+    # Answers with value for each key.
+    def values_at(*keys)
+      @cache.values_at(*keys.map {|key| "#{@cache_name}:#{key}" })
     end
   end
 end

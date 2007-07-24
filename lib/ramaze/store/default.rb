@@ -4,6 +4,9 @@
 require 'yaml/store'
 
 module Ramaze
+
+  # Namespace for Stores in Ramaze
+
   module Store
 
     # A simple wrapper around YAML::Store

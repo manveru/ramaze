@@ -11,6 +11,10 @@ module Ramaze
     # actions in your controllers.
 
     class Error
+
+      # The class of exception is matched when an error occurs and the status
+      # code is set. The absolute URLs are used as fallback in case of a total
+      # failure.
       HANDLE_ERROR = {
                           Exception => [ 500, '/error' ],
             Ramaze::Error::NoAction => [ 404, '/error' ],
@@ -20,6 +24,11 @@ module Ramaze
       class << self
         trait :last_error => nil
 
+        # Takes exception, of metainfo only :controller is used at the moment.
+        # Then goes on to try and find the correct response status and path.
+        # In case metainfo has a controller we try to get the action for the
+        # path on it, dispatching there if we find one.
+        # Otherwise a plain-text error message is set as response.
         def process(error, metainfo = {})
           log_error(error)
 
@@ -49,6 +58,8 @@ module Ramaze
           Dispatcher.build_response(ex.message, status)
         end
 
+        # Only logs new errors with full backtrace, repeated errors are shown
+        # only with their message.
         def log_error error
           error_message = error.message
 
@@ -60,6 +71,8 @@ module Ramaze
           end
         end
 
+        # Handle to current exception.
+        # Only works inside request/response cycle.
         def current
           Thread.current[:exception]
         end

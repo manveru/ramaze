@@ -2,6 +2,8 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # Subclassing Rack::Response for our own purposes.
   class Response < ::Rack::Response
     class << self
 

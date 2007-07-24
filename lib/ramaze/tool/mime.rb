@@ -5,11 +5,18 @@ require 'yaml'
 
 module Ramaze
   module Tool
+
+    # Responsible for lookup of MIME info for filetypes based on extension.
+
     module MIME
 
+      # the mime_types.yaml as full path, we use a copy of mongrels.
       trait :types => YAML.load_file(BASEDIR/'ramaze'/'tool'/'mime_types.yaml')
 
       class << self
+
+        # Get MIME-type for the given filename based on extension.
+        # Answers with an empty string if none is found.
         def type_for file
           ext = File.extname(file)
           trait[:types][ext].to_s
