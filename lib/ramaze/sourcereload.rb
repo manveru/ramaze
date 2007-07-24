@@ -87,7 +87,6 @@ module Ramaze
       SourceReloadHooks.after_safe_load_succeed(file)
       true
     rescue Object => ex
-      Inform.error(ex)
       SourceReloadHooks.after_safe_load_failed(file, ex)
       false
     end
@@ -125,6 +124,7 @@ module Ramaze
     # by default we output an error-message with the exception.
 
     def after_safe_load_failed(file, error)
+      Inform.error(error)
     end
   end
 end
