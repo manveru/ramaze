@@ -10,19 +10,24 @@ module Ramaze
   class Syslog
     include ::Syslog
 
+    # opens syslog
+
     def initialize
       open unless ::Syslog.opened?
     end
 
+    # alias for default syslog methods so they match ramaze
     alias error err
     alias warn warning
 
+    # just sends all messages received to ::Syslog
     def inform(tag, *args)
       self.__send__(tag, *args)
     end
 
     public :error, :warn
 
+    # Has to call the modules singleton-method.
     def inspect
       ::Syslog.inspect
     end
