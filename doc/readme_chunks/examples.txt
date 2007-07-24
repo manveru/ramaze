@@ -10,7 +10,7 @@ Or:
   $ cd examples/blog
   $ ramaze
 
-Since ramaze uses the main.rb by default if you don't pass anything else.
+Since ramaze uses the start.rb by default if you don't pass anything else.
 
 For more information about the usage of ramaze try:
 

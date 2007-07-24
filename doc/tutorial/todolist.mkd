@@ -549,7 +549,7 @@ options, since they are bound to change over time.
 
 First of all, the default port Ramaze runs on is 7000, but to make it a usual
 webserver it has to run on port 80.  So, let's add following line in your
-main.rb right after the lines of require you added before:
+start.rb right after the lines of require you added before:
 
     Ramaze::Global.port = 80
 
@@ -573,7 +573,7 @@ options, which is either using flags on the ramaze executable, or like this:
     Ramaze.start :port => 80, :adapter => :mongrel
 
 We haven't started Ramaze directly as of yet, but this allows you to ignore the
-ramaze executable and just run your application by `ruby main.rb`.
+ramaze executable and just run your application by `ruby start.rb`.
 
 
 ## Eleventh Step, Refactor with AspectHelper

@@ -156,7 +156,7 @@ spec/spec_helper.
 :template_root => 'template'
 
 The template_root is the point your templates are located relative to the
-location of the entry-file (usually main.rb)
+location of the entry-file (usually start.rb)
 It is also worth to mention that inside this directory the `mapping` is used
 to locate templates for each controller, only the controller mapped to '/' uses
 the templates directly from the `template_root`

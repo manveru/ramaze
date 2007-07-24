@@ -77,7 +77,7 @@ module Ramaze
     o "Test before start if adapters will be able to connect",
       :test_connections => true, :cli => true
 
-    o "Specify template root for dynamic files relative to main.rb",
+    o "Specify template root for dynamic files relative to start.rb",
       :template_root => 'template'
   end
 

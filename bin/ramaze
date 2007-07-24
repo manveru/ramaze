@@ -17,7 +17,7 @@ opts = OptionParser.new do |opt|
   ruby_version = "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]" 
   ramaze_version = "#{RAMAZE_VERSION}, on #{ruby_version}"
 
-  opt.banner = "Usage: ramaze main.rb [OPTIONS]"
+  opt.banner = "Usage: ramaze start.rb [OPTIONS]"
   opt.define_head ramaze_version
 
   opt.on('--create PROJECT', "A new application based on proto.") do |input|
@@ -71,7 +71,7 @@ opts = OptionParser.new do |opt|
 end
 
 opts.parse!(ARGV)
-runner = (ARGV + ['main.rb']).find{|f| File.exists?(f)}
+runner = (ARGV + ['start.rb']).find{|f| File.exists?(f)}
 
 if project = options.delete(:create)
   require 'ramaze/tool/create'

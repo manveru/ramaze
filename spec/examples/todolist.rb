@@ -3,7 +3,7 @@ require 'spec/helper'
 testcase_requires 'hpricot'
 
 $:.unshift 'examples/todolist'
-require 'main'
+require 'start'
 
 # fix the paths to template and public for the spec
 class MainController
