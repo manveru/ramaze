@@ -155,6 +155,7 @@ task 'tutorial2html' do
   File.open(basefile + '.html', 'w+'){|f| f.puts(wrap) }
 end
 
+desc "Rebuild doc/tutorial/todolist.html"
 task 'tutorial' => ['tutorial2html'] do
   require 'hpricot'
 
@@ -196,6 +197,7 @@ task 'tutorial' => ['tutorial2html'] do
   end
 end
 
+desc "Update /doc/AUTORS"
 task 'authors' do
   changes = `darcs changes`
   authors = []
@@ -249,7 +251,6 @@ task 'release' => ['distribute'] do
   sh "rubyforge add_file ramaze ramaze #{release_id} pkg/ramaze-#{VERS}.tar.bz2"
 end
 
-desc "list all undocumented methods"
 task 'undocumented-module' do
   require 'strscan'
   require 'term/ansicolor'
@@ -343,11 +344,13 @@ task 'undocumented-module' do
   puts
 end
 
+desc "list all undocumented methods"
 task 'undocumented' do
 	$VERBOSE = false
 	Rake::Task['undocumented-module'].execute
 end
 
+desc "list all undocumented methods verbosely"
 task 'undocumented-verbose' do
 	$VERBOSE = true
 	Rake::Task['undocumented-module'].execute
