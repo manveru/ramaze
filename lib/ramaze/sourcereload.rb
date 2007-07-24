@@ -98,19 +98,31 @@ module Ramaze
   module SourceReloadHooks
     module_function
 
+    # Overwrite to add actions before the reload cycle is started.
+
     def before_reload
     end
+
+    # Overwrite to add actions after the reload cycle has ended.
 
     def after_reload
     end
 
+    # Overwrite to add actions before a file is Kernel::load-ed
+
     def before_safe_load(file)
     end
+
+    # Overwrite to add actions after a file is Kernel::load-ed successfully,
+    # by default we clean the Cache for compiled templates and resolved actions.
 
     def after_safe_load_succeed(file)
       Cache.compiled.clear
       Cache.resolved.clear
     end
+
+    # Overwrite to add actions after a file is Kernel::load-ed unsuccessfully,
+    # by default we output an error-message with the exception.
 
     def after_safe_load_failed(file, error)
     end
