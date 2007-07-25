@@ -58,7 +58,7 @@ opts = OptionParser.new do |opt|
   opt.separator ''
   opt.separator 'Common options:'
 
-  # -? keeps -p for --port free
+  # -? keeps -h for --host free
   opt.on_tail('-?', '--help', 'Show this message') do
     puts opts
     exit
