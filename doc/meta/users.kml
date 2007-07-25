@@ -24,21 +24,21 @@
   </Placemark>
   <Placemark>
     <name>MonoDelDiablo</name>
-    <description>--</description>
+    <description><![CDATA[ Seattle, Washington, United States ]]></description>
     <Point>
       <coordinates>-122.266881,47.682765,0</coordinates>
     </Point>
   </Placemark>
   <Placemark>
     <name>Kashia</name>
-    <description>--</description>
+    <description><![CDATA[ Helsinki, Etela-Suomen Laani, Finland ]]></description>
     <Point>
       <coordinates>8.447204,49.028928,0</coordinates>
     </Point>
   </Placemark>
   <Placemark>
     <name>zenix</name>
-    <description>--</description>
+    <description><![CDATA[ Gaithersburg, Maryland, United States ]]></description>
     <Point>
       <coordinates>-77.183338,39.137049,0</coordinates>
     </Point>
@@ -51,5 +51,12 @@
     <Point>
       <coordinates>-71.084371,42.365975,0</coordinates>
     </Point>
+  </Placemark>
+  <Placemark>
+  	<name>riffraff</name>
+  	<description><![CDATA[ Rome, Italia ]]></description>
+  	<Point>
+  		<coordinates>41.993372,12.087193,0</coordinates>
+  	</Point>
   </Placemark>
 </kml>
