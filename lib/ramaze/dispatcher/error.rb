@@ -42,7 +42,7 @@ module Ramaze
             begin
               action = Controller.resolve(controller.mapping + path)
               return Dispatcher.build_response(action.render, status)
-            rescue Ramaze::Error
+            rescue Ramaze::Error => e
               Inform.debug("No custom error page found on #{controller}, going to #{path}")
             end
           end

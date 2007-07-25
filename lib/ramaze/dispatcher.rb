@@ -38,13 +38,22 @@ module Ramaze
 
         general_dispatch path
       rescue Object => error
-        Dispatcher::Error.process(error, :path => path, :request => request)
+        meta = { :path => path,
+                 :request => request,
+                 :controller => Thread.current[:controller] }
+        Dispatcher::Error.process(error, meta)
       end
 
       # protcets against recursive dispatch and reassigns the path_info in the
       # request, the rest of the request is kept intact.
       def dispatch_to(path)
-        raise "Recursive redirect from #{path} to #{path}" if request.path_info == path
+        if request.path_info == path
+          if error = Thread.current[:exception]
+            raise error
+          else
+            raise "Recursive redirect from #{path} to #{path}"
+          end
+        end
         request.path_info = path
         general_dispatch path
       end
@@ -107,7 +116,7 @@ module Ramaze
 
         meta = {
           :path => path,
-          :controller => Thread.current[:failed_controller]
+          :controller => Thread.current[:controller]
         }
         Dispatcher::Error.process(result, meta)
       end

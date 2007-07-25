@@ -22,6 +22,10 @@ class TCErrorCustomController < Ramaze::Controller
   def error
     "The error page of custom"
   end
+
+  def erroring
+    bluh
+  end
 end
 
 describe "Error" do
@@ -30,6 +34,11 @@ describe "Error" do
   before :all do
     require 'ramaze/dispatcher/error'
     @handle_error = Ramaze::Dispatcher::Error::HANDLE_ERROR
+  end
+
+  before :each do
+    Ramaze::Cache.resolved.clear
+    Ramaze::Cache.patterns.clear
   end
 
   it 'should resolve custom error pages per controller' do
@@ -43,6 +52,12 @@ describe "Error" do
     response.status.should == 500
     regex = %r(undefined local variable or method `blah' for .*?TCErrorController)
     response.body.should =~ regex
+  end
+
+  it 'should throw errors from rendering' do
+    response = get('/custom/erroring')
+    response.status.should == 500
+    response.body.should == "The error page of custom"
   end
 
   it 'should give 404 when no action is found' do
@@ -61,10 +76,10 @@ describe "Error" do
   end
 
   it "should give 404 when no controller is found" do
-    Ramaze::Global.should_receive(:mapping).exactly(3).times.and_return{ {} }
+    Ramaze::Global.should_receive(:mapping).exactly(6).times.and_return{ {} }
     response = get('/illegal2')
     response.status.should == 404
-    response.body.should =~ %r(No Controller found for `/illegal2')
+    response.body.should =~ %r(No Controller found for `/error')
   end
 
   it "should return custom error page" do

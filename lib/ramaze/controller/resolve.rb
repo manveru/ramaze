@@ -146,7 +146,7 @@ module Ramaze
       # Raises Ramaze::Error::NoAction
 
       def raise_no_action(controller, path)
-        Thread.current[:failed_controller] = controller
+        Thread.current[:controller] = controller
         raise Ramaze::Error::NoAction, "No Action found for `#{path}' on #{controller}"
       end
     end
