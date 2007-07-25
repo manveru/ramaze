@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+begin
+  require 'rubygems'
+rescue LoadError
+end
+
 require 'ramaze'
 
 RAMAZE_VERSION = "Ramaze Version #{Ramaze::VERSION}"

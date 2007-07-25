@@ -1,6 +1,11 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+begin
+  require 'rubygems'
+rescue LoadError
+end
+
 # The main namespace for Ramaze
 module Ramaze
   BASEDIR = File.dirname(File.expand_path(__FILE__))
