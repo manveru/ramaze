@@ -44,7 +44,7 @@ module WEBrick
   module HTTPServlet
 
     # Extending on ProcHandler
-    # 
+    #
     # We alias PUT to GET and DELETE to GET so WEBrick handles them as well.
     class ProcHandler
       alias do_PUT do_GET
