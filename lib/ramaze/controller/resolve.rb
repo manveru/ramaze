@@ -47,6 +47,8 @@ module Ramaze
         raise_no_controller(path)
       end
 
+      # Try to produce an Action from the given path and paremters with the
+      # appropiate template if one exists.
       def resolve_action(path, *parameter)
         path, parameter = path.to_s, parameter.map(&:to_s)
         if alternate_template = trait["#{path}_template"]
@@ -67,12 +69,14 @@ module Ramaze
                       :controller => self
       end
 
-      def resolve_template(action)
-        action = action.to_s
-        action_converted = action.split('__').inject{|s,v| s/v}
-        actions = [action, action_converted].compact
+      # Search the #template_paths for a fitting template for path.
+      # Only the first found possibility for the generated glob is returned.
+      def resolve_template(path)
+        path = path.to_s
+        path_converted = path.split('__').inject{|s,v| s/v}
+        possible_paths = [path, path_converted].compact
 
-        paths = template_paths.map{|pa| actions.map{|a| pa/a } }.flatten.uniq
+        paths = template_paths.map{|pa| possible_paths.map{|a| pa/a } }.flatten.uniq
         glob = "{#{paths.join(',')}}.{#{extension_order.join(',')}}"
 
         Dir[glob].first
@@ -83,6 +87,7 @@ module Ramaze
         [ @template_root, Global.public_root ].compact
       end
 
+      # Based on methodname and arity, tries to find the right method on current controller.
       def resolve_method(name, *params)
         if method = action_methods.delete(name)
           arity = instance_method(method).arity
@@ -93,6 +98,7 @@ module Ramaze
         return nil, []
       end
 
+      # methodnames that may be used for current controller.
       def action_methods
         exclude = Controller.trait[:exclude_action_modules]
 
@@ -102,6 +108,7 @@ module Ramaze
         meths - ancs.map(&:to_s)
       end
 
+      # Generate all possible permutations for given path.
       def pattern_for(path)
         atoms = path.split('/').grep(/\S/)
         atoms.unshift('')
@@ -129,6 +136,9 @@ module Ramaze
         patterns.reverse!
       end
 
+      # Uses custom defined engines and all available engines and throws it
+      # against the extensions for the template to find the most likely
+      # templating-engine to use ordered by priority and likelyhood.
       def extension_order
         t_extensions = Template::ENGINES
         engine = trait[:engine]
