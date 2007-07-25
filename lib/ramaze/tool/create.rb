@@ -29,14 +29,14 @@ module Ramaze
           @basedir = ::Ramaze::BASEDIR / 'proto'
           @destdir = Dir.pwd / project
 
-          puts "creating project: #{project}"
+          puts "Creating project #{project}"
 
           FileUtils.mkdir_p(project)
 
-          puts "copy proto to new project (#@destdir)..."
+          puts "Copying skeleton project to new project (#@destdir)..."
 
           directories, files =
-            Dir[@basedir / '**' / '*'].partition{|f| File.directory?(f) }
+            Dir[@basedir / '**' / '*'].partition{ |f| File.directory?(f) }
 
           create_dirs(*directories)
           copy_files(*files)
@@ -49,7 +49,7 @@ module Ramaze
           dirs.each do |dir|
             dest = dir.gsub(@basedir, @destdir)
 
-            puts "create directory: '#{dest}'"
+            puts "Create directory: '#{dest}'"
             FileUtils.mkdir_p(dest)
           end
         end
@@ -60,7 +60,7 @@ module Ramaze
           files.each do |file|
             dest = file.gsub(@basedir, @destdir)
 
-            puts "copy file: '#{dest}'"
+            puts "Copy file: '#{dest}'"
             FileUtils.cp(file, dest)
           end
         end
