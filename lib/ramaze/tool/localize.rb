@@ -16,8 +16,8 @@ class Ramaze::Tool::Localize
   # languages supported
   trait :languages => %w[ en ]
 
-  # YAML files the localizations are saved to and loaded from, %s is substituded
-  # by the values from trait[:languages]
+  # YAML files the localizations are saved to and loaded from, %s is
+  # substituted by the values from trait[:languages]
   trait :file => 'conf/locale_%s.yaml'.freeze
 
   # The pattern that is substituted with the translation of the current locale.
@@ -36,6 +36,8 @@ class Ramaze::Tool::Localize
 
     include Ramaze::Trinity
 
+    # Enables being plugged into Dispatcher::Action::FILTER
+
     def call(response, options = {})
       return response unless trait[:enable]
       return response if response.body.nil?
@@ -43,6 +45,10 @@ class Ramaze::Tool::Localize
       response.body = localize_body(response.body, options)
       response
     end
+
+    # Localizes a response body.  It reacts to a regular expression as given
+    # in trait[:regex].  Every 'entity' in it will be translated, see
+    # `localize` for more information.
 
     def localize_body(body, options)
       locale = session[:LOCALE] || set_session_locale
@@ -56,9 +62,10 @@ class Ramaze::Tool::Localize
       body
     end
 
-    def localize(str, locale)
-      Ramaze::Inform.debug "localizing: #{locale} => '#{str}'"
+    # Localizes a single 'entity'.  If a translation in the chosen language is
+    # not available, it falls back to the default language.
 
+    def localize(str, locale)
       trans = nil
       default_language = trait[:default_language]
       dict = dictionary
@@ -81,6 +88,10 @@ class Ramaze::Tool::Localize
       str
     end
 
+    # Sets session[:LOCALE] to one of the languages defined in the dictionary.
+    # It first tries to honor the browsers accepted languages and then falls
+    # back to the default language.
+
     def set_session_locale
       session[:LOCALE] = trait[:default_language]
       accepted_langs = request.http_accept_language rescue 'en'
@@ -98,11 +109,15 @@ class Ramaze::Tool::Localize
       end
 
       session[:LOCALE]
-    end # end set_session_locale
+    end
+
+    # Returns the dictionary used for translation.
 
     def dictionary
       trait[:dictionary] || load(*trait[:languages])
     end
+
+    # Load given locales from disk and save it into the dictionary.
 
     def load(*locales)
       Ramaze::Inform.debug "loading locales: #{locales.inspect}"
@@ -119,6 +134,8 @@ class Ramaze::Tool::Localize
 
       trait[:dictionary] = dict
     end
+
+    # Stores given locales from the dictionary to disk.
 
     def store(*locales)
       locales.uniq.compact.each do |locale|
