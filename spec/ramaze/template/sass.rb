@@ -25,7 +25,9 @@ describe "Simply calling" do
   ramaze(:compile => true)
 
   it "should render an inline Sass template" do
-    get('/test').body.strip.should ==
+    r = get('/test')
+    r.headers['Content-Type'].should == "text/css"
+    r.body.strip.should ==
 "body {
   margin: 1em; }
   body #content {
@@ -33,7 +35,9 @@ describe "Simply calling" do
   end
   
   it "should render a Sass template from file" do
-    get('/from_file').body.strip.should ==
+    r = get('/from_file')
+    r.headers['Content-Type'].should == "text/css"
+    r.body.strip.should ==
 "body {
   margin: 1em; }
   body #content {

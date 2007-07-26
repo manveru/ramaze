@@ -28,6 +28,7 @@ module Ramaze
         # options override the defaults from trait[:sass_options]
 
         def transform action
+          Response.current['Content-Type'] = "text/css"
           sass = wrap_compile(action)
           sass.to_css()
         end
