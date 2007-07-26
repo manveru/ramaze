@@ -100,6 +100,23 @@ module Ramaze
         Global.mapping[mapping.to_s]
       end
 
+      # Define a layout for all actions on this controller
+      #
+      # Example:
+      #   class Foo < Ramaze::Controller
+      #     layout :foo
+      #   end
+      #
+      #  This defines the action :foo to be layout of the controller and will
+      #  render the layout after any other action has been rendered, assigns
+      #  @content to the result of the action and then goes on rendering
+      #  the layout-action where @content may or may not be used, returning
+      #  whatever the layout returns.
+
+      def layout(meth)
+        trait :layout => R(self, meth)
+      end
+
       # Define a template_root for Controller, returns the current template_root
       # if no argument is given.
       # Runs every given path through Controller::check_path

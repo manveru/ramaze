@@ -41,12 +41,36 @@ module Ramaze
 
     # The 'normal' rendering process. Passes the Action instance to
     # Action#engine.transform, which returns the output of the action.
+    # Layout will be found and rendered in this step after self was rendered.
 
     def uncached_render
-      [ before_process,
-        engine.transform(self),
-        after_process,
-      ].join
+      bp = before_process
+      content = engine.transform(self)
+      ap = after_process
+
+      if tlayout = layout
+        instance.instance_variable_set("@content", content)
+        content = tlayout.render
+        Thread.current[:action] = self
+      end
+      [bp, content, ap].join
+    end
+
+    # Determine whether or not we have a layout to process and sets it up
+    # correctly to be rendered in the same context as current action.
+    # Will return false if the layout is the same as current action to avoid
+    # infinite recursion and also if no layout on this controller was found.
+
+    def layout
+      return false unless layout_name = controller.trait[:layout]
+      layout_action = Ramaze::Controller.resolve(layout_name)
+
+      return false if layout_action.path == path
+
+      layout_action.binding = binding
+      layout_action.controller = controller
+      layout_action.instance = instance
+      layout_action
     end
 
     # return true if the action is flagged for caching. Called by
