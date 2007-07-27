@@ -41,4 +41,13 @@ class MainController < Ramaze::Controller
     entry.save(request['text'])
     redirect Rs(:index, handle)
   end
+
+  def html_layout
+    @nodes = Dir['mkd/*'].map{|f|
+        name = File.basename(f)
+        %[<a href="/#{name}">#{name}</a>]
+      }.join("\n")
+  end
+
+  layout :html_layout
 end
