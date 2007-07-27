@@ -4,7 +4,7 @@
 module Ramaze
   # LinkHelper is included into the Controller by default
   #
-  # Usage is pretty much shown in test/tc_helper and the rdocs below.
+  # Usage is shown in spec/ramaze/helper/link.rb and the rdocs below.
 
   module LinkHelper
 

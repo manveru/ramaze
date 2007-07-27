@@ -2,6 +2,11 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # FeedHelper is an optional Helper.
+  #
+  # Usage is shown in spec/ramaze/helper/feed.rb and the rdocs below.
+
   module FeedHelper
 
     # just a stub, for the moment, doing nothing more than calling
@@ -12,6 +17,10 @@ module Ramaze
     end
   end
 end
+
+
+# A general module you can include to make any object convertable to
+# feeds giving just a few instructions.
 
 module ReFeed
 
