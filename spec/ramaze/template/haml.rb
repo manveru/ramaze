@@ -20,21 +20,21 @@ class TCTemplateHamlController < Ramaze::Controller
   end
 end
 
-describe "Simply calling" do
+describe "Haml templates" do
   ramaze(:compile => true)
 
-  it "index" do
+  it "should render" do
     get('/').body.strip.should ==
-"<div id='contact'>
+%{<div id='contact'>
   <h1>Eugene Mumbai</h1>
   <ul class='info'>
     <li class='login'>eugene</li>
     <li class='email'>eugene@example.com</li>
   </ul>
-</div>"
+</div>}
   end
 
-  it "variables in controller" do
+  it "should have access to variables defined in controller" do
     get('/with_vars').body.strip.should ==
 %{<div id='content'>
   <div class='title'>

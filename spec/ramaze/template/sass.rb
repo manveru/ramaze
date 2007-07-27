@@ -10,7 +10,7 @@ class TCTemplateSassController < Ramaze::Controller
   template_root 'spec/ramaze/template/sass/'
   trait :engine => Ramaze::Template::Sass
 
-  def test
+  define_method('style.css') do
 %{
 body
   :margin 1em
@@ -21,11 +21,11 @@ body
   end
 end
 
-describe "Simply calling" do
+describe "Sass templates" do
   ramaze(:compile => true)
 
-  it "should render an inline Sass template" do
-    r = get('/test')
+  it "should render inline" do
+    r = get('/style.css')
     r.headers['Content-Type'].should == "text/css"
     r.body.strip.should ==
 "body {
@@ -34,8 +34,8 @@ describe "Simply calling" do
     text-align: center; }"
   end
   
-  it "should render a Sass template from file" do
-    r = get('/from_file')
+  it "should render from file" do
+    r = get('/file.css')
     r.headers['Content-Type'].should == "text/css"
     r.body.strip.should ==
 "body {
