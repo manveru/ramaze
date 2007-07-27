@@ -4,13 +4,15 @@
 require 'ramaze/adapter'
 
 module Ramaze::Adapter
+
+  # Our Fcgi adapter acts as wrapper for the Rack::Handler::FastCGI.
   class Fcgi < Base
     class << self
-      def start host, ports
-        run_server
-      end
 
-      def run_server
+      # start FastCGI in a new thread, host and port parameter are only taken
+      # to make it compatible with other adapters but have no influence and
+      # can be omitted
+      def start host, ports
         Thread.new do
           Thread.current[:task] = :cgi
           Rack::Handler::FastCGI.run(self)

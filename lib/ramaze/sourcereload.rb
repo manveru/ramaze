@@ -4,6 +4,12 @@
 require 'set'
 
 module Ramaze
+
+  # SourceReload provides a way to reload changed files automatically during
+  # runtime. Its default behaviour in Ramaze is to check periodically for
+  # files with newer mtime and then attempts to load them in a controlled
+  # manner.
+
   class SourceReload
     attr_accessor :thread, :interval, :reload_glob, :map
 
