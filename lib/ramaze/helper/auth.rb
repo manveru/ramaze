@@ -8,7 +8,7 @@ module Ramaze
   # A really, really, totally stupid way to do authentication. It has no
   # roles and only a single password without usernames.
   #
-  # It is intended to be a simple way to protect various partions of a page
+  # It is intended to be a simple way to protect various portions of a page
   # when you start working on it. Also it is a nice way to see how you could
   # implement your own authentication.
 
@@ -100,7 +100,7 @@ module Ramaze
     #
     #   # The method to be called.
     #   trait :auth_table => :auth_table
-    #   trait :auth_tagle => 'auth_table'
+    #   trait :auth_table => 'auth_table'
     #
     #   # Lambda that will be called upon demand
     #   trait :auth_table => lambda{ {'manveru' => Digest::SHA1.hexdigest 'password'} }
