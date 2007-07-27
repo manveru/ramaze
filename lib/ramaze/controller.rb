@@ -44,6 +44,10 @@ module Ramaze
       def inherited controller
         controller.trait :actions_cached => Set.new
         Global.controllers << controller
+        if map = controller.mapping
+          Inform.debug("mapping #{map} => #{controller}")
+          Global.mapping[map] ||= controller
+        end
       end
 
       # called from Ramaze.startup, adds Cache.actions and Cache.patterns, walks
@@ -52,13 +56,6 @@ module Ramaze
 
       def startup options = {}
         Inform.debug("found Controllers: #{Global.controllers.inspect}")
-
-        Global.controllers.each do |controller|
-          if map = controller.mapping
-            Inform.debug("mapping #{map} => #{controller}")
-            Global.mapping[map] ||= controller
-          end
-        end
 
         if Global.mapping.empty?
           Inform.warn("No Controllers mapped, will serve /public only.")
@@ -87,8 +84,12 @@ module Ramaze
       end
 
       # Map Controller to the given syms or strings.
+      # Replaces old mappings.
+      # If you want to _add_ a mapping, just modify Global.mapping.
 
       def map(*syms)
+        Global.mapping.delete_if{|k,v| v == self}
+
         syms.each do |sym|
           Global.mapping[sym.to_s] = self
         end
