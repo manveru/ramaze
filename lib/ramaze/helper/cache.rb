@@ -7,6 +7,8 @@ module Ramaze
   # smaller amounts of data.
 
   module CacheHelper
+
+    # Create the Cache.value_cache on inclusion if it doesn't exist yet.
     def self.included(klass)
       Cache.add(:value_cache) unless Cache::CACHES.has_key?(:value_cache)
     end
