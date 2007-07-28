@@ -45,10 +45,10 @@ this path. In our example the file found is a favicon.ico from
 Global.public_proto.
 
 The contents of FILTER have to return a Ramaze::Response, either the (possibly
-modified) original (Dispatcher::build_response helps with that) or a totally new
+modified) original (Response#build helps with that) or a totally new
 one.
 
-In our case, Dispatcher::File uses build_response with an opened filehandler as
+In our case, Dispatcher::File uses response#build with an opened filehandler as
 body, '200 OK' as status and the Content-Type set to what Tool::MIME.type_for
 tells it is the correct mimetype for this file.
 

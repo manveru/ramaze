@@ -24,7 +24,7 @@ module Ramaze
 
         def process(path)
           body = Controller.handle(path)
-          response = Dispatcher.build_response(body)
+          response = Response.current.build(body)
           FILTER.inject(response){|r,f| f.call(r) }
         rescue Ramaze::Error => ex
           ex

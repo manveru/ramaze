@@ -33,6 +33,7 @@ module Ramaze
           log_error(error)
 
           Thread.current[:exception] = error
+          response = Response.current
 
           key = error.class.ancestors.find{|a| HANDLE_ERROR[a]}
           status, path = *HANDLE_ERROR[key || Exception]
@@ -41,21 +42,21 @@ module Ramaze
           if controller = metainfo[:controller]
             begin
               action = Controller.resolve(controller.mapping + path)
-              return Dispatcher.build_response(action.render, status)
+              return response.build(action.render, status)
             rescue Ramaze::Error => e
               Inform.debug("No custom error page found on #{controller}, going to #{path}")
             end
           end
 
           unless error.message =~ %r(`#{path.split('/').last}')
-            Response.current.status = status
+            response.status = status
             return Dispatcher.dispatch_to(path) if path and Global.error_page
           end
 
-          Dispatcher.build_response(error.message, status)
+          response.build(error.message, status)
         rescue Object => ex
           Inform.error(ex)
-          Dispatcher.build_response(ex.message, status)
+          response.build(ex.message, status)
         end
 
         # Only logs new errors with full backtrace, repeated errors are shown

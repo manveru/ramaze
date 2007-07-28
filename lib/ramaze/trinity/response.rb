@@ -5,6 +5,19 @@ module Ramaze
 
   # Subclassing Rack::Response for our own purposes.
   class Response < ::Rack::Response
+    # build a response, default values are from the current response.
+
+    def build body = body, status = status, head = header
+      Dispatcher.set_cookie if Global.cookies
+
+      head.each do |key, value|
+        self[key] = value
+      end
+
+      self.body, self.status = body, status
+      self
+    end
+
     class << self
 
       # get the current response out of Thread.current[:response]

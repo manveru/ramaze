@@ -100,7 +100,7 @@ module Ramaze
 
           body, status, head = redirection.values_at(:body, :status, :head)
           Inform.info("Redirect to `#{head['Location']}'")
-          throw(:respond, build_response(body, status, head))
+          throw(:respond, response.build(body, status, head))
         end
       end
 
@@ -119,19 +119,6 @@ module Ramaze
           :controller => Thread.current[:controller]
         }
         Dispatcher::Error.process(result, meta)
-      end
-
-      # build a response, default values are from the current response.
-
-      def build_response body = response.body, status = response.status, head = response.header
-        set_cookie if Global.cookies
-        head.each do |key, value|
-          response[key] = value
-        end
-
-        response.body, response.status = body, status
-
-        return response
       end
 
       # finalizes the session and assigns the key to the response via

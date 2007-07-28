@@ -15,7 +15,7 @@ module Ramaze
 
         def process(path)
           return unless file = open_file(path)
-          Dispatcher.build_response(file, Ramaze::STATUS_CODE['OK'])
+          Response.current.build(file, Ramaze::STATUS_CODE['OK'])
         end
 
         # returns file-handle with the open file on success, setting the
