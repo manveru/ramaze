@@ -2,6 +2,28 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+
+  # = PartialHelper
+  #
+  # === Example Usage
+  #
+  #   class MyController
+  #     def index
+  #     end
+  #     def list
+  #       plain = request['plain']
+  #       "Hello World from List!  Plain List == #{plain}"
+  #     end
+  #   end
+  #
+  #
+  #   <html>
+  #     <head><title>Partial Render Index</title></head>
+  #     <body>
+  #       #{render_partial(Rs(:list), 'plain' => true)}
+  #     </body>
+  #   </html>
+
   module PartialHelper
 
     private

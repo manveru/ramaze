@@ -128,11 +128,6 @@ class Pager
     @start_idx = (@page - 1) * limit
   end
 
-  def set_count(total_count)
-    @total_count = total_count
-    @page_count = (@total_count.to_f / @limit).ceil
-  end
-
   # Return the first page index.
 
   def first_page
@@ -262,10 +257,21 @@ private
     params = @request.params.merge(@key => page)
     Rs(Action.current.method, params)
   end
-  
+
+  # Generate link for the first page.
+
   def link_first_page; target_uri(first_page); end
+
+  # Generate link for the last page.
+
   def link_last_page; target_uri(last_page); end
+
+  # Generate link for the previous page.
+
   def link_prev_page; target_uri(prev_page); end
+
+  # Generate link for the next page.
+
   def link_next_page; target_uri(next_page); end
 
 
@@ -290,6 +296,13 @@ private
     e += d if d < 0
 
     return (s..e)
+  end
+
+  # generates total and page count of the pager.
+
+  def set_count(total_count)
+    @total_count = total_count
+    @page_count = (@total_count.to_f / @limit).ceil
   end
 
 end
