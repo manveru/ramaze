@@ -12,6 +12,8 @@ module Ramaze
 
   class Cache
     include Enumerable
+
+    # Holds all the instances of Cache that are being added.
     CACHES = {} unless defined?(CACHES)
 
     attr_accessor :cache
@@ -51,10 +53,12 @@ module Ramaze
       @cache = cache.new
     end
 
+    # Get key.
     def [](key)
       @cache["#{@cache_name}:#{key}"]
     end
 
+    # Set key to value.
     def []=(key, value)
       @cache["#{@cache_name}:#{key}"] = value
     end
