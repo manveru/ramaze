@@ -7,27 +7,34 @@ require 'openid'
 module Ramaze
 
   openid_store_file = File.join(Dir.tmpdir, 'openid-store')
+
+  # Constant for storing meta-information persistent
   OpenIDStore = OpenID::FilesystemStore.new(openid_store_file)
 
   # This is called Identity to avoid collisions with the original openid.rb
+  # It provides a nice and simple way to provide and control access over the
+  # OpenID authentication model.
 
   module IdentityHelper
-    def self.included(klass)
-      klass.send(:helper, :flash)
-    end
 
+    # Simple form for use or overwriting.
+    # Has to provide the same functionality when overwritten or directly
+    # embedded into a page.
     def openid_login_form
       %{
-<form method="GET" action="#{R(self, :openid_begin)}">
+<form method="GET" action="#{Rs(:openid_begin)}">
   Identity URL: <input type="text" name="url" />
   <input type="submit" />
 </form>
       }
     end
 
+    # We land here from the openid_login_form and if we can find a matching
+    # OpenID server we redirect the user to it, the browser will return to
+    # openid_complete when the authentication is complete.
     def openid_begin
       url = request['url']
-      redirect_referrer if url.nil? or url.empty?
+      redirect_referrer if url.to_s.empty?
       session[:openid_entry] = request.referrer
 
       openid_request = openid_consumer.begin(url)
@@ -38,13 +45,20 @@ module Ramaze
         redirect_referrer
       when OpenID::SUCCESS
         root         = "http://#{request.http_host}/"
-        return_to    = root[0..-2] + R(self, :openid_complete)
+        return_to    = root[0..-2] + Rs(:openid_complete)
         redirect_url = openid_request.redirect_url(root, return_to)
 
         redirect(redirect_url)
       end
     end
 
+    # After having authenticated at the OpenID server browsers are redirected
+    # back here and on success we set the session[:openid_identity] and a little
+    # default flash message. Then we redirect to wherever session[:openid_entry]
+    # points us to, which was set on openid_begin to the referrer
+    #
+    # TODO:
+    #   - maybe using StackHelper, but this is a really minimal overlap?
     def openid_complete
       openid_response = openid_consumer.complete(request.params)
 
@@ -63,6 +77,7 @@ module Ramaze
 
     private
 
+    # Fetch/Create a OpenID::Consumer for current session.
     def openid_consumer
       OpenID::Consumer.new(session, Ramaze::OpenIDStore)
     end
