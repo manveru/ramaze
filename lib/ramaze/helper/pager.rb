@@ -1,3 +1,5 @@
+module Ramaze
+
 # The BSD License
 #
 # Copyright (c) 2004-2007, George K. Moschovitis. (http://www.gmosx.com)
@@ -31,17 +33,53 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-module Ramaze
-
 # Displays a collection of entitities in multiple pages.
 #
 # === Design
 #
-# This pager is carefully designed for scaleability. It stores
-# only the items for one page. The key parameter is needed,
-# multiple pagers can coexist in a single page. The pager
-# leverages the SQL LIMIT option to optimize database
+# This pager is carefully designed for scaleability. It stores only the items
+# for one page. The key parameter is needed, multiple pagers can coexist in a
+# single page. The pager leverages the SQL LIMIT option to optimize database
 # interaction.
+#
+#
+# === Example
+#
+#   class MyController
+#     def index
+#       objs = (0..200).to_a
+#       @entries, @pager = paginate(objs, :limit => 20)
+#     end
+#   end
+#
+#
+#   <html>
+#     <head><title>Pager</title></head>
+#     <body>
+#       <?r if pager.navigation? ?>
+#         <div class="pager">#{@pager.navigation}</div>
+#       <?r end ?>
+#       <ul>
+#       <?r @entries.each do |entry| ?>
+#         <li>#{entry}</li>
+#       <?r end ?>
+#       </ul>
+#     </body>
+#   </html>
+#
+# === Styling
+#
+# The following classes can be used for styling with CSS (provided you put the
+# pager in a element with class 'pager' like shown above):
+#
+#   .pager {}
+#   .pager .first {}
+#   .pager .previous {}
+#   .pager .next {}
+#   .pager .last {}
+#   .pager ul {}
+#   .pager li {}
+#   .pager li.active {}
 
 class Pager
   include Ramaze::LinkHelper
@@ -56,19 +94,29 @@ class Pager
 
   # The current page.
 
-  attr_accessor :page
+  attr_reader :page
 
   # Items per page.
 
-  attr_accessor :limit
+  attr_reader :limit
 
   # The total number of pages.
 
-  attr_accessor :page_count
+  attr_reader :page_count
 
   # Total count of items.
 
-  attr_accessor :total_count
+  attr_reader :total_count
+
+  # Create a new Pager object.
+  #
+  # request:: Ramaze::Request object providing access to GET parameters
+  # limit:: how many elements go to one page
+  # total_count:: total element count
+  # key:: key used for getting the current page from GET paramaters
+  #
+  # Note:  You never have to create this class yourself, use the `paginate()`
+  # convenience method from the PagerHelper.
 
   def initialize(request, limit, total_count, key = trait[:key])
     raise 'limit should be > 0' unless limit > 0
@@ -121,12 +169,7 @@ class Pager
     [@page + 1, @page_count].min
   end
 
-  def link_first_page; target_uri(first_page); end
-  def link_last_page; target_uri(last_page); end
-  def link_prev_page; target_uri(prev_page); end
-  def link_next_page; target_uri(next_page); end
-
-  # Iterator
+  # Returns each element for the current page
 
   def each(&block)
     @page_items.each(&block)
@@ -135,60 +178,27 @@ class Pager
   # Iterator
   # Returns 1-based index.
 
-  def each_with_index
-    idx = @start_idx
-    for item in @page_items
-      yield(idx + 1, item)
-      idx += 1
-    end
+  def each_with_index(&block)
+    @page_items.each_with_index(&block)
   end
 
   # Is the pager empty, ie has one page only?
 
   def empty?
-    @page_count < 1
+    @page_count < 2
   end
 
-  # The items count.
+  # Returns true if a navigation is necessary (meaning there is more than one
+  # page)
+
+  def navigation?
+    !empty?
+  end
+
+  # Returns the amount of all elements in all pages.
 
   def size
     @total_count
-  end
-
-  # Returns the range of the current page.
-
-  def page_range
-    s = @idx
-    e = [@idx + @items_limit - 1, all_total_count].min
-
-    return [s, e]
-  end
-
-  # Override if needed.
-
-  def nav_range
-    # effective range = 10 pages.
-    s = [@page - 5, 1].max
-    e = [@page + 9, @page_count].min
-
-    d = 9 - (e - s)
-    e += d if d < 0
-
-    return (s..e)
-  end
-
-  # To be used with Og queries.
-
-  def limit
-    if @start_idx > 0
-      { :limit => @limit, :offset => @start_idx }
-    else
-      { :limit => @limit }
-    end
-  end
-
-  def offset
-    @start_idx
   end
 
   # Override this method in your application if needed.
@@ -217,13 +227,9 @@ class Pager
 
     for i in nav_range()
       if i == @page
-        nav << %{
-          <li class="active">#{i}</li>
-        }
+        nav << %{<li class="active">#{i}</li>}
       else
-        nav << %{
-          <li><a href="#{target_uri(i)}">#{i}</a></li>
-        }
+        nav << %{<li><a href="#{target_uri(i)}">#{i}</a></li>}
       end
     end
 
@@ -232,8 +238,20 @@ class Pager
     return nav
   end
 
-  def navigation?
-    @page_count > 1
+  # To be used with Og queries.
+
+  def limit
+    if @start_idx > 0
+      { :limit => @limit, :offset => @start_idx }
+    else
+      { :limit => @limit }
+    end
+  end
+
+  # Returns the index of the first element to go into the current page
+
+  def offset
+    @start_idx
   end
 
 private
@@ -241,8 +259,37 @@ private
   # Generate the target URI.
 
   def target_uri(page)
-    params = Request.current.params.dup.update(@key => page)
+    params = @request.params.merge(@key => page)
     Rs(Action.current.method, params)
+  end
+  
+  def link_first_page; target_uri(first_page); end
+  def link_last_page; target_uri(last_page); end
+  def link_prev_page; target_uri(prev_page); end
+  def link_next_page; target_uri(next_page); end
+
+
+  # Returns the range of the current page.
+
+  def page_range
+    s = @idx
+    e = [@idx + @items_limit - 1, all_total_count].min
+
+    return [s, e]
+  end
+
+  # Returns the range of
+  # Override if needed.
+
+  def nav_range
+    # effective range = 10 pages.
+    s = [@page - 5, 1].max
+    e = [@page + 9, @page_count].min
+
+    d = 9 - (e - s)
+    e += d if d < 0
+
+    return (s..e)
   end
 
 end
@@ -258,16 +305,8 @@ private
   #
   # === Example
   #
-  # entries, pager = paginate(Article, :where => 'title LIKE..', :limit => 10)
-  #
-  # or
-  #
   # items = [ 'item1', 'item2', ... ]
   # entries, pager = paginate(items, :limit => 10)
-  #
-  # or
-  #
-  # entries, pager = paginate(article.comments, :limit => 10)
   #
   # <ul>
   # <?r for entry in entries ?>
@@ -275,33 +314,39 @@ private
   # <?r end ?>
   # </ul>
   # #{pager.navigation}
+  #
+  # === Og Example
+  #
+  # entries, pager = paginate(Article, :where => 'title LIKE..', :limit => 10)
+  #
+  # or
+  #
+  # entries, pager = paginate(article.comments, :limit => 10)
 
   def paginate(items, options = {})
-    limit = options.delete(:limit) || options[:limit] || Pager.trait[:limit]
+    limit = options.delete(:limit) || Pager.trait[:limit]
     pager_key = options.delete(:pager_key) || Pager.trait[:key]
 
     case items
-      when Array
-        pager = Pager.new(request, limit, items.size, pager_key)
-        items = items.slice(pager.offset, pager.limit[:limit])
-        return items, pager
+    when Array
+      pager = Pager.new(request, limit, items.size, pager_key)
+      items = items.slice(pager.offset, pager.limit[:limit])
+      return items, pager
     end
 
-    if defined?(Og)
-      case items
-      when Og::Collection
-        pager = Pager.new(request, limit, items.count, pager_key)
-        options.update(pager.limit)
-        items = items.reload(options)
-        return items, pager
-
-      when Og::Mixin
-        pager = Pager.new(request, limit, items.count(options), pager_key)
-        options.update(pager.limit)
-        items = items.all(options)
-        return items, pager
-      end
+    if defined?(Og) && items.is_a?(Og::Collection)
+      pager = Pager.new(request, limit, items.count, pager_key)
+      options.update(pager.limit)
+      items = items.reload(options)
+      return items, pager
+    elsif defined?(Og) && items.is_a?(Og::Mixin)
+      pager = Pager.new(request, limit, items.count(options), pager_key)
+      options.update(pager.limit)
+      items = items.all(options)
+      return items, pager
     end
+
+    raise "No suitable pagination method for #{items.inspect}"
   end
 
 end
