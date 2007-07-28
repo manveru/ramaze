@@ -5,6 +5,9 @@ require 'ramaze/template/ezamar/engine'
 require 'ramaze/helper/partial'
 
 module Ezamar
+
+  # A transformer for <render /> tags.
+
   class RenderPartial
     extend Ramaze::PartialHelper
 

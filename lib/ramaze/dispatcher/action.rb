@@ -3,6 +3,10 @@
 
 module Ramaze
   module Dispatcher
+
+    # This dispatcher is responsible for relaying requests to Controller::handle
+    # and filtering the results using FILTER.
+
     class Action
 
       # The response is passed to each filter by sending .call(response) to it.

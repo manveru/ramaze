@@ -35,7 +35,7 @@ module Ramaze
     end
     alias pre before
 
-    # run block before all actions.
+    # Run block before all actions that were defined up to this point.
     def before_all(&block)
       meths = instance_methods(false)
       before(*meths, &block)
@@ -51,7 +51,7 @@ module Ramaze
     end
     alias post after
 
-    # run block after all actions.
+    # Run block after all actions that were defined up to this point.
     def after_all(&block)
       meths = instance_methods(false)
       after(*meths, &block)
