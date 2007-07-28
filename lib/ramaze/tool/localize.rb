@@ -4,6 +4,10 @@
 $KCODE = 'UTF-8'
 require 'ya2yaml'
 
+# Localize helps transforming arbitrary text into localized forms using
+# a simple regular expression and substituting occurences with predefined
+# snippets stored in YAML files.
+
 class Ramaze::Tool::Localize
 
   # Enable Localization
