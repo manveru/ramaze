@@ -79,6 +79,9 @@ module Ramaze
 
     o "Specify template root for dynamic files relative to start.rb",
       :template_root => 'template'
+
+    o "Enable directory listing",
+      :list_directories => false, :cli => false
   end
 
   require 'ramaze/global/globalstruct'

@@ -10,6 +10,7 @@ require 'ramaze/tool/mime'
 require 'ramaze/dispatcher/action'
 require 'ramaze/dispatcher/error'
 require 'ramaze/dispatcher/file'
+require 'ramaze/dispatcher/directory'
 
 module Ramaze
 
@@ -19,7 +20,8 @@ module Ramaze
   module Dispatcher
 
     # requests are passed to every
-    FILTER = [ Dispatcher::File, Dispatcher::Action ] unless defined?(FILTER)
+    FILTER = [ Dispatcher::File, Dispatcher::Directory,
+               Dispatcher::Action ] unless defined?(FILTER)
 
     # Response codes to cache the output of for repeated requests.
     trait :shielded => [ STATUS_CODE["Not Found"] ]
