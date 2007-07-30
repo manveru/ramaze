@@ -35,10 +35,9 @@ module Ramaze
     end
     alias pre before
 
-    # Run block before all actions that were defined up to this point.
+    # Run block before all actions.
     def before_all(&block)
-      meths = instance_methods(false)
-      before(*meths, &block)
+      trait[:aspects][:before][:all] = block
     end
     alias pre_all before_all
 
@@ -51,10 +50,9 @@ module Ramaze
     end
     alias post after
 
-    # Run block after all actions that were defined up to this point.
+    # Run block after all actions.
     def after_all(&block)
-      meths = instance_methods(false)
-      after(*meths, &block)
+      trait[:aspects][:after][:all] = block
     end
     alias post_all after_all
 
@@ -66,8 +64,8 @@ module Ramaze
 
     # run block before and after all actions.
     def wrap_all(&block)
-      meths = instance_methods(false)
-      wrap(*meths, &block)
+      trait[:aspects][:before][:all] = block
+      trait[:aspects][:after][:all] = block
     end
   end
 
@@ -77,16 +75,18 @@ module Ramaze
     # scope.
     def before_process
       return unless aspects = controller.ancestral_trait[:aspects]
-      block = aspects[:before][method]
-      instance.instance_eval(&block) if block
+      [ aspects[:before][name], aspects[:before][:all] ].compact.map do |block|
+        instance.instance_eval(&block) if block
+      end
     end
 
     # overwrites the default Action hook and runs the neccesary blocks in its
     # scope.
     def after_process
       return unless aspects = controller.ancestral_trait[:aspects]
-      block = aspects[:after][method]
-      instance.instance_eval(&block) if block
+      [ aspects[:after][name], aspects[:after][:all] ].compact.map do |block|
+        instance.instance_eval(&block) if block
+      end
     end
   end
 end

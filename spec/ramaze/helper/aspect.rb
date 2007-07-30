@@ -56,7 +56,7 @@ describe "AspectHelper" do
   end
   
   it 'should wrap templates' do
-    get('/test_template').body.should == '<br />I am a template.<br />'
+    get('/test_template').body.should == '<aspect>I am a template.<aspect>'
   end
 
   it 'should before_all and after_all' do

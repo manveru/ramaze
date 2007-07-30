@@ -101,6 +101,10 @@ module Ramaze
       self[:binding] ||= instance.instance_eval{ binding }
     end
 
+    def name
+      File.basename((self[:method] || self[:template]).to_s).split('.').first
+    end
+
     # Hook for AspectHelper
 
     def before_process
