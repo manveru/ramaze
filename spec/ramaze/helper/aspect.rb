@@ -7,6 +7,7 @@ class TCAspectController < Ramaze::Controller
   map '/'
   trait :foo => :bar
   helper :aspect
+  template_root(File.dirname(__FILE__)/:template)
 
   def test_before() 'test before' end
   before(:test_before){ '<aspect>' }
@@ -16,18 +17,23 @@ class TCAspectController < Ramaze::Controller
 
   def test_wrap() 'test wrap' end
   wrap(:test_wrap){ '<br />' }
+  
+  wrap(:test_template) { '<aspect>' }
 end
 
 class TCAspectAllController < Ramaze::Controller
   map '/all'
 
   helper :aspect
+  template_root(File.dirname(__FILE__)/:template)
 
   def test_all_first() 'first' end
   def test_all_second() 'second' end
 
   before_all{ '<pre>' }
   after_all{ '</pre>' }
+  
+  def test_all_after() 'after' end
 end
 
 describe "AspectHelper" do
@@ -48,33 +54,21 @@ describe "AspectHelper" do
   it 'should use wrap' do
     get('/test_wrap').body.should == '<br />test wrap<br />'
   end
+  
+  it 'should wrap templates' do
+    get('/test_template').body.should == '<br />I am a template.<br />'
+  end
 
   it 'should before_all and after_all' do
     get('/all/test_all_first').body.should == '<pre>first</pre>'
     get('/all/test_all_second').body.should == '<pre>second</pre>'
   end
-end
-
-=begin
-  it "pre" do
-    get('/test_pre').body.should == '<aspect>test pre'
+  
+  it 'should before_all and after_all for templates' do
+    get('/all/test_template').body.should == '<pre>I am a template.</pre>'
   end
-
-  it "post" do
-    get('/test_post').body.should == 'test post</aspect>'
-  end
-
-  it "pre and post" do
-    get('/test').body.should == '<aspect>test</aspect>'
-  end
-
-  it "wrap" do
-    get('/test_wrap').body.should == '<br />test wrap<br />'
-  end
-
-  it ":all" do
-    get('/all/test_all_first').body.should == '<pre>first</pre>'
-    get('/all/test_all_second').body.should == '<pre>second</pre>'
+  
+  it 'should before_all and after_all for all defined actions' do
+    get('/all/test_all_after').body.should == '<pre>after</pre>'
   end
 end
-=end
