@@ -1,6 +1,6 @@
 AUTHOR = "manveru"
 EMAIL = "m.fellinger@gmail.com"
-DESCRIPTION = "Ramaze tries to be a very simple Webframework without the voodoo"
+DESCRIPTION = "Ramaze is a simple and modular web framework"
 HOMEPATH = 'http://ramaze.rubyforge.org'
 BIN_FILES = %w( ramaze )
 
