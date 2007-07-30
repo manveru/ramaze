@@ -12,7 +12,7 @@ module Ramaze::Adapter
       # start FastCGI in a new thread, host and port parameter are only taken
       # to make it compatible with other adapters but have no influence and
       # can be omitted
-      def start host, ports
+      def start host = nil, ports = nil
         Thread.new do
           Thread.current[:task] = :cgi
           Rack::Handler::FastCGI.run(self)
