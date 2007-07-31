@@ -62,15 +62,23 @@ module Ramaze
     # infinite recursion and also if no layout on this controller was found.
 
     def layout
-      return false unless layout_name = controller.trait[:layout]
-      layout_action = Ramaze::Controller.resolve(layout_name)
+      return false unless layouts = controller.trait[:layout]
 
-      return false if layout_action.path == path
+      possible = [layouts[:all], layouts[path]].compact
+      denied = layouts[:deny].to_a
 
-      layout_action.binding = binding
-      layout_action.controller = controller
-      layout_action.instance = instance
-      layout_action
+      if layout = possible.first
+        layout_action = Ramaze::Controller.resolve(layout)
+
+        if denied.include?(path) or layout_action.path == path
+          return false
+        end
+
+        layout_action.binding = binding
+        layout_action.controller = controller
+        layout_action.instance = instance
+        layout_action
+      end
     end
 
     # return true if the action is flagged for caching. Called by

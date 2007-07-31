@@ -28,6 +28,35 @@ class TCActionOtherLayout < Ramaze::Controller
   end
 end
 
+class TCActionSingleLayout < Ramaze::Controller
+  map '/single'
+  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  layout :single_wrapper => :index
+
+  def index
+    "Single Hello"
+  end
+
+  def without
+    "Without wrapper"
+  end
+end
+
+class TCActionDenyLayout < Ramaze::Controller
+  map '/deny'
+  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  layout :single_wrapper
+  deny_layout :without
+
+  def index
+    "Single Hello"
+  end
+
+  def without
+    "Without wrapper"
+  end
+end
+
 describe 'Action rendering' do
   before :all do
     ramaze
@@ -42,5 +71,15 @@ describe 'Action rendering' do
   it 'should work with layout from file' do
     get('/other').body.should == "<p>Others Hello</p>"
     get('/other/bar').body.should == "<p>Hello from bar</p>"
+  end
+
+  it 'should apply single layout' do
+    get('/single').body.should == "<b>Single Hello</b>"
+    get('/single/without').body.should == "Without wrapper"
+  end
+
+  it 'should deny a single action' do
+    get('/deny').body.should == "<b>Single Hello</b>"
+    get('/deny/without').body.should == "Without wrapper"
   end
 end
