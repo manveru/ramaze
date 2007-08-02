@@ -141,7 +141,7 @@ module Ramaze
       def setup_environment rack_request, rack_response
         this = Thread.current
         this[:request]  = rack_request
-        this[:session]  = Session.new(request)
+        this[:session]  = Session.new(request) if Global.sessions
         this[:response] = rack_response
       end
     end

@@ -26,9 +26,6 @@ module Ramaze
     o "Turn on naive caching of all requests.",
       :cache_all => false, :cli => false
 
-    o "Turn on cookies for all requests.",
-      :cookies => true, :cli => true
-
     o "Compile Templates",
       :compile => false, :cli => false
 
@@ -61,6 +58,9 @@ module Ramaze
 
     o "Don't wait until all adapter-threads are finished or killed.",
       :run_loose => false, :cli => false
+
+    o "Turn on session for all requests.",
+      :sessions => true, :cli => true
 
     o "Turn on BF/DoS protection for error-responses",
       :shield => false, :cli => false

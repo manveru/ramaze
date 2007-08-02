@@ -76,7 +76,7 @@ module Ramaze
       # enabled
 
       def startup(options = {})
-        Cache.add(:sessions) if Global.cookies
+        Cache.add(:sessions) if Global.sessions
       end
 
       # answers with Thread.current[:session] which holds the current session

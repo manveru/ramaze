@@ -8,7 +8,7 @@ module Ramaze
     # build a response, default values are from the current response.
 
     def build body = body, status = status, head = header
-      Dispatcher.set_cookie if Global.cookies
+      Dispatcher.set_cookie if Global.sessions
 
       head.each do |key, value|
         self[key] = value
