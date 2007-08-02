@@ -101,14 +101,6 @@ Ramaze offers following features at the moment:
 
       Easy caching Actions and values.
 
-    * Feed
-
-      Programmatically generate feeds from any Class.
-
-    * Form
-
-      In development, help appreciated.
-
     * Identity
 
       For ease of use of the OpenID authentication mechanism.
