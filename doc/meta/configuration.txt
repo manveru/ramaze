@@ -110,9 +110,9 @@ cache consists of the controller and parameters, when repeated requests are
 made it will always serve the same (now static) page.
 
 
-:cookies => true
+:sessions => true
 
-Enables sending cookies by setting this to false.
+Enables creation of sessions and automatic creation/setting of cookies.
 Please note that many functionalities of Ramaze depend on an intact session and
 you will have to be careful not to use these.
 This is most likely useful in combination with `cache_all`
