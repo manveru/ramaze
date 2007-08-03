@@ -57,6 +57,25 @@ class TCActionDenyLayout < Ramaze::Controller
   end
 end
 
+class TCActionMultiLayout < Ramaze::Controller
+  map '/multi'
+  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  layout :single_wrapper => [:index, :second]
+  p trait
+
+  def index
+    "Single Hello"
+  end
+
+  def second
+    "Second with layout"
+  end
+
+  def without
+    "Without wrapper"
+  end
+end
+
 describe 'Action rendering' do
   before :all do
     ramaze
@@ -81,5 +100,11 @@ describe 'Action rendering' do
   it 'should deny a single action' do
     get('/deny').body.should == "<b>Single Hello</b>"
     get('/deny/without').body.should == "Without wrapper"
+  end
+
+  it 'should apply layout to a list of actions' do
+    get('/multi').body.should == "<b>Single Hello</b>"
+    get('/multi/second').body.should == "<b>Second with layout</b>"
+    get('/multi/without').body.should == "Without wrapper"
   end
 end

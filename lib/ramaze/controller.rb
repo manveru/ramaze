@@ -119,7 +119,7 @@ module Ramaze
       def layout(meth_or_hash, &block)
         if meth_or_hash.respond_to?(:to_hash)
           meth_or_hash.each do |layout_name, *actions|
-            actions.each do |action|
+            actions.flatten.each do |action|
               trait[:layout][action.to_s] = R(self, layout_name)
             end
           end
