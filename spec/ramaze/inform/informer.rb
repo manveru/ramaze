@@ -9,23 +9,23 @@ describe 'Informer' do
   end
 
   def format(tag, string)
-    "[#{@inform.timestamp}] #{tag.to_s.upcase.ljust(5)}  #{string}"
+    /\[\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\] #{tag.to_s.upcase.ljust(5)}  #{Regexp.escape(string)}/
   end
 
   it 'info' do
     @inform.info('Some Info')
-    @out.first.should == format(:info, 'Some Info')
+    @out.first.should =~ format(:info, 'Some Info')
   end
 
   it 'debug' do
     arr = [:some, :stuff]
     @inform.debug(arr)
-    @out.first.should == format(:debug, arr.inspect)
+    @out.first.should =~ format(:debug, arr.inspect)
   end
 
   it 'warn' do
     @inform.warn('More things')
-    @out.first.should == format(:warn, 'More things')
+    @out.first.should =~ format(:warn, 'More things')
   end
 
   it 'error' do
@@ -35,6 +35,6 @@ describe 'Informer' do
     end
 
     @inform.error(ex)
-    @out.first.should == format(:error, ex.inspect)
+    @out.first.should =~ format(:error, ex.inspect)
   end
 end
