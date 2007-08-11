@@ -109,7 +109,9 @@ module Ramaze
 
       def test_connection host, port
         Timeout.timeout(1) do
-          TCPServer.open(host, port){ true }
+          testsock = TCPServer.new(host, port)
+          testsock.close
+          true
         end
       rescue => ex
         Inform.error(ex)
