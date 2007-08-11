@@ -49,8 +49,8 @@ You can now do following:
 * Create a new project using the `ramaze' command:
     ramaze --create yourproject
 
-* Browse and try the Examples in
-    #{File.join(Gem.path, 'gems', 'ramaze-' + VERS, 'examples')}
-
 #{'=' * 60}
 }.strip
+
+# * Browse and try the Examples in
+#     #{File.join(Gem.path, 'gems', 'ramaze-' + VERS, 'examples')}
