@@ -15,7 +15,7 @@ module Ramaze
       def resolve(path)
         if found = Cache.resolved[path]
           if found.respond_to?(:relaxed_hash)
-            return found
+            return found.dup
           else
             Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
             Cache.resolved.delete path
@@ -39,7 +39,10 @@ module Ramaze
 
             valid_action = (action.method or (params.empty? && template))
 
-            return Cache.resolved[path] = action if valid_action
+            if valid_action
+              Cache.resolved[path] = action
+              return action.dup
+            end
           end
         end
 
