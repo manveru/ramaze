@@ -105,6 +105,22 @@ module Ramaze
       File.basename((self[:method] || self[:template]).to_s).split('.').first
     end
 
+    # TODO: find good names for this method.
+
+    def basepath
+      @basepath ||= "#{controller.mapping}/#{name}".gsub(/^\/+/, '/')
+    end
+
+    # TODO: find good names for this method.
+    def fullpath
+      "#{path}/#{params.join('/')}".gsub(/^\/+/, '/')
+    end
+
+    # TODO: find good names for this method.
+    def extended_path
+      @extended_path ||= File.join(Global.public_root, path, *params)
+    end
+
     # Hook for AspectHelper
 
     def before_process
