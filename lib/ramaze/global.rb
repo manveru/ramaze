@@ -8,6 +8,9 @@ require 'ramaze/global/dsl'
 
 module Ramaze
   GlobalDSL.option_dsl do
+    o "Caching actions to the filesystem in Global.public_root",
+      :action_file_cached => false, :cli => false
+
     o "Set the adapter Ramaze will run on.",
       :adapter => :webrick, :cli => [:webrick, :mongrel]
 

@@ -28,15 +28,21 @@ module Ramaze
     # true.
 
     def cached_render
-      action_cache = Cache.actions
+      if Global.action_file_cached
+        epath = extended_path
+        File.open(epath, 'w+'){|fp| fp.puts(uncached_render) } unless File.file?(epath)
+        File.read(epath)
+      else
+        action_cache = Cache.actions
 
-      if out = action_cache[relaxed_hash]
-        Inform.debug("Using Cached version")
-        return out
+        if out = action_cache[relaxed_hash]
+          Inform.debug("Using Cached version")
+          return out
+        end
+
+        Inform.debug("Compiling Action")
+        action_cache[relaxed_hash] = uncached_render
       end
-
-      Inform.debug("Compiling Action")
-      action_cache[relaxed_hash] = uncached_render
     end
 
     # The 'normal' rendering process. Passes the Action instance to

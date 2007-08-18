@@ -105,6 +105,10 @@ module Ramaze
       File.basename((self[:method] || self[:template]).to_s).split('.').first
     end
 
+    def fullpath
+      "#{path}/#{params.join('/')}".gsub(/^\/+/, '/')
+    end
+
     # Hook for AspectHelper
 
     def before_process
