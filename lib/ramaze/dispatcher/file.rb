@@ -22,7 +22,7 @@ module Ramaze
         # Content-Type as found in Tool::MIME
 
         def open_file(path)
-          file = Global.public_root/path
+          file = ::File.join(Global.public_root, path =~ /\/$/ ? path + 'index' : path)
 
           if ::File.file?(file)
             response = Response.current

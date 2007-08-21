@@ -30,8 +30,9 @@ module Ramaze
     def cached_render
       if Global.action_file_cached
         epath = extended_path
-        File.open(epath, 'w+'){|fp| fp.puts(uncached_render) } unless File.file?(epath)
-        File.read(epath)
+        rendered = uncached_render
+        File.open(epath, 'w+'){|fp| fp.print(rendered) }
+        rendered
       else
         action_cache = Cache.actions
 
