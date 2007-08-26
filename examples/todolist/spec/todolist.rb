@@ -1,4 +1,4 @@
-require 'spec/helper'
+require 'ramaze/spec/helper'
 
 testcase_requires 'hpricot'
 
@@ -7,7 +7,7 @@ require 'start'
 
 # fix the paths to template and public for the spec
 class MainController
-  template_root 'examples/todolist/template'
+  template_root File.dirname(__FILE__)/'..'/'template'
 end
 
 describe 'todolist' do
