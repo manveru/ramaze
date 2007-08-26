@@ -1,4 +1,4 @@
-require 'spec/helper/wrap'
+require 'ramaze/spec/helper/wrap'
 
 class SpecLayout
   attr_accessor :base, :layout, :files

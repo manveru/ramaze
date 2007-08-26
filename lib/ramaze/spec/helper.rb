@@ -1,11 +1,11 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'spec/helper/minimal'
-require 'spec/helper/mock_http'
-require 'spec/helper/simple_http'
-require 'spec/helper/requester'
-require 'spec/helper/context'
+require 'ramaze/spec/helper/minimal'
+require 'ramaze/spec/helper/mock_http'
+require 'ramaze/spec/helper/simple_http'
+require 'ramaze/spec/helper/requester'
+require 'ramaze/spec/helper/context'
 
 Spec::Runner.configure do |config|
   config.include MockHTTP

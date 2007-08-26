@@ -2,15 +2,16 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'rake'
-require 'spec/helper/layout'
+require 'ramaze/spec/helper/layout'
 require 'lib/ramaze/snippets/string/DIVIDE'
 
 SPEC_BASE = File.expand_path('spec')
-
+EXAMPLE_BASE = File.expand_path('examples')
 # ignore files with these paths
 ignores = [ './*', './helper/*', './ramaze/adapter.rb', './ramaze/request.rb', ]
 
-files = Dir[SPEC_BASE/'**'/'*.rb']
+files = Dir[SPEC_BASE/'**'/'*.rb'] + 
+        Dir[EXAMPLE_BASE/'**/spec'/'*.rb']
 ignores.each do |ignore|
   ignore_files = Dir[SPEC_BASE/ignore]
   ignore_files.each do |ignore_file|
