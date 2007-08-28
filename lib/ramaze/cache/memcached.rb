@@ -62,33 +62,9 @@ module Ramaze
     def values_at(*keys)
       get_multi(*keys).values_at(*keys)
     end
-  end
-end
 
-# add the MemCache#clear method
-
-class MemCache
-
-  # MemCache.clear sends 'flush_all' command to all registered MemCache
-  # servers.
-
-  def clear
-    raise MemCacheError, "Update of readonly cache" if @readonly
-
-    @servers.each do |server|
-      server.flush_all
-    end
-  end
-
-  # implements the flushing of MemCache server. Flushes a single server,
-  # MemCache#clear can be used for clearing out all MemCache servers.
-
-  class Server
-
-    # Serverside implementation of the #clear functionality for MemCache
-
-    def flush_all
-      socket.write "flush_all\r\n"
+    def clear
+      @cache.flush_all
     end
   end
 end
