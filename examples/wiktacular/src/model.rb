@@ -58,7 +58,7 @@ class WikiEntry
   end
 
   def base
-    "mkd/#@name"
+    File.dirname(__FILE__)/"../mkd/#@name"
   end
 
   def content
