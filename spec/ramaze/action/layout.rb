@@ -3,7 +3,7 @@ require 'spec/helper'
 class TCActionLayout < Ramaze::Controller
   map '/'
   layout :wrapper
-  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  template_root __DIR__ / :template
 
   def wrapper
     "<pre>#@content</pre>"
@@ -21,7 +21,7 @@ end
 class TCActionOtherLayout < Ramaze::Controller
   map '/other'
   layout :other_wrapper
-  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  template_root __DIR__ / :template
 
   def index
     "Others Hello"
@@ -30,7 +30,7 @@ end
 
 class TCActionSingleLayout < Ramaze::Controller
   map '/single'
-  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  template_root __DIR__ / :template
   layout :single_wrapper => :index
 
   def index
@@ -44,7 +44,7 @@ end
 
 class TCActionDenyLayout < Ramaze::Controller
   map '/deny'
-  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  template_root __DIR__/:template
   layout :single_wrapper
   deny_layout :without
 
@@ -59,7 +59,7 @@ end
 
 class TCActionMultiLayout < Ramaze::Controller
   map '/multi'
-  template_root "#{File.expand_path(File.dirname(__FILE__))}/template"
+  template_root __DIR__/:template
   layout :single_wrapper => [:index, :second]
   p trait
 

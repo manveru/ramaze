@@ -13,7 +13,7 @@ end
 
 describe 'Action rendering' do
   before :all do
-    @public_root = "#{File.expand_path(File.dirname(__FILE__))}/public"
+    @public_root = __DIR__ / :public
     FileUtils.mkdir_p @public_root
     ramaze :action_file_cached => true, :public_root => @public_root
   end
