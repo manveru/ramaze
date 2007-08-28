@@ -1,3 +1,4 @@
+require 'ramaze'
 require 'ramaze/spec/helper'
 
 #testcase_requires 'bluecloth'
@@ -27,16 +28,12 @@ describe 'wiktacular' do
     menu[1].inner_html.should == 'New Entry'
 
     navigation = doc.search('div#navigation>div>a')
-    navigation[0].inner_html.should == 'testing'
-    navigation[1].inner_html.should == 'link'
-    navigation[2].inner_html.should == 'markdown'
-    navigation[3].inner_html.should == 'main'
+    navigation.map{|n| n.inner_html }.sort.should ==
+      %w[link main markdown testing]
 
     manipulate = doc.search('div#manipulate>a')
-    manipulate[0].inner_html.should == 'Edit'
-    manipulate[1].inner_html.should == 'Delete'
-    manipulate[2].inner_html.should == 'Revert'
-    manipulate[3].inner_html.should == 'Unrevert'
+    manipulate.map{|m| m.inner_html }.should ==
+      %w[Edit Delete Revert Unrevert]
 
     doc
   end
