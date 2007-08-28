@@ -6,7 +6,7 @@ require 'ramaze'
 include Ramaze
 
 class MainController < Controller
-  template_root File.expand_path((File.dirname(__FILE__)/'template'))
+  template_root __DIR__/:template
   trait :engine => Template::Remarkably
 
   include Remarkably::Common

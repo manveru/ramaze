@@ -9,7 +9,7 @@ include Ramaze
 #   - implement the amrita2 example, man, this engine is awkward :P
 
 class MainController < Controller
-  template_root File.expand_path((File.dirname(__FILE__)/'template'))
+  template_root __DIR__/:template
   trait :engine => Template::Amrita2
 
   def index
