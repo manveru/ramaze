@@ -9,7 +9,7 @@ require 'start'
 # fix the paths to template and public for the spec
 # this is not needed usually, but this tests are also part of ramaze's suite
 class MainController
-  template_root File.expand_path(File.dirname(__FILE__)/'../template')
+  template_root __DIR__ / '../template'
 end
 
 describe 'wiktacular' do
