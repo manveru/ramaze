@@ -7,7 +7,7 @@ class TCAspectController < Ramaze::Controller
   map '/'
   trait :foo => :bar
   helper :aspect
-  template_root(File.dirname(__FILE__)/:template)
+  template_root(__DIR__/:template)
 
   def test_before() 'test before' end
   before(:test_before){ '<aspect>' }
@@ -25,7 +25,7 @@ class TCAspectAllController < Ramaze::Controller
   map '/all'
 
   helper :aspect
-  template_root(File.dirname(__FILE__)/:template)
+  template_root(__DIR__/:template)
 
   def test_all_first() 'first' end
   def test_all_second() 'second' end

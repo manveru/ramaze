@@ -27,7 +27,7 @@ end
 
 describe "Localize" do
   before :all do
-    @dir = File.join(File.dirname(__FILE__), 'conf')
+    @dir = __DIR__ / :conf
     FileUtils.mkdir_p(@dir)
 
     dict = {
