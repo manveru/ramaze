@@ -1,6 +1,5 @@
 class MainController < Ramaze::Controller
   
-  ENTRIES_DIR = File.expand_path(File.dirname(__FILE__)/'../mkd')
 
   def index handle = "main"
     @handle = handle
@@ -46,7 +45,7 @@ class MainController < Ramaze::Controller
   end
 
   def html_layout
-    @nodes = Dir[ENTRIES_DIR/'*'].map{|f|
+    @nodes = WikiEntry.titles.map{|f|
         name = File.basename(f)
         %[<a href="/#{name}">#{name}</a>]
       }.join("\n")

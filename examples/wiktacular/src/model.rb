@@ -2,9 +2,13 @@ require 'fileutils'
 require 'cgi'
 
 class WikiEntry
+  ENTRIES_DIR = File.expand_path(File.dirname(__FILE__)/'../mkd')
   class << self
     def [](name)
       new(name)
+    end
+    def titles
+      Dir[ENTRIES_DIR/'*'].entries
     end
   end
 
@@ -58,7 +62,7 @@ class WikiEntry
   end
 
   def base
-    File.dirname(__FILE__)/"../mkd/#@name"
+    ENTRIES_DIR/@name
   end
 
   def content
