@@ -7,7 +7,7 @@ require 'start'
 
 # fix the paths to template and public for the spec
 class MainController
-  template_root File.dirname(__FILE__)/'..'/'template'
+  template_root __DIR__ / '../template'
 end
 
 describe 'todolist' do
