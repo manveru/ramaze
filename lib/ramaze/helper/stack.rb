@@ -35,7 +35,7 @@ module Ramaze
   #
   #   def secret_information
   #     call :login unless logged_in?
-  #     "Agent X is assinged to fight the RubyNinjas"
+  #     "Agent X is assigned to fight the RubyNinjas"
   #   end
   # end
 
