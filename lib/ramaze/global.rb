@@ -8,9 +8,6 @@ require 'ramaze/global/dsl'
 
 module Ramaze
   GlobalDSL.option_dsl do
-    o "Caching actions to the filesystem in Global.public_root",
-      :action_file_cached => false, :cli => false
-
     o "Set the adapter Ramaze will run on.",
       :adapter => :webrick, :cli => [:webrick, :mongrel]
 
@@ -40,6 +37,12 @@ module Ramaze
 
     o "Turn on customized error pages.",
       :error_page => true, :cli => true
+
+    o "Caching actions to the filesystem in Global.public_root",
+      :file_cache => false, :cli => false
+
+    o "Base directory for meta information of file-caching",
+      :file_cache_meta_dir => "cache_meta", :cli => "cache_meta"
 
     o "Specify what IP Ramaze will respond to - 0.0.0.0 for all",
       :host => "0.0.0.0", :cli => '0.0.0.0'

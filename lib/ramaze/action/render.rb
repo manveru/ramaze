@@ -28,22 +28,37 @@ module Ramaze
     # true.
 
     def cached_render
-      if Global.action_file_cached
-        epath = extended_path
-        rendered = uncached_render
-        File.open(epath, 'w+'){|fp| fp.print(rendered) }
-        rendered
+      if Global.file_cache
+        cached_render_file
       else
-        action_cache = Cache.actions
-
-        if out = action_cache[relaxed_hash]
-          Inform.debug("Using Cached version")
-          return out
-        end
-
-        Inform.debug("Compiling Action")
-        action_cache[relaxed_hash] = uncached_render
+        cached_render_memory
       end
+    end
+
+    def cached_render_file
+      rendered = uncached_render
+
+      global_epath = Global.public_root/extended_path
+      FileUtils.mkdir_p(File.dirname(global_epath))
+      File.open( global_epath, 'w+'){|fp| fp.print(rendered) }
+
+      meta_epath = Global.file_cache_meta_dir/extended_path
+      FileUtils.mkdir_p(File.dirname(meta_epath))
+      File.open( meta_epath, 'w+'){|fp| fp.print(Time.now.to_i) }
+
+      rendered
+    end
+
+    def cached_render_memory
+      action_cache = Cache.actions
+
+      if out = action_cache[relaxed_hash]
+        Inform.debug("Using Cached version")
+        return out
+      end
+
+      Inform.debug("Compiling Action")
+      action_cache[relaxed_hash] = uncached_render
     end
 
     # The 'normal' rendering process. Passes the Action instance to
