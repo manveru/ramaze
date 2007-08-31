@@ -1,7 +1,9 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-#testcase_requires 'bluecloth'
+# if these libraries are missing there is no sense in running the tests,
+# cause they won't work at all. 
+testcase_requires 'bluecloth'
 testcase_requires 'hpricot'
 
 $:.unshift 'examples/wiktacular'
@@ -16,7 +18,7 @@ end
 describe 'wiktacular' do
 
   def check_page(name)
-    page = get(name)
+    page = get('/'+name)
     page.status.should == 200
     page.body.should_not be_nil
 
@@ -28,8 +30,9 @@ describe 'wiktacular' do
     menu[1].inner_html.should == 'New Entry'
 
     navigation = doc.search('div#navigation>div>a')
-    navigation.map{|n| n.inner_html }.sort.should ==
-      %w[link main markdown testing]
+    %w[link main markdown testing].each do |link|
+      navigation.map{|n| n.inner_html }.sort.should include(link)
+    end
 
     manipulate = doc.search('div#manipulate>a')
     manipulate.map{|m| m.inner_html }.should ==
@@ -64,4 +67,49 @@ describe 'wiktacular' do
     doc = check_page('/foobar')
     doc.at('div#text').inner_html.strip.should == 'No Entry'
   end 
+
+  it 'should allow page editing' do
+    doc = check_page('/edit/main')
+    form = doc.at('div#content>form')
+    form.at('input[@type=text]')['value'].should == 'main'
+    form.at('textarea').inner_html.should match(/# Hello, World/)
+    form.at('a').inner_html.should == 'cancel'
+    form.at('a')['href'].should == '/main'
+  end
+
+  def edit_page(name, text='new text')
+    page = post('/save','handle'=>name,'text'=>text) 
+    page.status.should == 303
+    page.location.should == '/index/'+name
+  end
+  def delete_page(name)
+    page = get('/delete/'+name)
+    page.status.should == 303
+    page.location.should == '/'
+  end
+  it 'editing should create page' do
+    edit_page('newpage', 'new text')
+    doc = check_page('newpage')
+    doc.at('div#text').inner_html.strip.should == '<p>new text</p>'
+    delete_page('newpage')
+  end
+
+  it 'editing should modify page' do
+    edit_page('editable', 'text text')
+    doc = check_page('editable')
+    doc.at('div#text').inner_html.strip.should == '<p>text text</p>'
+    edit_page('editable','some other text')
+    doc = check_page('editable')
+    doc.at('div#text').inner_html.strip.should == '<p>some other text</p>'
+    delete_page('editable')
+  end
+
+  after :all do
+    mkd = __DIR__ / '../mkd/'
+    keep = %w{link markdown main testing}.map {|x| mkd/x}
+    Dir[mkd/'*'].each do |dir|
+      FileUtils.rm_r dir unless keep.include? dir
+    end
+  end
+
 end
