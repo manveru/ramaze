@@ -5,6 +5,11 @@ require 'ramaze/spec/helper'
 testcase_requires 'og'
 testcase_requires 'hpricot'
 
+# Og sets this in the global namespace and uses the STDERR to write messages
+# We can replace it with Ramaze's logger that does The Right Thing (TM)
+class Logger
+  @@global_logger = Ramaze::Inform
+end
 $:.unshift 'examples/blog'
 require 'start'
 
