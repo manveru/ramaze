@@ -3,8 +3,6 @@
 
 # Extensions for Kernel
 
-require 'ramaze/snippets/ramaze/caller_info'
-
 module Kernel
   # This is similar to +__FILE__+ and +__LINE__+, and returns a String
   # representing the directory of the current file is.
@@ -16,7 +14,8 @@ module Kernel
   #
   unless defined?__DIR__
     def __DIR__()
-      File.expand_path(File.dirname(Ramaze.caller_info(1)[0]))
+      filename = caller[0][/(.*?):/, 1]
+      File.expand_path(File.dirname(filename))
     end
   end
 end
