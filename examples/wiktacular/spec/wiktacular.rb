@@ -1,4 +1,3 @@
-require 'ramaze'
 require 'ramaze/spec/helper'
 
 # if these libraries are missing there is no sense in running the tests,
