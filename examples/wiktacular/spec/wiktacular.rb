@@ -16,6 +16,7 @@ class MainController
 end
 
 describe 'wiktacular' do
+  NEWPAGE = "newpagename"
 
   def check_page(name)
     page = get('/'+name)
@@ -82,34 +83,65 @@ describe 'wiktacular' do
     page.status.should == 303
     page.location.should == '/index/'+name
   end
+  
   def delete_page(name)
     page = get('/delete/'+name)
     page.status.should == 303
     page.location.should == '/'
   end
+
+  def revert_page(name)
+    page = get('/revert/'+name)
+    page.status.should == 303
+    page.location.should == '/'+name
+  end
+
+  def unrevert_page(name)
+    page = get('/revert/'+name)
+    page.status.should == 303
+    page.location.should == '/'+name
+  end
+
   it 'editing should create page' do
-    edit_page('newpage', 'new text')
-    doc = check_page('newpage')
+    edit_page(NEWPAGE, 'new text')
+    doc = check_page(NEWPAGE)
     doc.at('div#text').inner_html.strip.should == '<p>new text</p>'
-    delete_page('newpage')
+    delete_page(NEWPAGE)
   end
 
   it 'editing should modify page' do
-    edit_page('editable', 'text text')
-    doc = check_page('editable')
+    edit_page(NEWPAGE, 'text text')
+    doc = check_page(NEWPAGE)
     doc.at('div#text').inner_html.strip.should == '<p>text text</p>'
-    edit_page('editable','some other text')
-    doc = check_page('editable')
+    edit_page(NEWPAGE,'some other text')
+    doc = check_page(NEWPAGE)
     doc.at('div#text').inner_html.strip.should == '<p>some other text</p>'
-    delete_page('editable')
+    delete_page(NEWPAGE)
   end
 
-  after :all do
-    mkd = __DIR__ / '../mkd/'
-    keep = %w{link markdown main testing}.map {|x| mkd/x}
-    Dir[mkd/'*'].each do |dir|
-      FileUtils.rm_r dir unless keep.include? dir
-    end
+  it "should be possible to revert changes" do
+    edit_page(NEWPAGE, 'first text')
+    edit_page(NEWPAGE, 'second text')
+    doc = check_page(NEWPAGE)
+    doc.at('div#text').inner_html.strip.should == '<p>second text</p>'
+    revert_page(NEWPAGE)
+    doc = check_page(NEWPAGE)
+    doc.at('div#text').inner_html.strip.should == '<p>first text</p>'
+  end
+
+  it "should be possible to unrevert changes" do
+    edit_page(NEWPAGE, 'first text')
+    edit_page(NEWPAGE, 'second text')
+    revert_page(NEWPAGE)
+    doc = check_page(NEWPAGE)
+    doc.at('div#text').inner_html.strip.should == '<p>first text</p>'
+    unrevert_page(NEWPAGE)
+    doc = check_page(NEWPAGE)
+    doc.at('div#text').inner_html.strip.should == '<p>first text</p>'
+  end
+
+  after do
+    WikiEntry.new(NEWPAGE).delete
   end
 
 end
