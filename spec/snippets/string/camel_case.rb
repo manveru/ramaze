@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-describe "camel_case" do
+describe "String#camel_case" do
   
   it 'should camelize snake_case' do
     'foo_bar'.camel_case.should == 'FooBar'
