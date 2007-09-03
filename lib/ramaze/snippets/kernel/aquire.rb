@@ -5,19 +5,29 @@
 
 module Kernel
 
-  # Example:
-  #   aquire 'foo/bar/*'
-  # requires all files inside foo/bar - recursive
-  # can take multiple parameters, it's mainly used to require all the
-  # snippets.
+  # Require all .rb and .so files on the given globs, utilizes Dir::[].
+  #
+  # Examples:
+  #   # Given following directory structure:
+  #   # src/foo.rb
+  #   # src/bar.so
+  #   # src/foo.yaml
+  #   # src/foobar/baz.rb
+  #   # src/foobar/README
+  #
+  #   # requires all files in 'src':
+  #   aquire 'src/*'
+  #
+  #   # requires all files in 'src' recursive:
+  #   aquire 'src/**/*'
+  #
+  #   # require 'src/foo.rb' and 'src/bar.so' and 'src/foobar/baz.rb'
+  #   aquire 'src/*', 'src/foobar/*'
 
-  def aquire *files
-    files.each do |file|
-      require file if %w(rb so).any?{|f| File.file?("#{file}.#{f}")}
-      $:.each do |dir|
-        Dir[File.join(dir, file, '*.rb')].each do |path|
-          require path unless path == File.expand_path(__FILE__)
-        end
+  def aquire *globs
+    globs.flatten.each do |glob|
+      Dir[glob].each do |file|
+        require file if file =~ /\.(rb|so)$/
       end
     end
   end
