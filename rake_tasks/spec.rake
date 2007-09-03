@@ -7,11 +7,13 @@ require 'lib/ramaze/snippets/string/DIVIDE'
 
 SPEC_BASE = File.expand_path('spec')
 EXAMPLE_BASE = File.expand_path('examples')
+SNIPPETS_BASE = File.expand_path('snippets')
 # ignore files with these paths
 ignores = [ './*', './helper/*', './ramaze/adapter.rb', './ramaze/request.rb', ]
 
 files = Dir[SPEC_BASE/'**'/'*.rb'] + 
         Dir[EXAMPLE_BASE/'**/spec'/'*.rb']
+        Dir[SNIPPETS_BASE/'**/*.rb']
 ignores.each do |ignore|
   ignore_files = Dir[SPEC_BASE/ignore]
   ignore_files.each do |ignore_file|
