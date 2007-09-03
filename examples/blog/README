@@ -1,0 +1,3 @@
+a simple blog engine which uses Og as the persistence layer.
+Og uses sqlite as the default DBMS engine and will create the database 
+automatically on startup.
