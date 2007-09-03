@@ -24,7 +24,7 @@ files.sort!
 spec_layout = Hash.new{|h,k| h[k] = []}
 
 files.each do |file|
-  name = file.gsub(/^#{SPEC_BASE}/, '.')
+  name = file.gsub(/^(#{SPEC_BASE}|#{EXAMPLE_BASE})/, '.')
   dir_name = File.dirname(name)[2..-1]
   task_name = ([:test] + dir_name.split('/')).join(':')
   spec_layout[task_name] << file
