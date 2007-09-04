@@ -17,7 +17,7 @@ module Ramaze
   #     ...
   #   ]
   # Example:
-  #  __caller_lines__('/usr/lib/ruby/1.8/debug.rb', 122, 2) # ->
+  #  caller_lines('/usr/lib/ruby/1.8/debug.rb', 122, 2) # ->
   #   [
   #     [ 120, "  def check_suspend",                               false ],
   #     [ 121, "    return if Thread.critical",                     false ],
