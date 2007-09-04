@@ -16,6 +16,7 @@ load 'rake_tasks/conf.rake'
 load 'rake_tasks/gem.rake'
 load 'rake_tasks/maintenance.rake'
 load 'rake_tasks/spec.rake'
+load 'rake_tasks/coverage.rake'
 
 task :default => ['test:all']
 task :test => ['test:all']
