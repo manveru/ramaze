@@ -11,6 +11,6 @@ class Struct
   # # => [10, 15]
 
   def values_at(*keys)
-    keys.map{|k| self[k.to_sym] }
+    keys.map{|k| self[k] }
   end
 end
