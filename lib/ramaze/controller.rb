@@ -7,7 +7,6 @@ require 'ramaze/action'
 
 require 'ramaze/controller/resolve'
 require 'ramaze/controller/error'
-require 'ramaze/controller/directory'
 
 module Ramaze
 
