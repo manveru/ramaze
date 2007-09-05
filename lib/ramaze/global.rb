@@ -18,7 +18,7 @@ module Ramaze
       :backtrace_size => 10, :cli => 10
 
     o "Turn benchmarking every request on.",
-      :benchmarking => false, :cli => false
+      :benchmarking => false, :cli => false, :short => :b
 
     o "Use this for general caching and as base for Cache.new.",
       :cache => :memory, :cli => [:memory, :memcached, :yaml]
@@ -33,7 +33,7 @@ module Ramaze
       :controllers => Set.new
 
     o "Start Ramaze within an IRB session",
-      :console => false, :cli => false
+      :console => false, :cli => false, :short => :c
 
     o "Turn on customized error pages.",
       :error_page => true, :cli => true
@@ -54,10 +54,10 @@ module Ramaze
       :origin => :main
 
     o "Specify port",
-      :port => 7000, :cli => 7000
+      :port => 7000, :cli => 7000, :short => :p
 
-    o "Specify the public directory of your application serving static files",
-      :public_root => File.expand_path('./public')
+    o "Specify directory to serve static files",
+      :public_root => './public', :cli => './public'
 
     o "Record all Request objects by assigning a filtering Proc to me.",
       :record => false
@@ -78,13 +78,13 @@ module Ramaze
       :sourcereload => 3, :cli => 3
 
     o "How many adapters Ramaze should spawn.",
-      :spawn => 1, :cli => 1
+      :spawn => 1, :cli => 1, :short => :s
 
     o "Test before start if adapters will be able to connect",
       :test_connections => true, :cli => true
 
-    o "Specify template root for dynamic files relative to start.rb",
-      :template_root => 'template'
+    o "Specify directory to serve dynamic files",
+      :template_root => './template', :cli => './template'
 
     o "Enable directory listing",
       :list_directories => false, :cli => false

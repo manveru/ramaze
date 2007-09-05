@@ -58,6 +58,9 @@ module Ramaze
 
       def startup options = {}
         Inform.debug("found Controllers: #{Global.controllers.inspect}")
+        tr, pr = Global.template_root, Global.public_root
+        Inform.warn("Template root: #{tr} doesn't exist") unless File.directory?(tr)
+        Inform.warn("Public root: #{pr} doesn't exist") unless File.directory?(pr)
 
         if Global.mapping.empty?
           Inform.warn("No Controllers mapped, will serve /public only.")

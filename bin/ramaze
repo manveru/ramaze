@@ -16,6 +16,7 @@ require 'abbrev'
 options = {:origin => :console, :create => false, :force => true}
 cli_options = Ramaze::CLI_OPTIONS
 cli_abbrevs = cli_options.map{|o| o.name.to_s}.abbrev
+%w[e h].each{|key| cli_abbrevs.delete key}
 cli_abbrevs = Hash[*cli_abbrevs.select{|k,v| k.size == 1}.flatten].invert
 
 opts = OptionParser.new do |opt|
@@ -25,31 +26,43 @@ opts = OptionParser.new do |opt|
   opt.banner = "Usage: ramaze start.rb [OPTIONS]"
   opt.define_head ramaze_version
 
+  opt.separator ''
+  opt.separator 'Specialized options:'
+
   opt.on('--create PROJECT', "A new application based on proto.") do |input|
     options[:create] = input
   end
 
+  opt.on('-eSTRING', '--execute STRING', String, "Execute string instead of a start.rb.") do |input|
+    options[:execute] = input
+  end
+
+  opt.separator ''
+  opt.separator 'Global options, value in [] shows default.'
+
   cli_options.each do |option|
     cli_name = option.name.to_s.gsub('_', '-')
-    short_option = cli_abbrevs[option.name.to_s]
-    short_option = '-' + short_option if short_option
+    short_option = (option.short || cli_abbrevs[option.name.to_s])
+    short_option = "-#{short_option}" if short_option
     long_option = '--' + cli_name
+    doc = "[#{option.cli.inspect}] #{option.doc}"
 
     case option.cli
     when TrueClass
-      params = [short_option, "--[no-]#{cli_name}", option.doc]
+      params = [short_option, "--[no-]#{cli_name}", doc]
     when FalseClass
-      params = [short_option, long_option, option.doc]
+      params = [short_option, long_option, doc]
     when Numeric
-      params = [short_option, "#{long_option} NUM", Integer, option.doc]
+      params = [short_option, "#{long_option} NUM", Integer, doc]
     when String
-      params = [short_option, "#{long_option} STRING", String, option.doc]
+      params = [short_option, "#{long_option} STRING", String, doc]
     when Array
       index = option.cli.map(&:to_s)
       aliases = index.abbrev
       list = "  (#{index.join(', ')})"
+      doc = "[#{option.default.inspect}] #{option.doc}"
 
-      params = [short_option, "#{long_option} CHOICE", index, aliases, option.doc, list]
+      params = [short_option, "#{long_option} CHOICE", index, aliases, doc, list]
     else
       pp option
       next
@@ -63,8 +76,7 @@ opts = OptionParser.new do |opt|
   opt.separator ''
   opt.separator 'Common options:'
 
-  # -? keeps -h for --host free
-  opt.on_tail('-?', '--help', 'Show this message') do
+  opt.on_tail('-h', '--help', 'Show this message') do
     puts opts
     exit
   end
@@ -77,6 +89,8 @@ end
 
 opts.parse!(ARGV)
 runner = (ARGV + ['start.rb']).find{|f| File.exists?(f)}
+execute = options.delete :execute
+p options
 
 if project = options.delete(:create)
   require 'ramaze/tool/create'
@@ -84,20 +98,24 @@ if project = options.delete(:create)
   exit
 end
 
-if ARGV.empty? and not runner
+unless ARGV.any? or runner or execute
   abort(opts.to_s)
 end
 
-begin
-  puts "running `#{runner}'"
-  require runner.to_s
-rescue LoadError => ex
-  puts ex
-  puts ex.backtrace
-  puts "Maybe i cannot find `#{runner}'"
-  puts "You could provide a file to execute like:"
-  puts "$ ramaze myapp.rb"
-  exit
+if execute
+  eval execute
+else
+  begin
+    puts "running `#{runner}'"
+    require runner.to_s
+  rescue LoadError => ex
+    puts ex
+    puts ex.backtrace
+    puts "Maybe i cannot find `#{runner}'"
+    puts "You could provide a file to execute like:"
+    puts "$ ramaze myapp.rb"
+    exit
+  end
 end
 
 if options.delete(:console)

@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  CLIOption = Struct.new('CLIOption', :name, :default, :doc, :cli)
+  CLIOption = Struct.new('CLIOption', :name, :default, :doc, :cli, :short)
   OPTIONS     = {}
   CLI_OPTIONS = []
 
@@ -24,10 +24,11 @@ module Ramaze
       def o(doc, options = {})
         cli_given = options.has_key?(:cli)
         cli = options.delete(:cli)
+        short = options.delete(:short)
         name, default = options.to_a.flatten
 
         if cli_given
-          option = CLIOption.new(name, default, doc, cli)
+          option = CLIOption.new(name, default, doc, cli, short)
           CLI_OPTIONS << option
         end
 

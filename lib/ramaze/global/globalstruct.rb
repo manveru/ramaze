@@ -33,7 +33,7 @@ module Ramaze
     def startup(options = {})
       options.each do |key, value|
         if (method(key) rescue false)
-          self[key] = value
+          send("#{key}=", value)
         else
           create_member(key, value)
         end
@@ -80,6 +80,16 @@ module Ramaze
       self[:sourcereload] = interval
       sri = Thread.main[:sourcereload]
       sri.interval = interval if sri
+    end
+
+    def template_root=(tr)
+      self[:template_root] = File.expand_path(tr)
+    end
+
+    def public_root=(pr)
+      pr = File.expand_path(pr)
+      p pr
+      self[:public_root] = pr
     end
 
 
