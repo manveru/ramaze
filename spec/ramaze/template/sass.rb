@@ -14,7 +14,7 @@ class TCTemplateSassController < Ramaze::Controller
 %{
 body
   :margin 1em
-  
+
   #content
     :text-align center
 }
@@ -33,7 +33,7 @@ describe "Sass templates" do
   body #content {
     text-align: center; }"
   end
-  
+
   it "should render from file" do
     r = get('/file.css')
     r.headers['Content-Type'].should == "text/css"

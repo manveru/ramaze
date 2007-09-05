@@ -1,7 +1,7 @@
 require 'spec/helper'
 
 describe 'String#/' do
-  
+
   # check if this is ok in win32
   it 'should join two strings' do
     ('a' / 'b').should == 'a/b'

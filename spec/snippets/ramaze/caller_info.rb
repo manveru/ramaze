@@ -2,7 +2,7 @@ require 'spec/helper'
 
 #TODO test parse_backtrace explicitly
 describe "Ramaze#caller_info" do
-  
+
   def foo(n=0)
     Ramaze.caller_info(n)
   end
@@ -35,5 +35,5 @@ describe "Ramaze#caller_info" do
     line.should match(/\d+/)
     meth.should == 'baz'
   end
-    
+
 end

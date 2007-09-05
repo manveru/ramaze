@@ -8,9 +8,9 @@ module Kernel
   # representing the directory of the current file is.
   # Unlike +__FILE__+ the path returned is absolute.
   #
-  # This method is convenience for the 
+  # This method is convenience for the
   #  File.expand_path(File.dirname(__FILE__))
-  # idiom. 
+  # idiom.
   #
   unless defined?__DIR__
     def __DIR__()

@@ -17,7 +17,7 @@ class TCAspectController < Ramaze::Controller
 
   def test_wrap() 'test wrap' end
   wrap(:test_wrap){ '<br />' }
-  
+
   wrap(:test_template) { '<aspect>' }
 end
 
@@ -32,7 +32,7 @@ class TCAspectAllController < Ramaze::Controller
 
   before_all{ '<pre>' }
   after_all{ '</pre>' }
-  
+
   def test_all_after() 'after' end
 end
 
@@ -54,7 +54,7 @@ describe "AspectHelper" do
   it 'should use wrap' do
     get('/test_wrap').body.should == '<br />test wrap<br />'
   end
-  
+
   it 'should wrap templates' do
     get('/test_template').body.should == '<aspect>I am a template.<aspect>'
   end
@@ -63,11 +63,11 @@ describe "AspectHelper" do
     get('/all/test_all_first').body.should == '<pre>first</pre>'
     get('/all/test_all_second').body.should == '<pre>second</pre>'
   end
-  
+
   it 'should before_all and after_all for templates' do
     get('/all/test_template').body.should == '<pre>I am a template.</pre>'
   end
-  
+
   it 'should before_all and after_all for all defined actions' do
     get('/all/test_all_after').body.should == '<pre>after</pre>'
   end
