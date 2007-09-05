@@ -37,4 +37,36 @@ describe 'Informer' do
     @inform.error(ex)
     @out.first.should =~ format(:error, ex.inspect)
   end
+
+  it 'should choose stdout on init(stdout,:stdout,STDOUT)' do
+    a = Ramaze::Informer.new(STDOUT)
+    b = Ramaze::Informer.new(:stdout)
+    c = Ramaze::Informer.new('stdout')
+    [a,b,c].each { |x| x.out.should == $stdout}
+  end
+
+  it 'should choose stderr on init(stderr,:stderr,STDERR)' do
+    a = Ramaze::Informer.new(STDERR)
+    b = Ramaze::Informer.new(:stderr)
+    c = Ramaze::Informer.new('stderr')
+    [a,b,c].each { |x| x.out.should == $stderr}
+  end
+
+  it 'should use IO when supplied' do
+    i = Ramaze::Informer.new(s = StringIO.new)
+    i.out.should == s
+  end
+
+  it 'should open file otherwise' do
+    begin
+      i = Ramaze::Informer.new('tmp.dummy')
+      out = i.out
+      out.should be_an_instance_of(File)
+      out.path.should == 'tmp.dummy'
+    ensure
+      out.close
+      File.delete('tmp.dummy')
+    end
+  end
+
 end
