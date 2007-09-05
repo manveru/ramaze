@@ -118,7 +118,7 @@ module Ramaze
 
     # TODO: find good names for this method.
     def extended_path
-      @extended_path ||= File.join(Global.public_root, path, *params)
+      @extended_path ||= File.join(path, *params)
     end
 
     # Hook for AspectHelper
