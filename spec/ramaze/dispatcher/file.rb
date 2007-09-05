@@ -6,9 +6,6 @@ describe 'Dispatcher::File' do
     @public_root = Ramaze::Global.public_root = 'spec/ramaze/dispatcher/public'
   end
 
-  it 'should serve from proto/public' do
-  end
-
   it 'should serve from Global.public_root' do
     css = File.read(@public_root/'test_download.css')
     re_css = get('/test_download.css')
