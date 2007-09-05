@@ -87,9 +87,7 @@ module Ramaze
     end
 
     def public_root=(pr)
-      pr = File.expand_path(pr)
-      p pr
-      self[:public_root] = pr
+      self[:public_root] = File.expand_path(pr)
     end
 
 

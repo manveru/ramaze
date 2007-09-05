@@ -90,7 +90,6 @@ end
 opts.parse!(ARGV)
 runner = (ARGV + ['start.rb']).find{|f| File.exists?(f)}
 execute = options.delete :execute
-p options
 
 if project = options.delete(:create)
   require 'ramaze/tool/create'
