@@ -16,11 +16,13 @@ require 'abbrev'
 options = {:origin => :console, :create => false, :force => true}
 cli_options = Ramaze::CLI_OPTIONS
 cli_abbrevs = cli_options.map{|o| o.name.to_s}.abbrev
-%w[e h].each{|key| cli_abbrevs.delete key}
+
+# options occupied by custom switches
+%w[e h i].each{|key| cli_abbrevs.delete key}
 cli_abbrevs = Hash[*cli_abbrevs.select{|k,v| k.size == 1}.flatten].invert
 
 opts = OptionParser.new do |opt|
-  ruby_version = "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]" 
+  ruby_version = "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]"
   ramaze_version = "#{RAMAZE_VERSION}, on #{ruby_version}"
 
   opt.banner = "Usage: ramaze start.rb [OPTIONS]"
@@ -29,12 +31,16 @@ opts = OptionParser.new do |opt|
   opt.separator ''
   opt.separator 'Specialized options:'
 
-  opt.on('--create PROJECT', "A new application based on proto.") do |input|
-    options[:create] = input
+  opt.on('--create PROJECT', "A new application based on proto.") do |project_name|
+    options[:create] = project_name
   end
 
-  opt.on('-eSTRING', '--execute STRING', String, "Execute string instead of a start.rb.") do |input|
-    options[:execute] = input
+  opt.on('-eSTRING', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
+    options[:execute] = execute
+  end
+
+  opt.on('-i', '--instant', "Start up with bare-bones Controller") do |instant|
+    options[:instant] = instant
   end
 
   opt.separator ''
@@ -90,6 +96,7 @@ end
 opts.parse!(ARGV)
 runner = (ARGV + ['start.rb']).find{|f| File.exists?(f)}
 execute = options.delete :execute
+instant = options.delete :instant
 
 if project = options.delete(:create)
   require 'ramaze/tool/create'
@@ -97,12 +104,15 @@ if project = options.delete(:create)
   exit
 end
 
-unless ARGV.any? or runner or execute
+unless ARGV.any? or [runner, execute, instant].any?
   abort(opts.to_s)
 end
 
 if execute
   eval execute
+elsif instant
+  class MainController < Ramaze::Controller
+  end
 else
   begin
     puts "running `#{runner}'"
