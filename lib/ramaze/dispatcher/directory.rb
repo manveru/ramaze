@@ -92,7 +92,7 @@ module Ramaze
           files.each do |file|
             basename = ::File.basename(file)
             time = ::File.mtime(file).strftime(time_format)
-            size = ::File.size(file)
+            size = ::File.size(file).human_readable_filesize_format
             mime = Tool::MIME.type_for(file)
             file_body << %[<tr>
             <td class="n"><a href="#{display/basename}">#{basename}</a></td>
