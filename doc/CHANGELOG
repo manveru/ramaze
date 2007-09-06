@@ -1,3 +1,410 @@
+Thu Sep  6 22:51:32 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Version 0.1.4
+
+Thu Sep  6 22:51:22 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make Struct#values_at backwards-compatible but remove Symbol#to_int (deprecated by ruby1.9)
+
+Thu Sep  6 22:49:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix typo in human_readable_filesize_format
+
+Thu Sep  6 22:49:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update things in /doc
+
+Thu Sep  6 22:48:56 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update doc/AUTHORS
+
+Thu Sep  6 14:28:18 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing some more spaces.
+
+Thu Sep  6 14:28:01 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding (c) to Numeric#human_readable_filesize_format
+
+Thu Sep  6 14:27:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding --instant option to start bin/ramaze with an empty controller.
+
+Thu Sep  6 14:23:36 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding Numeric#human_readable_filesize_format and using it in the directory-listing.
+
+Thu Sep  6 01:10:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove some useless debugging-information
+
+Thu Sep  6 00:57:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove deprecated spec from dispatcher/file
+
+Thu Sep  6 00:52:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove the now useless controller/directory
+
+Thu Sep  6 00:50:24 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Minor fix to Action#extended_path
+
+Thu Sep  6 00:46:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Medium refactoring of bin/ramaze, adding better functionality in Global for it and adding some niceties for Global.public_root/template_root
+
+Wed Sep  5 19:52:59 JST 2007  rff.rff@gmail.com
+  * spec for Informer case statement in initialize
+
+Wed Sep  5 19:07:09 JST 2007  rff.rff@gmail.com
+  * spec for Action#to_hash
+
+Wed Sep  5 18:36:22 JST 2007  rff.rff@gmail.com
+  * spec for Struct#values_at
+
+Wed Sep  5 18:34:39 JST 2007  rff.rff@gmail.com
+  * spec for Struct#fill
+
+Wed Sep  5 18:32:13 JST 2007  rff.rff@gmail.com
+  * make snippets/struct/values_at behaviour compatible with standard ruby
+
+Wed Sep  5 13:14:24 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * The usual, fixing some end-spaces.
+
+Tue Sep  4 21:10:56 JST 2007  rff.rff@gmail.com
+  * doc fix for caller_lines
+
+Tue Sep  4 21:07:59 JST 2007  rff.rff@gmail.com
+  * spec for Ramaze#caller_lines
+
+Tue Sep  4 20:54:14 JST 2007  rff.rff@gmail.com
+  * spec for Ramaze#caller_info
+
+Mon Sep  3 19:56:07 JST 2007  rff.rff@gmail.com
+  * remove useless snippets/openstruct
+
+Mon Sep  3 19:41:57 JST 2007  rff.rff@gmail.com
+  * spec for String#snake_case
+
+Mon Sep  3 19:35:56 JST 2007  rff.rff@gmail.com
+  * spec for String#DIVIDE
+
+Mon Sep  3 19:31:55 JST 2007  rff.rff@gmail.com
+  * spec for String#color
+
+Mon Sep  3 19:24:05 JST 2007  rff.rff@gmail.com
+  * tests for snippet/string/camel_case
+
+Mon Sep  3 17:59:38 JST 2007  rff.rff@gmail.com
+  * small spec for __DIR__ snippet
+
+Mon Sep  3 17:55:32 JST 2007  rff.rff@gmail.com
+  * snippets specs for aquire,constant
+
+Mon Sep  3 18:13:49 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing rake_tasks/spec for example specs
+
+Mon Sep  3 16:37:46 JST 2007  rff.rff@gmail.com
+  * more minimal READMES
+
+Mon Sep  3 16:19:39 JST 2007  rff.rff@gmail.com
+  * README for examples/blog
+
+Mon Sep  3 05:41:40 JST 2007  rff.rff@gmail.com
+  * Og's logger will write to STDERR which means that even if all tests pass
+  SpecWrapper will show it in red and show the error report.
+  It seems that using Ramaze::Inform as the default logger for it works,
+  but maybe it should be done in start.rb, or we should use Logger.set(STDOUT)
+
+Mon Sep  3 02:41:20 JST 2007  rff.rff@gmail.com
+  * removed require ramaze from wiktacular specs )
+
+Mon Sep  3 02:35:51 JST 2007  rff.rff@gmail.com
+  * these are just simple specs for example/blog, again more useful to 
+  show users how to write tests than  to test the ramaze infrastructure.
+  
+  Strangely, all test pass but it is shown with a red bar from ramaze's rake.
+
+Mon Sep  3 01:56:03 JST 2007  rff.rff@gmail.com
+  * specs for wiktacular/{revert/unrevert} + refactoring
+
+Mon Sep  3 16:52:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Rewrite of Kernel#aquire
+
+Sun Sep  2 17:51:10 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Changing implementation of __DIR__ a bit.
+
+Fri Aug 31 21:49:04 JST 2007  rff.rff@gmail.com
+  * more tests for wiktacular to show post() usage
+
+Fri Aug 31 08:37:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing typo in StackHelper docs.
+
+Thu Sep  6 00:41:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing directory listing and adding spec
+
+Thu Aug 30 18:09:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding the filecache meta structure and renaming Global.action_file_cached to Global.file_cache, adding Global.file_cache_meta_dir
+
+Tue Aug 28 23:15:40 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make the wiktacular spec work standalone and fix its dependence on hash-order
+
+Tue Aug 28 23:00:07 JST 2007  rff.rff@gmail.com
+  * added __DIR__ snippet and change wiktacular to use it
+
+Tue Aug 28 22:25:48 JST 2007  rff.rff@gmail.com
+  * last __DIR__ usage in spec
+
+Tue Aug 28 22:24:04 JST 2007  rff.rff@gmail.com
+  * __DIR__ usage in examples
+
+Tue Aug 28 22:17:03 JST 2007  rff.rff@gmail.com
+  * more __DIR__ usage in specs
+
+Tue Aug 28 22:11:52 JST 2007  rff.rff@gmail.com
+  * changed todolist's spec to use __DIR__
+
+Tue Aug 28 22:09:56 JST 2007  rff.rff@gmail.com
+  * use __DIR__ in specs
+
+Tue Aug 28 20:30:04 JST 2007  rff.rff@gmail.com
+  * refactor controller/model to hide path handling
+
+Tue Aug 28 20:22:02 JST 2007  rff.rff@gmail.com
+  * make wiktacular test work
+  the dummy specs for wiktacular are now runnable standalone or from rake.
+  It was a path problem. Needs consolidation in the model.
+
+Tue Aug 28 21:08:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove restriction on Haml, version 1.7.0 fixed the activesupport issue.
+
+Tue Aug 28 19:07:46 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make executing spec-files directly work again.
+
+Tue Aug 28 19:06:32 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update memcached, remove our flush_all hack, since this is supported by the latest version, add alias from #clear to #flush_all
+
+Mon Aug 27 00:37:48 JST 2007  rff.rff@gmail.com
+  * fixed todolist.rb so that spec run fine both from ramaze's rakefile and standalone
+
+Mon Aug 27 00:26:12 JST 2007  rff.rff@gmail.com
+  * re-added a commodity spec/helper to avoid changing all spec files
+
+Mon Aug 27 00:23:16 JST 2007  rff.rff@gmail.com
+  * example/todolist's db will be deleted at each test run, so we remay
+
+Mon Aug 27 00:09:50 JST 2007  rff.rff@gmail.com
+  * move todolist's test in example/todolist/spec
+
+Mon Aug 27 00:06:23 JST 2007  rff.rff@gmail.com
+  * mv spec/helper -> ramaze/spec/helper and accomodated requires.
+  
+  This means that end-users can use it for their own proijects by requiring 
+  ramaze/spec/helper, and we can add tests to the examples instead of leaving them 
+  in ramaze's spec directory.
+  
+
+Mon Aug 27 00:04:19 JST 2007  rff.rff@gmail.com
+  * add cancel links to wiktacular templates
+
+Sun Aug 26 22:48:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add missing html_layout.xhtml for wiktacular example.
+
+Tue Aug 21 14:15:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing and improving filebased caching. '/' should be transformed to '/index' in Dispatcher::File.
+
+Sat Aug 18 20:54:11 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * adding some path related methods to Action
+
+Sun Aug 12 18:02:49 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add Action#fullpath
+
+Sun Aug 12 14:22:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Create new Action for requests, modifying the cached one is dangerous.
+
+Sat Aug 11 20:24:27 JST 2007  Fabian Buch <fabian.buch@fabian-buch.de>
+  * changed Adapter to circumvent JRubys TCPServer bug (http://jira.codehaus.org/browse/JRUBY-1266)
+  Ramaze now works in JRuby with Webrick, tested on a PPC-Mac with JRuby 1.0
+
+Sat Aug 11 15:04:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove the faulty path from the post_install message on installing a gem.
+
+Fri Aug  3 14:56:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing multiple actions per layout.
+
+Sat Aug 18 20:13:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding filebased cache of actions... very alpha so please try it and suggest improvments (code donations more than welcome)
+
+Wed Aug  8 20:12:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add detailed error-message if haml 1.7.0 is installed but no activesupport.
+
+Wed Aug  8 19:50:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Improve text for redirection.
+
+Wed Aug  8 19:49:11 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make examples/caching not based on computation, that is very error-prone and slow, use rand instead.
+
+Wed Aug  8 19:47:57 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * More robust spec for informer
+
+Fri Aug  3 00:13:01 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove references to FeedHelper/FormHelper from the features readme chunk.
+
+Fri Aug  3 00:08:40 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update doc/meta/configuration.txt to reflect cookies => sessions.
+
+Fri Aug  3 00:03:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Global.cookies is now Global.sessions and actually works ;)
+
+Thu Aug  2 13:42:18 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add examples/layout.rb
+
+Tue Jul 31 21:16:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Making layouts more flexible but not yet stackable.
+
+Mon Jul 30 20:48:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix aspect spec and aspects for template-only actions.
+
+Mon Jul 30 18:11:16 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Harmonize Fcgi documentation and code
+
+Mon Jul 30 09:06:20 JST 2007  Aman Gupta <ramaze@tmm1.net>
+  * Updated spec for aspect helper
+
+Mon Jul 30 11:02:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update description of gem
+
+Sun Jul 29 22:11:07 JST 2007  comp.lang.zenix+ramaze@gmail.com
+  * Added directory listing & another option
+
+Sun Jul 29 02:18:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * move Dispatcher::build_response to Response#build
+
+Sat Jul 28 21:56:41 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * partial helper module docs, pager add docs for private methods too
+
+Sat Jul 28 20:22:41 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Pager:  documentation, major spec update
+
+Sat Jul 28 19:59:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Docs for Dispatcher::Action and RenderPartial, improving docs a bit concerning aspects *_all
+
+Sat Jul 28 19:46:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Full docs for Cache
+
+Sat Jul 28 19:44:49 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Full docs for CacheHelper
+
+Sat Jul 28 19:43:16 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * A bit of meta-docs for IdentityHelper.
+
+Sat Jul 28 19:30:05 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * finalize docs for controller/resolve
+
+Sat Jul 28 19:26:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * document Localize class
+
+Sat Jul 28 19:24:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove FormHelper and specs
+
+Sat Jul 28 19:22:52 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove ReFeed/FeedHelper and Store::YAML and their specs
+
+Sat Jul 28 06:27:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix typos in AuthHelper
+
+Sat Jul 28 06:06:26 JST 2007  Aman Gupta <ramaze@tmm1.net>
+  * Haml/Sass spec cleanup
+
+Fri Jul 27 13:42:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Documentation for mongrel/fcgi/cgi and sourcereload, reduces some overhead in the Cgi and Fcgi adapters.
+
+Fri Jul 27 13:35:26 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update docs concerning FeedHelper and ReFeed.
+
+Fri Jul 27 13:28:36 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Change wiktacular so it uses layout instead of Page.
+
+Fri Jul 27 13:26:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Put initial mapping into Controller::inherited so layout can work with it. Controller::startup is too late. Also introduces a change to delete any old mapping on usage of Controller::map.
+
+Fri Jul 27 08:54:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add default content-type text/css for Sass and update specs for it
+
+Fri Jul 27 08:48:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add autoload for Sass
+
+Fri Jul 27 08:34:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix typo in proto/template/index.xhtml
+
+Fri Jul 27 04:48:23 JST 2007  Aman Gupta <ramaze@tmm1.net>
+  * initial support for Sass CSS templates
+
+Thu Jul 26 17:35:47 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Documentation for tool/localize
+
+Thu Jul 26 19:09:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add another spec for Action()
+
+Thu Jul 26 01:37:17 JST 2007  comp.lang.zenix+ramaze@gmail.com
+  * Added capitalization to Ramaze::Tool::Create output
+
+Wed Jul 25 18:29:41 JST 2007  comp.lang.zenix+ramaze@gmail.com
+  * Updated user map information, added riffraff
+
+Wed Jul 25 16:15:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add tries to require rubygems
+
+Wed Jul 25 13:55:21 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix typo in bin/ramaze
+
+Tue Jul 24 08:16:25 JST 2007  Aman Gupta <ramaze@tmm1.net>
+  * tmm1's location on the ramaze users map
+
+Tue Jul 24 01:48:24 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add placemark for zenix
+
+Tue Jul 24 01:30:54 JST 2007  jesuswasramazing.10.pistos@geoshell.com
+  * Added Pistos avatar.
+
+Tue Jul 24 01:03:54 JST 2007  jesuswasramazing.10.pistos@geoshell.com
+  * Update of Pistos' description on Google Map.
+
+Tue Jul 24 01:03:12 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * update users.kml
+
+Tue Jul 24 00:46:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * add doc/meta/users.kml
+
+Thu Jul 26 20:45:57 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Implementing layouts, view this patch to find out more as it also adds docs and specs
+
+Wed Jul 25 15:51:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * minor beautification and docs for controller/resolve
+
+Wed Jul 25 15:42:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix a end-space
+
+Wed Jul 25 15:41:07 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Further improvment on error-handling on exception during render
+
+Tue Jul 24 20:47:31 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Documentation for Dispatcher, GlobalStruct, Dispatcher::Error, Tool::MIME, Response, Store::Default (adds some beautification in Dispatcher)
+
+Tue Jul 24 14:15:36 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * document AspectHelper and Syslog
+
+Tue Jul 24 14:00:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * document some raketasks
+
+Tue Jul 24 14:00:30 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * move error-message in sourcereload into the failed hook
+
+Tue Jul 24 14:00:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * full docs for sourcereload
+
+Tue Jul 24 13:59:57 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * docs for informer
+
+Tue Jul 24 13:59:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * main.rb is now start.rb
+
+Sun Jul 22 03:24:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix abort for bin/ramaze
+
+Sat Jul 21 22:20:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add desc to release task
+
+Sat Jul 21 22:09:12 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update CHANGELOG and AUTHORS
+
 Sat Jul 21 22:08:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   tagged 0.1.3
 
@@ -15,15 +422,6 @@ Sat Jul 21 19:28:05 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 
 Sat Jul 21 19:00:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * rawiki is now wiktacular, fixed some bugs, added some features, HTML escapes fine now.
-
-Fri Jul 20 14:54:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * documentation for dispatcher/error and the templating engines.
-
-Fri Jul 20 14:46:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Some more class/module docs.
-
-Fri Jul 20 14:33:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Documenting the inform/* informers.
 
 Fri Jul 20 21:53:45 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Add a spec for recent cache patch (namespaces for caches)
@@ -46,11 +444,17 @@ Fri Jul 20 16:36:09 JST 2007  Jonathan Buch <jo@helloit.fi>
   These are now the only operations supported by Cache, if you need more, use
   the Cache#cache to get the underlying object.
 
+Fri Jul 20 14:54:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * documentation for dispatcher/error and the templating engines.
+
+Fri Jul 20 14:46:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Some more class/module docs.
+
+Fri Jul 20 14:33:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Documenting the inform/* informers.
+
 Fri Jul 20 03:06:18 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Fix blog example, link is removed in favour of A
-
-Thu Jul 19 22:58:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Refining error-handling, now controllers are asked for a (also configurable) error-page if they have no action.
 
 Thu Jul 19 01:34:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Remove __ urls, saves us one iteration for each uri over 3 segments long :P
@@ -67,14 +471,14 @@ Sat Jul 14 01:24:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Fri Jul 13 08:45:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Two minor fixes for proto
 
+Thu Jul 12 08:51:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * remove the japanese COPYING, it's outdated and won't be read by anyone
+
 Thu Jul 12 20:22:14 JST 2007  Jonathan Buch <jo@helloit.fi>
   * bugfix, Inform not Informer
 
 Mon Jul  9 22:57:17 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Add a Controller.at(mapping) method to nicely get to a mapped controller when you only have a path.
-
-Thu Jul 12 08:51:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * remove the japanese COPYING, it's outdated and won't be read by anyone
 
 Mon Jul  9 22:19:31 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Partial suddenly needs Request.current instead of request O.o
@@ -95,6 +499,9 @@ Mon Jul  9 21:57:30 JST 2007  Jonathan Buch <jo@helloit.fi>
 Wed Jul  4 17:57:57 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Sanitize Cache.resolved before blindly using what it gives us, better error-tolerance (for memcache as far as we know), oh, and removed some spaces at EOL
 
+Thu Jul 19 22:58:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Refining error-handling, now controllers are asked for a (also configurable) error-page if they have no action.
+
 Sun Jul  1 02:49:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Remove Global.public_proto, make sure you copy over the error.xhtml if you need it..
 
@@ -114,14 +521,14 @@ Wed Jun 27 03:31:08 JST 2007  Lars Olsson <lasso@lassoweb.se>
 Wed Jun 27 23:36:28 JST 2007  Jonathan Buch <jo@helloit.fi>
   * migrate previous render_partial fix to post 0.1.2
 
+Wed Jun 27 16:58:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * implementation and spec for LinkHelper#breadcrumbs
+
 Tue Jun 26 22:49:09 JST 2007  Jonathan Buch <jo@helloit.fi>
   * use hash of SEEED for memcached namespace
 
 Tue Jun 26 22:14:18 JST 2007  Jonathan Buch <jo@helloit.fi>
   * [Pager] Overlooked one link
-
-Wed Jun 27 16:58:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * implementation and spec for LinkHelper#breadcrumbs
 
 Sun Jun 24 06:49:31 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Remove eval in Pager, add new testcase
@@ -132,12 +539,6 @@ Thu Jun 21 23:05:29 JST 2007  Jonathan Buch <jo@helloit.fi>
 Thu Jun 21 22:28:32 JST 2007  Jonathan Buch <jo@helloit.fi>
   * fix up render_partial
 
-Fri Jun 22 01:46:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Some code-beautification and complete docs for all files in this patch.
-
-Fri Jun 22 01:34:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Fixing parser of `rake undocumented` to recognize '=begin rdoc' as comment as well.
-
 Fri Jun 22 15:40:54 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * don't make a new Struct for GlobalStruct, causes problems with reloading.
 
@@ -147,20 +548,20 @@ Thu Jun 21 23:04:53 JST 2007  Jonathan Buch <jo@helloit.fi>
 Thu Jun 21 16:55:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * add Ramaze::SEEED which contains the file Ramaze.start was called from. Now used as key for memcached namespace.
 
+Fri Jun 22 01:46:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Some code-beautification and complete docs for all files in this patch.
+
+Fri Jun 22 01:34:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing parser of `rake undocumented` to recognize '=begin rdoc' as comment as well.
+
 Wed Jun 20 01:20:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * update AUTHORS - welcome tmm1! :)
 
 Wed Jun 20 00:56:41 JST 2007  Aman Gupta <ramaze@tmm1.net>
   * minor spec cleanups
 
-Tue Jun 19 14:23:26 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Describe the way of request/response in doc/meta/internals.txt (for rikur and all the other curious folks out there)
-
 Tue Jun 19 15:13:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Documented some undocumented methods. (by Riku R[_\c3_][_\a4_]s[_\c3_][_\a4_]en <riku@helloit.fi>)
-
-Mon Jun 18 14:07:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Make dispatching continue after Dispatcher::Action fails, just return the last available error if all dispatchers fail.
 
 Tue Jun 19 00:05:58 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Global.public_root has precedence over Global.public_proto
@@ -180,11 +581,14 @@ Sun Jun 17 06:49:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Sun Jun 17 06:49:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Update AUTHORS
 
+Tue Jun 19 14:23:26 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Describe the way of request/response in doc/meta/internals.txt (for rikur and all the other curious folks out there)
+
+Mon Jun 18 14:07:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make dispatching continue after Dispatcher::Action fails, just return the last available error if all dispatchers fail.
+
 Fri Jun 15 15:13:17 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Revision of tutorial
-
-Thu Jun 14 13:15:50 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Replace Action::fill by Action::create to avoid clash with our custom Struct::fill (eventually we should solve that otherwise) - also fix the problem that params were not unescaped properly
 
 Thu Jun 14 14:16:16 JST 2007  comp.lang.zenix+ramaze@gmail.com
   * Added verbosity control to 'undocumented'. Run `rake undocumented-verbose' for the 'updated' version
@@ -198,6 +602,9 @@ Thu Jun 14 11:55:28 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 
 Wed Jun 13 18:08:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * add ramaze/inform/knotify over Inform::Knotify
+
+Thu Jun 14 13:15:50 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Replace Action::fill by Action::create to avoid clash with our custom Struct::fill (eventually we should solve that otherwise) - also fix the problem that params were not unescaped properly
 
 Wed Jun 13 20:52:26 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * total rewrite of the undocumented task, better matching using StringScanner and nicer output using colors.
@@ -217,6 +624,9 @@ Wed Jun 13 13:32:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Wed Jun 13 02:41:59 JST 2007  Clive Crous <clive@crous.co.za>
   * Optional dynamic font size for XOSD
 
+Tue Jun 12 01:27:51 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * change @template_root of controller when not given
+
 Mon Jun 11 20:08:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * simplify the template handling again, removing the (for now) unused Global.compile option
 
@@ -225,9 +635,6 @@ Mon Jun 11 20:00:05 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 
 Mon Jun 11 19:37:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Improve performance by caching path lookups (need to add invalidation on SourceReload).
-
-Tue Jun 12 01:27:51 JST 2007  Jonathan Buch <jo@helloit.fi>
-  * change @template_root of controller when not given
 
 Mon Jun 11 08:35:12 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * add the example i use to find memory-leaks, might be useful for someone.
@@ -286,6 +693,9 @@ Wed Jun  6 04:33:43 JST 2007  rff.rff@gmail.com
 Wed Jun  6 12:25:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * ENV SWIFT and EVENT now trigger require of swiftiplied or evented mongrel
 
+Wed Jun  6 00:06:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * caching for our custom Request#params
+
 Tue Jun  5 20:08:56 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * fixing all those annoying spaces on empty lines and adapt the add-copyright task not to add one automatically but just notice.
 
@@ -316,9 +726,6 @@ Tue Jun  5 12:31:55 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Tue Jun  5 12:30:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * extend PartialHelper with render_template
 
-Wed Jun  6 00:06:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * caching for our custom Request#params
-
 Mon Jun  4 23:18:45 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Add :collect trait to Localize, disable collecting for more speed
 
@@ -346,11 +753,14 @@ Sun Jun  3 03:38:02 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Sat Jun  2 17:58:28 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Add render partial implementation + specs
 
-Fri Jun  1 14:42:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * constantize a couple of traits in Dispatcher, Dispatcher.trait[:handle_error] is now Dispatcher::Error::HANDLE_ERROR, Dispatcher::Action.trait[:filter] is now Dispatcher::Action::FILTER, sanitize error spec and add some docs.
-
 Fri Jun  1 16:31:18 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Common error classes, tiny change to Global, StackHelper expects url instead of using R() itself
+
+Thu May 31 18:12:45 JST 2007  Martin Hilbig blueonyx@dev-area.net
+  * fixing link building of the whywiki example
+
+Fri Jun  1 14:42:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * constantize a couple of traits in Dispatcher, Dispatcher.trait[:handle_error] is now Dispatcher::Error::HANDLE_ERROR, Dispatcher::Action.trait[:filter] is now Dispatcher::Action::FILTER, sanitize error spec and add some docs.
 
 Thu May 31 20:51:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * some santizing and docs for Session.
@@ -358,8 +768,8 @@ Thu May 31 20:51:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Thu May 31 20:29:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * speed up path resolution a little bit by directly instantinating Action
 
-Thu May 31 18:12:45 JST 2007  Martin Hilbig blueonyx@dev-area.net
-  * fixing link building of the whywiki example
+Wed May 30 17:37:19 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * make the life for people who want to run specs without RUBYOPT easier
 
 Thu May 31 12:46:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * document Informing and add some minor speed increase (increase will be smaller than most loggers would take to actual output)
@@ -372,9 +782,6 @@ Wed May 30 21:19:06 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 
 Wed May 30 21:14:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * a couple of docs for Controller
-
-Wed May 30 17:37:19 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * make the life for people who want to run specs without RUBYOPT easier
 
 Wed May 30 14:00:31 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * small update to the FAQ
@@ -442,9 +849,6 @@ Sun May 27 00:39:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Sun May 27 00:38:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * another update of tutorial
 
-Sat May 26 21:35:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * fix the precendence of startup-options: bin/ramaze > Ramaze.start > Global.option
-
 Sat May 26 23:52:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * some fixes to the tutorial
 
@@ -456,6 +860,9 @@ Fri May 25 20:38:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 
 Sat May 26 05:59:26 JST 2007  clive@crous.co.za
   * Correct a minor typo/spelling error in shutdown message
+
+Sat May 26 21:35:09 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fix the precendence of startup-options: bin/ramaze > Ramaze.start > Global.option
 
 Sat May 26 02:18:38 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * params assigned to Action should be unescaped automatically
@@ -542,6 +949,9 @@ Tue May 22 21:14:02 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Tue May 22 18:04:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * finally fix the localize spec, properly
 
+Tue May 15 17:42:06 JST 2007  Jonathan Buch <jo@helloit.fi>
+  * Remove yaml files for localizations
+
 Tue May 22 17:34:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * speed up the examples/chaching spec
 
@@ -584,14 +994,14 @@ Mon May 21 20:15:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Mon May 21 18:02:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * add check for defined?(Action)
 
-Mon May 21 20:10:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * fixing some typos in tutorial
-
 Mon May 21 14:11:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * use the new functionality of Cache all over Ramaze, makes a ton of trait lookups unnessecary and the total caches available in a single place.
 
 Mon May 21 14:07:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * make Cache Enumerable, add #each, #has_key? and ::add to add new global caches that are easily accessable
+
+Mon May 21 20:10:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * fixing some typos in tutorial
 
 Mon May 21 17:45:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * fix Dispatcher::File and add spec for missing response-code due to an evil mix of racks status-code hash and rubys nil.to_i => 0
@@ -733,9 +1143,6 @@ Thu May 17 01:29:19 JST 2007  clive@crous.co.za
 
 Thu May 17 00:22:39 JST 2007  Jonathan Buch <jo@helloit.fi>
   * Add small spec for template resolving of traits
-
-Tue May 15 17:42:06 JST 2007  Jonathan Buch <jo@helloit.fi>
-  * Remove yaml files for localizations
 
 Wed May 16 23:49:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * add migration info for patch 1111
