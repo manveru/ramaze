@@ -203,12 +203,13 @@ task 'authors' do
   authors = []
   mapping = {}
   author_map = {
-    'm.fellinger@gmail.com'            => 'Michael Fellinger',
-    'manveru@weez-int.com'             => 'Michael Fellinger',
-    'clive@crous.co.za'                => 'Clive Crous',
-    'blueonyx@dev-area.net'            => 'Martin Hilbig',
-    'rff.rff@gmail.com'                => 'Gabriele Renzi',
-    'comp.lang.zenix+ramaze@gmail.com' => 'zenix',
+    'm.fellinger@gmail.com'                   => 'Michael Fellinger',
+    'manveru@weez-int.com'                    => 'Michael Fellinger',
+    'clive@crous.co.za'                       => 'Clive Crous',
+    'blueonyx@dev-area.net'                   => 'Martin Hilbig',
+    'rff.rff@gmail.com'                       => 'Gabriele Renzi',
+    'comp.lang.zenix+ramaze@gmail.com'        => 'zenix',
+    'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
   }
   changes.split("\n").grep(/^\w/).each do |line|
     splat  = line.split
