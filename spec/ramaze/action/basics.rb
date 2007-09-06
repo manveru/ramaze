@@ -18,8 +18,8 @@ describe 'Action() basics' do
   end
 
   it 'should be transformable in an hash' do
-    # we need to supply a :controller because internal accessor methods 
-    # will use it to build some defaults. 
+    # we need to supply a :controller because internal accessor methods
+    # will use it to build some defaults.
     # TODO: in Action.new() raise on init :controller or use a default
     hsh = Ramaze::Action(:controller=>Object).to_hash
     hsh[:method].should == nil

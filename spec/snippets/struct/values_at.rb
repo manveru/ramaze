@@ -2,11 +2,11 @@ require 'spec/helper'
 
 describe "Struct#values_at" do
   Point = Struct.new(:x,:y)
-  
+
   it "should access a single value" do
     Point.new(1,2).values_at(:x).should == [1]
   end
-  
+
   it "should access multiple values" do
     Point.new(1,2).values_at(:x,:y).should == [1,2]
   end

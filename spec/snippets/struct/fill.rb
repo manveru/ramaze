@@ -1,7 +1,7 @@
 require 'spec/helper'
 
 describe "Struct.fill" do
-  
+
   Point = Struct.new(:x,:y)
   it "should return a well set struct" do
     p = Point.fill(:x=>1,:y=>2)
