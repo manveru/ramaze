@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 class Numeric
-  HUMAN_READBLE_FILESIZE_FORMAT = [
+  HUMAN_READABLE_FILESIZE_FORMAT = [
       ['%.1fT', 1 << 40],
       ['%.1fG', 1 << 30],
       ['%.1fM', 1 << 20],
@@ -10,7 +10,7 @@ class Numeric
     ]
 
   def human_readable_filesize_format
-    HUMAN_READBLE_FILESIZE_FORMAT.each do |format, size|
+    HUMAN_READABLE_FILESIZE_FORMAT.each do |format, size|
       return format % (self.to_f / size) if self >= size
     end
 
