@@ -78,7 +78,7 @@ module Ramaze
           dirs, files = Dir[path/'*'].partition{|file| ::File.directory?(file) }
           dir_body, file_body = [], []
 
-          dirs.each do |dir|
+          dirs.sort.each do |dir|
             basename = ::File.basename(dir)
             dir_body << %[<tr>
             <td class="n"><a href="#{display/basename}">#{basename}/</a></td>
@@ -89,7 +89,7 @@ module Ramaze
           end
 
           time_format = "%Y-%b-%d %H:%M:%S"
-          files.each do |file|
+          files.sort.each do |file|
             basename = ::File.basename(file)
             time = ::File.mtime(file).strftime(time_format)
             size = ::File.size(file).human_readable_filesize_format
