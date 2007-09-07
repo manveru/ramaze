@@ -21,7 +21,7 @@ class Struct
     if keys.all?{|key| key.respond_to?(:to_int) }
       keys.map{|key| values[key.to_int] }
     else
-      keys.map{|k| self[k.to_sym] }
+      keys.map{|k| self[k] }
     end
   end
 end
