@@ -3,6 +3,8 @@
 
 module Ramaze
   class Controller
+    FILTER = [ :cached, :default ]
+
     class << self
       # #ramaze - 9.5.2007
       #
@@ -13,15 +15,14 @@ module Ramaze
       # manveru: everything further down is considered 500
 
       def resolve(path)
-        if found = Cache.resolved[path]
-          if found.respond_to?(:relaxed_hash)
-            return found.dup
-          else
-            Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
-            Cache.resolved.delete path
-          end
+        FILTER.each do |filter|
+          answer = filter.respond_to?(:call) ? filter.call(path) : send(filter, path)
+          return answer if answer
         end
+        raise_no_filter(path)
+      end
 
+      def default(path)
         mapping     = Global.mapping
         controllers = Global.controllers
 
@@ -48,6 +49,17 @@ module Ramaze
 
         raise_no_action(first_controller, path) if first_controller
         raise_no_controller(path)
+      end
+
+      def cached(path)
+        if found = Cache.resolved[path]
+          if found.respond_to?(:relaxed_hash)
+            return found.dup
+          else
+            Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
+            Cache.resolved.delete path
+          end
+        end
       end
 
       # Try to produce an Action from the given path and paremters with the
