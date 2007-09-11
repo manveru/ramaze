@@ -52,9 +52,9 @@ module MockHTTP
   end
 
 	def make_query query
-		return query unless query && query.class == Hash
-    query.inject([]) do |s, (key, value)|
-			s + [CGI::escape(key) + "=" + CGI::escape(value)]
-    end.join('&')
+		return query unless query and query.respond_to?(:map)
+    query.map{|key, value|
+      "#{CGI::escape(key)}=#{CGI::escape(value)}"
+    }.join('&')
 	end
 end
