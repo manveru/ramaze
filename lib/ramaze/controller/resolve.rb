@@ -3,24 +3,50 @@
 
 module Ramaze
   class Controller
-    FILTER = [ :cached, :default ]
+    FILTER = [ :cached, :default ] unless defined?(FILTER)
 
     class << self
-      # #ramaze - 9.5.2007
-      #
-      # manveru: if no possible controller is found, it's a NoController error
-      # manveru: that would be a 404 then
-      # Kashia: aye
-      # manveru: if some controller are found but no actions on them, it's NoAction Error for the first controller found, again, 404
-      # manveru: everything further down is considered 500
+
+      # Resolve an absolute path in the application by passing it to each
+      # element of Ramaze::Controller::FILTER.
+      # Elements in exclude_filter are excluded from handling.
+      # If an element does not respond to call it will be sent to self
+      # instead, in either case with path as argument.
 
       def resolve(path, *exclude_filter)
         (FILTER - exclude_filter.flatten).each do |filter|
-          answer = filter.respond_to?(:call) ? filter.call(path) : send(filter, path)
+          answer =
+            if filter.respond_to?(:call)
+              filter.call(path)
+            else
+              send(filter.to_s, path)
+            end
           return answer if answer
         end
+
         raise_no_filter(path)
       end
+
+      # Default element of FILTER.
+      # Looks up the path in Cache.resolved and returns it if found.
+
+      def cached(path)
+        if found = Cache.resolved[path]
+          if found.respond_to?(:relaxed_hash)
+            return found.dup
+          else
+            Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
+            Cache.resolved.delete path
+          end
+        end
+
+        nil
+      end
+
+      # Default element of FILTER.
+      # The default handler that tries to find the best match for the given
+      # path in terms of Controller/method/template and given arguments.
+      # If a match is found it will be cached for further use.
 
       def default(path)
         mapping     = Global.mapping
@@ -51,19 +77,9 @@ module Ramaze
         raise_no_controller(path)
       end
 
-      def cached(path)
-        if found = Cache.resolved[path]
-          if found.respond_to?(:relaxed_hash)
-            return found.dup
-          else
-            Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
-            Cache.resolved.delete path
-          end
-        end
-      end
-
       # Try to produce an Action from the given path and paremters with the
       # appropiate template if one exists.
+
       def resolve_action(path, *parameter)
         path, parameter = path.to_s, parameter.map(&:to_s)
         if alternate_template = trait["#{path}_template"]
@@ -86,6 +102,7 @@ module Ramaze
 
       # Search the #template_paths for a fitting template for path.
       # Only the first found possibility for the generated glob is returned.
+
       def resolve_template(path)
         path = path.to_s
         path_converted = path.split('__').inject{|s,v| s/v}
@@ -165,6 +182,10 @@ module Ramaze
         c_extensions = t_extensions.select{|k,v| k == engine}.map{|k,v| v}.flatten
         all_extensions = t_extensions.map{|k,v| v}.flatten
         (c_extensions + all_extensions).uniq
+      end
+
+      def raise_no_filter(path)
+        raise Ramaze::Error::NoFilter, "No Filter found for `#{path}'"
       end
 
       # Raises Ramaze::Error::NoController

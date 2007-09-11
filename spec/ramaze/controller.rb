@@ -151,4 +151,15 @@ describe "Controller" do
       lambda{ resolve(path) }.should raise_error(Ramaze::Error::NoAction, message)
     end
   end
+
+  it 'should resolve correctly even if the action is cached already.' do
+    handle('/').should == 'Hello, World!'
+    handle('/').should == 'Hello, World!'
+  end
+
+  it 'should remove invalid cached actions' do
+    handle('/').should == 'Hello, World!'
+    Ramaze::Cache.resolved['/'] = 'duh'
+    handle('/').should == 'Hello, World!'
+  end
 end

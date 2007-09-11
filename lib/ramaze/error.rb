@@ -10,6 +10,9 @@ module Ramaze
     class NoAction < Error; end
 
     # No Controller found for request
+    class NoFilter < Error; end
+
+    # No Controller found for request
     class NoController < Error; end
 
     # Wrong parameter count for action
