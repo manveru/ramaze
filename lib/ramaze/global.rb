@@ -29,6 +29,9 @@ module Ramaze
     o "Compile Templates",
       :compile => false, :cli => false
 
+    o "Active contribs ",
+      :contribs => Set.new
+
     o "All subclasses of Controller are collected here.",
       :controllers => Set.new
 

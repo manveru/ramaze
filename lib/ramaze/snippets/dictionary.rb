@@ -31,7 +31,7 @@
 #
 # The Dictionary class is a Hash that preserves order.
 # So it has some array-like extensions also. By defualt
-# a Dictionary object preserves insertion order, but any 
+# a Dictionary object preserves insertion order, but any
 # order can be specified including alphabetical key order.
 #
 # == Usage
@@ -46,7 +46,7 @@
 #   p hsh.keys     #=> ['z','a','c']
 #
 #   # or using Dictionary[] method
-#   hsh = Dictionary['z', 1, 'a', 2, 'c', 3] 
+#   hsh = Dictionary['z', 1, 'a', 2, 'c', 3]
 #   p hsh.keys     #=> ['z','a','c']
 #
 #   # but this don't preserve order

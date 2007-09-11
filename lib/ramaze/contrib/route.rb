@@ -1,17 +1,20 @@
 module Ramaze
-  class Route
-    class << self
-      def startup
-        trait :route => true
-        trait :routes => Dictionary.new
-      end
+  module Contrib
+    class Route
+      class << self
+        def startup
+          trait :route => true
+          trait :routes => Dictionary.new
+          Ramaze::Controller::FILTER.put_before(:default, :routed)
+        end
 
-      def [](key)
-        trait[:routes][key]
-      end
+        def [](key)
+          trait[:routes][key]
+        end
 
-      def []=(key, value)
-        trait[:routes][key] = value
+        def []=(key, value)
+          trait[:routes][key] = value
+        end
       end
     end
   end
@@ -19,10 +22,11 @@ module Ramaze
   class Controller
     class << self
       def routed(path)
-        routes = Route.trait[:routes]
+        routes = Contrib::Route.trait[:routes]
         routes.each do |regex, pattern|
           if md = path.match(regex)
-            return resolve(pattern % md.to_a[1..-1])
+            new_path = pattern % md.to_a[1..-1]
+            return resolve(new_path, :routed)
           end
         end
 

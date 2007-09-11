@@ -14,8 +14,8 @@ module Ramaze
       # manveru: if some controller are found but no actions on them, it's NoAction Error for the first controller found, again, 404
       # manveru: everything further down is considered 500
 
-      def resolve(path)
-        FILTER.each do |filter|
+      def resolve(path, *exclude_filter)
+        (FILTER - exclude_filter.flatten).each do |filter|
           answer = filter.respond_to?(:call) ? filter.call(path) : send(filter, path)
           return answer if answer
         end
