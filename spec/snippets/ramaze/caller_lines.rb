@@ -1,15 +1,18 @@
 require 'spec/helper'
 
 describe "Ramaze#caller_info" do
+  before :all do
+    @file = Ramaze::BASEDIR/'ramaze/gestalt.rb'
+  end
 
   it 'should show  line numbers' do
-   res = Ramaze.caller_lines('/usr/lib/ruby/1.8/debug.rb', 122, 2)
+   res = Ramaze.caller_lines(@file, 68, 2)
    res.size.should == 5
-   res.map {|e| e[0]}.should == (120..124).to_a
+   res.map{|e| e[0]}.should == (66..70).to_a
   end
 
   it 'should show which line we asked for' do
-   res = Ramaze.caller_lines('/usr/lib/ruby/1.8/debug.rb', 122, 2)
+   res = Ramaze.caller_lines(@file, 68, 2)
    res.size.should == 5
    res.map {|e| e[2]}.should == [false,false,true,false,false]
   end
