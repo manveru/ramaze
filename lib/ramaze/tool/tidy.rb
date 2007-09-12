@@ -15,6 +15,7 @@ module Ramaze
       trait[:paths] ||= %w[
         /usr/lib/libtidy.so
         /usr/local/lib/libtidy.so
+        /usr/lib/libtidy.dylib
       ]
 
       trait[:path] ||= nil
