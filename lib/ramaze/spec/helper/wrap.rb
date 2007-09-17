@@ -65,7 +65,10 @@ class SpecWrap
   end
 
   def run
-    @specs.sort_by{|s| s.last}.each do |file, name|
+    total = @specs.size
+    n_width = (total.to_s.size * 2) + 4
+    @specs.sort_by{|s| s.last}.each_with_index do |(file, name), idx|
+      print "(#{idx}/#{total}) ".ljust(n_width)
       spec = SpecFile.new(file, name, term_width)
       spec.run
       spec.short_summary
@@ -118,7 +121,7 @@ class SpecFile
   end
 
   def init
-    print "Running #@name... ".ljust(@term_width + 20)
+    print "Running #@name... ".ljust(@term_width + 10)
   end
 
   def execute
