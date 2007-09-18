@@ -46,5 +46,6 @@ module Ramaze
     def redirect_referer
       redirect request.referer
     end
+    alias redirect_referrer redirect_referer
   end
 end
