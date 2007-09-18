@@ -4,6 +4,7 @@ require 'ramaze/spec/helper'
 # if these libraries are missing there is no sense in running the tests,
 # cause they won't work at all. 
 testcase_requires 'hpricot'
+testcase_requires 'sequel'
 
 $:.unshift __DIR__/'../'
 require 'start'
