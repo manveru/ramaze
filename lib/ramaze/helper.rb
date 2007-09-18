@@ -23,7 +23,8 @@ module Ramaze
     def helper *syms
       syms.each do |sym|
         mod_name = sym.to_s.capitalize + 'Helper'
-        require("ramaze/helper/"/sym)
+        glob = "{helper,#{BASEDIR/:ramaze/:helper}}/#{sym}.{rb,so}"
+        require Dir[glob].first
         include ::Ramaze.const_get(mod_name)
         extend ::Ramaze.const_get(mod_name)
       end
