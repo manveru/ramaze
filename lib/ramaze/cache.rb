@@ -36,14 +36,19 @@ module Ramaze
       #+++
 
       def add *keys
-        keys.each do |key|
-          CACHES[key] = new
-          CACHES[key].instance_variable_set("@cache_name", key)
-          self.class.class_eval do
-            define_method(key){ CACHES[key] }
-          end
-        end
+        keys.each{|key|
+          klass = Global.cache_alternative.fetch(key, self)
+          add_on(key, klass)
+        }
         Inform.debug("Added caches for: #{keys.join(', ')}")
+      end
+
+      def add_on(key, cache_class)
+        CACHES[key] = new(cache_class)
+        CACHES[key].instance_variable_set("@cache_name", key)
+        self.class.class_eval do
+          define_method(key){ CACHES[key] }
+        end
       end
 
     end

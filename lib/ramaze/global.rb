@@ -23,6 +23,9 @@ module Ramaze
     o "Use this for general caching and as base for Cache.new.",
       :cache => :memory, :cli => [:memory, :memcached, :yaml]
 
+    o "Alternative caches",
+      :cache_alternative => {}
+
     o "Turn on naive caching of all requests.",
       :cache_all => false, :cli => false
 
