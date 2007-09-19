@@ -36,6 +36,12 @@ module Ramaze
         setup_environment(rack_request, rack_response)
 
         path = request.path_info.squeeze('/')
+
+        case path
+        when *Global.ignore
+          return response.build(Global.ignore_body, Global.ignore_status)
+        end
+
         Inform.info("Request from #{request.remote_addr}: #{path}")
 
         general_dispatch path

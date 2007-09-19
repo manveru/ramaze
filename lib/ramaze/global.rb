@@ -53,6 +53,15 @@ module Ramaze
     o "Specify what IP Ramaze will respond to - 0.0.0.0 for all",
       :host => "0.0.0.0", :cli => '0.0.0.0'
 
+    o "Ignore requests to these paths, absolute path as string or regex",
+      :ignore => []
+
+    o "Body set on ignored paths",
+      :ignore_body => "File not found"
+
+    o "Status set on ignored paths",
+      :ignore_status => 404
+
     o "All paths to controllers are mapped here.",
       :mapping => {}
 
