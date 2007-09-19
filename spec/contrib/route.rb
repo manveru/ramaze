@@ -18,7 +18,7 @@ end
 
 describe 'Route' do
   before :all do
-    Ramaze::Contrib.load :route
+    Ramaze.contrib :route
     ramaze
     @route = Ramaze::Contrib::Route
   end
