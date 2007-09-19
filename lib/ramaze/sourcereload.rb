@@ -73,7 +73,8 @@ module Ramaze
     # Scans loaded features and paths for file-paths, filters them in the end
     # according to the @reload_glob
     def all_reload_files
-      files, paths = $LOADED_FEATURES, Array['', './', *$LOAD_PATH]
+      files, paths =
+        Array[$0, *$LOADED_FEATURES], Array['', './', *$LOAD_PATH]
 
       unless [@files, @paths] == [files, paths]
         @files, @paths = files.dup, paths.dup
