@@ -72,30 +72,50 @@ module Ramaze
     # catching all the tags. passing it to _gestalt_build_tag
 
     def method_missing meth, *args, &block
-      _gestalt_build_tag meth, *args, &block
+      _gestalt_call_tag meth, args, &block
     end
 
     # workaround for Kernel#p to make <p /> tags possible.
 
     def p *args, &block
-      _gestalt_build_tag :p, *args, &block
+      _gestalt_call_tag :p, args, &block
+    end
+
+    def _gestalt_call_tag name, args, &block
+      if args.size == 1 and args[0].kind_of? Hash
+        # args are just attributes, children in block...
+        _gestalt_build_tag name, args[0], &block
+      else
+        # no attributes, but text
+        _gestalt_build_tag name, {}, args, &block
+      end
     end
 
     # build a tag for `name`, using `args` and an optional block that
     # will be yielded
 
-    def _gestalt_build_tag name, args = []
+    def _gestalt_build_tag name, attr={}, text=[]
       @out << "<#{name}"
-      if block_given?
-        @out << args.inject(''){ |s,v| s << %{ #{v[0]}="#{v[1]}"} }
+      @out << attr.inject(''){ |s,v| s << %{ #{v[0]}="#{_gestalt_escape_entities(v[1])}"} }
+      if text != [] or block_given?
         @out << ">"
-        text = yield
-        @out << text if text != @out and text.respond_to?(:to_str)
+        @out << _gestalt_escape_entities(text.to_s)
+        if block_given?
+          text = yield
+          @out << text.to_str if text != @out and text.respond_to?(:to_str)
+        end
         @out << "</#{name}>"
       else
-        @out << args.inject(''){ |s,v| s << %{ #{v[0]}="#{v[1]}"} }
         @out << ' />'
       end
+    end
+
+    def _gestalt_escape_entities(s)
+      s.gsub(/&/, '&amp;').
+        gsub(/"/, '&quot;').
+        gsub(/'/, '&apos;').
+        gsub(/</, '&lt;').
+        gsub(/>/, '&gt;')
     end
 
     # @out.to_s

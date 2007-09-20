@@ -89,4 +89,23 @@ describe "Gestalt" do
       end
     }.should == '<table><tr><td>one</td><td>two</td><td>three</td></tr></table>'
   end
+
+  it "children as parameters" do
+    gestalt {
+      a "Hello"
+      b(23, 5) { "1" }
+      c(42) {
+        d
+      }
+      e("f & g")
+    }.should == '<a>Hello</a><b>2351</b><c>42<d /></c><e>f &amp; g</e>'
+  end
+
+  it "escapeable attributes" do
+    gestalt {
+      a(:href => "http://example.org/?a=one&b=two") {
+        "Click here"
+      }
+    }.should == '<a href="http://example.org/?a=one&amp;b=two">Click here</a>'
+  end
 end
