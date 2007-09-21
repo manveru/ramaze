@@ -121,7 +121,7 @@ class SpecFile
   end
 
   def init
-    print "Running #@name... ".ljust(@term_width + 10)
+    print "#@name ".ljust(@term_width + 10)
   end
 
   def execute
