@@ -82,8 +82,9 @@ module Ramaze
         @files, @paths = files.dup, paths.dup
 
         map = files.map do |file|
-          possible = paths.map{|pa| File.join(pa.to_s, file.to_s) }
-          possible.find{|po| File.exists?(po) }
+          paths.map{|pa|
+            File.expand_path(File.join(pa.to_s, file.to_s))
+          }.find{|po| File.exists?(po) }
         end
 
         @map = map.compact
