@@ -11,11 +11,13 @@ module Ramaze
   # manner.
 
   class SourceReload
-    attr_accessor :thread, :interval, :reload_glob, :map
+    attr_accessor :thread, :interval, :map
+
+    trait :reload_glob => %r{(^\./)|#{Dir.pwd}|ramaze}
 
     # Take interval and a regular expression for files that are going to be reloaded.
-    def initialize interval = 1, reload_glob = %r{(^\./)|#{Dir.pwd}|ramaze}
-      @interval, @reload_glob = interval, reload_glob
+    def initialize interval = 1
+      @interval = interval
       @map, @files, @paths = [], [], []
       @mtimes = {}
     end
@@ -71,10 +73,10 @@ module Ramaze
     end
 
     # Scans loaded features and paths for file-paths, filters them in the end
-    # according to the @reload_glob
+    # according to the trait[:reload_glob]
     def all_reload_files
-      files, paths =
-        Array[$0, *$LOADED_FEATURES], Array['', './', *$LOAD_PATH]
+      files = Array[$0, *$LOADED_FEATURES]
+      paths = Array['', './', *$LOAD_PATH]
 
       unless [@files, @paths] == [files, paths]
         @files, @paths = files.dup, paths.dup
@@ -87,7 +89,7 @@ module Ramaze
         @map = map.compact
       end
 
-      m = @map.grep(@reload_glob)
+      m = @map.grep(class_trait[:reload_glob])
     end
 
     # Safe mtime
