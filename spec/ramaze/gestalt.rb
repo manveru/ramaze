@@ -6,6 +6,8 @@ require 'spec/helper'
 testcase_requires 'ramaze/gestalt'
 
 describe "Gestalt" do
+  # This is useful for any controller using Gestalt,
+  # should be made a MixIn somewhen.
   def gestalt &block
     Ramaze::Gestalt.new(&block).to_s
   end
