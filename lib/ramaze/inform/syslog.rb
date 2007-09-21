@@ -19,6 +19,7 @@ module Ramaze
     # alias for default syslog methods so they match ramaze
     alias error err
     alias warn warning
+    alias dev debug
 
     # just sends all messages received to ::Syslog
     def inform(tag, *args)

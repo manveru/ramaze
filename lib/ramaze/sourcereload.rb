@@ -22,7 +22,7 @@ module Ramaze
 
     # start reloader-thread and assign it to this instance.
     def start
-      Inform.debug("initialize automatic source reload every #{interval} seconds")
+      Inform.dev("initialize automatic source reload every #{interval} seconds")
       @thread = reloader
     end
 

@@ -46,6 +46,12 @@ module Ramaze
       tag_inform(:debug, :inspect, *objects)
     end
 
+    # inspects objects if they are no strings. Tag is :dev
+
+    def dev(*objects)
+      tag_inform(:dev, :inspect, *objects)
+    end
+
     alias << debug
 
     # Takes either an Exception or just a String, formats backtraces to be a bit

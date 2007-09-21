@@ -22,8 +22,9 @@ module Ramaze
 
     # Which tag should be in what color
     COLORS = {
-      :info  => :green,
+      :dev   => :blue,
       :debug => :yellow,
+      :info  => :green,
       :warn  => :red,
       :error => :red,
     }

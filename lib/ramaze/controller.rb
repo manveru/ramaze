@@ -46,7 +46,7 @@ module Ramaze
         controller.trait :layout => {:all => nil, :deny => Set.new}
         Global.controllers << controller
         if map = controller.mapping
-          Inform.debug("mapping #{map} => #{controller}")
+          Inform.dev("mapping #{map} => #{controller}")
           Global.mapping[map] ||= controller
         end
       end
@@ -56,7 +56,7 @@ module Ramaze
       # they are not assigned yet.
 
       def startup options = {}
-        Inform.debug("found Controllers: #{Global.controllers.inspect}")
+        Inform.dev("found Controllers: #{Global.controllers.inspect}")
         tr, pr = Global.template_root, Global.public_root
         Inform.warn("Template root: #{tr} doesn't exist") unless File.directory?(tr)
         Inform.warn("Public root: #{pr} doesn't exist") unless File.directory?(pr)

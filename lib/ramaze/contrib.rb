@@ -11,7 +11,7 @@ module Ramaze
           const = Ramaze::Contrib.const_get(name.to_s.camel_case)
           Ramaze::Global.contribs << const
           const.startup if const.respond_to?(:startup)
-          Inform.debug "Loaded contrib: #{const}"
+          Inform.dev "Loaded contrib: #{const}"
         end
       end
     end

@@ -12,7 +12,7 @@ module Ramaze
     #  #> 'bar'
 
     def render
-      Inform.debug("The Action: #{self}")
+      Inform.dev("The Action: #{self}")
       Thread.current[:action] = self
 
       if should_cache?

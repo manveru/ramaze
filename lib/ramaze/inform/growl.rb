@@ -13,7 +13,7 @@ module Ramaze
       :name => 'walrus',
       :host => 'localhost',
       :password => 'walrus',
-      :all_notifies => %w[error warn debug info],
+      :all_notifies => %w[error warn debug info dev],
       :default_notifies => %w[error warn info]
     }
 
