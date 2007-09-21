@@ -1,4 +1,5 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#           Copyright (c) 2007  Stephan Maka  stephan@spaceboyz.net
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze'
@@ -16,6 +17,7 @@ class MainController < Controller
 
   def external *args
     r = lambda { |*a| R(*a) }
+    response['Content-Type'] = 'application/xhtml+xml'
 
     #options = {:place => :internal, :action => 'internal',
     #  :args => args, :request => request, :this => self}

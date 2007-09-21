@@ -1,3 +1,6 @@
+#          Copyright (c) 2007  Stephan Maka  stephan@spaceboyz.net
+# All files in this distribution are subject to the terms of the Ruby license.
+
 require 'xml/libxml'
 require 'xml/xslt'
 require 'thread'
@@ -8,7 +11,6 @@ module Ramaze
   # into proper XML form
   #
   # TODO:
-  # * Complex extFunction return values
   # * Error handling
   # * Maybe prevent extFunction to be called by HTTP
   module Template
@@ -52,7 +54,6 @@ module Ramaze
         end
 
         def ext_functions_synchronize &block
-          Inform.debug "Locking extFunctions Mutex #{XSLT_EXT_FUNCTIONS_LOCK.inspect}"
           XSLT_EXT_FUNCTIONS_LOCK.synchronize &block
         end
 
@@ -72,6 +73,7 @@ module Ramaze
 
         end
 
+        # Can be replaced by Ruby Facets' Functor pattern
         def make_functor(m, &block)
           # Create anonymous class and instantiate;
           # anonymous because only this one object with this
