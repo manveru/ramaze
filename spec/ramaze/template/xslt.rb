@@ -5,6 +5,7 @@ require 'spec/helper'
 
 testcase_requires 'xml/xslt'
 testcase_requires 'ramaze/gestalt'
+testcase_requires 'rexml/document'
 
 class TCTemplateXSLTController < Ramaze::Controller
   template_root 'spec/ramaze/template/xslt/'
@@ -29,6 +30,36 @@ class TCTemplateXSLTController < Ramaze::Controller
     @version
   end
 
+  def products
+    gestalt {
+      order {
+        first
+        items
+      }
+    }
+  end
+
+  def xslt_get_products
+    REXML::Document.new \
+    gestalt {
+      list {
+        %w[Onion Bacon].each { |product|
+          item product
+        }
+      }
+    }
+  end
+
+  def concat_words
+    gestalt {
+      document
+    }
+  end
+
+  def xslt_concat(*args)
+    args.to_s
+  end
+
   private
 
   def gestalt &block
@@ -46,6 +77,16 @@ describe "XSLT" do
 
   it "ruby_version through external functions" do
     get('/ruby_version').body.should == RUBY_VERSION
+  end
+
+  it "external functions returning XML data" do
+    get('/products').body.
+      gsub(/<\?.+\?>/, '').strip.
+      should == '<result><first>Onion</first><item>Onion</item><item>Bacon</item></result>'
+  end
+
+  it "parameters" do
+    get('/concat_words').body.should == 'oneonetwoonetwothree'
   end
 end
 

@@ -8,7 +8,9 @@
               encoding="utf-8"/>
 
   <xsl:template match="/document">
-    <ruby-version><xsl:value-of select="test:get-ruby-version()"/></ruby-version>
+    <xsl:value-of select="test:concat('one')"/>
+    <xsl:value-of select="test:concat('one', 'two')"/>
+    <xsl:value-of select="test:concat('one', 'two', 'three')"/>
   </xsl:template>
 
 </xsl:stylesheet>
