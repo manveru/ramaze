@@ -3,6 +3,7 @@
 
 require 'spec/helper'
 
+testcase_requires 'xml/libxml'
 testcase_requires 'xml/xslt'
 testcase_requires 'ramaze/gestalt'
 testcase_requires 'rexml/document'
