@@ -39,7 +39,9 @@ module Ramaze
 
         case path
         when *Global.ignore
-          return response.build(Global.ignore_body, Global.ignore_status)
+          unless ::File.exist?(Dispatcher::File.resolve_path(path))
+            return response.build(Global.ignore_body, Global.ignore_status)
+          end
         end
 
         Inform.info("Request from #{request.remote_addr}: #{path}")

@@ -53,7 +53,8 @@ module Ramaze
     o "Specify what IP Ramaze will respond to - 0.0.0.0 for all",
       :host => "0.0.0.0", :cli => '0.0.0.0'
 
-    o "Ignore requests to these paths, absolute path as string or regex",
+    o "Ignore requests to these paths if no file in public_root exists, absolute path or regex",
+      # Example: [/\.(ico|gif|jpg|png)$/, '/robots.txt']
       :ignore => []
 
     o "Body set on ignored paths",

@@ -22,14 +22,17 @@ module Ramaze
         # Content-Type as found in Tool::MIME
 
         def open_file(path)
-          file = ::File.join(Global.public_root, path =~ /\/$/ ? path + 'index' : path)
-
+          file = resolve_path(path)
           if ::File.file?(file)
             response = Response.current
             response['Content-Type'] = Tool::MIME.type_for(file)
             Inform.debug("Serving static: #{file}")
             ::File.open(file, 'rb')
           end
+        end
+
+        def resolve_path(path)
+          file = ::File.join(Global.public_root, path =~ /\/$/ ? path + 'index' : path)
         end
       end
     end
