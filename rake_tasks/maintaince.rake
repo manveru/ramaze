@@ -210,6 +210,7 @@ task 'authors' do
     'rff.rff@gmail.com'                       => 'Gabriele Renzi',
     'comp.lang.zenix+ramaze@gmail.com'        => 'zenix',
     'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
+    'stephan@spaceboyz.net'                   => 'Stephan Maka',
   }
   changes.split("\n").grep(/^\w/).each do |line|
     splat  = line.split
