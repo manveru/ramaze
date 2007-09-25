@@ -2,7 +2,7 @@ require 'spec/helper'
 
 class TCActionLayout < Ramaze::Controller
   map '/'
-  layout :wrapper
+  layout '/wrapper'
   template_root __DIR__ / :template
 
   def wrapper
@@ -20,7 +20,7 @@ end
 
 class TCActionOtherLayout < Ramaze::Controller
   map '/other'
-  layout :other_wrapper
+  layout '/other_wrapper'
   template_root __DIR__ / :template
 
   def index
@@ -31,7 +31,7 @@ end
 class TCActionSingleLayout < Ramaze::Controller
   map '/single'
   template_root __DIR__ / :template
-  layout :single_wrapper => :index
+  layout '/single_wrapper' => :index
 
   def index
     "Single Hello"
@@ -45,7 +45,7 @@ end
 class TCActionDenyLayout < Ramaze::Controller
   map '/deny'
   template_root __DIR__/:template
-  layout :single_wrapper
+  layout '/single_wrapper'
   deny_layout :without
 
   def index
@@ -60,7 +60,7 @@ end
 class TCActionMultiLayout < Ramaze::Controller
   map '/multi'
   template_root __DIR__/:template
-  layout :single_wrapper => [:index, :second]
+  layout '/single_wrapper' => [:index, :second]
   p trait
 
   def index

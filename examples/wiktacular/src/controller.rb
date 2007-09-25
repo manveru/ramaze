@@ -51,5 +51,5 @@ class MainController < Ramaze::Controller
       }.join("\n")
   end
 
-  layout :html_layout
+  layout '/html_layout'
 end
