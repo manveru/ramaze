@@ -20,11 +20,11 @@ module Ramaze
     # Simple form for use or overwriting.
     # Has to provide the same functionality when overwritten or directly
     # embedded into a page.
-    def openid_login_form
+    def openid_login_form(caption="login")
       %{
 <form method="GET" action="#{Rs(:openid_begin)}">
   Identity URL: <input type="text" name="url" />
-  <input type="submit" />
+  <input type="submit" value="#{caption}"/>
 </form>
       }
     end
