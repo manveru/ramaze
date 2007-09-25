@@ -15,7 +15,7 @@ module Ramaze
 
     trait :reload_glob => %r{(^\./)|#{Dir.pwd}|ramaze}
 
-    # Take interval and a regular expression for files that are going to be reloaded.
+    # Take interval for files that are going to be reloaded.
     def initialize interval = 1
       @interval = interval
       @map, @files, @paths = [], [], []
@@ -53,7 +53,7 @@ module Ramaze
     #
     # Usage example:
     #
-    # trap :HUB do
+    # trap :HUP do
     #   Ramaze::Inform.info "reloading source"
     #   Thread.main[:sourcereload].reload
     # end
