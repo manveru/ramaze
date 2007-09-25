@@ -144,7 +144,8 @@ class SpecFile
     elsif failed?
       text = "#{total} specs - #{failed} failed".rjust(width)
       if @stdout =~ /Usually you should not worry about this failure, just install the/
-        lib = @stdout.scan(/^no such file to load -- (.*?)$/).flatten.first
+        lib = @stdout[/^no such file to load -- (.*?)$/, 1] ||
+              @stdout[/RubyGem version error: (.*)$/, 1]
         text = "needs #{lib}".center(width)
         @mark_passed = true
       end
