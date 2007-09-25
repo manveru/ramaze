@@ -147,7 +147,7 @@ module Ramaze
 
       # Generate all possible permutations for given path.
       def pattern_for(path)
-        atoms = path.split('/').grep(/\S/)
+        atoms = path.to_s.split('/').grep(/\S/)
         atoms.unshift('')
         patterns, joiner = [], '/'
 

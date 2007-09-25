@@ -61,7 +61,6 @@ class TCActionMultiLayout < Ramaze::Controller
   map '/multi'
   template_root __DIR__/:template
   layout '/single_wrapper' => [:index, :second]
-  p trait
 
   def index
     "Single Hello"
@@ -73,6 +72,16 @@ class TCActionMultiLayout < Ramaze::Controller
 
   def without
     "Without wrapper"
+  end
+end
+
+class TCActionSubLayout < Ramaze::Controller
+  map '/sub'
+  template_root __DIR__/:template
+  layout :sub_wrapper
+
+  def index
+    "Sub Hello"
   end
 end
 
@@ -106,5 +115,9 @@ describe 'Action rendering' do
     get('/multi').body.should == "<b>Single Hello</b>"
     get('/multi/second').body.should == "<b>Second with layout</b>"
     get('/multi/without').body.should == "Without wrapper"
+  end
+
+  it 'should apply relative layouts' do
+    get('/sub').body.should == "<h1>SubWrapper</h1>"
   end
 end

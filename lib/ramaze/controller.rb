@@ -121,12 +121,14 @@ module Ramaze
       def layout(meth_or_hash, &block)
         if meth_or_hash.respond_to?(:to_hash)
           meth_or_hash.each do |layout_name, *actions|
+            layout_name = R(self, layout_name) if layout_name.to_s !~ /\A\//
             actions.flatten.each do |action|
               trait[:layout][action.to_s] = layout_name
             end
           end
         else
-          trait[:layout][:all] = meth_or_hash
+          layout_name = R(self, meth_or_hash) if meth_or_hash.to_s !~ /\A\//
+          trait[:layout][:all] = layout_name || meth_or_hash
         end
       end
 
