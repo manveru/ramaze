@@ -59,7 +59,7 @@ class Ramaze::Tool::Localize
     # `localize` for more information.
 
     def localize_body(body, options)
-      locale = session[:LOCALE] || set_session_locale
+      locale = (session[:LOCALE] || set_session_locale).to_s
 
       body.gsub!(trait[:regex]) do
         localize($1, locale) unless $1.to_s.empty?
