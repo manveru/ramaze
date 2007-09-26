@@ -2,7 +2,7 @@ module Ramaze
   def self.contrib(*args)
     Ramaze::Contrib.load *args
   end
-  
+
   module Contrib
     class << self
       def load(*contribs)

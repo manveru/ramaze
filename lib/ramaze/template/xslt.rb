@@ -41,7 +41,7 @@ module Ramaze
           end
 
         end
-            
+
         private
 
         def do_transform(action)
@@ -62,11 +62,11 @@ module Ramaze
           instance.methods.each do |method|
             if method =~ /^xslt_.+/
               method_name = method[5..-1]
-              
+
               proxy_instance = make_functor(method_name.intern) { |*a|
                 instance.send method.intern, *a
               }
-              
+
               XML::XSLT.extFunction method_name.gsub('_', '-'), fun_xmlns, proxy_instance
             end
           end

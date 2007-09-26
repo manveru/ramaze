@@ -13,23 +13,27 @@ module Ramaze
   class SourceReload
     attr_accessor :thread, :interval, :map
 
+    # Reload everything which falls under this regex
     trait :reload_glob => %r{(^\./)|#{Dir.pwd}|ramaze}
 
     # Take interval for files that are going to be reloaded.
-    def initialize interval = 1
+
+    def initialize(interval = 1)
       @interval = interval
       @map, @files, @paths = [], [], []
       @mtimes = {}
     end
 
     # start reloader-thread and assign it to this instance.
+
     def start
       Inform.dev("initialize automatic source reload every #{interval} seconds")
       @thread = reloader
     end
 
     # Takes value of Global.sourcereload and unless it's false calls #start
-    def self.startup options = {}
+
+    def self.startup(options = {})
       interval = Global.sourcereload
       instance = new(interval)
       Thread.main[:sourcereload] = instance
@@ -38,6 +42,7 @@ module Ramaze
     end
 
     # Start reload loop in separate Thread
+
     def reloader
       Thread.new do
         loop do
@@ -47,16 +52,17 @@ module Ramaze
       end
     end
 
-    # One iteration of reload will look for files that changed since the last iteration
-    # and will try to #safe_load it.
-    # This method is quite handy if you want direct control over when your code is reloaded
+    # One iteration of reload will look for files that changed since the last
+    # iteration and will try to #safe_load it.
+    # This method is quite handy if you want direct control over when your
+    # code is reloaded
     #
     # Usage example:
     #
-    # trap :HUP do
-    #   Ramaze::Inform.info "reloading source"
-    #   Thread.main[:sourcereload].reload
-    # end
+    #   trap :HUP do
+    #     Ramaze::Inform.info "reloading source"
+    #     Thread.main[:sourcereload].reload
+    #   end
     #
 
     def reload
@@ -74,6 +80,7 @@ module Ramaze
 
     # Scans loaded features and paths for file-paths, filters them in the end
     # according to the trait[:reload_glob]
+
     def all_reload_files
       files = Array[$0, *$LOADED_FEATURES]
       paths = Array['', './', *$LOAD_PATH]
@@ -94,13 +101,16 @@ module Ramaze
     end
 
     # Safe mtime
+
     def mtime(file)
       File.mtime(file)
     rescue Errno::ENOENT
       false
     end
 
-    # A safe Kernel::load, issuing the SourceReloadHooks dependin on the result.
+    # A safe Kernel::load, issuing the SourceReloadHooks depending on the
+    # result.
+
     def safe_load(file)
       SourceReloadHooks.before_safe_load(file)
       load(file)
