@@ -7,6 +7,10 @@ require 'ya2yaml'
 # Localize helps transforming arbitrary text into localized forms using
 # a simple regular expression and substituting occurences with predefined
 # snippets stored in YAML files.
+#
+# == Usage:
+#
+#   Ramaze::Dispatcher::Action::FILTER << Ramaze::Tool::Localize
 
 class Ramaze::Tool::Localize
 
@@ -118,6 +122,7 @@ class Ramaze::Tool::Localize
     # Returns the dictionary used for translation.
 
     def dictionary
+      trait[:languages].map! {|x| x.to_s }.uniq!
       trait[:dictionary] || load(*trait[:languages])
     end
 
@@ -143,7 +148,7 @@ class Ramaze::Tool::Localize
 
     def store(*locales)
       locales.uniq.compact.each do |locale|
-        Ramaze::Inform.debug "saving localized to: #{trait[:file] % locale}"
+        Ramaze::Inform.dev "saving localized to: #{trait[:file] % locale}"
         data = dictionary[locale].ya2yaml
         file = trait[:file] % locale
         File.open(file, File::CREAT|File::TRUNC|File::WRONLY) do |fd|
