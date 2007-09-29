@@ -111,7 +111,7 @@ module Ramaze
     end
 
     def _gestalt_escape_entities(s)
-      s.gsub(/&/, '&amp;').
+      s.to_s.gsub(/&/, '&amp;').
         gsub(/"/, '&quot;').
         gsub(/'/, '&apos;').
         gsub(/</, '&lt;').

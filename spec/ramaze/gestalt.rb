@@ -110,4 +110,10 @@ describe "Gestalt" do
       }
     }.should == '<a href="http://example.org/?a=one&amp;b=two">Click here</a>'
   end
+
+  it 'should accept symbols as attributes' do
+    gestalt{
+      input :type => :text, :value => :one
+    }.should == '<input type="text" value="one" />'
+  end
 end
