@@ -13,9 +13,6 @@ module Ramaze::Adapter
       # to make it compatible with other adapters but have no influence and
       # can be omitted
       def start host = nil, ports = nil
-        global = Ramaze::Global
-        global.inform_to = :stderr if global.inform_to == $stdout
-
         Thread.new do
           Thread.current[:task] = :cgi
           Rack::Handler::CGI.run(self)

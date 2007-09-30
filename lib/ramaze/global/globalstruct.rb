@@ -14,7 +14,7 @@ module Ramaze
     ADAPTER_ALIAS = {
       :webrick => :WEBrick,
       :mongrel => :Mongrel,
-      :cgi     => :CGI,
+      :cgi     => :Cgi,
       :fcgi    => :Fcgi,
     }
 
