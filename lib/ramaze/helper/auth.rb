@@ -5,12 +5,8 @@ require 'digest/sha1'
 
 module Ramaze
 
-  # A really, really, totally stupid way to do authentication. It has no
-  # roles and only a single password without usernames.
-  #
-  # It is intended to be a simple way to protect various portions of a page
-  # when you start working on it. Also it is a nice way to see how you could
-  # implement your own authentication.
+  # A simple way to do authentication. Please have a look at the docs for the
+  # auth_auth method for detailed information
 
   module AuthHelper
 
