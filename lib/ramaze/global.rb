@@ -55,7 +55,7 @@ module Ramaze
 
     o "Ignore requests to these paths if no file in public_root exists, absolute path or regex",
       # Example: [/\.(ico|gif|jpg|png)$/, '/robots.txt']
-      :ignore => []
+      :ignore => [ '/favicon.ico' ]
 
     o "Body set on ignored paths",
       :ignore_body => "File not found"
