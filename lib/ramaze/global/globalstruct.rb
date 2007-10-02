@@ -10,12 +10,19 @@ module Ramaze
   # Class for Ramaze::Global instance.
   class GlobalStruct
 
+    ENV_TRIGGER = {
+      'EVENT' => lambda{ require 'ramaze/adapter/evented_mongrel' },
+      'SWIFT' => lambda{ require 'ramaze/adapter/swiftiplied_mongrel' }
+    }
+
     # mapping of :adapter => to the right class-name.
     ADAPTER_ALIAS = {
-      :webrick => :WEBrick,
-      :mongrel => :Mongrel,
-      :cgi     => :Cgi,
-      :fcgi    => :Fcgi,
+      :webrick             => :WEBrick,
+      :cgi                 => :Cgi,
+      :fcgi                => :Fcgi,
+      :mongrel             => :Mongrel,
+      :evented_mongrel     => :Mongrel,
+      :swiftiplied_mongrel => :Mongrel,
     }
 
     # mapping of :cache => to the right class-name.
@@ -38,6 +45,8 @@ module Ramaze
           create_member(key, value)
         end
       end
+
+      ENV_TRIGGER.values_at(*ENV.keys).compact.each{|l| l.call}
     end
 
     # batch-assignment of key/value from hash, yields self if a block is given.
@@ -55,8 +64,8 @@ module Ramaze
     # the actual class.
     def adapter
       if internal = self[:adapter]
-        class_name = ADAPTER_ALIAS[internal.to_sym]
-        require("ramaze/adapter/"/class_name.to_s.downcase)
+        class_name = ADAPTER_ALIAS.fetch(internal.to_sym, internal)
+        require("ramaze/adapter"/internal.to_s.downcase)
         adapter = Ramaze::Adapter.const_get(class_name)
       end
     end
