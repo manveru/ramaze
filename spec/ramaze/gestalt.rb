@@ -112,8 +112,9 @@ describe "Gestalt" do
   end
 
   it 'should accept symbols as attributes' do
-    gestalt{
-      input :type => :text, :value => :one
-    }.should == '<input type="text" value="one" />'
+    input = gestalt{ input(:type => :text, :value => :one) }
+
+    input.should =~ /type="text"/
+    input.should =~ /value="one"/
   end
 end
