@@ -24,7 +24,7 @@ module Ramaze
 
   # This module holds all classes and methods related to the adapters like
   # webrick or mongrel.
-  # It's responsible to start and stop them.
+  # It's responsible for starting and stopping them.
 
   module Adapter
     class << self

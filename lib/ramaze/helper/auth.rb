@@ -6,7 +6,7 @@ require 'digest/sha1'
 module Ramaze
 
   # A simple way to do authentication. Please have a look at the docs for the
-  # auth_auth method for detailed information
+  # check_auth method for detailed information
 
   module AuthHelper
 
@@ -28,6 +28,7 @@ module Ramaze
       username, password = request.params.values_at('username', 'password')
       if check_auth(username, password)
         session[:logged_in] = true
+        session[:username] = username
         inside_stack? ? answer : redirect( R(self) )
       else
         if AUTH_ELEMENT and AUTH_ELEMENT.to_s.split.any?
@@ -36,7 +37,7 @@ module Ramaze
         end
         %{
           #{open_element}
-            <form method="POST" action="#{R(self, :login)}"
+            <form method="POST" action="#{Rs(:login)}"
               <ul style="list-style:none;">
                 <li>Username: <input type="text" name="username" /></li>
                 <li>Password: <input type="password" name="password" /></li>
