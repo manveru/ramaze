@@ -57,13 +57,13 @@ module Ramaze
       redirect_referer
     end
 
+    private
+
     # call( R(self, :login) ) if not logged in
 
     def login_required
       call(Rs(:login)) unless logged_in?
     end
-
-    private
 
     # checks if the user is already logged in.
     #   session[:logged_in] is not nil/false
