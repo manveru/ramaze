@@ -1,0 +1,146 @@
+=== simple.rb ===
+<code ruby>
+require 'ramaze'
+
+class MainController < Ramaze::Controller
+  def index
+    "Hello, World!"
+  end
+end
+</code>
+
+== webrick ==
+  Time taken for tests:   3.762 seconds
+  Failed requests:        0
+  Requests per second:    132.91 [#/sec] (mean)
+  Time per request:       37.62 [ms] (mean)
+  Time per request:       7.52 [ms] (mean, across all concurrent requests)
+
+== mongrel ==
+  Time taken for tests:   1.149 seconds
+  Failed requests:        0
+  Requests per second:    435.16 [#/sec] (mean)
+  Time per request:       11.49 [ms] (mean)
+  Time per request:       2.30 [ms] (mean, across all concurrent requests)
+
+== evented_mongrel ==
+  Time taken for tests:   0.979 seconds
+  Failed requests:        0
+  Requests per second:    510.73 [#/sec] (mean)
+  Time per request:       9.79 [ms] (mean)
+  Time per request:       1.96 [ms] (mean, across all concurrent requests)
+
+=== no_informer.rb ===
+<code ruby>
+require 'ramaze'
+
+class MainController < Ramaze::Controller
+  def index
+    "Hello, World!"
+  end
+end
+
+Ramaze::Inform.loggers = []
+</code>
+
+== webrick ==
+  Time taken for tests:   2.618 seconds
+  Failed requests:        0
+  Requests per second:    190.99 [#/sec] (mean)
+  Time per request:       26.18 [ms] (mean)
+  Time per request:       5.24 [ms] (mean, across all concurrent requests)
+
+== mongrel ==
+  Time taken for tests:   0.818 seconds
+  Failed requests:        0
+  Requests per second:    611.25 [#/sec] (mean)
+  Time per request:       8.18 [ms] (mean)
+  Time per request:       1.64 [ms] (mean, across all concurrent requests)
+
+== evented_mongrel ==
+  Time taken for tests:   0.762 seconds
+  Failed requests:        0
+  Requests per second:    656.17 [#/sec] (mean)
+  Time per request:       7.62 [ms] (mean)
+  Time per request:       1.52 [ms] (mean, across all concurrent requests)
+
+=== no_template.rb ===
+<code ruby>
+require 'ramaze'
+
+class Ramaze::Template::NoTemplate < Ramaze::Template::Template
+  def self.transform action
+    render_method(action)
+  end
+end
+
+class MainController < Ramaze::Controller
+  trait :engine => Ramaze::Template::NoTemplate
+  def index
+    "Hello, World!"
+  end
+end
+</code>
+
+== webrick ==
+  Time taken for tests:   3.631 seconds
+  Failed requests:        0
+  Requests per second:    137.70 [#/sec] (mean)
+  Time per request:       36.31 [ms] (mean)
+  Time per request:       7.26 [ms] (mean, across all concurrent requests)
+
+== mongrel ==
+  Time taken for tests:   0.992 seconds
+  Failed requests:        0
+  Requests per second:    504.03 [#/sec] (mean)
+  Time per request:       9.92 [ms] (mean)
+  Time per request:       1.98 [ms] (mean, across all concurrent requests)
+
+== evented_mongrel ==
+  Time taken for tests:   0.857 seconds
+  Failed requests:        0
+  Requests per second:    583.43 [#/sec] (mean)
+  Time per request:       8.57 [ms] (mean)
+  Time per request:       1.71 [ms] (mean, across all concurrent requests)
+
+=== no_informer_or_template.rb ===
+<code ruby>
+require 'ramaze'
+
+class Ramaze::Template::NoTemplate < Ramaze::Template::Template
+  def self.transform action
+    render_method(action)
+  end
+end
+
+class MainController < Ramaze::Controller
+  trait :engine => Ramaze::Template::NoTemplate
+  def index
+    "Hello, World!"
+  end
+end
+
+Ramaze::Inform.loggers = []
+</code>
+
+== webrick ==
+  Time taken for tests:   2.469 seconds
+  Failed requests:        0
+  Requests per second:    202.51 [#/sec] (mean)
+  Time per request:       24.69 [ms] (mean)
+  Time per request:       4.94 [ms] (mean, across all concurrent requests)
+
+== mongrel ==
+  Time taken for tests:   0.724 seconds
+  Failed requests:        0
+  Requests per second:    690.61 [#/sec] (mean)
+  Time per request:       7.24 [ms] (mean)
+  Time per request:       1.45 [ms] (mean, across all concurrent requests)
+
+== evented_mongrel ==
+  Time taken for tests:   0.651 seconds
+  Failed requests:        0
+  Requests per second:    768.05 [#/sec] (mean)
+  Time per request:       6.51 [ms] (mean)
+  Time per request:       1.30 [ms] (mean, across all concurrent requests)
+
