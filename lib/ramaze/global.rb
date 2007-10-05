@@ -20,6 +20,10 @@ module Ramaze
     o "Turn benchmarking every request on.",
       :benchmarking => false, :cli => false, :short => :b
 
+    o "Do not log about these requests to static files, values as in Global.ignore",
+      # Example: [/\.(ico|gif|jpg|png)$/, '/robots.txt']
+      :boring => [ '/favicon.ico' ]
+
     o "Use this for general caching and as base for Cache.new.",
       :cache => :memory, :cli => [:memory, :memcached, :yaml]
 

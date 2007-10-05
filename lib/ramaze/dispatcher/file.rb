@@ -26,13 +26,21 @@ module Ramaze
           if ::File.file?(file)
             response = Response.current
             response['Content-Type'] = Tool::MIME.type_for(file)
-            Inform.debug("Serving static: #{file}")
+            log(file)
             ::File.open(file, 'rb')
           end
         end
 
         def resolve_path(path)
           file = ::File.join(Global.public_root, path =~ /\/$/ ? path + 'index' : path)
+        end
+
+        def log(file)
+          case file
+          when *Global.boring
+          else
+            Inform.debug("Serving static: #{file}")
+          end
         end
       end
     end

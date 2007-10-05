@@ -17,12 +17,14 @@ module Ramaze
       ]
 
       class << self
+        include Trinity
 
         # Takes path, asks Controller to handle it and builds a response on
         # success. The response is then passed to each member of FILTER for
         # post-processing.
 
         def process(path)
+          Inform.info("Dynamic request from #{request.remote_addr}: #{path}")
           body = Controller.handle(path)
           response = Response.current.build(body)
           FILTER.inject(response){|r,f| f.call(r) }

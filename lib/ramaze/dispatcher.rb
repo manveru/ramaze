@@ -44,8 +44,6 @@ module Ramaze
           end
         end
 
-        Inform.info("Request from #{request.remote_addr}: #{path}")
-
         general_dispatch path
       rescue Object => error
         meta = { :path => path,
