@@ -108,5 +108,5 @@ module Ramaze
 
   require 'ramaze/global/globalstruct'
 
-  Global = GlobalStruct.setup(OPTIONS)
+  Global = GlobalStruct.setup(OPTIONS) unless defined?(Global)
 end
