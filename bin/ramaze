@@ -93,7 +93,13 @@ opts = OptionParser.new do |opt|
   end
 end
 
-opts.parse!(ARGV)
+begin
+  opts.parse!(ARGV)
+rescue OptionParser::MissingArgument => ex
+  puts ex
+  exit 1
+end
+
 runner = (ARGV + ['start.rb']).find{|f| File.exists?(f)}
 execute = options.delete :execute
 instant = options.delete :instant
