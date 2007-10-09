@@ -47,7 +47,7 @@ Ramaze offers following features at the moment:
     * CGI
 
       CGI is the Common Gateway Interface and is one of the most basic ways
-      to integrate into Webservers like Apache, Lighttpd or Nginx.
+      to integrate into Webservers like Apache or Lighttpd.
 
     * FCGI
 
