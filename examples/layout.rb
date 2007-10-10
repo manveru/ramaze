@@ -27,7 +27,7 @@ class MainController < Controller
     %{
 <html>
   <head>
-    <title>examples/element</title>
+    <title>examples/layout</title>
   </head>
   <body>
     <h1>#@title</h1>
