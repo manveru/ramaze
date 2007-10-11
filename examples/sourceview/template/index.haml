@@ -1,0 +1,39 @@
+!!!
+%html
+  %head
+    %title Ramaze Source Browser
+    
+    %link{ :rel => 'stylesheet', :type => 'text/css', :href => '/jquery.treeview.css' }/
+    %link{ :rel => 'stylesheet', :type => 'text/css', :href => '/coderay.css' }/
+    %style{ :type => 'text/css' }
+      :sass
+        body
+          :font-family sans-serif
+          :margin 1.5em
+        
+        a
+          :text-decoration none
+          :color #000
+          &.selected
+            :color #f00
+        
+        #file
+          :margin-left 20%
+          :white-space pre
+
+        #source
+          :float left
+          
+          .filetree
+            span.folder, span.file
+              :padding-left 19px
+              :margin-left 2px
+  
+  %body
+    #source
+      = render_partial('/filetree')
+    #file.CodeRay
+    
+    %script{ :type => 'text/javascript', :src => '/jquery.js' }=""
+    %script{ :type => 'text/javascript', :src => '/jquery.treeview.js' }=""
+    %script{ :type => 'text/javascript', :src => '/sourceview.js' }=""
