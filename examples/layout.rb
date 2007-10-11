@@ -1,26 +1,12 @@
 require 'ramaze'
-include Ramaze
 
-class SideBar < Ezamar::Element
-  def render
-    %{
-     <div class="sidebar">
-       <a href="http://something.com">something</a>
-     </div>
-     }
-  end
-end
-
-class MainController < Controller
+class MainController < Ramaze::Controller
   map '/'
   layout :page
 
   def index
     @title = "Test"
-    %{
-    <SideBar />
-    <p>Hello, World!</p>
-    }
+    "<p>Hello, World!</p>"
   end
 
   def page
