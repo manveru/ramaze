@@ -1,13 +1,14 @@
 $(document).ready(function(){
-  $("#source").treeview({
+  $('ul.filetree').treeview({
     persist: 'location',
+		animated: 'fast',
     unique: true,
     collapsed: true
   });
 
   $("span.file").click(function(){
-    $("a.selected").removeClass('selected');
-    $('#file').load('/source', { file: $(this).attr('name') });
+    $('a.selected').removeClass('selected');
+    $('#file_contents').load('/source', { file: $(this).attr('name') });
     $('a',this).eq(0).addClass('selected');
   });
 

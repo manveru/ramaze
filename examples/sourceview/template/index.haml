@@ -16,23 +16,27 @@
           :color #000
           &.selected
             :color #f00
-        
-        #file
-          :margin-left 20%
-          :white-space pre
 
-        #source
+        #dir_listing
           :float left
           
           .filetree
             span.folder, span.file
               :padding-left 19px
               :margin-left 2px
+        
+        #file_contents
+          :margin-left 290px
+          :white-space pre
+          :font-size 11pt
   
   %body
-    #source
+    #dir_listing
       = render_partial('/filetree')
-    #file.CodeRay
+    #file_contents.CodeRay
+      %span{ :style => 'text-align: center' }
+        %h1 Welcome to the Ramaze source code browser
+        %h3 pick a file on the left to view its contents
     
     %script{ :type => 'text/javascript', :src => '/jquery.js' }=""
     %script{ :type => 'text/javascript', :src => '/jquery.treeview.js' }=""

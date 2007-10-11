@@ -22,21 +22,28 @@ class MainController < Ramaze::Controller
   helper :partial, :inform
 
   def source
+    return if request['file'].nil? or request['file'] =~ /\.{2}/
+
     file = RAMAZE_SRC + request['file']
-    unless request['file'] =~ /\.\./ or !FileTest.file? file
+    if FileTest.file? file
       inform :info, "Showing source for #{file}"
       CodeRay.scan_file(file).html(:line_numbers => :inline)
     end
   end
   
   def filetree
-    ul :id => 'source', :class => 'filetree' do
+    ul :class => 'filetree treeview' do
       Dir.chdir(RAMAZE_SRC) do
         Dir['{benchmarks,doc,examples,lib,spec}'].collect do |d|
           dir_listing d
         end
       end
     end.to_s
+  end
+  
+  define_method('coderay.css') do
+    response['Content-Type'] = 'text/css'
+    CodeRay::Encoders[:html]::CSS.new.stylesheet
   end
   
   private
