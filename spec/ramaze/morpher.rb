@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 testcase_requires 'hpricot'
+require 'ramaze/template/ezamar/morpher'
 
 class TCMorpherController < Ramaze::Controller
   map '/'
@@ -48,6 +49,20 @@ class TCMorpherController < Ramaze::Controller
       <div each="@elem">#{_e}</div>
     }
   end
+
+  def complex_one
+    %q{
+<html>
+  <head>
+    <title>test morph</title>
+  </head>
+  <body>
+    <a if="1" href="foo">foo</a>
+    <a unless="1" href="bar">bar</a>
+  </body>
+</html>
+    }
+  end
 end
 
 describe "Morpher" do
@@ -62,32 +77,36 @@ describe "Morpher" do
     get(*url).body.split("\n").join.strip
   end
 
-  it "testrun" do
+  it "should do a testrun" do
     clean_get('/').should == 'TCMorpherController'
   end
 
-  it "if" do
+  it "should morph if" do
     clean_get('/simple_if').should == '<p>orig</p>'
     clean_get('/simple_if/bar').should == '<p>bar</p>'
   end
 
-  it "unless" do
+  it "should morph unless" do
     clean_get('/simple_unless').should == '<p>orig</p>'
     clean_get('/simple_unless/bar').should == '<p>bar</p>'
   end
 
-  it "for" do
+  it "should morph for" do
     clean_get('/simple_for').should == "<div>0</div><div>1</div>"
     clean_get('/simple_for/3').should == "<div>0</div><div>1</div><div>2</div><div>3</div>"
   end
 
-  it "times" do
+  it "should morph times" do
     clean_get('/simple_times').should == "<div>0</div>"
     clean_get('/simple_times/3').should == "<div>0</div><div>1</div><div>2</div>"
   end
 
-  it "each" do
+  it "should morph each" do
     clean_get('/simple_each').should == ''
     clean_get('/simple_each/1/2/3').should == "<div>1</div><div>2</div><div>3</div>"
+  end
+
+  it 'should morph a more complex document' do
+    clean_get('/complex_one').should == '<html>  <head>    <title>test morph</title>  </head>  <body>    <a href="foo">foo</a>      </body></html>'
   end
 end

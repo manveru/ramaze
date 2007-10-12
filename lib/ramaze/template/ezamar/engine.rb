@@ -12,7 +12,6 @@ require 'digest/sha1'
 module Ezamar
 
   require 'ramaze/template/ezamar/element'
-  require 'ramaze/template/ezamar/morpher'
 
   # This class is responsible for initializing and compiling the template.
 

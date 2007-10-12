@@ -2,6 +2,12 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze/template/ezamar/engine'
+begin
+  require 'hpricot'
+rescue LoadError => ex
+  Ramaze::Inform.error "Please install hpricot (for example via `gem install hpricot`) to get morphing"
+  puts ex
+end
 
 # This applies a morphing-replace for the template.
 #
@@ -20,16 +26,16 @@ require 'ramaze/template/ezamar/engine'
 # from:
 #   Ramaze::Template::Ezamar::TRANSFORM_PIPELINE
 # or do:
-#   Ramaze::Morpher.trait[:morphs] = {}
+#   Ramaze::Morpher::MORPHS.clear
 #
 # The latter is a tad slower, but i mention the possibility in case you
 # find good use for it.
 #
-# You can add your own morphers in Ramaze::Morpher.trait[:morphs]
+# You can add your own morphers in Ramaze::Morpher::MORPHS
 #
 # For Example:
 #
-#   Morpher.trait[:morphs]['if'] = '<?r %morph %expression ?>%content<?r end ?>'
+#   Morpher::MORPHS['if'] = '<?r %morph %expression ?>%content<?r end ?>'
 #
 # Now, assuming that some tag in your template is '<a if="@foo">x</a>'
 #
@@ -40,12 +46,12 @@ require 'ramaze/template/ezamar/engine'
 class Ezamar::Morpher
 
   # Use this trait to define your custom morphs.
-  trait :morphs => {
-                      'if'     => '<?r %morph %expression ?>%content<?r end ?>',
-                      'unless' => '<?r %morph %expression ?>%content<?r end ?>',
-                      'for'    => '<?r %morph %expression ?>%content<?r end ?>',
-                      'each'   => '<?r %expression.%morph do |_e| ?>%content<?r end ?>',
-                      'times'  => '<?r %expression.%morph do |_t| ?>%content<?r end ?>',
+  MORPHS = {
+            'if'     => '<?r %morph %expression ?>%content<?r end ?>',
+            'unless' => '<?r %morph %expression ?>%content<?r end ?>',
+            'for'    => '<?r %morph %expression ?>%content<?r end ?>',
+            'each'   => '<?r %expression.%morph do |_e| ?>%content<?r end ?>',
+            'times'  => '<?r %expression.%morph do |_t| ?>%content<?r end ?>',
   }
 
   # Since the functionality is best explained by examples, here they come.
@@ -107,49 +113,24 @@ class Ezamar::Morpher
   #   - Add pure Ruby implementation as a fall-back.
 
   def self.transform(template)
-    morphs =
-      trait[:morphs].map{|k,v| [k.to_s, v.to_s]}.select do |(k,v)|
-        template.to_s.include?("#{k}=")
-      end
-
-    morphs = Hash[*morphs.flatten]
-
-    return template if morphs.empty?
-
-    require 'hpricot'
-
+    template = template.to_s
     hp = Hpricot(template)
-    hp.each_child do |child|
-      if child.elem?
-        morphs.each_pair do |morph, replacement|
-          if expression = child[morph]
-            old = child.to_html
-            child.remove_attribute(morph)
 
-            replacement = replacement.dup.
-              gsub('%morph',      morph).
-              gsub('%expression', expression).
-              gsub('%content',    child.to_html)
+    MORPHS.each do |morph, replacement|
+      hp.search("[@#{morph}]") do |elem|
+        expr = elem[morph]
 
-            template.gsub!(old, replacement)
-          end
-        end
+        elem.remove_attribute(morph)
+
+        repl = replacement.
+          sub('%morph', morph).
+          sub('%expression', expr).
+          sub('%content', elem.to_html)
+
+        elem.swap(repl)
       end
     end
 
-    template
-
-  rescue LoadError => ex
-    error "Please install hpricot (for example via `gem install hpricot`) to get morphing"
-
-    # replace this method with a stub that only returns the template.
-
-    self.class_eval do
-      def self.transform(template)
-        template
-      end
-    end
-
-    template
+    hp.to_html
   end
 end
