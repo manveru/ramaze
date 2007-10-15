@@ -17,10 +17,12 @@ end
 
 class MainController < Ramaze::Controller
 
-  trait :engine => Ramaze::Template::NoTemplate
   include Remarkably::Common
-  helper :partial, :inform
-
+  helper :partial, :inform, :cache
+  
+  trait :actions_cached => [:filetree]
+  trait :engine => Ramaze::Template::NoTemplate
+  
   def source
     return if request['file'].nil? or request['file'] =~ /\.{2}/
 
@@ -43,7 +45,7 @@ class MainController < Ramaze::Controller
   
   define_method('coderay.css') do
     response['Content-Type'] = 'text/css'
-    CodeRay::Encoders[:html]::CSS.new.stylesheet
+    value_cache[:coderay] ||= CodeRay::Encoders[:html]::CSS.new.stylesheet
   end
   
   private
