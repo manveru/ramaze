@@ -16,7 +16,8 @@ module Ramaze
 
     ENGINES = {} unless defined?(ENGINES)
 
-    %w[ Amrita2 Erubis Haml Liquid Markaby Remarkably Sass XSLT ].each do |const|
+    %w[ Amrita2 Erubis Haml Liquid Markaby Nagoro Remarkably Sass XSLT ].
+      each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
     end
 
@@ -63,7 +64,10 @@ module Ramaze
 
         def wrap_compile(action, template = nil)
           template ||= reaction_or_file(action).to_s
+          caching_compile(action, template)
+        end
 
+        def caching_compile(action, template)
           if Global.compile
             Cache.compiled[action.relaxed_hash] ||= compile(action, template)
           else
