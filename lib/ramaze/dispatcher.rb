@@ -100,16 +100,13 @@ module Ramaze
       # filters the path until a response or redirect is thrown or a filter is
       # successful, builds a response from the returned hash in case of throws.
       def dispatch(path)
-        catch(:respond) do
-          redirection = catch(:redirect) do
-            found = filter(path)
-            throw(:respond, found)
-          end
-
-          body, status, head = redirection.values_at(:body, :status, :head)
-          Inform.info("Redirect to `#{head['Location']}'")
-          throw(:respond, response.build(body, status, head))
-        end
+        catch(:respond){
+          redirected = catch(:redirect){
+            filter(path)
+            throw(:respond)
+          }
+          response.build(*redirected)
+        }
       end
 
       # Calls .process(path) on every class in Dispatcher::FILTER until one

@@ -33,15 +33,12 @@ module Ramaze
 
     def redirect target, opts = {}
       target = target.to_s
-      head = {
-        'Location' => target
-      }.merge(response.header)
-
+      header = {'Location' => target}
       status = opts[:status] || STATUS_CODE["See Other"]
-
       body = %{You are being redirected, please follow <a href="#{target}">this link to: #{target}</a>!}
 
-      throw(:redirect, :body => body, :status => status, :head => head)
+      Inform.info("Redirect to '#{target}'")
+      throw(:redirect, [body, status, header])
     end
 
     # redirect to the location the browser says it's coming from.

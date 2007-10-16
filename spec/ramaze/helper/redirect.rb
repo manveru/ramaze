@@ -5,7 +5,6 @@ require 'spec/helper'
 
 class TCRedirectHelperController < Ramaze::Controller
   map :/
-  helper :redirect
 
   def index
     self.class.name
@@ -39,7 +38,7 @@ class TCRedirectHelperController < Ramaze::Controller
 end
 
 describe "RedirectHelper" do
-  ramaze(:adapter => :webrick)
+  ramaze(:adapter => :mongrel)
 
   b = Browser.new
 
@@ -47,20 +46,25 @@ describe "RedirectHelper" do
     b.get('/').should == "TCRedirectHelperController"
   end
 
-  it "calls" do
+  it "should do redirection" do
     b.story do
-      get('/redirection').should        == "TCRedirectHelperController"
+      get('/redirection').should == "TCRedirectHelperController"
       get('/double_redirection').should == "TCRedirectHelperController"
-      get('/no_actual_redirect').should        == 'foo'
+    end
+  end
+
+  it 'should be possible to catch a redirect' do
+    b.story do
+      get('/no_actual_redirect').should == 'foo'
       get('/no_actual_double_redirect').should == 'bar'
     end
   end
 
-  it "redirect to referer" do
+  it "should redirect to referer" do
     b.story do
-      get('/').should                        == 'TCRedirectHelperController'
+      b.get('/').should == "TCRedirectHelperController"
       get('/redirect_referer_action').should == 'TCRedirectHelperController'
-      get('/noop').should                    == 'noop'
+      get('/noop').should == 'noop'
       get('/redirect_referer_action').should == 'noop'
     end
   end
