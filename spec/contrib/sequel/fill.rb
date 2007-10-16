@@ -15,8 +15,7 @@ class Person < Sequel::Model(:person)
   end
 end
 
-Person.create_table unless Person.table_exists?
-Person.recreate_table
+Person.create_table!
 
 class MainController < Ramaze::Controller
   def index
