@@ -1,6 +1,3 @@
-* Nicer Error-pages
-  * Install coderay (it's a gem)
-
 * Performance
   * Serving
   
