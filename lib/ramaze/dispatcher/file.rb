@@ -9,13 +9,14 @@ module Ramaze
 
     class File
       class << self
+        include Trinity
 
         # Entry point from Dispatcher::filter.
         # searches for the file and builds a response with status 200 if found.
 
         def process(path)
           return unless file = open_file(path)
-          Response.current.build(file, Ramaze::STATUS_CODE['OK'])
+          response.build(file, STATUS_CODE['OK'])
         end
 
         # returns file-handle with the open file on success, setting the
@@ -24,7 +25,6 @@ module Ramaze
         def open_file(path)
           file = resolve_path(path)
           if ::File.file?(file)
-            response = Response.current
             response['Content-Type'] = Tool::MIME.type_for(file)
             log(file)
             ::File.open(file, 'rb')
