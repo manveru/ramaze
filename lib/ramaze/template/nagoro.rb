@@ -12,13 +12,9 @@ module Ramaze
 
       ENGINES[self] = %w[ xhtml nag ]
 
-      LISTENERS = [
-        ::Nagoro::Listener::Element,
-        ::Nagoro::Listener::Morpher,
-        ::Nagoro::Listener::Include,
-        ::Nagoro::Listener::Instruction,
-        ::Nagoro::Listener::Compile
-      ]
+      LISTENERS = [ :Element, :Morpher, :Include, :Instruction ]
+
+      TEMPLATE = ::Nagoro::Template[LISTENERS]
 
       class << self
 
@@ -26,7 +22,13 @@ module Ramaze
         # the result
         def transform action
           nagoro = wrap_compile(action)
-          nagoro.eval(action.binding)
+          file = action.template || action.method
+          nagoro.result(action.binding, file.to_s)
+        end
+
+        def wrap_compile(action, template = nil)
+          template ||= file_or_result(action)
+          caching_compile(action, template)
         end
 
         def file_or_result(action)
@@ -39,18 +41,11 @@ module Ramaze
           result
         end
 
-        def wrap_compile(action, template = nil)
-          template ||= file_or_result(action)
-          caching_compile(action, template)
-        end
-
         # Compile a template, applying all transformations from the pipeline
         # and returning an instance of ::Ezamar::Template
 
         def compile(action, template)
-          render = ::Nagoro::Render.new(LISTENERS)
-          render.filter(template)
-          render
+          TEMPLATE.render(template)
         end
       end
     end
