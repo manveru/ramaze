@@ -56,15 +56,15 @@ describe "StackHelper" do
   it "indirect login" do
     browser do
       get('/foo').should == 'logged in'
-      get('/foo').should == 'logged in'
-      eget('/').should == {:logged_in => true, :STACK => []}
+      get('/secure').should == 'secret content'
+      eget('/').should == {:logged_in => true}
     end
   end
 
   it "indirect login with params" do
     browser do
       eget('/bar', 'x' => 'y').should == {'x' => 'y'}
-      eget('/').should == {:logged_in => true, :STACK => []}
+      eget('/').should == {:logged_in => true}
     end
   end
 end
