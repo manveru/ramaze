@@ -9,11 +9,12 @@ module Ramaze
   #     setting a status-code of 303 and a response['Location'] = link
   # returning some nice text for visitors who insist on ignoring those hints :P
   #
-  # example of usage:
-  #   redirect MainController
-  #   redirect MainController, :foo
+  # Usage:
+  #   redirect Rs()
+  #   redirect R(MainController)
+  #   redirect R(MainController, :foo)
   #   redirect 'foo/bar'
-  #   redirect :index, :status => 309
+  #   redirect 'foo/bar', :status => 301
   #
   # TODO:
   #   - maybe some more options, like a delay
@@ -24,9 +25,11 @@ module Ramaze
     private
 
     # Usage:
+    #   redirect Rs()
     #   redirect R(MainController)
     #   redirect R(MainController, :foo)
     #   redirect 'foo/bar'
+    #   redirect 'foo/bar', :status => 301
 
     def redirect target, opts = {}
       target = target.to_s
