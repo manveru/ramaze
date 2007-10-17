@@ -7,8 +7,7 @@ BIN_FILES = %w( ramaze )
 BASEDIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
 NAME = "ramaze"
-REV = File.read(".svn/entries")[/committed-rev="(d+)"/, 1] rescue nil
-VERS = ENV['VERSION'] || (Ramaze::VERSION + (REV ? ".#{REV}" : ""))
+VERS = Ramaze::VERSION
 COPYRIGHT = [
   "#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com",
   "# All files in this distribution are subject to the terms of the Ruby license."
