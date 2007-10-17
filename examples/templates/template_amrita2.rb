@@ -3,14 +3,12 @@
 
 require 'ramaze'
 
-include Ramaze
-
 # TODO:
 #   - implement the amrita2 example, man, this engine is awkward :P
 
-class MainController < Controller
+class MainController < Ramaze::Controller
   template_root __DIR__/:template
-  trait :engine => Template::Amrita2
+  engine :Amrita2
 
   def index
     %{ #{A(Rs())} | #{Rs(:internal)} | #{Rs(:external)} }

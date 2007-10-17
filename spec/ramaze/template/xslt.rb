@@ -10,7 +10,7 @@ testcase_requires 'rexml/document'
 
 class TCTemplateXSLTController < Ramaze::Controller
   template_root 'spec/ramaze/template/xslt/'
-  trait :engine       => Ramaze::Template::XSLT
+  engine :XSLT
   trait :xslt_options => { :fun_xmlns => 'urn:test' }
 
   def index

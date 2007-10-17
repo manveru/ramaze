@@ -3,11 +3,9 @@
 
 require 'ramaze'
 
-include Ramaze
-
-class MainController < Controller
+class MainController < Ramaze::Controller
   template_root __DIR__/:template
-  trait :engine => Template::Remarkably
+  engine :Remarkably
 
   include Remarkably::Common
 

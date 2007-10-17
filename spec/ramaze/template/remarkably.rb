@@ -6,7 +6,7 @@ testcase_requires 'remarkably/engines/html'
 
 class TCTemplateRemarkablyController < Ramaze::Controller
   template_root 'spec/ramaze/template/remarkably/'
-  trait :engine => Ramaze::Template::Remarkably
+  engine :Remarkably
 
   include Remarkably::Common
 

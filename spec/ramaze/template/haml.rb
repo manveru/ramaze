@@ -8,7 +8,7 @@ testcase_requires 'ramaze/template/haml'
 class TCTemplateHamlController < Ramaze::Controller
   map '/'
   template_root 'spec/ramaze/template/haml/'
-  trait :engine => Ramaze::Template::Haml
+  engine :Haml
 
   helper :link
 

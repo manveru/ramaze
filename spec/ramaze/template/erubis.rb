@@ -7,7 +7,7 @@ testcase_requires 'erubis'
 
 class TCTemplateErubisController < Ramaze::Controller
   template_root 'spec/ramaze/template/erubis/'
-  trait :engine => Ramaze::Template::Erubis
+  engine :Erubis
 
   def index
     'Erubis Index'

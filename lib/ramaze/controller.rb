@@ -174,6 +174,15 @@ module Ramaze
         trait "#{this}_template" => [from, that.to_s]
       end
 
+      def engine(name)
+        name = Ramaze::Template.const_get(name)
+      rescue NameError => ex
+        Inform.warn ex
+        Inform.warn "Try to use passed engine directly"
+      ensure
+        trait :engine => name
+      end
+
       # Return Controller of current Action
 
       def current

@@ -7,7 +7,7 @@ testcase_requires 'markaby'
 
 class TCTemplateMarkabyController < Ramaze::Controller
   template_root 'spec/ramaze/template/markaby/'
-  trait :engine => Ramaze::Template::Markaby
+  engine :Markaby
 
   helper :markaby
 

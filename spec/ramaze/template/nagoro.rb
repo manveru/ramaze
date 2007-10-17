@@ -7,7 +7,7 @@ testcase_requires 'nagoro'
 class TCTemplateNagoroController < Ramaze::Controller
   map :/
   template_root 'spec/ramaze/template/nagoro'
-  trait :engine => Ramaze::Template::Nagoro
+  engine :Nagoro
 
   def index text
     @text = text

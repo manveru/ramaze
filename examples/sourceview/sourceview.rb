@@ -21,7 +21,7 @@ class MainController < Ramaze::Controller
   helper :partial, :inform, :cache
   
   trait :actions_cached => [:filetree]
-  trait :engine => Ramaze::Template::NoTemplate
+  engine :NoTemplate
   
   def source
     return if request['file'].nil? or request['file'] =~ /\.{2}/

@@ -5,7 +5,7 @@ require 'ramaze'
 
 class MainController < Ramaze::Controller
   template_root __DIR__/:template
-  trait :engine => Ramaze::Template::Erubis
+  engine :Erubis
 
   def index
     %{ #{A('Home', :href => :/)} | #{A(:internal)} | #{A(:external)} }

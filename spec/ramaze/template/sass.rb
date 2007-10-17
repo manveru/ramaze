@@ -8,7 +8,7 @@ testcase_requires 'sass/engine'
 class TCTemplateSassController < Ramaze::Controller
   map '/'
   template_root 'spec/ramaze/template/sass/'
-  trait :engine => Ramaze::Template::Sass
+  engine :Sass
 
   define_method('style.css') do
 %{

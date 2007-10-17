@@ -26,7 +26,7 @@ end
 
 class TCTemplateLiquidController < Ramaze::Controller
   template_root 'spec/ramaze/template/liquid/'
-  trait :engine         => Ramaze::Template::Liquid
+  engine :Liquid
   trait :liquid_options => { :filters => ProductsFilter }
 
   def index
