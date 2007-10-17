@@ -14,6 +14,8 @@ describe "A" do
   it 'should build links' do
     A('title', :href => '/').should == %(<a href="/">title</a>)
     A('title', :href => '/foo').should == %(<a href="/foo">title</a>)
+    A('title', :href => '/foo?x=y').should == %{<a href="/foo?x=y">title</a>}
+    A('/foo?x=y').should == %{<a href="/foo?x=y">/foo?x=y</a>}
 
     a = A('title', :href => '/foo', :class => :none)
     a.should =~ /class="none"/

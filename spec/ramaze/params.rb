@@ -55,7 +55,7 @@ class TCParamsController3 < Ramaze::Controller
   map '/ma'
 
   def index(*args)
-    request.params['foo'].inspect
+    request.params['foo'].to_s.dump
   end
 end
 
@@ -141,6 +141,10 @@ describe "Simple Parameters" do
   end
 
   it 'params should have no content without params' do
-    get('/ma').body.should == 'nil'
+    get('/ma').body.should == '""'
+  end
+
+  it 'should have a parameter via QUERY_PARAMS' do
+    get('/ma', 'foo' => 'bar').body.should == '"bar"'
   end
 end

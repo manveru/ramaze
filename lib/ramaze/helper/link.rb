@@ -20,13 +20,15 @@ module Ramaze
     # used instead. If you really want an empty href, use :href => ''
     #
     # Usage:
-    #   A('title')                  #=> <a href="/title">title</a>
-    #   A('foo/bar')                #=> <a href="/foo/bar">foo/bar</a>
-    #   A('Home', :href => Rs(:/))  #=> <a href="/foo/bar">Home</a>
+    #   A('title')                      #> <a href="/title">title</a>
+    #   A('foo/bar')                    #> <a href="/foo/bar">foo/bar</a>
+    #   A('/foo?x=y')                   #> <a href="/foo?x=y">/foo?x=y</a>
+    #   A('title', :href => '/foo?x=y') #> <a href="/foo?x=y">title</a>
+    #   A('Home', :href => Rs(:/))      #> <a href="/foo/bar">Home</a>
 
     def A(title, hash = {})
-      hash[:href] ||= Rs(title)
-      hash[:href].to_s.gsub!(/[^\/]+/){|m| CGI.escape(m) }
+      hash[:href] ||= (Rs(title) rescue title)
+      hash[:href].to_s.sub!(/\A[^\/?]+/){|m| CGI.escape(m) }
 
       args = ['']
       hash.each{|k,v| args << %(#{k}="#{v}") if k and v }
