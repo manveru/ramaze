@@ -6,13 +6,13 @@
 require 'ramaze'
 require 'bluecloth'
 
-include Ramaze
+Db = Ramaze::YAMLStoreCache.new('wiki.yaml')
 
-Db = YAMLStoreCache.new('wiki.yaml')
-
-class WikiController < Controller
+class WikiController < Ramaze::Controller
+  map :/
+  
   def index
-    redirect(R(:show, 'Home'))
+    redirect R(:show, 'Home')
   end
 
   def show page = 'Home'
@@ -21,7 +21,7 @@ class WikiController < Controller
 
     @text.gsub!(/\[\[(.*?)\]\]/) do |m|
       exists = Db[$1] ? 'exists' : 'nonexists'
-      link( R(self, :show, CGI.escape($1)), :title => $1, :class => exists)
+      A($1, :href => Rs(:show, CGI.escape($1)), :class => exists)
     end
 
     @text = BlueCloth.new(@text).to_html
@@ -40,12 +40,8 @@ class WikiController < Controller
 
     Db[page] = text
 
-    redirect R(self, :show, CGI.escape(page))
+    redirect Rs(:show, CGI.escape(page))
   end
 end
 
-Global.adapter = :mongrel
-#Global.tidy = true
-Global.mapping = {'/' => WikiController}
-
-Ramaze.start
+Ramaze.start :adapter => :mongrel
