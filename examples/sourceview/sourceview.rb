@@ -7,7 +7,7 @@ require 'ramaze'
 Ramaze::Template::Haml
 
 # where is the source
-RAMAZE_SRC = '/Users/aman/ramaze'
+RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'..')
 
 class Ramaze::Template::NoTemplate < Ramaze::Template::Template
   def self.transform action
@@ -77,4 +77,8 @@ class MainController < Ramaze::Controller
 
 end
 
-Ramaze.start :adapter => :mongrel, :boring => [/(js|gif|css)$/], :port => 3000
+Ramaze.start :adapter => :mongrel,
+  :boring => [/(js|gif|css)$/],
+  :port => 3000,
+  :public_root => __DIR__/:public,
+  :template_root => __DIR__/:template
