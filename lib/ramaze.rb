@@ -10,6 +10,7 @@ end
 module Ramaze
   BASEDIR = File.dirname(File.expand_path(__FILE__))
   SEEED = $0.dup
+  APPDIR = File.dirname(File.expand_path($0))
   $:.unshift BASEDIR
 end
 
@@ -51,6 +52,7 @@ module Ramaze
       if $0 == starter or options.delete(:force)
         Inform.info("Starting up Ramaze (Version #{VERSION})")
         SEEED.replace(starter)
+        APPDIR.replace(File.dirname(File.expand_path(starter)))
 
         trait[:essentials].each do |obj|
           obj.startup(options)

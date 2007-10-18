@@ -77,7 +77,7 @@ module Ramaze
       :port => 7000, :cli => 7000, :short => :p
 
     o "Specify directory to serve static files",
-      :public_root => './public', :cli => './public'
+      :public_root => APPDIR/'./public', :cli => './template'
 
     o "Record all Request objects by assigning a filtering Proc to me.",
       :record => false
@@ -104,7 +104,7 @@ module Ramaze
       :test_connections => true, :cli => true
 
     o "Specify directory to serve dynamic files",
-      :template_root => './template', :cli => './template'
+      :template_root => APPDIR/'./template', :cli => './template'
 
     o "Enable directory listing",
       :list_directories => false, :cli => false
