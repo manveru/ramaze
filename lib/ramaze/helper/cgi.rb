@@ -20,13 +20,13 @@ module Ramaze
       CGI.unescape(*args)
     end
 
-    # shortcut for GCI.escapeHTML
+    # shortcut for CGI.escapeHTML
 
     def html_escape(string)
       CGI.escapeHTML(string)
     end
 
-    # shortcut for GCI.unescapeHTML
+    # shortcut for CGI.unescapeHTML
 
     def html_unescape(string)
       CGI.unescapeHTML(string)
