@@ -6,12 +6,12 @@
 require 'ramaze'
 require 'bluecloth'
 
-Db = Ramaze::YAMLStoreCache.new('wiki.yaml')
+Db = Ramaze::YAMLStoreCache.new('wiki.yaml') unless defined?(Db)
 
 class WikiController < Ramaze::Controller
   map :/
   engine :Nagoro
-  
+
   def index
     redirect R(:show, 'Home')
   end
