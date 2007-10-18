@@ -10,6 +10,7 @@ Db = Ramaze::YAMLStoreCache.new('wiki.yaml')
 
 class WikiController < Ramaze::Controller
   map :/
+  engine :Nagoro
   
   def index
     redirect R(:show, 'Home')
@@ -18,8 +19,10 @@ class WikiController < Ramaze::Controller
   def show page = 'Home'
     @page = CGI.unescape(page)
     @text = Db[page].to_s
+    @edit_link = "/edit/#{page}"
 
     @text.gsub!(/\[\[(.*?)\]\]/) do |m|
+      p m
       exists = Db[$1] ? 'exists' : 'nonexists'
       A($1, :href => Rs(:show, CGI.escape($1)), :class => exists)
     end

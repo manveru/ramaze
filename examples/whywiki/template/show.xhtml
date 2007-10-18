@@ -6,16 +6,13 @@
       a.nonexists{ color: #f00; }
     </style>
   </head>
-    #{ A("&lt; Home", :href => R(self)) unless @page == "Home" }
   <body>
+    <a href="/show/Home" unless="@page == 'Home'">&lt; Home</a>
     <h1>#{@page}</h1>
-    <?r if @text.empty? ?>
-      #{ A("Create #{@page}?",:href => R(self, :edit, CGI.escape(@page))) }
-    <?r else ?>
-    <div>
-      #{ A("Edit #{@page}?", :href => R(self, :edit, CGI.escape(@page))) }
-      #{@text}
+    <a href="#@edit_link" if="@text.empty?">Create #@page</a>
+    <div unless="@text.empty?">
+      <a href="#@edit_link">Edit #@page</a>
+      #@text
     </div>
-    <?r end ?>
   </body>
 </html>
