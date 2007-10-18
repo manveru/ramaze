@@ -53,9 +53,9 @@ module Ramaze
 
     def render_template(file, options = {})
       current = Action.current
-      options[:binding]     ||= current.binding
-      options[:controller]  ||= current.controller
-      options[:instance]    ||= current.instance
+      options[:controller] ||= current.controller
+      options[:instance]   ||= current.instance.dup
+      options[:binding]    ||= options[:instance].instance_eval{ binding }
       options[:template] = (options[:controller].template_root/file)
 
       action = Ramaze::Action(options)

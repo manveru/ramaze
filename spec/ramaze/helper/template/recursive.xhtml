@@ -1,0 +1,9 @@
+<ul>
+  <li>#@n</li>
+  <?r if @n < 2 ?>
+    <?r @n += 1 ?>
+    #{render_template('recursive.xhtml')}
+    <?r @n -= 1 ?>
+  <?r end ?>
+  <li>#@n</li>
+</ul>
