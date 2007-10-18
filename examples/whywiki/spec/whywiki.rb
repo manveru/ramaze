@@ -21,12 +21,10 @@ describe WikiController do
 
   def page(name)
     page = get('/'+name)
-    p page
     page.status.should == 200
     page.body.should_not be_nil
 
     doc = Hpricot(page.body)
-    p name => doc.to_html
     title = doc.at('title').inner_html
 
     body = doc.at('body')
@@ -48,7 +46,7 @@ describe WikiController do
   it 'should have edit page' do
     t,body = page('/edit/Home')
     t.should match(/^MicroWiki Edit Home$/)
-    puts body
+
     body.at('a[@href=/]').inner_html.should == '&lt; Home'
     body.at('h1').inner_html.should == 'Edit Home'
     body.at('form[@action=/save]>textarea[@name=text]').should_not be_nil

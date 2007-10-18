@@ -17,21 +17,20 @@ class WikiController < Ramaze::Controller
   end
 
   def show page = 'Home'
-    @page = CGI.unescape(page)
+    @page = url_decode(page)
     @text = Db[page].to_s
     @edit_link = "/edit/#{page}"
 
     @text.gsub!(/\[\[(.*?)\]\]/) do |m|
-      p m
       exists = Db[$1] ? 'exists' : 'nonexists'
-      A($1, :href => Rs(:show, CGI.escape($1)), :class => exists)
+      A($1, :href => Rs(:show, url_encode($1)), :class => exists)
     end
 
     @text = BlueCloth.new(@text).to_html
   end
 
   def edit page = 'Home'
-    @page = CGI.unescape(page)
+    @page = url_decode(page)
     @text = Db[page]
   end
 
@@ -43,7 +42,7 @@ class WikiController < Ramaze::Controller
 
     Db[page] = text
 
-    redirect Rs(:show, CGI.escape(page))
+    redirect Rs(:show, url_encode(page))
   end
 end
 
