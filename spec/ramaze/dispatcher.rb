@@ -23,9 +23,9 @@ describe "Dispatcher" do
     page.body.should == 'Hello, World!'
   end
 
-  it 'should ignore /favicon.ico' do
-    Ramaze::Global.ignore = ['/favicon.ico']
-    page = get('/favicon.ico')
+  it 'should ignore /foo.ico' do
+    Ramaze::Global.ignore = ['/foo.ico']
+    page = get('/foo.ico')
     page.status.should == 404
     page.body.should == 'File not found'
   end
