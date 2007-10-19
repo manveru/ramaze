@@ -178,10 +178,14 @@ module Ramaze
       # templating-engine to use ordered by priority and likelyhood.
       def extension_order
         t_extensions = Template::ENGINES
-        engine = trait[:engine]
-        c_extensions = t_extensions.select{|k,v| k == engine}.map{|k,v| v}.flatten
-        all_extensions = t_extensions.map{|k,v| v}.flatten
-        (c_extensions + all_extensions).uniq
+        all_extensions = t_extensions.values.flatten
+
+        if engine = trait[:engine]
+          c_extensions = t_extensions.select{|k,v| k == engine}.map{|k,v| v}.flatten
+          return (c_extensions + all_extensions).uniq
+        end
+
+        all_extensions
       end
 
       def raise_no_filter(path)

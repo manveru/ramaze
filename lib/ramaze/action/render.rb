@@ -73,6 +73,8 @@ module Ramaze
       if tlayout = layout
         instance.instance_variable_set("@content", content)
         content = tlayout.render
+
+        # restore Action.current after render above
         Thread.current[:action] = self
       end
       [bp, content, ap].join
