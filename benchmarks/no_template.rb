@@ -1,13 +1,8 @@
 require 'ramaze'
 
-class Ramaze::Template::NoTemplate < Ramaze::Template::Template
-  def self.transform action
-    render_method(action)
-  end
-end
-
 class MainController < Ramaze::Controller
-  trait :engine => Ramaze::Template::NoTemplate
+  engine :None
+  
   def index
     "Hello, World!"
   end

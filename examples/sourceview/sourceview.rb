@@ -9,19 +9,13 @@ Ramaze::Template::Haml
 # where is the source
 RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'..')
 
-class Ramaze::Template::NoTemplate < Ramaze::Template::Template
-  def self.transform action
-    render_method(action)
-  end
-end
-
 class MainController < Ramaze::Controller
 
   include Remarkably::Common
   helper :partial, :inform, :cache
   
   trait :actions_cached => [:filetree]
-  engine :NoTemplate
+  engine :None
   
   def source
     return if request['file'].nil? or request['file'] =~ /\.{2}/

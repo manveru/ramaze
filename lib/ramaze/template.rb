@@ -16,7 +16,7 @@ module Ramaze
 
     ENGINES = {} unless defined?(ENGINES)
 
-    %w[ Amrita2 Erubis Haml Liquid Markaby Nagoro Remarkably Sass XSLT ].
+    %w[ Amrita2 Erubis Haml Liquid Markaby Nagoro None Remarkably Sass XSLT ].
       each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
     end
