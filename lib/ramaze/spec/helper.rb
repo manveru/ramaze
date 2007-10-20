@@ -22,7 +22,10 @@ end
 # that will be merged with the default-options.
 
 def ramaze_start hash = {}
+  appdir = File.dirname(caller[0].split(':').first)
   options = {
+    :template_root => appdir/:template,
+    :public_root => appdir/:public,
     :adapter      => false,
     :run_loose    => true,
     :error_page   => false,
