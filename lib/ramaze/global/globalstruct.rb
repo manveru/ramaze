@@ -104,6 +104,17 @@ module Ramaze
       self[:public_root] = File.expand_path(pr)
     end
 
+    def list_directories=(active)
+      require 'ramaze/dispatcher'
+      d = Ramaze::Dispatcher
+      self[:list_directories] = active
+      if active
+        d::FILTER.put_within(d::Directory, :after => d::File, :before => d::Action)
+      else
+        d::FILTER.delete(d::Directory)
+      end
+    end
+
 
     # External helpers
 

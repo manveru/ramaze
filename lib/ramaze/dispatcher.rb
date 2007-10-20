@@ -20,8 +20,7 @@ module Ramaze
   module Dispatcher
 
     # requests are passed to every
-    FILTER = [ Dispatcher::File, Dispatcher::Directory,
-               Dispatcher::Action ] unless defined?(FILTER)
+    FILTER = [ Dispatcher::File, Dispatcher::Action ] unless defined?(FILTER)
 
     # Response codes to cache the output of for repeated requests.
     trait :shielded => [ STATUS_CODE["Not Found"] ]
