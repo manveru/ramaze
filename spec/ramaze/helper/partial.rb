@@ -20,7 +20,7 @@ class TCPartialHelperController < Ramaze::Controller
     'From Action | ' +
     render_template("partial.xhtml")
   end
-  
+
   def recursive
     @n = 1
   end
@@ -38,7 +38,7 @@ describe "PartialHelper" do
   it 'should be able to render a template in the current scope' do
     get('/composed').body.should == 'From Action | From Partial there'
   end
-  
+
   it 'should work recursively' do
     get('/recursive').body.gsub(/\s/, '').should ==
       '<ul><li>1</li><ul><li>2</li><li>2</li></ul><li>1</li></ul>'
