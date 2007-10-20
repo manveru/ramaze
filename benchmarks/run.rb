@@ -2,12 +2,14 @@ results = File.open('benchmarks.txt', 'w')
 
 %w{ simple no_informer no_template no_informer_or_template }.each do |file|
   
-  results.puts "=== #{file}.rb ==="
-  results.puts "<code ruby>\n#{File.read("#{file}.rb")}\n</code>\n\n"
+  filename = "#{file}.rb"
+  
+  results.puts "====== #{filename} ======"
+  results.puts "<code ruby>\n#{File.read(filename)}\n</code>\n\n"
   
   %w{ webrick mongrel evented_mongrel }.each do |adapter|
     
-    results.puts "== #{adapter} =="
+    results.puts "=== #{adapter} ==="
     
     ramaze = fork do
       Signal.trap('USR1') { Ramaze.shutdown }
@@ -18,7 +20,7 @@ results = File.open('benchmarks.txt', 'w')
     # wait for ramaze to start up
     sleep 2
     
-    results.puts `ab -c 5 -n 500 http://localhost:7000/`.grep(/^(Fail|Req|Time)/).map{|l|"  #{l}"}
+    results.puts `ab -c 10 -n 1000 http://localhost:7000/`.grep(/^(Fail|Req|Time)/).map{|l|"  #{l}"}
     results.puts "\n"
     results.flush
     

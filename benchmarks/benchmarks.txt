@@ -1,4 +1,4 @@
-=== simple.rb ===
+====== simple.rb ======
 <code ruby>
 require 'ramaze'
 
@@ -9,28 +9,28 @@ class MainController < Ramaze::Controller
 end
 </code>
 
-== webrick ==
-  Time taken for tests:   3.762 seconds
+=== webrick ===
+  Time taken for tests:   6.757736 seconds
   Failed requests:        0
-  Requests per second:    132.91 [#/sec] (mean)
-  Time per request:       37.62 [ms] (mean)
-  Time per request:       7.52 [ms] (mean, across all concurrent requests)
+  Requests per second:    147.98 [#/sec] (mean)
+  Time per request:       67.577 [ms] (mean)
+  Time per request:       6.758 [ms] (mean, across all concurrent requests)
 
-== mongrel ==
-  Time taken for tests:   1.149 seconds
+=== mongrel ===
+  Time taken for tests:   2.178072 seconds
   Failed requests:        0
-  Requests per second:    435.16 [#/sec] (mean)
-  Time per request:       11.49 [ms] (mean)
-  Time per request:       2.30 [ms] (mean, across all concurrent requests)
+  Requests per second:    459.12 [#/sec] (mean)
+  Time per request:       21.781 [ms] (mean)
+  Time per request:       2.178 [ms] (mean, across all concurrent requests)
 
-== evented_mongrel ==
-  Time taken for tests:   0.979 seconds
+=== evented_mongrel ===
+  Time taken for tests:   1.104686 seconds
   Failed requests:        0
-  Requests per second:    510.73 [#/sec] (mean)
-  Time per request:       9.79 [ms] (mean)
-  Time per request:       1.96 [ms] (mean, across all concurrent requests)
+  Requests per second:    905.23 [#/sec] (mean)
+  Time per request:       11.047 [ms] (mean)
+  Time per request:       1.105 [ms] (mean, across all concurrent requests)
 
-=== no_informer.rb ===
+====== no_informer.rb ======
 <code ruby>
 require 'ramaze'
 
@@ -43,78 +43,68 @@ end
 Ramaze::Inform.loggers = []
 </code>
 
-== webrick ==
-  Time taken for tests:   2.618 seconds
+=== webrick ===
+  Time taken for tests:   5.266059 seconds
   Failed requests:        0
-  Requests per second:    190.99 [#/sec] (mean)
-  Time per request:       26.18 [ms] (mean)
-  Time per request:       5.24 [ms] (mean, across all concurrent requests)
+  Requests per second:    189.90 [#/sec] (mean)
+  Time per request:       52.661 [ms] (mean)
+  Time per request:       5.266 [ms] (mean, across all concurrent requests)
 
-== mongrel ==
-  Time taken for tests:   0.818 seconds
+=== mongrel ===
+  Time taken for tests:   2.129892 seconds
   Failed requests:        0
-  Requests per second:    611.25 [#/sec] (mean)
-  Time per request:       8.18 [ms] (mean)
-  Time per request:       1.64 [ms] (mean, across all concurrent requests)
+  Requests per second:    469.51 [#/sec] (mean)
+  Time per request:       21.299 [ms] (mean)
+  Time per request:       2.130 [ms] (mean, across all concurrent requests)
 
-== evented_mongrel ==
-  Time taken for tests:   0.762 seconds
+=== evented_mongrel ===
+  Time taken for tests:   1.2625 seconds
   Failed requests:        0
-  Requests per second:    656.17 [#/sec] (mean)
-  Time per request:       7.62 [ms] (mean)
-  Time per request:       1.52 [ms] (mean, across all concurrent requests)
+  Requests per second:    997.38 [#/sec] (mean)
+  Time per request:       10.026 [ms] (mean)
+  Time per request:       1.003 [ms] (mean, across all concurrent requests)
 
-=== no_template.rb ===
+====== no_template.rb ======
 <code ruby>
 require 'ramaze'
 
-class Ramaze::Template::NoTemplate < Ramaze::Template::Template
-  def self.transform action
-    render_method(action)
-  end
-end
-
 class MainController < Ramaze::Controller
-  trait :engine => Ramaze::Template::NoTemplate
+  engine :None
+  
   def index
     "Hello, World!"
   end
 end
 </code>
 
-== webrick ==
-  Time taken for tests:   3.631 seconds
+=== webrick ===
+  Time taken for tests:   6.611010 seconds
   Failed requests:        0
-  Requests per second:    137.70 [#/sec] (mean)
-  Time per request:       36.31 [ms] (mean)
-  Time per request:       7.26 [ms] (mean, across all concurrent requests)
+  Requests per second:    151.26 [#/sec] (mean)
+  Time per request:       66.110 [ms] (mean)
+  Time per request:       6.611 [ms] (mean, across all concurrent requests)
 
-== mongrel ==
-  Time taken for tests:   0.992 seconds
+=== mongrel ===
+  Time taken for tests:   1.988508 seconds
   Failed requests:        0
-  Requests per second:    504.03 [#/sec] (mean)
-  Time per request:       9.92 [ms] (mean)
-  Time per request:       1.98 [ms] (mean, across all concurrent requests)
+  Requests per second:    502.89 [#/sec] (mean)
+  Time per request:       19.885 [ms] (mean)
+  Time per request:       1.989 [ms] (mean, across all concurrent requests)
 
-== evented_mongrel ==
-  Time taken for tests:   0.857 seconds
+=== evented_mongrel ===
+  Time taken for tests:   0.987911 seconds
   Failed requests:        0
-  Requests per second:    583.43 [#/sec] (mean)
-  Time per request:       8.57 [ms] (mean)
-  Time per request:       1.71 [ms] (mean, across all concurrent requests)
+  Requests per second:    1012.24 [#/sec] (mean)
+  Time per request:       9.879 [ms] (mean)
+  Time per request:       0.988 [ms] (mean, across all concurrent requests)
 
-=== no_informer_or_template.rb ===
+====== no_informer_or_template.rb ======
 <code ruby>
 require 'ramaze'
 
-class Ramaze::Template::NoTemplate < Ramaze::Template::Template
-  def self.transform action
-    render_method(action)
-  end
-end
-
 class MainController < Ramaze::Controller
-  trait :engine => Ramaze::Template::NoTemplate
+  engine :None
+  
   def index
     "Hello, World!"
   end
@@ -123,24 +113,24 @@ end
 Ramaze::Inform.loggers = []
 </code>
 
-== webrick ==
-  Time taken for tests:   2.469 seconds
+=== webrick ===
+  Time taken for tests:   4.931231 seconds
   Failed requests:        0
-  Requests per second:    202.51 [#/sec] (mean)
-  Time per request:       24.69 [ms] (mean)
-  Time per request:       4.94 [ms] (mean, across all concurrent requests)
+  Requests per second:    202.79 [#/sec] (mean)
+  Time per request:       49.312 [ms] (mean)
+  Time per request:       4.931 [ms] (mean, across all concurrent requests)
 
-== mongrel ==
-  Time taken for tests:   0.724 seconds
+=== mongrel ===
+  Time taken for tests:   1.614083 seconds
   Failed requests:        0
-  Requests per second:    690.61 [#/sec] (mean)
-  Time per request:       7.24 [ms] (mean)
-  Time per request:       1.45 [ms] (mean, across all concurrent requests)
+  Requests per second:    619.55 [#/sec] (mean)
+  Time per request:       16.141 [ms] (mean)
+  Time per request:       1.614 [ms] (mean, across all concurrent requests)
 
-== evented_mongrel ==
-  Time taken for tests:   0.651 seconds
+=== evented_mongrel ===
+  Time taken for tests:   0.868236 seconds
   Failed requests:        0
-  Requests per second:    768.05 [#/sec] (mean)
-  Time per request:       6.51 [ms] (mean)
-  Time per request:       1.30 [ms] (mean, across all concurrent requests)
+  Requests per second:    1151.76 [#/sec] (mean)
+  Time per request:       8.682 [ms] (mean)
+  Time per request:       0.868 [ms] (mean, across all concurrent requests)
 
