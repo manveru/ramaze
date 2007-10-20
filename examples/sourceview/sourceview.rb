@@ -3,9 +3,6 @@ require 'remarkably/engines/html'
 require 'coderay'
 require 'ramaze'
 
-# make sure to look for .haml templates
-Ramaze::Template::Haml
-
 # where is the source
 RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'..')
 
@@ -71,8 +68,7 @@ class MainController < Ramaze::Controller
 
 end
 
-Ramaze.start :adapter => :mongrel,
-  :boring => [/(js|gif|css)$/],
-  :port => 3000,
-  :public_root => __DIR__/:public,
-  :template_root => __DIR__/:template
+Ramaze.start :adapter      => :mongrel,
+             :load_engines => :Haml,
+             :boring       => /(js|gif|css)$/,
+             :port         => 3000

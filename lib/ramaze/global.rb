@@ -67,6 +67,9 @@ module Ramaze
     o "Status set on ignored paths",
       :ignore_status => 404
 
+    o "Templating engines to load on startup",
+      :load_engines => []
+
     o "All paths to controllers are mapped here.",
       :mapping => {}
 

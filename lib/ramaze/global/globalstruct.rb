@@ -47,6 +47,11 @@ module Ramaze
       end
 
       ENV_TRIGGER.values_at(*ENV.keys).compact.each{|l| l.call}
+
+      engines = self[:load_engines]
+      (Symbol === engines ? [engines] : engines).each do |engine|
+        Ramaze::Template.const_get(engine)
+      end
     end
 
     # batch-assignment of key/value from hash, yields self if a block is given.
