@@ -9,7 +9,7 @@ end
 begin
   require 'systemu'
 rescue LoadError
-  puts "Please install systemu for better-looking results"
+  puts "Please install systemu for accurate results"
 
   # small drop-in replacement for systemu... far from perfect though, so please
   # install the library
@@ -160,7 +160,8 @@ class SpecFile
   def long_summary
     puts "[ #@name ]".center(80, '-'), "ExitStatus:".yellow
     pp @status
-    puts "StdOut:".yellow, @stdout, "StdErr:".yellow, @stderr
+    puts "StdOut:".yellow, PP.pp(@stdout, '')
+    puts "StdErr:".yellow, PP.pp(@stderr, '')
   end
 
   def parse
