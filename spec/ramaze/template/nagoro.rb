@@ -6,7 +6,7 @@ testcase_requires 'nagoro'
 
 class TCTemplateNagoroController < Ramaze::Controller
   map :/
-  template_root 'spec/ramaze/template/nagoro'
+  template_root __DIR__/:nagoro
   engine :Nagoro
 
   def index text
@@ -33,7 +33,9 @@ end
 
 
 describe "Nagoro" do
-  ramaze
+  before(:all) do
+    ramaze
+  end
 
   it "hello world" do
     get('/World').body.should == 'Hello, World!'

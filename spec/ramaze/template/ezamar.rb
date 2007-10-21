@@ -4,7 +4,8 @@
 require 'spec/helper'
 
 class TCTemplateController < Ramaze::Controller
-  template_root 'spec/ramaze/template/ezamar'
+  map :/
+  template_root __DIR__/:ezamar
   engine :Ezamar
 
   def index text
@@ -31,7 +32,9 @@ end
 
 
 describe "Ezamar" do
-  ramaze(:mapping => {'/' => TCTemplateController})
+  before(:all) do
+    ramaze
+  end
 
   it "hello world" do
     get('/World').body.should == 'Hello, World!'

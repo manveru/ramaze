@@ -6,7 +6,7 @@ require 'spec/helper'
 testcase_requires 'amrita2'
 
 class TCTemplateAmritaController < Ramaze::Controller
-  template_root 'spec/ramaze/template/amrita2/'
+  template_root __DIR__/:amrita2
   engine :Amrita2
 
   def title

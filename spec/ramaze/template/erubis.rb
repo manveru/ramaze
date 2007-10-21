@@ -6,7 +6,7 @@ require 'spec/helper'
 testcase_requires 'erubis'
 
 class TCTemplateErubisController < Ramaze::Controller
-  template_root 'spec/ramaze/template/erubis/'
+  template_root __DIR__/:erubis
   engine :Erubis
 
   def index

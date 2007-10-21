@@ -68,7 +68,7 @@ class SpecWrap
     total = @specs.size
     n_width = (total.to_s.size * 2) + 4
     @specs.sort_by{|s| s.last}.each_with_index do |(file, name), idx|
-      print "(#{idx}/#{total}) ".ljust(n_width)
+      print "(#{idx+1}/#{total}) ".ljust(n_width)
       spec = SpecFile.new(file, name, term_width)
       spec.run
       spec.short_summary

@@ -21,7 +21,7 @@ end
 class TCTemplateController < Ramaze::Controller
   map '/'
   engine :TestTemplate
-  template_root(__DIR__/:template/:ramaze)
+  template_root __DIR__/:template/:ramaze
 
   def index *args
   end

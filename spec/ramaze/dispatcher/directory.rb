@@ -4,7 +4,8 @@ testcase_requires 'hpricot'
 
 describe 'Dispatcher::Directory' do
   before :all do
-    ramaze :public_root => __DIR__/:public
+    ramaze
+
     @hierarchy = %w[
     /test/deep/hierarchy/one.txt
     /test/deep/hierarchy/two.txt

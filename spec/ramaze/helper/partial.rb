@@ -6,7 +6,6 @@ require 'spec/helper'
 class TCPartialHelperController < Ramaze::Controller
   map '/'
   helper :partial
-  template_root(__DIR__/:template)
 
   def index
     '<html><head><title>#{render_partial("/title")}</title></head></html>'

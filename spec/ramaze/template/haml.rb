@@ -6,8 +6,8 @@ require 'spec/helper'
 testcase_requires 'ramaze/template/haml'
 
 class TCTemplateHamlController < Ramaze::Controller
-  map '/'
-  template_root 'spec/ramaze/template/haml/'
+  map :/
+  template_root __DIR__/:haml
   engine :Haml
 
   helper :link

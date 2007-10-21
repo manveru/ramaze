@@ -4,7 +4,6 @@
 require 'spec/helper'
 
 class MainController < Ramaze::Controller
-  template_root __DIR__ / :template
 
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"
@@ -13,40 +12,41 @@ class MainController < Ramaze::Controller
   def list
     @obj = Ramaze::Action.current.method
   end
+
   alias_method :index, :list
   template :index, 'list'
+  template :non_existant_method, :list
 
 end
 
 class OtherController < MainController
-  template_root __DIR__ / "template/other"
 
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)
   end
   template :greet__mom, MainController, :greet
 
-  def greet__other(one, two)
+  def greet__other
     @greet = "Other"
   end
-  template :greet__other, 'greet/other'
+  template :greet__other, :blah
 
-  def partial_stuff
-    render_partial('/greet/the/world', :foo => :bar)
+  def greet__another
+    @greet = "Another"
   end
-end
+  template :greet__another, :greet__other
 
-class Ramaze::Controller
-  private
-
-  def render_partial(url, options = {})
-    body = Ramaze::Controller.handle(url)
-    body
+  def greet__last
+    @greet = 'Last'
   end
+  template :greet__last, 'greet/other'
+
 end
 
 describe "Testing Template overriding" do
-  ramaze(:mapping => {'/' => MainController, '/other' => OtherController})
+  before(:all) do
+    ramaze
+  end
 
   it "simple request to greet" do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'
@@ -56,23 +56,24 @@ describe "Testing Template overriding" do
     get('/other/greet/mom').body.should == '<html>Mom : Moms are cool!</html>'
   end
 
-  it "should accept template overrides with same name as controller" do
-    get('/other/greet/other/one/two').body.should == '<html>Other: Other</html>'
+  it "should treat template overrides as possible alternatives (only use if found)" do
+    get('/other/greet/other').body.should == '<html>Other: Other</html>'
   end
 
-  it "setting template for non-existant :index action should not arbitrary parameters" do
+  it "should accept template overrides given as symbols" do
+    get('/other/greet/another').body.should == '<html>Other: Another</html>'
+  end
+
+  it "should accept template overrides given as strings" do
+    get('/other/greet/last').body.should == '<html>Other: Last</html>'
+  end
+
+  it "should set template for aliased :index action" do
     get('/list').body.should == '<html>list</html>'
-
-    response = get('/non_existant_method')
-    response.status.should == 404
-    response.body.should =~ %r(No Action found for `/non_existant_method' on MainController)
+    get('/index').body.should == '<html>index</html>'
   end
 
-end
-
-describe "render_partial" do
-  it 'greet' do
-    result = get('/other/partial_stuff')
-    result.body.should == '<html>the : world</html>'
+  it "should use template overrides for non-existant actions" do
+    get('/non_existant_method').body.should == '<html></html>'
   end
 end
