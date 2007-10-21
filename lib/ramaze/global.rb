@@ -51,9 +51,6 @@ module Ramaze
     o "Caching actions to the filesystem in Global.public_root",
       :file_cache => false, :cli => false
 
-    o "Base directory for meta information of file-caching",
-      :file_cache_meta_dir => "cache_meta", :cli => "cache_meta"
-
     o "Specify what IP Ramaze will respond to - 0.0.0.0 for all",
       :host => "0.0.0.0", :cli => '0.0.0.0'
 

@@ -42,10 +42,6 @@ module Ramaze
       FileUtils.mkdir_p(File.dirname(global_epath))
       File.open( global_epath, 'w+'){|fp| fp.print(rendered) }
 
-      meta_epath = Global.file_cache_meta_dir/extended_path
-      FileUtils.mkdir_p(File.dirname(meta_epath))
-      File.open( meta_epath, 'w+'){|fp| fp.print(Time.now.to_i) }
-
       rendered
     end
 
