@@ -105,6 +105,11 @@ module Ramaze
       File.basename((self[:method] || self[:template]).to_s).split('.').first
     end
 
+    # combined path to current action, from path and params
+    def extended_path
+      @extended_path ||= Array[path, *params].join('/')
+    end
+
     # Hook for AspectHelper
 
     def before_process
