@@ -17,10 +17,6 @@ end
 
 require 'ramaze'
 
-# invoke auto-load of Haml template engine
-# so ramaze knows to look for .haml templates
-Ramaze::Template::Haml
-
 class MainController < Ramaze::Controller
   helper :auth
   layout :layout
@@ -50,4 +46,4 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze.start :adapter => :mongrel
+Ramaze.start :adapter => :mongrel, :load_engines => :Haml
