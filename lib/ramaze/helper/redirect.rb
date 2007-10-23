@@ -33,6 +33,14 @@ module Ramaze
 
     def redirect target, opts = {}
       target = target.to_s
+
+      unless target =~ %r!^https?://!
+        target[0,0] = '/' unless target =~ %r!^/!
+        if host = request.env['HTTP_HOST']
+          target[0,0] = "http://#{host}"
+        end
+      end
+
       header = {'Location' => target}
       status = opts[:status] || STATUS_CODE["See Other"]
       body = %{You are being redirected, please follow <a href="#{target}">this link to: #{target}</a>!}

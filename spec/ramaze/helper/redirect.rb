@@ -35,6 +35,10 @@ class TCRedirectHelperController < Ramaze::Controller
     catch(:redirect){ double_redirection }
     'bar'
   end
+
+  def absolute_uri_redirect
+    redirect 'http://localhost:7007/noop'
+  end
 end
 
 describe "RedirectHelper" do
@@ -66,6 +70,12 @@ describe "RedirectHelper" do
       get('/redirect_referer_action').should == 'TCRedirectHelperController'
       get('/noop').should == 'noop'
       get('/redirect_referer_action').should == 'noop'
+    end
+  end
+
+  it "should work with absolute uris" do
+    b.story do
+      b.get('/absolute_uri_redirect').should == 'noop'
     end
   end
 end
