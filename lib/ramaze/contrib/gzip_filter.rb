@@ -7,7 +7,7 @@
 # in start.rb:
 #
 # require 'path/to/gzip-filter'
-# Ramaze::Dispatcher::Action::FILTER.push Ramaze::Filter::Gzip
+# Ramaze::Dispatcher::Action::FILTER << Ramaze::Filter::Gzip
 
 require 'zlib'
 

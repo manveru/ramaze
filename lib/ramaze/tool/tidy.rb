@@ -5,7 +5,9 @@ module Ramaze
   module Tool
 
     # This is a simple tool to tidy up your html-output
-    # in general this is just used by setting Global.tidy = true
+    #
+    # Usage:
+    #   Ramaze::Dispatcher::Action::FILTER << Ramaze::Tool::Tidy
 
     module Tidy
 
@@ -33,11 +35,6 @@ module Ramaze
       class << self
 
         # dirty html in, tidy html out
-        # To activate Tidy for everything outgoing (given that it is of
-        # Content-Type text/html) set
-        #   Global.tidy = true
-        # there is almost no speed-tradeoff but makes debugging a much
-        # nicer experience ;)
         #
         # Example:
         #
