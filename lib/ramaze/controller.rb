@@ -118,7 +118,7 @@ module Ramaze
       #  the layout-action where @content may or may not be used, returning
       #  whatever the layout returns.
 
-      def layout(meth_or_hash, &block)
+      def layout(meth_or_hash)
         if meth_or_hash.respond_to?(:to_hash)
           meth_or_hash.each do |layout_name, *actions|
             layout_name = R(self, layout_name) if layout_name.to_s !~ /\A\//

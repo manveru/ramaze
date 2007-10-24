@@ -66,7 +66,7 @@ module Ramaze
       content = engine.transform(self)
       ap = after_process
 
-      if tlayout = layout
+      if !path.nil? and tlayout = layout
         instance.instance_variable_set("@content", content)
         content = tlayout.render
 
