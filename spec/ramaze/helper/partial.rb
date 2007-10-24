@@ -39,8 +39,12 @@ describe "PartialHelper" do
     get('/composed').body.should == 'From Action | From Partial there'
   end
 
+  it 'should render_template in a loop' do
+    get('/loop').body.gsub(/\s/,'').should == '12345'
+  end
+
   it 'should work recursively' do
     get('/recursive').body.gsub(/\s/, '').should ==
-      '<ul><li>1</li><ul><li>2</li><li>2</li></ul><li>1</li></ul>'
+      '<(1)<(2)<(3)<(4)(4)>(4)>(3)>(2)>'
   end
 end
