@@ -55,11 +55,11 @@ module Ezamar
       start_heredoc, end_heredoc = "\n<<#{start_heredoc}\n", "\n#{start_heredoc}\n"
       bufadd = "_out_ << "
 
-      temp.gsub!(/<%\s+(.*?)\s+%>/m,
+      temp.gsub!(/<%(?!=)\s*(.*?)\s*%>/m,
             "#{end_heredoc} \\1; #{bufadd} #{start_heredoc}")
       temp.gsub!(/<\?r\s+(.*?)\s+\?>/m,
             "#{end_heredoc} \\1; #{bufadd} #{start_heredoc}")
-      temp.gsub!(/<%=\s+(.*?)\s+%>/m,
+      temp.gsub!(/<%=\s*(.*?)\s*%>/m,
             "#{end_heredoc} #{bufadd} (\\1); #{bufadd} #{start_heredoc}")
 
       @compiled = "_out_ = ''
