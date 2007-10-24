@@ -14,4 +14,7 @@ describe "String#snake_case" do
     'Camel_Case'.snake_case.should == 'camel__case'
   end
 
+  it 'should group uppercase words together' do
+    'CSSController'.snake_case.should == 'css_controller'
+  end
 end

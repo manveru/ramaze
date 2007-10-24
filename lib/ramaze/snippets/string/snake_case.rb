@@ -10,6 +10,6 @@ class String
   #   'FooBar'.snake_case # => 'foo_bar'
 
   def snake_case
-    gsub(/\B[A-Z]/, '_\&').downcase.gsub(' ', '_')
+    gsub(/\B[A-Z][^A-Z]/, '_\&').downcase.gsub(' ', '_')
   end
 end
