@@ -6,7 +6,7 @@ require 'nagoro'
 module Ramaze
   module Template
 
-    # Is responsible for compiling a template using the Ezamar templating engine.
+    # Is responsible for compiling a template using the Nagoro templating engine.
 
     class Nagoro < Template
 
@@ -42,7 +42,7 @@ module Ramaze
         end
 
         # Compile a template, applying all transformations from the pipeline
-        # and returning an instance of ::Ezamar::Template
+        # and returning an instance of ::Nagoro::Template
 
         def compile(action, template)
           TEMPLATE.render(template)
