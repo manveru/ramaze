@@ -44,7 +44,6 @@ describe "PartialHelper" do
   end
 
   it 'should work recursively' do
-    get('/recursive').body.gsub(/\s/, '').should ==
-      '<(1)<(2)<(3)<(4)(4)>(4)>(3)>(2)>'
+    get('/recursive').body.gsub(/\s/,'').should == '{1{2{3{44}4}3}2}'
   end
 end
