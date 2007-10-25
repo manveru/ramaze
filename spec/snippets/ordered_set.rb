@@ -12,29 +12,45 @@ describe 'OrderedSet' do
     os.should == [1,2,3]
   end
 
-  it 'should remove duplicates added' do
+  it 'should not duplicate entries' do
     os << 4
     os.should == [1,2,3,4]
 
-    os << 1
+    os << 4
     os.should == [1,2,3,4]
+  end
 
+  it 'should append with push and prepend with unshift' do
     os.push 1
-    os.should == [1,2,3,4]
+    os.should == [2,3,4,1]
 
     os.unshift 1
     os.should == [1,2,3,4]
 
-    os.unshift 3
-    os.should == [3,1,2,4]
+    os.push [1,2]
+    os.should == [1,2,3,4,[1,2]]
 
-    os.unshift 5
-    os.should == [5,3,1,2,4]
+    os.unshift [1,2]
+    os.should == [[1,2],1,2,3,4]
+  end
 
-    os.delete 4
-    os.should == [5,3,1,2]
+  it 'should support Array#[]=' do
+    os = OrderedSet.new(1)
+    os.should == [1]
 
     os[0] = 1
-    os.should == [1,3,2]
+    os.should == [1]
+
+    os[1,0] = [3,4,5,1]
+    os.should == [3,4,5,1]
+
+    os[0,0] = [1,2]
+    os.should == [1,2,3,4,5]
+
+    os[5..5] = [7,8,1,2]
+    os.should == [3,4,5,7,8,1,2]
+
+    os[1..2] = 3
+    os.should == [3,7,8,1,2]
   end
 end
