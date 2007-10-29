@@ -74,7 +74,7 @@ module Ramaze
     # overwrites the default Action hook and runs the neccesary blocks in its
     # scope.
     def before_process
-      return unless aspects = controller.ancestral_trait[:aspects]
+      return unless path and aspects = controller.ancestral_trait[:aspects]
       [ aspects[:before][name], aspects[:before][:all] ].compact.map do |block|
         instance.instance_eval(&block) if block
       end
@@ -83,7 +83,7 @@ module Ramaze
     # overwrites the default Action hook and runs the neccesary blocks in its
     # scope.
     def after_process
-      return unless aspects = controller.ancestral_trait[:aspects]
+      return unless path and aspects = controller.ancestral_trait[:aspects]
       [ aspects[:after][name], aspects[:after][:all] ].compact.map do |block|
         instance.instance_eval(&block) if block
       end

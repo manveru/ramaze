@@ -40,7 +40,7 @@ module Ramaze
 
       global_epath = Global.public_root/extended_path
       FileUtils.mkdir_p(File.dirname(global_epath))
-      File.open( global_epath, 'w+'){|fp| fp.print(rendered) }
+      File.open(global_epath, 'w+') {|fp| fp.print(rendered) }
 
       rendered
     end
@@ -62,18 +62,19 @@ module Ramaze
     # Layout will be found and rendered in this step after self was rendered.
 
     def uncached_render
-      bp = before_process
-      content = engine.transform(self)
-      ap = after_process
+      content = [before_process,
+                 engine.transform(self),
+                 after_process].join
 
-      if !path.nil? and tlayout = layout
+      if path and tlayout = layout
         instance.instance_variable_set("@content", content)
         content = tlayout.render
 
         # restore Action.current after render above
         Thread.current[:action] = self
       end
-      [bp, content, ap].join
+
+      content
     end
 
     # Determine whether or not we have a layout to process and sets it up
@@ -97,6 +98,7 @@ module Ramaze
         layout_action.binding = binding
         layout_action.controller = controller
         layout_action.instance = instance
+        layout_action.path = nil
         layout_action
       end
     end

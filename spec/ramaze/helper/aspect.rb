@@ -23,7 +23,7 @@ end
 class TCAspectAllController < Ramaze::Controller
   map '/all'
 
-  helper :aspect
+  helper :aspect, :partial
   template_root __DIR__/:template
 
   def test_all_first() 'first' end
@@ -33,6 +33,10 @@ class TCAspectAllController < Ramaze::Controller
   after_all{ '</pre>' }
 
   def test_all_after() 'after' end
+
+  def layout() '<div>#@content</div>' end
+  template :loop_with_layout, :loop
+  layout :layout => [:loop_with_layout]
 end
 
 describe "AspectHelper" do
@@ -69,5 +73,13 @@ describe "AspectHelper" do
 
   it 'should before_all and after_all for all defined actions' do
     get('/all/test_all_after').body.should == '<pre>after</pre>'
+  end
+
+  it 'should not apply aspects to render_template' do
+    get('/all/loop').body.gsub(/\s/,'').should == '<pre>12345</pre>'
+  end
+
+  it 'should not apply aspects to layouts' do
+    get('/all/loop_with_layout').body.gsub(/\s/,'').should == '<div><pre>12345</pre></div>'
   end
 end
