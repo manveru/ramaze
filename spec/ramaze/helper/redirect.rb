@@ -36,8 +36,17 @@ class TCRedirectHelperController < Ramaze::Controller
     'bar'
   end
 
+  def redirect_method
+    redirect Rs(:noop)
+  end
+
   def absolute_uri_redirect
     redirect 'http://localhost:7007/noop'
+  end
+
+  def loop
+    respond 'no loop'
+    'loop'
   end
 end
 
@@ -73,9 +82,21 @@ describe "RedirectHelper" do
     end
   end
 
+  it "should work with R()" do
+    b.story do
+      b.get('/redirect_method').should == 'noop'
+    end
+  end
+
   it "should work with absolute uris" do
     b.story do
       b.get('/absolute_uri_redirect').should == 'noop'
+    end
+  end
+
+  it 'should allow respond() that ignores return values and templates' do
+    b.story do
+      b.get('/loop').should == 'no loop'
     end
   end
 end

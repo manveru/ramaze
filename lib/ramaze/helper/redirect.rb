@@ -24,6 +24,12 @@ module Ramaze
 
     private
 
+    # render to the browser directly, ignoring any templates
+    def respond *args
+      response.build(*args)
+      throw :respond
+    end
+
     # Usage:
     #   redirect Rs()
     #   redirect R(MainController)
