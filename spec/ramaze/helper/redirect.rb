@@ -48,6 +48,10 @@ class TCRedirectHelperController < Ramaze::Controller
     respond 'no loop'
     'loop'
   end
+
+  def respond_with_status
+    respond 'not found', 404
+  end
 end
 
 describe "RedirectHelper" do
@@ -75,7 +79,7 @@ describe "RedirectHelper" do
 
   it "should redirect to referer" do
     b.story do
-      b.get('/').should == "TCRedirectHelperController"
+      get('/').should == "TCRedirectHelperController"
       get('/redirect_referer_action').should == 'TCRedirectHelperController'
       get('/noop').should == 'noop'
       get('/redirect_referer_action').should == 'noop'
@@ -83,20 +87,17 @@ describe "RedirectHelper" do
   end
 
   it "should work with R()" do
-    b.story do
-      b.get('/redirect_method').should == 'noop'
-    end
+    b.get('/redirect_method').should == 'noop'
   end
 
   it "should work with absolute uris" do
-    b.story do
-      b.get('/absolute_uri_redirect').should == 'noop'
-    end
+    b.get('/absolute_uri_redirect').should == 'noop'
   end
 
   it 'should allow respond() that ignores return values and templates' do
-    b.story do
-      b.get('/loop').should == 'no loop'
-    end
+    get('/loop').body.should == 'no loop'
+    page = get('/respond_with_status')
+    page.status.should == 404
+    page.body.should == 'not found'
   end
 end
