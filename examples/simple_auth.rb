@@ -1,5 +1,3 @@
-require 'base64'
-
 require 'rubygems'
 require 'ramaze'
 
@@ -7,7 +5,7 @@ class MainController < Ramaze::Controller
   LOGINS = {
    :username => 'password',
    :admin => 'secret'
-  }.map{|k,v| Base64.encode64("#{k}:#{v}").chomp} unless defined? LOGINS
+  }.map{|k,v| ["#{k}:#{v}"].pack('m').strip} unless defined? LOGINS
 
   helper :aspect
 
