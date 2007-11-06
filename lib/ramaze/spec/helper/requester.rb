@@ -10,7 +10,7 @@ module Requester
   def request method, url, hash = {}
     http = SimpleHttp.new(url2uri(url))
     if method == :get and not hash.empty?
-      http.uri.query = hash.inject([]){|s,(k,v)| s << "#{k}=#{v}"}.join('&')
+      http.uri.query = hash.map{|k,v| "#{k}=#{v}"}.join('&')
       hash = {}
     end
 
