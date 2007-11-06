@@ -5,7 +5,7 @@ require 'ramaze/spec/helper/minimal'
 require 'ramaze/spec/helper/mock_http'
 require 'ramaze/spec/helper/simple_http'
 require 'ramaze/spec/helper/requester'
-require 'ramaze/spec/helper/context'
+require 'ramaze/spec/helper/browser'
 
 Spec::Runner.configure do |config|
   config.include MockHTTP
