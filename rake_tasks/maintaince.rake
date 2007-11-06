@@ -199,7 +199,7 @@ end
 
 desc "Update /doc/AUTORS"
 task 'authors' do
-  changes = `darcs changes`
+  changes = `darcs changes --reverse`
   authors = []
   mapping = {}
   author_map = {
