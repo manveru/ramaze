@@ -158,9 +158,9 @@ class SpecFile
   end
 
   def long_summary
-    puts "[ #@name ]".center(80, '-'), "ExitStatus:".yellow
-    pp @status
-    puts "StdOut:".yellow, PP.pp(@stdout, '')
+    puts "[ #@name ]".center(80, '-')
+    puts "ExitStatus:".yellow, PP.pp(@status)
+    puts "StdOut:".yellow, @stdout
     puts "StdErr:".yellow, PP.pp(@stderr, '')
   end
 
