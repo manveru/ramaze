@@ -20,6 +20,9 @@ class TCRequestController < Ramaze::Controller
   end
 
   def put_inspect(file)
+    # referencing request.rack_params breaks this test
+    # request.params is hacked to return {} on PUT requests
+    request.params
     request.body.read.inspect
   end
 
@@ -66,7 +69,7 @@ describe "Request" do
   end
 
   describe "PUT" do
-    it "put a ressource" do
+    it "put a resource" do
       image = 'favicon.ico'
       image_path = File.join('spec', 'ramaze', 'public', image)
       address = "/put_inspect/#{image}"
@@ -79,7 +82,7 @@ describe "Request" do
   end
 
   describe "DELETE" do
-    it "delete a ressource" do
+    it "delete a resource" do
       delete('/is_delete').body.should == 'true'
     end
   end

@@ -69,6 +69,7 @@ module Ramaze
       #  end
 
       def params
+        return {} if put?
         return @ramaze_params if @ramaze_params
         @rack_params ||= rack_params
         @ramaze_params = {}
