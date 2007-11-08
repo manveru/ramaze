@@ -12,3 +12,11 @@ lib/ramaze/snippets/dictionary.rb
 lib/proto/js/jquery.js
   License: Dual licensed under MIT and GPL
   Author: John Resig
+
+lib/ramaze/spec/helper/simple_http.rb
+  License: GPL
+  Author: Tim Becker
+
+lib/ramaze/template/xslt.rb
+  License: Ruby
+  Author: Stephan Maka
