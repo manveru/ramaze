@@ -64,7 +64,7 @@ module Ramaze
         def log_error error
           error_message = error.message
 
-          if trait[:last_error] == error_message
+          if trait[:last_error] == error_message or error.is_a? Ramaze::Error::NoAction
             Inform.error(error_message)
           else
             trait[:last_error] = error_message
