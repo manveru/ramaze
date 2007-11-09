@@ -26,7 +26,9 @@ begin
     def get_args
       arg_node = deep_array_node(:args)
       args = arg_node.arg_nodes
-      lasgns = arg_node.deep_array_node(:block)[1..-1]
+      default_node = arg_node.deep_array_node(:block)
+      return args unless default_node
+      lasgns = default_node[1..-1]
       lasgns.each do |asgn|
         args.assoc(asgn[1]) << eval(RubyToRuby.new.process(asgn[2]))
       end
