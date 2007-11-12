@@ -60,15 +60,15 @@ module Ramaze
 
     # the key used for the cookie
 
-    SESSION_KEY = '_ramaze_session_id'
+    SESSION_KEY = '_ramaze_session_id' unless defined?(SESSION_KEY)
 
     # Holds counter for IPs
 
-    IP_COUNT = Hash.new{|h,k| h[k] = []}
+    IP_COUNT = Hash.new{|h,k| h[k] = Set.new} unless defined?(IP_COUNT)
 
     # Limit the number of sessions one IP is allowed to hold.
 
-    IP_COUNT_LIMIT = 1000
+    IP_COUNT_LIMIT = 1000 unless defined?(IP_COUNT_LIMIT)
 
     class << self
 
