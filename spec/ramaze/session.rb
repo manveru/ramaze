@@ -17,6 +17,14 @@ class TCSessionController < Ramaze::Controller
     session.merge! request.params
     index
   end
+
+  def test_set(n)
+    session[:n] = n
+  end
+
+  def test_result
+    session[:n]
+  end
 end
 
 describe "Session" do
@@ -66,6 +74,14 @@ describe "Session" do
 
       it "snooping a bit around" do
         b.cookie.split('=').size.should == 3
+      end
+
+      it 'should not hit IP_COUNT_LIMIT for the same session/ip' do
+        Ramaze::Session::const_set(:IP_COUNT_LIMIT, 5)
+        (0..Ramaze::Session::IP_COUNT_LIMIT * 2).each do |n|
+          b.get("/test_set/#{n}")
+          b.get("/test_result").to_i.should == n
+        end
       end
     end
   end
