@@ -5,13 +5,10 @@ module Ramaze
   module FormattingHelper
     private
 
-    # stolen and adapted from PLEAC-ruby
-    def number_format n, delimiter = ','
-      n.to_s =~ /([^\.]*)(\..*)?/
-      int, dec = $1.reverse, $2 ? $2 : ''
-      dec.sub!('.', ',') if delimiter == '.'
-      while int.gsub!(/(,|\.|^)(\d{3})(\d)/, "\\1\\2#{delimiter}\\3"); end
-      int.reverse + dec
+    def number_format(n, delimiter = ',')
+      delim_l, delim_r = delimiter == ',' ? %w[, .] : %w[. ,]
+      h, r = n.to_s.split('.')
+      [h.reverse.scan(/\d{1,3}/).join(delim_l).reverse, r].compact.join(delim_r)
     end
 
     # stolen and adapted from rails

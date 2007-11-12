@@ -8,6 +8,8 @@ describe 'FormattingHelper' do
     number_format(2_123_456).should == '2,123,456'
     number_format(1234.567).should == '1,234.567'
     number_format(123456.789, '.').should == '123.456,789'
+    number_format(123456.789123, '.').should == '123.456,789123'
+    number_format(132123456.789123, '.').should == '132.123.456,789123'
   end
 
   it 'should return difference in time as a string' do
