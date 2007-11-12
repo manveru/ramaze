@@ -1,10 +1,16 @@
 desc "add copyright to all .rb files in the distribution"
 task 'add-copyright' do
+  ignore = File.readlines('doc/LEGAL').
+    select{|line| line.strip!; File.exist?(line)}.
+    map{|file| File.expand_path(file)}
+
   puts "adding copyright to files that don't have it currently"
   puts COPYRIGHT
   puts
+
   Dir['{lib,test}/**/*{.rb}'].each do |file|
-    next if file =~ /_darcs/
+    file = File.expand_path(file)
+    next if file =~ /_darcs/ or ignore.include? file
     lines = File.readlines(file).map{|l| l.chomp}
     unless lines.first(COPYRIGHT.size) == COPYRIGHT
       puts "#{file} seems to need attention, first 4 lines:"
