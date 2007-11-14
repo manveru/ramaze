@@ -13,6 +13,19 @@ module Ramaze
       Cache.add(:value_cache) unless Cache::CACHES.has_key?(:value_cache)
     end
 
+    # Example:
+    #
+    #   class FooController < Ramaze::Controller
+    #     helper :cache
+    #     cache :index, :map_of_the_internet
+    #   end
+
+    def cache *args
+      args.each do |arg|
+        actions_cached << arg unless arg.nil?
+      end
+    end
+
     private
 
     # use this to cache values in your controller and templates,

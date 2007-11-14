@@ -5,7 +5,7 @@ include Ramaze
 class MainController < Controller
   map '/'
   helper :cache
-  trait :actions_cached => [:index]
+  cache :index
 
   def index
 %[

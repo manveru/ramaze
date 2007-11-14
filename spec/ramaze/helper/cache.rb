@@ -4,10 +4,10 @@
 require 'spec/helper'
 
 class TCCacheHelperController < Ramaze::Controller
-  map '/'
-  helper :cache
+  map :/
 
-  trait :actions_cached => [:cached_action]
+  helper :cache
+  cache :cached_action
 
   def index
     self.class.name

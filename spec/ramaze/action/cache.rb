@@ -8,7 +8,7 @@ class TCActionCache < Ramaze::Controller
     rand
   end
 
-  trait :actions_cached => [:index]
+  cache :index
 end
 
 describe 'Action rendering' do

@@ -11,7 +11,7 @@ class MainController < Ramaze::Controller
   include Remarkably::Common
   helper :partial, :inform, :cache
   
-  trait :actions_cached => [:filetree]
+  cache :filetree
   engine :None
   
   def source
