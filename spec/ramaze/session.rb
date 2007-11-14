@@ -77,7 +77,10 @@ describe "Session" do
       end
 
       it 'should not hit IP_COUNT_LIMIT for the same session/ip' do
-        Ramaze::Session::const_set(:IP_COUNT_LIMIT, 5)
+        class Ramaze::Session
+          remove_const :IP_COUNT_LIMIT
+          const_set(:IP_COUNT_LIMIT, 2)
+        end
         (0..Ramaze::Session::IP_COUNT_LIMIT * 2).each do |n|
           b.get("/test_set/#{n}")
           b.get("/test_result").to_i.should == n
