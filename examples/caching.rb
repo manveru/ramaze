@@ -1,9 +1,8 @@
 require 'ramaze'
 
-include Ramaze
+class MainController < Ramaze::Controller
+  map :/
 
-class MainController < Controller
-  map '/'
   helper :cache
   cache :index
 
@@ -23,7 +22,7 @@ class MainController < Controller
   end
 
   def invalidate
-    action_cache.clear
+    action_cache.delete '/index'
     redirect :/
   end
 end
