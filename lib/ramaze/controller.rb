@@ -42,7 +42,7 @@ module Ramaze
       # Global.controllers and a new trait :actions_cached is set on it.
 
       def inherited controller
-        controller.trait :actions_cached => Set.new
+        controller.trait :actions_cached => {}
         controller.trait :layout => {:all => nil, :deny => Set.new}
         Global.controllers << controller
         if map = controller.mapping

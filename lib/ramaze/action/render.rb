@@ -49,14 +49,26 @@ module Ramaze
 
     def cached_render_memory
       action_cache = Cache.actions
+      full_path = self.controller.mapping/extended_path
 
-      if out = action_cache[relaxed_hash]
-        Inform.debug("Using Cached version")
-        return out
+      # backwards compat with trait :actions_cached => []
+      cache_opts = actions_cached.is_a?(Hash) ? actions_cached[path.to_sym] : {}
+
+      if cache_opts[:key]
+        action_cache[full_path] ||= {}
+        cache = action_cache[full_path][ cache_opts[:key].call ] ||= {}
+      else
+        cache = action_cache[full_path] ||= {}
       end
 
-      Inform.debug("Compiling Action")
-      action_cache[relaxed_hash] = uncached_render
+      if cache.size > 0 and (cache_opts[:ttl].nil? or cache[:time] + cache_opts[:ttl] > Time.now)
+        Inform.debug("Using Cached version")
+      else
+        Inform.debug("Compiling Action")
+        cache.replace({ :time => Time.now, :content => uncached_render })
+      end
+
+      cache[:content]
     end
 
     # The 'normal' rendering process. Passes the Action instance to
@@ -105,16 +117,19 @@ module Ramaze
       end
     end
 
+    def actions_cached
+      controller.trait[:actions_cached]
+    end
+
     # return true if the action is flagged for caching. Called by
     # Action#render.
 
     def should_cache?
       ctrait = controller.trait
-      actions_cached = ctrait[:actions_cached]
 
       [ Global.cache_all,
         ctrait[:cache_all],
-        actions_cached.map{|k| k.to_s}.include?(method),
+        actions_cached.map{|k,v| k.to_s}.include?(method),
       ].any?
     end
   end

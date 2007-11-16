@@ -19,10 +19,33 @@ module Ramaze
     #     helper :cache
     #     cache :index, :map_of_the_internet
     #   end
+    #
+    # cache supports these options
+    #   [+:ttl+]  time-to-live in seconds
+    #   [+:key+]  proc that returns a key to store cache with
+    #
+    # Example:
+    #
+    #   class CacheController < Ramaze::Controller
+    #     helper :cache
+    #
+    #     # for each distinct value of request['name']
+    #     # cache rendered output of name action for 60 seconds
+    #     cache :name, :key => lambda{ request['name'] }, :ttl => 60
+    #
+    #     def name
+    #       "hi #{request['name']}"
+    #     end
+    #   end
 
     def cache *args
+      if args.last.is_a? Hash
+        opts = args.pop
+      end
+      opts ||= {}
+
       args.each do |arg|
-        actions_cached << arg unless arg.nil?
+        actions_cached[arg] = opts unless arg.nil?
       end
     end
 
@@ -35,21 +58,63 @@ module Ramaze
       Cache.value_cache
     end
 
-    # holds the values returned on the first call to a cached action.
-    # To uncache, simply delete.
+    # action_cache holds rendered output of actions for which caching is enabled.
     #
-    # Please note that the action is cached by a combination of
-    # [action, parameter].inspect - so it is a bit awkward to use.
+    # For simple cases:
     #
-    # Suggestions welcome.
+    #   class Controller < Ramaze::Controller
+    #     map '/path/to'
+    #     helper :cache
+    #     cache :action
     #
-    # Example:
+    #     def action with, params
+    #       'rendered output'
+    #     end
+    #   end
     #
-    #   action_cache.delete '["index", []]'
+    #   { '/path/to/action/with/params' => {
+    #       :time => Time.at(rendering),
+    #       :content => 'rendered output'
+    #     }
+    #   }
     #
-    # or by delete_if
+    # If an additional key is provided:
     #
-    #   action_cache.delete_if{|key, value| key =~ /"index",/}
+    #   class Controller < Ramaze::Controller
+    #     map '/path/to'
+    #     helper :cache
+    #     cache :action, :key => lambda{ 'value of key proc' }
+    #
+    #     def action
+    #       'output'
+    #     end
+    #   end
+    #
+    #   { '/path/to/action' => {
+    #       'value of key proc' => {
+    #         :time => Time.at(rendering),
+    #         :content => 'output'
+    #       }
+    #     }
+    #   }
+    #
+    # Caches can be invalidated after a certain amount of time
+    # by supplying a :ttl option (in seconds)
+    #
+    #   class Controller < Ramaze::Controller
+    #     helper :cache
+    #     cache :index, :ttl => 60
+    #
+    #     def index
+    #       Time.now.to_s
+    #     end
+    #   end
+    #
+    # or by deleting values from action_cache directly
+    #
+    #   action_cache.clear
+    #   action_cache.delete '/index'
+    #   action_cache.delete '/path/to/action'
 
     def action_cache
       Cache.actions
