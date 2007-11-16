@@ -24,15 +24,15 @@ module Ramaze
 
         def open_file(path)
           file = resolve_path(path)
-          if ::File.file?(file)
-            response['Content-Type'] = Tool::MIME.type_for(file)
+          if ::File.file?(file) or ::File.file?(file=file/'index')
+            response['Content-Type'] = Tool::MIME.type_for(file) unless ::File.extname(file).empty?
             log(file)
             ::File.open(file, 'rb')
           end
         end
 
         def resolve_path(path)
-          file = ::File.join(Global.public_root, path =~ /\/$/ ? path + 'index' : path)
+          ::File.join(Global.public_root, path)
         end
 
         def log(file)

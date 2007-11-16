@@ -22,6 +22,8 @@ module Ramaze
       end
     end
 
+    private
+
     # Return the cached output of the action if it exists, otherwise do a
     # normal Action#uncached_render and store the output in the Cache.actions.
     # Action#cached_render is only called if Action#should_cache? returns
@@ -38,7 +40,7 @@ module Ramaze
     def cached_render_file
       rendered = uncached_render
 
-      global_epath = Global.public_root/extended_path
+      global_epath = Global.public_root/self.controller.mapping/extended_path
       FileUtils.mkdir_p(File.dirname(global_epath))
       File.open(global_epath, 'w+') {|fp| fp.print(rendered) }
 
