@@ -1,6 +1,5 @@
 require 'spec/helper'
-
-require 'examples/caching.rb'
+require 'examples/caching'
 
 describe 'Caching' do
   ramaze
