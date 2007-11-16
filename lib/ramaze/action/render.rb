@@ -63,9 +63,10 @@ module Ramaze
 
       if cache.size > 0 and (cache_opts[:ttl].nil? or cache[:time] + cache_opts[:ttl] > Time.now)
         Inform.debug("Using Cached version")
+        Response.current['Content-Type'] = cache[:type]
       else
         Inform.debug("Compiling Action")
-        cache.replace({ :time => Time.now, :content => uncached_render })
+        cache.replace({ :time => Time.now, :content => uncached_render, :type => Response.current['Content-Type'] })
       end
 
       cache[:content]

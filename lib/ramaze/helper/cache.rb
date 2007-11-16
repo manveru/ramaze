@@ -45,7 +45,7 @@ module Ramaze
       opts ||= {}
 
       args.each do |arg|
-        actions_cached[arg] = opts unless arg.nil?
+        actions_cached[arg.to_sym] = opts unless arg.nil?
       end
     end
 
@@ -74,6 +74,7 @@ module Ramaze
     #
     #   { '/path/to/action/with/params' => {
     #       :time => Time.at(rendering),
+    #       :type => 'content/type',
     #       :content => 'rendered output'
     #     }
     #   }
@@ -93,6 +94,7 @@ module Ramaze
     #   { '/path/to/action' => {
     #       'value of key proc' => {
     #         :time => Time.at(rendering),
+    #         :type => 'content/type',
     #         :content => 'output'
     #       }
     #     }

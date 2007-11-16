@@ -148,6 +148,12 @@ module Ramaze
     def after_safe_load_succeed(file)
       Cache.compiled.clear
       Cache.resolved.clear
+      SourceReloadHooks.after_safe_load(file)
+    end
+
+    # Overwrite to add custom hook in addition to default Cache cleaning
+
+    def after_safe_load(file)
     end
 
     # Overwrite to add actions after a file is Kernel::load-ed unsuccessfully,
