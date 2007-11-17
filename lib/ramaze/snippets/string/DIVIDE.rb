@@ -5,7 +5,7 @@
 
 class String
 
-  # A convinient way to do File.join
+  # A convenient way to do File.join
   #
   # Example:
   #   'a' / 'b'                      # -> 'a/b'
