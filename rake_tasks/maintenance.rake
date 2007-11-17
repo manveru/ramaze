@@ -203,11 +203,7 @@ task 'tutorial' => ['tutorial2html'] do
   end
 end
 
-desc "Update /doc/AUTORS"
-task 'authors' do
-  changes = `darcs changes --reverse`
-  authors = []
-  mapping = {}
+def authors
   author_map = {
     'm.fellinger@gmail.com'                   => 'Michael Fellinger',
     'manveru@weez-int.com'                    => 'Michael Fellinger',
@@ -218,25 +214,30 @@ task 'authors' do
     'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
     'stephan@spaceboyz.net'                   => 'Stephan Maka',
   }
-  changes.split("\n").grep(/^\w/).each do |line|
-    splat  = line.split
-    author = splat[6..-1]
-    email  = author.pop
-    email.gsub!(/<(.*?)>/, '\1')
+
+  mapping = {}
+  `darcs changes`.split("\n").grep(/^\w/).each do |line|
+    author = line.split[6..-1]
+    email  = author.pop.gsub(/<(.*?)>/, '\1')
     name   = author.join(' ')
     name   = author_map[email] if name.empty?
-    mapping[name] = email
+    mapping[name] ||= { :email => email, :patches => 0 }
+    mapping[name][:patches] += 1
   end
-  pp mapping
 
-  max = mapping.map{|k,v| k.size}.max
+  max = mapping.map{|k,v| k.length}.max
+  mapping.inject({}) {|h,(k,v)| h[k.ljust(max)] = v; h}
+end
 
+desc "Update /doc/AUTHORS"
+task 'authors' do
   File.open('doc/AUTHORS', 'w+') do |fp|
-    fp.puts("Following persons (in alphabetical order) have contributed to Ramaze:")
+    fp.puts "Following persons (in alphabetical order) have contributed to Ramaze:"
     fp.puts
-    mapping.sort_by{|k,v| k}.each do |name, email|
-      fp.puts("#{name.ljust(max)} - #{email}")
+    authors.sort_by{|k,v| k}.each do |name, author|
+      fp.puts "   #{name}  -  #{author[:email]}"
     end
+    fp.puts
   end
 end
 

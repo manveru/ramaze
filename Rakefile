@@ -14,7 +14,7 @@ $:.unshift File.join(File.dirname(__FILE__), "lib")
 require 'ramaze/version'
 load 'rake_tasks/conf.rake'
 load 'rake_tasks/gem.rake'
-load 'rake_tasks/maintaince.rake'
+load 'rake_tasks/maintenance.rake'
 load 'rake_tasks/spec.rake'
 
 task :default => ['test:all']
@@ -121,16 +121,14 @@ end
 desc "show how many patches we made so far"
 task :patchsize do
   size = `darcs changes`.split("\n").reject{|l| l =~ /^\s/ or l.empty?}.size
-  puts "currently we got #{size} patches"
+  puts "currently we have #{size} patches"
   puts "shall i now play some Death-Metal for you?" if size == 666
 end
 
 desc "show who made how many patches"
 task :patchstat do
-  patches = `darcs changes`.split("\n").grep(/^\S/).map{|e| e.split.last}
-  committs = patches.inject(Hash.new(0)){|s,v| s[v] += 1; s}
-  committs.sort.each do |committer, patches|
-    puts "#{committer.ljust(25)}: #{patches}"
+  authors.sort_by{|k,v| -v[:patches]}.each do |name, author|
+    puts "#{name}  #{author[:patches]}"
   end
 end
 
