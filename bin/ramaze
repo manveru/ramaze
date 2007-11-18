@@ -123,6 +123,7 @@ else
   begin
     puts "running `#{runner}'"
     require runner.to_s
+    options[:runner] = runner
   rescue LoadError => ex
     puts ex
     puts ex.backtrace
