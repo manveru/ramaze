@@ -64,7 +64,7 @@ module Ramaze
 
     # Holds counter for IPs
 
-    IP_COUNT = Hash.new{|h,k| h[k] = Set.new} unless defined?(IP_COUNT)
+    IP_COUNT = Hash.new{|h,k| h[k] = OrderedSet.new} unless defined?(IP_COUNT)
 
     # Limit the number of sessions one IP is allowed to hold.
 

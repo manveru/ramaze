@@ -83,7 +83,7 @@ describe "Session" do
         end
         (0..Ramaze::Session::IP_COUNT_LIMIT * 2).each do |n|
           b.get("/test_set/#{n}")
-          b.get("/test_result").to_i.should == n
+          b.get("/test_result").should == n.to_s
         end
       end
     end
