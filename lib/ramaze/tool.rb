@@ -6,5 +6,4 @@ module Ramaze::Tool
   autoload :Localize, 'ramaze/tool/localize'
   autoload :Mime, 'ramaze/tool/mime'
   autoload :Record, 'ramaze/tool/record'
-  autoload :Tidy, 'ramaze/tool/tidy'
 end

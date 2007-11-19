@@ -13,7 +13,6 @@ module Ramaze
 
       FILTER = OrderedSet.new(
         # Ramaze::Tool::Localize,
-        # Ramaze::Tool::Tidy
       ) unless defined?(FILTER)
 
       class << self
