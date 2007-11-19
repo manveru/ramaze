@@ -1,46 +1,42 @@
-This time we are proud to announce Version 0.1.4 of the Ramaze framework, a
+This time we are proud to announce Version 0.1.5 of the Ramaze framework, a
 light and modular open source web framework.
 
-Since the last release hundreds of lines of documentation and specs have been
-written. Ramaze was ported to JRuby and received lots of special love regarding
-bugfixes and polishing the overall API.
+This release features a lot of work directly from our community and i am really
+greatful for everybody who helped in testing, patching and contributing new
+exciting features.
 
-An extensive set of specs is covering almost every detail of the implementation
-and usage. It is developed by several people and already in production-use at
-some companies.
+An extensive set of specs and docs is covering almost every detail of the
+implementation and usage. It is under development by a growing community and in
+production-use at companies.
 
 Special (alphabetic) thanks go to:
 
-Aman 'tmm1' Gupta         - specs, Sass support
-Fabian Buch               - porting to JRuby
-Gabriele 'riffraff' Renzi - specs, documentation, cleanup
-Jonathan 'Kashia' Buch    - documentation
-Riku Räisänen             - extensive testing
+Aman 'tmm1' Gupta      - tons of patches, specs and support
+Jonathan 'Kashia' Buch - patches for localization
+Riku Räisänen          - as usual, extensive testing
+Pistos                 - submitted his first patch
+Stephan Maka           - XSLT templating, implementation, specs and examples
 
 
 Home page: http://ramaze.rubyforge.org
 IRC: #ramaze on irc.freenode.net
 
 
-Short summary of changes from 0.1.3 to 0.1.4:
+Short summary of changes from 0.1.4 to 0.1.5:
 
-  - Even better error handling.
+  - Contrib facility, for simple experimental user-contributions
 
-  - Many bugs fixed.
+  - Routes
 
-  - Support for Sass CSS templates.
+  - As always, lots of bugfixes
 
-  - Layouts for actions.
+  - complete XSLT templating system, usage and specs
 
-  - Close to 100% documented methods/classes/methods.
+  - Improved localization filter
 
-  - Primitive filebased action-cache.
+  - Added gzip filter
 
-  - Runs on JRuby.
-
-  - Easier integration of ramazes spec-helpers for your own applications.
-
-  - Dirlisting functionality.
+  - Support for the new upcoming nagoro templating engine.
 
 
 A complete Changelog is available at http://manveru.net/ramaze/doc/CHANGELOG
