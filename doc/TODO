@@ -10,15 +10,20 @@ position specified in the list.
 
 /home/manveru/prog/projects/ramaze/spec/ramaze/action/basics.rb
 
-/home/manveru/prog/projects/ramaze/lib/ramaze/action.rb
-
 /home/manveru/prog/projects/ramaze/lib/ramaze/template/ezamar/engine.rb
 - provide C version or maybe use erbuis
+
+/home/manveru/prog/projects/ramaze/lib/ramaze/template/xslt.rb
+  * Error handling
+  * Maybe prevent extFunction to be called by HTTP
 
 /home/manveru/prog/projects/ramaze/lib/ramaze/helper/identity.rb
 - maybe using StackHelper, but this is a really minimal overlap?
 
 /home/manveru/prog/projects/ramaze/spec/snippets/ramaze/caller_info.rb
+
+/home/manveru/prog/projects/ramaze/lib/ramaze/snippets/dictionary.rb
+  ++
 
 /home/manveru/prog/projects/ramaze/lib/ramaze/helper/redirect.rb
 - maybe some more options, like a delay

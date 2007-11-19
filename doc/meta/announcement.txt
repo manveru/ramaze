@@ -1,4 +1,4 @@
-This time we are proud to announce Version 0.1.5 of the Ramaze framework, a
+This time we are proud to announce Version 0.2.0 of the Ramaze framework, a
 light and modular open source web framework.
 
 This release features a lot of work directly from our community and i am really
@@ -22,7 +22,7 @@ Home page: http://ramaze.rubyforge.org
 IRC: #ramaze on irc.freenode.net
 
 
-Short summary of changes from 0.1.4 to 0.1.5:
+Short summary of changes from 0.1.4 to 0.2.0:
 
   - Contrib facility, for simple experimental user-contributions
 
@@ -37,6 +37,8 @@ Short summary of changes from 0.1.4 to 0.1.5:
   - Added gzip filter
 
   - Support for the new upcoming nagoro templating engine.
+
+  - Tool::Tidy is gone for good
 
 
 A complete Changelog is available at http://manveru.net/ramaze/doc/CHANGELOG
