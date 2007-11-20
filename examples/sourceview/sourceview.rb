@@ -4,16 +4,22 @@ require 'coderay'
 require 'ramaze'
 
 # where is the source
-RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'..')
+RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'..') unless defined? RAMAZE_SRC
+
+# delete cached filetree when source changes
+module Ramaze::SourceReloadHooks
+  module_function
+  def after_safe_load file
+    Ramaze::Cache.actions.delete '/filetree' if file =~ /^#{RAMAZE_SRC}/
+  end
+end
 
 class MainController < Ramaze::Controller
 
   include Remarkably::Common
   helper :partial, :inform, :cache
-  
-  cache :filetree
   engine :None
-  
+
   def source
     return if request['file'].nil? or request['file'] =~ /\.{2}/
 
@@ -23,7 +29,7 @@ class MainController < Ramaze::Controller
       CodeRay.scan_file(file).html(:line_numbers => :inline)
     end
   end
-  
+
   def filetree
     ul :class => 'filetree treeview' do
       Dir.chdir(RAMAZE_SRC) do
@@ -33,35 +39,29 @@ class MainController < Ramaze::Controller
       end
     end.to_s
   end
-  
-  define_method('coderay.css') do
-    response['Content-Type'] = 'text/css'
-    value_cache[:coderay] ||= CodeRay::Encoders[:html]::CSS.new.stylesheet
-  end
-  
+  cache :filetree
+
   private
 
   def dir_listing dir
     li do
       span dir, :class => 'folder'
       Dir.chdir(dir) do
-        if Dir['*'].any?
-          ul do
-            a '', :href => "##{File.expand_path('.').sub(RAMAZE_SRC,'')}"
-            Dir['*'].each do |d|
-              if FileTest.directory? d
-                dir_listing d
-              else
-                file = File.expand_path(d).sub(RAMAZE_SRC,'')
-                li do
-                  span :class => 'file', :name => file do
-                    a d, :href => "##{file}"
-                  end
+        ul do
+          a '', :href => "##{File.expand_path('.').sub(RAMAZE_SRC,'')}"
+          Dir['*'].sort.each do |d|
+            if FileTest.directory? d
+              dir_listing d
+            else
+              file = File.expand_path(d).sub(RAMAZE_SRC,'')
+              li do
+                span :class => 'file', :name => file do
+                  a d, :href => "##{file}"
                 end
               end
             end
           end
-        end
+        end if Dir['*'].any?
       end
     end
   end
@@ -71,4 +71,4 @@ end
 Ramaze.start :adapter      => :mongrel,
              :load_engines => :Haml,
              :boring       => /(js|gif|css)$/,
-             :port         => 3000
+             :port         => 9950

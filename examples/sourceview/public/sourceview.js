@@ -1,7 +1,7 @@
-$(document).ready(function(){
+$(function(){
   $('ul.filetree').treeview({
     persist: 'location',
-		animated: 'fast',
+    animated: 'fast',
     unique: true,
     collapsed: true
   });
