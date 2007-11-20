@@ -37,8 +37,12 @@ module Ramaze
     #       "hi #{request['name']}"
     #     end
     #   end
+    #
+    # cache acts as a wrapper for value_cache if no args are given
 
     def cache *args
+      return value_cache if args.size == 0
+
       if args.last.is_a? Hash
         opts = args.pop
       end

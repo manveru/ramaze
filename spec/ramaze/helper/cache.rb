@@ -17,8 +17,13 @@ class TCCacheHelperController < Ramaze::Controller
     value_cache[:time] ||= random
   end
 
-  def uncache_value
+  def alt_cached_value
+    cache[:rand] ||= random
+  end
+
+  def uncache_values
     value_cache.delete :time
+    cache.delete :rand
   end
 
   def cached_action
@@ -96,8 +101,10 @@ describe "CacheHelper" do
     end
 
     3.times do
-      lambda{ req('/uncache_value') }.should change{ req('/cached_value') }
+      lambda{ req('/uncache_values') }.should change{ req('/cached_value') }
     end
+
+    lambda{ req('/uncache_values') }.should change{ req('/alt_cached_value') }
   end
 
   it "cached action" do
