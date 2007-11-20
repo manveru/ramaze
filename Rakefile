@@ -70,7 +70,9 @@ end
 desc "generate improved allison-rdoc"
 task :allison => :clean do
   opts = RDOC_OPTS
-  opts << %w[--template '/home/manveru/prog/projects/allison/allison.rb']
+  path = `allison --path`.strip
+  raise LoadError, "Please `gem install allison` first" if $?.exitstatus == 127
+  opts << %W[--template '#{path}']
   sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
 end
 
