@@ -29,7 +29,7 @@ module Ramaze
       if check_auth(username, password)
         session[:logged_in] = true
         session[:username] = username
-        inside_stack? ? answer : redirect( R(self) )
+        inside_stack? ? answer : redirect_referrer
       else
         if AUTH_ELEMENT and AUTH_ELEMENT.to_s.split.any?
           open_element = "<#{AUTH_ELEMENT}>"
