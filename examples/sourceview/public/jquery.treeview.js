@@ -3,13 +3,13 @@
  * 
  * http://bassistance.de/jquery-plugins/jquery-plugin-treeview/
  *
- * Copyright (c) 2006 Jörn Zaefferer, Myles Angell
+ * Copyright (c) 2007 Jörn Zaefferer
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * Revision: $Id: jquery.treeview.js 3522 2007-10-03 08:39:11Z joern.zaefferer $
+ * Revision: $Id: jquery.treeview.js 3752 2007-10-28 02:53:07Z joern.zaefferer $
  *
  */
 
@@ -64,7 +64,7 @@
 		},
 		heightHide: function(animated, callback) {
 			if (animated) {
-				this.animate({ height: "hide" }, animated, callback)
+				this.animate({ height: "hide" }, animated, callback);
 			} else {
 				this.hide();
 				if (callback)
@@ -73,7 +73,7 @@
 		},
 		prepareBranches: function(settings) {
 			// mark last tree items
-			this.filter(":last-child").addClass(CLASSES.last);
+			this.filter(":last-child:not(ul)").addClass(CLASSES.last);
 			// collapse whole tree, or only those marked as closed, anyway except those marked as open
 			this.filter((settings.collapsed ? "" : "." + CLASSES.closed) + ":not(." + CLASSES.open + ")").find(">ul").hide();
 			// return all items with sublists
@@ -98,7 +98,7 @@
 					
             // create hitarea
 			this.prepend("<div class=\"" + CLASSES.hitarea + "\"/>")
-				.find("div." + CLASSES.hitarea).click( toggler )
+				.find("div." + CLASSES.hitarea).click( toggler );
 		},
 		treeview: function(settings) {
 			
@@ -113,7 +113,7 @@
 				var callback = settings.toggle;
 				settings.toggle = function() {
 					return callback.apply($(this).parent()[0], arguments);
-				}
+				};
 			}
 		
 			// factory for treecontroller
@@ -128,7 +128,7 @@
 							return filter ? $(this).parent("." + filter).length : true;
 						}) );
 						return false;
-					}
+					};
 				}
 				// click on first element to collapse tree
 				$(":eq(0)", control).click( handler(CLASSES.collapsable) );

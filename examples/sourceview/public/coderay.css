@@ -1,7 +1,7 @@
 .CodeRay {
   background-color: #f8f8f8;
   border: 1px solid silver;
-  font-family: 'Courier New', 'Terminal', monospace;
+  font-family: monospace;
   color: #100;
 }
 .CodeRay pre { margin: 0px }
@@ -10,7 +10,7 @@ div.CodeRay { }
 
 span.CodeRay { white-space: pre; border: 0px; padding: 2px }
 
-table.CodeRay { border-collapse: collapse; width: 100%; padding: 2px }
+table.CodeRay { border-collapse: collapse; padding: 2px }
 table.CodeRay td { padding: 2px 4px; vertical-align: top }
 
 .CodeRay .line_numbers, .CodeRay .no {

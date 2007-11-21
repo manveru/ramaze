@@ -26,7 +26,7 @@ class MainController < Ramaze::Controller
     file = RAMAZE_SRC + request['file']
     if FileTest.file? file
       inform :info, "Showing source for #{file}"
-      CodeRay.scan_file(file).html(:line_numbers => :inline)
+      CodeRay.scan_file(file).html(:line_numbers => :table)
     end
   end
 
@@ -47,7 +47,7 @@ class MainController < Ramaze::Controller
     li do
       span dir, :class => 'folder'
       Dir.chdir(dir) do
-        ul do
+        ul :style => 'display: none;' do
           a '', :href => "##{File.expand_path('.').sub(RAMAZE_SRC,'')}"
           Dir['*'].sort.each do |d|
             if FileTest.directory? d
@@ -55,7 +55,7 @@ class MainController < Ramaze::Controller
             else
               file = File.expand_path(d).sub(RAMAZE_SRC,'')
               li do
-                span :class => 'file', :name => file do
+                span :class => 'file' do
                   a d, :href => "##{file}"
                 end
               end
