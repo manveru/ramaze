@@ -118,25 +118,25 @@ describe "CacheHelper" do
   end
 
   it "should support options" do
-    req('/ttl/cached_list').should == { :index => { :ttl => 1 } }.inspect
+    req('/ttl/cached_list').should == {:index=>{:ttl=>1}}.inspect
     req('/key/cached_list').should =~ /^\{:name=>\{:key=>/
   end
 
   it "should expire cache after time-to-live" do
-    orig_value = get('/ttl').body
+    orig_value = req('/ttl')
     req('/ttl').should == orig_value
     sleep 1
     req('/ttl').should_not == orig_value
   end
 
   it "should cache using key lambda if provided" do
-    lambda{ req('/key/name', {:name=>'Aman'}) }.should_not change{ req('/key/name', {:name=>'Aman'}) }
-    req('/key/name', {:name=>'Bob'}).should =~ /^hi Bob/
+    lambda{ req('/key/name', :name=>'Aman') }.should_not change{ req('/key/name', :name=>'Aman') }
+    req('/key/name', :name=>'Bob').should =~ /^hi Bob/
   end
 
   it "should remain backwards compatible" do
     lambda{ req('/old') }.should_not change{ req('/old') }
-    lambda{ req('/old/action/one/two') }.should_not change{ req('/old/action/one/two') }
+    lambda{ req('/old/action/two/three') }.should_not change{ req('/old/action/one/two') }
     req('/old/action/two/three').should =~ /^twothree/
   end
 end
