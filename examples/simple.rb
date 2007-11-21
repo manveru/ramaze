@@ -19,10 +19,7 @@ require 'ramaze'
 # - How to map your controllers to urls       [ /other ]
 # - Also try out the error-page, just pass something odd ;)
 
-
-include Ramaze
-
-class SimpleController < Controller
+class SimpleController < Ramaze::Controller
   map '/'
 
   def index
@@ -50,7 +47,7 @@ class SimpleController < Controller
   end
 end
 
-class OtherController < Controller
+class OtherController < Ramaze::Controller
   map '/other'
 
   def index

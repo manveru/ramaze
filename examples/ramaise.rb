@@ -1,4 +1,8 @@
-# Ramaise, the Ramaze version of Reprise (http://redflavor.com/reprise.rb), a minimal hAtom blog
+# Ramaise, the Ramaze version of Reprise, a minimal hAtom blog
+#
+# http://redflavor.com/reprise.rb
+# http://www.rubyinside.com/reprise-a-ruby-powered-blogging-app-in-
+#                            100-lines-including-templates-646.html
 #
 # Usage:
 #
@@ -53,9 +57,12 @@ class MainController < Ramaze::Controller
   def index slug = nil
     if slug.nil?
       @posts = BlogPost.collect
-      raise Ramaze::Error::NoAction, 'No blog posts found, create entries/YYYY.MM.DD.My.First.Blog.Post' unless @posts.any?
+      raise Ramaze::Error::NoAction,
+            'No blog posts found, create
+             entries/YYYY.MM.DD.My.First.Blog.Post' unless @posts.any?
     else
-      raise Ramaze::Error::NoAction, 'Invalid blog post' unless post = BlogPost[slug]
+      raise Ramaze::Error::NoAction,
+            'Invalid blog post' unless post = BlogPost[slug]
       @title = post.title
       @posts = [ post ]
     end

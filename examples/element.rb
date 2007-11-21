@@ -1,5 +1,4 @@
 require 'ramaze'
-include Ramaze
 
 class Page < Ezamar::Element
   def render
@@ -27,7 +26,7 @@ class SideBar < Ezamar::Element
   end
 end
 
-class MainController < Controller
+class MainController < Ramaze::Controller
   map '/'
 
   def index
