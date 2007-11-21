@@ -6,20 +6,13 @@ class Thread
   #   :action, :response, :request, :session,
   #   :task, :adapter, :controller, :exception
 
-  def self.into
-    Thread.new(Thread.current) do |thread|
-      current = Thread.current
-
-      vars = Dir["#{Ramaze::BASEDIR}/**/*.rb"].
-        map{|f| File.readlines(f).
-          map{|l| l[/Thread\.current\[:([^\]]*)\]/, 1] } }
-
-      vars.flatten.compact.uniq.each do |var|
-        var = var.to_sym
-        current[var] = thread[var]
+  def self.into *args
+    Thread.new(Thread.current, *args) do |thread, *args|
+      thread.keys.each do |k|
+        Thread.current[k] = thread[k] unless k.to_s =~ /^__/
       end
 
-      yield
+      yield *args
     end
   end
 end
