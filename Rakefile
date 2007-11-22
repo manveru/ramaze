@@ -122,9 +122,12 @@ end
 
 desc "show how many patches we made so far"
 task :patchsize do
-  size = `darcs changes`.split("\n").reject{|l| l =~ /^\s/ or l.empty?}.size
+  patches = `darcs changes --reverse`.split("\n")
+  size = patches.reject{|l| l =~ /^\s/ or l.empty?}.size
   puts "currently we have #{size} patches"
   puts "shall i now play some Death-Metal for you?" if size == 666
+  days = (Time.now - Time.parse(patches[0])) / (3600*24)
+  puts "#{days.round} days since init, avg #{"%4.2f" % (size/days)} patches per day"
 end
 
 desc "show who made how many patches"
