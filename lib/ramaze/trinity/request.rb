@@ -55,8 +55,7 @@ module Ramaze
       LOCAL.find{|range| range.include?(addr) }
     end
 
-
-    unless defined?(rack_params)
+    unless method_defined?(:rack_params)
       alias rack_params params
 
       # Wrapping Request#params to support a one-level hash notation.
