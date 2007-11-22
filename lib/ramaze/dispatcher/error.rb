@@ -40,11 +40,14 @@ module Ramaze
           status ||= 500
 
           if controller = metainfo[:controller]
-            begin
-              action = Controller.resolve(controller.mapping + path)
-              return response.build(action.render, status)
-            rescue Ramaze::Error => e
+            newpath = (controller.mapping + path).squeeze('/')
+            action_response = Dispatcher::Action.process(newpath)
+            case action_response
+            when Ramaze::Error
               Inform.debug("No custom error page found on #{controller}, going to #{path}")
+            else
+              action_response.status = status
+              return action_response
             end
           end
 
