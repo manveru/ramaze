@@ -23,7 +23,7 @@ module Ramaze
         # post-processing.
 
         def process(path)
-          Inform.info("Dynamic request from #{request.remote_addr}: #{path}")
+          Inform.info("Dynamic request from #{request.ip}: #{request.request_uri}")
           body = Controller.handle(path)
           response = Response.current.build(body)
           FILTER.inject(response){|r,f| f.call(r) }

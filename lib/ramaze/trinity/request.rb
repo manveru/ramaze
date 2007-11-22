@@ -34,6 +34,10 @@ module Ramaze
       super
     end
 
+    def request_uri
+      env['REQUEST_URI'] || path_info
+    end
+
     def ip
       env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR']
     end
@@ -49,7 +53,7 @@ module Ramaze
       # 172.16.0.0/12   => 2753
       # 10.0.0.0/8      => 10
       local_ranges = { 0 => 2130706433, 16 => 49320, 20 => 2753, 24 => 10}
-      local_ranges.find{|s,c| (n >> s) == c}
+      local_ranges.find{|s,c| (bip >> s) == c}
     end
 
 
