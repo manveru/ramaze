@@ -7,7 +7,7 @@ testcase_requires 'sass/engine'
 
 class TCTemplateSassController < Ramaze::Controller
   map '/'
-  template_root 'spec/ramaze/template/sass/'
+  template_root __DIR__/:sass
   engine :Sass
 
   define_method('style.css') do
@@ -17,6 +17,24 @@ body
 
   #content
     :text-align center
+}
+  end
+end
+
+class TCTemplateSassLocalsController < Ramaze::Controller
+  map '/options'
+  engine :Sass
+  trait :sass_options => { :style => :compact }
+
+  def test
+%{
+body
+  margin: 1em
+
+  #content
+    font:
+      family: monospace
+      size: 10pt
 }
   end
 end
@@ -42,5 +60,9 @@ describe "Sass templates" do
   margin: 1em; }
   body #content {
     text-align: center; }"
+  end
+
+  it "should use sass options" do
+    get('/options/test').body.should_not =~ /^ +/
   end
 end

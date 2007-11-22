@@ -11,21 +11,11 @@ module Ramaze
 
     class Sass < Template
 
-      # Custom SASS-options for your controller to be merged.
-
-      trait :sass_options => {
-        :locals => {}
-      }
-
       ENGINES[self] = %w[ sass ]
 
       class << self
 
-        # Transform any String via Sass, takes optionally an hash with the
-        # sass_options that you can set also by
-        #   trait :sass_options => {}
-        # if you pass the options it will merge the trait with them. (your
-        # options override the defaults from trait[:sass_options]
+        # Transform via Sass templating engine
 
         def transform action
           Response.current['Content-Type'] = "text/css"
@@ -33,11 +23,11 @@ module Ramaze
           sass.to_css()
         end
 
-        # Instantiates Sass::Engine with the template and sass_options from
-        # the trait.
+        # Instantiates Sass::Engine with the template and sass_options trait from
+        # the controller.
 
         def compile(action, template)
-          ::Sass::Engine.new(template, ancestral_trait[:sass_options])
+          ::Sass::Engine.new(template, action.controller.trait[:sass_options] || {})
         end
       end
     end

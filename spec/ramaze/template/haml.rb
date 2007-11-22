@@ -20,6 +20,16 @@ class TCTemplateHamlController < Ramaze::Controller
   end
 end
 
+class TCTemplateHamlLocalsController < Ramaze::Controller
+  map '/locals'
+  engine :Haml
+  trait :haml_options => { :locals => { :localvar => 'abcdefg' } }
+
+  def test
+    %{= localvar}
+  end
+end
+
 describe "Haml templates" do
   ramaze(:compile => true)
 
@@ -42,5 +52,9 @@ describe "Haml templates" do
     <a href="/Home">Home</a>
   </div>
 </div>}
+  end
+
+  it "should have access to locals defined" do
+    get('/locals/test').body.strip.should == 'abcdefg'
   end
 end
