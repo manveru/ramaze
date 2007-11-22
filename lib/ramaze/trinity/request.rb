@@ -34,6 +34,25 @@ module Ramaze
       super
     end
 
+    def ip
+      env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR']
+    end
+
+    # Request is from a local network? (RFC1918 + localhost)
+    # Modified from nitros version
+
+    def local_net?(address = ip)
+      bip = address.split('.').map{ |x| x.to_i }.pack('C4').unpack('N')[0]
+
+      # 127.0.0.1/32    => 2130706433
+      # 192.168.0.0/16  => 49320
+      # 172.16.0.0/12   => 2753
+      # 10.0.0.0/8      => 10
+      local_ranges = { 0 => 2130706433, 16 => 49320, 20 => 2753, 24 => 10}
+      local_ranges.find{|s,c| (n >> s) == c}
+    end
+
+
     unless defined?(rack_params)
       alias rack_params params
 
