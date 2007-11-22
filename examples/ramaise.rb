@@ -47,6 +47,13 @@ class BlogPost
   end
 end
 
+class String
+  def unindent
+    strip.gsub(/^#{ self.split("\n")[1][/^(\s+)/,1] }/, '')
+  end
+  alias ui unindent
+end
+
 class MainController < Ramaze::Controller
 
   TITLE = 'Ramaise'
@@ -66,63 +73,64 @@ class MainController < Ramaze::Controller
       @title = post.title
       @posts = [ post ]
     end
-%(
-%h1
-  - if @title
-    %a{ :href => '/' } #{TITLE}
-  - else
-    #{TITLE}
 
-- @posts.each do |post|
-  .hentry
-    %h2
-      %abbr.updated{ :title => Time.parse(post.date).iso8601 }= post.date
-      %a.entry-title{ :href => '/'+post.slug, :rel => 'bookmark' }= post.title
-    .entry-content= post.body
-)
+    %(
+      %h1
+        - if @title
+          %a{ :href => '/' } #{TITLE}
+        - else
+          #{TITLE}
+
+      - @posts.each do |post|
+        .hentry
+          %h2
+            %abbr.updated{ :title => Time.parse(post.date).iso8601 }= post.date
+            %a.entry-title{ :href => '/'+post.slug, :rel => 'bookmark' }= post.title
+          .entry-content= post.body
+    ).ui
   end
 
   def error
-%(
-%h1 #{TITLE}: Resource not found
-%h2= Ramaze::Dispatcher::Error.current.message + '.'
+    %(
+      %h1 #{TITLE}: Resource not found
+      %h2= Ramaze::Dispatcher::Error.current.message + '.'
 
-Go back to the
-%a{ :href => '/' } the front
-page.
-)
+      Go back to the
+      %a{ :href => '/' } the front
+      page.
+    ).ui
   end
 
   def layout
-%(
-!!!
-%html
-  %head
-    %title
-      #{TITLE}
-      - if @title
-        = ': ' + @title
-    %style{ :type => 'text/css' }
-      :sass
-        body
-          font-size: 90%
-          line-height: 1.4
-          width: 94%
-          margin: auto
-        abbr
-          border: 0
-        .entry-content
-          -moz-column-width: 30em
-          -moz-column-gap: 1.5em
-          -webkit-column-width: 30em
-          -webkit-column-gap: 1.5em
-        h2
-          border-bottom: 0.05em solid #999
-  %body
-    = @content
-    %address.author.vcard
-      %a.url.fn{ :href => '#{AUTHOR[:url]}' } #{AUTHOR[:name]}
-)
+    %(
+      !!!
+      %html
+        %head
+          %title
+            #{TITLE}
+            - if @title
+              = ': ' + @title
+          %style{ :type => 'text/css' }
+            :sass
+              body
+                font-size: 90%
+                line-height: 1.4
+                width: 94%
+                margin: auto
+              abbr
+                border: 0
+              .entry-content
+                -moz-column-width: 30em
+                -moz-column-gap: 1.5em
+                -webkit-column-width: 30em
+                -webkit-column-gap: 1.5em
+              h2
+                border-bottom: 0.05em solid #999
+        %body
+          = @content
+          %address.author.vcard
+            %a.url.fn{ :href => '#{AUTHOR[:url]}' } #{AUTHOR[:name]}
+    ).ui
   end
   layout :layout
 
