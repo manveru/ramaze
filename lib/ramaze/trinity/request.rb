@@ -4,6 +4,7 @@
 require 'cgi'
 require 'tmpdir'
 require 'digest/md5'
+require 'ipaddr'
 require 'rack'
 require 'rack/request'
 
@@ -42,18 +43,16 @@ module Ramaze
       env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR']
     end
 
-    # Request is from a local network? (RFC1918 + localhost)
-    # Modified from nitros version
+    # Request is from a local network?
+    # Checks both IPv4 and IPv6
+
+    ipv4 = %w[ 127.0.0.1/32 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8 169.254.0.0/16 ]
+    ipv6 = %w[ fc00::/7 fe80::/10 fec0::/10 ::1 ]
+    LOCAL = (ipv4 + ipv6).map{|a| IPAddr.new(a)}
 
     def local_net?(address = ip)
-      bip = address.split('.').map{ |x| x.to_i }.pack('C4').unpack('N')[0]
-
-      # 127.0.0.1/32    => 2130706433
-      # 192.168.0.0/16  => 49320
-      # 172.16.0.0/12   => 2753
-      # 10.0.0.0/8      => 10
-      local_ranges = { 0 => 2130706433, 16 => 49320, 20 => 2753, 24 => 10}
-      local_ranges.find{|s,c| (bip >> s) == c}
+      addr = IPAddr.new(address)
+      LOCAL.find{|range| range.include?(addr) }
     end
 
 
