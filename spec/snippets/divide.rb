@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-describe 'String#/' do
+describe 'String#/ and Symbol#/' do
 
   # check if this is ok in win32
   it 'should join two strings' do
@@ -9,6 +9,10 @@ describe 'String#/' do
 
   it 'should join a string and a symbol' do
     ('a' / :b).should == 'a/b'
+  end
+
+  it 'should join two symbols' do
+    (:a / :b).should == 'a/b'
   end
 
   it 'should be usable in concatenation' do

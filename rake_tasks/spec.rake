@@ -3,7 +3,7 @@
 
 require 'rake'
 require 'ramaze/spec/helper/layout'
-require 'lib/ramaze/snippets/string/DIVIDE'
+require 'lib/ramaze/snippets/divide'
 
 SPEC_BASE = File.expand_path('spec')
 EXAMPLE_BASE = File.expand_path('examples')
