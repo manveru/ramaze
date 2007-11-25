@@ -8,6 +8,8 @@ module AnotherController
   def another_page
     'another page'
   end
+
+  define_method(:css/'style.css') { 'style.css' }
 end
 
 class MainController < Ramaze::Controller
@@ -93,5 +95,9 @@ describe 'Normal behavior' do
 
   it 'should work with included actions' do
     get('/another_page').body.should == 'another page'
+  end
+
+  it 'should work with /' do
+    get('/css/style.css').body.should == 'style.css'
   end
 end

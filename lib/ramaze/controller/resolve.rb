@@ -126,7 +126,7 @@ module Ramaze
 
       # Based on methodname and arity, tries to find the right method on current controller.
       def resolve_method(name, *params)
-        if method = action_methods.delete(name)
+        if method = [ name, name.gsub('__','/') ].find{|n| action_methods.delete(n) }
           arity = instance_method(method).arity
           if params.size == arity or arity < 0
             return method, params
