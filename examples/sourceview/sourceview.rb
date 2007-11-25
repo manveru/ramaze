@@ -17,18 +17,21 @@ end
 class MainController < Ramaze::Controller
 
   include Remarkably::Common
-  helper :partial, :inform, :cache
+  helper :partial, :inform, :cache, :aspect
   engine :None
 
-  def source
-    return if request['file'].nil? or request['file'] =~ /\.{2}/
-
-    file = RAMAZE_SRC + request['file']
-    if FileTest.file? file
-      inform :info, "Showing source for #{file}"
-      CodeRay.scan_file(file).html(:line_numbers => :table)
-    end
+  def index *args
+    redirect "/#/#{args.join('/')}" if args.size > 0
   end
+
+  def source *args
+    file = args.join('/')
+    return if file.empty? or file =~ /\.{2}/
+
+    file[0,0] = RAMAZE_SRC + '/'
+    CodeRay.scan_file(file).html(:line_numbers => :table) if FileTest.file? file
+  end
+  before(:source){ %(<link href='/coderay.css' rel='stylesheet' type='text/css' />) unless request.xhr? }
 
   def filetree
     ul :class => 'filetree treeview' do
