@@ -16,6 +16,8 @@ function setup() {
       $('a.selected').removeClass('selected');
       $('#file_contents').load('/source'+curfile, {}, function(){ processing = false; });
       $('a',this).eq(0).addClass('selected');
+    } else {
+      processing = false;
     }
 
     if (curfile) {
