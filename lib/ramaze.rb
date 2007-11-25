@@ -59,6 +59,8 @@ module Ramaze
         trait[:essentials].each do |obj|
           obj.startup(options)
         end
+      else
+        Global.startup(options)
       end
     end
 
