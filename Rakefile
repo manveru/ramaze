@@ -56,11 +56,11 @@ end
 
 require 'spec/rake/spectask'
 desc "Generate HTML coverage report"
-Spec::Rake::SpecTask.new(:rcov_summary => :rcov_dir) do |t|
-  t.spec_files = FileList['test/tc_adapter.rb']
-  t.spec_opts = ["--format", "html"]
-  t.out = 'doc/output/tools/rcov/test.html'
-  t.fail_on_error = false
+task :rcov_summary => :rcov_dir do
+  `rcov --version`
+  raise LoadError, "Please `gem install rcov` first" if $?.exitstatus == 127
+  raise "Run `rake coverage` to generate coverage data first" unless File.exists? 'coverage.data'
+  sh "rcov --aggregate coverage.data -o doc/output/tools/rcov/"
 end
 
 desc "generate rdoc"

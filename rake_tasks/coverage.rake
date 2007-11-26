@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'rake'
-require 'lib/ramaze/snippets/string/DIVIDE'
+require 'lib/ramaze/snippets/divide'
 
 spec_base = File.expand_path('spec/ramaze/')
 example_base = File.expand_path('examples')
@@ -10,7 +10,7 @@ snippets_base = File.expand_path('spec/snippets')
 # ignore files with these paths
 ignores = [ './*', './helper/*', './ramaze/adapter.rb', './ramaze/request.rb', ]
 
-files = Dir[spec_base/'**'/'*.rb'] + 
+files = Dir[spec_base/'**'/'*.rb'] +
         Dir[example_base/'**/spec'/'*.rb']
 ignores.each do |ignore|
   ignore_files = Dir[spec_base/ignore]
@@ -30,11 +30,11 @@ def sys(cmd)
  system(cmd)
 end
 
-task "coverage" => [:clean] do
+task :coverage => :clean do
   # these are the tests that can be run in parallel.
-  # IMHO, ideally we should have 
+  # IMHO, ideally we should have
   # * 100% coverage of ramaze with pure tests
-  # * 100% coverage with non-pure functional tests 
+  # * 100% coverage with non-pure functional tests
   pure_specs =  Dir[snippets_base/'**/*.rb'].entries
   sys(COV_CMD % ["no-","t", pure_specs.join(' ')])
 
