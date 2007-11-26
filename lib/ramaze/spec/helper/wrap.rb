@@ -164,7 +164,7 @@ class SpecFile
     puts "[ #@name ]".center(80, '-')
     puts "ExitStatus:".yellow, PP.pp(@status)
     puts "StdOut:".yellow, @stdout
-    puts "StdErr:".yellow, PP.pp(@stderr, '')
+    puts "StdErr:".yellow, @stderr
   end
 
   def parse
