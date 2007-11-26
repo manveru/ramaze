@@ -1,7 +1,5 @@
 require 'spec/helper'
 
-require 'ramaze/contrib'
-
 class MainController < Ramaze::Controller
   def float(flt)
     "Float: #{flt}"

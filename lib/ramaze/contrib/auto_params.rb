@@ -4,7 +4,6 @@
 # using ruby2ruby and ParseTree
 #
 # Usage:
-#   require 'ramaze/contrib'
 #   Ramaze.contrib :auto_params
 #
 # For example,

@@ -1,7 +1,5 @@
 require 'spec/helper'
 
-require 'ramaze/contrib'
-
 testcase_requires 'sequel', 'sequel/sqlite'
 
 DB = Sequel('sqlite:/')

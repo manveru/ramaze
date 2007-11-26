@@ -1,7 +1,6 @@
 require 'spec/helper'
 testcase_requires 'ruby2ruby'
 
-require 'ramaze/contrib'
 Ramaze.contrib :auto_params
 
 module AnotherController

@@ -34,6 +34,7 @@ require 'ramaze/sourcereload'
 # Complete
 require 'ramaze/dispatcher'
 require 'ramaze/template/ezamar'
+require 'ramaze/contrib'
 
 module Ramaze
 
