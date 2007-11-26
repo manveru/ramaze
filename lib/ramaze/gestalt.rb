@@ -8,8 +8,7 @@ Example:
   require 'ramaze/gestalt'
 
   def random_color
-    r = lambda{|n| rand(n).to_s(16) }
-    '#' + [255, 255, 255].map{r[255] + r[255] + r[255]
+    ('#' << '%02x' * 3) % (1..3).map{ rand(255) }
   end
 
   puts Ramaze::Gestalt.build{
