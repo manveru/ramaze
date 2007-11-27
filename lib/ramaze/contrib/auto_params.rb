@@ -4,9 +4,10 @@
 # using ruby2ruby and ParseTree
 #
 # Usage:
+#
 #   Ramaze.contrib :auto_params
 #
-# For example,
+# Then, for example,
 #
 #   def search(query) end
 #

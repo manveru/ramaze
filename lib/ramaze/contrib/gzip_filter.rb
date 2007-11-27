@@ -6,11 +6,10 @@
 # Use this to compress "large" pages with gzip.  All major browsers support gzipped pages.
 # This filter brought to you by your friends in #ramaze: Pistos, manveru, rikur and Kashia.
 #
-# Usage:
-# in start.rb:
+# Usage, in start.rb:
 #
-# require 'path/to/gzip-filter'
-# Ramaze::Dispatcher::Action::FILTER << Ramaze::Filter::Gzip
+#   require 'ramaze/contrib/gzip_filter'
+#   Ramaze::Dispatcher::Action::FILTER << Ramaze::Filter::Gzip
 
 require 'zlib'
 
