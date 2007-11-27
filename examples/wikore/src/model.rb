@@ -1,24 +1,28 @@
 require 'sequel'
-require 'sequel/sqlite'
 
-case $wikore_db
-when :memory
-  DB = Sequel('sqlite:/')
-else
-  DB = Sequel('sqlite:///wikore.db')
+begin
+  case $wikore_db
+  when :memory
+    DB = Sequel.sqlite
+  else
+    DB = Sequel.sqlite 'wikore.db'
+  end
+rescue NoMethodError
+  raise LoadError, 'Install latest Sequel gem'
 end
 
 module Model
   PAGE_SCHEMA = lambda{
+    primary_key :id
+    boolean :active, :default => true
+    text    :text
+    integer :version
   }
 
   class Page < Sequel::Model(:page)
     set_schema do
-      primary_key :id
-      text    :title, :unique => true, :null => false
-      boolean :active, :default => true
-      text    :text
-      integer :version
+      instance_eval &PAGE_SCHEMA
+      text :title, :unique => true, :null => false
     end
 
     def backup
@@ -37,11 +41,8 @@ module Model
 
   class OldPage < Sequel::Model(:old_page)
     set_schema do
-      primary_key :id
-      text    :title, :unique => false, :null => false
-      boolean :active, :default => true
-      text    :text
-      integer :version
+      instance_eval &PAGE_SCHEMA
+      text :title, :unique => false, :null => false
     end
   end
 

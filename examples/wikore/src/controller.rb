@@ -59,7 +59,6 @@ class PageController < Ramaze::Controller
 
   def revert(title)
     page = Page[:title => title]
-    p page
     page.revert
     redirect R(MainController, title)
   end

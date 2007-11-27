@@ -1,8 +1,12 @@
 require 'spec/helper'
 
-testcase_requires 'sequel', 'sequel/sqlite'
+testcase_requires 'sequel'
 
-DB = Sequel('sqlite:/')
+begin
+  DB = Sequel.sqlite
+rescue NoMethodError
+  raise LoadError, 'Install latest Sequel gem'
+end
 
 require 'ramaze/contrib/sequel/fill'
 
