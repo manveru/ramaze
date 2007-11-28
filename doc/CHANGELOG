@@ -1,3 +1,126 @@
+Thu Nov 29 08:23:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Spec and fix for bug in String#unindent
+
+Wed Nov 28 17:32:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Allow multiple keys for Request#[]
+
+Wed Nov 28 14:46:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add spec for and fix implementation of Request#local_net?
+
+Wed Nov 28 12:53:36 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Allow helper modules to be defined in contrib/ or same file as the app
+
+Tue Nov 27 15:12:02 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Update to latest Sequel conventions (require 'sequel/sqlite' is deprecated)
+
+Tue Nov 27 15:12:12 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Doc fixes for contrib/
+
+Tue Nov 27 08:14:25 JST 2007  Aman Gupta <aman@ramaze.net>
+  * require 'ramaze/contrib' then Ramaze.contrib :foo is redundant, load 'ramaze/contrib' by default
+
+Tue Nov 27 08:12:32 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Make StdErr output in specs readable
+
+Mon Nov 26 10:39:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix code in comment for gestalt.rb
+
+Mon Nov 26 10:37:05 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Fix rcov coverage report generation task
+
+Tue Sep 25 22:39:15 JST 2007  rff.rff@gmail.com
+  * support custom caption in openid_login_form
+
+Tue Sep 18 21:00:27 JST 2007  rff.rff@gmail.com
+  * add testcase_require in wikore/spec
+
+Tue Sep  4 20:33:08 JST 2007  rff.rff@gmail.com
+  * coverage task, first try
+
+Mon Nov 26 01:14:29 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Fix for nginx caching issue with sourceview's javascript
+
+Mon Nov 26 00:57:40 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Improve sourceview: add analytics tracking, /path/to/file.rb now works, changing location hash in browser address bar works, visiting /source/file.rb directly works
+
+Mon Nov 26 00:16:18 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix doc/meta/users.kml for kml version 2.2
+
+Sun Nov 25 09:19:57 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Cleanup proto: remove 'include Ramaze', require rubygems so ruby start.rb works, include :port option for easy changing
+
+Sun Nov 25 09:14:07 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add support for define_method actions with / instead of __
+
+Sun Nov 25 09:10:27 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Set Ramaze.start options when using ramaze binary
+
+Sun Nov 25 08:45:54 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add Symbol#/ to divide snippet
+
+Fri Nov 23 02:13:00 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Fix breakage when trinity/response.rb is source reloaded
+
+Thu Nov 22 18:36:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Use the almighty IPAddr to check for local IPs, _so_ _much_ _nicer_ and supports both IPv4 and IPv6 :D (is it obvious that i'm 10 minutes before a long weekend?)
+
+Thu Nov 22 18:11:57 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Calculate avg patches per day in patchsize rake task
+
+Thu Nov 22 17:19:46 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add String#unindent snippet and use it in Ramaise
+
+Thu Nov 22 16:44:56 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * This fixes some problems related to Request, better information on entering Action, fallback for Request#request_uri and fix Request#local_net? (damn you irb)
+
+Thu Nov 22 16:42:55 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Do go the usual Dispatcher::Action path when we encounter an error so Action::FILTER are applied.
+
+Thu Nov 22 11:57:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding Request#ip and Request#local_net?
+
+Thu Nov 22 09:57:37 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Fix Haml/Sass options handling
+
+Thu Nov 22 05:43:44 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Wrap long lines in ramaise, don't include Ramaze in examples
+
+Thu Nov 22 05:40:13 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Various hacks to get sourceview working in IE, some cleanups to reduce bandwidth and make page loads snappier
+
+Wed Nov 21 17:05:15 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add Ramaise example (Ramaze version of the Reprise hAtom blog)
+
+Wed Nov 21 14:52:47 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update README
+
+Wed Nov 21 12:48:35 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Simplify Thread.into + spec
+
+Wed Nov 21 12:26:43 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Random minor spec cleanups
+
+Wed Nov 21 07:02:19 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Use cache as a wrapper for value_cache when no args are provided
+
+Tue Nov 20 17:51:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * redirect_referrer on login in AuthHelper, a lot more useful and smoother
+
+Tue Nov 20 17:05:00 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Minor cleanups to sourceview example
+
+Tue Nov 20 13:27:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update allison raketask to use new version.
+
+Tue Nov 20 01:36:02 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * keep darcs repo one step ahead on 0.2.1
+
+Tue Nov 20 01:18:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  tagged 0.2.0
+
+Tue Nov 20 01:18:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update doc/CHANGELOG
+
 Tue Nov 20 01:16:42 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Update TODO, Version and announcement
 
