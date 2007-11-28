@@ -50,7 +50,12 @@ module Ramaze
     ipv6 = %w[ fc00::/7 fe80::/10 fec0::/10 ::1 ]
     LOCAL = (ipv4 + ipv6).map{|a| IPAddr.new(a)}
 
+    # --
+    # Mongrel somehow puts together multiple IPs when proxy is involved.
+    # ++
+
     def local_net?(address = ip)
+      address = address.to_s.split(',').first
       addr = IPAddr.new(address)
       LOCAL.find{|range| range.include?(addr) }
     end
