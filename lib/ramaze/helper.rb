@@ -23,10 +23,14 @@ module Ramaze
     def helper *syms
       syms.each do |sym|
         mod_name = sym.to_s.capitalize + 'Helper'
-        glob = "{helper,#{BASEDIR/:ramaze/:helper}}/#{sym}.{rb,so}"
-        require Dir[glob].first
-        include ::Ramaze.const_get(mod_name)
-        extend ::Ramaze.const_get(mod_name)
+        begin
+          include ::Ramaze.const_get(mod_name)
+          extend ::Ramaze.const_get(mod_name)
+        rescue NameError
+          files = Dir["{helper,#{BASEDIR/:ramaze/:helper}}/#{sym}.{rb,so}"]
+          raise LoadError, "#{mod_name} not found" unless files.any?
+          require(files.first) ? retry : raise
+        end
       end
     end
   end
