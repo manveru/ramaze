@@ -25,7 +25,7 @@ module Ramaze
     # if no password given, shows a simple form to input it.
 
     def login
-      username, password = request.params.values_at('username', 'password')
+      username, password = request[:username, :password]
       if check_auth(username, password)
         session[:logged_in] = true
         session[:username] = username

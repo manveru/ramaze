@@ -29,7 +29,7 @@ module Ramaze
     # first it tries to match your method with any of the HTTP parameters
     # then, in case that fails, it will relay to @request
 
-    def method_missing meth, *args, &block
+    def method_missing meth, *args
       key = meth.to_s.upcase
       return env[key] if env.has_key?(key)
       super
