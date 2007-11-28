@@ -60,6 +60,13 @@ module Ramaze
       LOCAL.find{|range| range.include?(addr) }
     end
 
+    def [](key, *rest)
+      value = params[key.to_s]
+      return value if rest.empty?
+      keys = rest.flatten.map{|k| k.to_s}
+      Array[value, *params.values_at(*keys)]
+    end
+
     unless method_defined?(:rack_params)
       alias rack_params params
 
