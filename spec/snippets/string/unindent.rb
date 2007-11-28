@@ -15,4 +15,8 @@ describe "String#unindent" do
   you
 doing)
   end
+
+  it 'should not break on a single line' do
+    'word'.unindent.should == 'word'
+  end
 end
