@@ -211,6 +211,12 @@ module Ramaze
       combined.inspect
     end
 
+    # Delete a key
+
+    def delete(key)
+      session[:FLASH].delete(key)
+    end
+
     private
 
     # Session.current or {}
