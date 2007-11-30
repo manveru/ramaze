@@ -48,60 +48,71 @@ describe "Controller" do
       ],
 
       '/foo' => [
-        ["/foo", 'index',[]],
-        ['/',    'foo',  []],
-        ["/",    'index', ["foo"]],
+        ["/foo", "index",      []],
+        ["/",    "foo__index", []],
+        ["/",    "foo",        []],
+        ["/",    "index",      ["foo"]]
+
       ],
 
       '/foo/bar' => [
-        ["/foo/bar",  "index",    []],
-
-        ["/foo",      "bar",      []],
-        ["/foo",      "index",    ["bar"]],
-
-        ["/",         "foo__bar", []],
-        ["/",         "foo",      ["bar"]],
-        ["/",         "index",    ["foo", "bar"]],
+        ["/foo/bar", "index",           []],
+        ["/foo",     "bar__index",      []],
+        ["/foo",     "bar",             []],
+        ["/foo",     "index",           ["bar"]],
+        ["/",        "foo__bar__index", []],
+        ["/",        "foo__bar",        []],
+        ["/",        "foo__index",      ["bar"]],
+        ["/",        "foo",             ["bar"]],
+        ["/",        "index",           ["foo", "bar"]]
       ],
 
       '/foo/bar/baz' => [
-
-        ['/foo/bar/baz',   'index',         []],
-
-        ['/foo/bar',       'baz',           []],
-        ['/foo/bar',       'index',         ['baz']],
-
-        ['/foo',           'bar__baz',      []],
-        ['/foo',           'bar',           ['baz']],
-        ['/foo',           'index',         ['bar', 'baz']],
-
-        ['/',              'foo__bar__baz', []],
-        ['/',              'foo__bar',      ['baz']],
-        ['/',              'foo',           ['bar', 'baz']],
-        ['/',              'index',         ['foo', 'bar', 'baz']],
+        ["/foo/bar/baz", "index",                []],
+        ["/foo/bar",     "baz__index",           []],
+        ["/foo/bar",     "baz",                  []],
+        ["/foo/bar",     "index",                ["baz"]],
+        ["/foo",         "bar__baz__index",      []],
+        ["/foo",         "bar__baz",             []],
+        ["/foo",         "bar__index",           ["baz"]],
+        ["/foo",         "bar",                  ["baz"]],
+        ["/foo",         "index",                ["bar", "baz"]],
+        ["/",            "foo__bar__baz__index", []],
+        ["/",            "foo__bar__baz",        []],
+        ["/",            "foo__bar__index",      ["baz"]],
+        ["/",            "foo__bar",             ["baz"]],
+        ["/",            "foo__index",           ["bar", "baz"]],
+        ["/",            "foo",                  ["bar", "baz"]],
+        ["/",            "index",                ["foo", "bar", "baz"]]
       ],
 
       '/foo/bar/baz/oof' => [
-        ['/foo/bar/baz/oof',    'index',               []],
-
-        ['/foo/bar/baz',        'oof',                 []],
-        ['/foo/bar/baz',        'index',               ['oof']],
-
-        ['/foo/bar',            'baz__oof',            []],
-        ['/foo/bar',            'baz',                 ['oof']],
-        ['/foo/bar',            'index',               ['baz', 'oof']],
-
-        ['/foo',                'bar__baz__oof',       []],
-        ['/foo',                'bar__baz',            ['oof']],
-        ['/foo',                'bar',                 ['baz', 'oof']],
-        ['/foo',                'index',               ['bar', 'baz', 'oof']],
-
-        ['/',                   'foo__bar__baz__oof',  []],
-        ['/',                   'foo__bar__baz',       ['oof']],
-        ['/',                   'foo__bar',            ['baz', 'oof']],
-        ['/',                   'foo',                 ['bar', 'baz', 'oof']],
-        ['/',                   'index',               ['foo', 'bar', 'baz', 'oof']],
-      ]
+        ["/foo/bar/baz/oof", "index",                     []],
+         ["/foo/bar/baz",     "oof__index",                []],
+         ["/foo/bar/baz",     "oof",                       []],
+         ["/foo/bar/baz",     "index",                     ["oof"]],
+         ["/foo/bar",         "baz__oof__index",           []],
+         ["/foo/bar",         "baz__oof",                  []],
+         ["/foo/bar",         "baz__index",                ["oof"]],
+         ["/foo/bar",         "baz",                       ["oof"]],
+         ["/foo/bar",         "index",                     ["baz", "oof"]],
+         ["/foo",             "bar__baz__oof__index",      []],
+         ["/foo",             "bar__baz__oof",             []],
+         ["/foo",             "bar__baz__index",           ["oof"]],
+         ["/foo",             "bar__baz",                  ["oof"]],
+         ["/foo",             "bar__index",                ["baz", "oof"]],
+         ["/foo",             "bar",                       ["baz", "oof"]],
+         ["/foo",             "index",                     ["bar", "baz", "oof"]],
+         ["/",                "foo__bar__baz__oof__index", []],
+         ["/",                "foo__bar__baz__oof",        []],
+         ["/",                "foo__bar__baz__index",      ["oof"]],
+         ["/",                "foo__bar__baz",             ["oof"]],
+         ["/",                "foo__bar__index",           ["baz", "oof"]],
+         ["/",                "foo__bar",                  ["baz", "oof"]],
+         ["/",                "foo__index",                ["bar", "baz", "oof"]],
+         ["/",                "foo",                       ["bar", "baz", "oof"]],
+         ["/",                "index",                     ["foo", "bar", "baz", "oof"]]
+      ],
     }
   end
 
@@ -142,6 +153,7 @@ describe "Controller" do
   it "double underscore in templates" do
     handle('/some/long/action').should == 'some long action'
     handle('/another/long/action').should == 'another long action'
+    handle('/other').should == 'This is the index of /other'
   end
 
   TCControllerController.private_methods.sort.each do |action|

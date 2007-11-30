@@ -139,10 +139,12 @@ module Ramaze
       def action_methods
         exclude = Controller.trait[:exclude_action_modules]
 
-        ancs = (ancestors - exclude).select{|a| a.is_a?(Module)}
-        meths = ancs.map{|a| a.instance_methods(false).map(&:to_s)}.flatten.uniq
+        ancs = (ancestors - exclude).select{|a| a.is_a?(Module) }
+        meths = ancs.map{|a|
+          a.instance_methods(false).map{|iv| iv.to_s }
+        }.flatten.uniq
         # fix for facets/more/paramix
-        meths - ancs.map(&:to_s)
+        meths - ancs.map{|a| a.to_s}
       end
 
       # Generate all possible permutations for given path.
@@ -166,7 +168,9 @@ module Ramaze
 
           until pattern.empty?
             args << pattern.shift
-            patterns << [controller, args.join( '__' ), pattern.dup]
+            joined = args.join('__')
+            patterns << [controller, joined, pattern.dup]
+            patterns << [controller, "#{joined}__index", pattern.dup]
           end
         end
 
