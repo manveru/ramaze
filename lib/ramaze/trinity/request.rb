@@ -58,6 +58,8 @@ module Ramaze
       address = address.to_s.split(',').first
       addr = IPAddr.new(address)
       LOCAL.find{|range| range.include?(addr) }
+    rescue ArgumentError => ex
+      raise ArgumentError, ex unless ex.message == 'invalid address'
     end
 
     def [](key, *rest)
