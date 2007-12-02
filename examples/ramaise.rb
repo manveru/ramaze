@@ -12,7 +12,7 @@
 #   4. vi entries/YYYY.MM.DD.Title.Goes.Here
 #   5. ruby ramaise.rb
 
-%w(rubygems ramaze bluecloth rubypants haml).each { |lib| require lib }
+%w(rubygems ramaze bluecloth rubypants haml).each{|lib| require lib }
 
 class BlogPost
   DIR = __DIR__/:entries
@@ -45,13 +45,6 @@ class BlogPost
       BlogPost.find{|post| post.slug == key }
     end
   end
-end
-
-class String
-  def unindent
-    strip.gsub(/^#{ self.split("\n")[1][/^(\s+)/,1] }/, '')
-  end
-  alias ui unindent
 end
 
 class MainController < Ramaze::Controller
@@ -87,7 +80,7 @@ class MainController < Ramaze::Controller
             %abbr.updated{ :title => Time.parse(post.date).iso8601 }= post.date
             %a.entry-title{ :href => '/'+post.slug, :rel => 'bookmark' }= post.title
           .entry-content= post.body
-    ).ui
+    ).unindent
   end
 
   def error
@@ -98,7 +91,7 @@ class MainController < Ramaze::Controller
       Go back to the
       %a{ :href => '/' } the front
       page.
-    ).ui
+    ).unindent
   end
 
   def layout
@@ -130,7 +123,7 @@ class MainController < Ramaze::Controller
           = @content
           %address.author.vcard
             %a.url.fn{ :href => '#{AUTHOR[:url]}' } #{AUTHOR[:name]}
-    ).ui
+    ).unindent
   end
   layout :layout
 
