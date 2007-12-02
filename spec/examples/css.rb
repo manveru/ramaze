@@ -1,4 +1,6 @@
 require 'spec/helper'
+testcase_requires 'haml'
+
 require 'examples/css'
 
 describe 'CSSController' do
