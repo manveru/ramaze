@@ -50,20 +50,30 @@ module Facebook
                                                }.sort
 
       data = Array["sig=#{Digest::MD5.hexdigest(args.join+SECRET)}", *args].join('&')
+
       begin
         ret = post(data)
       rescue Errno::ECONNRESET
-        @server = nil
+        @server = connect
         retry
-      end
+      end while ret.empty? and @server = connect
 
-      ret = if ret == 'true' then true
-            elsif ret == 'false' then false
-            elsif ret[0..0] == '"' then ret[1..-2]
-            else JSON::parse(ret)
+      ret = case
+            when ret == 'true':    true
+            when ret == 'false':   false
+            when ret[0..0] == '"': ret[1..-2]
+            else
+              begin
+                JSON::parse(ret)
+              rescue JSON::ParserError
+                puts "Error parsing #{ret.inspect}"
+                raise
+              end
             end
-      ret = ret.first if ret.is_a? Array and ret.size == 1
-      raise Error, ret['error_msg'] if ret.is_a? Hash and ret['error_code']
+
+      ret = ret.first if ret.is_a? Array and ret.size == 1 and ret.first.is_a? Hash
+      raise Facebook::Error, ret['error_msg'] if ret.is_a? Hash and ret['error_code']
+
       ret
     ensure
       unless @keepalive
@@ -124,8 +134,13 @@ module Facebook
 
     private
 
+    def connect
+      @socket.close if @socket
+      TCPSocket.new('api.facebook.com', 80)
+    end
+
     def post data
-      @server ||= TCPSocket.new('api.facebook.com', 80)
+      @server ||= connect
 
       @server.puts "POST /restserver.php HTTP/1.1\r\n"
       @server.puts "Host: api.facebook.com\r\n"
