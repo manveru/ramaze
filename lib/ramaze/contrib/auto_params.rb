@@ -86,7 +86,8 @@ module Ramaze
     # use Method#get_args to insert values from request.params into Action#params
 
     def self.resolve_method(name, *params)
-      if method = [ name, name.gsub('__','/') ].find{|n| action_methods.delete(n) }
+      if method = [ name, name.gsub('__','/') ].find{|n|
+          cached_action_methods.include?(n) }
         meth = instance_method(method)
         arity = meth.arity
 

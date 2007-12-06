@@ -25,7 +25,8 @@ module Ramaze
       # Ramaze.trait(:essentials).
 
       def startup(options)
-        Cache.add :compiled, :actions, :patterns, :resolved, :shield
+        Cache.add :compiled, :actions, :patterns,
+                  :resolved, :shield, :action_methods
       end
 
       # This will define a method to access a new cache directly over

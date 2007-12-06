@@ -148,6 +148,7 @@ module Ramaze
     def after_safe_load_succeed(file)
       Cache.compiled.clear
       Cache.resolved.clear
+      Cache.action_methods.clear
       SourceReloadHooks.after_safe_load(file)
     end
 
