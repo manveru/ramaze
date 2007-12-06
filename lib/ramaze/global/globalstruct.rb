@@ -96,12 +96,16 @@ module Ramaze
       sri.interval = interval if sri
     end
 
-    def template_root=(tr)
-      self[:template_root] = File.expand_path(tr)
+    def template_root
+      [ tr = self[:template_root],
+        APPDIR/tr,
+      ].find{|path| File.directory?(path) } || self[:template_root]
     end
 
-    def public_root=(pr)
-      self[:public_root] = File.expand_path(pr)
+    def public_root
+      [ pr = self[:public_root],
+        APPDIR/pr,
+      ].find{|path| File.directory?(path) } || self[:public_root]
     end
 
     def list_directories=(active)

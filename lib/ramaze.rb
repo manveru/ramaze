@@ -50,12 +50,12 @@ module Ramaze
     # each class in trait[:essentials] by calling ::startup on them.
 
     def startup options = {}
-      starter = options.fetch(:runner, caller[0].split(':').first)
+      runner = options.delete(:runner) || caller[0].split(':').first
 
-      if $0 == starter or options.delete(:force)
+      if $0 == runner or options.delete(:force)
         Inform.info("Starting up Ramaze (Version #{VERSION})")
-        SEEED.replace(starter)
-        APPDIR.replace(File.dirname(File.expand_path(starter)))
+        SEEED.replace(runner)
+        APPDIR.replace(File.dirname(File.expand_path(runner)))
 
         trait[:essentials].each do |obj|
           obj.startup(options)
