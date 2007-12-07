@@ -26,6 +26,6 @@ class OrderedSet
     end
     @set.__send__(meth, *args, &block)
   ensure
-    @set.delete nil
+    @set.compact! if meth == :[]=
   end
 end
