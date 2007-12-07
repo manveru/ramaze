@@ -1,0 +1,117 @@
+====== simple ======
+<code ruby>
+require 'ramaze'
+
+class MainController < Ramaze::Controller
+  def index
+    "Hello, World!"
+  end
+end
+</code>
+
+=== webrick ===
+  Time taken for tests:   7.775237 seconds
+  Failed requests:        0
+  Requests per second:    128.61 [#/sec] (mean)
+  Time per request:       77.752 [ms] (mean)
+  Time per request:       7.775 [ms] (mean, across all concurrent requests)
+
+=== mongrel ===
+  Time taken for tests:   2.347717 seconds
+  Failed requests:        0
+  Requests per second:    425.95 [#/sec] (mean)
+  Time per request:       23.477 [ms] (mean)
+  Time per request:       2.348 [ms] (mean, across all concurrent requests)
+
+=== evented_mongrel ===
+  Time taken for tests:   1.439457 seconds
+  Failed requests:        0
+  Requests per second:    694.71 [#/sec] (mean)
+  Time per request:       14.395 [ms] (mean)
+  Time per request:       1.439 [ms] (mean, across all concurrent requests)
+
+====== no_template ======
+<code ruby>
+require 'ramaze'
+
+class MainController < Ramaze::Controller
+  engine :None
+
+  def index
+    "Hello, World!"
+  end
+end
+</code>
+
+=== evented_mongrel ===
+  Time taken for tests:   1.150997 seconds
+  Failed requests:        0
+  Requests per second:    868.81 [#/sec] (mean)
+  Time per request:       11.510 [ms] (mean)
+  Time per request:       1.151 [ms] (mean, across all concurrent requests)
+
+====== no_informer ======
+<code ruby>
+require 'ramaze'
+
+class MainController < Ramaze::Controller
+  def index
+    "Hello, World!"
+  end
+end
+
+Ramaze::Inform.loggers = []
+</code>
+
+=== evented_mongrel ===
+  Time taken for tests:   1.129152 seconds
+  Failed requests:        0
+  Requests per second:    885.62 [#/sec] (mean)
+  Time per request:       11.292 [ms] (mean)
+  Time per request:       1.129 [ms] (mean, across all concurrent requests)
+
+====== no_sessions ======
+<code ruby>
+require 'ramaze'
+
+class MainController < Ramaze::Controller
+  def index
+    "Hello, World!"
+  end
+end
+
+Ramaze::Inform.loggers = []
+Ramaze::Global.sessions = false
+</code>
+
+=== evented_mongrel ===
+  Time taken for tests:   0.796293 seconds
+  Failed requests:        0
+  Requests per second:    1255.82 [#/sec] (mean)
+  Time per request:       7.963 [ms] (mean)
+  Time per request:       0.796 [ms] (mean, across all concurrent requests)
+
+====== minimal ======
+<code ruby>
+require 'ramaze'
+
+class MainController < Ramaze::Controller
+  engine :None
+
+  def index
+    "Hello, World!"
+  end
+end
+
+Ramaze::Global.sourcereload = false
+Ramaze::Global.sessions = false
+Ramaze::Inform.loggers = []
+</code>
+
+=== evented_mongrel ===
+  Time taken for tests:   0.650482 seconds
+  Failed requests:        0
+  Requests per second:    1537.32 [#/sec] (mean)
+  Time per request:       6.505 [ms] (mean)
+  Time per request:       0.650 [ms] (mean, across all concurrent requests)
+
