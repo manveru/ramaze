@@ -14,7 +14,7 @@ module Ramaze
     attr_accessor :thread, :interval, :map
 
     # Reload everything which falls under this regex
-    trait :reload_glob => %r{(^\./)|#{Dir.pwd}|ramaze}
+    trait :reload_glob => Regexp.union(/^\.\//, Dir.pwd, 'ramaze')
 
     # Take interval for files that are going to be reloaded.
 
@@ -97,7 +97,7 @@ module Ramaze
         @map = map.compact
       end
 
-      m = @map.grep(class_trait[:reload_glob])
+      @map.grep(class_trait[:reload_glob])
     end
 
     # Safe mtime
