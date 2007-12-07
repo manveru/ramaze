@@ -31,10 +31,20 @@ module Ramaze
     class << self
       def routed(path)
         routes = Contrib::Route.trait[:routes]
-        routes.each do |regex, pattern|
-          if md = path.match(regex)
-            new_path = pattern % md.to_a[1..-1]
-            return resolve(new_path, :routed)
+        routes.each do |key, val|
+          case
+          when key.is_a?(Regexp)
+            regex, pattern = key, val
+            if md = path.match(regex)
+              new_path = pattern % md.to_a[1..-1]
+              return resolve(new_path, :routed)
+            end
+          when val.respond_to?(:call)
+            if new_path = val.call(path, request)
+              return resolve(new_path, :routed)
+            end
+          else
+            Inform.error "Invalid route #{val}"
           end
         end
 

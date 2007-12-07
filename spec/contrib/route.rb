@@ -12,6 +12,10 @@ class MainController < Ramaze::Controller
   def price(p)
     "Price: \$#{p}"
   end
+
+  def sum(a, b)
+    a.to_i + b.to_i
+  end
 end
 
 describe 'Route' do
@@ -19,6 +23,19 @@ describe 'Route' do
     Ramaze.contrib :route
     ramaze
     @route = Ramaze::Contrib::Route
+  end
+
+  it 'should take custom lambda routers' do
+    @route['string'] = lambda {|path, req| path if path =~ %r!^/string! }
+    @route['string'].class.should == Proc
+
+    @route['calc sum'] = lambda do |path, req|
+      if req[:do_calc]
+        lval, rval = req[:a, :b]
+        rval = rval.to_i * 10
+        "/sum/#{lval}/#{rval}"
+      end
+    end
   end
 
   it 'should be possible to define routes' do
@@ -54,5 +71,15 @@ describe 'Route' do
     r = get('/12.84')
     r.status.should == 200
     r.body.should == 'Price: $12.84'
+  end
+
+  it 'should use lambda routers' do
+    r = get('/string/abc')
+    r.status.should == 200
+    r.body.should == 'String: abc'
+
+    r = get('/', 'do_calc=1&a=2&b=6')
+    r.status.should == 200
+    r.body.should == '62'
   end
 end
