@@ -29,6 +29,11 @@ module Ramaze
           @basedir = ::Ramaze::BASEDIR / 'proto'
           @destdir = Dir.pwd / project
 
+          if File.directory?(@destdir)
+            puts "Error: #{project} already exists. Rename or delete directory and try again."
+            return
+          end
+
           puts "Creating project #{project}"
 
           FileUtils.mkdir_p(project)
