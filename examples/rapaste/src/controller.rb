@@ -10,13 +10,14 @@ class PasteController < Ramaze::Controller
   engine :Ezamar
   helper :formatting, :sequel, :aspect
   layout :layout
-  deny_layout :plain
+  deny_layout :plain, :save_theme
 
   def index(start = 1)
     ordered = Paste.order(:created.DESC)
     @paginated = ordered.paginate(start.to_i, 10)
     @pager = paginator(@paginated, '/page')
     @pastes = @paginated
+    @style = session[ :theme ] || STYLE
   end
 
   def save
@@ -39,7 +40,8 @@ class PasteController < Ramaze::Controller
   def view(id, format)
     @paste, @format = paste_for(id), format
     @syntax = @paste.syntax_name
-    @formatted = @paste.view(format, STYLE)
+    @style = session[ :theme ] || STYLE
+    @formatted = @paste.view(format, @style)
 
     ordered = Paste.order(:created.DESC)
     @paginated = ordered.paginate(id.to_i, 1)
@@ -53,6 +55,10 @@ class PasteController < Ramaze::Controller
     response['Content-Type'] = 'text/plain'
     response.body = paste.text
     throw :respond
+  end
+    
+  def save_theme( theme_name )
+    session[ :theme ] = theme_name
   end
 
   private

@@ -4,6 +4,7 @@
   function change_style(name){
     $('link')[1].href = '/css/' + name + '.css';
     $('pre')[0].className = name;
+    $.get( '/save_theme/' + name );
   }
 </script>
 <div id="paste">
@@ -20,7 +21,7 @@
           Theme:
           <select onchange="change_style(this.value);" name="style" id="select_style">
             <?r Uv.themes.each do |theme| ?>
-              <option value="#{theme}">#{theme.capitalize.tr('_', ' ')}</option>
+              <option value="#{theme}"#{theme == @style ? ' selected' : ''}>#{theme.capitalize.tr('_', ' ')}</option>
             <?r end ?>
           </select>
         </form>
