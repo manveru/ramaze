@@ -74,23 +74,16 @@ class Ramaze::Tool::Localize
     # not available, it falls back to the default language.
 
     def localize(str, locale)
-      trans = nil
       default_language = trait[:default_language]
       dict = dictionary
+      dict[locale] ||= {}
+      dict[default_language] ||= {}
 
-      if dict[locale] && trans = dict[locale][str]
-        #
-      elsif dict[default_language] && trans = dict[default_language][str]
-        dict[locale] ||= {}
-        dict[locale][str] = str
-      else
-        dict[locale] ||= {}
-        dict[default_language] ||= {}
-        dict[locale][str] = str
-        dict[default_language][str] = str
-      end
+      trans = dict[locale].fetch(str, dict[default_language][str])
+      dict[locale][str] ||= trans
+      dict[default_language][str] ||= trans
 
-      trans || str
+      trans
     rescue Object => ex
       Ramaze::Inform.error(ex)
       str
