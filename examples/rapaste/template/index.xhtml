@@ -11,7 +11,7 @@
         <span class="created">created #{time_diff(paste.created)} ago</span>
       </a>
       </div>
-      <div class="fragment">#{paste.text_fragment}</div>
+      <div class="fragment">#{paste.text_fragment(@style)}</div>
       <?r if paste.lines[11,1] ?>
         <div class="more"><a href="/#{paste.id}">more...</a></div>
       <?r else ?>
