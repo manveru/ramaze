@@ -2,7 +2,7 @@ Ramaze::Contrib::Route[%r!^/(\d+)\.(?:te?xt|plain)$!] = '/plain/%d'
 Ramaze::Contrib::Route[%r!^/(?:te?xt|plain)/(\d+)$!] = '/plain/%d'
 Ramaze::Contrib::Route[%r!^/(\d+)\.(\w+)$!] = '/view/%d/%s'
 Ramaze::Contrib::Route[%r!^/(\d+)$!] = '/view/%d/html'
-Ramaze::Contrib::Route[%r!^/page/(\d+)$!] = '/%d'
+Ramaze::Contrib::Route[%r!^/list/page/(\d+)$!] = '/list/%d'
 # Ramaze::Contrib::Route[%r!^/list/?(.*)!] = '/%s'
 
 class PasteController < Ramaze::Controller
@@ -12,10 +12,10 @@ class PasteController < Ramaze::Controller
   layout :layout
   deny_layout :plain, :save_theme
 
-  def index(start = 1)
+  def list(start = 1)
     ordered = Paste.order(:created.DESC)
     @paginated = ordered.paginate(start.to_i, 10)
-    @pager = paginator(@paginated, '/page')
+    @pager = paginator(@paginated, '/list/page')
     @pastes = @paginated
     @style = session[ :theme ] || STYLE
   end
@@ -45,7 +45,7 @@ class PasteController < Ramaze::Controller
 
     ordered = Paste.order(:created.DESC)
     @paginated = ordered.paginate(id.to_i, 1)
-    @pager = paginator(@paginated, '/')
+    @pager = paginator(@paginated, '/list')
   end
 
   # Do not run through templating

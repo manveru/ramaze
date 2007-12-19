@@ -1,7 +1,7 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-testcase_requires 'ultraviolet', 'hpricot'
+testcase_requires 'uv', 'hpricot'
 base = File.expand_path(__DIR__/'..')
 require base/:start
 
@@ -10,19 +10,19 @@ describe 'RaPaste' do
     ramaze :template_root => base/:template, :public_root => base/:public
   end
 
-  it 'should show an empty list on the index page' do
-    page = get('/')
-    Hpricot(page.body).at('tr.list_empty/td').inner_html.strip.
-      should == 'No pastes available yet, go on and <a href="/add">Add one</a>'
+  it 'should show an empty list on the list page' do
+    page = get('/list')
+    Hpricot(page.body).at('p.list_empty').inner_html.strip.
+      should == 'No pastes available yet, go on and <a href="/">Add one</a>'
   end
 
   it 'should have a link to the new paste form' do
-    page = get('/')
-    Hpricot(page.body).at('a[@href=/add]').inner_text.should == 'Add'
+    page = get('/list')
+    Hpricot(page.body).at('#menu a[@href=/]').inner_text.should == 'New'
   end
 
   it 'should show a new paste form' do
-    page = get('/add')
+    page = get('/')
     form = Hpricot(page.body).at(:form)
     form[:action].should == '/save'
     form[:method].should == 'POST'
