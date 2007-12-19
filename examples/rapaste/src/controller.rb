@@ -23,7 +23,7 @@ class PasteController < Ramaze::Controller
   def save
     syntax, text = request[:syntax, :text]
 
-    if request.post? and syntax and text
+    if request.post? and text and SYNTAX_LIST.has?(syntax)
       paste = Paste.create :syntax => syntax,
         :text => text,
         :created => Time.now
