@@ -6,6 +6,7 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/contrib/rubyforgepublisher'
 require 'fileutils'
+require 'time'
 require 'pp'
 include FileUtils
 
