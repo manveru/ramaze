@@ -20,7 +20,7 @@ describe WikiController do
   end
 
   def page(name)
-    page = get('/'+name)
+    page = get(name)
     page.status.should == 200
     page.body.should_not be_nil
 
