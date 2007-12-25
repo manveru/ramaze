@@ -12,9 +12,7 @@ module Ramaze
 
       ENGINES[self] = %w[ xhtml nag ]
 
-      LISTENERS = [ :Element, :Morpher, :Include, :Instruction ]
-
-      TEMPLATE = ::Nagoro::Template[LISTENERS]
+      PIPES = ::Nagoro::DEFAULT_PIPES.dup
 
       class << self
 
@@ -23,7 +21,7 @@ module Ramaze
         def transform action
           nagoro = wrap_compile(action)
           file = action.template || action.method
-          nagoro.result(action.binding, file.to_s)
+          nagoro.result(:file => file, :binding => action.binding)
         end
 
         def wrap_compile(action, template = nil)
@@ -45,7 +43,7 @@ module Ramaze
         # and returning an instance of ::Nagoro::Template
 
         def compile(action, template)
-          TEMPLATE.render(template)
+          ::Nagoro.compile(template)
         end
       end
     end
