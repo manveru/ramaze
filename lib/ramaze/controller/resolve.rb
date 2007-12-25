@@ -81,7 +81,7 @@ module Ramaze
       # appropiate template if one exists.
 
       def resolve_action(path, *parameter)
-        path, parameter = path.to_s, parameter.map(&:to_s)
+        path, parameter = path.to_s, parameter.map{|e| e.to_s}
         if alternate_template = trait["#{path}_template"]
           t_controller, t_path = *alternate_template
           template = t_controller.resolve_template(t_path)
