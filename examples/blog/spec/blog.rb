@@ -1,11 +1,9 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-# if these libraries are missing there is no sense in running the tests,
-# cause they won't work at all. 
-testcase_requires 'sequel'
-testcase_requires 'hpricot'
+testcase_requires 'hpricot', 'sequel'
 
+$LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
 
 describe 'blog' do
@@ -30,8 +28,8 @@ describe 'blog' do
   end
 
   before :all do
-    ramaze :public_root   => __DIR__/'../public',
-           :template_root => __DIR__/'../template'
+    ramaze :public_root   => base/:public,
+           :template_root => base/:template
   end
 
   it 'should have main page' do

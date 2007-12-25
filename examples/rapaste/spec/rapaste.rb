@@ -1,13 +1,15 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-testcase_requires 'uv', 'hpricot'
-base = File.expand_path(__DIR__/'..')
-require base/:start
+testcase_requires 'hpricot', 'uv'
+
+$LOAD_PATH.unshift base = __DIR__/'..'
+require 'start'
 
 describe 'RaPaste' do
   before :all do
-    ramaze :template_root => base/:template, :public_root => base/:public
+    ramaze :public_root   => base/:public,
+           :template_root => base/:template
   end
 
   it 'should show an empty list on the list page' do

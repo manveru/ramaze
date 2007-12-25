@@ -1,14 +1,10 @@
+require 'ramaze'
 require 'ramaze/spec/helper'
 
 testcase_requires 'hpricot'
 
-$:.unshift 'examples/todolist'
+$LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
-
-# fix the paths to template and public for the spec
-class MainController
-  template_root __DIR__ / '../template'
-end
 
 describe 'todolist' do
   def h_get(*args)
@@ -46,7 +42,8 @@ describe 'todolist' do
   end
 
   it 'should start' do
-    ramaze :public_root => 'examples/todolist/public', :port => 7080
+    ramaze :public_root   => base/:public,
+           :template_root => base/:template
     get('/').status.should == 200
   end
 

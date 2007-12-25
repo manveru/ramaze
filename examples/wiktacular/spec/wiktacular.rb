@@ -1,19 +1,10 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-# if these libraries are missing there is no sense in running the tests,
-# cause they won't work at all. 
-testcase_requires 'bluecloth'
-testcase_requires 'hpricot'
+testcase_requires 'hpricot', 'bluecloth'
 
-$:.unshift 'examples/wiktacular'
+$LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
-
-# fix the paths to template and public for the spec
-# this is not needed usually, but this tests are also part of ramaze's suite
-class MainController
-  template_root __DIR__ / '../template'
-end
 
 describe 'wiktacular' do
   NEWPAGE = "newpagename"
@@ -43,7 +34,8 @@ describe 'wiktacular' do
   end
 
   it 'should start' do
-    ramaze :public_root => 'examples/wiktacular/public', :port => 7001
+    ramaze :public_root   => base/:public,
+           :template_root => base/:template
     get('/').status.should == 200
   end
 

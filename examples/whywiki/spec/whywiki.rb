@@ -1,22 +1,16 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-# if these libraries are missing there is no sense in running the tests,
-# cause they won't work at all.
 testcase_requires 'bluecloth', 'hpricot', 'nagoro'
 
-$:.unshift 'examples/whywiki'
+$LOAD_PATH.unshift base = __DIR__/'..'
 
-Db = Ramaze::YAMLStoreCache.new('testwiki.yaml')
+Db = Ramaze::YAMLStoreCache.new("#{base}/testwiki.yaml")
 require 'start'
-
-class WikiController < Ramaze::Controller
-  template_root __DIR__ / '../template'
-end
 
 describe WikiController do
   after :all do
-    FileUtils.rm('testwiki.yaml')
+    FileUtils.rm("#{base}/testwiki.yaml")
   end
 
   def page(name)
@@ -32,7 +26,8 @@ describe WikiController do
   end
 
   it 'should start' do
-    ramaze :public_root => '.', :port => 7001
+    ramaze :public_root   => base/:public,
+           :template_root => base/:template
     get('/').status.should == 303
   end
 
