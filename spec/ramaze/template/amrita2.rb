@@ -9,6 +9,8 @@ class TCTemplateAmritaController < Ramaze::Controller
   template_root __DIR__/:amrita2
   engine :Amrita2
 
+  private
+
   def title
     "hello world"
   end

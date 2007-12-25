@@ -10,9 +10,7 @@ class MainController < Ramaze::Controller
   template_root __DIR__/:template
   engine :Amrita2
 
-  def index
-    %{ #{A(Rs())} | #{Rs(:internal)} | #{Rs(:external)} }
-  end
+  private
 
   def title
     "The external Template for Amrita2"
