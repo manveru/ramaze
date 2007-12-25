@@ -10,7 +10,7 @@ $:.unshift __DIR__/'../'
 require 'start'
 
 describe 'Wikore' do
-  def should_redirect to = '/'
+  def check_redirect(to = '/')
     response = yield
     response.status.should == 303
     response.body.should =~ /<a href="#{to}">/
@@ -25,7 +25,8 @@ describe 'Wikore' do
   end
 
   before :all do
-    ramaze :template_root => (__DIR__/'../template')
+    ramaze :template_root => __DIR__/'../template',
+           :public_root   => __DIR__/'../public'
   end
 
   it 'should have no Main page' do
@@ -35,7 +36,7 @@ describe 'Wikore' do
   end
 
   it 'should create a Main page' do
-    should_redirect '/Main' do
+    check_redirect '/Main' do
       post('/page/create', 'title' => 'Main', 'text' => 'Newly created Main page')
     end
 
@@ -47,7 +48,7 @@ describe 'Wikore' do
   end
 
   it 'should update Main page' do
-    should_redirect '/Main' do
+    check_redirect '/Main' do
       post('/page/save', 'title' => 'Main', 'text' => 'Newly updated Main page')
     end
 
@@ -87,10 +88,10 @@ describe 'Wikore' do
   end
 
   it 'should rename Main page to Other and back' do
-    should_redirect '/Other' do
+    check_redirect '/Other' do
       get('/page/rename/Main/Other')
     end
-    should_redirect '/Main' do
+    check_redirect '/Main' do
       get('/page/rename/Other/Main')
     end
   end
@@ -102,10 +103,10 @@ describe 'Wikore' do
   end
 
   it 'should fail if create/save is not POSTed to' do
-    should_redirect '/' do
+    check_redirect '/' do
       get('/page/save', 'title' => 'Main', 'text' => 'Newly updated Main page')
     end
-    should_redirect '/' do
+    check_redirect '/' do
       get('/page/create', 'title' => 'Main', 'text' => 'Newly updated Main page')
     end
   end
