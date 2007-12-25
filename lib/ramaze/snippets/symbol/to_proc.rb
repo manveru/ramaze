@@ -4,14 +4,21 @@
 # Extensions for Symbol
 
 class Symbol
+  unless method_defined?(:to_proc)
 
-  # the well-known #to_proc
-  # creates a lambda that sends the symbol and any further arguments
-  # to the object yielded.
-  #   [1, 2, 3].map(&:to_s)    # => ['1', '2', '3']
-  #   %w[a b c].map(&:to_sym)  # => [:a, :b, :c]
+    # Turns the symbol into a simple proc, which is especially useful for enumerations. Examples:
+    #
+    #   # The same as people.collect { |p| p.name }
+    #   people.collect(&:name)
+    #
+    #   # The same as people.select { |p| p.manager? }.collect { |p| p.salary }
+    #   people.select(&:manager?).collect(&:salary)
+    #
+    #   [1, 2, 3].map(&:to_s)    # => ['1', '2', '3']
+    #   %w[a b c].map(&:to_sym)  # => [:a, :b, :c]
 
-  def to_proc
-    lambda{|o, *args| o.send(self, *args) }
+    def to_proc
+      Proc.new{|*args| args.shift.__send__(self, *args) }
+    end
   end
 end
