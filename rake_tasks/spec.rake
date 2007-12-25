@@ -33,7 +33,6 @@ files.each do |file|
 end
 
 spec_layout.each do |task_name, specs|
-
   desc task_name
   task task_name => [:clean] do
     wrap = SpecWrap.new(*specs)
