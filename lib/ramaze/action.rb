@@ -84,9 +84,13 @@ module Ramaze
       return default if engines.empty?
 
       ext = File.extname(template).gsub(/^\./, '')
-      ext_engine = engines.find{|e| e.last.include?(ext)}.first
+      ext_engines = engines.reject{|k,v| not v.include?(ext) }
 
-      self[:engine] = (ext_engine || default)
+      if ext_engines.has_key?(default)
+        self[:engine] = default
+      else
+        self[:engine] = ext_engines.keys.sort.first
+      end
     end
 
     # Returns an instance of controller, will be cached on first access.
