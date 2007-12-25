@@ -7,8 +7,8 @@
         <div class="title">#{entry.title}</div>
         <div class="created">Created: #{entry.created}</div>
         <ul>
-					<li>#{A 'edit', :href => Rs(:edit, entry.oid)}</li>
-					<li>#{A 'delete', :href => Rs(:delete, entry.oid)}</li>
+					<li>#{A 'edit', :href => Rs(:edit, entry.id)}</li>
+					<li>#{A 'delete', :href => Rs(:delete, entry.id)}</li>
 				</ul>
       </div>
       <div class="content">#{entry.content}</div>

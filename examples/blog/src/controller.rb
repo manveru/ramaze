@@ -1,25 +1,27 @@
-class MainController < Controller
+class MainController < Ramaze::Controller
   def index
-    @entries = Entry.all :order => 'created DESC'
+    @entries = Entry.order(:created.DESC).all
   end
-  def delete oid
-    Entry.delete oid
+
+  def delete id
+    entry = Entry[id]
+    entry.delete
     redirect :/
   end
-  def edit oid
-    @entry = Entry[oid]
+
+  def edit id
+    @entry = Entry[id]
+    redirect_referrer unless @entry
   end
+
   def create
-    Entry.create request['title'], request['content']
+    Entry.add(*request[:title, :content])
     redirect :/
   end
+
   def save
-    redirect_referer unless oid = request['oid']
-    entry = Entry[oid]
-    entry.title = request['title']
-    entry.content = request['content']
-    entry.updated = Time.now
-    entry.save
+    redirect_referer unless  entry = Entry[request[:id]]
+    entry.update(*request[:title, :content])
     redirect :/
   end
 end
