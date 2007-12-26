@@ -1,8 +1,7 @@
-require 'spec/helper'
+require 'spec'
+require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
 
 describe 'String#/ and Symbol#/' do
-
-  # check if this is ok in win32
   it 'should join two strings' do
     ('a' / 'b').should == 'a/b'
   end
@@ -18,5 +17,4 @@ describe 'String#/ and Symbol#/' do
   it 'should be usable in concatenation' do
     ('a' / :b / :c).should == 'a/b/c'
   end
-
 end

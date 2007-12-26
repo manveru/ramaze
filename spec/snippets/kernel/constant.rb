@@ -1,8 +1,7 @@
-require 'spec/helper'
+require 'spec'
+require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
 
 describe 'constant' do
-
-
   it 'should load from string' do
     constant('Fixnum').should == Fixnum
   end
@@ -12,16 +11,14 @@ describe 'constant' do
   end
 
   it 'should handle hierarchy' do
-    constant('Ramaze::Inform').should == Ramaze::Inform
+    constant('Math::PI').should == Math::PI
   end
 
   it 'should be callable with explicit self' do
-    Ramaze.constant('Inform').should == Ramaze::Inform
+    Math.constant('PI').should == Math::PI
   end
 
   it 'should be callable with explicit self' do
-    Ramaze.constant('::Ramaze').should == Ramaze
+    Math.constant('::Math').should == Math
   end
-
 end
-

@@ -1,4 +1,5 @@
-require 'spec/helper'
+require 'spec'
+require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
 
 describe "Numeric#filesize_format" do
   it 'it should convert filesizes to human readable format' do

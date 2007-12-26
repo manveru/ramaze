@@ -1,4 +1,5 @@
-require 'spec/helper'
+require 'spec'
+require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
 
 describe "String#unindent" do
   it "should remove indentation" do

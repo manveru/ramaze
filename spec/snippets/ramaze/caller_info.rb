@@ -1,4 +1,5 @@
-require 'spec/helper'
+require 'spec'
+require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
 
 #TODO test parse_backtrace explicitly
 describe "Ramaze#caller_info" do

@@ -1,4 +1,6 @@
-require 'spec/helper'
+require 'spec'
+require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
+require 'fileutils'
 
 describe 'aquire' do
   def require(name)

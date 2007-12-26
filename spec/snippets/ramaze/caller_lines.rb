@@ -1,8 +1,9 @@
-require 'spec/helper'
+require 'spec'
+require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
 
 describe "Ramaze#caller_info" do
   before :all do
-    @file = Ramaze::BASEDIR/'ramaze/gestalt.rb'
+    @file = File.expand_path(File.join(File.dirname(__FILE__), '../../../lib/ramaze/gestalt.rb'))
   end
 
   it 'should show  line numbers' do
