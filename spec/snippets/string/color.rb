@@ -1,5 +1,5 @@
 require 'spec'
-require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
+require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
 
 describe 'String#color' do
   it 'should define methods to return ANSI strings' do

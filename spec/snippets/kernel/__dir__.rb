@@ -1,5 +1,5 @@
 require 'spec'
-require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
+require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
 
 describe '__DIR__' do
   # this is hardly exhaustive, but better than nothing

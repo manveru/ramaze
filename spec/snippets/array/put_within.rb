@@ -1,5 +1,5 @@
 require 'spec'
-require File.expand_path(__FILE__).gsub(/\/spec\//, '/lib/ramaze/')
+require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
 
 describe 'Array#put_within' do
   it 'should put a given object at a well-described position' do
