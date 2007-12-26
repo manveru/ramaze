@@ -9,7 +9,7 @@ rescue LoadError => ex
 end
 
 base = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'lib'))
-$:.unshift base.gsub(/^#{Dir.pwd}/, '.')
+$:.unshift base.gsub(/^#{Regexp.escape(Dir.pwd)}/, '.')
 
 # $VERBOSE = 1
 $context_runner = false

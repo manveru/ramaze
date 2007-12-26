@@ -60,7 +60,7 @@ module Ramaze
     def error(ex)
       if ex.respond_to?(:exception)
         message = ex.backtrace[0..Global.backtrace_size]
-        message.map{|m| m.gsub!(/^#{Dir.pwd}/, '.') }
+        message.map{|m| m.gsub!(/^#{Regexp.escape(Dir.pwd)}/, '.') }
         message.unshift(ex.inspect)
       else
         message = ex.to_s
