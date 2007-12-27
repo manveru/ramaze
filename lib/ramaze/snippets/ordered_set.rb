@@ -1,9 +1,9 @@
 #          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-class OrderedSet
-  instance_methods.each { |m| undef_method m unless m =~ /^__/ }
+require File.join(File.dirname(__FILE__), 'blankslate')
 
+class OrderedSet < BlankSlate
   def initialize(*args)
     @set = *args
     @set ||= []
