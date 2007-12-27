@@ -45,7 +45,7 @@ class PasteController < Ramaze::Controller
 
     ordered = Paste.order(:created.DESC)
     @paginated = ordered.paginate(id.to_i, 1)
-    @pager = paginator(@paginated, '/list')
+    @pager = paginator(@paginated, '/')
   end
 
   # Do not run through templating
