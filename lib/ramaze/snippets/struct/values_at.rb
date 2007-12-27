@@ -4,7 +4,7 @@
 # Extensions for Struct
 
 class Symbol
-  undef_method :to_int
+  undef_method :to_int if method_defined?(:to_int)
 end
 
 class Struct
