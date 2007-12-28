@@ -352,7 +352,8 @@ private
       options.update(pager.limit)
       items = items.reload(options)
       return items, pager
-    elsif defined?(Og) && items.is_a?(Og::Mixin)
+    elsif defined?(Og::EntityMixin) && items.is_a?(Og::EntityMixin) ||
+          defined?(Og::Mixin) && items.is_a?(Og::Mixin) # Og <= 0.41
       pager = Pager.new(request, limit, items.count(options), pager_key)
       options.update(pager.limit)
       items = items.all(options)
