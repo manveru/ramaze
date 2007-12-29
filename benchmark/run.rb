@@ -3,6 +3,10 @@ class String
   def /(o) File.join(self, o.to_s) end
 end
 
+def memsize(pid)
+  (`ps -p #{pid} -o rss=`.strip.to_f/10.24).round/100.0
+end
+
 results = File.open(__DIR__/'results.txt', 'w')
 
 %w[ simple no_template no_informer no_sessions minimal ].each do |file|
@@ -29,7 +33,10 @@ results = File.open(__DIR__/'results.txt', 'w')
     # wait for ramaze to start up
     sleep 1
 
+    results.puts "  Mem usage before:".ljust(26) + "#{memsize(ramaze)}MB"
     results.puts `ab -c 10 -n 1000 http://127.0.0.1:7000/`.grep(/^(Fail|Req|Time)/).map{|l|"  #{l}"}
+    results.puts "  Mem usage after:".ljust(26)  + "#{memsize(ramaze)}MB"
+
     results.puts "\n"
     results.flush
 
