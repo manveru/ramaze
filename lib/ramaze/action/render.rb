@@ -82,7 +82,10 @@ module Ramaze
                  after_process].join
 
       if path and tlayout = layout
-        instance.instance_variable_set("@content", content)
+        [instance, tlayout.instance].each do |i|
+          i.instance_variable_set("@content", content)
+        end
+
         content = tlayout.render
 
         # restore Action.current after render above
@@ -111,8 +114,6 @@ module Ramaze
         end
 
         layout_action.binding = binding
-        layout_action.controller = controller
-        layout_action.instance = instance
         layout_action.path = nil
         layout_action
       end
