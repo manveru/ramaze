@@ -80,6 +80,15 @@ class TCActionSubLayout < Ramaze::Controller
   end
 end
 
+class TCReUseActionLayout < Ramaze::Controller
+  map '/reuse'
+  layout '/wrapper'
+
+  def index
+    'hi'
+  end
+end
+
 describe 'Action rendering' do
   before :all do
     ramaze
@@ -114,5 +123,9 @@ describe 'Action rendering' do
 
   it 'should apply relative layouts' do
     get('/sub').body.should == "<h1>SubWrapper</h1>"
+  end
+
+  it 'should allow re-using layouts from other controllers' do
+    get('/reuse').body.should == "<pre>hi</pre>"
   end
 end
