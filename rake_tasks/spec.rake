@@ -9,7 +9,10 @@ SPEC_BASE = File.expand_path('spec')
 EXAMPLE_BASE = File.expand_path('examples')
 SNIPPETS_BASE = File.expand_path('snippets')
 # ignore files with these paths
-ignores = [ './*', './helper/*', './ramaze/adapter.rb', './ramaze/request.rb', ]
+ignores = [
+  './*', './helper/*', './ramaze/adapter.rb', './ramaze/request.rb',
+  './bacon/snippets.rb'
+]
 
 files = Dir[SPEC_BASE/'**'/'*.rb'] + 
         Dir[EXAMPLE_BASE/'**/spec'/'*.rb']
