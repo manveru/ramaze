@@ -5,6 +5,17 @@ require 'spec/helper'
 
 testcase_requires 'hpricot'
 
+module Og
+  class Mock
+    def initialize(*a); @a = a; end
+    def all(o) @a[(o[:offset]||0),o[:limit]] end
+    def count(*a) @a.size end
+    alias reload all
+  end
+  module Mixin; end
+  module Collection; end
+end
+
 class TCPagerController < Ramaze::Controller
   map '/'
   helper :pager
@@ -39,104 +50,47 @@ shared 'pager' do
   end
 
   before do
-    @stuff = (1..9).to_a
     @items, @pager = paginate(@stuff, :limit => 2)
   end
-end
-
-describe 'PagerHelper' do
-  behaves_like 'pager'
 
   it 'should be paginated' do
     get('/page').body.should == [1, 2].inspect
     get('/page', pager_key => '2').body.should == [3, 4].inspect
   end
 
-  it 'should link to other pages' do
-    page = Hpricot(@pager.navigation)
-    (page/:a).size.should == 6
-  end
-end
-
-describe 'Pager' do
-  behaves_like 'pager'
-
-  it 'should report the number of articles as Pager#total_count' do
-    @pager.total_count.should == 9
-  end
-end
-
-__END__
-describe "Pager", :shared => true do
-  include Ramaze::PagerHelper
-
   it "should report the number of articles as Pager#total_count" do
-    @pager.should.not be_nil
-    @pager.total_count.should == 5
+    @pager.should.not.be.nil
+    @pager.total_count.should.equal 5
   end
 
   it "should return the same number of items as passed to :per_page" do
-    @items.should.not be_nil
-    @items.size.should == 2
+    @items.should.not.be.nil
+    @items.size.should.equal 2
   end
 
   it "should link to other pages" do
-    @pager.should.not be_nil
-    @pager.navigation.should.not be_nil
+    @pager.should.not.be.nil
+    @pager.navigation.should.not.be.nil
 
-    require 'hpricot'
     page = Hpricot(@pager.navigation)
     (page / 'a').size.should == 4
   end
+end
 
+describe "Array Pager" do
+  @stuff = (1..5).to_a
+
+  behaves_like "pager"
 end
 
 describe "OgPager" do
-  it_should_behave_like "Pager"
+  @stuff = Og::Mock.new(1,2,3,4,5).extend(Og::Mixin)
 
-  module Og; end
-  module Og::Mixin; end
-  module Og::Collection; end
-
-  before do
-    person = mock("Person")
-    person.should_receive(:count).with(any_args).and_return(5)
-    person.should_receive(:all).with(any_args).and_return([1,2])
-    person.should_receive(:is_a?).any_number_of_times do |x|
-      x.inspect =~ /Og::Mixin/
-    end
-
-    @items, @pager = paginate(person, :limit => 2)
-  end
-
+  behaves_like "pager"
 end
 
 describe "OgCollectionPager" do
-  it_should_behave_like "Pager"
+  @stuff = Og::Mock.new(1,2,3,4,5).extend(Og::Collection)
 
-  module Og; end
-  module Og::Mixin; end
-  module Og::Collection; end
-
-  before do
-    collection = mock("Og::HasMany.new")
-    collection.should_receive(:count).with(any_args).and_return(5)
-    collection.should_receive(:reload).with(any_args).and_return([1,2])
-    collection.should_receive(:is_a?).any_number_of_times do |x|
-      x.inspect =~ /Og::Collection/
-    end
-
-    @items, @pager = paginate(collection, :limit => 2)
-  end
-
-end
-
-describe "ArrayPager" do
-  it_should_behave_like "Pager"
-
-  before do
-    stuff = [1, 2, 3, 4, 5]
-    @items, @pager = paginate(stuff, :limit => 2)
-  end
-
+  behaves_like "pager"
 end
