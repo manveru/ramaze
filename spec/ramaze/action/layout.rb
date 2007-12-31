@@ -87,6 +87,33 @@ class TCReUseActionLayout < Ramaze::Controller
   def index
     'hi'
   end
+
+  def other_layout
+    "#@title: #@content"
+  end
+end
+
+class TCLayoutInstance < Ramaze::Controller
+  map '/reuse_instance'
+  layout '/reuse/other_layout'
+
+  def index
+    @title = 'hello'
+    'world'
+  end
+end
+
+class TCLayoutInstanceVars < Ramaze::Controller
+  map '/instancevars'
+  layout :layout
+
+  def layout
+    @title = "layout"
+  end
+
+  def test
+    'test'
+  end
 end
 
 describe 'Action rendering' do
@@ -125,7 +152,12 @@ describe 'Action rendering' do
     get('/sub').body.should == "<h1>SubWrapper</h1>"
   end
 
+  it 'should use instance vars defined in the layout action in external templates' do
+    get('/instancevars/test').body.should == 'layout: test'
+  end
+
   it 'should allow re-using layouts from other controllers' do
     get('/reuse').body.should == "<pre>hi</pre>"
+    get('/reuse_instance').body.should == "hello: world"
   end
 end

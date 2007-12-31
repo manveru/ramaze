@@ -113,7 +113,16 @@ module Ramaze
           return false
         end
 
-        layout_action.binding = binding
+        unless layout_action.controller == controller
+          instance.instance_variables.each do |x|
+            layout_action.instance.instance_variable_set(x, instance.instance_variable_get(x))
+          end
+        else
+          layout_action.binding = binding
+          layout_action.controller = controller
+          layout_action.instance = instance
+        end
+
         layout_action.path = nil
         layout_action
       end
