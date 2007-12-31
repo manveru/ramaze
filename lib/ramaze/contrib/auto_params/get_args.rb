@@ -25,6 +25,7 @@ begin
 
     def get_args
       arg_node = deep_array_node(:args)
+      return nil unless arg_node
       args = arg_node.arg_nodes
       default_node = arg_node.deep_array_node(:block)
       return args unless default_node

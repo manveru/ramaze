@@ -92,8 +92,14 @@ module Ramaze
         arity = meth.arity
 
         if meth.respond_to? :get_args
-          Cache.args[name] ||= meth.get_args.select{|e| e.to_s !~ /^\*/} || []
-          args = Cache.args[name]
+          unless args = Cache.args[name]
+            if args = meth.get_args
+              args = args.select{|e| e.to_s !~ /^\*/}
+            else
+              args = []
+            end
+            Cache.args[name] = args
+          end
 
           param_keys = request.params.keys
 
@@ -101,7 +107,7 @@ module Ramaze
           if args.size > params.size or args.find{|k,v| param_keys.include?(k.to_s) }
             args.each_with_index do |(name, val), i|
               r_params = request.params[name.to_s]
-              if params[i] and r_params.size > 0
+              if params[i] and r_params and r_params.size > 0
                 params[i] = [params[i], r_params].flatten
               else
                 params[i] ||= r_params

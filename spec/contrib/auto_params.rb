@@ -40,6 +40,21 @@ class MainController < Ramaze::Controller
   end
 end
 
+class GetArgsTest
+  def one(a, b, c) end
+  def two(a, b = 1, c = nil) end
+  def three(a, *args) end
+end
+
+describe 'Method#get_args' do
+  it 'should return a list of arguments' do
+    gat = GetArgsTest.new
+    gat.method(:one).get_args.should == [[:a], [:b], [:c]]
+    gat.method(:two).get_args.should == [[:a], [:b, 1], [:c, nil]]
+    gat.method(:three).get_args.should == [[:a], [:"*args"]]
+  end
+end
+
 describe 'Parameterized actions' do
   before(:all) { ramaze }
 
