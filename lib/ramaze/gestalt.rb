@@ -98,7 +98,7 @@ module Ramaze
       @out << attr.inject(''){ |s,v| s << %{ #{v[0]}="#{_gestalt_escape_entities(v[1])}"} }
       if text != [] or block_given?
         @out << ">"
-        @out << _gestalt_escape_entities(text.to_s)
+        @out << _gestalt_escape_entities([text].join)
         if block_given?
           text = yield
           @out << text.to_str if text != @out and text.respond_to?(:to_str)
