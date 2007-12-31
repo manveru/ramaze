@@ -4,9 +4,7 @@
 # Extensions for String
 
 class String
-
-  {
-    :reset          =>  0,
+  { :reset          =>  0,
     :bold           =>  1,
     :dark           =>  2,
     :underline      =>  4,
