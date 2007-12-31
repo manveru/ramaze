@@ -63,7 +63,7 @@ class SpecWrap
   def initialize(*files)
     @files = files.flatten
     @names = @files.namize
-    @specs = Hash[*@files.zip(@names).flatten]
+    @specs = Hash[*@files.zip(@names).to_a.flatten]
     @done = Set.new
   end
 
@@ -171,7 +171,7 @@ class SpecFile
     @passed = 0
     @failed = 0
     found = false
-    @stdout.grep(/(\d+) examples?, (\d+) failures?/)
+    @stdout =~ /(\d+) examples?, (\d+) failures?/
     @passed, @failed = $1.to_i, $2.to_i
   end
 

@@ -12,8 +12,10 @@ class Struct
 
   def self.fill(hash = {})
     instance = new
+    to_s = members.first.respond_to?(:to_str)
     hash.each do |key, value|
-      next unless members.include?(key.to_s)
+      key = to_s ? key.to_s : key.to_sym
+      next unless members.include?(key)
       instance.send("#{key}=", value)
     end
     instance
