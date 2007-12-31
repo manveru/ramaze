@@ -10,10 +10,10 @@ end
 
 # The main namespace for Ramaze
 module Ramaze
-  BASEDIR = File.dirname(File.expand_path(__FILE__))
   SEEED = $0.dup
   APPDIR = File.dirname(File.expand_path($0))
-  $:.unshift BASEDIR
+  BASEDIR = File.dirname(File.expand_path(__FILE__))
+  $LOAD_PATH.unshift BASEDIR
 end
 
 Thread.abort_on_exception = true
