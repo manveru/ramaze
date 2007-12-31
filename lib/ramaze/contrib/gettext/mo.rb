@@ -17,7 +17,7 @@
 
 require 'iconv'
 
-class MOFile < Hash 
+class MOFile < Hash
   class InvalidFormat < RuntimeError; end;
 
   attr_reader :filename

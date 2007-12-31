@@ -4,10 +4,10 @@
 
   Copyright (C) 2003-2006  Masao Mutoh
   Copyright (C) 2001,2002  Yasushi Shoji, Masao Mutoh
- 
+
       Yasushi Shoji   <yashi at atmark-techno.com>
       Masao Mutoh     <mutoh at highway.ne.jp>
- 
+
   You may redistribute it and/or modify it under the same
   license terms as Ruby.
 =end
@@ -17,7 +17,7 @@ module GetText
 
   module RGetText #:nodoc:
     extend GetText
-    
+
     MAX_LINE_LEN = 70 unless defined?(MAX_LINE_LEN)
 
     module_function
@@ -65,33 +65,33 @@ EOS
       	end
       	msgid.gsub!(/"/, '\"')
       	msgid.gsub!(/\r/, '')
-      	
+
       	str << "\nmsgid \"" << msgid << "\"\n"
     	  str << "msgstr \"\"\n"
       end
       str
     end
-    
+
     def generate_translated_po(hash)
       str = generate_pot_header
       result = Array.new
-      
+
       hash.keys.sort.each do |msgid|
         msgid = msgid.dup
         msgstr = hash[msgid]
-        
+
         msgid.gsub!(/"/, '\"')
       	msgid.gsub!(/\r/, '')
-      	
+
       	if msgstr
       	  msgstr.gsub!(/"/, '\"')
         	msgstr.gsub!(/\r/, '')
       	end
-      	
+
       	str << "\nmsgid \"" << msgid << "\"\n"
     	  str << "msgstr \"" << msgstr << "\"\n"
       end
-      
+
       str
     end
 

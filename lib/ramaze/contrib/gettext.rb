@@ -89,7 +89,7 @@ class Ramaze::Tool::Gettext < Ramaze::Tool::Localize
     dictionary.each do |locale, dict|
       keys.concat dict.keys
     end
-    
+
     data = ::GetText::RGetText.generate(keys.compact.uniq.sort.map {|x| [x] })
     file = (trait[:file] % trait[:default_language]) + '.pot'
     File.open(file, File::CREAT|File::TRUNC|File::WRONLY) do |fd|
@@ -98,7 +98,7 @@ class Ramaze::Tool::Gettext < Ramaze::Tool::Localize
   rescue Errno::ENOENT => e
     Ramaze::Inform.error e
   end
-  
+
 end
 
 class Ramaze::Contrib::Gettext
