@@ -1,5 +1,4 @@
-require 'spec'
-require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
+require 'spec/bacon/snippets'
 
 describe 'Array#put_within' do
   it 'should put a given object at a well-described position' do
@@ -12,7 +11,8 @@ describe 'Array#put_within' do
     array = [:foo, :bar, :baz]
     lambda{
       array.put_within(:foobar, :after => :foo, :before => :baz)
-    }.should raise_error(ArgumentError, "Too many elements within constrain")
+    }.should.raise(ArgumentError).
+      message.should == "Too many elements within constrain"
   end
 end
 

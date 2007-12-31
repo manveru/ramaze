@@ -42,10 +42,11 @@ class TCStackHelperController < Ramaze::Controller
 end
 
 describe "StackHelper" do
+  behaves_like 'browser'
   ramaze(:adapter => :webrick)
 
   it "conventional login" do
-    browser do
+    Browser.new do
       get('/secure').should == 'please login'
       get('/login')
       get('/secure').should == 'secret content'
@@ -54,7 +55,7 @@ describe "StackHelper" do
   end
 
   it "indirect login" do
-    browser do
+    Browser.new do
       get('/foo').should == 'logged in'
       get('/secure').should == 'secret content'
       eget('/').should == {:logged_in => true}
@@ -62,7 +63,7 @@ describe "StackHelper" do
   end
 
   it "indirect login with params" do
-    browser do
+    Browser.new do
       eget('/bar', 'x' => 'y').should == {'x' => 'y'}
       eget('/').should == {:logged_in => true}
     end

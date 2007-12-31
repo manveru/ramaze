@@ -7,6 +7,8 @@ $LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
 
 describe 'todolist' do
+  behaves_like 'http'
+
   def h_get(*args)
     Hpricot(get(*args).body)
   end
@@ -48,7 +50,7 @@ describe 'todolist' do
   end
 
   it 'should have no empty mainpage' do
-    get('/').body.should_not be_nil
+    get('/').body.should.not == nil
   end
 
   it 'should have two preset tasks' do
@@ -62,13 +64,13 @@ describe 'todolist' do
   end
 
   it 'should have a page to create new tasks' do
-    get('/new').body.should_not be_nil
+    get('/new').body.should.not == nil
   end
 
   it 'should have a form to create a tasks on the /new page' do
     doc = h_get('/new')
     form = doc.at :form
-    form.should_not be_nil
+    form.should.not == nil
     input = form.at(:input)
     input['type'].should == 'text'
     input['name'].should == 'title'
@@ -80,15 +82,15 @@ describe 'todolist' do
   end
 
   it 'should show have the new task' do
-    task_titles.should include('spectask')
+    task_titles.should.include('spectask')
   end
 
   it 'should toggle the spectask' do
     get('/close/spectask').status.should == 303
-    spectask.should_not be_nil
+    spectask.should.not == nil
     spectask_status.should == 'done'
     get('/open/spectask').status.should == 303
-    spectask.should_not be_nil
+    spectask.should.not == nil
     spectask_status.should == 'not done'
   end
 
@@ -103,7 +105,7 @@ describe 'todolist' do
 
   it 'should delete the new task' do
     get('/delete/spectask').status.should == 303
-    task_titles.should_not include('spectask')
+    task_titles.should.not.include('spectask')
   end
 
   it 'should not create empty tasks but show a subtle error message' do
@@ -115,7 +117,5 @@ describe 'todolist' do
     error_on_page('/new', response).should == 'Please enter a title'
   end
 
-  after :all do
-    FileUtils.rm('todolist.db') rescue nil
-  end
+  FileUtils.rm('todolist.db') rescue nil
 end

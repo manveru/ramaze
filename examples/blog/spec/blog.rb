@@ -1,22 +1,30 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-testcase_requires 'hpricot', 'sequel'
+testcase_requires 'hpricot', 'sequel', 'sequel_model', 'sqlite3'
 
 $LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
 
-describe 'blog' do
+describe 'Blog' do
+  behaves_like 'http'
+  ramaze :public_root   => base/:public,
+         :template_root => base/:template
+
+  after do
+    Entry.each{|e| e.delete unless e.id == 1 }
+  end
+
   def check_page(name = '')
     page = get("/#{name}")
     page.status.should == 200
-    page.body.should_not be_nil
+    page.body.should.not == nil
 
     doc = Hpricot(page.body)
     doc.at('title').inner_html.should == 'bl_Og'
     doc.at('h1').inner_html.should == 'bl_Og'
 
-    doc.search('div#entries').should have(1).div
+    doc.search('div#entries').size.should == 1
 
     doc
   end
@@ -27,15 +35,10 @@ describe 'blog' do
     page.location.should == '/'
   end
 
-  before :all do
-    ramaze :public_root   => base/:public,
-           :template_root => base/:template
-  end
-
   it 'should have main page' do
     doc = check_page
     doc.at('div#actions>a').inner_html.should == 'new entry'
-    doc.search('div.entry').length.should == 1
+    doc.search('div.entry').size.should == 1
   end
 
   it 'should have new entry page' do
@@ -50,7 +53,7 @@ describe 'blog' do
     create_page('new page', 'cool! a new page')
     doc = check_page
     entry = doc.search('div.entry')
-    entry.length.should == 2
+    entry.size.should == 2
     entry = entry.last
 
     entry.at('div.title').inner_html == 'new page'
@@ -62,7 +65,7 @@ describe 'blog' do
     post('/save','id'=>'2','title'=>'new title','content'=>'bla bla')
     doc = check_page
     entries = doc/'div.entry'
-    entries.should have(2).divs
+    entries.size.should == 2
     entry = entries.first
 
     entry.at('div.title').inner_html == 'new title'
@@ -72,19 +75,13 @@ describe 'blog' do
   it 'should delete existing pages' do
     create_page("page to delete", 'content')
     entries = check_page/'div.entry'
-    entries.should have(2).divs
+    entries.size.should == 2
     delete_link = entries.last.at("a:contains('delete')")
     page = get(delete_link[:href])
     page.status.should == 303
     page.location.should == '/'
-    (check_page/'div.entry').should have(1).div
+    (check_page/'div.entry').size.should == 1
   end
 
-  after :each do
-    Entry.each{|e| e.delete unless e.id == 1 }
-  end
-
-  after :all do
-    FileUtils.rm_f(__DIR__/'../blog.db')
-  end
+  FileUtils.rm_f(__DIR__/'../blog.db')
 end

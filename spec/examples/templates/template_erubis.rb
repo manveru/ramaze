@@ -4,6 +4,7 @@ testcase_requires 'erubis'
 require 'examples/templates/template_erubis'
 
 describe 'Template Erubis' do
+  extend MockHTTP
   ramaze
 
   it '/' do
@@ -14,7 +15,7 @@ describe 'Template Erubis' do
   %w[/internal /external].each do |url|
     it url do
       html = get(url).body
-      html.should_not == nil
+      html.should.not == nil
       html.should =~ %r{<title>Template::Erubis (internal|external)</title>}
       html.should =~ %r{<h1>The (internal|external) Template for Erubis</h1>}
     end

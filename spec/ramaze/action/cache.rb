@@ -21,25 +21,23 @@ class TCOtherCache < Ramaze::Controller
 end
 
 describe 'Action rendering' do
-  before :all do
-    @public_root = __DIR__ / :public
-    FileUtils.mkdir_p @public_root
-    ramaze :file_cache => true
-  end
+  extend MockHTTP
+
+  @public_root = __DIR__ / :public
+  FileUtils.mkdir_p @public_root
+  ramaze :file_cache => true
 
   def req(path) r = get(path); [r.content_type, r.body] end
 
   it 'should cache to file' do
-    lambda{ req('/') }.should_not change{ req('/') }
-    File.file?(@public_root/'index').should be_true
+    lambda{ req('/') }.should.not.change{ req('/') }
+    File.file?(@public_root/'index').should == true
   end
 
   it 'should create subdirs as needed' do
-    lambda{ req('/other') }.should_not change{ req('/other') }
-    File.file?(@public_root/'other'/'index').should be_true
+    lambda{ req('/other') }.should.not.change{ req('/other') }
+    File.file?(@public_root/'other'/'index').should == true
   end
 
-  after :all do
-    FileUtils.rm_rf @public_root
-  end
+  FileUtils.rm_rf @public_root
 end

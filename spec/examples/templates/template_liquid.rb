@@ -4,6 +4,7 @@ testcase_requires 'liquid'
 require 'examples/templates/template_liquid'
 
 describe 'Template Liquid' do
+  extend MockHTTP
   ramaze
 
   it '/' do
@@ -17,7 +18,7 @@ describe 'Template Liquid' do
       response = get(url)
       response.status.should == 200
       html = response.body
-      html.should_not == nil
+      html.should.not == nil
       html.should =~ %r(<title>Template::Liquid #{name}</title>)
       html.should =~ %r(<h1>The #{name} Template for Liquid</h1>)
     end

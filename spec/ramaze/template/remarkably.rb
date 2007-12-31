@@ -5,6 +5,7 @@ require 'spec/helper'
 testcase_requires 'remarkably/engines/html'
 
 class TCTemplateRemarkablyController < Ramaze::Controller
+  map '/'
   template_root 'spec/ramaze/template/remarkably/'
   engine :Remarkably
 
@@ -31,7 +32,8 @@ class TCTemplateRemarkablyController < Ramaze::Controller
 end
 
 describe "Remarkably" do
-  ramaze(:mapping => {'/' => TCTemplateRemarkablyController})
+  behaves_like 'http'
+  ramaze
 
   def retrieve(*url)
     Ramaze::Controller.handle(*url)

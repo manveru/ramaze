@@ -26,17 +26,13 @@ caches.each do |cache, name|
   end
 
   describe "#{name} modification" do
-    setup do
+    before do
       Ramaze::Global.cache = cache
       @cache = Ramaze::Global.cache.new
     end
 
-    after :each do
+    after do
       @cache.clear
-    end
-
-    after :all do
-      FileUtils.rm(@cache.file) if cache == :yaml
     end
 
     it "should be assignable with #[]=" do
@@ -52,7 +48,7 @@ caches.each do |cache, name|
     it "should delete keys" do
       @cache[:bar] = :duh
       @cache.delete(:bar)
-      @cache[:bar].should be_nil
+      @cache[:bar].should == nil
     end
 
     it "should show values for multiple keys" do
@@ -69,7 +65,9 @@ caches.each do |cache, name|
       Ramaze::Cache.foo[key] = 'foo'
       Ramaze::Cache.bar[key] = 'bar'
 
-      Ramaze::Cache.foo[key].should_not == Ramaze::Cache.bar[key]
+      Ramaze::Cache.foo[key].should.not == Ramaze::Cache.bar[key]
     end
+
+    FileUtils.rm(@cache.file) if cache == :yaml
   end
 end

@@ -7,12 +7,13 @@ $LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
 
 describe 'wiktacular' do
+  behaves_like 'http'
   NEWPAGE = "newpagename"
 
   def check_page(name)
     page = get('/'+name)
     page.status.should == 200
-    page.body.should_not be_nil
+    page.body.should.not == nil
 
     doc = Hpricot(page.body)
     doc.at('title').inner_html.should == 'Wiktacular'
@@ -23,7 +24,7 @@ describe 'wiktacular' do
 
     navigation = doc.search('div#navigation>div>a')
     %w[link main markdown testing].each do |link|
-      navigation.map{|n| n.inner_html }.sort.should include(link)
+      navigation.map{|n| n.inner_html }.sort.should.include(link)
     end
 
     manipulate = doc.search('div#manipulate>a')
@@ -65,7 +66,7 @@ describe 'wiktacular' do
     doc = check_page('/edit/main')
     form = doc.at('div#content>form')
     form.at('input[@type=text]')['value'].should == 'main'
-    form.at('textarea').inner_html.should match(/# Hello, World/)
+    form.at('textarea').inner_html.should.match(/# Hello, World/)
     form.at('a').inner_html.should == 'cancel'
     form.at('a')['href'].should == '/main'
   end

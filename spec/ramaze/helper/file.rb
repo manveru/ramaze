@@ -9,6 +9,7 @@ class TCFileHelper < Ramaze::Controller
 end
 
 describe 'FileHelper' do
+  behaves_like 'http'
   ramaze
 
   it 'serving a file' do

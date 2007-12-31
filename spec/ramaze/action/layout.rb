@@ -117,9 +117,8 @@ class TCLayoutInstanceVars < Ramaze::Controller
 end
 
 describe 'Action rendering' do
-  before :all do
-    ramaze
-  end
+  extend MockHTTP
+  ramaze
 
   it 'should work with layouts' do
     get('/').body.should == "<pre>Hello, World!</pre>"

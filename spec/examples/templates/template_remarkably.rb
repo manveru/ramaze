@@ -4,6 +4,7 @@ testcase_requires 'remarkably/engines/html'
 require 'examples/templates/template_remarkably'
 
 describe 'Template Remarkably' do
+  extend MockHTTP
   ramaze
 
   it '/' do
@@ -14,7 +15,7 @@ describe 'Template Remarkably' do
   %w[/internal /external].each do |url|
     it url do
       html = get(url).body
-      html.should_not == nil
+      html.should.not == nil
       html.should =~ %r{<title>Template::Remarkably (internal|external)</title>}
       html.should =~ %r{<h1>The (internal|external) Template for Remarkably</h1>}
     end

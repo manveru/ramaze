@@ -25,6 +25,7 @@ end
 
 
 class TCTemplateLiquidController < Ramaze::Controller
+  map '/'
   template_root 'spec/ramaze/template/liquid/'
   engine :Liquid
   trait :liquid_options => { :filters => ProductsFilter }
@@ -48,7 +49,8 @@ class TCTemplateLiquidController < Ramaze::Controller
 end
 
 describe "Liquid" do
-  ramaze(:mapping => {'/' => TCTemplateLiquidController})
+  behaves_like 'http'
+  ramaze
 
   it "index" do
     get('/').body.strip.should == "hi tobi"

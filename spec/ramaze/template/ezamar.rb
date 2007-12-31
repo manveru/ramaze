@@ -32,9 +32,8 @@ end
 
 
 describe "Ezamar" do
-  before(:all) do
-    ramaze
-  end
+  behaves_like 'http'
+  ramaze
 
   it "hello world" do
     get('/World').body.should == 'Hello, World!'

@@ -8,15 +8,13 @@ $LOAD_PATH.unshift base = __DIR__/'..'
 Db = Ramaze::YAMLStoreCache.new("#{base}/testwiki.yaml")
 require 'start'
 
-describe WikiController do
-  after :all do
-    FileUtils.rm("#{base}/testwiki.yaml")
-  end
+describe 'WikiController' do
+  behaves_like 'http'
 
   def page(name)
     page = get(name)
     page.status.should == 200
-    page.body.should_not be_nil
+    page.body.should.not == nil
 
     doc = Hpricot(page.body)
     title = doc.at('title').inner_html
@@ -33,26 +31,28 @@ describe WikiController do
 
   it 'should have main page' do
     t,body = page('/show/Home')
-    t.should match(/^MicroWiki Home$/)
+    t.should.match(/^MicroWiki Home$/)
     body.at('h1').inner_html.should == 'Home'
     body.at('a[@href=/edit/Home]').inner_html.should == 'Create Home'
   end
 
   it 'should have edit page' do
     t,body = page('/edit/Home')
-    t.should match(/^MicroWiki Edit Home$/)
+    t.should.match(/^MicroWiki Edit Home$/)
 
     body.at('a[@href=/]').inner_html.should == '&lt; Home'
     body.at('h1').inner_html.should == 'Edit Home'
-    body.at('form[@action=/save]>textarea[@name=text]').should_not be_nil
+    body.at('form[@action=/save]>textarea[@name=text]').should.not == nil
   end
 
   it 'should create pages' do
     post('/save','text'=>'the text','page'=>'ThePage').status.should == 303
     page = Hpricot(get('/show/ThePage').body)
     body = page.at('body>div')
-    body.should_not be_nil
+    body.should.not == nil
     body.at('a[@href=/edit/ThePage]').inner_html.should =='Edit ThePage'
     body.at('p').inner_html.should == 'the text'
   end
+
+  FileUtils.rm("#{base}/testwiki.yaml")
 end

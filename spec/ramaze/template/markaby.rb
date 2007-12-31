@@ -6,6 +6,7 @@ require 'spec/helper'
 testcase_requires 'markaby'
 
 class TCTemplateMarkabyController < Ramaze::Controller
+  map '/'
   template_root 'spec/ramaze/template/markaby/'
   engine :Markaby
 
@@ -34,7 +35,8 @@ class TCTemplateMarkabyController < Ramaze::Controller
 end
 
 describe "Markaby" do
-  ramaze(:mapping => {'/' => TCTemplateMarkabyController})
+  behaves_like 'http'
+  ramaze
 
   it "index" do
     get('/').body.should == '<h1>Markaby Index</h1>'

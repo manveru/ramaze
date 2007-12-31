@@ -66,12 +66,11 @@ class TCMorpherController < Ramaze::Controller
 end
 
 describe "Morpher" do
-  before :all do
-    ramaze
-    pipeline = Ramaze::Template::Ezamar::TRANSFORM_PIPELINE
-    pipeline.clear
-    pipeline.push(Ezamar::Element, Ezamar::Morpher)
-  end
+  behaves_like 'http'
+  ramaze
+  pipeline = Ramaze::Template::Ezamar::TRANSFORM_PIPELINE
+  pipeline.clear
+  pipeline.push(Ezamar::Element, Ezamar::Morpher)
 
   def clean_get(*url)
     get(*url).body.split("\n").join.strip

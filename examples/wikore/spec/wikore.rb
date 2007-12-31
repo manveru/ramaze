@@ -1,12 +1,16 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-testcase_requires 'hpricot', 'sequel'
+testcase_requires 'hpricot', 'sequel', 'sequel_model', 'sqlite3'
 
 $LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
 
 describe 'Wikore' do
+  behaves_like 'http'
+  ramaze :public_root   => base/:public,
+         :template_root => base/:template
+
   def check_redirect(to = '/')
     response = yield
     response.status.should == 303
@@ -19,11 +23,6 @@ describe 'Wikore' do
     matches.each do |match|
       page.body.should =~ match
     end
-  end
-
-  before :all do
-    ramaze :public_root   => base/:public,
-           :template_root => base/:template
   end
 
   it 'should have no Main page' do
@@ -108,7 +107,5 @@ describe 'Wikore' do
     end
   end
 
-  after :all do
-    FileUtils.rm('wikore.db')
-  end
+  FileUtils.rm('wikore.db')
 end

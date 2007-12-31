@@ -9,7 +9,7 @@ class TCLink < Ramaze::Controller
 end
 
 describe "A" do
-  include Ramaze::LinkHelper
+  extend Ramaze::LinkHelper
 
   it 'should build links' do
     A('title', :href => '/').should == %(<a href="/">title</a>)
@@ -24,7 +24,7 @@ describe "A" do
 end
 
 describe 'R' do
-  include Ramaze::LinkHelper
+  extend Ramaze::LinkHelper
 
   it 'should build urls' do
     R(TCLink).should == '/'
@@ -35,7 +35,7 @@ describe 'R' do
 end
 
 describe 'breadcrumbs' do
-  include Ramaze::LinkHelper
+  extend Ramaze::LinkHelper
 
   it 'should lay out breadcrumbs' do
     breadcrumbs('/file/dir/listing/is/cool').

@@ -12,10 +12,9 @@ class TCDispatcherController < Ramaze::Controller
 end
 
 describe "Dispatcher" do
-  before :all do
-    ramaze :ignore => ['/favicon.ico', '/robots.txt'],
-      :ignore_body => 'File not found'
-  end
+  behaves_like 'http'
+  ramaze :ignore => ['/favicon.ico', '/robots.txt'],
+    :ignore_body => 'File not found'
 
   it 'should resolve a normal request' do
     page = get('/')

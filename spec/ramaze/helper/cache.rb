@@ -87,6 +87,7 @@ class TCCacheHelperOldController < Ramaze::Controller
 end
 
 describe "CacheHelper" do
+  behaves_like 'http'
   ramaze
 
   def req(path='/', *args) get(path, *args).body end
@@ -97,23 +98,23 @@ describe "CacheHelper" do
 
   it "cached value" do
     3.times do
-      lambda{ req('/cached_value') }.should_not change{ req('/cached_value') }
+      lambda{ req('/cached_value') }.should.not.change{ req('/cached_value') }
     end
 
     3.times do
-      lambda{ req('/uncache_values') }.should change{ req('/cached_value') }
+      lambda{ req('/uncache_values') }.should.change{ req('/cached_value') }
     end
 
-    lambda{ req('/uncache_values') }.should change{ req('/alt_cached_value') }
+    lambda{ req('/uncache_values') }.should.change{ req('/alt_cached_value') }
   end
 
   it "cached action" do
     3.times do
-      lambda{ req('/cached_action') }.should_not change{ req('/cached_action') }
+      lambda{ req('/cached_action') }.should.not.change{ req('/cached_action') }
     end
 
     3.times do
-      lambda{ req('/uncache_actions') }.should change{ req('/cached_action') }
+      lambda{ req('/uncache_actions') }.should.change{ req('/cached_action') }
     end
   end
 
@@ -126,17 +127,17 @@ describe "CacheHelper" do
     orig_value = req('/ttl')
     req('/ttl').should == orig_value
     sleep 1
-    req('/ttl').should_not == orig_value
+    req('/ttl').should.not == orig_value
   end
 
   it "should cache using key lambda if provided" do
-    lambda{ req('/key/name', :name=>'Aman') }.should_not change{ req('/key/name', :name=>'Aman') }
+    lambda{ req('/key/name', :name=>'Aman') }.should.not.change{ req('/key/name', :name=>'Aman') }
     req('/key/name', :name=>'Bob').should =~ /^hi Bob/
   end
 
   it "should remain backwards compatible" do
-    lambda{ req('/old') }.should_not change{ req('/old') }
-    lambda{ req('/old/action/two/three') }.should_not change{ req('/old/action/one/two') }
+    lambda{ req('/old') }.should.not.change{ req('/old') }
+    lambda{ req('/old/action/two/three') }.should.not.change{ req('/old/action/one/two') }
     req('/old/action/two/three').should =~ /^twothree/
   end
 end

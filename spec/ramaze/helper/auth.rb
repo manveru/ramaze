@@ -45,14 +45,16 @@ class TCAuthLambdaHelperController < TCAuthHelperController
 end
 
 describe "StackHelper" do
+  behaves_like 'browser'
+
   ramaze :adapter => :webrick
   [ TCAuthHashHelperController,
     TCAuthMethodHelperController,
     TCAuthLambdaHelperController
   ].each do |controller|
 
-    specify controller.to_s do
-      browser('/', Ramaze::Global.mapping.invert[controller]) do
+    it controller.to_s do
+      Browser.new('/', Ramaze::Global.mapping.invert[controller]) do
         get('/secured').should == ''
         post('/login', 'username' => 'manveru', 'password' => 'password')
         get('/secured').should == 'Secret content'

@@ -1,10 +1,9 @@
 require 'spec/helper'
 
 describe 'Dispatcher::File' do
-  before :all do
-    ramaze
-    @public_root = Ramaze::Global.public_root = 'spec/ramaze/dispatcher/public'
-  end
+  behaves_like 'http'
+  @public_root = 'spec/ramaze/dispatcher/public'
+  ramaze :public_root => @public_root
 
   it 'should serve from Global.public_root' do
     css = File.read(@public_root/'test_download.css')

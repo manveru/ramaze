@@ -29,16 +29,17 @@ class TCErrorCustomController < Ramaze::Controller
 end
 
 describe "Error" do
+  behaves_like 'http'
   ramaze :error_page => true, :public_root => 'spec/ramaze/public'
 
-  before :all do
-    require 'ramaze/dispatcher/error'
-    @handle_error = Ramaze::Dispatcher::Error::HANDLE_ERROR
-  end
+  @handle_error = Ramaze::Dispatcher::Error::HANDLE_ERROR
+  @orig_handle_error = @handle_error.dup
 
-  before :each do
+  before do
     Ramaze::Cache.resolved.clear
     Ramaze::Cache.patterns.clear
+    @handle_error.clear
+    @handle_error.merge!(@orig_handle_error)
   end
 
   it 'should resolve custom error pages per controller' do
@@ -67,8 +68,7 @@ describe "Error" do
   end
 
   it "should give custom status when no action is found" do
-    @handle_error.should_receive(:[]).twice.
-      with(Ramaze::Error::NoAction).and_return{ [707, '/error'] }
+    @handle_error[Ramaze::Error::NoAction] = [707, '/error']
 
     response = get('/illegal1')
     response.status.should == 707
@@ -76,15 +76,16 @@ describe "Error" do
   end
 
   it "should give 404 when no controller is found" do
-    Ramaze::Global.should_receive(:mapping).exactly(6).times.and_return{ {} }
+    old_mapping = Ramaze::Global.mapping.dup
+    Ramaze::Global.mapping.clear
     response = get('/illegal2')
     response.status.should == 404
     response.body.should =~ %r(No Controller found for `/error')
+    Ramaze::Global.mapping = old_mapping
   end
 
   it "should return custom error page" do
-    @handle_error.should_receive(:[]).twice.
-      with(Ramaze::Error::NoAction).and_return{ [404, '/error404'] }
+    @handle_error[Ramaze::Error::NoAction] = [404, '/error404']
     response = get('/illegal3')
     response.status.should == 404
     response.body.should == '404 - not found'

@@ -20,3 +20,7 @@ lib/ramaze/spec/helper/simple_http.rb
 lib/ramaze/template/xslt.rb
   License: Ruby
   Author: Stephan Maka
+
+lib/vendor/bacon.rb
+  License: MIT
+  Author: Christian Neukirchen

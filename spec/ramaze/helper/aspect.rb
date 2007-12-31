@@ -40,7 +40,8 @@ class TCAspectAllController < Ramaze::Controller
 end
 
 describe "AspectHelper" do
-  ramaze(:error_page => false)
+  behaves_like 'http'
+  ramaze :error_page => false
 
   it "shouldn't overwrite traits on inclusion" do
     TCAspectController.trait[:foo].should == :bar

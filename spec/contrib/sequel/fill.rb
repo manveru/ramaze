@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-testcase_requires 'sequel'
+testcase_requires 'sequel', 'sequel_model'
 
 begin
   DB = Sequel.sqlite
@@ -35,9 +35,8 @@ class MainController < Ramaze::Controller
 end
 
 describe 'Route' do
-  before :all do
-    ramaze
-  end
+  behaves_like 'http'
+  ramaze
 
   it 'should fill values from current request' do
     insert = get('/insert', 'name' => 'manveru')

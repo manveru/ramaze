@@ -31,6 +31,7 @@ class TCTemplateHamlLocalsController < Ramaze::Controller
 end
 
 describe "Haml templates" do
+  behaves_like 'http'
   ramaze(:compile => true)
 
   it "should render" do

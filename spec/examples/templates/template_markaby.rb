@@ -4,6 +4,7 @@ testcase_requires 'markaby'
 require 'examples/templates/template_markaby'
 
 describe 'Template Markaby' do
+  extend MockHTTP
   ramaze
 
   it '/' do
@@ -14,7 +15,7 @@ describe 'Template Markaby' do
   %w[/internal /external].each do |url|
     it url do
       html = get(url).body
-      html.should_not == nil
+      html.should.not == nil
       html.should =~ %r{<title>Template::Markaby (internal|external)</title>}
       html.should =~ %r{<h1>The (internal|external) Template for Markaby</h1>}
     end

@@ -1,5 +1,4 @@
-require 'spec'
-require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
+require 'spec/bacon/snippets'
 
 describe "String#camel_case" do
 

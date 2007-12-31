@@ -12,10 +12,8 @@ class TrinitySessionController < Ramaze::Controller
 end
 
 describe "Session" do
-  before(:all){
-    Ramaze::Global.sessions = false
-    ramaze
-  }
+  behaves_like 'http'
+  ramaze :sessions => false
 
   it 'should work without sessions' do
     (Ramaze::Session::IP_COUNT_LIMIT + 2).times do

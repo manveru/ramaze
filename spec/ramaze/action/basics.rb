@@ -5,8 +5,8 @@ describe 'Action() basics' do
     action = Ramaze::Action()
 
     action.params.should == []
-    action.method.should be_nil
-    action.template.should be_nil
+    action.method.should == nil
+    action.template.should == nil
   end
 
   it 'should sanitize parameters' do
@@ -23,12 +23,12 @@ describe 'Action() basics' do
     # TODO: in Action.new() raise on init :controller or use a default
     hsh = Ramaze::Action(:controller=>Object).to_hash
     hsh[:method].should == nil
-    hsh[:binding].should be_an_instance_of(Binding)
+    hsh[:binding].should.instance_of?(Binding)
     hsh[:controller].should == Object
     hsh[:engine].should == Ramaze::Template::Ezamar
     hsh[:params].should == []
     hsh[:path].should == nil
-    hsh[:instance].should be_an_instance_of(Object)
+    hsh[:instance].should.instance_of?(Object)
     hsh[:template].should == nil
   end
 

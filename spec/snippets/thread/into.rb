@@ -11,7 +11,9 @@ class TCThreadIntoController < Ramaze::Controller
 end
 
 describe 'Thread.into' do
+  behaves_like 'http'
   ramaze
+
   it 'should provide access to thread vars' do
     get('/hello').body.should == 'hello, goodbye'
   end

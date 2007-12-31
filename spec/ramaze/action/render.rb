@@ -16,10 +16,10 @@ class TCActionOne < Ramaze::Controller
   end
 end
 
+ramaze
+
 describe 'Action rendering' do
-  before :all do
-    ramaze
-  end
+  behaves_like "http"
 
   it 'should render' do
     action = Ramaze::Action(:method => :index, :controller => TCActionOne)

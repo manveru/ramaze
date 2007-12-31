@@ -14,6 +14,7 @@ class MainController < Ramaze::Controller
 end
 
 describe 'Controller resolving' do
+  behaves_like 'http'
   ramaze
 
   it 'should work with .' do

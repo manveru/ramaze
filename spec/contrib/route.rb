@@ -19,9 +19,11 @@ class MainController < Ramaze::Controller
 end
 
 describe 'Route' do
-  before :all do
-    Ramaze.contrib :route
-    ramaze
+  extend MockHTTP
+  Ramaze.contrib :route
+  ramaze
+
+  before do
     @route = Ramaze::Contrib::Route
   end
 

@@ -40,6 +40,7 @@ body
 end
 
 describe "Sass templates" do
+  behaves_like 'http'
   ramaze(:compile => true)
 
   it "should render inline" do
@@ -63,6 +64,6 @@ describe "Sass templates" do
   end
 
   it "should use sass options" do
-    get('/options/test').body.should_not =~ /^ +/
+    get('/options/test').body.should.not =~ /^ +/
   end
 end

@@ -28,6 +28,7 @@ class TCSessionController < Ramaze::Controller
 end
 
 describe "Session" do
+  behaves_like 'http', 'browser'
   ramaze(:adapter => :webrick, :mapping => {'/' => TCSessionController})
 
   { :MemoryCache => :memory,
@@ -41,7 +42,7 @@ describe "Session" do
       next
     end
 
-    context cache.to_s do
+    describe cache.to_s do
 
       Ramaze::Global.cache = cache
       Thread.main[:session_cache] = nil

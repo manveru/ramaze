@@ -56,7 +56,8 @@ describe 'Method#get_args' do
 end
 
 describe 'Parameterized actions' do
-  before(:all) { ramaze }
+  extend MockHTTP
+  ramaze
 
   it 'should pass in values from request.params' do
     get('/create/Aman/20').body.should == 'Aman, 20'
@@ -97,7 +98,8 @@ describe 'Parameterized actions' do
 end if method(:puts).respond_to? :get_args
 
 describe 'Normal behavior' do
-  before(:all) { ramaze }
+  extend MockHTTP
+  ramaze
 
   it 'should work with no arguments' do
     get('/page').body.should == 'page'

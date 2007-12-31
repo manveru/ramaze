@@ -27,9 +27,8 @@ class TCPartialHelperController < Ramaze::Controller
 end
 
 describe "PartialHelper" do
-  before :all do
-    ramaze
-  end
+  behaves_like 'http'
+  ramaze
 
   it "should render partials" do
     get('/').body.should == '<html><head><title>Title</title></head></html>'

@@ -1,5 +1,4 @@
-require 'spec'
-require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
+require 'spec/bacon/snippets'
 
 #TODO test parse_backtrace explicitly
 describe "Ramaze#caller_info" do
@@ -19,21 +18,21 @@ describe "Ramaze#caller_info" do
   it "should report correct informations" do
     file,line,meth=foo()
     file.should == __FILE__
-    line.should match(/\d+/)
+    line.should.match(/\d+/)
     meth.should == 'foo'
   end
 
   it "should report correct informations on nested defs" do
     file,line,meth=bar()
     file.should == __FILE__
-    line.should match(/\d+/)
+    line.should.match(/\d+/)
     meth.should == 'foo'
   end
 
   it "should report correct informations on other callers" do
     file,line,meth=baz()
     file.should == __FILE__
-    line.should match(/\d+/)
+    line.should.match(/\d+/)
     meth.should == 'baz'
   end
 

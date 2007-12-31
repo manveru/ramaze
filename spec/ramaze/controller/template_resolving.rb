@@ -44,9 +44,8 @@ class OtherController < MainController
 end
 
 describe "Testing Template overriding" do
-  before(:all) do
-    ramaze
-  end
+  behaves_like 'http'
+  ramaze
 
   it "simple request to greet" do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'

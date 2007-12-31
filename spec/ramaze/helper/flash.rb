@@ -58,10 +58,11 @@ class TCFlashHelperThirdController < Ramaze::Controller
 end
 
 describe "FlashHelper" do
+  behaves_like 'browser'
   ramaze :adapter => :webrick
 
   it "twice" do
-    browser '/' do
+    Browser.new('/') do
       get('/first_here')
       get('/then_here').should == 'hey'
       get('/then_here').should == ''
@@ -73,7 +74,7 @@ describe "FlashHelper" do
   end
 
   it "over seperate controllers" do
-    browser do
+    Browser.new do
       get('/first_here')
       get('/second/then_here').should == 'hey'
       get('/then_here').should == ''
@@ -85,13 +86,13 @@ describe "FlashHelper" do
   end
 
   it "single" do
-    browser do
+    Browser.new do
       get('/third/set/foo').should == 'foo'
     end
   end
 
   it "single" do
-    browser do
+    Browser.new do
       get('/third/set/foo').should == 'foo'
       get('/third/retrieve').should == 'foo'
       get('/third/retrieve').should == ''

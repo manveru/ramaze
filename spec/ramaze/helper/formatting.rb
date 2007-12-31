@@ -2,7 +2,7 @@ require 'spec/helper'
 require 'ramaze/helper/formatting'
 
 describe 'FormattingHelper' do
-  include Ramaze::FormattingHelper
+  extend Ramaze::FormattingHelper
 
   it 'should format numbers' do
     number_format(2_123_456).should == '2,123,456'

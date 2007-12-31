@@ -55,7 +55,8 @@ class TCRedirectHelperController < Ramaze::Controller
 end
 
 describe "RedirectHelper" do
-  ramaze(:adapter => :mongrel)
+  behaves_like 'http', 'browser'
+  ramaze(:adapter => :webrick)
 
   b = Browser.new
 

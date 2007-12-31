@@ -3,21 +3,17 @@ require 'spec/helper'
 testcase_requires 'hpricot'
 
 describe 'Dispatcher::Directory' do
-  before :all do
-    ramaze
+  @hierarchy = %w[
+  /test/deep/hierarchy/one.txt
+  /test/deep/hierarchy/two.txt
+  /test/deep/three.txt
+  /test/deep/four.txt
+  /test/five.txt
+  /test/six.txt ]
 
-    @hierarchy = %w[
-    /test/deep/hierarchy/one.txt
-    /test/deep/hierarchy/two.txt
-    /test/deep/three.txt
-    /test/deep/four.txt
-    /test/five.txt
-    /test/six.txt ]
-
-    @hierarchy.each do |path|
-      FileUtils.mkdir_p(__DIR__/:public/File.dirname(path))
-      FileUtils.touch(__DIR__/:public/path)
-    end
+  @hierarchy.each do |path|
+    FileUtils.mkdir_p(__DIR__/:public/File.dirname(path))
+    FileUtils.touch(__DIR__/:public/path)
   end
 
   def build_listing(path)
@@ -48,7 +44,5 @@ describe 'Dispatcher::Directory' do
       ["/test/five.txt", "five.txt"], ["/test/six.txt", "six.txt"]]
   end
 
-  after :all do
-    FileUtils.rm_rf(__DIR__/:public/:test)
-  end
+  FileUtils.rm_rf(__DIR__/:public/:test)
 end

@@ -4,19 +4,19 @@
 require 'spec/helper'
 
 class TCAdapterController < Ramaze::Controller
+  map '/'
+
   def index
     "The index"
   end
 end
 
-describe "Adapter" do
-  ramaze ramaze_options.merge( :port => 7007, :spawn => 10, :mapping => {'/' => TCAdapterController} )
+ramaze ramaze_options.merge(:spawn => 10)
 
-  describe "multiple" do
-    it "simple request" do
-      browser do
-        get('/').should == "The index"
-      end
-    end
+describe "Adapter" do
+  behaves_like "http"
+
+  it 'should do a simple request' do
+    get('/').body.should == 'The index'
   end
 end

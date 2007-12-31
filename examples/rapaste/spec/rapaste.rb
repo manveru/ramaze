@@ -1,16 +1,15 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-testcase_requires 'hpricot', 'uv'
+testcase_requires 'hpricot', 'uv', 'sequel', 'sequel_model'
 
 $LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'
 
 describe 'RaPaste' do
-  before :all do
-    ramaze :public_root   => base/:public,
-           :template_root => base/:template
-  end
+  behaves_like 'http'
+  ramaze :public_root   => base/:public,
+         :template_root => base/:template
 
   it 'should show an empty list on the list page' do
     page = get('/list')

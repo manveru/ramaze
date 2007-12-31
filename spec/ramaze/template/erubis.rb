@@ -24,6 +24,7 @@ class TCTemplateErubisController < Ramaze::Controller
 end
 
 describe "Erubis" do
+  behaves_like 'http'
   ramaze(:mapping => {'/' => TCTemplateErubisController})
 
   it "index" do

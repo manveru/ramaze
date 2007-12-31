@@ -40,81 +40,79 @@ describe "Controller" do
     resolve(*url).values_at(:method, :params, :template)
   end
 
-  before :all do
-    ramaze :error_page => false
-    @hash = {
-      '/' => [
-        ["/", 'index', []]
-      ],
+  ramaze :error_page => false
+  @hash = {
+    '/' => [
+      ["/", 'index', []]
+    ],
 
-      '/foo' => [
-        ["/foo", "index",      []],
-        ["/",    "foo__index", []],
-        ["/",    "foo",        []],
-        ["/",    "index",      ["foo"]]
+    '/foo' => [
+      ["/foo", "index",      []],
+      ["/",    "foo__index", []],
+      ["/",    "foo",        []],
+      ["/",    "index",      ["foo"]]
 
-      ],
+    ],
 
-      '/foo/bar' => [
-        ["/foo/bar", "index",           []],
-        ["/foo",     "bar__index",      []],
-        ["/foo",     "bar",             []],
-        ["/foo",     "index",           ["bar"]],
-        ["/",        "foo__bar__index", []],
-        ["/",        "foo__bar",        []],
-        ["/",        "foo__index",      ["bar"]],
-        ["/",        "foo",             ["bar"]],
-        ["/",        "index",           ["foo", "bar"]]
-      ],
+    '/foo/bar' => [
+      ["/foo/bar", "index",           []],
+      ["/foo",     "bar__index",      []],
+      ["/foo",     "bar",             []],
+      ["/foo",     "index",           ["bar"]],
+      ["/",        "foo__bar__index", []],
+      ["/",        "foo__bar",        []],
+      ["/",        "foo__index",      ["bar"]],
+      ["/",        "foo",             ["bar"]],
+      ["/",        "index",           ["foo", "bar"]]
+    ],
 
-      '/foo/bar/baz' => [
-        ["/foo/bar/baz", "index",                []],
-        ["/foo/bar",     "baz__index",           []],
-        ["/foo/bar",     "baz",                  []],
-        ["/foo/bar",     "index",                ["baz"]],
-        ["/foo",         "bar__baz__index",      []],
-        ["/foo",         "bar__baz",             []],
-        ["/foo",         "bar__index",           ["baz"]],
-        ["/foo",         "bar",                  ["baz"]],
-        ["/foo",         "index",                ["bar", "baz"]],
-        ["/",            "foo__bar__baz__index", []],
-        ["/",            "foo__bar__baz",        []],
-        ["/",            "foo__bar__index",      ["baz"]],
-        ["/",            "foo__bar",             ["baz"]],
-        ["/",            "foo__index",           ["bar", "baz"]],
-        ["/",            "foo",                  ["bar", "baz"]],
-        ["/",            "index",                ["foo", "bar", "baz"]]
-      ],
+    '/foo/bar/baz' => [
+      ["/foo/bar/baz", "index",                []],
+      ["/foo/bar",     "baz__index",           []],
+      ["/foo/bar",     "baz",                  []],
+      ["/foo/bar",     "index",                ["baz"]],
+      ["/foo",         "bar__baz__index",      []],
+      ["/foo",         "bar__baz",             []],
+      ["/foo",         "bar__index",           ["baz"]],
+      ["/foo",         "bar",                  ["baz"]],
+      ["/foo",         "index",                ["bar", "baz"]],
+      ["/",            "foo__bar__baz__index", []],
+      ["/",            "foo__bar__baz",        []],
+      ["/",            "foo__bar__index",      ["baz"]],
+      ["/",            "foo__bar",             ["baz"]],
+      ["/",            "foo__index",           ["bar", "baz"]],
+      ["/",            "foo",                  ["bar", "baz"]],
+      ["/",            "index",                ["foo", "bar", "baz"]]
+    ],
 
-      '/foo/bar/baz/oof' => [
-        ["/foo/bar/baz/oof", "index",                     []],
-         ["/foo/bar/baz",     "oof__index",                []],
-         ["/foo/bar/baz",     "oof",                       []],
-         ["/foo/bar/baz",     "index",                     ["oof"]],
-         ["/foo/bar",         "baz__oof__index",           []],
-         ["/foo/bar",         "baz__oof",                  []],
-         ["/foo/bar",         "baz__index",                ["oof"]],
-         ["/foo/bar",         "baz",                       ["oof"]],
-         ["/foo/bar",         "index",                     ["baz", "oof"]],
-         ["/foo",             "bar__baz__oof__index",      []],
-         ["/foo",             "bar__baz__oof",             []],
-         ["/foo",             "bar__baz__index",           ["oof"]],
-         ["/foo",             "bar__baz",                  ["oof"]],
-         ["/foo",             "bar__index",                ["baz", "oof"]],
-         ["/foo",             "bar",                       ["baz", "oof"]],
-         ["/foo",             "index",                     ["bar", "baz", "oof"]],
-         ["/",                "foo__bar__baz__oof__index", []],
-         ["/",                "foo__bar__baz__oof",        []],
-         ["/",                "foo__bar__baz__index",      ["oof"]],
-         ["/",                "foo__bar__baz",             ["oof"]],
-         ["/",                "foo__bar__index",           ["baz", "oof"]],
-         ["/",                "foo__bar",                  ["baz", "oof"]],
-         ["/",                "foo__index",                ["bar", "baz", "oof"]],
-         ["/",                "foo",                       ["bar", "baz", "oof"]],
-         ["/",                "index",                     ["foo", "bar", "baz", "oof"]]
-      ],
-    }
-  end
+    '/foo/bar/baz/oof' => [
+      ["/foo/bar/baz/oof", "index",                     []],
+       ["/foo/bar/baz",     "oof__index",                []],
+       ["/foo/bar/baz",     "oof",                       []],
+       ["/foo/bar/baz",     "index",                     ["oof"]],
+       ["/foo/bar",         "baz__oof__index",           []],
+       ["/foo/bar",         "baz__oof",                  []],
+       ["/foo/bar",         "baz__index",                ["oof"]],
+       ["/foo/bar",         "baz",                       ["oof"]],
+       ["/foo/bar",         "index",                     ["baz", "oof"]],
+       ["/foo",             "bar__baz__oof__index",      []],
+       ["/foo",             "bar__baz__oof",             []],
+       ["/foo",             "bar__baz__index",           ["oof"]],
+       ["/foo",             "bar__baz",                  ["oof"]],
+       ["/foo",             "bar__index",                ["baz", "oof"]],
+       ["/foo",             "bar",                       ["baz", "oof"]],
+       ["/foo",             "index",                     ["bar", "baz", "oof"]],
+       ["/",                "foo__bar__baz__oof__index", []],
+       ["/",                "foo__bar__baz__oof",        []],
+       ["/",                "foo__bar__baz__index",      ["oof"]],
+       ["/",                "foo__bar__baz",             ["oof"]],
+       ["/",                "foo__bar__index",           ["baz", "oof"]],
+       ["/",                "foo__bar",                  ["baz", "oof"]],
+       ["/",                "foo__index",                ["bar", "baz", "oof"]],
+       ["/",                "foo",                       ["bar", "baz", "oof"]],
+       ["/",                "index",                     ["foo", "bar", "baz", "oof"]]
+    ],
+  }
 
   it "dry pattern_for" do
     @hash.each do |path, correct|
@@ -160,7 +158,9 @@ describe "Controller" do
     it action do
       path = "/#{action}"
       message = "No Action found for `#{path}' on TCControllerController"
-      lambda{ resolve(path) }.should raise_error(Ramaze::Error::NoAction, message)
+      lambda{ resolve(path) }.should.
+        raise(Ramaze::Error::NoAction).
+        message.should == message
     end
   end
 

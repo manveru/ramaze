@@ -4,6 +4,7 @@ testcase_requires 'haml'
 require 'examples/templates/template_haml'
 
 describe 'Template Haml' do
+  extend MockHTTP
   ramaze
 
   it '/' do
@@ -14,7 +15,7 @@ describe 'Template Haml' do
   %w[/internal /external].each do |url|
     it url do
       html = get(url).body
-      html.should_not == nil
+      html.should.not == nil
       html.should =~ %r{<title>Template::Haml (internal|external)</title>}
       html.should =~ %r{<h1>The (internal|external) Template for Haml</h1>}
     end

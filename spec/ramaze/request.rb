@@ -23,7 +23,7 @@ class TCRequestController < Ramaze::Controller
     # referencing request.rack_params breaks this test
     # request.params is hacked to return {} on PUT requests
     request.params
-    request.body.read.inspect
+    request.body.read
   end
 
   def get_inspect
@@ -49,11 +49,15 @@ class TCRequestController < Ramaze::Controller
   end
 end
 
+options = ramaze_options rescue {}
+ramaze options.merge(:public_root => 'spec/ramaze/public')
+
 describe "Request" do
-  options = ramaze_options rescue {}
-  ramaze options.merge(:public_root => 'spec/ramaze/public')
+  behaves_like 'http'
 
   describe "POST" do
+    behaves_like 'http'
+
     it "give me the result of request.post?" do
       post("/is_post").body.should == 'true'
     end
@@ -69,6 +73,8 @@ describe "Request" do
   end
 
   describe "PUT" do
+    behaves_like 'http'
+
     it "put a resource" do
       image = 'favicon.ico'
       image_path = File.join('spec', 'ramaze', 'public', image)
@@ -77,17 +83,21 @@ describe "Request" do
       file = File.read(image_path)
 
       response = put(address, :input => file)
-      response.body[1..-2].should == file
+      response.body.dump.should == file.dump
     end
   end
 
   describe "DELETE" do
+    behaves_like 'http'
+
     it "delete a resource" do
       delete('/is_delete').body.should == 'true'
     end
   end
 
   describe "GET" do
+    behaves_like 'http'
+
     it "give me the result of request.post?" do
       get("/is_post").body.should == 'false'
     end
@@ -113,6 +123,8 @@ describe "Request" do
   end
 
   describe "get files" do
+    behaves_like 'http'
+
     it "binary" do
       image_path = '/favicon.ico'
       static_image = File.read("spec/ramaze/public#{image_path}")

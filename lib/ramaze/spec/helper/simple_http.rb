@@ -62,7 +62,6 @@ require 'net/http'
 require 'net/https'
 require 'uri'
 require 'cgi'
-require 'base64'
 
 
 # Wrapper around ruby's standard net/http classes. Currently, only GET
@@ -146,8 +145,10 @@ class SimpleHttp
 			# anything other than GET, for that matter.)
 
       case request
-      when Net::HTTP::Get  : sh.get
-      when Net::HTTP::Post : sh.post
+      when Net::HTTP::Get
+        sh.get
+      when Net::HTTP::Post
+        sh.post
 			else
 				raise "Not a valid HTTP method for redirection: #{request.class}"
 			end
@@ -201,7 +202,7 @@ class SimpleHttp
 	#
 
 	def basic_authentication usr, pwd
-		str = Base64.encode64("#{usr}:#{pwd}")
+		str = ["#{usr}:#{pwd}"].pack("*m")
 		str = "Basic #{str}"
 		@request_headers["Authorization"]=str
 	end

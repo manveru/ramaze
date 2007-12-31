@@ -31,9 +31,7 @@ class TCTemplateController < Ramaze::Controller
 end
 
 describe "testing ramaze template" do
-  before :all do
-    ramaze
-  end
+  ramaze
 
   def getpage page
     content = Ramaze::Controller.handle(page)
@@ -45,7 +43,7 @@ describe "testing ramaze template" do
 
     @action.should == "index"
     @params.should == []
-    @file.should be_nil
+    @file.should == nil
   end
 
   it "Maps the index" do
@@ -53,7 +51,7 @@ describe "testing ramaze template" do
 
     @action.should == "index"
     @params.should == []
-    @file.should be_nil
+    @file.should == nil
   end
 
   it "Parses parameters" do
@@ -61,7 +59,7 @@ describe "testing ramaze template" do
 
     @action.should == "index"
     @params.should == %w{one two three}
-    @file.should be_nil
+    @file.should == nil
   end
 
   it "Knows about other methods" do
@@ -69,7 +67,7 @@ describe "testing ramaze template" do
 
     @action.should == "some_other_method"
     @params.should == []
-    @file.should be_nil
+    @file.should == nil
   end
 
   it "Uses external template files" do

@@ -1,7 +1,7 @@
 require 'spec/helper'
 
 describe 'Informer' do
-  before(:each) do
+  before do
     @out = []
     def @out.puts(*args) push(*args) end
     Ramaze::Informer.trait[:colorize] = false
@@ -61,7 +61,7 @@ describe 'Informer' do
     begin
       i = Ramaze::Informer.new('tmp.dummy')
       out = i.out
-      out.should be_an_instance_of(File)
+      out.should.be.instance_of(File)
       out.path.should == 'tmp.dummy'
     ensure
       out.close

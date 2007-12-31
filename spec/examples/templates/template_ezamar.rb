@@ -3,6 +3,7 @@ require 'spec/helper'
 require 'examples/templates/template_ezamar'
 
 describe 'Template Ezamar' do
+  extend MockHTTP
   ramaze
 
   it '/' do
@@ -13,7 +14,7 @@ describe 'Template Ezamar' do
   %w[/internal /external].each do |url|
     it url do
       html = get(url).body
-      html.should_not == nil
+      html.should.not == nil
       html.should =~ %r{<title>Template::Ezamar (internal|external)</title>}
       html.should =~ %r{<h1>The (internal|external) Template for Ezamar</h1>}
     end

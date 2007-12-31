@@ -46,8 +46,8 @@ end
 
 class PageWithParams < Ezamar::Element
   def render
-    ivs = (instance_variables - ['@content'])
-    ivs.inject({}){|s,v| s.merge(v => instance_variable_get(v)) }.inspect
+    ivs = (instance_variables - ['@content', :@content])
+    ivs.inject({}){|s,v| s.merge(v.to_s => instance_variable_get(v)) }.inspect
   end
 end
 
@@ -59,8 +59,8 @@ end
 
 class PageLittleWithParams < Ezamar::Element
   def render
-    ivs = (instance_variables - ['@content'])
-    ivs.inject({}){|s,v| s.merge(v => instance_variable_get(v)) }.inspect
+    ivs = (instance_variables - ['@content', :@content])
+    ivs.inject({}){|s,v| s.merge(v.to_s => instance_variable_get(v)) }.inspect
   end
 end
 

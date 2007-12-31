@@ -1,5 +1,4 @@
-require 'spec'
-require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
+require 'spec/bacon/snippets'
 require 'fileutils'
 
 describe 'aquire' do
@@ -7,16 +6,15 @@ describe 'aquire' do
     @required << name
   end
 
-  before :all do
-    FileUtils.mkdir_p 'tmp_dir_for_aquire/sub'
-    FileUtils.touch 'tmp_dir_for_aquire/foo.rb'
-    FileUtils.touch 'tmp_dir_for_aquire/bar.rb'
-    FileUtils.touch 'tmp_dir_for_aquire/baz.so'
-    FileUtils.touch 'tmp_dir_for_aquire/baz.yml'
-    FileUtils.touch 'tmp_dir_for_aquire/sub/baz.rb'
-  end
-
   before do
+    dir = 'tmp_dir_for_aquire'
+    FileUtils.mkdir_p(dir + '/sub')
+
+    %w[ foo.rb bar.rb baz.so baz.yml sub/baz.rb ].
+      each do |path|
+      FileUtils.touch("#{dir}/#{path}")
+    end
+
     @required = []
   end
 
@@ -27,47 +25,42 @@ describe 'aquire' do
 
   it 'should load dir' do
     aquire 'tmp_dir_for_aquire/sub/*'
-    @required.should == ['tmp_dir_for_aquire/sub/baz.rb']
+    @required.should == %w[
+      tmp_dir_for_aquire/sub/baz.rb]
   end
 
   it 'should load {so,rb}, not others' do
     aquire 'tmp_dir_for_aquire/*'
-    @required.sort.should == %w{
-                              tmp_dir_for_aquire/bar.rb
-                              tmp_dir_for_aquire/baz.so
-                              tmp_dir_for_aquire/foo.rb}
-
+    @required.sort.should == %w[
+      tmp_dir_for_aquire/bar.rb
+      tmp_dir_for_aquire/baz.so
+      tmp_dir_for_aquire/foo.rb]
   end
 
   it 'should use globbing' do
     aquire 'tmp_dir_for_aquire/ba*'
-    @required.sort.should == %w{
-                              tmp_dir_for_aquire/bar.rb
-                              tmp_dir_for_aquire/baz.so}
-
+    @required.sort.should == %w[
+      tmp_dir_for_aquire/bar.rb
+      tmp_dir_for_aquire/baz.so]
   end
 
   it 'should use recursive globbing' do
     aquire 'tmp_dir_for_aquire/**/*'
-    @required.sort.should == %w{
-                              tmp_dir_for_aquire/bar.rb
-                              tmp_dir_for_aquire/baz.so
-                              tmp_dir_for_aquire/foo.rb
-                              tmp_dir_for_aquire/sub/baz.rb}
-
+    @required.sort.should == %w[
+      tmp_dir_for_aquire/bar.rb
+      tmp_dir_for_aquire/baz.so
+      tmp_dir_for_aquire/foo.rb
+      tmp_dir_for_aquire/sub/baz.rb]
   end
 
   it 'should accept multiple arguments' do
     aquire 'tmp_dir_for_aquire/*', 'tmp_dir_for_aquire/sub/*'
-    @required.sort.should == %w{
-                              tmp_dir_for_aquire/bar.rb
-                              tmp_dir_for_aquire/baz.so
-                              tmp_dir_for_aquire/foo.rb
-                              tmp_dir_for_aquire/sub/baz.rb}
-
+    @required.sort.should == %w[
+      tmp_dir_for_aquire/bar.rb
+      tmp_dir_for_aquire/baz.so
+      tmp_dir_for_aquire/foo.rb
+      tmp_dir_for_aquire/sub/baz.rb]
   end
 
-  after :all do
-    FileUtils.rm_rf('tmp_dir_for_aquire')
-  end
+  FileUtils.rm_rf('tmp_dir_for_aquire')
 end

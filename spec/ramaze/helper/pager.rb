@@ -19,60 +19,70 @@ class TCPagerController < Ramaze::Controller
 
 end
 
-describe "PagerHelper" do
-  include Ramaze::PagerHelper
+ramaze
 
-  before(:all){ ramaze }
+shared 'pager' do
+  behaves_like 'http'
+  extend Ramaze::PagerHelper
+
+  def pager_key
+    Ramaze::Pager.trait[:key]
+  end
 
   # Used internally in Pager to get parameters like: ?_page=1
-
   def request
-    req = mock("Request")
-    req.should_receive(:params).with(no_args).
-                                any_number_of_times.
-                                and_return(Ramaze::Pager.trait[:key] => 1)
+    req = Object.new
+    def req.params
+      {Ramaze::Pager.trait[:key] => 1}
+    end
     req
   end
 
-  it "should be paginated" do
-    get('/page').body.should == '[1, 2]'
-    get("/page", Ramaze::Pager.trait[:key] => '2').body.should == '[3, 4]'
+  before do
+    @stuff = (1..9).to_a
+    @items, @pager = paginate(@stuff, :limit => 2)
   end
-
-  it "should link to other pages" do
-    stuff = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-    items, pager = paginate(stuff, :limit => 2)
-    page = Hpricot(pager.navigation)
-    (page / 'a').size.should == 6
-  end
-
 end
 
+describe 'PagerHelper' do
+  behaves_like 'pager'
+
+  it 'should be paginated' do
+    get('/page').body.should == [1, 2].inspect
+    get('/page', pager_key => '2').body.should == [3, 4].inspect
+  end
+
+  it 'should link to other pages' do
+    page = Hpricot(@pager.navigation)
+    (page/:a).size.should == 6
+  end
+end
+
+describe 'Pager' do
+  behaves_like 'pager'
+
+  it 'should report the number of articles as Pager#total_count' do
+    @pager.total_count.should == 9
+  end
+end
+
+__END__
 describe "Pager", :shared => true do
   include Ramaze::PagerHelper
 
-  def request
-    req = mock("Request")
-    req.should_receive(:params).with(no_args).
-                                any_number_of_times.
-                                and_return(Ramaze::Pager.trait[:key] => 1)
-    req
-  end
-
   it "should report the number of articles as Pager#total_count" do
-    @pager.should_not be_nil
+    @pager.should.not be_nil
     @pager.total_count.should == 5
   end
 
   it "should return the same number of items as passed to :per_page" do
-    @items.should_not be_nil
+    @items.should.not be_nil
     @items.size.should == 2
   end
 
   it "should link to other pages" do
-    @pager.should_not be_nil
-    @pager.navigation.should_not be_nil
+    @pager.should.not be_nil
+    @pager.navigation.should.not be_nil
 
     require 'hpricot'
     page = Hpricot(@pager.navigation)

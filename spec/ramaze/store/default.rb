@@ -4,36 +4,39 @@
 require 'spec/helper'
 require 'ramaze/store/default'
 
-describe "initialize an Store" do
+describe "Store::Default" do
   db = 'db.yaml'
+
+  after do
+    FileUtils.rm db
+  end
 
   def add hash = {}
     Books.merge!(hash)
   end
 
-  it "Store::Default.new" do
+  it "should initialize Store::Default" do
     Books = Ramaze::Store::Default.new(db)
     Books.db.should.is_a?(YAML::Store)
   end
 
-  it "store and retrieve something" do
+  it "should store and retrieve key/value" do
     add 'Pickaxe' => 'good book'
     Books['Pickaxe'].should == 'good book'
   end
 
-  it "empty?" do
+  it "be empty after #clear" do
     add 'Pickaxe' => 'good book'
 
-    Books.empty?.should == false
+    Books.should.not.be.empty
     Books.clear
-    Books.empty?.should == true
+    Books.should.be.empty
   end
 
-  it "size" do
+  it "should have right size" do
     Books.size.should == 0
 
-    {
-      'Pickaxe' => 'good book',
+    { 'Pickaxe' => 'good book',
       '1984' => 'scary',
       'Brave new World' => 'interesting',
     }.each_with_index do |(title, content), i|
@@ -42,7 +45,7 @@ describe "initialize an Store" do
     end
   end
 
-  it "Enumerable" do
+  it "should be Enumerable" do
     add 'Pickaxe' => 'good book', '1984' => 'scary'
 
     Books.each do |title, content|
@@ -51,24 +54,18 @@ describe "initialize an Store" do
     end
   end
 
-  it "merge and merge!" do
+  it "should merge and merge!" do
     books = {'Pickaxe' => 'good book', '1984' => 'scary'}
     add books
 
     bnw = {'Brave new World' => 'interesting'}
 
     Books.merge(bnw).should == books.merge(bnw)
-
     Books[bnw.keys.first].should == nil
 
     Books.merge!(bnw).should == books.merge(bnw)
-
     Books[bnw.keys.first].should == bnw.values.first
 
     Books.size.should == 3
-  end
-
-  after(:each) do
-    FileUtils.rm db
   end
 end

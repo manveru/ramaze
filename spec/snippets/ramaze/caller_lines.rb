@@ -1,8 +1,7 @@
-require 'spec'
-require File.expand_path(__FILE__).gsub('/spec/', '/lib/ramaze/')
+require 'spec/bacon/snippets'
 
 describe "Ramaze#caller_info" do
-  before :all do
+  before do
     @file = File.expand_path(File.join(File.dirname(__FILE__), '../../../lib/ramaze/gestalt.rb'))
   end
 

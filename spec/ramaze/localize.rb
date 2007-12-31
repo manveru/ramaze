@@ -26,30 +26,32 @@ class TCLocalize < Ramaze::Controller
 end
 
 describe "Localize" do
-  before :all do
-    @dir = __DIR__ / :conf
-    FileUtils.mkdir_p(@dir)
+  behaves_like 'http'
 
-    dict = {
-      :de => {
-        'hello'  => 'Hallo, Welt!',
-        'this'   => 'Das',
-        'is'     => 'ist',
-        'a'      => 'ein',
-        'test'   => 'Test',
-      },
-      :en => {
-        'hello'  => 'Hello, World!',
-        'this'   => 'this',
-        'is'     => 'is',
-        'a'      => 'a',
-        'test'   => 'test',
-    } }
-    dict.each do |lang, dic|
-      File.open(@dir/"locale_#{lang}.yaml", 'w+'){|fp| fp.print(dic.to_yaml)}
-    end
-    ramaze
+  @dir = __DIR__ / :conf
+  FileUtils.mkdir_p(@dir)
+
+  dict = {
+    :de => {
+      'hello'  => 'Hallo, Welt!',
+      'this'   => 'Das',
+      'is'     => 'ist',
+      'a'      => 'ein',
+      'test'   => 'Test',
+    },
+    :en => {
+      'hello'  => 'Hello, World!',
+      'this'   => 'this',
+      'is'     => 'is',
+      'a'      => 'a',
+      'test'   => 'test',
+  } }
+
+  dict.each do |lang, dic|
+    File.open(@dir/"locale_#{lang}.yaml", 'w+'){|fp| fp.print(dic.to_yaml)}
   end
+
+  ramaze
 
   it "hello world" do
     get('/hello').body.should == 'Hello, World!'
@@ -61,7 +63,5 @@ describe "Localize" do
     get('/advanced/de').body.should == 'Das ist ein Test'
   end
 
-  after :all do
-    FileUtils.rm_rf(@dir)
-  end
+  FileUtils.rm_rf(@dir)
 end

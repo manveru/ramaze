@@ -21,6 +21,7 @@ class TCTemplateAmritaController < Ramaze::Controller
 end
 
 describe "Simply calling" do
+  behaves_like 'http'
   ramaze(:mapping => {'/' => TCTemplateAmritaController})
 
   it "should respond to /data" do

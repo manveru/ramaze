@@ -70,6 +70,7 @@ class TCTemplateXSLTController < Ramaze::Controller
 end
 
 describe "XSLT" do
+  behaves_like 'http'
   ramaze(:mapping => {'/' => TCTemplateXSLTController})
 
   it "index" do

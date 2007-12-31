@@ -60,9 +60,8 @@ class TCParamsController3 < Ramaze::Controller
 end
 
 describe "Simple Parameters" do
-  before :all do
-    ramaze
-  end
+  behaves_like 'http'
+  ramaze
 
   def handle(*url)
     Ramaze::Controller.handle(*url)
@@ -78,7 +77,7 @@ describe "Simple Parameters" do
 
   it "call /bar though index doesn't take params" do
     lambda{ handle('/bar') }.
-      should raise_error(Ramaze::Error::NoAction)
+      should.raise(Ramaze::Error::NoAction)
   end
 
   it "action that takes a single param" do
@@ -91,7 +90,7 @@ describe "Simple Parameters" do
 
   it "action that takes two params but we give only one" do
     lambda{ handle('/double_param/foo') }.
-      should raise_error(Ramaze::Error::NoAction)
+      should.raise(Ramaze::Error::NoAction)
   end
 
   it "action that takes all params" do
@@ -104,7 +103,7 @@ describe "Simple Parameters" do
 
   it "action that takes all params but needs at least one (not given here)" do
     lambda{ handle('/at_least_one') }.
-      should raise_error(ArgumentError)
+      should.raise(ArgumentError)
   end
 
   it "one default" do
@@ -126,12 +125,12 @@ describe "Simple Parameters" do
 
   it "jo/add should raise with 0 parameters" do
     lambda{ handle('/jo/add') }.
-      should raise_error(ArgumentError)
+      should.raise(ArgumentError)
   end
 
   it "add should raise with 4 parameters" do
     lambda{ handle('/jo/add/1/2/3/4') }.
-      should raise_error(ArgumentError)
+      should.raise(ArgumentError)
   end
 
   it "add should not raise with 1-3 parameters" do
