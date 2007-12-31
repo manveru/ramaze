@@ -7,7 +7,7 @@ class OrderedSet < BlankSlate
   def initialize(*args)
     @set = *args
     @set ||= []
-    @set = [@set] unless Array === @set
+    @set = [@set] unless ::Array === @set
     @set.uniq!
   end
 
