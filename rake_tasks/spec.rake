@@ -12,6 +12,7 @@ task 'spec' do
   require 'scanf'
 
   root = File.expand_path(File.dirname(__FILE__)/'..')
+  libpath = root/'lib'
 
   specs = Dir[root/'spec/{ramaze,examples,snippets,contrib}/**/*.rb'] +
     Dir[root/'examples/**/spec/**/*.rb']
@@ -34,7 +35,7 @@ task 'spec' do
     print '%2d/%d: ' % [idx + 1, total]
     print name.ljust(width + 2)
 
-    stdout = `#{bin} #{spec} 2>&1`
+    stdout = `#{bin} -I#{libpath} #{spec} 2>&1`
 
     status = $?.exitstatus
     tests, assertions, failures, errors = stdout[/.*\Z/].to_s.scanf(result_format)
