@@ -17,15 +17,20 @@ ramaze = fork do
     def index() "Hello, World!" end
   end
 
+  Ramaze::Inform.ignored_tags = [:debug]
   Ramaze::Inform.loggers = []
-  Ramaze.start :adapter => :evented_mongrel, :sessions => false
+  Ramaze.start :sessions => false, :sourcereload => false, :adapter => (ARGV[0] || :evented_mongrel).to_sym
 end
 
 sleep 2
-out = `ab -c 10 -n 1000 http://127.0.0.1:7000/ 2> /dev/null`
-Process.kill('SIGKILL', ramaze)
 
-out =~ /^Requests.+?(\d+\.\d+)/
+# out = `ab -c 10 -n 1000 http://127.0.0.1:7000/ 2> /dev/null`
+# out =~ /^Requests.+?(\d+\.\d+)/
+
+out = `httperf --server=localhost --port=7000 --uri=/ --num-conns=10 --num-calls=100 2> /dev/null`
+out =~ /^Request rate: (.+?)$/
+
 puts $1
 
+Process.kill('SIGKILL', ramaze)
 Process.wait
