@@ -4,7 +4,7 @@ testcase_requires 'remarkably/engines/html'
 require 'examples/templates/template_remarkably'
 
 describe 'Template Remarkably' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it '/' do

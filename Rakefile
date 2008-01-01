@@ -18,8 +18,8 @@ load 'rake_tasks/maintenance.rake'
 load 'rake_tasks/spec.rake'
 load 'rake_tasks/coverage.rake'
 
-task :default => ['test:all']
-task :test => ['test:all']
+task :default => ['spec']
+task :test => ['spec']
 
 desc "sanitize the code and darcs record"
 task :record => ['fix-end-spaces', 'add-copyright'] do

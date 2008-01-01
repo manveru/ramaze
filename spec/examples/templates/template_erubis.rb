@@ -4,7 +4,7 @@ testcase_requires 'erubis'
 require 'examples/templates/template_erubis'
 
 describe 'Template Erubis' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it '/' do

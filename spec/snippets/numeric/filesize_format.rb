@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'lib/ramaze/spec/helper/snippets'
 
 describe "Numeric#filesize_format" do
   it 'it should convert filesizes to human readable format' do

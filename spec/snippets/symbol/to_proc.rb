@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'lib/ramaze/spec/helper/snippets'
 
 describe 'Symbol#to_proc' do
   it 'should convert symbols to procs' do

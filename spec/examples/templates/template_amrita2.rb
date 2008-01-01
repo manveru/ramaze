@@ -4,7 +4,7 @@ testcase_requires 'amrita2'
 require 'examples/templates/template_amrita2'
 
 describe 'Template Amrita2' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it '/external' do

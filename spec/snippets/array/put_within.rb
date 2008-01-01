@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'lib/ramaze/spec/helper/snippets'
 
 describe 'Array#put_within' do
   it 'should put a given object at a well-described position' do

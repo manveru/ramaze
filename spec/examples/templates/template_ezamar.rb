@@ -3,7 +3,7 @@ require 'spec/helper'
 require 'examples/templates/template_ezamar'
 
 describe 'Template Ezamar' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it '/' do

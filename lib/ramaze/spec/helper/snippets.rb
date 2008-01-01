@@ -4,5 +4,4 @@ if caller
 end
 
 require 'lib/vendor/bacon'
-Bacon.extend Bacon::TestUnitOutput
-Bacon.summary_on_exit
+require 'lib/ramaze/spec/helper/bacon'

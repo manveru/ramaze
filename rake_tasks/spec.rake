@@ -2,49 +2,58 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'rake'
-require 'ramaze/spec/helper/layout'
+require 'pp'
+
 require 'lib/ramaze/snippets/divide'
+require 'lib/ramaze/snippets/string/color'
 
-SPEC_BASE = File.expand_path('spec')
-EXAMPLE_BASE = File.expand_path('examples')
-SNIPPETS_BASE = File.expand_path('snippets')
-# ignore files with these paths
-ignores = [
-  './*', './helper/*', './ramaze/adapter.rb', './ramaze/request.rb',
-  './bacon/snippets.rb'
-]
+desc 'Run all specs'
+task 'spec' do
+  require 'scanf'
 
-files = Dir[SPEC_BASE/'**'/'*.rb'] + 
-        Dir[EXAMPLE_BASE/'**/spec'/'*.rb']
-        Dir[SNIPPETS_BASE/'**/*.rb']
-ignores.each do |ignore|
-  ignore_files = Dir[SPEC_BASE/ignore]
-  ignore_files.each do |ignore_file|
-    files.delete File.expand_path(ignore_file)
+  root = File.expand_path(File.dirname(__FILE__)/'..')
+
+  specs = Dir[root/'spec/{ramaze,examples,snippets,contrib}/**/*.rb'] +
+    Dir[root/'examples/**/spec/**/*.rb']
+
+  ignore = [
+    root/'spec/ramaze/adapter.rb', root/'spec/ramaze/request.rb',
+  ].map{|i| Dir[i].map{|f| File.expand_path(f) }}.flatten
+
+  config = RbConfig::CONFIG
+  bin = config['bindir']/config['ruby_install_name']
+
+  result_format = '%d tests, %d assertions, %d failures, %d errors'
+
+  list = (specs - ignore).sort
+  names = list.map{|l| l.sub(root + '/', '') }
+  width = names.sort_by{|s| s.size}.last.size
+  total = names.size
+
+  list.zip(names).each_with_index do |(spec, name), idx|
+    print '%2d/%d: ' % [idx + 1, total]
+    print name.ljust(width + 2)
+
+    stdout = `#{bin} #{spec} 2>&1`
+
+    status = $?.exitstatus
+    tests, assertions, failures, errors = stdout[/.*\Z/].to_s.scanf(result_format)
+
+    if stdout =~ /Usually you should not worry about this failure, just install the/
+      lib = stdout[/^no such file to load -- (.*?)$/, 1] ||
+            stdout[/RubyGem version error: (.*)$/, 1]
+      puts "requires #{lib}".yellow
+    elsif status == 0
+      puts "all %3d passed".green % tests
+    else
+      out = result_format % [tests, assertions, failures, errors]
+      puts out.red
+      puts stdout
+      exit status
+    end
   end
-end
 
-files.sort!
-
-spec_layout = Hash.new{|h,k| h[k] = []}
-
-files.each do |file|
-  name = file.gsub(/^(#{Regexp.union(SPEC_BASE, EXAMPLE_BASE)})/, '.')
-  dir_name = File.dirname(name)[2..-1]
-  task_name = ([:test] + dir_name.split('/')).join(':')
-  spec_layout[task_name] << file
-end
-
-spec_layout.each do |task_name, specs|
-  desc task_name
-  task task_name => [:clean] do
-    wrap = SpecWrap.new(*specs)
-    wrap.run
-  end
-end
-
-desc "Test all"
-task "test:all" => [:clean] do
-  wrap = SpecWrap.new(*spec_layout.values.flatten)
-  wrap.run
+  puts '', "joy: the emotion evoked by well-being, success, or good fortune or by the
+prospect of possessing what one desires"
+  puts "All specs pass, go enjoy yourself :)"
 end

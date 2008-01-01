@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'lib/ramaze/spec/helper/snippets'
 require 'fileutils'
 
 describe 'aquire' do

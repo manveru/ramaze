@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'lib/ramaze/spec/helper/snippets'
 
 describe 'String#color' do
   it 'should define methods to return ANSI strings' do

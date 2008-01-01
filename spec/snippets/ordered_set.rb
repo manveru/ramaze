@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'lib/ramaze/spec/helper/snippets'
 
 describe 'OrderedSet' do
   os = OrderedSet.new(1,2,3,1)

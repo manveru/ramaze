@@ -1,5 +1,7 @@
 require 'spec/helper'
 
+Ramaze.contrib :route
+
 class MainController < Ramaze::Controller
   def float(flt)
     "Float: #{flt}"
@@ -19,8 +21,7 @@ class MainController < Ramaze::Controller
 end
 
 describe 'Route' do
-  extend MockHTTP
-  Ramaze.contrib :route
+  behaves_like 'http'
   ramaze
 
   before do

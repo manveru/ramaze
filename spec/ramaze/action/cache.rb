@@ -21,7 +21,7 @@ class TCOtherCache < Ramaze::Controller
 end
 
 describe 'Action rendering' do
-  extend MockHTTP
+  behaves_like 'http'
 
   @public_root = __DIR__ / :public
   FileUtils.mkdir_p @public_root

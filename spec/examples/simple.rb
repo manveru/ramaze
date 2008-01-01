@@ -2,7 +2,7 @@ require 'spec/helper'
 require 'examples/simple'
 
 describe 'Simple' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   def check(url)

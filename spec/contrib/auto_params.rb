@@ -56,7 +56,7 @@ describe 'Method#get_args' do
 end
 
 describe 'Parameterized actions' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it 'should pass in values from request.params' do

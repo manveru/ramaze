@@ -2,7 +2,7 @@ require 'spec/helper'
 require 'examples/hello'
 
 describe 'Hello' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it '/' do

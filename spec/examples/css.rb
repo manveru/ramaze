@@ -3,7 +3,7 @@ testcase_requires 'haml'
 require 'examples/css'
 
 describe 'CSSController' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   def req(path) r = get(path); [r.content_type, r.body] end

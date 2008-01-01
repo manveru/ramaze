@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'spec/helper'
 
 #TODO test parse_backtrace explicitly
 describe "Ramaze#caller_info" do

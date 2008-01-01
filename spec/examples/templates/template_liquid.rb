@@ -4,7 +4,7 @@ testcase_requires 'liquid'
 require 'examples/templates/template_liquid'
 
 describe 'Template Liquid' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it '/' do

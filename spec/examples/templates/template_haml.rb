@@ -4,7 +4,7 @@ testcase_requires 'haml'
 require 'examples/templates/template_haml'
 
 describe 'Template Haml' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it '/' do

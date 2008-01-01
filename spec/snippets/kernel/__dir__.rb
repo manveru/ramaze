@@ -1,4 +1,4 @@
-require 'spec/bacon/snippets'
+require 'lib/ramaze/spec/helper/snippets'
 
 describe '__DIR__' do
   # this is hardly exhaustive, but better than nothing

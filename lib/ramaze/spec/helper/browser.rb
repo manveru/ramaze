@@ -51,7 +51,6 @@ class Browser
       hash.clear
     end
 
-    puts "#{method.to_s.upcase} => #{@http.uri}"
     response = @http.send(method, hash).strip
     @history << @http.uri
     get_cookie

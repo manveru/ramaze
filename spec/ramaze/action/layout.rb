@@ -117,7 +117,7 @@ class TCLayoutInstanceVars < Ramaze::Controller
 end
 
 describe 'Action rendering' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it 'should work with layouts' do
