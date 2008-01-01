@@ -5,6 +5,13 @@ describe 'OrderedSet' do
 
   it 'should create sets' do
     OrderedSet.new.should == []
+    OrderedSet.new(1).should == [1]
+    OrderedSet.new(1,2).should == [1,2]
+    OrderedSet.new([1,2,3]).should == [1,2,3]
+  end
+
+  it 'should compare sets' do
+    os.should == OrderedSet.new(1,2,3,1)
     os.should == OrderedSet.new([1,2,3,1])
   end
 

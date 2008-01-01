@@ -5,7 +5,12 @@ require File.join(File.dirname(__FILE__), 'blankslate')
 
 class OrderedSet < BlankSlate
   def initialize(*args)
-    @set = *args
+    if args.size == 1
+      @set = args.shift
+    else
+      @set = *args
+    end
+
     @set ||= []
     @set = [@set] unless ::Array === @set
     @set.uniq!
@@ -17,7 +22,7 @@ class OrderedSet < BlankSlate
       @set.delete *args
     when '[]='
       @set.map! do |e|
-        if Array === args.last
+        if ::Array === args.last
           args.last.include?(e) ? nil : e
         else
           args.last == e ? nil : e
