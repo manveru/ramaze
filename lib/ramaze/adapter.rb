@@ -39,10 +39,10 @@ module Ramaze
         start_adapter
 
         Timeout.timeout(3) do
-          sleep 0.01 until Global.adapters.list.any?
+          sleep 0.01 until Global.adapters.any?
         end
 
-        Global.adapters.list.each{|a| a.join} unless Global.run_loose
+        Global.adapters.each{|a| a.join} unless Global.run_loose
 
       rescue SystemExit
         Ramaze.shutdown
@@ -79,13 +79,13 @@ module Ramaze
 
       def shutdown
         Timeout.timeout(1) do
-          Global.adapters.list.each do |adapter|
+          Global.adapters.each do |adapter|
             a = adapter[:adapter]
             a.shutdown if a.respond_to?(:shutdown)
           end
         end
       rescue Timeout::Error
-        Global.adapters.list.each{|a| a.kill! }
+        Global.adapters.each{|a| a.kill! }
         # Hard exit! because it won't be able to kill Webrick otherwise
         exit!
       end

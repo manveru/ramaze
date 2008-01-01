@@ -12,7 +12,7 @@ module Ramaze
       :adapter => :webrick, :cli => [:webrick, :mongrel]
 
     o "All running threads of Adapter will be collected here.",
-      :adapters => ThreadGroup.new
+      :adapters => Set.new
 
     o "Set the size of Backtrace shown.",
       :backtrace_size => 10, :cli => 10
