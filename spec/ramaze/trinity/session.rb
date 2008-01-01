@@ -16,6 +16,10 @@ describe "Session" do
   ramaze :sessions => false
 
   it 'should work without sessions' do
+    class Ramaze::Session
+      remove_const :IP_COUNT_LIMIT
+      const_set(:IP_COUNT_LIMIT, 2)
+    end
     (Ramaze::Session::IP_COUNT_LIMIT + 2).times do
       r = get('/')
       r.body.should == "nothing"

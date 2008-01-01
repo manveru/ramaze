@@ -171,7 +171,7 @@ class SpecFile
     @passed = 0
     @failed = 0
     found = false
-    @stdout =~ /(\d+)\s+assertions,.*(\d+)\s+failures,\s+(\d+) errors/
+    @stdout =~ /(\d+)\s+tests,.*(\d+)\s+failures,\s+(\d+) errors/
     @passed, @failed = $1.to_i, $2.to_i
   end
 
