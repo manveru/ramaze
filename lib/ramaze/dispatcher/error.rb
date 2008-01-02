@@ -51,12 +51,12 @@ module Ramaze
             end
           end
 
-          unless error.message =~ %r(`#{path.split('/').last}')
+          if path and Global.error_page and error.message !~ /`#{path}'/
             response.status = status
-            return Dispatcher.dispatch_to(path) if path and Global.error_page
+            return Dispatcher.dispatch_to(path)
+          else
+            response.build(error.message, status)
           end
-
-          response.build(error.message, status)
         rescue Object => ex
           Inform.error(ex)
           response.build(ex.message, status)
