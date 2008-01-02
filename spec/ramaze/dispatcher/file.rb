@@ -14,7 +14,11 @@ describe 'Dispatcher::File' do
 
   it 'should give priority to Global.public_root' do
     file = (@public_root/'favicon.ico')
-    original = File.read(file)
+    if RUBY_VERSION >= '1.9.0'
+      original = File.open(file, 'r:ASCII'){|f| f.read}
+    else
+      original = File.read(file)
+    end
     get('/favicon.ico').body.should == original
   end
 end
