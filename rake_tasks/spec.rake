@@ -9,6 +9,7 @@ require 'lib/ramaze/snippets/string/color'
 
 desc 'Run all specs'
 task 'spec' do
+  non_verbose, non_fatal = ENV['non_verbose'], ENV['non_fatal']
   require 'scanf'
 
   root = File.expand_path(File.dirname(__FILE__)/'..')
@@ -38,7 +39,8 @@ task 'spec' do
     stdout = `#{bin} -I#{libpath} #{spec} 2>&1`
 
     status = $?.exitstatus
-    tests, assertions, failures, errors = stdout[/.*\Z/].to_s.scanf(result_format)
+    tests, assertions, failures, errors =
+      stdout[/.*\Z/].to_s.scanf(result_format)
 
     if stdout =~ /Usually you should not worry about this failure, just install the/
       lib = stdout[/^no such file to load -- (.*?)$/, 1] ||
@@ -47,10 +49,10 @@ task 'spec' do
     elsif status == 0
       puts "all %3d passed".green % tests
     else
-      out = result_format % [tests, assertions, failures, errors]
+      out = result_format % [tests, assertions, failures, errors].map{|e| e.to_s.to_i}
       puts out.red
-      puts stdout
-      exit status
+      puts stdout unless non_verbose
+      exit status unless non_fatal
     end
   end
 
