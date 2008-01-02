@@ -81,7 +81,11 @@ describe "Request" do
       image_path = File.join('spec', 'ramaze', 'public', image)
       address = "/put_inspect/#{image}"
 
-      file = File.read(image_path)
+      if RUBY_VERSION >= '1.9.0'
+        file = File.open(image_path, 'r:ASCII'){|f| f.read}
+      else
+        file = File.read(image_path)
+      end
 
       response = put(address, :input => file)
       response.body.dump.should == file.dump
@@ -128,7 +132,11 @@ describe "Request" do
 
     it "binary" do
       image_path = '/favicon.ico'
-      static_image = File.read("spec/ramaze/public#{image_path}")
+      if RUBY_VERSION >= '1.9.0'
+        static_image = File.open("spec/ramaze/public#{image_path}", 'r:ASCII'){|f| f.read}
+      else
+        static_image = File.read("spec/ramaze/public#{image_path}")
+      end
 
       response = get(image_path)
       response.status.should == 200
