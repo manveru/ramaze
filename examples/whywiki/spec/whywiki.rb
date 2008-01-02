@@ -1,7 +1,7 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-testcase_requires 'bluecloth', 'hpricot', 'nagoro'
+testcase_requires 'bluecloth', 'hpricot'
 
 $LOAD_PATH.unshift base = __DIR__/'..'
 
