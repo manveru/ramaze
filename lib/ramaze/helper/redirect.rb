@@ -47,6 +47,11 @@ module Ramaze
         end
       end
 
+      raw_redirect(target, opts)
+    end
+
+    def raw_redirect(target, opts = {})
+      target = target.to_s
       header = {'Location' => target}
       status = opts[:status] || STATUS_CODE["See Other"]
       body = %{You are being redirected, please follow <a href="#{target}">this link to: #{target}</a>!}
