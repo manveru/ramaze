@@ -52,6 +52,10 @@ class TCRedirectHelperController < Ramaze::Controller
   def respond_with_status
     respond 'not found', 404
   end
+
+  def redirect_unmodified
+    raw_redirect '/noop'
+  end
 end
 
 describe "RedirectHelper" do
@@ -100,5 +104,9 @@ describe "RedirectHelper" do
     page = get('/respond_with_status')
     page.status.should == 404
     page.body.should == 'not found'
+  end
+
+  it 'should redirect without modifying the target' do
+    get('/redirect_unmodified').headers['Location'].should == '/noop'
   end
 end
