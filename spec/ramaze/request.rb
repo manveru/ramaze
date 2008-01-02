@@ -5,6 +5,7 @@ require 'spec/helper'
 
 class TCRequestController < Ramaze::Controller
   map '/'
+  engine :None
 
   def is_post()   request.post?.to_s end
   def is_get()    request.get?.to_s end
