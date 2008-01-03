@@ -36,7 +36,7 @@ module Ramaze
         def call(env)
           if Ramaze::Global.benchmarking
             time = Benchmark.measure{ respond(env) }
-            Inform.debug("request took #{time.real}s")
+            Inform.debug('request took %.5fs [~%.0f r/s]' % [time.real, 1.0/time.real])
           else
             respond env
           end
