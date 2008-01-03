@@ -59,10 +59,10 @@ module Ramaze
 
       map = Global.mapping.invert
       atoms.map! do |atom|
-        if atom.respond_to?(:new)
-          map[atom] || atom
-        else
+        if atom.is_a?(Ramaze::Controller)
           map[atom.class] || atom
+        else
+          map[atom] || atom
         end
       end
 
