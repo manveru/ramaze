@@ -14,6 +14,7 @@ module Ramaze
   APPDIR = File.dirname(File.expand_path($0))
   BASEDIR = File.dirname(File.expand_path(__FILE__))
   $LOAD_PATH.unshift BASEDIR
+  $LOAD_PATH.uniq!
 end
 
 Thread.abort_on_exception = true
