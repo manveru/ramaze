@@ -23,6 +23,7 @@ module Ramaze
       :mongrel             => :Mongrel,
       :evented_mongrel     => :Mongrel,
       :swiftiplied_mongrel => :Mongrel,
+      :thin                => :Thin
     }
 
     # mapping of :cache => to the right class-name.
