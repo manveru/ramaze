@@ -8,4 +8,9 @@ class PageController < Ramaze::Controller
       redirect page.url
     end
   end
+
+  def view(oid)
+    page = Page[oid]
+    @text = page.text
+  end
 end

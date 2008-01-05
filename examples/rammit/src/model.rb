@@ -14,11 +14,18 @@ class User < Sequel::Model(:user)
 end
 
 class Page < Sequel::Model(:page)
+  include Ramaze::LinkHelper
+
   set_schema do
     primary_key :id
 
-    text :id
+    text :text
   end
+
+  def url
+    R(PageController, :view, id)
+  end
+
 end
 
 [ User, Page ].each do |model|

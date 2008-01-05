@@ -19,11 +19,11 @@ describe 'Rammit' do
   end
 
   it 'should create page from intro page' do
-    got = post('/', 'text' => 'Some text')
+    got = post('/page/create', 'text' => 'Some text')
     refer = got.headers['Location']
     refer.should.not == nil
     got = get(refer)
     doc = Hpricot(got.body)
-    doc.at('div#text').should == 'Some text'
+    doc.at('div#text').inner_html.should =~ /Some text/
   end
 end
