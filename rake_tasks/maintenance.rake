@@ -225,8 +225,8 @@ def authors
     mapping[name][:patches] += 1
   end
 
-  max = mapping.map{|k,v| k.length}.max
-  mapping.inject({}) {|h,(k,v)| h[k.ljust(max)] = v; h}
+  max = mapping.map{|k,v| k.to_s.length }.max
+  mapping.inject({}) {|h,(k,v)| h[k.to_s.ljust(max)] = v; h}
 end
 
 desc "Update /doc/AUTHORS"
