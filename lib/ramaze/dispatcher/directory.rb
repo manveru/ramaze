@@ -36,7 +36,8 @@ module Ramaze
         end
 
         def list_for(path)
-          display = path.gsub(/^#{Regexp.escape(Global.public_root)}\/?/, '/')
+          root = ::File.expand_path(Global.public_root)
+          display = path.gsub(/^#{Regexp.escape(root)}\/?/, '/')
           wrapper =
 %(<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
