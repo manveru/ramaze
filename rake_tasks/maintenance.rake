@@ -205,13 +205,14 @@ end
 
 def authors
   author_map = {
-    'm.fellinger@gmail.com'                   => 'Michael Fellinger',
-    'manveru@weez-int.com'                    => 'Michael Fellinger',
-    'clive@crous.co.za'                       => 'Clive Crous',
     'blueonyx@dev-area.net'                   => 'Martin Hilbig',
-    'rff.rff@gmail.com'                       => 'Gabriele Renzi',
+    'clive@crous.co.za'                       => 'Clive Crous',
     'comp.lang.zenix+ramaze@gmail.com'        => 'zenix',
     'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
+    'manveru@weez-int.com'                    => 'Michael Fellinger',
+    'm.fellinger@gmail.com'                   => 'Michael Fellinger',
+    'outtenr@gmail.com'                       => 'Carlo Zottmann',
+    'rff.rff@gmail.com'                       => 'Gabriele Renzi',
     'stephan@spaceboyz.net'                   => 'Stephan Maka',
   }
 
@@ -221,12 +222,13 @@ def authors
     email  = author.pop.gsub(/<(.*?)>/, '\1')
     name   = author.join(' ')
     name   = author_map[email] if name.empty?
+    fail "#{email} doesn't have a name" unless name
     mapping[name] ||= { :email => email, :patches => 0 }
     mapping[name][:patches] += 1
   end
 
-  max = mapping.map{|k,v| k.to_s.length }.max
-  mapping.inject({}) {|h,(k,v)| h[k.to_s.ljust(max)] = v; h}
+  max = mapping.map{|k,v| k.size }.max
+  mapping.inject({}) {|h,(k,v)| h[k.ljust(max)] = v; h}
 end
 
 desc "Update /doc/AUTHORS"
