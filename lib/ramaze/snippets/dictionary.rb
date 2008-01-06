@@ -350,7 +350,7 @@ module Ramaze
     def inspect
       ary = []
       each {|k,v| ary << k.inspect + "=>" + v.inspect}
-    '{' + ary.join(", ") + '}'
+      '{' + ary.join(", ") + '}'
     end
 
     def dup
@@ -372,6 +372,10 @@ module Ramaze
       ary = []
       each { |k,v| ary << [k,v] if yield k,v }
       ary
+    end
+
+    def find
+      each{|k,v| return k, v if yield(k,v) }
     end
 
     def first
