@@ -376,6 +376,7 @@ module Ramaze
 
     def find
       each{|k,v| return k, v if yield(k,v) }
+      return nil
     end
 
     def first
