@@ -8,6 +8,10 @@ module Ramaze
     # file if found.
 
     class File
+      # These names are checked for serving from public directory.
+      # They take priority over Actions which comes later in the FILTER
+      INDICES = %w[index.htm index.xhtml index.html index]
+
       class << self
         include Trinity
 
@@ -24,6 +28,7 @@ module Ramaze
 
         def open_file(path)
           file = resolve_path(path)
+
           if ::File.file?(file) or ::File.file?(file=file/'index')
             response['Content-Type'] = Tool::MIME.type_for(file) unless ::File.extname(file).empty?
             log(file)
@@ -32,7 +37,13 @@ module Ramaze
         end
 
         def resolve_path(path)
-          ::File.join(Global.public_root, path)
+          joined = ::File.join(Global.public_root, path)
+
+          if ::File.directory?(joined)
+            Dir[joined/"{#{INDICES.join(',')}}"].first || joined
+          else
+            joined
+          end
         end
 
         def log(file)
