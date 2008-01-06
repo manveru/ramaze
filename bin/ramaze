@@ -116,10 +116,7 @@ end
 
 if execute
   eval execute
-elsif instant
-  class MainController < Ramaze::Controller
-  end
-else
+elsif not instant
   begin
     puts "running `#{runner}'"
     require runner.to_s
