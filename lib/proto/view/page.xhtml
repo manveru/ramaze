@@ -1,8 +1,15 @@
 <html>
   <head>
     <title>#{@title}</title>
+    <style type="text/css">
+      body { margin: 2em; }
+      #content { margin-left: 2em; }
+    </style>
   </head>
   <body>
-    #@content
+    <h1>#{@title}</h1>
+    <div id="content">
+      #@content
+    </div>
   </body>
 </html>
