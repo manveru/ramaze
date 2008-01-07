@@ -30,7 +30,7 @@ module Ramaze
           @destdir = Dir.pwd / project
 
           if File.directory?(@destdir)
-            puts "Error: #{project} already exists. Rename or delete directory and try again."
+            puts "Error: #{project}/ already exists. Rename or delete directory and try again."
             return
           end
 
@@ -46,6 +46,7 @@ module Ramaze
           create_dirs(*directories)
           copy_files(*files)
 
+          puts "\nStart your new ramaze app: ruby #{project}/start.rb"
         end
 
         # create the directories recursivly
