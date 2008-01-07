@@ -1,7 +1,4 @@
-# require 'ramaze'
-
-require 'rubygems'
-require File.dirname(__FILE__) + '/../lib/ramaze'
+require 'ramaze'
 
 class LinkingController < Ramaze::Controller
   map '/'
