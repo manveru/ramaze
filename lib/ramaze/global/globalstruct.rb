@@ -100,6 +100,7 @@ module Ramaze
     def template_root
       [ tr = self[:template_root],
         APPDIR/tr,
+        APPDIR/'template',
       ].find{|path| File.directory?(path) } || self[:template_root]
     end
 

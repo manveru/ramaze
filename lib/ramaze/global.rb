@@ -104,7 +104,7 @@ module Ramaze
       :test_connections => true, :cli => true
 
     o "Specify directory to serve dynamic files",
-      :template_root => 'template', :cli => 'template'
+      :template_root => 'view', :cli => 'view'
 
     o "Enable directory listing",
       :list_directories => false, :cli => false
