@@ -15,15 +15,20 @@
         <td>File</td><td>Line</td><td>Method</td>
       </tr>
       <?r @backtrace.each do |lines, hash, file, lineno, meth| ?>
-        <tr id="line_#{hash}" style="background:rgb(#{@colors.shift},200,200);">
-          <td>#{file}</td><td>#{lineno}</td><td><pre>#{meth}</pre></td>
+        <tr class="line" id="#{hash}">
+          <td>#{file}</td><td class="lineno">#{lineno}</td><td><pre>#{meth}</pre></td>
         </tr>
         <tr id="source_#{hash}" style="display:none;">
           <td colspan="3">
             <div class="source">
               <table style="width:100%;">
                 <tr>
-                  <td colspan="2">#{@editor} #{file} +#{lineno}</td>
+                  <td class="editor" colspan="2">
+                    #{@editor} #{file} +#{lineno}
+                    <div style="float: right">
+                      <a href="txmt://open?url=file://#{file}&line=#{lineno}">open in textmate</a>
+                    </div>
+                  </td>
                 </tr>
                 <?r lines.each do |llineno, lcode, lcurrent| ?>
                   <tr class="source" #{'style="background:#faa;"' if lcurrent}>
@@ -33,13 +38,13 @@
                 <?r end ?>
               </table>
             </div>
-            <script type="text/javascript">
-              $("tr#line_#{hash}").click(function(){$("tr#source_#{hash}").toggle()});
-            </script>
           </td>
         </tr>
       <?r end ?>
     </table>
+    <script type="text/javascript">
+      $("tr.line").click(function(){$("tr#source_"+this.id).toggle()});
+    </script>
     <?r
       {
         'Session'   => Thread.current[:session],

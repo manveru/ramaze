@@ -1,9 +1,18 @@
+body {
+  font-family: sans-serif;
+}
+
 h1.main {
   text-align: center;
 }
 
+td {
+  padding: 4px;
+}
+
 table.main {
-  background: #000;
+  background: #444;
+  margin-left: 2em;
 }
 
 table.main tr.head {
@@ -11,8 +20,16 @@ table.main tr.head {
   width:      100%;
 }
 
+table.main tr {
+  background: #fff;
+}
+
 table.main tr.source_container {
   display:    none;
+}
+
+tr.source td {
+  padding: 0;
 }
 
 tr.source_container div {
@@ -35,6 +52,11 @@ tr.source_container div table tr.source {
 
 div.source {
   background: #fff;
+  padding: 6px;
+}
+
+div.source td.editor {
+  font-size: 0.8em;
 }
 
 tr.source {
@@ -42,9 +64,15 @@ tr.source {
 }
 
 tr.source td.lineno {
-  font-size: 0.8em;
+  font-size: 0.9em;
+  font-family: monospace;
+}
+
+tr.source td.lineno, tr.line td.lineno {
+  text-align: right;
 }
 
 tr.source td.code pre {
-  height: 0.1em;
+  margin: 0;
+  font-family: monospace;
 }
