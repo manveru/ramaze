@@ -29,6 +29,11 @@ describe 'aquire' do
       tmp_dir_for_aquire/sub/baz.rb]
   end
 
+  it 'should be aliased to acquire' do
+    acquire 'tmp_dir_for_aquire/sub/*'
+    @required.should.not.be.empty
+  end
+
   it 'should load {so,rb}, not others' do
     aquire 'tmp_dir_for_aquire/*'
     @required.sort.should == %w[

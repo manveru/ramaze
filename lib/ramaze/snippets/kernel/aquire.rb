@@ -31,4 +31,5 @@ module Kernel
       end
     end
   end
+  alias acquire aquire
 end
