@@ -16,20 +16,24 @@ module Kernel
   #   # src/foobar/README
   #
   #   # requires all files in 'src':
-  #   aquire 'src/*'
+  #   acquire 'src/*'
   #
   #   # requires all files in 'src' recursive:
-  #   aquire 'src/**/*'
+  #   acquire 'src/**/*'
   #
   #   # require 'src/foo.rb' and 'src/bar.so' and 'src/foobar/baz.rb'
-  #   aquire 'src/*', 'src/foobar/*'
+  #   acquire 'src/*', 'src/foobar/*'
 
-  def aquire *globs
+  def acquire *globs
     globs.flatten.each do |glob|
       Dir[glob].each do |file|
         require file if file =~ /\.(rb|so)$/
       end
     end
   end
-  alias acquire aquire
+
+  def aquire *globs
+    warn "Kernel#aquire is being deprecated, use Kernel#acquire instead"
+    acquire *globs
+  end
 end
