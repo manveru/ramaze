@@ -4,6 +4,8 @@
 require 'rubygems'
 require 'ramaze'
 
-require 'controller/main'
+# require all controllers and models
+acquire __DIR__/:controller/'*'
+acquire __DIR__/:model/'*'
 
-Ramaze.start
+Ramaze.start :adapter => :webrick, :port => 7000

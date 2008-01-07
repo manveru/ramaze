@@ -4,9 +4,10 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-describe 'Main' do
+require __DIR__/'..'/'start'
+
+describe MainController do
   behaves_like 'http', 'xpath'
-  require 'start'
   ramaze :template_root => __DIR__/'../view',
          :public_root => __DIR__/'../public'
 
@@ -23,6 +24,4 @@ describe 'Main' do
     got.at_xpath('//body').text.strip.should ==
       MainController.new.notemplate
   end
-
-  FileUtils.rm_f('yaml.db')
 end
