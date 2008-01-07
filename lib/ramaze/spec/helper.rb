@@ -56,3 +56,21 @@ end
 shared 'requester' do
   require 'ramaze/spec/helper/requester'
 end
+
+shared 'xpath' do
+  behaves_like 'http'
+
+  require 'rexml/document'
+  require 'rexml/xpath'
+
+  class Rack::MockResponse
+    def xpath(path)
+      doc = REXML::Document.new body
+      REXML::XPath.match doc, path
+    end
+
+    def at_xpath(path)
+      xpath(path).first
+    end
+  end
+end
