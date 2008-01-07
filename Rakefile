@@ -20,6 +20,23 @@ load 'rake_tasks/coverage.rake'
 
 task :default => ['spec']
 task :test => ['spec']
+task :package => ['jquery']
+
+desc 'download latest jquery and put in /lib/proto/public/js/jquery.js'
+task :jquery do
+  require 'open-uri'
+  $stdout.sync = true
+
+  File.open('lib/proto/public/js/jquery.js', 'w+') do |jquery|
+    remote = open('http://code.jquery.com/jquery-latest.js')
+    print "openend remote side, copying..."
+    while chunk = remote.read(4096)
+      print '.'
+      jquery.write(chunk)
+    end
+    puts " done."
+  end
+end
 
 desc "sanitize the code and darcs record"
 task :record => ['fix-end-spaces', 'add-copyright'] do
