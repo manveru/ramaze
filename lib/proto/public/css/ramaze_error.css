@@ -15,6 +15,14 @@ table.main {
   margin-left: 2em;
 }
 
+div.additional h3 {
+  cursor: pointer;
+}
+
+div.additional pre {
+  margin-left: 2em;
+}
+
 table.main tr.head {
   background: #fee;
   width:      100%;
