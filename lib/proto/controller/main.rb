@@ -1,4 +1,4 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 # Default url mappings are:
@@ -9,17 +9,17 @@
 # this will force the controller to be mounted on: /otherurl
 
 class MainController < Ramaze::Controller
+  layout '/page'
 
   # the index action is called automatically when no other action is specified
   def index
-    @welcome = "Welcome to Ramaze!"
+    @title = "Welcome to Ramaze!"
   end
 
   # the string returned at the end of the function is used as the html body
   # if there is no template for the action. if there is a template, the string
   # is silently ignored
   def notemplate
-    "there is no template associated with this action"
+    "there is no 'notemplate.xhtml' associated with this action"
   end
-
 end
