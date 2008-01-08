@@ -72,14 +72,45 @@ shared 'xpath' do
   require 'rexml/document'
   require 'rexml/xpath'
 
-  class Rack::MockResponse
-    def xpath(path)
-      doc = REXML::Document.new body
-      REXML::XPath.match doc, path
-    end
+  include REXML
 
-    def at_xpath(path)
-      xpath(path).first
+  class Rack::MockResponse
+    def match(xpath = '*')
+      REXML::XPath::match(REXML::Document.new(body), xpath)
+    end
+    alias / match
+    alias search match
+
+    def first(xpath = '*')
+      REXML::XPath::first(REXML::Document.new(body), xpath)
+    end
+    alias at first
+
+    def each(xpath = '*', &block)
+      REXML::XPath::each(REXML::Document.new(body), xpath, &block)
+    end
+  end
+
+  def xp_match(obj, xpath = '*')
+    XPath::match(rexml_doc(body), xpath, &block)
+  end
+  alias xp_search xp_match
+
+  def xp_first(obj, xpath = '*')
+    XPath::first(rexml_doc(body), xpath, &block)
+  end
+  alias xp_at xp_first
+
+  def xp_each(obj, xpath = '*', &block)
+    XPath::each(rexml_doc(body), xpath, &block)
+  end
+
+  def rexml_doc(obj)
+    case obj
+    when REXML::Document, REXML::Element
+      obj
+    else
+      REXML::Document.new(obj)
     end
   end
 end
