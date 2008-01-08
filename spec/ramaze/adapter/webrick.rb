@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'webrick'
+spec_require 'webrick'
 
 def ramaze_options
   { :adapter => :webrick }

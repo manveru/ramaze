@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-testcase_requires 'remarkably/engines/html'
+spec_require 'remarkably/engines/html'
 
 class TCTemplateRemarkablyController < Ramaze::Controller
   map '/'

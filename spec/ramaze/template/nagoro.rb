@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-testcase_requires 'nagoro'
+spec_require 'nagoro'
 
 class TCTemplateNagoroController < Ramaze::Controller
   map :/

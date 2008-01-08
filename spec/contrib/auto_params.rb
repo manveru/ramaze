@@ -1,5 +1,5 @@
 require 'spec/helper'
-testcase_requires 'ruby2ruby'
+spec_require 'ruby2ruby'
 
 Ramaze.contrib :auto_params
 

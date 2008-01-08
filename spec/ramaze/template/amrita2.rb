@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'amrita2'
+spec_require 'amrita2'
 
 class TCTemplateAmritaController < Ramaze::Controller
   template_root __DIR__/:amrita2

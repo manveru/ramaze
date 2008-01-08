@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'ya2yaml', 'ramaze/tool/localize'
+spec_require 'ya2yaml', 'ramaze/tool/localize'
 
 Ramaze::Tool::Localize.trait :enable    => true,
                              :file      => 'spec/ramaze/conf/locale_%s.yaml'.freeze,

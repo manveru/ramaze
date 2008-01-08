@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-testcase_requires 'thin'
+spec_require 'thin'
 
 def ramaze_options
   { :adapter => :thin }

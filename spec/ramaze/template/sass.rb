@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'sass/engine'
+spec_require 'sass/engine'
 
 class TCTemplateSassController < Ramaze::Controller
   map '/'

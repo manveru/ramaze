@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'markaby'
+spec_require 'markaby'
 
 class TCTemplateMarkabyController < Ramaze::Controller
   map '/'

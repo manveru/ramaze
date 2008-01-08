@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'erubis'
+spec_require 'erubis'
 
 class TCTemplateErubisController < Ramaze::Controller
   template_root __DIR__/:erubis

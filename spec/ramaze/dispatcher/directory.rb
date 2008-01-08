@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-testcase_requires 'hpricot'
+spec_require 'hpricot'
 
 describe 'Dispatcher::Directory' do
   @hierarchy = %w[

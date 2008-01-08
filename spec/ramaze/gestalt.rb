@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'ramaze/gestalt'
+spec_require 'ramaze/gestalt'
 
 describe "Gestalt" do
   # This is useful for any controller using Gestalt,

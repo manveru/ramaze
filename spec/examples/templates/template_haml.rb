@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-testcase_requires 'haml'
+spec_require 'haml'
 require 'examples/templates/template_haml'
 
 describe 'Template Haml' do

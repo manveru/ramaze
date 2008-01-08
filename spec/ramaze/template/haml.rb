@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'ramaze/template/haml'
+spec_require 'ramaze/template/haml'
 
 class TCTemplateHamlController < Ramaze::Controller
   map :/

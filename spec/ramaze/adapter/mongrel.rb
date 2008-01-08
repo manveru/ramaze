@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'mongrel'
+spec_require 'mongrel'
 
 def ramaze_options
   { :adapter => :mongrel }

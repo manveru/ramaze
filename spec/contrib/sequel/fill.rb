@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-testcase_requires 'sequel', 'sequel_model', 'sqlite3'
+spec_require 'sequel'
 
 begin
   DB = Sequel.sqlite

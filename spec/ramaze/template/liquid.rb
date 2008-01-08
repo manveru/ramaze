@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'liquid'
+spec_require 'liquid'
 
 module ProductsFilter
   def price(integer)

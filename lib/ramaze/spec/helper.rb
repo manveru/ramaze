@@ -28,11 +28,15 @@ def ramaze(options = {})
   Ramaze.start(options)
 end
 
-# require each of the following and rescue LoadError, telling you why it failed.
+SPEC_REQUIRE_DEPENDENCY = {
+  'sequel' => %w[sqlite3 sequel_model sequel_core]
+}
 
-def testcase_requires(*following)
-  following.each do |file|
-    require(file.to_s)
+# require each of the following and rescue LoadError, telling you why it failed.
+def spec_require(*following)
+  following << following.map{|f| SPEC_REQUIRE_DEPENDENCY[f] }
+  following.flatten.uniq.compact.reverse.each do |file|
+    require file.to_s
   end
 rescue LoadError => ex
   puts ex
@@ -42,6 +46,10 @@ rescue LoadError => ex
   exit
 end
 
+def testcase_requires(*following)
+  warn "'testcase_requires' is being deprecated, please use 'spec_require' instead"
+  spec_require(*following)
+end
 
 shared "http" do
   require 'ramaze/spec/helper/mock_http'

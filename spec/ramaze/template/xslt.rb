@@ -3,10 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'xml/libxml'
-testcase_requires 'xml/xslt'
-testcase_requires 'ramaze/gestalt'
-testcase_requires 'rexml/document'
+spec_require 'xml/libxml', 'xml/xslt', 'ramaze/gestalt', 'rexml/document'
 
 class TCTemplateXSLTController < Ramaze::Controller
   template_root 'spec/ramaze/template/xslt/'

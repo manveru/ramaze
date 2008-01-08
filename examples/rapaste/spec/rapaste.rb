@@ -1,7 +1,7 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-testcase_requires 'hpricot', 'uv', 'sequel', 'sequel_model'
+spec_require 'hpricot', 'uv', 'sequel'
 
 $LOAD_PATH.unshift base = __DIR__/'..'
 require 'start'

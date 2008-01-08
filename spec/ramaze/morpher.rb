@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-testcase_requires 'hpricot'
+spec_require 'hpricot'
 require 'ramaze/template/ezamar/morpher'
 
 class TCMorpherController < Ramaze::Controller
