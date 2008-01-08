@@ -116,12 +116,11 @@ module Ramaze
 
       # Composes an array with the template-paths to look up in the right order.
       # Usually this is composed of Global.template_root and the mapping of the
-      # controller and a second element for Global.public_root, which makes
-      # it possible to convert CSS on the fly and things like that.
+      # controller.
 
       def template_paths
         @template_root ||= Global.template_root / Global.mapping.invert[self]
-        [ @template_root, Global.public_root ].compact
+        [ @template_root ]
       end
 
       # Based on methodname and arity, tries to find the right method on current controller.

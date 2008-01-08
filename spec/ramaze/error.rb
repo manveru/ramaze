@@ -30,7 +30,8 @@ end
 
 describe "Error" do
   behaves_like 'http'
-  ramaze :error_page => true, :public_root => 'spec/ramaze/public'
+  ramaze :error_page => true,
+         :template_root => 'spec/ramaze/public'
 
   @handle_error = Ramaze::Dispatcher::Error::HANDLE_ERROR
   @orig_handle_error = @handle_error.dup
