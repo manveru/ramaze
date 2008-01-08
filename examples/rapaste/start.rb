@@ -6,7 +6,7 @@ Ramaze::Inform.debug "Initializing UltraViolet..."
 Uv.copy_files "xhtml", __DIR__/"public"
 Uv.init_syntaxes
 
-UV_PRIORITY_NAMES = %w[ ruby plain_text html css javascript yaml ]
+UV_PRIORITY_NAMES = %w[ ruby plain_text html css javascript yaml diff ]
 
 STYLE = 'iplastic'
 
