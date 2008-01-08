@@ -9,7 +9,7 @@ require 'ramaze/global/dsl'
 module Ramaze
   GlobalDSL.option_dsl do
     o "Set the adapter Ramaze will run on.",
-      :adapter => :webrick, :cli => [:webrick, :mongrel]
+      :adapter => :webrick, :cli => [:webrick, :mongrel, :thin]
 
     o "All running threads of Adapter will be collected here.",
       :adapters => Set.new
