@@ -9,6 +9,7 @@ class TCTemplateXSLTController < Ramaze::Controller
   template_root 'spec/ramaze/template/xslt/'
   engine :XSLT
   trait :xslt_options => { :fun_xmlns => 'urn:test' }
+  map '/'
 
   def index
     gestalt {
@@ -63,12 +64,11 @@ class TCTemplateXSLTController < Ramaze::Controller
   def gestalt &block
     Ramaze::Gestalt.new(&block).to_s
   end
-
 end
 
 describe "XSLT" do
   behaves_like 'http'
-  ramaze(:mapping => {'/' => TCTemplateXSLTController})
+  ramaze
 
   it "index" do
     get('/').body.should == "hi tobi"
@@ -88,4 +88,3 @@ describe "XSLT" do
     get('/concat_words').body.should == 'oneonetwoonetwothree'
   end
 end
-

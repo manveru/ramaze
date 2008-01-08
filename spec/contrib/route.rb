@@ -23,10 +23,7 @@ end
 describe 'Route' do
   behaves_like 'http'
   ramaze
-
-  before do
-    @route = Ramaze::Contrib::Route
-  end
+  @route = Ramaze::Contrib::Route
 
   it 'should take custom lambda routers' do
     @route['string'] = lambda {|path, req| path if path =~ %r!^/string! }

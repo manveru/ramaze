@@ -20,28 +20,34 @@ describe 'Dispatcher::Directory' do
     Ramaze::Dispatcher::Directory.build_listing(path)
   end
 
-  it 'should dry serve root directory' do
-    body, status, header = build_listing('/')
+  def check(url, title, list)
+    body, status, header = build_listing(url)
     status.should == 200
     header['Content-Type'].should == 'text/html'
+
     doc = Hpricot(body)
-    doc.at(:title).inner_text.should == 'Directory listing of /'
-    files = doc.search("//td[@class='n']")
-    links = files.map{|td| a = td.at(:a); [a['href'], a.inner_text]}
-    links.should == [["/../", "Parent Directory"], ["/test", "test/"],
-      ["/favicon.ico", "favicon.ico"], ["/test_download.css", "test_download.css"]]
+    doc.at(:title).inner_text.should == title
+    doc.search("//td[@class='n']").map{|td|
+      a = td.at(:a)
+      [ a[:href], a.inner_text ]
+    }.should == list
+  end
+
+  it 'should dry serve root directory' do
+   files = [
+     ["/../", "Parent Directory"], ["/test", "test/"],
+     ["/favicon.ico", "favicon.ico"], ["/test_download.css", "test_download.css"]
+   ]
+
+    check '/', 'Directory listing of /', files
   end
 
   it 'should serve hierarchies' do
-    body, status, header = build_listing('/test')
-    status.should == 200
-    header['Content-Type'].should == 'text/html'
-    doc = Hpricot(body)
-    doc.at(:title).inner_text.should == 'Directory listing of /test'
-    files = doc.search("//td[@class='n']")
-    links = files.map{|td| a = td.at(:a); [a['href'], a.inner_text]}
-    links.should == [["/test/../", "Parent Directory"], ["/test/deep", "deep/"],
-      ["/test/five.txt", "five.txt"], ["/test/six.txt", "six.txt"]]
+    files = [
+      ["/test/../", "Parent Directory"], ["/test/deep", "deep/"],
+      ["/test/five.txt", "five.txt"], ["/test/six.txt", "six.txt"]
+    ]
+    check '/test', 'Directory listing of /test', files
   end
 
   FileUtils.rm_rf(__DIR__/:public/:test)
