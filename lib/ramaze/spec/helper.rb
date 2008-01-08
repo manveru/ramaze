@@ -22,6 +22,7 @@ def ramaze(options = {})
     :port         => 7007,
     :host         => '127.0.0.1',
     :force        => true,
+    :sourcereload => false,
     :origin       => :spec,
   }.merge(options)
 
