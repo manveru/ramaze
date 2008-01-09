@@ -1,47 +1,80 @@
-This time we are proud to announce Version 0.2.0 of the Ramaze framework, a
-light and modular open source web framework.
+This time we are proud to announce Version 0.3.0 of Ramaze, the light and
+modular open source web framework.
 
-This release features a lot of work directly from our community and i am really
-greatful for everybody who helped in testing, patching and contributing new
-exciting features.
+This release features a lot of work directly from our community and we are
+really greatful for everybody who helped in testing, patching and contributing
+new exciting features.
 
-An extensive set of specs and docs is covering almost every detail of the
-implementation and usage. It is under development by a growing community and in
-production-use at companies.
-
-Special (alphabetic) thanks go to:
-
-Aman 'tmm1' Gupta      - tons of patches, specs and support
-Jonathan 'Kashia' Buch - patches for localization
-Riku Räisänen          - as usual, extensive testing
-Pistos                 - submitted his first patch
-Stephan Maka           - XSLT templating, implementation, specs and examples
+Our extensive set of specs and docs now covers almost every detail of
+implementation and usage. Ramaze is under development by a growing community
+and in production use at companies.
 
 
-Home page: http://ramaze.rubyforge.org
+Home page:   http://ramaze.net
+Screencasts: http://ramaze.net/screencasts
+
+View source: http://source.ramaze.net
+Darcsweb:    http://darcs.ramaze.net
+
 IRC: #ramaze on irc.freenode.net
 
 
-Short summary of changes from 0.1.4 to 0.2.0:
+Simple example:
 
-  - Contrib facility, for simple experimental user-contributions
+  require 'ramaze'
 
-  - Routes
+  class MainController
+    def index
+      'Hello, World!'
+    end
+  end
 
-  - As always, lots of bugfixes
-
-  - complete XSLT templating system, usage and specs
-
-  - Improved localization filter
-
-  - Added gzip filter
-
-  - Support for the new upcoming nagoro templating engine.
-
-  - Tool::Tidy is gone for good
+  Ramaze.start
 
 
-A complete Changelog is available at http://manveru.net/ramaze/doc/CHANGELOG
+Special (alphabetic) thanks go to:
+
+Aman 'tmm1' Gupta      - lots of patches and friendly support
+Antonio Cangiano       - Article: http://tiny.cc/tRLfm
+Carlo Zottmann         - First patch!
+Jonathan 'Kashia' Buch - patches for gettext and Og support
+Pistos                 - PR through awesome screencasts
+
+
+Selected summary of the 118 patches from 0.2.1 to 0.3.0:
+
+  - Specs switched from RSpec to bacon; Ramaze now runs on Ruby 1.9.
+
+  - /lib/proto (pregenerated base source code) updated to a new structure.
+
+  - Oddities in gem version of bin/ramaze fixed (hopefully? :) )
+
+  - Layouts fixed so the method on the right controller is called.
+
+  - contrib/facebook and simple facebook app example added.
+
+  - Lambda router support added to contrib/route.
+
+  - examples/rapaste added.
+
+  - gettext contrib added; localize ramaze via gettext.
+
+  - Adapter for Thin Ruby webserver added.
+
+  - Index files can now be put into public directories and subdirectories.
+
+  - examples/blog switched from Og to Sequel.
+
+  - view/ is now the subdirectory for templates; if not found, Ramaze falls
+    back to template/.
+
+  - Default error pages updated: colour gradient removed; textmate link added;
+    Javascript optimized; CSS tweaked.
+
+  - Templates are no longer searched for in public/.
+
+A complete Changelog is available at
+http://darcs.ramaze.net/ramaze/doc/CHANGELOG
 
 
 Known issues:
@@ -49,36 +82,35 @@ Known issues:
   - none yet, waiting for your reports :)
 
 
-Features:
+Ramaze Features:
   - Builds on top of the Rack library, which provides easy use of adapters like
-    Mongrel, WEBrick, CGI or FCGI.
+    Mongrel, WEBrick, LiteSpeed, Thin, CGI or FCGI.
 
-  - Supports a wide range of templating-engines like:
-      Amrita2, Erubis, Haml, Liquid, Markaby, Remarkably and its own engine
-      called Ezamar.
+  - Supports a wide range of templating-engines like: Amrita2, Erubis, Haml,
+    Liquid, Markaby, Remarkably and its own engine called Ezamar and (still
+    unofficial) Nagoro.
 
-  - Highly modular structure, you can just use the parts you like. This also
-      means that it's very simple to add your own customizations.
+  - Highly modular structure: you can just use the parts you like. This also
+    means that it's very simple to add your own customizations.
 
   - A variety of helpers is already available, giving you things like advanced
-      caching, OpenID-authentication or aspect-oriented programming for your
-      controllers.
+    caching, OpenID-authentication or aspect-oriented programming for your
+    controllers.
 
-  - It is possible to use the ORM you like, be it ActiveRecord, Og, Kansas or
-      something more simplistic like a wrapper around YAML::Store.
+  - It is possible to use the ORM you like, be it Sequel, DataMapper,
+    ActiveRecord, Og, Kansas or something more simplistic like DBI, or a
+    wrapper around YAML::Store.
 
-  - Good documentation: although we don't have 100% (dcov says around 75%)
-      documentation right now, just about every part of Ramaze is covered with
-      basic and advanced docs.
-      There are a variety of examples and a tutorial available.
+  - Good documentation: although we don't have 100% documentation right now
+    (dcov says around 75%), just about every part of Ramaze is covered with
+    basic and advanced docs. There are a variety of examples, screencasts and a
+    tutorial available.
 
-  - Friendly community: lastly, but still quite important, there are people from
-      all over the world using Ramaze, so you can get almost instant help and
-      info.
+  - Friendly community: there are people from all over the world using Ramaze,
+    so you can get almost instant help and info.
 
 
-For more information please come to http://ramaze.rubyforge.org or ask directly
-on IRC (irc://irc.freenode.net/#ramaze)
+For more information please come to http://ramaze.net or ask directly on IRC
+irc://irc.freenode.net/#ramaze
 
-Thank you,
-Michael 'manveru' Fellinger and the Ramaze community
+Thank you, Michael 'manveru' Fellinger and the Ramaze community
