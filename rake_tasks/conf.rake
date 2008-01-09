@@ -9,7 +9,7 @@ BASEDIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 NAME = "ramaze"
 VERS = Ramaze::VERSION
 COPYRIGHT = [
-  "#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com",
+  "#          Copyright (c) #{Time.now.year} Michael Fellinger m.fellinger@gmail.com",
   "# All files in this distribution are subject to the terms of the Ruby license."
 ]
 CLEAN.include %w[
