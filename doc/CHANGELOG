@@ -1,3 +1,387 @@
+Thu Jan 10 02:04:02 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Cosmetic change in error.xhtml
+
+Thu Jan 10 02:03:11 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Change (c) for new year
+
+Thu Jan 10 02:02:16 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Update announcment
+
+Tue Jan  8 09:50:59 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Add diff to top of syntax list in rapaste
+
+Tue Jan  8 09:50:44 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Don't look for templates in public/
+
+Tue Jan  8 17:10:53 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding thin to 'obvious' options in global.rb
+
+Mon Jan  7 03:55:11 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Make Dictionary#find return nil if nothing is found.
+
+Mon Jan  7 01:38:37 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Extend Dictionary with a nice #find method.
+
+Tue Jan  8 23:14:01 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * A couple of beautifications for specs of Dispatcher::Directory, Template::XSLT and Contrib::Route
+
+Tue Jan  8 23:13:19 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding a bunch of comfy methods to work directly with REXML on mock responses in specs.
+
+Tue Jan  8 23:13:07 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Don't start sourcereload for specs
+
+Tue Jan  8 23:12:08 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Change testcase_requires to spec_require, shorter and reads better.
+
+Mon Jan  7 19:44:17 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Extend Dictionary with a nice #find method
+
+Mon Jan  7 17:57:41 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Move public/error.zmr to template/error.xhtml, cleanup js, use page.xhtml layout
+
+Mon Jan  7 17:33:02 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Update proto start and spec: use __DIR__ so specs and start can be run from any dir, include :adapter and :port options to Ramaze.start for easy changing
+
+Mon Jan  7 17:32:02 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Update proto views: add links to ramaze site and docs, remove old references, tweak css
+
+Mon Jan  7 17:30:31 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Update error pages: remove color gradient, add textmate link, optimize javascript, tweak css
+
+Mon Jan  7 17:21:29 JST 2008  Aman Gupta <aman@ramaze.net>
+  * After creating a new ramaze app, show command to run the app
+
+Mon Jan  7 17:20:48 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Make "describe ClassName do end" work with bacon
+
+Mon Jan  7 16:07:05 JST 2008  Aman Gupta <aman@ramaze.net>
+  * [rapaste] remove unused helper/ subdir, use respond() instead of throw :respond
+
+Mon Jan  7 16:13:14 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding fallback aquire.rb
+
+Mon Jan  7 15:59:58 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * jQuery 1.1.3.1 => 1.2.2b2
+
+Mon Jan  7 15:56:02 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Update /lib/proto to new structure.
+
+Mon Jan  7 15:52:59 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * s/aquire/acquire/g
+
+Mon Jan  7 15:48:09 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding jquery task to d/l latest jquery and put it in /lib/proto/public/js/jquery.js
+
+Mon Jan  7 15:35:16 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding shared xpath for bacon, that should help us getting rid of Hpricot in specs.
+
+Mon Jan  7 13:31:09 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Use view/ subdirectory for templates if available, else fallback to template/
+
+Mon Jan  7 13:25:25 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Display current public and template root during startup
+
+Mon Jan  7 12:24:08 JST 2008  outtenr@gmail.com
+  * * fixed require statement in linking.rb example
+
+Mon Jan  7 12:29:11 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Avoid requiring bacon twice when running snippet specs
+
+Mon Jan  7 12:26:49 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Alias acquire to aquire
+
+Sun Jan  6 18:45:28 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Add possibility to put index file into public directories and subdirectories.
+
+Sun Jan  6 18:33:03 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Fixing directory dispatcher in case of relative public root
+
+Sun Jan  6 18:31:54 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding default MainController
+
+Sun Jan  6 17:41:10 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Don't ignore missing author names in the author related tasks.
+
+Sun Jan  6 17:37:54 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Make rammit pass
+
+Sun Jan  6 12:02:24 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Add request/thin spec
+
+Sun Jan  6 09:30:58 JST 2008  Jonathan Buch <john@oxyliquit.de>
+  * [benchmark] add benchmarking for templates (ezamar, haml for now)
+
+Sun Jan  6 07:48:43 JST 2008  Jonathan Buch <john@oxyliquit.de>
+  * [rakefile] fix rake patchstat, empty name from darcs breaks script
+
+Sat Jan  5 18:26:24 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Add adapter for Thin ruby webserver
+
+Sat Jan  5 10:14:14 JST 2008  Jonathan Buch <john@oxyliquit.de>
+  * [rammit] make specs runnable from `rake test`
+
+Sat Jan  5 10:07:25 JST 2008  Jonathan Buch <john@oxyliquit.de>
+  * Make 'should create page from intro page' pass
+
+Sat Jan  5 06:11:56 JST 2008  Michael Fellinger <manveru@weez-int.com>
+  * Make the sourceview example work on _darcs/current and invalidate cache in any case on a reload
+
+Sat Jan  5 05:58:37 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding examples/rammit (first draft)
+
+Sat Jan  5 05:57:16 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Make the load path for bacon more general and uniq it in ramaze.rb
+
+Fri Jan  4 02:16:21 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Add (statisticans please close your eyes) more info for benchmarking
+
+Thu Jan  3 22:38:51 JST 2008  outtenr@gmail.com
+  * fix_for_controllers_with_new_method
+  
+  If a controller had a method of "new", the "R" linking method would brake.  Modified code and tests should be included.
+  
+
+Wed Jan  2 21:58:20 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Add tiny spec for raw_redirect
+
+Wed Jan  2 21:57:55 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding sqlite3 to dependencies of sequel/fill spec
+
+Wed Jan  2 21:02:21 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding RedirectHelper#raw_redirect to prevent messing with the target
+
+Wed Jan  2 13:00:51 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Fix encoding issues with mongrel/webrick request specs on 1.9
+
+Wed Jan  2 12:28:57 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix the dispatcher/file spec for 1.9.0
+
+Wed Jan  2 11:44:37 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Don't run contents of favicon.ico through ezamar in mongrel/webrick request spec
+
+Wed Jan  2 11:39:24 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Simplify error dispatching code, and prevent infinite recursion on 1.9
+
+Wed Jan  2 10:25:50 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * add non_fatal and non_verbose ENV options for running specs and fix a minor bug
+
+Wed Jan  2 10:06:01 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Don't use Nagoro for the whywiki example
+
+Wed Jan  2 08:50:39 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Update benchmark/test.rb: use httperf, turn off sourcereload, read adapter from ARGV[0]
+
+Wed Jan  2 06:59:12 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Block arguments in 1.9 cannot be instance variables
+
+Wed Jan  2 06:52:26 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Improve ruby1.9 version of BlankSlate and make OrderedSet specs pass
+
+Wed Jan  2 06:20:42 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Do not use ThreadGroup for collecting adapter threads, use Set instead, a lot more reliable over 1.8=>1.9
+
+Wed Jan  2 08:51:38 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Add -I for libpath to spec task
+
+Wed Jan  2 08:15:32 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Finally switch to bacon totally, enjoy :D
+
+Tue Jan  1 18:30:11 JST 2008  Aman Gupta <aman@ramaze.net>
+  * Speed up trinity/session spec, show # of passing tests instead of assertions
+
+Tue Jan  1 06:01:07 JST 2008  Jonathan Buch <john@oxyliquit.de>
+  * patch rake test, shows passed/failed specs again, don't test bacon/snippets.rb
+
+Tue Jan  1 05:34:20 JST 2008  Jonathan Buch <john@oxyliquit.de>
+  * revise pager spec
+
+Tue Jan  1 05:33:44 JST 2008  Jonathan Buch <john@oxyliquit.de>
+  * remove unneccessary whitespace from contrib/gettext
+
+Tue Jan  1 03:40:35 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Update Bacon to latest version
+
+Tue Jan  1 03:40:27 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Big switch to using bacon instead of rspec, gotta update the rake task for darcs, run specs using 'ruby specwrapper.rb' for now
+
+Tue Jan  1 01:58:07 JST 2008  Michael Fellinger <m.fellinger@gmail.com>
+  * Small beautification for lib/ramaze.rb
+
+Mon Dec 31 19:55:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make Gestalt compatible with 1.9.0
+
+Mon Dec 31 19:27:16 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Small beautification for source of snippets/string/color
+
+Mon Dec 31 19:26:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Don't require rubyforgepublisher in Rakefile, we don't use it anyway
+
+Mon Dec 31 19:26:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * More compatiblity with Ruby 1.9.0 - at least the hello example now runs on 1.9.0!
+
+Mon Dec 31 18:53:19 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make OrderedSet compatible with 1.9
+
+Mon Dec 31 11:06:26 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Fix auto_params with latest ruby2ruby (nil.method_missing was removed)
+
+Mon Dec 31 11:05:43 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Make instance vars available when layout action is in another controller + better layout specs
+
+Sun Dec 30 15:31:32 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add spec for re-using layouts from other controllers
+
+Sun Dec 30 17:30:30 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix layout so it calls a method on the right controller.
+
+Sat Dec 29 09:44:08 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add memory usage to benchmarks
+
+Sat Dec  1 03:35:35 JST 2007  Jonathan Buch <john@oxyliquit.de>
+  * Add gettext contrib, localize ramaze via gettext
+
+Fri Dec 28 09:11:13 JST 2007  Jonathan Buch <john@oxyliquit.de>
+  * [pager] add compatibility to Og > 0.41
+
+Fri Dec 28 08:57:59 JST 2007  Jonathan Buch <john@oxyliquit.de>
+  * [rapaste] fix pagination bug on /view
+
+Thu Dec 27 18:50:05 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adding blankslate and String#ord, first one for OrderedSet to inherit from, and in case of 1.9 to make BlankSlate equivalent to BasicObject
+
+Thu Dec 27 17:31:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Only undef Symbol#to_int if it has been defined
+
+Wed Dec 26 16:21:44 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Minor beautification of spec speedup patch
+
+Wed Dec 26 16:20:32 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Escape regexps so specs run in directories with strange characters
+
+Tue Dec 25 14:20:04 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Update amrita2 template engine
+
+Tue Dec 25 14:19:53 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add specs for Symbol#to_proc snippet
+
+Wed Dec 26 13:55:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Speed up snippet specs, shaves off 10 secs of spectime.
+
+Tue Dec 25 12:10:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make our Symbol#to_proc equivalent to the activesupport one :P
+
+Tue Dec 25 12:06:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Don't rely on Symbol#to_proc in our source
+
+Fri Dec 21 18:47:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Rakefile should require time
+
+Tue Dec 25 13:12:19 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * little beautification
+
+Tue Dec 25 13:11:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Adapt nagoro engine to latest nagoro version
+
+Tue Dec 25 13:10:53 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix engine lookup if conflict of extension arises, make result predictable
+
+Tue Dec 25 13:10:03 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Unify the specs in example applications
+
+Tue Dec 25 13:09:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Move the SequelHelper into our general helpers, provides easy pagination
+
+Tue Dec 25 12:56:02 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Make examples/wikore compatible with rspec 1.1.1 which has the silly behaviour of assuming methods starting with 'should_' are specs too...
+
+Tue Dec 25 12:48:08 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Switch examples/blog from Og to Sequel
+
+Sat Dec 22 21:48:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Small fix for whywiki spec
+
+Thu Dec 20 01:25:49 JST 2007  jesuswasramazing.10.pistos@geoshell.com
+  * / is now the "add new" action, /list is now the listing.
+
+Wed Dec 19 22:27:23 JST 2007  Michael Fellinger <manveru@weez-int.com>
+  * Fix the check for syntax in rapaste
+
+Wed Dec 19 13:29:54 JST 2007  Michael Fellinger <manveru@weez-int.com>
+  * Add guard against wrong syntax in rapaste for saving pastes
+
+Wed Dec 19 02:23:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * examples/rapaste: Select right style for text_fragment
+
+Tue Dec 18 04:55:22 JST 2007  jesuswasramazing.10.pistos@geoshell.com
+  * Save theme selection in session.
+
+Mon Dec 17 10:17:44 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Improved Tool::Localize
+
+Mon Dec 17 12:56:51 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add examples/rapaste
+
+Sun Dec  9 11:29:33 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Prevent ramaze --create from overwriting existing files/directories
+
+Sat Dec  8 05:14:50 JST 2007  Aman Gupta <aman@ramaze.net>
+  * SourceReload bugfix- use Regexp.union so Dir.pwd is escaped
+
+Sat Dec  8 05:00:26 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add lambda router support to contrib/route
+
+Fri Dec  7 12:58:38 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Updated benchmark suite and results
+
+Fri Dec  7 11:40:11 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Optimize OrderedSet implementation
+
+Thu Dec  6 11:54:46 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Improve facebook API error handling (I'll move this to a gem or external lib eventually..)
+
+Thu Dec  6 15:29:01 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Introducing caching for Controller::action_methods in Cache.action_methods.
+
+Thu Dec  6 14:54:32 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Fix oddities in bin/ramaze when used via gems (hopefully? :)
+
+Mon Dec  3 06:50:17 JST 2007  Aman Gupta <aman@ramaze.net>
+  * String#unindent is part of latest release, remove from ramaise.rb
+
+Sun Dec  2 09:07:54 JST 2007  Aman Gupta <aman@ramaze.net>
+  * examples/css spec requires Haml
+
+Sun Dec  2 04:39:28 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add contrib/facebook and simple facebook app example
+
+Sun Dec  2 04:33:47 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Add another spec for String#snake_case
+
+Sun Dec  2 04:33:26 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Fix timeout error with :adapter => :fcgi
+
+Fri Nov 30 16:12:15 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add SessionFlash#delete
+
+Fri Nov 30 16:09:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Failsafe for Request#local_net? - 'unkown' seems to be a common address...
+
+Fri Nov 30 12:59:00 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add lookup for index template like /foo__index
+
+Thu Nov 29 08:39:45 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Version 0.2.1
+
+Thu Nov 29 08:39:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  tagged 0.2.1
+
+Thu Nov 29 08:39:12 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update CHANGELOG
+
+Thu Nov 29 08:27:40 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Use new Request#[] and avoid binding block unnecessarily
+
 Thu Nov 29 08:23:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Spec and fix for bug in String#unindent
 
@@ -130,11 +514,11 @@ Mon Nov 19 23:03:34 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Mon Nov 19 22:56:22 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Adding Thread::into, almost forgot about it.
 
-Mon Nov 19 18:31:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Update doc/meta/announcement
-
 Mon Nov 19 22:47:43 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Remove Tool::Tidy and all traces of it, it's leaking memory, has problems upgrading and isn't used by anybody i know of.
+
+Mon Nov 19 18:31:59 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Update doc/meta/announcement
 
 Sun Nov 18 13:19:07 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Using OrderedSet instead of Set helps keeping sessions deleted in chronological order
@@ -271,17 +655,17 @@ Wed Oct 24 08:23:22 JST 2007  Aman Gupta <aman@ramaze.net>
 Mon Oct 22 12:40:52 JST 2007  Aman Gupta <aman@ramaze.net>
   * Update auth example to use new :load_engines config option
 
-Sun Oct 21 05:36:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Minor improvment of spec wrapper
-
-Sun Oct 21 03:59:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * ran fix-end-spaces
-
 Sun Oct 21 13:54:18 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Don't create meta-cache structure
 
 Sun Oct 21 13:50:25 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Require fileutils for Ramaze::Action::render
+
+Sun Oct 21 05:36:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Minor improvment of spec wrapper
+
+Sun Oct 21 03:59:14 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * ran fix-end-spaces
 
 Sun Oct 21 12:40:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix cache spec and add Action#extended_path again
@@ -289,11 +673,11 @@ Sun Oct 21 12:40:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Sun Oct 21 09:04:35 JST 2007  Aman Gupta <aman@ramaze.net>
   * Fix off-by-one on spec output and cleanup template_root references in various specs
 
-Sun Oct 21 07:11:59 JST 2007  Aman Gupta <aman@ramaze.net>
-  * Stop RDoc from complaining
-
 Sun Oct 21 08:09:23 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix Global options for (template|public)_root in spec/helper
+
+Sun Oct 21 07:11:59 JST 2007  Aman Gupta <aman@ramaze.net>
+  * Stop RDoc from complaining
 
 Sun Oct 21 00:17:55 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Don't activate Dispatcher::Directory by default.
@@ -370,6 +754,9 @@ Tue Oct 16 23:53:27 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Tue Oct 16 23:52:39 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Small beautification to Dispatcher::File
 
+Wed Oct 17 00:20:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Don't mention coderay in README anymore
+
 Tue Oct 16 21:00:24 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Adapt Nagoro for latest API changes
 
@@ -379,29 +766,32 @@ Mon Oct 15 13:58:05 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Fri Oct 12 21:41:24 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix ezamar morpher, seems to break on 0.6 - simplify implementation at the same time... couldn't do a real benchmark for the new vs old since the old one doesn't seem to be able to process more complex documents, new one builds on XPATH functionality of hpricot and is a lot more robust but at the same time much easier to understand. Extend specs for it and don't require it by default anymore.
 
-Wed Oct 17 00:20:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Don't mention coderay in README anymore
+Fri Oct 12 00:26:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * layout example should not have an Element
 
 Thu Oct 11 13:30:35 JST 2007  Aman Gupta <ramaze@tmm1.net>
   * Minor sourceview cleanups
 
-Fri Oct 12 00:26:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * layout example should not have an Element
-
 Thu Oct 11 12:51:30 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Numeric#human_readable_filesize_format #=> Numeric#filesize_format
 
-Thu Oct 11 10:31:18 JST 2007  Aman Gupta <ramaze@tmm1.net>
-  * Add sourceview example- syntax highlighting source browser for ramaze source code
-
 Fri Oct  5 14:48:48 JST 2007  jesuswasramazing.10.pistos@geoshell.com
   * gzip filter added
+
+Thu Oct 11 10:31:18 JST 2007  Aman Gupta <ramaze@tmm1.net>
+  * Add sourceview example- syntax highlighting source browser for ramaze source code
 
 Wed Oct 10 21:25:07 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix <title> in layout example
 
 Wed Oct 10 02:07:13 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Remove mention of Nginx from feature CGI
+
+Sun Oct  7 07:26:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * rescue MissingArgument for missing arguments in bin/ramaze
+
+Sat Oct  6 00:27:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Add doc/LEGAL that is required by doc/LEGAL, holds a list of licenses and authors of files we use but do not 'own'.
 
 Fri Oct  5 14:29:16 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Add Global.boring to avoid logging of some static files
@@ -421,12 +811,6 @@ Wed Oct  3 08:47:47 JST 2007  Aman Gupta <ramaze@tmm1.net>
 Wed Oct  3 08:43:55 JST 2007  Aman Gupta <ramaze@tmm1.net>
   * Ignore /favicon.ico by default
 
-Sun Oct  7 07:26:48 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * rescue MissingArgument for missing arguments in bin/ramaze
-
-Sat Oct  6 00:27:20 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Add doc/LEGAL that is required by doc/LEGAL, holds a list of licenses and authors of files we use but do not 'own'.
-
 Wed Oct  3 08:36:31 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Add the needed adapter/swiftiplied_mongrel and adapter/evented_mongrel
 
@@ -436,14 +820,14 @@ Wed Oct  3 08:31:35 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Wed Oct  3 00:25:04 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix hash-order issue for gestalt spec.
 
-Sat Sep 29 22:37:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Gestalt should accept symbols as attributes
-
 Mon Oct  1 01:33:54 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix reference and logging of CGI adapter.
 
 Sun Sep 30 14:14:29 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix docs for AuthHelper
+
+Sat Sep 29 22:37:37 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Gestalt should accept symbols as attributes
 
 Thu Sep 27 01:02:07 JST 2007  Jonathan Buch <john@oxyliquit.de>
   * [localize] normalize session locale too
@@ -469,14 +853,14 @@ Tue Sep 25 13:17:27 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
 Tue Sep 25 23:05:10 JST 2007  jesuswasramazing.10.pistos@geoshell.com
   * trivial comment changes
 
-Sun Sep 23 04:17:54 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
-  * Remove unused methods from Action
-
 Sun Sep 23 14:12:41 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Global.ignore now only ignores files if they don't exist.
 
 Sun Sep 23 14:09:57 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
   * Fix requires for to specs.
+
+Sun Sep 23 04:17:54 JST 2007  Michael Fellinger <m.fellinger@gmail.com>
+  * Remove unused methods from Action
 
 Sat Sep 22 07:55:25 JST 2007  stephan@spaceboyz.net
   * XSLT template example: add Content-Type
