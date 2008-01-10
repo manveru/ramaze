@@ -1,11 +1,15 @@
 #!/usr/bin/env ruby
 
 begin
-  require 'rubygems'
+  require File.join(File.dirname(__FILE__), '../lib/ramaze')
 rescue LoadError
-end
+  begin
+    require 'rubygems'
+  rescue LoadError
+  end
 
-require 'ramaze'
+  require 'ramaze'
+end
 
 RAMAZE_VERSION = "Ramaze Version #{Ramaze::VERSION}"
 
