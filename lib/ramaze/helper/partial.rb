@@ -47,16 +47,26 @@ module Ramaze
       options.keys.each {|x| Request.current.params[x] = saved[x] }
     end
 
-    # Generate from a filename in template_root of the given (or current)
-    # controller a new action.
-    # Any option you don't pass is instead taken from Action.current
+    # Render the template file in template_root of the
+    # current controller.
 
-    def render_template(file, options = {})
+    def render_template(file, locals = {})
       current = Action.current
-      options[:controller] ||= current.controller
-      options[:instance]   ||= current.instance.dup
-      options[:binding]    ||= options[:instance].instance_eval{ binding }
-      options[:template] = (options[:controller].template_root/file)
+
+      options = { :controller => current.controller,
+                  :instance => current.instance.dup }
+
+      options[:template] = options[:controller].template_root/file
+      options[:binding]  = options[:instance].instance_eval{ binding }
+
+      # use method_missing to provide access to locals, if any exist
+      options[:instance].instance_eval {
+        @__locals = locals
+        def method_missing sym, *args, &block
+          return @__locals[sym] if @__locals.key?(sym)
+          super
+        end
+      } if locals.any?
 
       action = Ramaze::Action(options)
       action.render
