@@ -70,6 +70,10 @@ module Ramaze
 
     IP_COUNT_LIMIT = 1000 unless defined?(IP_COUNT_LIMIT)
 
+    # Holds the default cookie used for sessions
+
+    COOKIE = { :path => '/' }
+
     class << self
 
       # called from Ramaze::startup and adds Cache.sessions if cookies are

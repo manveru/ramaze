@@ -130,7 +130,7 @@ module Ramaze
 
       def set_cookie
         session.finalize
-        hash = {:value => session.session_id, :path => '/'}
+        hash = {:value => session.session_id}.merge(Session::COOKIE)
         response.set_cookie(Session::SESSION_KEY, hash)
       end
 
