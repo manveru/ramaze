@@ -67,11 +67,9 @@ module Ramaze
           end
         end
 
-        if Global.mapping.empty?
-          Inform.warn("No Controllers mapped, will serve /public only.")
-        else
-          Inform.debug("mapped Controllers: #{Global.mapping.inspect}")
-        end
+        require 'ramaze/controller/main' if Global.mapping.empty?
+
+        Inform.debug("mapped Controllers: #{Global.mapping.inspect}")
       end
 
       # checks paths for existance and logs a warning if it doesn't exist yet.
