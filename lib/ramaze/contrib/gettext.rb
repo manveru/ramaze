@@ -89,6 +89,7 @@ class Ramaze::Tool::Gettext < Ramaze::Tool::Localize
     dictionary.each do |locale, dict|
       keys.concat dict.keys
     end
+    keys.delete ""
 
     data = ::GetText::RGetText.generate(keys.compact.uniq.sort.map {|x| [x] })
     file = (trait[:file] % trait[:default_language]) + '.pot'
