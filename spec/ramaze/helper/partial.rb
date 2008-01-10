@@ -21,7 +21,8 @@ class TCPartialHelperController < Ramaze::Controller
     render_template("partial.xhtml")
   end
 
-  def recursive
+  def recursive locals = false
+    respond render_template('recursive_locals.xhtml', :n => 1) if locals
     @n = 1
   end
 
@@ -52,5 +53,9 @@ describe "PartialHelper" do
 
   it 'should support locals' do
     get('/test_locals').body.should == 'Hello, World!'
+  end
+
+  it 'should work recursively with locals' do
+    get('/recursive/true').body.gsub(/\s/,'').should == '{1{2{3{44}3}2}1}'
   end
 end
