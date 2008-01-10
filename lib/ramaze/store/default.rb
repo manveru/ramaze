@@ -34,7 +34,9 @@ module Ramaze
       # pass on all methods inside a transaction
 
       def method_missing(meth, *args, &block)
-        @db.transaction do
+        read_only = (meth == :[])
+
+        @db.transaction(read_only) do
           @db.send(meth, *args, &block)
         end
       end
