@@ -36,7 +36,7 @@ Special (alphabetic) thanks go to:
 
 Aman 'tmm1' Gupta      - lots of patches and friendly support
 Antonio Cangiano       - Article: http://tiny.cc/tRLfm
-Carlo Zottmann         - First patch!
+Richard Outten         - First patch!
 Jonathan 'Kashia' Buch - patches for gettext and Og support
 Pistos                 - PR through awesome screencasts
 

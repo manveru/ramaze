@@ -211,7 +211,7 @@ def authors
     'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
     'manveru@weez-int.com'                    => 'Michael Fellinger',
     'm.fellinger@gmail.com'                   => 'Michael Fellinger',
-    'outtenr@gmail.com'                       => 'Carlo Zottmann',
+    'outtenr@gmail.com'                       => 'Richard Outten',
     'rff.rff@gmail.com'                       => 'Gabriele Renzi',
     'stephan@spaceboyz.net'                   => 'Stephan Maka',
   }
