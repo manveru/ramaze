@@ -17,7 +17,6 @@ spec =
         s.post_install_message = POST_INSTALL_MESSAGE
 
         s.add_dependency('rake', '>=0.7.3')
-        s.add_dependency('rspec', '>=1.0.2')
         s.add_dependency('rack', '>=0.2.0')
         # s.required_ruby_version = '>= 1.8.5'
 
