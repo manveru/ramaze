@@ -57,16 +57,14 @@ module Ramaze
                   :instance => current.instance.dup }
 
       options[:template] = options[:controller].template_root/file
-      options[:binding]  = options[:instance].instance_eval{ binding }
 
       # use method_missing to provide access to locals, if any exist
-      options[:instance].instance_eval {
-        @__locals = locals
-        def method_missing sym, *args, &block
-          return @__locals[sym] if @__locals.key?(sym)
-          super
-        end
+      options[:instance].meta_def(:method_missing) { |sym, *args|
+        return locals[sym] if locals.key?(sym)
+        super
       } if locals.any?
+
+      options[:binding]  = options[:instance].instance_eval{ binding }
 
       action = Ramaze::Action(options)
       action.render
