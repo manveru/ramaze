@@ -50,7 +50,7 @@ class TCRequestController < Ramaze::Controller
   end
 
   def to_ivs
-    request.to_ivs :foo
+    request.to_ivs :foo, :bar
     instance_variables.sort.map{|iv|
       [ iv.to_s, instance_variable_get(iv) ].join(' => ')
     }.join(', ')
@@ -64,8 +64,10 @@ describe "Request" do
   behaves_like 'http'
 
   it 'to_ivs' do
-    got = get('/to_ivs', 'foo' => 'bar')
-    got.body.should == '@foo => bar'
+    got = get('/to_ivs', 'foo' => 'a')
+    got.body.should == '@foo => a'
+    got = get('/to_ivs', 'bar' => 'b', 'foo' => 'c')
+    got.body.should == '@bar => b, @foo => c'
   end
 
   describe "POST" do
