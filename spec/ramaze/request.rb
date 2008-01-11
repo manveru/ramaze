@@ -48,6 +48,13 @@ class TCRequestController < Ramaze::Controller
   def my_ip
     request.remote_addr
   end
+
+  def to_ivs
+    request.to_ivs :foo
+    instance_variables.sort.map{|iv|
+      [ iv.to_s, instance_variable_get(iv) ].join(' => ')
+    }.join(', ')
+  end
 end
 
 options = ramaze_options rescue {}
@@ -55,6 +62,11 @@ ramaze options.merge(:public_root => 'spec/ramaze/public')
 
 describe "Request" do
   behaves_like 'http'
+
+  it 'to_ivs' do
+    got = get('/to_ivs', 'foo' => 'bar')
+    got.body.should == '@foo => bar'
+  end
 
   describe "POST" do
     behaves_like 'http'

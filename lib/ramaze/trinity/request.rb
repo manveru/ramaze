@@ -69,6 +69,14 @@ module Ramaze
       Array[value, *params.values_at(*keys)]
     end
 
+    def to_ivs(*args)
+      instance = Action.current.instance
+      args.each do |arg|
+        next unless value = self[arg]
+        instance.instance_variable_set("@#{arg}", value)
+      end
+    end
+
     unless method_defined?(:rack_params)
       alias rack_params params
 
