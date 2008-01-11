@@ -47,4 +47,15 @@ describe 'breadcrumbs' do
       "<a href=\"/file/dir/listing/is/cool\">cool</a>"
     ].join('/')
   end
+
+  it 'should lay out breadcrumbs with href prefix' do
+    breadcrumbs('/file/dir/listing/is/cool', '/', '/', '/prefix/path').
+      should == [
+      "<a href=\"/prefix/path/file\">file</a>",
+      "<a href=\"/prefix/path/file/dir\">dir</a>",
+      "<a href=\"/prefix/path/file/dir/listing\">listing</a>",
+      "<a href=\"/prefix/path/file/dir/listing/is\">is</a>",
+      "<a href=\"/prefix/path/file/dir/listing/is/cool\">cool</a>"
+    ].join('/')
+  end
 end

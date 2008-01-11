@@ -94,11 +94,26 @@ module Ramaze
     #   <a href="/path">path</a>/
     #   <a href="/path/to">to</a>/
     #   <a href="/path/to/somewhere">somewhere</a>
+    #
+    # Optionally a href prefix can be specified which generate link
+    # names a above, but with the prefix prepended to the href path.
+    #
+    # Example:
+    #   breadcrumbs('/path/to/somewhere', '/', '/', '/mycontroller/action')
+    #
+    #   # results in this, newlines added for readability:
+    #
+    #   <a href="/mycontroller/action/path">path</a>/
+    #   <a href="/mycontroller/action/path/to">to</a>/
+    #   <a href="/mycontroller/action/path/to/somewhere">somewhere</a>
 
-    def breadcrumbs(path, split = '/', join = '/')
+    def breadcrumbs(path, split = '/', join = '/', href_prefix = '')
       atoms = path.split(split).reject{|a| a.empty?}
       crumbs = atoms.inject([]){|s,v| s << [s.last,v]}
-      bread = crumbs.map{|a| A(a[-1], :href=>(a*'/'))}
+      bread = crumbs.map do |a|
+        href_path = href_prefix + a*'/'
+        A(a[-1], :href=>(href_path))
+      end
       bread.join(join)
     end
   end
