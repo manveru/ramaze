@@ -72,11 +72,11 @@ module Ramaze
     def adapter
       if internal = self[:adapter]
         class_name = ADAPTER_ALIAS.fetch(internal.to_sym, internal)
-        adapter = Ramaze::Adapter.const_get(class_name)
+        unless Ramaze::Adapter.const_defined?(class_name)
+          require("ramaze/adapter"/internal.to_s.downcase)
+        end
+        Ramaze::Adapter.const_get(class_name)
       end
-    rescue NameError
-      require("ramaze/adapter"/internal.to_s.downcase)
-      retry
     end
 
     # get right classname, require the file for given cache and answer with
