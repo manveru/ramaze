@@ -1,6 +1,8 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require "time"
+
 module Ramaze
   module Dispatcher
 
@@ -20,6 +22,9 @@ module Ramaze
 
         def process(path)
           return unless file = open_file(path)
+          if file == :NotModified
+            return response.build([], STATUS_CODE['Not Modified'])
+          end
           response.build(file, STATUS_CODE['OK'])
         end
 
@@ -31,6 +36,11 @@ module Ramaze
 
           if ::File.file?(file) or ::File.file?(file=file/'index')
             response['Content-Type'] = Tool::MIME.type_for(file) unless ::File.extname(file).empty?
+            mtime = ::File.mtime(file)
+            response['Last-Modified'] = mtime.httpdate
+            if modified_since = request.env['HTTP_IF_MODIFIED_SINCE']
+              return :NotModified unless Time.parse(modified_since) < mtime
+            end
             log(file)
             ::File.open(file, 'rb')
           end
