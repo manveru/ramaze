@@ -26,14 +26,19 @@ module Ramaze
     #   A('title', :href => '/foo?x=y') #> <a href="/foo?x=y">title</a>
     #   A('Home', :href => Rs(:/))      #> <a href="/foo/bar">Home</a>
 
-    def A(title, hash = {})
-      hash[:href] ||= (Rs(title) rescue title)
-      hash[:href].to_s.sub!(/\A[^\/?]+/){|m| CGI.escape(m) }
+    def A(*args)
+      hash = args.last.respond_to?(:to_hash) ? args.pop : {}
+
+      hash[:href] ||= Rs(*args)
+      title = hash.delete(:title) ||
+              (args.last.respond_to?(:to_s) ? args.last : nil) ||
+              hash[:href]
+      hash[:href].to_s.sub!(/\A[^\/?]+/) {|m| CGI.escape(m) }
 
       args = ['']
-      hash.each{|k,v| args << %(#{k}="#{v}") if k and v }
+      hash.each {|k,v| args << %(#{k}="#{v}") if k and v }
 
-      %(<a#{args.join(' ')}>#{title || hash[:href]}</a>)
+      %(<a#{args.join(' ')}>#{title}</a>)
     end
 
     # Builds links out of segments.
@@ -79,7 +84,8 @@ module Ramaze
     # Uses R with Controller.current as first element.
 
     def Rs(*atoms)
-      R(Controller.current, *atoms)
+      atoms.unshift Controller.current unless atoms.first.is_a?(Controller)
+      R(*atoms)
     end
 
     # Give it a path with character to split at and one to join the crumbs with.

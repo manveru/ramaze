@@ -6,10 +6,23 @@ require 'ramaze/helper/link'
 
 class TCLink < Ramaze::Controller
   map '/'
+  def index; end
 end
+
+class TCLink2 < Ramaze::Controller
+  map '/2'
+  def index; end
+end
+
+ramaze
 
 describe "A" do
   extend Ramaze::LinkHelper
+
+  before do
+    # initialize Ramaze::Controller.current for Rs()
+    Ramaze::Controller.handle('/')
+  end
 
   it 'should build links' do
     A('title', :href => '/').should == %(<a href="/">title</a>)
@@ -20,6 +33,10 @@ describe "A" do
     a = A('title', :href => '/foo', :class => :none)
     a.should =~ /class="none"/
     a.should =~ /href="\/foo"/
+  end
+
+  it 'should build position independend links' do
+    A(TCLink, :foo).should == %(<a href="/foo">foo</a>)
   end
 end
 
@@ -32,6 +49,24 @@ describe 'R' do
     R(TCLink, :foo, :bar).should == '/foo/bar'
     R(TCLink, :foo, :bar => :baz).should == '/foo?bar=baz'
   end
+end
+
+describe 'Rs' do
+  extend Ramaze::LinkHelper
+
+  it 'should build links for current controller' do
+    Ramaze::Controller.handle('/2')
+    Rs(:index).should == '/2/index'
+
+    Ramaze::Controller.handle('/')
+    Rs(:index).should == '/index'
+  end
+
+  it 'should treat Rs() like R() when Controller given' do
+    Ramaze::Controller.handle('/2')
+    Rs(TCLink, :index).should == '/2/index'
+  end
+
 end
 
 describe 'breadcrumbs' do
