@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require "time"
+require 'digest/md5'
 
 module Ramaze
   module Dispatcher
@@ -40,6 +41,12 @@ module Ramaze
             response['Last-Modified'] = mtime.httpdate
             if modified_since = request.env['HTTP_IF_MODIFIED_SINCE']
               return :NotModified unless Time.parse(modified_since) < mtime
+            elsif match = request.env['HTTP_IF_NONE_MATCH']
+              # Should be a unique string enclosed in ""
+              # To avoiding more file reading we use mtime and filepath
+              # we could throw in inode and size for more uniqueness
+              response['ETag']= Digest::MD5.hexdigest(file+mtime.to_s).inspect
+              return :NotModified if response['ETag']==match
             end
             log(file)
             ::File.open(file, 'rb')
