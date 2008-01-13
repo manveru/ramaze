@@ -59,7 +59,12 @@ class Ramaze::Tool::Localize
     # `localize` for more information.
 
     def localize_body(body, options)
-      locale = (session[:LOCALE] || set_session_locale).to_s
+      locale =
+        if trait[:languages].include?(response["Content-Language"])
+          response["Content-Language"]
+        else
+          (session[:LOCALE] || set_session_locale).to_s
+        end
 
       body.gsub!(trait[:regex]) do
         localize($1, locale) unless $1.to_s.empty?
