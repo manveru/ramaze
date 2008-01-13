@@ -1,13 +1,15 @@
 #!/usr/bin/env ruby
 
 begin
-  require File.join(File.dirname(__FILE__), '../lib/ramaze')
+  $:.unshift File.join(File.dirname(__FILE__), '../lib')
+  require 'ramaze'
 rescue LoadError
+  $:.shift
+
   begin
     require 'rubygems'
   rescue LoadError
   end
-
   require 'ramaze'
 end
 
