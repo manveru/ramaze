@@ -26,6 +26,8 @@ module MockHTTP
     :referrer => 'HTTP_REFERER',
     :referer => 'HTTP_REFERER',
     :cookie => 'HTTP_COOKIE',
+    :if_none_match=> 'HTTP_IF_NONE_MATCH',
+    :if_modified_since=> 'HTTP_IF_MODIFIED_SINCE',
   }
 
   MOCK_REQUEST = ::Rack::MockRequest.new(Ramaze::Adapter::Fake)
