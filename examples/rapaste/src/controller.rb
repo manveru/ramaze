@@ -20,6 +20,15 @@ class PasteController < Ramaze::Controller
     @style = session[ :theme ] || STYLE
   end
 
+  def search
+    if request.post?
+      limit = 50
+      @pastes = Paste.where( "text LIKE '%' || ? || '%'", request[ 'substring' ] ).limit( limit ).order( :created.DESC ).all
+      @hit_limit = ( @pastes.size == limit )
+      @style = session[ :theme ] || STYLE
+    end
+  end
+
   def save
     syntax, text = request[:syntax, :text]
 
