@@ -51,7 +51,8 @@ module Ramaze
     # each class in trait[:essentials] by calling ::startup on them.
 
     def startup options = {}
-      runner = options.delete(:runner) || caller[0].split(':').first
+      runner_from_caller = caller[0][/^(.*?):\d+/, 1]
+      runner = options.delete(:runner) || runner_from_caller
 
       if $0 == runner or options.delete(:force)
         Inform.info("Starting up Ramaze (Version #{VERSION})")
