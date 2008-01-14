@@ -71,7 +71,6 @@ task :rcov_dir do
   mkdir_p 'doc/output/tools/rcov/'
 end
 
-require 'spec/rake/spectask'
 desc "Generate HTML coverage report"
 task :rcov_summary => :rcov_dir do
   `rcov --version`
