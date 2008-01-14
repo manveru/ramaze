@@ -18,7 +18,9 @@ module Ramaze
         # Transform via Sass templating engine
 
         def transform action
-          Response.current['Content-Type'] = "text/css"
+          if response = Response.current
+            response['Content-Type'] = "text/css"
+          end
           sass = wrap_compile(action)
           sass.to_css()
         end
