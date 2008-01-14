@@ -72,8 +72,6 @@ shared 'xpath' do
   require 'rexml/document'
   require 'rexml/xpath'
 
-  include REXML
-
   class Rack::MockResponse
     def match(xpath = '*')
       REXML::XPath::match(REXML::Document.new(body), xpath)

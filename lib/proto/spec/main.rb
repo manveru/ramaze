@@ -14,14 +14,14 @@ describe MainController do
   it 'should show start page' do
     got = get('/')
     got.status.should == 200
-    got.at_xpath('//title').text.strip.should ==
+    got.at('//title').text.strip.should ==
       MainController.new.index
   end
 
   it 'should show /notemplate' do
     got = get('/notemplate')
     got.status.should == 200
-    got.at_xpath('//body').text.strip.should ==
+    got.at('//body').text.strip.should ==
       MainController.new.notemplate
   end
 end
