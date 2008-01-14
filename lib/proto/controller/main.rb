@@ -1,6 +1,3 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the Ruby license.
-
 # Default url mappings are:
 #  a controller called Main is mapped on the root of the site: /
 #  a controller called Something is mapped on: /something
