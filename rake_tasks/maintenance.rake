@@ -213,7 +213,9 @@ def authors
     'm.fellinger@gmail.com'                   => 'Michael Fellinger',
     'outtenr@gmail.com'                       => 'Richard Outten',
     'rff.rff@gmail.com'                       => 'Gabriele Renzi',
+    'skaar@waste.org'                         => 'skaar',
     'stephan@spaceboyz.net'                   => 'Stephan Maka',
+    'keita.yamaguchi@gmail.com'               => 'Keita Yamaguchi',
   }
 
   mapping = {}

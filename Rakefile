@@ -149,8 +149,10 @@ end
 
 desc "show who made how many patches"
 task :patchstat do
+  total = authors.inject(0.0){|s,(n,a)| s + a[:patches]}
   authors.sort_by{|k,v| -v[:patches]}.each do |name, author|
-    puts "#{name}  #{author[:patches]}"
+    patches = author[:patches]
+    puts("%s %4d [%6.2f%% ]" % [name, patches, patches/total * 100])
   end
 end
 
