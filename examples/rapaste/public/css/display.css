@@ -177,3 +177,14 @@ div#menu {
   background: #ddd;
   text-align: center;
 }
+
+form#search {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-size: 0.9em;
+}
+
+form#search input {
+  font-size: 0.9em;
+}

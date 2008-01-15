@@ -24,7 +24,7 @@ describe 'RaPaste' do
 
   it 'should show a new paste form' do
     page = get('/')
-    form = Hpricot(page.body).at(:form)
+    form = Hpricot(page.body).at('form#new_paste')
     form[:action].should == '/save'
     form[:method].should == 'POST'
     form.at(:textarea)[:name].should == 'text'

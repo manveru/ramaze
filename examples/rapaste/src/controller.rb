@@ -21,7 +21,7 @@ class PasteController < Ramaze::Controller
   end
 
   def search
-    if request.post?
+    if needle = request['substring'] and not needle.empty?
       limit = 50
       @pastes = Paste.where( "text LIKE '%' || ? || '%'", request[ 'substring' ] ).limit( limit ).order( :created.DESC ).all
       @hit_limit = ( @pastes.size == limit )

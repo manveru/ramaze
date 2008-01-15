@@ -12,7 +12,9 @@
     <div id="menu">
       <a href="/">New</a>
       <a href="/list">List</a>
-      <a href="/search">Search</a>
+      <form id="search" action="/search" method="GET">
+        Search: <input type="text" name="substring"/>
+      </form>
     </div>
     #@content
     <div id="footer">
