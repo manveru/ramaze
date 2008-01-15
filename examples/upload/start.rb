@@ -1,24 +1,19 @@
 require 'rubygems'
 require 'ramaze'
-require 'cgi'
-require 'ftools'
 
 class MainController < Ramaze::Controller
-    def index
-        if request.post?
-            @inspection = CGI.escapeHTML( PP.pp( request.params, "" ) )
-            
-            file = request[ 'file' ][ :tempfile ]
-            @file_size = file.stat.size
-            filename = request[ 'file' ][ :filename ]
-            @extension = File.extname( filename )
-            @ext_name = File.basename( filename )
-            File.move( file.path, 'public/' + @ext_name )
-            @is_image = [
-                '.png', '.jpeg', '.jpg', '.gif', '.tiff'
-            ].include?( @extension.downcase )
-        end
-    end
+  def index
+    return unless request.post?
+    @inspection = h(request.params.pretty_inspect)
+    tempfile, filename, @type =
+      request[:file].values_at(:tempfile, :filename, :type)
+    @extname, @basename = File.extname(filename), File.basename(filename)
+    @file_size = tempfile.size
+
+    FileUtils.move(tempfile.path, Ramaze::Global.public_root/@basename)
+
+    @is_image = @type.split('/').first == 'image'
+  end
 end
 
 Ramaze.start
