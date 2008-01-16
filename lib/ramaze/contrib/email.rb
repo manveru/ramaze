@@ -48,7 +48,9 @@ module Ramaze
     class << self
       def send(recipient, subject, message)
         {:recipient => recipient, :subject => subject, :message => message}.each do |k,v|
-          raise(ArgumentError, "EmailHelper error: Missing or invalid #{k}: #{v.inspect}")
+          if v.nil? or v.empty?
+            raise(ArgumentError, "EmailHelper error: Missing or invalid #{k}: #{v.inspect}")
+          end
         end
         sender = trait[:sender_full] || "#{trait[:sender_address]} <#{trait[:sender_address]}>"
         subject = [trait[:subject_prefix], subject].join(' ').strip
@@ -62,14 +64,15 @@ Message-Id: #{id}
 #{message}
 }
 
-        send_smtp(email)
+        send_smtp( email, recipient, subject )
       end
 
-      def send_smtp(email, recipient, subject, message)
+      def send_smtp( email, recipient, subject )
         options = trait.values_at(:smtp_server, :smtp_port, :smtp_helo_domain,
                                   :smtp_username, :smtp_password, :smtp_auth_type)
-        Net::SMTP.start(*options) do |smtp|
-          smtp.send_message(email, sender_address, Array[recipient, *bcc_addresses])
+                                  
+        Net::SMTP.start( *options ) do |smtp|
+          smtp.send_message( email, trait[ :sender_address ], Array[ recipient, *trait[ :bcc_addresses ] ] )
           Inform.info "E-mail sent to #{recipient} - '#{subject}'"
         end
       rescue => e
