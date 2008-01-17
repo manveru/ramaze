@@ -42,6 +42,10 @@ module MockHTTP
     MOCK_REQUEST.send(meth, uri, DEFAULTS.merge(options))
   end
 
+  def raw_mock_request(meth, uri, options = {})
+    MOCK_REQUEST.send(meth, uri, DEFAULTS.merge(options))
+  end
+
   def process_request(path, query)
     options = {}
     FISHING.each{|key, value|

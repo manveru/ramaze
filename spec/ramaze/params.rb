@@ -49,6 +49,10 @@ class TCParamsController2 < Ramaze::Controller
   def add(one, two = nil, three = nil)
     "#{one}:#{two}:#{three}"
   end
+
+  def keys
+    request.params.keys.to_s.dump
+  end
 end
 
 class TCParamsController3 < Ramaze::Controller
@@ -145,5 +149,9 @@ describe "Simple Parameters" do
 
   it 'should have a parameter via QUERY_PARAMS' do
     get('/ma', 'foo' => 'bar').body.should == '"bar"'
+  end
+
+  it 'should handle valueless params' do
+    raw_mock_request(:get, '/jo/keys?foo').body.should == '"foo"'
   end
 end
