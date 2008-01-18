@@ -50,16 +50,14 @@ Ramaze comes at the moment only with a simple wrapper of the YAML::Store.
 So we are going to base this on the tools available, you can just do the same
 with your ORM or database-library of choice.
 
-So first, edit the `src/model.rb` to fit better into our application:
+So first, create a `model/todolist.rb` for our application:
 
     TodoList = Store::Default.new('todolist.yaml')
 
 Let's add some items as well to have a base to start from.
 
-    {
-      'Laundry'     => {:done => false},
+    { 'Laundry'     => {:done => false},
       'Wash dishes' => {:done => false},
-
     }.each do |title, value|
       TodoList[title] = value
     end
@@ -69,7 +67,7 @@ Let's add some items as well to have a base to start from.
 
 Now let's get our hands dirty and just edit the templates for our to-do list.
 
-Start with editing `template/index.xhtml`, it is using the default templating
+Start with editing `view/index.xhtml`, it is using the default templating
 of Ramaze, called Ezamar.
 
 The index.xhtml currently contains a default welcome page, remove the contents.
@@ -142,7 +140,7 @@ application and secondly provides excellent ways of changing the complete
 Structure of the Model or View independent from each other.
 
 OK, enough of the theory, you will see the benefits in an instant. Go on and
-edit the file `src/controller/main.rb`.
+edit the file `controller/main.rb`.
 
 The contents of it are like following:
 
@@ -208,12 +206,12 @@ Some things you should know:
 We set out to build the ultimate to-do list, but there are still some things
 missing. First off, we want to add new tasks, so let's get that done.
 
-Add a link on the `template/index.xhtml` like this:
+Add a link on the `view/index.xhtml` like this:
 
     <h1>TodoList</h1>
     <a href="/new">New Task</a>
 
-Open a new file `template/new.xhtml` with a form to add a new task.
+Open a new file `view/new.xhtml` with a form to add a new task.
 
     <html>
       <head>
@@ -267,7 +265,7 @@ Now you can create as many tasks as you want, please don't get overworked ;)
 Since the nature of tasks is to be done eventually
 we will need some way to mark it as done or open tasks again.
 
-Jump into `template/index.xhtml` and do the following:
+Jump into `view/index.xhtml` and do the following:
 
 
     <?r @tasks.each do |title, status, toggle| ?>
@@ -369,7 +367,7 @@ and an corresponding method while we're at it:
       redirect Rs()
     end
 
-Now jumping to `template/index.xhtml` again, change it so it shows the link:
+Now jumping to `view/index.xhtml` again, change it so it shows the link:
 
     <?r @tasks.each do |title, status, toggle, delete| ?>
       <li>
@@ -459,7 +457,7 @@ Please note that instance variables reflecting the parameters are set.
 
 And let's change our templates as well.
 
-First the `template/index.xhtml`
+First the `view/index.xhtml`
 
     <Page title="TodoList">
       <a href="/new">New Task</a>
@@ -476,7 +474,7 @@ First the `template/index.xhtml`
       <?r end ?>
     </Page>
 
-and the `template/new.xhtml`
+and the `view/new.xhtml`
 
     <Page title="New Task">
       <a href="/">Back to TodoList</a>
