@@ -209,6 +209,7 @@ def authors
     'clive@crous.co.za'                       => 'Clive Crous',
     'comp.lang.zenix+ramaze@gmail.com'        => 'zenix',
     'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
+    'jesusisramazing.10.pistos@geoshell.com'  => 'Pistos',
     'manveru@weez-int.com'                    => 'Michael Fellinger',
     'm.fellinger@gmail.com'                   => 'Michael Fellinger',
     'outtenr@gmail.com'                       => 'Richard Outten',
