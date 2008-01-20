@@ -1,7 +1,16 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'amrita2/template'
+require 'amrita2'
+
+class Amrita2::Template
+
+  # Ramaze helpers are available in template contexts.
+
+  include Ramaze::Helper
+  extend Ramaze::Helper
+  helper :link, :file, :flash, :cgi
+end
 
 module Ramaze
   module Template
@@ -11,27 +20,24 @@ module Ramaze
 
     class Amrita2 < Template
 
-      ENGINES[self] = %w[ amrita amr ]
+      ENGINES[self] = %w[ amrita amr a2html ]
 
       class << self
 
         # Takes an Action
-        # The file is rendered using Amrita2::TemplateFile.
-        # The Controller is used as the object for expansion.
+        # The result or file is rendered using Amrita2::Template.
         #
-        # The parameters are set to @params in the controller before expansion.
+        # The context data are set to @data in the controller before expansion.
 
-        def transform action
-          instance, file = action.instance, action.template
+        def transform(action)
+          template = wrap_compile(action)
+          data = action.instance.instance_variable_get("@data") || {}
+          action.instance.extend ::Amrita2::Runtime if data.kind_of? Binding
+          template.render_with(data)
+        end
 
-          raise Ramaze::Error::NoAction,
-                "No Amrita2 template found for `#{action.path}' on #{action.controller}" unless file
-
-          template = ::Amrita2::TemplateFile.new(file)
-          out = ''
-          instance.instance_variable_set('@params', action.params)
-          template.expand(out, instance)
-          out
+        def compile(action, template)
+          ::Amrita2::Template.new(template)
         end
       end
     end

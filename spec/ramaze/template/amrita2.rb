@@ -9,14 +9,20 @@ class TCTemplateAmritaController < Ramaze::Controller
   template_root __DIR__/:amrita2
   engine :Amrita2
 
-  private
-
-  def title
-    "hello world"
+  def internal
+    @data = { :hello => "hello world" }
+    "<h1 am:src='hello' />"
   end
 
-  def body
-    "Amrita2 is an HTML template library for Ruby"
+  def external
+    @data = {
+      :title => "hello world",
+      :body => "Amrita2 is an HTML template library for Ruby"
+    }
+  end
+
+  def sum
+    @data = { :one => 1, :two => 2 }
   end
 end
 
@@ -24,13 +30,21 @@ describe "Simply calling" do
   behaves_like 'http'
   ramaze(:mapping => {'/' => TCTemplateAmritaController})
 
-  it "should respond to /data" do
-    get('/data').body.strip.should ==
+  it "should respond to /internal" do
+    get('/internal').body.strip.should == "<h1>hello world</h1>"
+  end
+
+  it "should respond to /external" do
+    get('/external').body.strip.should ==
 %{<html>
   <body>
     <h1>hello world</h1>
     <p>Amrita2 is an HTML template library for Ruby</p>
   </body>
 </html>}
+  end
+
+  it "should respond to /sum" do
+    get('/sum').body.strip.should == "1 + 2 = 3"
   end
 end
