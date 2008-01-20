@@ -17,7 +17,7 @@ class PasteController < Ramaze::Controller
     @paginated = ordered.paginate(start.to_i, 10)
     @pager = paginator(@paginated, '/list/page')
     @pastes = @paginated
-    @style = session[ :theme ] || STYLE
+    @style = style
   end
 
   def search
@@ -49,8 +49,7 @@ class PasteController < Ramaze::Controller
   def view(id, format)
     @paste, @format = paste_for(id), format
     @syntax = @paste.syntax_name
-    @style = session[ :theme ] || STYLE
-    @formatted = @paste.view(format, @style)
+    @formatted = @paste.view(format, style)
 
     ordered = Paste.order(:created.DESC)
     @paginated = ordered.paginate(id.to_i, 1)
@@ -69,10 +68,27 @@ class PasteController < Ramaze::Controller
     session[ :theme ] = theme_name
   end
 
+  def diff(from, to)
+    paste1, paste2 = Paste[from], Paste[to]
+    cs1 = Digest::MD5.hexdigest(paste1.text)
+    cs2 = Digest::MD5.hexdigest(paste2.text)
+    File.open(f1 = Dir.tmpdir/cs1, 'w+'){|io| io.puts(paste1.text) }
+    File.open(f2 = Dir.tmpdir/cs2, 'w+'){|io| io.puts(paste2.text) }
+    diff = `diff -up #{f1} #{f2}`.strip
+    FileUtils.rm(f1)
+    FileUtils.rm(f2)
+
+    Uv.parse(diff, 'xhtml', 'diff', true, style)
+  end
+
   private
 
   def paste_for(id)
     redirect Rs() unless paste = Paste[:id => id.to_i]
     paste
+  end
+
+  def style
+    @style ||= session[ :theme ] || STYLE
   end
 end

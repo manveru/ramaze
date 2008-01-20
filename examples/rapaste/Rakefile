@@ -26,3 +26,10 @@ task :fill do
     end
   end
 end
+
+desc 'run specs'
+task :spec do
+  sh 'ruby spec/rapaste.rb'
+end
+
+task :default => :spec

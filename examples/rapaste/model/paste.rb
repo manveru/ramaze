@@ -1,7 +1,3 @@
-require 'sequel'
-
-DB = Sequel.sqlite
-
 class Paste < Sequel::Model(:paste)
   set_schema do
     primary_key :id

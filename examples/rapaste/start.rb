@@ -1,4 +1,7 @@
+require 'tmpdir'
+
 require 'ramaze'
+require 'sequel'
 require 'uv'
 
 Ramaze::Inform.debug "Initializing UltraViolet..."
@@ -11,10 +14,11 @@ UV_PRIORITY_NAMES = %w[ ruby plain_text html css javascript yaml diff ]
 STYLE = 'iplastic'
 
 Ramaze::Inform.debug "done."
-
 Ramaze.contrib :route
 
-require 'src/model'
-require 'src/controller'
+DB = Sequel.sqlite
 
-Ramaze.start :adapter => :mongrel
+require 'model/paste'
+require 'controller/paste'
+
+Ramaze.start

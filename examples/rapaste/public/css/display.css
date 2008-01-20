@@ -81,6 +81,12 @@ div.item_meta span.syntax {
   border-right: 1px solid #ccc;
 }
 
+div.item_meta span.paste_id {
+  background: #fff;
+  padding: 0em 0.5em 0em 0.5em;
+  border-right: 1px solid #ccc;
+}
+
 div.item pre {
   margin: 0.5em;
   padding: 0.5em;

@@ -7,9 +7,10 @@
     <div class="item">
       <div class="item_meta">
         <a href="/#{paste.id}">
-        <span class="syntax">#{paste.syntax_name}</span>
-        <span class="created">created #{time_diff(paste.created)} ago</span>
-      </a>
+          <span class="paste_id">#{paste.id}</span>
+          <span class="syntax">#{paste.syntax_name}</span>
+          <span class="created">created #{time_diff(paste.created)} ago</span>
+        </a>
       </div>
       <div class="fragment">#{paste.text_fragment(@style)}</div>
       <?r if paste.lines[11,1] ?>
