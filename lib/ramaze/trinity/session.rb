@@ -99,11 +99,10 @@ module Ramaze
     def initialize request
       @session_id = (request.cookies[SESSION_KEY] || random_key)
 
-      ip = request.remote_addr
-      IP_COUNT[ip] << @session_id
-
-      if IP_COUNT[ip].size > IP_COUNT_LIMIT
-        sessions.delete(IP_COUNT[ip].shift)
+      unless IP_COUNT.nil?
+        ip = request.remote_addr
+        IP_COUNT[ip] << @session_id
+        sessions.delete(IP_COUNT[ip].shift) if IP_COUNT[ip].size > IP_COUNT_LIMIT
       end
 
       @flash = Ramaze::SessionFlash.new
