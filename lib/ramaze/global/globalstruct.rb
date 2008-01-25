@@ -19,6 +19,7 @@ module Ramaze
     ADAPTER_ALIAS = {
       :cgi                 => :Cgi,
       :fcgi                => :Fcgi,
+      :scgi                => :Scgi,
       :thin                => :Thin,
       :lsws                => :Lsws,
       :webrick             => :WEBrick,
