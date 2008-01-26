@@ -83,8 +83,7 @@ module Ramaze
       engines = Template::ENGINES
       return default if engines.empty?
 
-      ext = File.extname(template).gsub(/^\./, '')
-      ext_engines = engines.reject{|k,v| not v.include?(ext) }
+      ext_engines = engines.reject {|k,v| !v.any? {|e| template =~ /\.#{e}$/ } }
 
       if ext_engines.has_key?(default)
         self[:engine] = default
