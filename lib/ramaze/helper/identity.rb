@@ -52,31 +52,14 @@ module Ramaze
       immediate = false
       if openid_request.send_redirect?(root, return_to, immediate)
         redirect_url = openid_request.redirect_url(root, return_to, immediate)
-        redirect redirect_url
+        raw_redirect redirect_url
       else
         # what the hell is @form_text ?
       end
 
-
-=begin
-
-      case openid_request.status
-      when OpenID::FAILURE
-        flash[:error] = "OpenID - Unable to find openid server for `#{url}'"
-
-        redirect_referrer
-      when OpenID::SUCCESS
-        root         = "http://#{request.http_host}/"
-        return_to    = root[0..-2] + Rs(:openid_complete)
-        redirect_url = openid_request.redirect_url(root, return_to)
-
-        redirect(redirect_url)
-      end
-=end
-
     rescue OpenID::OpenIDError => ex
       flash[:error] = "Discovery failed for #{url}: #{ex}"
-      redirect Rs(:/)
+      raw_redirect Rs(:/)
     end
 
     # After having authenticated at the OpenID server browsers are redirected
@@ -99,7 +82,7 @@ module Ramaze
 
       session.delete(:_openid_consumer_service)
 
-      redirect session[:openid_entry]
+      raw_redirect session[:openid_entry]
     end
 
     private
