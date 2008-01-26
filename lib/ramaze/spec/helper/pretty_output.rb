@@ -10,7 +10,7 @@ module Bacon
     end
 
     def handle_requirement(description)
-	    print "- #{description}"
+	    print "- #{description}\n"
       error = yield
 
       unless error.empty?
