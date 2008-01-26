@@ -4,15 +4,18 @@ module Bacon
 
     def handle_specification(name)
       NAME.replace name
+			puts NAME
       yield
+			puts
     end
 
     def handle_requirement(description)
+	    print "- #{description}"
       error = yield
 
       unless error.empty?
         if defined?(Ramaze::Informing)
-          puts '', " #{NAME} -- #{description} ".center(70, '-'), ''
+          puts '', " #{NAME} -- #{description} [FAILED]".center(70, '-'), ''
           colors = Ramaze::Informer::COLORS
 
           until RamazeLogger.log.empty?
@@ -35,6 +38,7 @@ module Bacon
     end
 
     def handle_summary
+	    puts
       puts "%d tests, %d assertions, %d failures, %d errors" %
         Counter.values_at(:specifications, :requirements, :failed, :errors)
     end
