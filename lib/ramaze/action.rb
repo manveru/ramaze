@@ -80,16 +80,13 @@ module Ramaze
       default = controller.trait.fetch(:engine, Template::Ezamar)
       return default unless template
 
-      engines = Template::ENGINES
-      return default if engines.empty?
-
-      ext_engines = engines.reject {|k,v| !v.any? {|e| template =~ /\.#{e}$/ } }
-
-      if ext_engines.has_key?(default)
-        self[:engine] = default
-      else
-        self[:engine] = ext_engines.keys.sort.first
+      Template::ENGINES.sort_by{|v| v.join}.each do |(engine, exts)|
+        if template =~ /\.(#{Regexp.union(*exts)})$/
+          return self[:engine] = engine
+        end
       end
+
+      self[:engine] = default
     end
 
     # Returns an instance of controller, will be cached on first access.
