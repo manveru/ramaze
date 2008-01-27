@@ -3,7 +3,7 @@
 
 module Ramaze
   class Controller
-    FILTER = [ :cached, :default ] unless defined?(FILTER)
+    FILTER = [ :cached, :routed, :default ] unless defined?(FILTER)
 
     class << self
 
@@ -37,6 +37,33 @@ module Ramaze
           else
             Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
             Cache.resolved.delete path
+          end
+        end
+
+        nil
+      end
+
+      # Routing filter
+      # Loops over Route.trait[:routes] to find a matching route
+
+      def routed(path)
+        Route.trait[:routes].each do |key, val|
+          if key.is_a?(Regexp)
+            if md = path.match(key)
+              new_path = val % md.to_a[1..-1]
+              return resolve(new_path, :routed)
+            end
+
+          elsif val.respond_to?(:call)
+            if new_path = val.call(path, request)
+              return resolve(new_path, :routed)
+            end
+
+          elsif val.is_a?(String)
+            return resolve(val, :routed) if path == key
+
+          else
+            Inform.error "Invalid route #{key} => #{val}"
           end
         end
 

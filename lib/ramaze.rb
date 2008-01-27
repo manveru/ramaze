@@ -23,6 +23,7 @@ Thread.abort_on_exception = true
 require 'ramaze/version'
 require 'ramaze/snippets'
 require 'ramaze/inform'
+require 'ramaze/route'
 require 'ramaze/global'
 require 'ramaze/cache'
 require 'ramaze/tool'
