@@ -52,11 +52,19 @@ module Ramaze
 
     def render_template(file, locals = {})
       current = Action.current
-
       options = { :controller => current.controller,
                   :instance => current.instance.dup }
 
-      options[:template] = options[:controller].template_root/file
+      filename = options[:controller].template_root/file
+
+      if File.exist?(filename)
+        options[:template] = filename
+      elsif files = Dir["#{filename}.*"] and files.any?
+        options[:template] = files.first
+      else
+        Inform.warn "render_template: #{filename} does not exist"
+        return ''
+      end
 
       # use method_missing to provide access to locals, if any exist
       options[:instance].meta_def(:method_missing) { |sym, *args|
@@ -66,8 +74,7 @@ module Ramaze
 
       options[:binding]  = options[:instance].instance_eval{ binding }
 
-      action = Ramaze::Action(options)
-      action.render
+      Ramaze::Action(options).render
     ensure
       Thread.current[:action] = current
     end

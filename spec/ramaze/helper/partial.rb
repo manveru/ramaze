@@ -29,6 +29,10 @@ class TCPartialHelperController < Ramaze::Controller
   def test_locals
     render_template 'locals.xhtml', :say => 'Hello', :to => 'World'
   end
+
+  def test_without_ext
+    render_template :locals, :say => 'Hi', :to => 'World'
+  end
 end
 
 describe "PartialHelper" do
@@ -57,5 +61,9 @@ describe "PartialHelper" do
 
   it 'should work recursively with locals' do
     get('/recursive/true').body.gsub(/\s/,'').should == '{1{2{3{44}3}2}1}'
+  end
+
+  it 'should not require file extension' do
+    get('/test_without_ext').body.should == 'Hi, World!'
   end
 end
