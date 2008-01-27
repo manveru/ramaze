@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'ramaze'
 
 require 'src/model'

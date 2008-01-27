@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'ramaze'
 
 gem 'facets', '=1.4.5'

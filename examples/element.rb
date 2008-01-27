@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'ramaze'
 
 class Page < Ezamar::Element
@@ -40,3 +41,5 @@ class MainController < Ramaze::Controller
     }
   end
 end
+
+Ramaze.start

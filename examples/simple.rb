@@ -1,6 +1,4 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the Ruby license.
-
+require 'rubygems'
 require 'ramaze'
 
 # A very simple little application, you can simply run it and
@@ -54,3 +52,5 @@ class OtherController < Ramaze::Controller
     "Hello, World from #{self.class.name}"
   end
 end
+
+Ramaze.start

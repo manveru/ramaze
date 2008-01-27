@@ -1,8 +1,6 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the Ruby license.
-
 # written as an example of how to implement the minimal _why wiki
 
+require 'rubygems'
 require 'ramaze'
 require 'bluecloth'
 

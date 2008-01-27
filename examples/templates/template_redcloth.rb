@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
@@ -54,3 +55,5 @@ __REDCLOTH__
 __HTML__
   end
 end
+
+Ramaze.start

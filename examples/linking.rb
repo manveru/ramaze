@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'ramaze'
 
 class LinkingController < Ramaze::Controller
