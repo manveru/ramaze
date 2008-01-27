@@ -4,6 +4,8 @@
 require 'spec/helper'
 
 class TCSessionController < Ramaze::Controller
+  map '/'
+
   def index
     session.inspect
   end
@@ -29,7 +31,7 @@ end
 
 describe "Session" do
   behaves_like 'http', 'browser'
-  ramaze(:adapter => :webrick, :mapping => {'/' => TCSessionController})
+  ramaze :adapter => :webrick
 
   { :MemoryCache => :memory,
     :YAMLStoreCache => :yaml_store,
@@ -42,7 +44,7 @@ describe "Session" do
       next
     end
 
-    describe cache.to_s do
+    describe cache do
 
       Ramaze::Global.cache = cache
       Thread.main[:session_cache] = nil
