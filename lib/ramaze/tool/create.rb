@@ -43,7 +43,8 @@ module Ramaze
           directories, files =
             Dir[@basedir / '**' / '*'].partition{ |f| File.directory?(f) }
 
-          create_dirs(*directories)
+          # gem packaging removes empty model directory, so add it in ourselves
+          create_dirs(*Array[ @basedir/'model', *directories ].uniq)
           copy_files(*files)
 
           puts "\nStart your new ramaze app: ruby #{project}/start.rb"
