@@ -147,7 +147,7 @@ module Ramaze
       # Runs every given path through Controller::check_path
 
       def template_root path = nil
-        if path
+        if path and path = path.to_s
           message = "#{self}.template_root is #{path} which does not exist"
           check_path(path, message)
           @template_root = path
