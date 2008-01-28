@@ -37,7 +37,7 @@ module Ramaze
         end
         %{
           #{open_element}
-            <form method="POST" action="#{Rs(:login)}>"
+            <form method="POST" action="#{Rs(:login)}">
               <ul style="list-style:none;">
                 <li>Username: <input type="text" name="username" /></li>
                 <li>Password: <input type="password" name="password" /></li>
