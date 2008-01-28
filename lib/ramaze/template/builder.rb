@@ -8,7 +8,10 @@ module Ramaze
 
         class << self
           def transform action
-            Response.current['Content-Type'] = "application/xml"
+            if response = Response.current
+              response['Content-Type'] = "application/xml"
+            end
+
             template = wrap_compile(action)
             action.instance.instance_eval(template, action.template || __FILE__)
           end
