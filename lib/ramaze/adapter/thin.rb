@@ -13,9 +13,8 @@ module Ramaze
           server = ::Thin::Server.new(host, port, self)
           server.silent = true
           server.timeout = 3
-          server.start
 
-          thread = Thread.new{ server.listen! }
+          thread = Thread.new{ server.start }
           thread[:adapter] = server
           thread
         end
