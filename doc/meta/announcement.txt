@@ -1,9 +1,9 @@
-This time we are proud to announce Version 0.3.0 of Ramaze, the light and
+This time we are proud to announce Version 0.3.5 of Ramaze, the light and
 modular open source web framework.
 
 This release features a lot of work directly from our community and we are
 really greatful for everybody who helped in testing, patching and contributing
-new exciting features.
+exciting new features.
 
 Our extensive set of specs and docs now covers almost every detail of
 implementation and usage. Ramaze is under development by a growing community
@@ -34,44 +34,53 @@ Simple example:
 
 Special (alphabetic) thanks go to:
 
-Aman 'tmm1' Gupta      - lots of patches and friendly support
-Antonio Cangiano       - Article: http://tiny.cc/tRLfm
-Richard Outten         - First patch!
-Jonathan 'Kashia' Buch - patches for gettext and Og support
-Pistos                 - PR through awesome screencasts
+Aman 'tmm1' Gupta         - patches and support
+Carlo Zottmann            - first patch!
+Chris 'celldee' Duncan    - first patch!
+Gabriele 'riffraff' Renzi - patches for file dispatcher
+jeedee                    - new Ramaze logo
+Jonathan 'Kashia' Buch    - patches and support
+Keita Yamaguchi           - first patch!
+Pistos                    - lots of friendly support
+skaar                     - first patch!
 
 
-Selected summary of the 118 patches from 0.2.1 to 0.3.0:
+Selected summary of the 62 patches from 0.3.0 to 0.3.5:
 
-  - Specs switched from RSpec to bacon; Ramaze now runs on Ruby 1.9.
+  Core
+    - Ramaze::Contrib::Route is now available by default as Ramaze::Route
+    - Support for ETag and If-Modified-Since in Dispatcher::File
+    - Add adapter for LiteSpeed webserver
+    - Allow setting default session cookie options using Session::COOKIE
+    - Support for Content-Language based localization and gettext
 
-  - /lib/proto (pregenerated base source code) updated to a new structure.
+  Templates
+    - Support for passing in locals to render_template
+    - template_root supports symbol as an argument
+    - render_template does not require template extensions
+    - Allow dots in template extensions (template.html.erb)
 
-  - Oddities in gem version of bin/ramaze fixed (hopefully? :) )
+  Templating Engines
+    - Add Builder templating engine to produce XML
+    - Add RedCloth templating engine
+    - Update Amrita2 templating engine for latest release
 
-  - Layouts fixed so the method on the right controller is called.
+  Helpers
+    - Simple new EmailHelper
+    - Update IdentityHelper for latest ruby-openid
+    - Add MarukuHelper
+    - Clean up AuthHelper
+    - Improve LinkHelper's A(), R(), Rs() and breadcrumbs
 
-  - contrib/facebook and simple facebook app example added.
+  Examples
+    - All examples were standardized to include rubygems
+    - Simple file upload example
+    - Add search and diff functionality to Rapaste
 
-  - Lambda router support added to contrib/route.
+  Misc
+    - Fix read vs read/write issue in Ramaze::Store
+    - Fix for running Ramaze apps within IDEs on Windows
 
-  - examples/rapaste added.
-
-  - gettext contrib added; localize ramaze via gettext.
-
-  - Adapter for Thin Ruby webserver added.
-
-  - Index files can now be put into public directories and subdirectories.
-
-  - examples/blog switched from Og to Sequel.
-
-  - view/ is now the subdirectory for templates; if not found, Ramaze falls
-    back to template/.
-
-  - Default error pages updated: colour gradient removed; textmate link added;
-    Javascript optimized; CSS tweaked.
-
-  - Templates are no longer searched for in public/.
 
 A complete Changelog is available at
 http://darcs.ramaze.net/ramaze/doc/CHANGELOG
