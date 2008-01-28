@@ -34,52 +34,52 @@ Simple example:
 
 Special (alphabetic) thanks go to:
 
-Aman 'tmm1' Gupta         - patches and support
-Carlo Zottmann            - first patch!
-Chris 'celldee' Duncan    - first patch!
-Gabriele 'riffraff' Renzi - patches for file dispatcher
-jeedee                    - new Ramaze logo
-Jonathan 'Kashia' Buch    - patches and support
-Keita Yamaguchi           - first patch!
-Pistos                    - lots of friendly support
-skaar                     - first patch!
+  Aman 'tmm1' Gupta         - patches and support
+  Carlo Zottmann            - first patch!
+  Chris 'celldee' Duncan    - first patch!
+  Gabriele 'riffraff' Renzi - patches for file dispatcher
+  jeedee                    - new Ramaze logo
+  Jonathan 'Kashia' Buch    - patches and support
+  Keita Yamaguchi           - first patch!
+  Pistos                    - lots of friendly support
+  skaar                     - first patch!
 
 
 Selected summary of the 62 patches from 0.3.0 to 0.3.5:
 
   Core
-    - Ramaze::Contrib::Route is now available by default as Ramaze::Route
-    - Support for ETag and If-Modified-Since in Dispatcher::File
-    - Add adapter for LiteSpeed webserver
-    - Allow setting default session cookie options using Session::COOKIE
-    - Support for Content-Language based localization and gettext
+    - Ramaze::Contrib::Route made available by default as Ramaze::Route (backwards compatibility retained)
+    - Support added for ETag and If-Modified-Since in Dispatcher::File
+    - Adapter for LiteSpeed webserver added
+    - Added ability to set default session cookie options using Session::COOKIE
+    - Support added for Content-Language based localization and gettext
 
   Templates
-    - Support for passing in locals to render_template
-    - template_root supports symbol as an argument
-    - render_template does not require template extensions
-    - Allow dots in template extensions (template.html.erb)
+    - Support added for passing in locals to render_template
+    - Added support for symbol argument to template_root
+    - render_template no longer requires template extensions
+    - Dots allowed in template extensions (template.html.erb)
 
   Templating Engines
-    - Add Builder templating engine to produce XML
-    - Add RedCloth templating engine
-    - Update Amrita2 templating engine for latest release
+    - Builder templating engine added to produce XML
+    - RedCloth templating engine added
+    - Amrita2 templating engine updated to latest release
 
   Helpers
-    - Simple new EmailHelper
-    - Update IdentityHelper for latest ruby-openid
-    - Add MarukuHelper
-    - Clean up AuthHelper
-    - Improve LinkHelper's A(), R(), Rs() and breadcrumbs
+    - Simple EmailHelper added
+    - IdentityHelper updated for latest ruby-openid
+    - MarukuHelper added
+    - AuthHelper cleaned up
+    - LinkHelper improved: A(), R(), Rs() and breadcrumbs
 
   Examples
     - All examples were standardized to include rubygems
-    - Simple file upload example
-    - Add search and diff functionality to Rapaste
+    - Simple file upload example added
+    - Search and diff functionality added to Rapaste
 
   Misc
-    - Fix read vs read/write issue in Ramaze::Store
-    - Fix for running Ramaze apps within IDEs on Windows
+    - Read and read/write issues fixed in Ramaze::Store
+    - Fix applied for running Ramaze apps within IDEs on Windows
 
 
 A complete Changelog is available at
