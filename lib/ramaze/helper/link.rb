@@ -12,25 +12,25 @@ module Ramaze
 
     # Builds a basic <a> tag.
     #
-    # `title` is mandatory, the second hash of options will be transformed into
+    # `text` is mandatory, the second hash of options will be transformed into
     # arguments of the tag, :href is a special case and its segments will be
     # CGI.escaped.
     #
-    # If you pass no :href, the title will be run through Rs and its result is
+    # If you pass no :href, the text will be run through Rs and its result is
     # used instead. If you really want an empty href, use :href => ''
     #
     # Usage:
-    #   A('title')                      #> <a href="/title">title</a>
+    #   A('text')                       #> <a href="/text">text</a>
     #   A('foo/bar')                    #> <a href="/foo/bar">foo/bar</a>
     #   A('/foo?x=y')                   #> <a href="/foo?x=y">/foo?x=y</a>
-    #   A('title', :href => '/foo?x=y') #> <a href="/foo?x=y">title</a>
+    #   A('text', :href => '/foo?x=y')  #> <a href="/foo?x=y">text</a>
     #   A('Home', :href => Rs(:/))      #> <a href="/foo/bar">Home</a>
 
     def A(*args)
       hash = args.last.respond_to?(:to_hash) ? args.pop : {}
 
       hash[:href] ||= Rs(*args)
-      title = hash.delete(:title) ||
+      text = hash.delete(:text) ||
               (args.last.respond_to?(:to_s) ? args.last : nil) ||
               hash[:href]
       hash[:href].to_s.sub!(/\A[^\/?]+/) {|m| CGI.escape(m) }
@@ -38,7 +38,7 @@ module Ramaze
       args = ['']
       hash.each {|k,v| args << %(#{k}="#{v}") if k and v }
 
-      %(<a#{args.join(' ')}>#{title}</a>)
+      %(<a#{args.join(' ')}>#{text}</a>)
     end
 
     # Builds links out of segments.
