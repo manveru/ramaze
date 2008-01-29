@@ -116,6 +116,28 @@ class TCLayoutInstanceVars < Ramaze::Controller
   end
 end
 
+class TCActionTwoLevelLayout < Ramaze::Controller
+  map '/twolevel'
+  layout :wrapper
+  layout :wrapper2 => [:foo]
+
+  def wrapper
+    "<pre>#@content</pre>"
+  end
+
+  def wrapper2
+    "<code>#@content</code>"
+  end
+
+  def index
+    'Hello, World!'
+  end
+
+  def foo
+    "bar"
+  end
+end
+
 describe 'Action rendering' do
   behaves_like 'http'
   ramaze
@@ -159,4 +181,10 @@ describe 'Action rendering' do
     get('/reuse').body.should == "<pre>hi</pre>"
     get('/reuse_instance').body.should == "hello: world"
   end
+
+  it 'should be able to override :all' do
+    get('/twolevel/index').body.should == '<pre>Hello, World!</pre>'
+    get('/twolevel/foo').body.should == '<code>bar</code>'
+  end
+
 end

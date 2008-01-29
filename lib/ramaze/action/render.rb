@@ -103,17 +103,15 @@ module Ramaze
     def layout
       return false unless layouts = controller.trait[:layout]
 
-      possible = [layouts[:all], layouts[path]].compact
+      possible = [layouts[path], layouts[:all]].compact
       denied = layouts[:deny].to_a
 
       if layout = possible.first
         layout_action = Ramaze::Controller.resolve(layout)
 
-        if denied.include?(path) or layout_action.path == path
-          return false
-        end
+        return false if denied.include?(path) or layout_action.path == path
 
-        unless layout_action.controller == controller
+        if layout_action.controller != controller
           instance.instance_variables.each do |x|
             layout_action.instance.instance_variable_set(x, instance.instance_variable_get(x))
           end
