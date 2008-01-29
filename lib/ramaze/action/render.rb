@@ -113,7 +113,9 @@ module Ramaze
 
         if layout_action.controller != controller
           instance.instance_variables.each do |x|
-            layout_action.instance.instance_variable_set(x, instance.instance_variable_get(x))
+            unless layout_action.instance.instance_variable_defined?(x)
+              layout_action.instance.instance_variable_set(x, instance.instance_variable_get(x))
+            end
           end
         else
           layout_action.binding = binding
