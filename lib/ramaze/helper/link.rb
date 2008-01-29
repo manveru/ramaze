@@ -30,10 +30,8 @@ module Ramaze
       hash = args.last.respond_to?(:to_hash) ? args.pop : {}
 
       hash[:href] ||= Rs(*args)
-      text = hash.delete(:text) ||
-              (args.last.respond_to?(:to_s) ? args.last : nil) ||
-              hash[:href]
-      hash[:href].to_s.sub!(/\A[^\/?]+/) {|m| CGI.escape(m) }
+      text = hash.delete(:text) || hash[:title] || args.last || hash[:href]
+      hash[:href] = hash[:href].to_s.gsub(/[^\/?;=]+/) {|m| CGI.escape(m) }
 
       args = ['']
       hash.each {|k,v| args << %(#{k}="#{v}") if k and v }

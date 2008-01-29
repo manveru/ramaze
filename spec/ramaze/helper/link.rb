@@ -38,6 +38,11 @@ describe "A" do
   it 'should build position independend links' do
     A(TCLink, :foo).should == %(<a href="/foo">foo</a>)
   end
+
+  it 'should escape path' do
+    A('ti tle').should == '<a href="/ti+tle">ti tle</a>'
+    A('', :href => "/foo?chunky=b\000acon").should == '<a href="/foo?chunky=b%00acon"></a>'
+  end
 end
 
 describe 'R' do
