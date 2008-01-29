@@ -1,4 +1,6 @@
 class MainController < Ramaze::Controller
+  layout '/layout'
+
   def index
     @entries = Entry.order(:created.DESC).all
   end

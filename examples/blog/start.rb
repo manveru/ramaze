@@ -1,8 +1,7 @@
 require 'rubygems'
 require 'ramaze'
 
-require 'src/model'
-require 'src/view'
-require 'src/controller'
+require 'model/entry'
+require 'controller/main'
 
 Ramaze.start

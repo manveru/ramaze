@@ -9,7 +9,7 @@ require 'start'
 describe 'Blog' do
   behaves_like 'http'
   ramaze :public_root   => base/:public,
-         :template_root => base/:template
+         :template_root => base/:view
 
   after do
     Entry.each{|e| e.delete unless e.id == 1 }
@@ -21,8 +21,8 @@ describe 'Blog' do
     page.body.should.not == nil
 
     doc = Hpricot(page.body)
-    doc.at('title').inner_html.should == 'bl_Og'
-    doc.at('h1').inner_html.should == 'bl_Og'
+    doc.at('title').inner_html.should == 'Blog'
+    doc.at('h1').inner_html.should == 'Blog'
 
     doc.search('div#entries').size.should == 1
 
