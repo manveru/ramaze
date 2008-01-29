@@ -25,7 +25,7 @@ describe 'Dispatcher::File' do
   it 'should send ETag' do
     res = get '/test_download.css'
     res.headers['ETag'].should.not.be == nil
-    res.headers['ETag'].length.should == 34  # "32 hash" 
+    res.headers['ETag'].length.should == 34  # "32 hash"
   end
 
   it 'should send Last-Modified' do

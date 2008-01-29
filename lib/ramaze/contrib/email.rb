@@ -70,7 +70,7 @@ Message-Id: #{id}
       def send_smtp( email, recipient, subject )
         options = trait.values_at(:smtp_server, :smtp_port, :smtp_helo_domain,
                                   :smtp_username, :smtp_password, :smtp_auth_type)
-                                  
+
         Net::SMTP.start( *options ) do |smtp|
           smtp.send_message( email, trait[ :sender_address ], Array[ recipient, *trait[ :bcc_addresses ] ] )
           Inform.info "E-mail sent to #{recipient} - '#{subject}'"

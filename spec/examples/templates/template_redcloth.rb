@@ -1,7 +1,7 @@
 require 'spec/helper'
 
 spec_require 'redcloth'
-require 'examples/templates/template_redcloth'
+spec_require 'examples/templates/template_redcloth'
 
 describe 'Template RedCloth' do
   behaves_like 'http'
