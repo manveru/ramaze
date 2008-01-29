@@ -30,7 +30,7 @@ module Ramaze
       hash = args.last.respond_to?(:to_hash) ? args.pop : {}
 
       hash[:href] ||= Rs(*args)
-      text = hash.delete(:text) || hash[:title] || args.last || hash[:href]
+      text = hash.delete(:text) || args.last || hash[:title] || hash[:href]
       hash[:href] = hash[:href].to_s.gsub(/[^\/?;=]+/) {|m| CGI.escape(m) }
 
       args = ['']

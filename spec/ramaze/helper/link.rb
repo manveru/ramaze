@@ -41,7 +41,30 @@ describe "A" do
 
   it 'should escape path' do
     A('ti tle').should == '<a href="/ti+tle">ti tle</a>'
-    A('', :href => "/foo?chunky=b\000acon").should == '<a href="/foo?chunky=b%00acon"></a>'
+    a = A('', :href => "/foo?chunky=b\000acon")
+    a.should == '<a href="/foo?chunky=b%00acon"></a>'
+  end
+
+  it 'should handle text key' do
+    A(:href => '/', :text => 'text').should == '<a href="/">text</a>'
+  end
+
+  it 'should use last argument as first text fallback' do
+    a = A('text', :href => '/', :title => 'title')
+    a.should =~ /href="\/"/
+    a.should =~ /title="title"/
+    a.should =~ />text</
+  end
+
+  it 'should use :title as second text fallback' do
+    a = A(:href => '/', :title => 'text')
+    a.should =~ /title="text"/
+    a.should =~ /href="\/"/
+    a.should =~ />text</
+  end
+
+  it 'should use :href as third text fallback' do
+    A(:href => '/').should == '<a href="/">/</a>'
   end
 end
 
@@ -70,6 +93,11 @@ describe 'Rs' do
   it 'should treat Rs() like R() when Controller given' do
     Ramaze::Controller.handle('/2')
     Rs(TCLink, :index).should == '/2/index'
+  end
+
+  it 'should treat non-controllers as strings' do
+    Ramaze::Controller.handle('/2')
+    Rs(Ramaze, :index).should == '/2/Ramaze/index'
   end
 
 end
