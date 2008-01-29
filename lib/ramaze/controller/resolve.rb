@@ -147,7 +147,7 @@ module Ramaze
 
       def template_paths
         @template_root ||= Global.template_root / Global.mapping.invert[self]
-        [ @template_root ]
+        [ @template_root ].flatten
       end
 
       # Based on methodname and arity, tries to find the right method on current controller.
