@@ -25,7 +25,7 @@ RubyForge.
 Additionally, we now have added tests for the resulting application that you
 can find in spec/examples/todolist.rb
 
-Date of last update: Thu Jun 14 13:25:45 JST 2007
+Date of last update: Thu Jan 31 04:37:16 JST 2008
 
 Thanks in advance.
 The author of the tutorial, Michael 'manveru' Fellinger

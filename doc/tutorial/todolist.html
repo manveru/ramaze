@@ -70,7 +70,7 @@ RubyForge.</p>
 <p>Additionally, we now have added tests for the resulting application that you
 can find in spec/examples/todolist.rb</p>
 
-<p>Date of last update: Thu Jun 14 13:25:45 JST 2007</p>
+<p>Date of last update: Thu Jan 31 04:37:16 JST 2008</p>
 
 <p>Thanks in advance.
 The author of the tutorial, Michael 'manveru' Fellinger</p>
@@ -95,17 +95,15 @@ to-do list.</p>
 So we are going to base this on the tools available, you can just do the same
 with your ORM or database-library of choice.</p>
 
-<p>So first, edit the <code>src/model.rb</code> to fit better into our application:</p>
+<p>So first, create a <code>model/todolist.rb</code> for our application:</p>
 
 <pre><code>TodoList = Store::Default.new('todolist.yaml')
 </code></pre>
 
 <p>Let's add some items as well to have a base to start from.</p>
 
-<pre><code>{
-  'Laundry'     =&gt; {:done =&gt; false},
+<pre><code>{ 'Laundry'     =&gt; {:done =&gt; false},
   'Wash dishes' =&gt; {:done =&gt; false},
-
 }.each do |title, value|
   TodoList[title] = value
 end
@@ -115,7 +113,7 @@ end
 
 <p>Now let's get our hands dirty and just edit the templates for our to-do list.</p>
 
-<p>Start with editing <code>template/index.xhtml</code>, it is using the default templating
+<p>Start with editing <code>view/index.xhtml</code>, it is using the default templating
 of Ramaze, called Ezamar.</p>
 
 <p>The index.xhtml currently contains a default welcome page, remove the contents.</p>
@@ -189,7 +187,7 @@ application and secondly provides excellent ways of changing the complete
 Structure of the Model or View independent from each other.</p>
 
 <p>OK, enough of the theory, you will see the benefits in an instant. Go on and
-edit the file <code>src/controller/main.rb</code>.</p>
+edit the file <code>controller/main.rb</code>.</p>
 
 <p>The contents of it are like following:</p>
 
@@ -260,13 +258,13 @@ Tasks it will say so.</p>
 <p>We set out to build the ultimate to-do list, but there are still some things
 missing. First off, we want to add new tasks, so let's get that done.</p>
 
-<p>Add a link on the <code>template/index.xhtml</code> like this:</p>
+<p>Add a link on the <code>view/index.xhtml</code> like this:</p>
 
 <pre><code>&lt;h1&gt;TodoList&lt;/h1&gt;
 &lt;a href="/new"&gt;New Task&lt;/a&gt;
 </code></pre>
 
-<p>Open a new file <code>template/new.xhtml</code> with a form to add a new task.</p>
+<p>Open a new file <code>view/new.xhtml</code> with a form to add a new task.</p>
 
 <pre><code>&lt;html&gt;
   &lt;head&gt;
@@ -321,7 +319,7 @@ and redirect back to the mapping of the current Controller ('/' in this case).</
 <p>Since the nature of tasks is to be done eventually
 we will need some way to mark it as done or open tasks again.</p>
 
-<p>Jump into <code>template/index.xhtml</code> and do the following:</p>
+<p>Jump into <code>view/index.xhtml</code> and do the following:</p>
 
 <pre><code>&lt;?r @tasks.each do |title, status, toggle| ?&gt;
   &lt;li&gt;
@@ -429,7 +427,7 @@ Controller:</p>
 end
 </code></pre>
 
-<p>Now jumping to <code>template/index.xhtml</code> again, change it so it shows the link:</p>
+<p>Now jumping to <code>view/index.xhtml</code> again, change it so it shows the link:</p>
 
 <pre><code>&lt;?r @tasks.each do |title, status, toggle, delete| ?&gt;
   &lt;li&gt;
@@ -524,7 +522,7 @@ end
 
 <p>And let's change our templates as well.</p>
 
-<p>First the <code>template/index.xhtml</code></p>
+<p>First the <code>view/index.xhtml</code></p>
 
 <pre><code>&lt;Page title="TodoList"&gt;
   &lt;a href="/new"&gt;New Task&lt;/a&gt;
@@ -542,7 +540,7 @@ end
 &lt;/Page&gt;
 </code></pre>
 
-<p>and the <code>template/new.xhtml</code></p>
+<p>and the <code>view/new.xhtml</code></p>
 
 <pre><code>&lt;Page title="New Task"&gt;
   &lt;a href="/"&gt;Back to TodoList&lt;/a&gt;
