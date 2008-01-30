@@ -18,7 +18,7 @@ describe MainController do
   it 'should show /notemplate' do
     got = get('/notemplate')
     got.status.should == 200
-    got.at('//body').text.strip.should ==
+    got.at('//div').text.strip.should ==
       MainController.new.notemplate
   end
 end
