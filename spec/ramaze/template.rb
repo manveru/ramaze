@@ -89,11 +89,6 @@ describe "ramaze template engines" do
     end
   end
 
-  it "should have no overlapping template extensions" do
-    extensions = Ramaze::Template::ENGINES.map {|e,ext| ext }.flatten
-    proc { extensions.uniq! }.should.not.change { extensions.size }
-  end
-
   it "should not have dots at beginning of template extensions" do
     extensions = Ramaze::Template::ENGINES.map {|e,ext| ext }.flatten
     extensions.find_all {|e| e =~ /\A\./ }.should.be.empty
