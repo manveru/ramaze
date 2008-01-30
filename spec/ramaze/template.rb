@@ -79,3 +79,24 @@ describe "testing ramaze template" do
     @file.should == file
   end
 end
+
+describe "ramaze template engines" do
+  Ramaze::Template::AVAILABLE_ENGINES.each do |engine|
+    begin
+      Ramaze::Template.const_get(engine)
+    rescue LoadError, NameError
+      # ignore missing template engines
+    end
+  end
+
+  it "should have no overlapping template extensions" do
+    extensions = Ramaze::Template::ENGINES.map {|e,ext| ext }.flatten
+    proc { extensions.uniq! }.should.not.change { extensions.size }
+  end
+
+  it "should not have dots at beginning of template extensions" do
+    extensions = Ramaze::Template::ENGINES.map {|e,ext| ext }.flatten
+    extensions.find_all {|e| e =~ /\A\./ }.should.be.empty
+  end
+
+end
