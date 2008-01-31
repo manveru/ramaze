@@ -20,10 +20,8 @@ class Paste < Sequel::Model(:paste)
     case format.downcase
     when /x?html/
       uv(text, style)
-    when /txt/, /plain/
-      text
     else
-      raise "No such format: #{format}"
+      text
     end
   end
 
