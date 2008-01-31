@@ -1,5 +1,5 @@
-Ramaze::Contrib::Route[%r!^/(\d+)\.(?:te?xt|plain)$!] = '/plain/%d'
-Ramaze::Contrib::Route[%r!^/(?:te?xt|plain)/(\d+)$!] = '/plain/%d'
+Ramaze::Contrib::Route[%r!^/(\d+)\.(?:te?xt|plain|rb|css|js)$!] = '/plain/%d'
+Ramaze::Contrib::Route[%r!^/(?:te?xt|plain|rb|css|js)/(\d+)$!] = '/plain/%d'
 Ramaze::Contrib::Route[%r!^/(\d+)\.(\w+)$!] = '/view/%d/%s'
 Ramaze::Contrib::Route[%r!^/(\d+)$!] = '/view/%d/html'
 Ramaze::Contrib::Route[%r!^/list/page/(\d+)$!] = '/list/%d'
