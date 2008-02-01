@@ -27,7 +27,7 @@ module Ramaze
           include ::Ramaze.const_get(mod_name)
           extend ::Ramaze.const_get(mod_name)
         rescue NameError
-          files = Dir["{helper,#{BASEDIR/:ramaze/:helper}}/#{sym}.{rb,so}"]
+          files = Dir["{helper,#{BASEDIR/:ramaze/:helper}}/#{sym}.{so,bundle,rb}"]
           raise LoadError, "#{mod_name} not found" unless files.any?
           require(files.first) ? retry : raise
         end
