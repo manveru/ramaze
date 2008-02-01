@@ -22,7 +22,7 @@ module Ramaze
 
     def helper *syms
       syms.each do |sym|
-        mod_name = sym.to_s.capitalize + 'Helper'
+        mod_name = sym.to_s.camel_case + 'Helper'
         begin
           include ::Ramaze.const_get(mod_name)
           extend ::Ramaze.const_get(mod_name)
