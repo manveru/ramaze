@@ -117,7 +117,9 @@ module Ramaze
         gsub(/>/, '&gt;')
     end
 
-    # @out.to_s
+    def tag(name, *args, &block)
+      _gestalt_call_tag(name.to_s, args, &block)
+    end
 
     def to_s
       @out.to_s

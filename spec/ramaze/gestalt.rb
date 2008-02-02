@@ -117,4 +117,15 @@ describe "Gestalt" do
     input.should =~ /type="text"/
     input.should =~ /value="one"/
   end
+
+  it 'tags with prefix' do
+    gestalt{tag "prefix:local"}.should == '<prefix:local />'
+  end
+
+  it 'tags with a variety of characters' do
+    # with "-"
+    gestalt{tag "hello-world"}.should == '<hello-world />'
+    # with Hiragana
+    gestalt{tag "あいうえお"}.should == '<あいうえお />'
+  end
 end
