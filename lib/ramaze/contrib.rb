@@ -55,5 +55,28 @@ module Ramaze
         end
       end
     end
-  end
-end
+
+    # Will call .shutdown on all contrib modules which support it.
+    #---
+    # .shudown gets called by Ramaze :essentials.
+    #+++
+
+    def self.shutdown
+      Ramaze::Global.contribs.each do |contrib|
+        contrib.shutdown if contrib.respond_to?(:shutdown)
+      end
+    end
+
+    # Will load all contrib modules from options[:contrib]
+    #---
+    # .startup gets called by Ramaze :essentials.
+    #+++
+
+    def self.startup(options = {})
+      return unless options[:contrib]
+      [options[:contrib]].flatten.each do |contrib|
+        load(contrib)
+      end
+    end
+  end # class Contrib
+end # class Ramaze
