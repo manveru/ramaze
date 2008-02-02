@@ -55,11 +55,9 @@ module Ramaze
       options = { :controller => current.controller,
                   :instance => current.instance.dup }
 
-      filename = options[:controller].template_root/file
+      roots = [options[:controller].template_root].flatten
 
-      if File.exist?(filename)
-        options[:template] = filename
-      elsif files = Dir["#{filename}.*"] and files.any?
+      if (files = Dir["{#{roots.join(',')}}"/"{#{file},#{file}.*}"]).any?
         options[:template] = files.first
       else
         Inform.warn "render_template: #{filename} does not exist"
