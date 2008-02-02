@@ -113,9 +113,10 @@ module Ramaze
 
         if layout_action.controller != controller
           instance.instance_variables.each do |x|
-            unless layout_action.instance.instance_variable_defined?(x)
-              layout_action.instance.instance_variable_set(x, instance.instance_variable_get(x))
+            if layout_action.instance.instance_variable_defined?(x)
+              Inform.warn "overwriting instance variable #{x} from layout controller with instance variable from action controller."
             end
+            layout_action.instance.instance_variable_set(x, instance.instance_variable_get(x))
           end
         else
           layout_action.binding = binding
