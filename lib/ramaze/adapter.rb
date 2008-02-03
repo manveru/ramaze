@@ -61,10 +61,12 @@ module Ramaze
         if adapter = Global.adapter
           host, ports = Global.host, Global.ports
 
-          Inform.info("Adapter: #{adapter}, testing connection to #{host}:#{ports}")
-          test_connections(host, ports)
+          if Global.test_connections
+            Inform.info("Adapter: #{adapter}, testing connection to #{host}:#{ports}")
+            test_connections(host, ports)
+            Inform.info("and we're running: #{host}:#{ports}")
+          end
 
-          Inform.info("and we're running: #{host}:#{ports}")
           adapter.start(host, ports)
         else # run dummy
           Global.adapters.add Thread.new{ sleep }
@@ -94,8 +96,6 @@ module Ramaze
       # Shuts down if no connection is possible.
 
       def test_connections host, ports
-        return unless Global.test_connections
-
         ports.each do |port|
           unless test_connection(host, port)
             Inform.error("Cannot open connection on #{host}:#{port}")

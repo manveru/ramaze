@@ -4,20 +4,22 @@
 require 'ramaze/adapter'
 require 'rack/handler/scgi'
 
-module Ramaze::Adapter
+module Ramaze
+  Global.test_connections = true
 
-  # Our Scgi adapter acts as wrapper for the Rack::Handler::SCGI.
-  class Scgi < Base
-    class << self
+  module Adapter
+    # Our Scgi adapter acts as wrapper for the Rack::Handler::SCGI.
+    class Scgi < Base
+      class << self
 
-      # start SCGI in a new thread
-      def run_server host, port
-        Thread.new do
-          Thread.current[:task] = :cgi
-          Rack::Handler::SCGI.run(self, :Host=>host, :Port=>port)
+        # start SCGI in a new thread
+        def run_server host, port
+          Thread.new do
+            Thread.current[:task] = :cgi
+            Rack::Handler::SCGI.run(self, :Host=>host, :Port=>port)
+          end
         end
       end
     end
   end
 end
-

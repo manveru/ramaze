@@ -3,8 +3,9 @@ require 'ramaze/adapter'
 require 'rack/handler/thin'
 
 module Ramaze
-  module Adapter
+  Global.test_connections = true
 
+  module Adapter
     class Thin < Base
       class << self
 

@@ -6,6 +6,8 @@ require 'ramaze/adapter'
 require 'rack/handler/mongrel'
 
 module Ramaze
+  Global.test_connections = true
+
   module Adapter
 
     # Our Mongrel adapter acts as wrapper for the Rack::Handler::Mongrel.

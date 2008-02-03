@@ -6,8 +6,9 @@ require 'webrick'
 require 'rack/handler/webrick'
 
 module Ramaze
-  module Adapter
+  Global.test_connections = true
 
+  module Adapter
     # Our WEBrick adapter acts as wrapper for the Rack::Handler::WEBrick.
     class WEBrick < Base
       class << self
