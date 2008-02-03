@@ -7,7 +7,6 @@ class MainController < Ramaze::Controller
   def index
     @hello = "Hello, World!"
     '<% 10.times do %> %<%= @hello %>% <% end %>'
-    %q[ html { body { 10.times { span @hello } } } ]
   end
 
   def layout
