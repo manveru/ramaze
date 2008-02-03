@@ -1,9 +1,6 @@
 require 'rubygems'
 require 'ramaze'
 
-# TODO:
-#   - implement the amrita2 example, man, this engine is awkward :P
-
 class MainController < Ramaze::Controller
   template_root __DIR__/:template
   engine :Amrita2
