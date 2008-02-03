@@ -2,9 +2,10 @@ require 'ramaze'
 
 class MainController < Ramaze::Controller
   engine :Markaby
+  helper :markaby
 
   def index
     @hello = "Hello, World!"
-    %q[ html { body { 10.times { span @hello } } } ]
+    mab { html { body { 10.times { span @hello } } } }
   end
 end
