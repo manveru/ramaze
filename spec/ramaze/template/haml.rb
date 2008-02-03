@@ -24,8 +24,6 @@ class TCRamazeLocals < Ramaze::Controller
   map '/test'
   template_root __DIR__/:haml
 
-  helper :partial
-
   def render_with_locals
     render_template 'locals.haml', :abc => 'def'
   end

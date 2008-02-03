@@ -23,7 +23,7 @@ end
 class TCAspectAllController < Ramaze::Controller
   map '/all'
 
-  helper :aspect, :partial
+  helper :aspect
   template_root __DIR__/:template
 
   def test_all_first() 'first' end

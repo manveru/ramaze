@@ -16,7 +16,7 @@ module Ramaze
     include Ramaze::Helper
     extend Ramaze::Helper
 
-    helper :redirect, :link, :file, :flash, :cgi
+    helper :redirect, :link, :file, :flash, :cgi, :partial
 
     # Whether or not to map this controller on startup automatically
 

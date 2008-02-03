@@ -17,7 +17,7 @@ end
 class MainController < Ramaze::Controller
 
   include Remarkably::Common
-  helper :partial, :inform, :cache, :aspect
+  helper :inform, :cache, :aspect
   engine :None
 
   def index *args
