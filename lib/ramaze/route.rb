@@ -38,7 +38,7 @@ module Ramaze
   #   end
 
   class Route
-    trait :routes => Dictionary.new
+    trait[:routes] ||= Dictionary.new
 
     class << self
       def [](key)
@@ -47,6 +47,10 @@ module Ramaze
 
       def []=(key, value)
         trait[:routes][key] = value
+      end
+
+      def clear
+        trait[:routes].clear
       end
     end
   end

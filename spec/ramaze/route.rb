@@ -104,4 +104,10 @@ describe 'Route' do
     r.status.should == 200
     r.body.should == 'this is bar'
   end
+
+  it 'should clear routes' do
+    Ramaze::Route.trait[:routes].size.should > 0
+    Ramaze::Route.clear
+    Ramaze::Route.trait[:routes].size.should == 0
+  end
 end
