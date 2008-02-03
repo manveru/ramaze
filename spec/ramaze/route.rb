@@ -110,4 +110,21 @@ describe 'Route' do
     Ramaze::Route.clear
     Ramaze::Route.trait[:routes].size.should == 0
   end
+
+  it 'should exclude existing actions' do
+    Ramaze::Route[ %r!^/(.+)$! ] = "/string/%s"
+    r = get('/hello')
+    r.status.should == 200
+    r.body.should == 'String: hello'
+
+    r = get('/bar')
+    r.status.should == 200
+    r.body.should == 'this is bar'
+  end
+
+  it 'should not recurse given a bad route' do
+    Ramaze::Route[ %r!^/good/(.+)$! ] = "/bad/%s"
+    r = get('/good/hi')
+    r.status.should == 404
+  end
 end

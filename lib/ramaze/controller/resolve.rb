@@ -3,7 +3,7 @@
 
 module Ramaze
   class Controller
-    FILTER = [ :cached, :routed, :default ] unless defined?(FILTER)
+    FILTER = [ :cached, :default ] unless defined?(FILTER)
 
     class << self
 
@@ -14,6 +14,8 @@ module Ramaze
       # instead, in either case with path as argument.
 
       def resolve(path, *exclude_filter)
+        @exclude = exclude_filter
+
         (FILTER - exclude_filter.flatten).each do |filter|
           answer =
             if filter.respond_to?(:call)
@@ -50,17 +52,16 @@ module Ramaze
         Route.trait[:routes].each do |key, val|
           if key.is_a?(Regexp)
             if md = path.match(key)
-              new_path = val % md.to_a[1..-1]
-              return resolve(new_path, :routed)
+              return val % md.to_a[1..-1]
             end
 
           elsif val.respond_to?(:call)
             if new_path = val.call(path, request)
-              return resolve(new_path, :routed)
+              return new_path
             end
 
           elsif val.is_a?(String)
-            return resolve(val, :routed) if path == key
+            return val if path == key
 
           else
             Inform.error "Invalid route #{key} => #{val}"
@@ -98,6 +99,11 @@ module Ramaze
               return action.dup
             end
           end
+        end
+
+        if !@exclude.include?(:routed) and new_path = routed(path)
+          Inform.dev("Routing from `#{path}' to `#{new_path}'")
+          return resolve(new_path, :routed)
         end
 
         raise_no_action(first_controller, path) if first_controller
