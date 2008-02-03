@@ -146,10 +146,16 @@ module Ramaze
       # if no argument is given.
       # Runs every given path through Controller::check_path
 
-      def template_root path = nil
-        if path and path = path.to_s
-          message = "#{self}.template_root is #{path} which does not exist"
-          check_path(path, message)
+      def template_root *args
+        if args.any?
+          args.each do |dir|
+            message = "#{self}.template_root contains #{dir} which does not exist"
+            check_path(dir, message)
+          end
+
+          path = args if args.size > 1
+          path ||= args.first
+
           @template_root = path
         else
           @template_root

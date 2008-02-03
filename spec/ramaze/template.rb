@@ -30,6 +30,24 @@ class TCTemplateController < Ramaze::Controller
   end
 end
 
+class TCMultipleTemplateRoots < Ramaze::Controller
+  map '/multiple'
+  template_root __DIR__/:helper/:template, __DIR__/:template/:ezamar
+
+  def sum
+    @num1, @num2 = 1, 2
+  end
+
+  def num
+    @n = 3
+  end
+
+  def render
+    @n = 3
+    render_template :num
+  end
+end
+
 describe "testing ramaze template" do
   ramaze
 
@@ -77,6 +95,19 @@ describe "testing ramaze template" do
     @params.should == []
     file = TCTemplateController.template_root/'external.test'
     @file.should == file
+  end
+end
+
+describe 'multiple template_roots' do
+  def get(*args) Ramaze::Controller.handle(args) end
+
+  it 'should work' do
+    get('/multiple/sum').should == '3'
+    get('/multiple/num').should == '3'
+  end
+
+  it 'should work with render_template' do
+    get('/multiple/render').should == '3'
   end
 end
 
