@@ -32,10 +32,14 @@ module Ramaze
       CGI.unescapeHTML(string)
     end
 
+    # safely escape all HTML and code
+    def c(string)
+      CGI.escapeHTML(string).gsub(/#/, '&#35;')
+    end
+
     # one-letter versions help in case like #{h foo.inspect}
     # ERb/ERuby/Rails compatible
-    alias h html_escape
     alias u url_encode
-
+    alias h c
   end
 end
