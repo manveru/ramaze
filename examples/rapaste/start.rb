@@ -15,7 +15,6 @@ UV_PRIORITY_NAMES = %w[ ruby plain_text html css javascript yaml diff ]
 STYLE = 'iplastic'
 
 Ramaze::Inform.debug "done."
-Ramaze.contrib :route
 
 DB = Sequel.sqlite
 
