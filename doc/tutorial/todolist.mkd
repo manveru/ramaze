@@ -52,7 +52,7 @@ with your ORM or database-library of choice.
 
 So first, create a `model/todolist.rb` for our application:
 
-    TodoList = Store::Default.new('todolist.yaml')
+    TodoList = Ramaze::Store::Default.new('todolist.yaml')
 
 Let's add some items as well to have a base to start from.
 
