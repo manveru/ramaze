@@ -9,20 +9,18 @@ module Ramaze
 
       # Resolve an absolute path in the application by passing it to each
       # element of Ramaze::Controller::FILTER.
-      # Elements in exclude_filter are excluded from handling.
       # If an element does not respond to call it will be sent to self
       # instead, in either case with path as argument.
 
-      def resolve(path, *exclude_filter)
-        @exclude = exclude_filter
+      def resolve(path, routed = false)
+        @routed = routed
 
-        (FILTER - exclude_filter.flatten).each do |filter|
-          answer =
-            if filter.respond_to?(:call)
-              filter.call(path)
-            else
-              send(filter.to_s, path)
-            end
+        FILTER.each do |filter|
+          answer = if filter.respond_to?(:call)
+                     filter.call(path)
+                   else
+                     send(filter.to_s, path)
+                   end
           return answer if answer
         end
 
@@ -39,32 +37,6 @@ module Ramaze
           else
             Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
             Cache.resolved.delete path
-          end
-        end
-
-        nil
-      end
-
-      # Routing filter
-      # Loops over Route.trait[:routes] to find a matching route
-
-      def routed(path)
-        Route.trait[:routes].each do |key, val|
-          if key.is_a?(Regexp)
-            if md = path.match(key)
-              return val % md.to_a[1..-1]
-            end
-
-          elsif val.respond_to?(:call)
-            if new_path = val.call(path, request)
-              return new_path
-            end
-
-          elsif val.is_a?(String)
-            return val if path == key
-
-          else
-            Inform.error "Invalid route #{key} => #{val}"
           end
         end
 
@@ -101,9 +73,9 @@ module Ramaze
           end
         end
 
-        if !@exclude.include?(:routed) and new_path = routed(path)
+        if !@routed and new_path = Route.resolve(path)
           Inform.dev("Routing from `#{path}' to `#{new_path}'")
-          return resolve(new_path, :routed)
+          return resolve(new_path, true)
         end
 
         raise_no_action(first_controller, path) if first_controller

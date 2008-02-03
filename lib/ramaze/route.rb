@@ -52,6 +52,29 @@ module Ramaze
       def clear
         trait[:routes].clear
       end
+
+      def resolve(path)
+        trait[:routes].each do |key, val|
+          if key.is_a?(Regexp)
+            if md = path.match(key)
+              return val % md.to_a[1..-1]
+            end
+
+          elsif val.respond_to?(:call)
+            if new_path = val.call(path, Request.current)
+              return new_path
+            end
+
+          elsif val.is_a?(String)
+            return val if path == key
+
+          else
+            Inform.error "Invalid route #{key} => #{val}"
+          end
+        end
+
+        nil
+      end
     end
   end
 
