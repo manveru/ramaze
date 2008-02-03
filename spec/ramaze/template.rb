@@ -93,7 +93,7 @@ describe "testing ramaze template" do
 
     @file.should =~ /external\.test$/
     @params.should == []
-    file = TCTemplateController.template_root/'external.test'
+    file = TCTemplateController.template_root.first/'external.test'
     @file.should == file
   end
 end

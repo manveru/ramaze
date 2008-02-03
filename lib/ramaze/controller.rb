@@ -58,14 +58,8 @@ module Ramaze
       def startup options = {}
         Inform.dev("found Controllers: #{Global.controllers.inspect}")
 
-        { 'Template' => Global.template_root,
-          'Public'   => Global.public_root }.each do |type, path|
-          unless File.directory?(path)
-            Inform.warn("#{type} root: #{path} doesn't exist")
-          else
-            Inform.info("#{type} root: #{File.expand_path path}")
-          end
-        end
+        check_path("Public root: '%s' doesn't exist", Global.public_root)
+        check_path("Template root: '%s' doesn't exist", Global.template_root)
 
         require 'ramaze/controller/main' if Global.mapping.empty?
 
@@ -74,8 +68,10 @@ module Ramaze
 
       # checks paths for existance and logs a warning if it doesn't exist yet.
 
-      def check_path(path, message)
-        Inform.warn(message) unless File.directory?(path)
+      def check_path(message, *paths)
+        paths.each do |path|
+          Inform.warn(message % path) unless File.directory?(path)
+        end
       end
 
       # if trait[:automap] is set and controller is not in Global.mapping yet
@@ -147,18 +143,11 @@ module Ramaze
       # Runs every given path through Controller::check_path
 
       def template_root *args
-        if args.any?
-          args.each do |dir|
-            message = "#{self}.template_root contains #{dir} which does not exist"
-            check_path(dir, message)
-          end
-
-          path = args if args.size > 1
-          path ||= args.first
-
-          @template_root = path
-        else
+        if args.empty?
           @template_root
+        else
+          check_path("#{self}.template_root: '%s' doesn't exist", *args)
+          @template_root = args.flatten
         end
       end
 
