@@ -24,8 +24,10 @@ module Ramaze
 
         def process(path)
           Inform.info("Dynamic request from #{request.ip}: #{request.request_uri}")
-          body = Controller.handle(path)
-          response = Response.current.build(body)
+          catch(:respond) {
+            body = Controller.handle(path)
+            response = Response.current.build(body)
+          }
           FILTER.inject(response){|r,f| f.call(r) }
         rescue Ramaze::Error => ex
           ex
