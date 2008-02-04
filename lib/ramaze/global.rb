@@ -70,6 +70,9 @@ module Ramaze
     o "All paths to controllers are mapped here.",
       :mapping => {}
 
+    o "For your own modes to decide on",
+      :mode => :live, :cli => [:live, :dev]
+
     o "The place ramaze was started from, useful mostly for debugging",
       :origin => :main
 
