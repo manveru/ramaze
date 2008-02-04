@@ -23,13 +23,17 @@ describe 'todolist' do
     (h_get('/')/:tr)
   end
 
-  def spectask
+  def task(name)
     tasks.find do |task|
       (task/:td).find do |td|
         td['class'] == 'title' and
-        td.inner_html.strip == 'spectask'
+        td.inner_html.strip == name
       end
     end
+  end
+
+  def spectask
+    task('spectask')
   end
 
   def spectask_status
@@ -115,6 +119,13 @@ describe 'todolist' do
     response.original_headers['Location'].should == '/new'
 
     error_on_page('/new', response).should == 'Please enter a title'
+  end
+
+  it 'should escape harmful titles' do
+    response = post('/create', 'title' => '#{puts "gotcha"}')
+
+    task('#{puts "gotcha"}').should.be.nil
+    task('&#35;{puts &quot;gotcha&quot;}').should.not.be.nil
   end
 
   FileUtils.rm('todolist.db') rescue nil

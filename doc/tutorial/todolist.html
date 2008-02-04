@@ -97,7 +97,8 @@ with your ORM or database-library of choice.</p>
 
 <p>So first, create a <code>model/todolist.rb</code> for our application:</p>
 
-<pre><code>TodoList = Ramaze::Store::Default.new('todolist.yaml')
+<pre><code>require 'ramaze/store/default'
+TodoList = Ramaze::Store::Default.new('todolist.yaml')
 </code></pre>
 
 <p>Let's add some items as well to have a base to start from.</p>
@@ -132,7 +133,7 @@ simple.</p>
         TodoList.each do |title, value|
           status = value[:done] ? 'done' : 'not done'
         ?&gt;
-        &lt;li&gt;#{title}: #{status}&lt;/li&gt;
+        &lt;li&gt;#{c title}: #{status}&lt;/li&gt;
       &lt;?r end ?&gt;
     &lt;/ul&gt;
   &lt;/body&gt;
@@ -232,7 +233,7 @@ changed to do following:</p>
     &lt;?r else ?&gt;
       &lt;ul&gt;
         &lt;?r @tasks.each do |title, status| ?&gt;
-          &lt;li&gt;#{title}: #{status}&lt;/li&gt;
+          &lt;li&gt;#{c title}: #{status}&lt;/li&gt;
         &lt;?r end ?&gt;
       &lt;/ul&gt;
     &lt;?r end ?&gt;
@@ -323,7 +324,7 @@ we will need some way to mark it as done or open tasks again.</p>
 
 <pre><code>&lt;?r @tasks.each do |title, status, toggle| ?&gt;
   &lt;li&gt;
-    #{title}: #{status} - [ #{toggle} ]
+    #{c title}: #{status} - [ #{toggle} ]
   &lt;/li&gt;
 &lt;?r end ?&gt;
 </code></pre>
@@ -431,7 +432,7 @@ end
 
 <pre><code>&lt;?r @tasks.each do |title, status, toggle, delete| ?&gt;
   &lt;li&gt;
-    #{title}: #{status} [ #{toggle} | #{delete} ]
+    #{c title}: #{status} [ #{toggle} | #{delete} ]
   &lt;/li&gt;
 &lt;?r end ?&gt;
 </code></pre>
@@ -532,7 +533,7 @@ end
     &lt;ul&gt;
       &lt;?r @tasks.each do |title, status, toggle, delete| ?&gt;
         &lt;li&gt;
-          #{title}: #{status} [ #{toggle} | #{delete} ]
+          #{c title}: #{status} [ #{toggle} | #{delete} ]
         &lt;/li&gt;
       &lt;?r end ?&gt;
     &lt;/ul&gt;
@@ -564,7 +565,7 @@ to get it line up properly and look actually structured.</p>
 <pre><code>&lt;ul&gt;
   &lt;?r @tasks.each do |title, status, toggle, delete| ?&gt;
     &lt;li&gt;
-      #{title}: #{status} [ #{toggle} | #{delete} ]
+      #{c title}: #{status} [ #{toggle} | #{delete} ]
     &lt;/li&gt;
   &lt;?r end ?&gt;
 &lt;/ul&gt;
@@ -575,7 +576,7 @@ to get it line up properly and look actually structured.</p>
 <pre><code>&lt;table&gt;
   &lt;?r @tasks.each do |title, status, toggle, delete| ?&gt;
     &lt;tr&gt;
-      &lt;td class="title"&gt;  #{title}  &lt;/td&gt;
+      &lt;td class="title"&gt;  #{c title}  &lt;/td&gt;
       &lt;td class="status"&gt; #{status} &lt;/td&gt;
       &lt;td class="toggle"&gt; #{toggle} &lt;/td&gt;
       &lt;td class="delete"&gt; #{delete} &lt;/td&gt;
