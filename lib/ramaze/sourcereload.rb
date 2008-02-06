@@ -4,6 +4,8 @@
 require 'set'
 
 module Ramaze
+  # true if we are on windows.
+  MSWIN = [ /mswin/i, /mingw/i, /bccwin/i ].any? { |re| PLATFORM =~ re }
 
   # SourceReload provides a way to reload changed files automatically during
   # runtime. Its default behaviour in Ramaze is to check periodically for
@@ -11,6 +13,9 @@ module Ramaze
   # manner.
 
   class SourceReload
+    # Regexp checking for windows-like absolute path with drive-name
+    MSWIN_ABSOLUTE_PATH = /^[[:alpha:]]:[\/\\]/
+
     attr_accessor :thread, :interval, :map
 
     # Reload everything which falls under this regex
@@ -78,9 +83,6 @@ module Ramaze
       SourceReloadHooks.after_reload
     end
 
-    MSWIN = [ /mswin/i, /mingw/i, /bccwin/i ].any? { |re| PLATFORM =~ re }
-    MSWIN_ABSOLUTE_PATH = /^[[:alpha:]]:[\/\\]/
-
     # Scans loaded features and paths for file-paths, filters them in the end
     # according to the trait[:reload_glob]
 
@@ -93,8 +95,11 @@ module Ramaze
 
         map = files.map do |file|
           paths.map{|pa|
-            if MSWIN and file =~ MSWIN_ABSOLUTE_PATH then file
-            else File.expand_path(File.join(pa.to_s, file.to_s)) end
+            if MSWIN and file =~ MSWIN_ABSOLUTE_PATH
+              file
+            else
+              File.expand_path(File.join(pa.to_s, file.to_s))
+            end
           }.find{|po| File.exists?(po) }
         end
 
