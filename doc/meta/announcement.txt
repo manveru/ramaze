@@ -48,7 +48,8 @@ Special (alphabetic) thanks go to:
 Selected summary of the 62 patches from 0.3.0 to 0.3.5:
 
   Core
-    - Ramaze::Contrib::Route made available by default as Ramaze::Route (backwards compatibility retained)
+    - Ramaze::Contrib::Route made available by default as Ramaze::Route
+      (backwards compatibility retained)
     - Support added for ETag and If-Modified-Since in Dispatcher::File
     - Adapter for LiteSpeed webserver added
     - Added ability to set default session cookie options using Session::COOKIE
