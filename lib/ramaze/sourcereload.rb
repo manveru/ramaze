@@ -78,6 +78,9 @@ module Ramaze
       SourceReloadHooks.after_reload
     end
 
+    MSWIN = [ /mswin/i, /mingw/i, /bccwin/i ].any? { |re| PLATFORM =~ re }
+    MSWIN_ABSOLUTE_PATH = /^[[:alpha:]]:[\/\\]/
+
     # Scans loaded features and paths for file-paths, filters them in the end
     # according to the trait[:reload_glob]
 
@@ -90,7 +93,8 @@ module Ramaze
 
         map = files.map do |file|
           paths.map{|pa|
-            File.expand_path(File.join(pa.to_s, file.to_s))
+            if MSWIN and file =~ MSWIN_ABSOLUTE_PATH then file
+            else File.expand_path(File.join(pa.to_s, file.to_s)) end
           }.find{|po| File.exists?(po) }
         end
 
