@@ -15,7 +15,7 @@ class PasteController < Ramaze::Controller
   def list(start = 1)
     ordered = Paste.order(:created.DESC)
     @paginated = ordered.paginate(start.to_i, 10)
-    @pager = paginator(@paginated, '/list/page')
+    @pager = paginator(@paginated, '/list')
     @pastes = @paginated
     @style = style
   end
