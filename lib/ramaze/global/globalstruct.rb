@@ -21,6 +21,7 @@ module Ramaze
       :fcgi                => :Fcgi,
       :scgi                => :Scgi,
       :thin                => :Thin,
+      :ebb                 => :Ebb,
       :lsws                => :Lsws,
       :webrick             => :WEBrick,
       :mongrel             => :Mongrel,
