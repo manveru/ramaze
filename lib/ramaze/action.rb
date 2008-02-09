@@ -30,10 +30,14 @@ module Ramaze
         i
       end
 
-      # Thread.current[:action] returns the instance of Action you are currently in.
+      # alias for stack.last, returns the instance of Action you are currently in.
 
       def current
-        Thread.current[:action]
+        stack.last
+      end
+
+      def stack
+        Thread.current[:action_stack] ||= []
       end
     end
 

@@ -18,17 +18,13 @@ ramaze
 
 describe "A" do
   extend Ramaze::LinkHelper
-
-  before do
-    # initialize Ramaze::Controller.current for Rs()
-    Ramaze::Controller.handle('/')
-  end
+  behaves_like 'resolve'
 
   it 'should build links' do
     A('title', :href => '/').should == %(<a href="/">title</a>)
     A('title', :href => '/foo').should == %(<a href="/foo">title</a>)
     A('title', :href => '/foo?x=y').should == %{<a href="/foo?x=y">title</a>}
-    A('/foo?x=y').should == %{<a href="/foo?x=y">/foo?x=y</a>}
+    stack('/'){ A('/foo?x=y') }.should == %{<a href="/foo?x=y">/foo?x=y</a>}
 
     a = A('title', :href => '/foo', :class => :none)
     a.should =~ /class="none"/
@@ -36,11 +32,11 @@ describe "A" do
   end
 
   it 'should build position independend links' do
-    A(TCLink, :foo).should == %(<a href="/foo">foo</a>)
+    stack('/'){ A(TCLink, :foo) }.should == %(<a href="/foo">foo</a>)
   end
 
   it 'should escape path' do
-    A('ti tle').should == '<a href="/ti+tle">ti tle</a>'
+    stack('/'){ A('ti tle') }.should == '<a href="/ti+tle">ti tle</a>'
     a = A('', :href => "/foo?chunky=b\000acon")
     a.should == '<a href="/foo?chunky=b%00acon"></a>'
   end
@@ -82,22 +78,21 @@ end
 describe 'Rs' do
   extend Ramaze::LinkHelper
 
-  it 'should build links for current controller' do
-    Ramaze::Controller.handle('/2')
-    Rs(:index).should == '/2/index'
+  def resolve(url)
+    Ramaze::Controller::resolve(url)
+  end
 
-    Ramaze::Controller.handle('/')
-    Rs(:index).should == '/index'
+  it 'should build links for current controller' do
+    resolve('/2').stack{ Rs(:index).should == '/2/index' }
+    resolve('/').stack{ Rs(:index).should == '/index' }
   end
 
   it 'should treat Rs() like R() when Controller given' do
-    Ramaze::Controller.handle('/2')
-    Rs(TCLink, :index).should == '/2/index'
+    resolve('/2').stack{ Rs(TCLink, :index).should == '/2/index' }
   end
 
   it 'should treat non-controllers as strings' do
-    Ramaze::Controller.handle('/2')
-    Rs(Ramaze, :index).should == '/2/Ramaze/index'
+    resolve('/2').stack{ Rs(Ramaze, :index).should == '/2/Ramaze/index' }
   end
 
 end

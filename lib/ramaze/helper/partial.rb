@@ -37,13 +37,11 @@ module Ramaze
     def render_partial(url, options = {})
       saved = {}
       options.keys.each {|x| saved[x] = Request.current.params[x] }
-      saved_action = Action.current
 
       Request.current.params.update(options)
 
       Controller.handle(url)
     ensure
-      Thread.current[:action] = saved_action
       options.keys.each {|x| Request.current.params[x] = saved[x] }
     end
 
@@ -73,8 +71,6 @@ module Ramaze
       options[:binding]  = options[:instance].instance_eval{ binding }
 
       Ramaze::Action(options).render
-    ensure
-      Thread.current[:action] = current
     end
   end
 end

@@ -4,6 +4,13 @@
 module Ramaze
   class Action
 
+    def stack
+      Action.stack << self
+      return yield(self)
+    ensure
+      Action.stack.pop
+    end
+
     # Render this instance of Action, this will (eventually) pass itself to
     # Action#engine.transform
     # Usage, given that Foo is a Controller and has the method/template
@@ -12,13 +19,14 @@ module Ramaze
     #  #> 'bar'
 
     def render
-      Inform.dev("The Action: #{self}")
-      Thread.current[:action] = self
+      Inform.info("The Action: #{self}")
 
-      if should_cache?
-        cached_render
-      else
-        uncached_render
+      stack do
+        if should_cache?
+          cached_render
+        else
+          uncached_render
+        end
       end
     end
 
@@ -87,9 +95,6 @@ module Ramaze
         end
 
         content = tlayout.render
-
-        # restore Action.current after render above
-        Thread.current[:action] = self
       end
 
       content

@@ -34,6 +34,7 @@ ramaze
 
 shared 'pager' do
   behaves_like 'http'
+  behaves_like 'resolve'
   extend Ramaze::PagerHelper
 
   def pager_key
@@ -69,11 +70,13 @@ shared 'pager' do
   end
 
   it "should link to other pages" do
-    @pager.should.not.be.nil
-    @pager.navigation.should.not.be.nil
+    stack('/page') do
+      @pager.should.not.be.nil
+      @pager.navigation.should.not.be.nil
 
-    page = Hpricot(@pager.navigation)
-    (page / 'a').size.should == 4
+      page = Hpricot(@pager.navigation)
+      (page / 'a').size.should == 4
+    end
   end
 end
 

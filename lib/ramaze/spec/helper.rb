@@ -112,3 +112,13 @@ shared 'xpath' do
     end
   end
 end
+
+shared 'resolve' do
+  def resolve(url)
+    Ramaze::Controller::resolve(url)
+  end
+
+  def stack(url, &block)
+    resolve(url).stack(&block)
+  end
+end
