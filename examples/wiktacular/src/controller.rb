@@ -17,7 +17,7 @@ class MainController < Ramaze::Controller
 
   def edit handle
     @handle = handle
-    @entry = WikiEntry[handle]
+    @entry = WikiEntry.new(handle)
     @text = @entry.content
   end
 
@@ -39,7 +39,7 @@ class MainController < Ramaze::Controller
   def save
     redirect_referer unless request.post?
     handle = request['handle']
-    entry = WikiEntry[handle]
+    entry = WikiEntry.new(handle)
     entry.save(request['text'])
     redirect Rs(:index, handle)
   end

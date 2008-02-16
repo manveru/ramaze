@@ -133,6 +133,24 @@ describe 'wiktacular' do
     doc.at('div#text').inner_html.strip.should == '<p>first text</p>'
   end
 
+  it "should convert [[#{NEWPAGE}]] to existing link" do
+    edit_page(NEWPAGE, "Link: [[#{NEWPAGE}]]")
+    doc = check_page(NEWPAGE)
+    a = doc.at('div#text>p>a')
+    a['class'].should == 'exists'
+    a['href'].should == NEWPAGE
+    a.inner_html.should == NEWPAGE
+  end
+
+  it "should convert [[chunky bacon]] to nonexisting link" do
+    edit_page(NEWPAGE, "Link: [[chunky bacon]]")
+    doc = check_page(NEWPAGE)
+    a = doc.at('div#text>p>a')
+    a['class'].should == 'nonexists'
+    a['href'].should == "chunky+bacon"
+    a.inner_html.should == "chunky bacon"
+  end
+
   after do
     WikiEntry.new(NEWPAGE).delete
   end
