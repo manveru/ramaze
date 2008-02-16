@@ -10,6 +10,8 @@ module Ramaze
   # and also a helper method, look below for more information about it
 
   module Helper
+    LOOKUP = Set.new
+
     include Trinity
 
     private

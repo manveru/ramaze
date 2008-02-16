@@ -149,14 +149,13 @@ module Ramaze
 
       # methodnames that may be used for current controller.
       def action_methods
-        exclude = Controller.trait[:exclude_action_modules]
+        ancs = ancestors.select{|ancestor|
+          ancestor <= Ramaze::Controller
+        } + Helper::LOOKUP.to_a
 
-        ancs = (ancestors - exclude).select{|a| a.is_a?(Module) }
         meths = ancs.map{|a|
           a.instance_methods(false).map{|iv| iv.to_s }
         }.flatten.uniq
-        # fix for facets/more/paramix
-        meths - ancs.map{|a| a.to_s}
       end
 
       # Generate all possible permutations for given path.

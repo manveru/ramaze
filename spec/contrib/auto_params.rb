@@ -4,11 +4,13 @@ spec_require 'ruby2ruby'
 Ramaze.contrib :auto_params
 
 module AnotherController
+  Ramaze::Helper::LOOKUP << self
+
   def another_page
     'another page'
   end
 
-  define_method(:css/'style.css') { 'style.css' }
+  define_method('css/style.css') { 'style.css' }
 end
 
 class MainController < Ramaze::Controller

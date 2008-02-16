@@ -9,6 +9,7 @@ module Ramaze
   # check_auth method for detailed information
 
   module AuthHelper
+    Helper::LOOKUP << self
 
     # add AspectHelper and StackHelper on inclusion of AuthHelper
 

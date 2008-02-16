@@ -26,10 +26,6 @@ module Ramaze
 
     trait[:map] ||= nil
 
-    # Modules that are excluded from the Action lookup
-
-    trait :exclude_action_modules => [Kernel, Object, PP::ObjectMixin]
-
     # Caches patterns for the given path.
 
     trait :pattern_cache => Hash.new{|h,k| h[k] = Controller.pattern_for(k) }
