@@ -61,15 +61,19 @@ module Ramaze
       args = args.flatten.inject{|s,v| s.merge!(v) }
 
       map = Global.mapping.invert
+
       atoms.map! do |atom|
-        e = (atom.is_a?(Ramaze::Controller) ? map[atom.class] : map[atom]) || atom
-        CGI.escape(e.to_s)
+        if atom.is_a?(Ramaze::Controller)
+          map[atom.class]
+        else
+          map[atom]
+        end or atom.to_s
       end
 
       front = atoms.join('/').squeeze('/')
 
       if args
-        rear = args.inject('?'){|s,(k,v)| s << "#{CGI.escape k}=#{CGI.escape v};"}[0..-2]
+        rear = args.inject('?'){|s,(k,v)| s << "#{k}=#{v};"}[0..-2]
         front + rear
       else
         front
