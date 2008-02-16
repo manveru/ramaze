@@ -19,7 +19,7 @@ module Ramaze
     #  #> 'bar'
 
     def render
-      Inform.info("The Action: #{self}")
+      Inform.debug("The Action: #{self}")
 
       stack do
         if should_cache?
