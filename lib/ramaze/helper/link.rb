@@ -62,13 +62,8 @@ module Ramaze
 
       map = Global.mapping.invert
       atoms.map! do |atom|
-        CGI.escape(
-          if atom.is_a?(Ramaze::Controller)
-            map[atom.class] || atom
-          else
-            map[atom] || atom
-          end
-        )
+        e = (atom.is_a?(Ramaze::Controller) ? map[atom.class] : map[atom]) || atom
+        CGI.escape(e.to_s)
       end
 
       front = atoms.join('/').squeeze('/')
