@@ -205,6 +205,8 @@ end
 
 def authors
   author_map = {
+    'ahoward'                                 => 'Ara T. Howard',
+    'ara.t.howard@gmail.com'                  => 'Ara T. Howard',
     'blueonyx@dev-area.net'                   => 'Martin Hilbig',
     'clive@crous.co.za'                       => 'Clive Crous',
     'comp.lang.zenix+ramaze@gmail.com'        => 'zenix',
@@ -221,8 +223,8 @@ def authors
   }
 
   mapping = {}
-  `darcs changes`.split("\n").grep(/^\w/).each do |line|
-    author = line.split[6..-1]
+  `darcs show authors`.split("\n").each do |line|
+    author = line.split
     email  = author.pop.gsub(/<(.*?)>/, '\1')
     name   = author.join(' ')
     name   = author_map[email] if name.empty?
