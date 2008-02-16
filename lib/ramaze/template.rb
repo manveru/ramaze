@@ -16,7 +16,7 @@ module Ramaze
 
     ENGINES = {} unless defined?(ENGINES)
 
-    AVAILABLE_ENGINES = %w[ Amrita2 Builder Erubis Haml Liquid Markaby Nagoro None RedCloth Remarkably Sass XSLT Tenjin ]
+    AVAILABLE_ENGINES = %w[ Amrita2 Builder Erubis Haml Liquid Markaby Nagoro None RedCloth Remarkably Sass XSLT Tenjin Tagz ]
 
     AVAILABLE_ENGINES.each do |const|
       autoload(const, "ramaze/template/#{const.downcase}")
