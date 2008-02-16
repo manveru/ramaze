@@ -80,6 +80,8 @@ end
 
 class EntryView
   class << self
+    include Ramaze::CgiHelper
+
     def render content
       mkd2html(content || "No Entry")
     end
@@ -88,7 +90,7 @@ class EntryView
       html = BlueCloth.new(text).to_html
       html.gsub!(/\[\[(.*?)\]\]/) do |m|
         exists = WikiEntry[$1] ? 'exists' : 'nonexists'
-      %{<a href="/#{CGI.escape($1)}" class="#{exists}">#{$1}</a>}
+      %{<a href="/#{h $1}" class="#{exists}">#{h $1}</a>}
       end
       html
     end
