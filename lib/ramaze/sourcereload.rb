@@ -5,7 +5,7 @@ require 'set'
 
 module Ramaze
   # true if we are on windows.
-  MSWIN = [ /mswin/i, /mingw/i, /bccwin/i ].any? { |re| PLATFORM =~ re }
+  MSWIN = [ /mswin/i, /mingw/i, /bccwin/i ].any? { |re| RUBY_PLATFORM =~ re }
 
   # SourceReload provides a way to reload changed files automatically during
   # runtime. Its default behaviour in Ramaze is to check periodically for
