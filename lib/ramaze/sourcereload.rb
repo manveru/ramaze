@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'set'
+require 'pathname'
 
 module Ramaze
 
