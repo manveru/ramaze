@@ -4,8 +4,6 @@
 require 'set'
 
 module Ramaze
-  # true if we are on windows.
-  MSWIN = [ /mswin/i, /mingw/i, /bccwin/i ].any? { |re| RUBY_PLATFORM =~ re }
 
   # SourceReload provides a way to reload changed files automatically during
   # runtime. Its default behaviour in Ramaze is to check periodically for
@@ -13,9 +11,6 @@ module Ramaze
   # manner.
 
   class SourceReload
-    # Regexp checking for windows-like absolute path with drive-name
-    MSWIN_ABSOLUTE_PATH = /^[[:alpha:]]:[\/\\]/
-
     attr_accessor :thread, :interval, :map
 
     # Reload everything which falls under this regex
@@ -88,22 +83,21 @@ module Ramaze
 
     def all_reload_files
       files = Array[$0, *$LOADED_FEATURES]
-      paths = Array['', './', *$LOAD_PATH]
+      paths = Array['./', *$LOAD_PATH]
 
       unless [@files, @paths] == [files, paths]
         @files, @paths = files.dup, paths.dup
 
-        map = files.map do |file|
-          paths.map{|pa|
-            if MSWIN and file =~ MSWIN_ABSOLUTE_PATH
-              file
-            else
-              File.expand_path(File.join(pa.to_s, file.to_s))
-            end
-          }.find{|po| File.exists?(po) }
-        end
-
-        @map = map.compact
+        @map = files.map{|file|
+          if Pathname.new(file).absolute?
+            file
+          else
+            paths.find{|pa|
+              ex = File.expand_path(pa/file)
+              ex if File.exists?(ex)
+            }
+          end
+        }.compact
       end
 
       @map.grep(class_trait[:reload_glob])
