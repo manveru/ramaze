@@ -99,7 +99,7 @@ module Ramaze
       #  # In your Controller:
       #
       #  def paste
-      #    name, syntax = request.params['paste'].values_at('name', 'syntax')
+      #    name, syntax = request['paste'].values_at('name', 'syntax')
       #    paste = Paste.create_with(:name => name, :syntax => syntax)
       #    redirect '/'
       #  end
@@ -107,7 +107,7 @@ module Ramaze
       #  # Or, easier:
       #
       #  def paste
-      #    paste = Paste.create_with(request.params)
+      #    paste = Paste.create_with(request['paste'])
       #    redirect '/'
       #  end
 
@@ -118,10 +118,20 @@ module Ramaze
         @ramaze_params = {}
 
         @rack_params.each do |key, value|
-          outer_key, inner_key = key.scan(/^(.+)\[(.*?)\]$/).first
-          if outer_key and inner_key
-            @ramaze_params[outer_key] ||= {}
-            @ramaze_params[outer_key][inner_key] = value
+          if key =~ /^(.*?)(\[.*\])/
+            prim, nested = $~.captures
+            ref = @ramaze_params
+
+            keys = nested.scan(/\[([^\]]+)\]/).flatten
+            keys.unshift prim
+
+            keys.each_with_index do |k, i|
+              if i + 1 >= keys.size
+                ref[k] = value
+              else
+                ref = ref[k] ||= {}
+              end
+            end
           else
             @ramaze_params[key] = value
           end

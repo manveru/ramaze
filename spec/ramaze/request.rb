@@ -36,10 +36,7 @@ class TCRequestController < Ramaze::Controller
   end
 
   def test_post
-    [ request['foo'],
-      request['bar']['1'],
-      request['bar']['7'],
-    ].inspect
+    request.params.inspect
   end
 
   def test_headers
@@ -84,6 +81,19 @@ describe "Request" do
     # this here has shown some odd errors... keep an eye on it.
     it "give me back what i gave" do
       post("/post_inspect", 'this' => 'post').body.should == {"this" => "post"}.inspect
+    end
+
+    should "handle key[nested_key]" do
+      get('/test_get', 'foo' => 'bar').body.should == 'bar'
+      params = {'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben'}
+
+      eval(post('/test_post', params).body).should ==
+        {'foo' => 'null', 'bar' => {'1' => 'eins', '7' => 'sieben'}}
+    end
+
+    should 'handle key[nested_key][nested_nested_key]' do
+      eval(post('/test_post', 'foo[1][2]' => 'eins zwei').body).should ==
+        {'foo' => {'1' => {'2' => 'eins zwei'}}}
     end
   end
 
@@ -132,12 +142,6 @@ describe "Request" do
 
     it "my ip" do
       get("/my_ip").body.should == '127.0.0.1'
-    end
-
-    it "request[key]" do
-      get('/test_get', 'foo' => 'bar').body.should == 'bar'
-      post('/test_post', 'foo' => 'null', 'bar[1]' => 'eins', 'bar[7]' => 'sieben').body.should ==
-        ['null', 'eins', 'sieben'].inspect
     end
   end
 
