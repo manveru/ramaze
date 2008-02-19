@@ -93,10 +93,11 @@ module Ramaze
           if Pathname.new(file).absolute?
             file
           else
-            paths.find{|pa|
+            path = paths.find{|pa|
               ex = File.expand_path(pa/file)
-              ex if File.exists?(ex)
+              File.exists?(ex)
             }
+            File.expand_path(path/file) if path
           end
         }.compact
       end
