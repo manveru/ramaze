@@ -73,7 +73,7 @@ module Ramaze
       front = atoms.join('/').squeeze('/')
 
       if args
-        rear = args.inject('?'){|s,(k,v)| s << "#{k}=#{v};"}[0..-2]
+        rear = args.inject('?'){|s,(k,v)| s << "#{CGI.escape k.to_s}=#{CGI.escape v.to_s};"}[0..-2]
         front + rear
       else
         front
