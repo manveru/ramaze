@@ -26,8 +26,9 @@ module Ramaze
 
     private
 
-    # run block before given actions.
+    # run block before given actions or, if no actions specified, all actions.
     def before(*meths, &block)
+      return before_all(*meths, &block) if meths.empty?
       aspects = trait[:aspects][:before]
       meths.each do |meth|
         aspects[meth.to_s] = block
@@ -41,8 +42,9 @@ module Ramaze
     end
     alias pre_all before_all
 
-    # run block after given actions.
+    # run block after given actions or, if no actions specified, all actions.
     def after(*meths, &block)
+      return after_all(*meths, &block) if meths.empty?
       aspects = trait[:aspects][:after]
       meths.each do |meth|
         aspects[meth.to_s] = block
@@ -56,8 +58,10 @@ module Ramaze
     end
     alias post_all after_all
 
-    # run block before and after given actions.
+    # run block before and after given actions, or, if no actions specified.
+    # all actions
     def wrap(*meths, &block)
+      return wrap_all(*meths, &block) if meths.empty?
       before(*meths, &block)
       after(*meths, &block)
     end
