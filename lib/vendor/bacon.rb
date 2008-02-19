@@ -2,13 +2,13 @@
 #
 # "Truth will sooner come out from error than from confusion." ---Francis Bacon
 
-# Copyright (C) 2007 Christian Neukirchen <purl.org/net/chneukirchen>
+# Copyright (C) 2007, 2008 Christian Neukirchen <purl.org/net/chneukirchen>
 #
 # Bacon is freely distributable under the terms of an MIT-style license.
 # See COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 module Bacon
-  VERSION = "0.2"
+  VERSION = "0.9"
 
   Counter = Hash.new(0)
   ErrorLog = ""
@@ -53,9 +53,7 @@ module Bacon
   end
 
   module TestUnitOutput
-    def handle_specification(name)
-      yield
-    end
+    def handle_specification(name)  yield  end
 
     def handle_requirement(description)
       error = yield
@@ -74,17 +72,15 @@ module Bacon
   end
 
   module TapOutput
-    def handle_specification(name)
-      yield
-    end
+    def handle_specification(name)  yield  end
 
     def handle_requirement(description)
       ErrorLog.replace ""
       error = yield
       if error.empty?
-        printf "ok %-8d # %s\n" % [Counter[:specifications], description]
+        printf "ok %-3d - %s\n" % [Counter[:specifications], description]
       else
-        printf "not ok %-4d # %s: %s\n" %
+        printf "not ok %d - %s: %s\n" %
           [Counter[:specifications], description, error]
         puts ErrorLog.strip.gsub(/^/, '# ')
       end
@@ -110,29 +106,32 @@ module Bacon
 
   class Context
     def initialize(name, &block)
-      @before = []
-      @after = []
       @name = name
+      @before, @after = [], []
 
       return  unless name =~ RestrictContext
-      Bacon.handle_specification(name) do
-        instance_eval(&block)
-      end
+      Bacon.handle_specification(name) { instance_eval(&block) }
     end
 
     def before(&block); @before << block; end
     def after(&block);  @after << block; end
 
     def behaves_like(*names)
-      names.each do |name|
-        instance_eval(&Shared[name])
-      end
+      names.each { |name| instance_eval(&Shared[name]) }
     end
 
     def it(description, &block)
       return  unless description =~ RestrictName
       Counter[:specifications] += 1
       run_requirement description, block
+    end
+    
+    def should(*args, &block)
+      if Counter[:depth]==0
+        it('should '+args.first,&block)
+      else
+        super(*args,&block)
+      end
     end
 
     def run_requirement(description, spec)
@@ -190,7 +189,7 @@ class Proc
     exceptions << RuntimeError if exceptions.empty?
     call
 
-    # Only to work in 1.9.0, rescue with splat doesn't work there right now
+  # Only to work in 1.9.0, rescue with splat doesn't work there right now
   rescue Object => e
     case e
     when *exceptions
@@ -226,21 +225,14 @@ end
 
 
 class Object
-  def should(*args, &block)
-    Should.new(self).be(*args, &block)
-  end
+  def should(*args, &block)   Should.new(self).be(*args, &block)  end
 end
 
 module Kernel
   private
 
-  def describe(name, &block)
-    Bacon::Context.new(name.to_s, &block)
-  end
-
-  def shared(name, &block)
-    Bacon::Shared[name] = block
-  end
+  def describe(name, &block)  Bacon::Context.new(name.to_s, &block) end
+  def shared(name, &block)    Bacon::Shared[name] = block           end
 end
 
 
@@ -300,15 +292,12 @@ class Should
     desc << @object.inspect << "." << name.to_s
     desc << "(" << args.map{|x|x.inspect}.join(", ") << ") failed"
 
-    satisfy(desc) { |x|
-      x.__send__(name, *args, &block)
-    }
+    satisfy(desc) { |x| x.__send__(name, *args, &block) }
   end
 
-  def equal(value); self == value; end
-  def match(value); self =~ value; end
-
-  def identical_to(value); self.equal? value; end
+  def equal(value)         self == value      end
+  def match(value)         self =~ value      end
+  def identical_to(value)  self.equal? value  end
   alias same_as identical_to
 
   def flunk(reason="Flunked")
