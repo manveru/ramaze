@@ -64,7 +64,12 @@ module Ramaze
             action = controller.resolve_action(method, *params)
             template = action.template
 
-            valid_action = (action.method or (params.empty? && template))
+            valid_action =
+              if Action.stack.size > 0 || Global.actionless_templates
+                action.method or (params.empty? && template)
+              else
+                action.method
+              end
 
             if valid_action
               Cache.resolved[path] = action

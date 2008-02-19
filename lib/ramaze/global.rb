@@ -111,6 +111,9 @@ module Ramaze
 
     o "Enable directory listing",
       :list_directories => false, :cli => false
+
+    o "Disable templates without actions",
+      :actionless_templates => true, :cli => true
   end
 
   require 'ramaze/global/globalstruct'
