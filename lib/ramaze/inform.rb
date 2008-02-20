@@ -19,6 +19,7 @@ module Ramaze
   autoload :Syslog,    "ramaze/inform/syslog.rb"
   autoload :Growl,     "ramaze/inform/growl.rb"
   autoload :Xosd,      "ramaze/inform/xosd.rb"
+  autoload :Logger,    "ramaze/inform/logger.rb"
 
   unless defined?(Inform)
     Inform = LogHub.new(Informer)
