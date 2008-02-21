@@ -33,7 +33,7 @@ task 'spec' do
   total = names.size
 
   list.zip(names).each_with_index do |(spec, name), idx|
-    print '%2d/%d: ' % [idx + 1, total]
+    print '%3d/%d: ' % [idx + 1, total]
     print name.ljust(width + 2)
 
     stdout = `#{bin} -I#{libpath} #{spec} 2>&1`
