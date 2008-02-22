@@ -1,4 +1,8 @@
-require 'rubygems'
+begin
+  require 'rubygems'
+rescue LoadError
+end
+
 require 'rake'
 require 'rake/clean'
 require 'rake/packagetask'
