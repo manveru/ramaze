@@ -11,6 +11,7 @@ module Ramaze
 
   module Helper
     LOOKUP = Set.new
+    IGNORE = [] unless defined?(IGNORE)
 
     include Trinity
 
@@ -30,7 +31,8 @@ module Ramaze
           extend ::Ramaze.const_get(mod_name)
         rescue NameError
           glob = "{,#{APPDIR},#{BASEDIR/:ramaze}}/helper/#{sym}.{so,bundle,rb}"
-          files = Dir[glob].reject{|f| f.include?('/spec/ramaze/helper') }
+          files = Dir[glob]
+          files.reject!{|file| IGNORE.any?{|ignore| file =~ ignore } }
           raise LoadError, "#{mod_name} not found" unless files.any?
           require(files.first) ? retry : raise
         end

@@ -8,6 +8,13 @@ end
 
 require 'timeout'
 
+module Ramaze
+  module Helper
+    ignore = File.expand_path(File.join(File.dirname(__FILE__), '../../../spec/ramaze/helper/'))
+    IGNORE = [%r'#{ignore}/']
+  end
+end
+
 require 'ramaze'
 require 'ramaze/spec/helper/bacon'
 
