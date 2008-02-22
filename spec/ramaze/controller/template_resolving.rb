@@ -43,6 +43,31 @@ class OtherController < MainController
 
 end
 
+class AnotherController < Ramaze::Controller
+
+  Root = File.expand_path(
+    MainController.template_root || Ramaze::Global.template_root
+  )
+  Absolute = lambda{|path| File.join Root, path}
+  Relative = lambda{|path| path}
+
+  def greet_absolute(type, message = "Message")
+    @greet = "#{type} : #{message}"
+  end
+  template :greet_absolute, :file => Absolute["greet.xhtml"]
+
+  def greet_relative(type, message = "Message")
+    @greet = "#{type} : #{message}"
+  end
+  template :greet_relative, :file => Relative["greet.xhtml"]
+
+  def greet_controller_action(type, message = "Message")
+    @greet = "#{type} : #{message}"
+  end
+  template :greet_controller_action, :controller => MainController, :action => "greet"
+
+end
+
 describe "Testing Template overriding" do
   behaves_like 'http'
   ramaze
@@ -74,5 +99,17 @@ describe "Testing Template overriding" do
 
   it "should use template overrides for non-existant actions" do
     get('/non_existant_method').body.should == '<html></html>'
+  end
+
+  it "should allow template overrides to be specified by absolute path" do
+    get('/another/greet_absolute/asdf').body.should == '<html>asdf : Message</html>'
+  end
+
+  it "should allow template overrides to be specified by relative path" do
+    get('/another/greet_relative/asdf').body.should == '<html>asdf : Message</html>'
+  end
+
+  it "should allow template overrides to be specified by named controller and action" do
+    get('/another/greet_controller_action/asdf').body.should == '<html>asdf : Message</html>'
   end
 end

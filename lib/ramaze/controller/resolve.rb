@@ -92,9 +92,12 @@ module Ramaze
 
       def resolve_action(path, *parameter)
         path, parameter = path.to_s, parameter.map{|e| e.to_s}
-        if alternate_template = trait["#{path}_template"]
-          t_controller, t_path = *alternate_template
-          template = t_controller.resolve_template(t_path)
+        if info = trait["#{path}_template"]
+          template = info[:file]
+          unless template
+            controller, action = info.values_at :controller, :action
+            template = controller.resolve_template(action)
+          end
         end
 
         method, params = resolve_method(path, *parameter)

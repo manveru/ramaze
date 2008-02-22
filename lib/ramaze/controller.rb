@@ -1,6 +1,8 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require "pathname"
+
 require 'ramaze/helper'
 require 'ramaze/template'
 require 'ramaze/action'
@@ -154,6 +156,10 @@ module Ramaze
       #   class MainController
       #     template :index, OtherController, :list
       #     template :foo, :bar
+      #     template :bar, :file => '/absolute/path' 
+      #     template :baz, :file => 'relative/path' 
+      #     template :abc, :controller => OtherController
+      #     template :xyz, :controller => OtherController, :action => 'list'
       #
       #     def index
       #       'will use template from OtherController#list'
@@ -162,11 +168,51 @@ module Ramaze
       #     def foo
       #       'will use template from self#bar'
       #     end
+      #
+      #     def bar
+      #       'will use template from /absolute/path'
+      #     end
+      #
+      #     def baz
+      #       'will use template from relative/path'
+      #     end
+      #
+      #     def abc
+      #       'will use template from OtherController#index'
+      #     end
+      #
+      #     def xyz
+      #       'will use template from OtherController#list'
+      #     end
       #   end
 
-      def template(this, from, that = nil)
-        from, that = self, from unless that
-        trait "#{this}_template" => [from, that.to_s]
+      def template(this, *argv)
+        case argv.first
+          when Hash
+            options, *ignored = argv
+            controller = options[:controller] || options['controller']
+            action = options[:action] || options['action']
+            file = options[:file] || options['file']
+            info = {}
+            if file
+              file = file.to_s
+              unless Pathname(file).absolute?
+                root = template_root || Global.template_root
+                file = File.join(root, file)
+              end
+              info[:file] = file
+            else
+              controller ||= self
+              action = (action || 'index').to_s
+              info[:controller] = controller
+              info[:action] = action
+            end
+            trait "#{this}_template" => info
+          else
+            controller, action, *ignored = argv
+            controller, action = self, controller unless action
+            trait "#{this}_template" => {:controller => controller, :action => action} 
+        end
       end
 
       def engine(name)
