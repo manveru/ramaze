@@ -85,9 +85,9 @@ module Ramaze
     # Layout will be found and rendered in this step after self was rendered.
 
     def uncached_render
-      content = [before_process,
-                 engine.transform(self),
-                 after_process].join
+      before_process
+
+      content = engine.transform(self)
 
       if path and tlayout = layout
         [instance, tlayout.instance].each do |i|
@@ -96,6 +96,8 @@ module Ramaze
 
         content = tlayout.render
       end
+
+      after_process
 
       content
     end
