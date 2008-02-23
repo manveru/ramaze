@@ -1,5 +1,4 @@
 require 'ebb'
-require 'ramaze/adapter'
 
 module Ramaze
   Global.test_connections = true

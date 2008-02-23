@@ -1,9 +1,6 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'set'
-require 'pathname'
-
 module Ramaze
 
   # SourceReload provides a way to reload changed files automatically during

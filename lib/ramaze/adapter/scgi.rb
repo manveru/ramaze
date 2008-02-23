@@ -1,7 +1,6 @@
 #          Copyright (c) 2008 Jeremy Evans  code@jeremyevans.net
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'ramaze/adapter'
 require 'rack/handler/scgi'
 
 module Ramaze

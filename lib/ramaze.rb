@@ -1,12 +1,33 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+# StdLib
+require 'abbrev'
+require 'benchmark'
+require 'cgi'
+require 'digest/md5'
 require 'fileutils'
+require 'ipaddr'
+require 'optparse'
+require 'ostruct'
+require 'pathname'
+require 'pp'
+require 'set'
+require 'socket'
+require 'timeout'
+require 'tmpdir'
+require 'yaml'
 
 begin
   require 'rubygems'
 rescue LoadError
 end
+
+# Rack
+require 'rack'
+require 'rack/utils'
+require 'rack/request'
+require 'rack/response'
 
 # The main namespace for Ramaze
 module Ramaze
@@ -23,13 +44,14 @@ Thread.abort_on_exception = true
 require 'ramaze/version'
 require 'ramaze/snippets'
 require 'ramaze/inform'
+require 'ramaze/trinity'
+require 'ramaze/adapter'
 require 'ramaze/global'
 require 'ramaze/cache'
 require 'ramaze/tool'
 
 # Startup
 require 'ramaze/controller'
-require 'ramaze/adapter'
 require 'ramaze/sourcereload'
 
 # Complete

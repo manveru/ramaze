@@ -2,8 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require "tagz"
-require "cgi"
-require "pp"
 
 module Ramaze
   module Template

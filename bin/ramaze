@@ -15,10 +15,6 @@ end
 
 RAMAZE_VERSION = "Ramaze Version #{Ramaze::VERSION}"
 
-require 'optparse'
-require 'ostruct'
-require 'abbrev'
-
 options = {:origin => :console, :create => false, :force => true}
 cli_options = Ramaze::CLI_OPTIONS
 cli_abbrevs = cli_options.map{|o| o.name.to_s}.abbrev

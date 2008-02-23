@@ -1,10 +1,7 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'timeout'
-
 require 'ramaze/error'
-require 'ramaze/adapter'
 require 'ramaze/tool/mime'
 
 require 'ramaze/dispatcher/action'

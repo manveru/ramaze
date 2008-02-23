@@ -1,5 +1,4 @@
 require 'thin'
-require 'ramaze/adapter'
 require 'rack/handler/thin'
 
 module Ramaze

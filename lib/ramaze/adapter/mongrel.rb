@@ -2,7 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'mongrel'
-require 'ramaze/adapter'
 require 'rack/handler/mongrel'
 
 module Ramaze

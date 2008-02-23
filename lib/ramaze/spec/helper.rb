@@ -6,8 +6,6 @@ begin
 rescue LoadError => ex
 end
 
-require 'timeout'
-
 require 'ramaze'
 require 'ramaze/spec/helper/bacon'
 
