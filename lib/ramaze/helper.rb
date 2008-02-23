@@ -12,7 +12,7 @@ module Ramaze
   module Helper
     LOOKUP = Set.new
     trait :ignore => [
-      /#{File.expand_path(BASEDIR/'../spec/ramaze/helper/')}\//
+      /#{Regexp.escape(File.expand_path(BASEDIR/'../spec/ramaze/helper/'))}\//
     ]
 
     include Trinity
