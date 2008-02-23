@@ -11,7 +11,9 @@ module Ramaze
 
   module Helper
     LOOKUP = Set.new
-    IGNORE = [] unless defined?(IGNORE)
+    trait :ignore => [
+      /#{File.expand_path(BASEDIR/'../spec/ramaze/helper/')}\//
+    ]
 
     include Trinity
 
@@ -32,7 +34,8 @@ module Ramaze
         rescue NameError
           glob = "{,#{APPDIR},#{BASEDIR/:ramaze}}/helper/#{sym}.{so,bundle,rb}"
           files = Dir[glob]
-          files.reject!{|file| IGNORE.any?{|ignore| file =~ ignore } }
+          ignore = Helper.trait[:ignore]
+          files.reject!{|f| ignore.any?{|i| f =~ i}}
           raise LoadError, "#{mod_name} not found" unless files.any?
           require(files.first) ? retry : raise
         end
