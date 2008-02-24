@@ -136,7 +136,8 @@ div#paste_head {
   background: #ccf;
   border: 1px solid #ccf;
   width: 14em;
-  right: 1em;
+  right: 0.2em;
+  top: 1.5em;
   position: absolute;
 }
 
