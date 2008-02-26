@@ -249,6 +249,28 @@ task 'authors' do
   end
 end
 
+desc "show how many patches we made so far"
+task :patchsize do
+  patches = `darcs show repo`[/Num Patches: (\d+)/, 1].to_i
+  puts "currently we have #{patches} patches"
+  init = Time.parse("Sat Oct 14 04:22:49 JST 2006")
+  days = (Time.now - init) / (3600 * 24)
+  puts "%d days since init, avg %4.2f patches per day" % [days, patches/days]
+end
+
+desc "show who made how many patches"
+task :patchstat do
+  total = 0.0
+
+  authors.map do |name, hash|
+    patches = hash[:patches]
+    total += patches
+    [patches, name]
+  end.sort.reverse_each do |patches, name|
+    puts "%s %4d [%6.2f%% ]" % [name, patches, patches/total * 100]
+  end
+end
+
 desc "upload packages to rubyforge"
 task 'release' => ['distribute'] do
   sh 'rubyforge login'

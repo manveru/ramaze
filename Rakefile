@@ -141,25 +141,6 @@ task :todo do
   end
 end
 
-desc "show how many patches we made so far"
-task :patchsize do
-  patches = `darcs changes --reverse`.split("\n")
-  size = patches.reject{|l| l =~ /^\s/ or l.empty?}.size
-  puts "currently we have #{size} patches"
-  puts "shall i now play some Death-Metal for you?" if size == 666
-  days = (Time.now - Time.parse(patches[0])) / (3600*24)
-  puts "#{days.round} days since init, avg #{"%4.2f" % (size/days)} patches per day"
-end
-
-desc "show who made how many patches"
-task :patchstat do
-  total = authors.inject(0.0){|s,(n,a)| s + a[:patches]}
-  authors.sort_by{|k,v| -v[:patches]}.each do |name, author|
-    patches = author[:patches]
-    puts("%s %4d [%6.2f%% ]" % [name, patches, patches/total * 100])
-  end
-end
-
 desc "opens a simple readline that makes making requests easier"
 task 'request' do
   ARGV.clear
