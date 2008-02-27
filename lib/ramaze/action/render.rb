@@ -97,9 +97,10 @@ module Ramaze
         content = tlayout.render
       end
 
-      after_process
-
       content
+
+    ensure
+      after_process unless $!
     end
 
     # Determine whether or not we have a layout to process and sets it up
