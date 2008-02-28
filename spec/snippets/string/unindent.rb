@@ -19,4 +19,19 @@ doing)
   it 'should not break on a single line' do
     'word'.unindent.should == 'word'
   end
+
+  it 'should find the first line with indentation' do
+%(  hi
+  there
+    bob).ui.should == \
+%(hi
+there
+  bob)
+  end
+
+  it 'should have destructive version' do
+    str = %(  1\n    2\n  3)
+    str.ui!
+    str.should == %(1\n  2\n3)
+  end
 end
