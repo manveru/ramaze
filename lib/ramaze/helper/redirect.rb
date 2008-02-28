@@ -57,12 +57,12 @@ module Ramaze
       body = %{You are being redirected, please follow <a href="#{target}">this link to: #{target}</a>!}
 
       Inform.info("Redirect to '#{target}'")
-      trait :redirected => true
+      request[:redirected] = true
       throw(:redirect, [body, status, header])
     end
 
     def redirected?
-      trait[:redirected]
+      request[:redirected]
     end
 
     # redirect to the location the browser says it's coming from.
