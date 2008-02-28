@@ -50,7 +50,7 @@ class MainController < Ramaze::Controller
   end
 
   helper :aspect
-  after(:create, :open, :close, :delete){ redirect(Rs()) }
+  after(:create, :open, :close, :delete){ redirect(Rs()) unless redirected? }
 
   private
 
