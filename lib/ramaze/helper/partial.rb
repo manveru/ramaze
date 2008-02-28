@@ -62,13 +62,12 @@ module Ramaze
         return ''
       end
 
-      # use method_missing to provide access to locals, if any exist
-      options[:instance].meta_def(:method_missing) { |sym, *args|
-        return locals[sym] if locals.key?(sym)
-        super
-      } if locals.any?
+      binding = options[:binding] = options[:instance].instance_eval{ lambda{} }
 
-      options[:binding]  = options[:instance].instance_eval{ binding }
+      locals.each do |name, value|
+        value = "ObjectSpace._id2ref(#{ value.object_id })"
+        eval "#{ name } = #{ value }", binding
+      end
 
       Ramaze::Action(options).render
     end
