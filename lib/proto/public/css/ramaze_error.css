@@ -80,6 +80,10 @@ tr.source td.lineno, tr.line td.lineno {
   text-align: right;
 }
 
+tr.line td {
+  cursor: pointer;
+}
+
 tr.source td.code pre {
   margin: 0;
   font-family: monospace;
