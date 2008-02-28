@@ -129,6 +129,11 @@ module Ramaze
         session.finalize
         hash = {:value => session.session_id}.merge(Session::COOKIE)
         response.set_cookie(Session::SESSION_KEY, hash)
+
+        # set client side session cookie
+        if val = request['session.client'] and !val.empty?
+          response.set_cookie("#{Session::SESSION_KEY}-client", hash.merge({:value => session.marshal(val)}))
+        end
       end
 
       # Setup the Trinity (Request, Response, Session) and store them as

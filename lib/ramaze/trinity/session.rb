@@ -39,6 +39,36 @@ module Ramaze
     def inspect
       @hash.inspect
     end
+
+    # Use client side session variables
+
+    def client
+      Request.current['session.client'] ||= unmarshal(Request.current.cookies["#{Session::SESSION_KEY}-client"]) || {}
+    end
+
+    private
+
+    # Marshal a session hash into safe cookie data. Include an integrity hash.
+    def marshal(session)
+      data = [ Marshal.dump(session) ].pack('m').chop
+      "#{data}--#{generate_digest(data)}"
+    end
+
+    # Unmarshal cookie data to a hash and verify its integrity.
+    def unmarshal(cookie)
+      if cookie
+        data, digest = cookie.split('--')
+        return nil unless digest == generate_digest(data)
+        Marshal.load(data.unpack('m').first)
+      end
+    end
+
+    # Generate the inline SHA512 message digest. Larger (128 bytes) than SHA256
+    # (64 bytes) or RMD160 (40 bytes), but small relative to the 4096 byte
+    # max cookie size.
+    def generate_digest(data)
+      Digest::SHA512.hexdigest "#{data}#{Session.trait[:secret]}"
+    end
   end
 
   # The purpose of Session is to hold key/value pairs like a Hash for a series
@@ -57,6 +87,10 @@ module Ramaze
     # This variable holds the current SessionFlash
 
     attr_accessor :flash
+
+    # secret salt for client-side session data
+
+    trait :secret => 'change_me_please_123'
 
     # the key used for the cookie
 
