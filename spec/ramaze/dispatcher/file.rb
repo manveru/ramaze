@@ -22,6 +22,12 @@ describe 'Dispatcher::File' do
     get('/favicon.ico').body.should == original
   end
 
+  it 'should work on files with spaces' do
+    res = get('/file%20name.txt')
+    res.status.should == 200
+    res.body.should == 'hi'
+  end
+
   it 'should send ETag' do
     res = get '/test_download.css'
     res.headers['ETag'].should.not.be == nil
@@ -51,5 +57,4 @@ describe 'Dispatcher::File' do
     res.status.should == 304
     res.body.should == ''
   end
-
 end

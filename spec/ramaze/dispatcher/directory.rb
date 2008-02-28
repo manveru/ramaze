@@ -36,7 +36,8 @@ describe 'Dispatcher::Directory' do
   it 'should dry serve root directory' do
    files = [
      ["/../", "Parent Directory"], ["/test", "test/"],
-     ["/favicon.ico", "favicon.ico"], ["/test_download.css", "test_download.css"]
+     ["/favicon.ico", "favicon.ico"], ["/file name.txt", "file name.txt"],
+     ["/test_download.css", "test_download.css"]
    ]
 
     check '/', 'Directory listing of /', files

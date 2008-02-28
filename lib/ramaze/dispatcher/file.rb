@@ -22,7 +22,7 @@ module Ramaze
         # searches for the file and builds a response with status 200 if found.
 
         def process(path)
-          return unless file = open_file(path)
+          return unless file = open_file(CGI.unescape(path))
           if file == :NotModified
             return response.build([], STATUS_CODE['Not Modified'])
           end
