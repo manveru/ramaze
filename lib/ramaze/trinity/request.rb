@@ -135,5 +135,12 @@ module Ramaze
         @ramaze_params
       end
     end
+
+    def to_s
+      match = /USER|HOST|REQUEST|REMOTE|FORWARD|REFER|PATH|QUERY|VERSION|KEEP|CACHE/
+      p, c, e = params.inspect, cookies.inspect, env.reject{|k,v| k !~ match}.inspect
+      %{#<Ramaze::Request @params=#{p} @cookies=#{c} @env=#{e}>}
+    end
+    alias inspect to_s
   end
 end
