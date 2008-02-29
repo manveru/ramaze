@@ -21,21 +21,11 @@ class TCTemplateHamlController < Ramaze::Controller
 end
 
 class TCRamazeLocals < Ramaze::Controller
-  map '/test'
+  map '/locals'
   template_root __DIR__/:haml
 
-  def render_with_locals
+  def output
     render_template 'locals.haml', :abc => 'def'
-  end
-end
-
-class TCTemplateHamlLocalsController < Ramaze::Controller
-  map '/locals'
-  engine :Haml
-  trait :haml_options => { :locals => { :localvar => 'abcdefg' } }
-
-  def test
-    %{= localvar}
   end
 end
 
@@ -65,10 +55,6 @@ describe "Haml templates" do
   end
 
   it 'should support locals via render_template' do
-    get('/test/render_with_locals').body.strip.should == 'def'
-  end
-
-  it "should have access to locals defined" do
-    get('/locals/test').body.strip.should == 'abcdefg'
+    get('/locals/output').body.strip.should == 'def'
   end
 end
