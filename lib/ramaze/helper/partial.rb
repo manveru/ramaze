@@ -62,7 +62,7 @@ module Ramaze
         return ''
       end
 
-      binding = options[:binding] = options[:instance].instance_eval{ lambda{} }
+      binding = options[:instance].scope
 
       vars.each do |name, value|
         options[:instance].instance_variable_set("@#{name}", value)
@@ -70,6 +70,8 @@ module Ramaze
         value = "ObjectSpace._id2ref(#{ value.object_id })"
         eval "#{ name } = #{ value }", binding
       end
+
+      options[:binding] = binding
 
       Ramaze::Action(options).render
     end
