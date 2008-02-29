@@ -48,7 +48,7 @@ module Ramaze
     # Render the template file in template_root of the
     # current controller.
 
-    def render_template(file, locals = {})
+    def render_template(file, vars = {})
       current = Action.current
       options = { :controller => current.controller,
                   :instance => current.instance.dup }
@@ -64,7 +64,9 @@ module Ramaze
 
       binding = options[:binding] = options[:instance].instance_eval{ lambda{} }
 
-      locals.each do |name, value|
+      vars.each do |name, value|
+        options[:instance].instance_variable_set("@#{name}", value)
+
         value = "ObjectSpace._id2ref(#{ value.object_id })"
         eval "#{ name } = #{ value }", binding
       end

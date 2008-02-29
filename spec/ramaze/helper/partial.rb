@@ -29,6 +29,10 @@ class TCPartialHelperController < Ramaze::Controller
     render_template 'locals.xhtml', :say => 'Hello', :to => 'World'
   end
 
+  def test_local_ivars
+    render_template 'recursive_local_ivars.xhtml', :n => 1
+  end
+
   def test_without_ext
     render_template :locals, :say => 'Hi', :to => 'World'
   end
@@ -60,6 +64,10 @@ describe "PartialHelper" do
 
   it 'should work recursively with locals' do
     get('/recursive/true').body.gsub(/\s/,'').should == '{1{2{3{44}3}2}1}'
+  end
+
+  it 'should set ivars in addition to locals' do
+    get('/test_local_ivars').body.gsub(/\s/,'').should == '{1{2{3{44}3}2}1}'
   end
 
   it 'should not require file extension' do
