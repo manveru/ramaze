@@ -27,6 +27,12 @@ class TCRamazeLocals < Ramaze::Controller
   def output
     render_template 'locals.haml', :abc => 'def'
   end
+
+private
+
+  def sayhi
+    'hi'
+  end
 end
 
 describe "Haml templates" do
@@ -55,6 +61,6 @@ describe "Haml templates" do
   end
 
   it 'should support locals via render_template' do
-    get('/locals/output').body.strip.should == 'def'
+    get('/locals/output').body.strip.should == "def\nhi"
   end
 end

@@ -19,7 +19,7 @@ module Ramaze
 
         def transform action
           haml = wrap_compile(action)
-          haml.to_html(action.binding)
+          haml.to_html(action.instance, action.binding.locals)
         end
 
         # Instantiates Haml::Engine with the template and haml_options trait from
