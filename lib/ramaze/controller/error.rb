@@ -17,7 +17,12 @@ module Ramaze
 
       unless Action.current.template
         response['Content-Type'] = 'text/plain'
-        return [title, "", error.backtrace].flatten.join("\n")
+        respond %(
+          #{error.message}
+            #{error.backtrace.join("\n            ")}
+
+          #{PP.pp request, '', 200}
+        ).ui
       end
 
       backtrace_size = Ramaze::Global.backtrace_size

@@ -43,7 +43,7 @@ module Ramaze
 
     ipv4 = %w[ 127.0.0.1/32 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8 169.254.0.0/16 ]
     ipv6 = %w[ fc00::/7 fe80::/10 fec0::/10 ::1 ]
-    LOCAL = (ipv4 + ipv6).map{|a| IPAddr.new(a)}
+    LOCAL = (ipv4 + ipv6).map{|a| IPAddr.new(a)} unless defined?(LOCAL)
 
     # --
     # Mongrel somehow puts together multiple IPs when proxy is involved.
@@ -136,11 +136,31 @@ module Ramaze
       end
     end
 
+    # Interesting HTTP variables from env
+
+    def http_vars
+      env.reject{ |k,v|
+        k.to_s !~ /USER|HOST|REQUEST|REMOTE|FORWARD|REFER|PATH|QUERY|VERSION|KEEP|CACHE/
+      }
+    end
+
     def to_s
-      match = /USER|HOST|REQUEST|REMOTE|FORWARD|REFER|PATH|QUERY|VERSION|KEEP|CACHE/
-      p, c, e = params.inspect, cookies.inspect, env.reject{|k,v| k !~ match}.inspect
-      %{#<Ramaze::Request @params=#{p} @cookies=#{c} @env=#{e}>}
+      p, c, e = params.inspect, cookies.inspect, http_vars.inspect
+      %{#<Ramaze::Request params=#{p} cookies=#{c} env=#{e}>}
     end
     alias inspect to_s
+
+    def pretty_print pp
+      p, c, e = params, cookies, http_vars
+      pp.object_group(self){
+        { 'params' => params,
+          'cookies' => cookies,
+          'env' => http_vars }.each do |name, hash|
+          pp.breakable
+          pp.text " @#{name}="
+          pp.nest(name.length+3){ pp.pp_hash hash }
+        end
+      }
+    end
   end
 end
