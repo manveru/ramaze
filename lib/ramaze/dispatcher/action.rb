@@ -24,6 +24,8 @@ module Ramaze
 
         def process(path)
           Inform.info("Dynamic request from #{request.ip}: #{request.request_uri}")
+          Current.session = Session.new
+
           catch(:respond) {
             body = Controller.handle(path)
             response = Response.current.build(body)

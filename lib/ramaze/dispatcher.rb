@@ -28,9 +28,7 @@ module Ramaze
       # Entry point for Adapter#respond, takes a Rack::Request and
       # Rack::Response, sets up the environment and the goes on to dispatch
       # for the given path from rack_request.
-      def handle rack_request, rack_response
-        setup_environment(rack_request, rack_response)
-
+      def handle
         path = request.path_info.squeeze('/')
 
         case path
@@ -120,33 +118,6 @@ module Ramaze
           :controller => Thread.current[:controller]
         }
         Dispatcher::Error.process(result, meta)
-      end
-
-      # finalizes the session and assigns the key to the response via
-      # set_cookie.
-
-      def set_cookie
-        session.finalize
-        hash = {:value => session.session_id}.merge(Session::COOKIE)
-        response.set_cookie(Session::SESSION_KEY, hash)
-
-        # set client side session cookie
-        if val = request['session.client'] and !val.empty?
-          response.set_cookie("#{Session::SESSION_KEY}-client", hash.merge({:value => session.marshal(val)}))
-        end
-      end
-
-      # Setup the Trinity (Request, Response, Session) and store them as
-      # thread-variables in Thread.current
-      #   Thread.current[:request]  == Request.current
-      #   Thread.current[:response] == Response.current
-      #   Thread.current[:session]  == Session.current
-
-      def setup_environment rack_request, rack_response
-        this = Thread.current
-        this[:request]  = rack_request
-        this[:session]  = Session.new(request) if Global.sessions
-        this[:response] = rack_response
       end
     end
   end
