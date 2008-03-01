@@ -5,9 +5,7 @@ class Proc
   # hash
   #   usage: x = 42; p Proc.new.locals #=> {'x'=> 42}
   def locals
-    eval '
-      local_variables.inject({}){|h,v| h.update v => eval(v)}
-    ', self
+    instance_eval('binding').locals
   end
 
 end
