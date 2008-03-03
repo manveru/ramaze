@@ -14,7 +14,7 @@ module Ramaze
   class Xosd < ::Xosd
     attr_accessor :options
 
-    include Informing
+    include Logging
 
     DEFAULT = {
       :font_size       => 20,
@@ -79,7 +79,7 @@ module Ramaze
 
     # pushes all messages it gets on the QUEUE for further processing.
 
-    def inform(tag, *messages)
+    def log(tag, *messages)
       messages.each do |message|
         QUEUE << [tag, message]
       end

@@ -35,7 +35,7 @@ module Ramaze
           if found.respond_to?(:relaxed_hash)
             return found.dup
           else
-            Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
+            Log.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
             Cache.resolved.delete path
           end
         end
@@ -79,7 +79,7 @@ module Ramaze
         end
 
         if !@routed and new_path = Route.resolve(path)
-          Inform.dev("Routing from `#{path}' to `#{new_path}'")
+          Log.dev("Routing from `#{path}' to `#{new_path}'")
           return resolve(new_path, true)
         end
 

@@ -11,7 +11,7 @@ module Ramaze
   # gem install analogger
 
   class Analogger < ::Swiftcore::Analogger::Client
-    include Informing
+    include Logging
 
     # identifier for your application
     trait :name => 'walrus'
@@ -28,9 +28,9 @@ module Ramaze
       super
     end
 
-    # integration to Informing
+    # integration to Logging
 
-    def inform(tag, *args)
+    def log(tag, *args)
       log(tag, args.join("\n"))
     end
   end

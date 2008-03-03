@@ -9,9 +9,9 @@ module Ramaze
 
   class Logger < ::Logger
 
-    # integration to Informing
+    # integration to Logging
 
-    def inform(tag, *args)
+    def log(tag, *args)
       __send__(tag, args.join("\n"))
     end
 

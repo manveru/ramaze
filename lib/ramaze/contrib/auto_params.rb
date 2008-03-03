@@ -75,7 +75,7 @@ module Ramaze
 
           return found.dup
         else
-          Inform.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
+          Log.warn("Found faulty `#{path}' in Cache.resolved, deleting it for sanity.")
           Cache.resolved.delete path
         end
       end

@@ -4,7 +4,7 @@
 begin
   require 'hpricot'
 rescue LoadError => ex
-  Ramaze::Inform.error "Please install hpricot (for example via `gem install hpricot`) to get morphing"
+  Ramaze::Log.error "Please install hpricot (for example via `gem install hpricot`) to get morphing"
   puts ex
 end
 

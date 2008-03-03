@@ -22,84 +22,85 @@ require 'ramaze/contrib/gettext/po'
 #
 #   Ramaze::Dispatcher::Action::FILTER << Ramaze::Tool::Gettext
 
-class Ramaze::Tool::Gettext < Ramaze::Tool::Localize
+module Ramaze
+  class Tool::Gettext < Tool::Localize
 
-  # Enable Localization
-  trait :enable => true
+    # Enable Localization
+    trait :enable => true
 
-  # Default language that is used if the browser don't suggests otherwise or
-  # the language requested is not available.
-  trait :default_language => 'en'
+    # Default language that is used if the browser don't suggests otherwise or
+    # the language requested is not available.
+    trait :default_language => 'en'
 
-  # languages supported
-  trait :languages => %w[ en ]
+    # languages supported
+    trait :languages => %w[ en ]
 
-  # YAML files the localizations are saved to and loaded from, %s is
-  # substituted by the values from trait[:languages]
-  trait :file => 'conf/locale_%s.mo'.freeze
+    # YAML files the localizations are saved to and loaded from, %s is
+    # substituted by the values from trait[:languages]
+    trait :file => 'conf/locale_%s.mo'.freeze
 
-  # The pattern that is substituted with the translation of the current locale.
-  trait :regex => /\[\[(.*?)\]\]/
+    # The pattern that is substituted with the translation of the current locale.
+    trait :regex => /\[\[(.*?)\]\]/
 
-  # Browsers may send different keys for the same language, this allows you to
-  # do some coercion between what you use as keys and what the browser sends.
-  trait :mapping => { 'en-us' => 'en', 'ja' => 'jp'}
+    # Browsers may send different keys for the same language, this allows you to
+    # do some coercion between what you use as keys and what the browser sends.
+    trait :mapping => { 'en-us' => 'en', 'ja' => 'jp'}
 
-  # When this is set to false, it will not save newly collected translatable
-  # strings to disk.  Disable this for production use, as it slows the
-  # application down.
-  trait :collect => true
+    # When this is set to false, it will not save newly collected translatable
+    # strings to disk.  Disable this for production use, as it slows the
+    # application down.
+    trait :collect => true
 
 
-  # Load given locales from disk and save it into the dictionary.
+    # Load given locales from disk and save it into the dictionary.
 
-  def self.load(*locales)
-    Ramaze::Inform.debug "loading locales: #{locales.inspect}"
+    def self.load(*locales)
+      Log.debug "loading locales: #{locales.inspect}"
 
-    dict = trait[:dictionary] || {}
+      dict = trait[:dictionary] || {}
 
-    locales.each do |locale|
-      begin
-        dict[locale] = ::MOFile.open(trait[:file] % locale)
-      rescue Errno::ENOENT
-        Ramaze::Inform.error "couldn't load #{trait[:file] % locale}"
-        dict[locale] = {}
+      locales.each do |locale|
+        begin
+          dict[locale] = ::MOFile.open(trait[:file] % locale)
+        rescue Errno::ENOENT
+          Log.error "couldn't load #{trait[:file] % locale}"
+          dict[locale] = {}
+        end
+      end
+
+      trait[:dictionary] = dict
+    end
+
+    # Reloads given locales from the disk to refresh the dictionary.
+
+    def self.update
+      trait[:dictionary] = nil
+      dictionary.each do |locale, dict|
+        if dict.kind_of?(MOFile)
+          Log.debug("Reloading #{dict.filename}")
+          dict.update!
+        end
       end
     end
 
-    trait[:dictionary] = dict
-  end
+    # Stores given locales from the dictionary to disk.
 
-  # Reloads given locales from the disk to refresh the dictionary.
-
-  def self.update
-    trait[:dictionary] = nil
-    dictionary.each do |locale, dict|
-      if dict.kind_of?(MOFile)
-        Ramaze::Inform.debug("Reloading #{dict.filename}")
-        dict.update!
+    def self.store(*locales)
+      keys = []
+      dictionary.each do |locale, dict|
+        keys.concat dict.keys
       end
+      keys.delete ""
+
+      data = ::GetText::RGetText.generate(keys.compact.uniq.sort.map {|x| [x] })
+      file = (trait[:file] % trait[:default_language]) + '.pot'
+      File.open(file, File::CREAT|File::TRUNC|File::WRONLY) do |fd|
+        fd.write data
+      end
+    rescue Errno::ENOENT => e
+      Log.error e
     end
   end
-
-  # Stores given locales from the dictionary to disk.
-
-  def self.store(*locales)
-    keys = []
-    dictionary.each do |locale, dict|
-      keys.concat dict.keys
-    end
-    keys.delete ""
-
-    data = ::GetText::RGetText.generate(keys.compact.uniq.sort.map {|x| [x] })
-    file = (trait[:file] % trait[:default_language]) + '.pot'
-    File.open(file, File::CREAT|File::TRUNC|File::WRONLY) do |fd|
-      fd.write data
-    end
-  rescue Errno::ENOENT => e
-    Ramaze::Inform.error e
-  end
-
 end
 
 class Ramaze::Contrib::Gettext

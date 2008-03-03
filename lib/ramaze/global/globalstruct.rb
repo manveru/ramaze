@@ -136,7 +136,7 @@ module Ramaze
 
     # Creates a new attr_accessor like method-pair.
     def create_member key, value = nil
-      Inform.warn "Create #{key}=#{value.inspect} on Global"
+      Log.warn "Create #{key}=#{value.inspect} on Global"
 
       @table ||= {}
       key = key.to_sym

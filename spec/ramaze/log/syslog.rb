@@ -1,6 +1,6 @@
 require 'spec/helper'
 
-require 'ramaze/inform/syslog'
+require 'ramaze/log/syslog'
 
 describe 'Syslog' do
   it 'should do something' do

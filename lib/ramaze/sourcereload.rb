@@ -25,7 +25,7 @@ module Ramaze
     # start reloader-thread and assign it to this instance.
 
     def start
-      Inform.dev("initialize automatic source reload every #{interval} seconds")
+      Log.dev("initialize automatic source reload every #{interval} seconds")
       @thread = reloader
     end
 
@@ -58,7 +58,7 @@ module Ramaze
     # Usage example:
     #
     #   trap :HUP do
-    #     Ramaze::Inform.info "reloading source"
+    #     Ramaze::Log.info "reloading source"
     #     Thread.main[:sourcereload].reload
     #   end
     #
@@ -70,7 +70,7 @@ module Ramaze
 
         next if (@mtimes[file] ||= mtime) == mtime
 
-        Inform.debug("reload #{file}")
+        Log.debug("reload #{file}")
         @mtimes[file] = mtime if safe_load(file)
       end
       SourceReloadHooks.after_reload
@@ -163,7 +163,7 @@ module Ramaze
     # by default we output an error-message with the exception.
 
     def after_safe_load_failed(file, error)
-      Inform.error(error)
+      Log.error(error)
     end
   end
 end

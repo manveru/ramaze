@@ -24,9 +24,9 @@ module Ramaze
       super(*options)
     end
 
-    # integration to Informing
+    # integration to Logging
 
-    def inform(tag, *args)
+    def log(tag, *args)
       notify(tag.to_s, Time.now.strftime("%X"), args.join("\n")[0..100])
     rescue Errno::EMSGSIZE
       # Send size was to big (not really), ignore

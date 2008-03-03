@@ -7,7 +7,7 @@ module Ramaze
   # This is the default with Informer as only member.
 
   class LogHub
-    include Informing
+    include Logging
 
     attr_accessor :loggers
     attr_accessor :ignored_tags
@@ -26,12 +26,12 @@ module Ramaze
       @loggers.compact!
     end
 
-    # integration to Informing
+    # integration to Logging
 
-    def inform(tag, *args)
+    def log(tag, *args)
       return if @ignored_tags.include?(tag)
       @loggers.each do |logger|
-        logger.inform(tag, *args)
+        logger.log(tag, *args)
       end
     end
   end

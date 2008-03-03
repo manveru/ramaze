@@ -73,11 +73,11 @@ Message-Id: #{id}
 
         Net::SMTP.start( *options ) do |smtp|
           smtp.send_message( email, trait[ :sender_address ], Array[ recipient, *trait[ :bcc_addresses ] ] )
-          Inform.info "E-mail sent to #{recipient} - '#{subject}'"
+          Log.info "E-mail sent to #{recipient} - '#{subject}'"
         end
       rescue => e
-        Inform.error "Failed to send e-mail to #{recipient}"
-        Inform.error e
+        Log.error "Failed to send e-mail to #{recipient}"
+        Log.error e
       end
     end
   end

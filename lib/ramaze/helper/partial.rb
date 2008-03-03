@@ -58,7 +58,7 @@ module Ramaze
       if (files = Dir["{#{roots.join(',')}}"/"{#{file},#{file}.*}"]).any?
         options[:template] = files.first.squeeze '/'
       else
-        Inform.warn "render_template: #{file} does not exist in the following directories: #{roots.join(',')}."
+        Log.warn "render_template: #{file} does not exist in the following directories: #{roots.join(',')}."
         return ''
       end
 

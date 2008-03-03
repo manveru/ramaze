@@ -67,7 +67,7 @@ module Ramaze
           case file
           when *Global.boring
           else
-            Inform.debug("Serving static: #{file}")
+            Log.debug("Serving static: #{file}")
           end
         end
       end

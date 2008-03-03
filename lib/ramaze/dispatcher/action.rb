@@ -23,7 +23,7 @@ module Ramaze
         # post-processing.
 
         def process(path)
-          Inform.info("Dynamic request from #{request.ip}: #{request.request_uri}")
+          Log.info("Dynamic request from #{request.ip}: #{request.request_uri}")
           Current.session = Session.new
 
           catch(:respond) {

@@ -40,7 +40,7 @@ module Ramaze
       rescue SystemExit
         Ramaze.shutdown
       rescue Object => ex
-        Inform.error(ex)
+        Log.error(ex)
         Ramaze.shutdown
       end
 
@@ -55,18 +55,18 @@ module Ramaze
           host, ports = Global.host, Global.ports
 
           if Global.test_connections
-            Inform.info("Adapter: #{adapter}, testing connection to #{host}:#{ports}")
+            Log.info("Adapter: #{adapter}, testing connection to #{host}:#{ports}")
             test_connections(host, ports)
-            Inform.info("and we're running: #{host}:#{ports}")
+            Log.info("and we're running: #{host}:#{ports}")
           end
 
           adapter.start(host, ports)
         else # run dummy
           Global.adapters.add Thread.new{ sleep }
-          Inform.warn("Seems like Global.adapter is turned off", "Continue without adapter.")
+          Log.warn("Seems like Global.adapter is turned off", "Continue without adapter.")
         end
       rescue LoadError => ex
-        Inform.warn(ex, "Continue without adapter.")
+        Log.warn(ex, "Continue without adapter.")
       end
 
       # Calls ::shutdown on all running adapters and waits up to 1 second for
@@ -91,7 +91,7 @@ module Ramaze
       def test_connections host, ports
         ports.each do |port|
           unless test_connection(host, port)
-            Inform.error("Cannot open connection on #{host}:#{port}")
+            Log.error("Cannot open connection on #{host}:#{port}")
             Ramaze.shutdown
           end
         end
@@ -107,7 +107,7 @@ module Ramaze
           true
         end
       rescue => ex
-        Inform.error(ex)
+        Log.error(ex)
         false
       end
     end

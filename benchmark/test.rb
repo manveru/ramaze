@@ -17,8 +17,7 @@ ramaze = fork do
     def index() "Hello, World!" end
   end
 
-  Ramaze::Inform.ignored_tags = [:debug]
-  Ramaze::Inform.loggers = []
+  Ramaze::Log.loggers = []
   Ramaze.start :sessions => false, :sourcereload => false, :adapter => (ARGV[0] || :evented_mongrel).to_sym
 end
 

@@ -41,7 +41,7 @@ module Ramaze
           klass = Global.cache_alternative.fetch(key, self)
           add_on(key, klass)
         }
-        Inform.dev("Added caches for: #{keys.join(', ')}")
+        Log.dev("Added caches for: #{keys.join(', ')}")
       end
 
       def add_on(key, cache_class)

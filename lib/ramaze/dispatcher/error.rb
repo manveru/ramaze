@@ -44,7 +44,7 @@ module Ramaze
             action_response = Dispatcher::Action.process(newpath)
             case action_response
             when Ramaze::Error
-              Inform.debug("No custom error page found on #{controller}, going to #{path}")
+              Log.debug("No custom error page found on #{controller}, going to #{path}")
             else
               action_response.status = status
               return action_response
@@ -58,7 +58,7 @@ module Ramaze
             response.build(error.message, status)
           end
         rescue Object => ex
-          Inform.error(ex)
+          Log.error(ex)
           response.build(ex.message, status)
         end
 
@@ -68,10 +68,10 @@ module Ramaze
           error_message = error.message
 
           if trait[:last_error] == error_message or error.is_a? Ramaze::Error::NoAction
-            Inform.error(error_message)
+            Log.error(error_message)
           else
             trait[:last_error] = error_message
-            Inform.error(error)
+            Log.error(error)
           end
         end
 

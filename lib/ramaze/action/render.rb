@@ -19,7 +19,7 @@ module Ramaze
     #  #> 'bar'
 
     def render
-      Inform.debug("The Action: #{self}")
+      Log.debug("The Action: #{self}")
 
       stack do
         if should_cache?
@@ -70,10 +70,10 @@ module Ramaze
       end
 
       if cache.size > 0 and (cache_opts[:ttl].nil? or cache[:time] + cache_opts[:ttl] > Time.now)
-        Inform.debug("Using Cached version")
+        Log.debug("Using Cached version")
         Response.current['Content-Type'] = cache[:type]
       else
-        Inform.debug("Compiling Action")
+        Log.debug("Compiling Action")
         cache.replace({ :time => Time.now, :content => uncached_render, :type => Response.current['Content-Type'] })
       end
 
@@ -115,14 +115,14 @@ module Ramaze
       denied = layouts[:deny].to_a
 
       if layout = possible.first
-        layout_action = Ramaze::Controller.resolve(layout)
+        layout_action = Controller.resolve(layout)
 
         return false if denied.include?(path) or layout_action.path == path
 
         if layout_action.controller != controller
           instance.instance_variables.each do |x|
             if layout_action.instance.instance_variable_defined?(x)
-              Inform.warn "overwriting instance variable #{x} from layout controller with instance variable from action controller."
+              Log.warn "overwriting instance variable #{x} from layout controller with instance variable from action controller."
             end
             layout_action.instance.instance_variable_set(x, instance.instance_variable_get(x))
           end

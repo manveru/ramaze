@@ -24,7 +24,7 @@ module Ramaze
         # Does nothing
 
         def stop
-          Inform.debug("Stopping #{self.class}")
+          Log.debug("Stopping #{self.class}")
         end
 
         # This is called by Rack with the usual env, subsequently calls
@@ -34,9 +34,9 @@ module Ramaze
         # calls .finish on the current response after ::respond has finished.
 
         def call(env)
-          if Ramaze::Global.benchmarking
+          if Global.benchmarking
             time = Benchmark.measure{ respond(env) }
-            Inform.debug('request took %.5fs [~%.0f r/s]' % [time.real, 1.0/time.real])
+            Log.debug('request took %.5fs [~%.0f r/s]' % [time.real, 1.0/time.real])
           else
             respond env
           end

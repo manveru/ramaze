@@ -69,7 +69,7 @@ module Ramaze
             return val if path == key
 
           else
-            Inform.error "Invalid route #{key} => #{val}"
+            Log.error "Invalid route #{key} => #{val}"
           end
         end
 

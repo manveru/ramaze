@@ -3,9 +3,9 @@
 
 module Ramaze
 
-  # Easy access to Inform
+  # Easy access to Log
 
-  module InformHelper
+  module LogHelper
 
     private
 
@@ -33,7 +33,7 @@ module Ramaze
     #   # ... rest of backtrace ...
 
     def inform tag, *args
-      Inform.send(tag, *args)
+      Log.send(tag, *args)
     end
   end
 end

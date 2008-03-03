@@ -28,5 +28,5 @@ Thread.new do
   end
 end
 
-Ramaze::Inform.loggers.clear
+Ramaze::Log.loggers.clear
 Ramaze.start :adapter => :mongrel, :sourcereload => false

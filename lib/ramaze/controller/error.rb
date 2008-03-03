@@ -12,7 +12,7 @@ module Ramaze
     # holds the exception thrown.
 
     def error
-      error = Ramaze::Dispatcher::Error.current
+      error = Dispatcher::Error.current
       title = error.message
 
       unless Action.current.template
@@ -25,10 +25,10 @@ module Ramaze
         ).ui
       end
 
-      backtrace_size = Ramaze::Global.backtrace_size
+      backtrace_size = Global.backtrace_size
       @backtrace = error.backtrace[0..20].map do |line|
-        file, lineno, meth = *Ramaze.parse_backtrace(line)
-        lines = Ramaze.caller_lines(file, lineno, backtrace_size)
+        file, lineno, meth = *parse_backtrace(line)
+        lines = caller_lines(file, lineno, backtrace_size)
 
         [ lines, lines.object_id.abs, file, lineno, meth ]
       end
@@ -40,7 +40,7 @@ module Ramaze
       @editor = (ENV['EDITOR'] || 'vim')
       title
     rescue Object => ex
-      Inform.error(ex)
+      Log.error(ex)
     end
   end
 end

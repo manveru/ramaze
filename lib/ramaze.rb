@@ -43,7 +43,7 @@ Thread.abort_on_exception = true
 # Bootstrap
 require 'ramaze/version'
 require 'ramaze/snippets'
-require 'ramaze/inform'
+require 'ramaze/log'
 require 'ramaze/trinity'
 require 'ramaze/current'
 require 'ramaze/adapter'
@@ -79,7 +79,7 @@ module Ramaze
       runner = options.delete(:runner) || runner_from_caller
 
       if $0 == runner or options.delete(:force)
-        Inform.info("Starting up Ramaze (Version #{VERSION})")
+        Log.info("Starting up Ramaze (Version #{VERSION})")
         SEEED.replace(runner)
         APPDIR.replace(File.dirname(File.expand_path(runner)))
 

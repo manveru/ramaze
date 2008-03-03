@@ -7,7 +7,7 @@ module Ramaze
   # customization.
 
   class Informer
-    include Informing
+    include Logging
 
     attr_accessor :out, :colorize, :log_levels
 
@@ -70,14 +70,14 @@ module Ramaze
 
     def shutdown
       if @out.respond_to?(:close)
-        Inform.debug("close, #{@out.inspect}")
+        Log.debug("close, #{@out.inspect}")
         @out.close
       end
     end
 
-    # Integration to Informing.
+    # Integration to Logging.
 
-    def inform tag, *messages
+    def log tag, *messages
       return if closed? || !@log_levels.include?(tag)
       messages.flatten!
 

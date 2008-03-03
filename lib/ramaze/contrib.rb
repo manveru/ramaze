@@ -12,7 +12,7 @@ module Ramaze
   #   Ramaze.contrib :gzip_filter
 
   def self.contrib(*args)
-    Ramaze::Contrib.load *args
+    Contrib.load *args
   end
 
   # A module used for loading contrib modules.
@@ -29,7 +29,7 @@ module Ramaze
     #
     #   module Ramaze::Contrib::Test
     #     def self.setup
-    #       Inform.info "Test module set up"
+    #       Log.info "Test module set up"
     #     end
     #   end
     #   class TestController < Ramaze::Controller
@@ -44,10 +44,10 @@ module Ramaze
       contribs.each do |name|
         mod_name = name.to_s.camel_case
         begin
-          const = Ramaze::Contrib.const_get(mod_name)
-          Ramaze::Global.contribs << const
+          const = Contrib.const_get(mod_name)
+          Global.contribs << const
           const.startup if const.respond_to?(:startup)
-          Inform.dev "Loaded contrib: #{const}"
+          Log.dev "Loaded contrib: #{const}"
         rescue NameError
           files = Dir["{contrib,#{BASEDIR/:ramaze/:contrib}}/#{name}.{so,bundle,rb}"]
           raise LoadError, "#{mod_name} not found" unless files.any?
@@ -62,7 +62,7 @@ module Ramaze
     #+++
 
     def self.shutdown
-      Ramaze::Global.contribs.each do |contrib|
+      Global.contribs.each do |contrib|
         contrib.shutdown if contrib.respond_to?(:shutdown)
       end
     end

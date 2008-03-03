@@ -26,7 +26,7 @@ module Ramaze
           dir = ::File.expand_path(Global.public_root/::File.expand_path(path, '/'))
 
           if ::File.directory?(dir)
-            Inform.debug("Serving directory listing: #{dir}")
+            Log.debug("Serving directory listing: #{dir}")
 
             status = Ramaze::STATUS_CODE['OK']
             header = {'Content-Type' => "text/html"}

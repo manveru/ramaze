@@ -56,7 +56,7 @@ module Ramaze
       status = opts[:status] || STATUS_CODE["See Other"]
       body = %{You are being redirected, please follow <a href="#{target}">this link to: #{target}</a>!}
 
-      Inform.info("Redirect to '#{target}'")
+      Log.info("Redirect to '#{target}'")
       request[:redirected] = true
       throw(:redirect, [body, status, header])
     end

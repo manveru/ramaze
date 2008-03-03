@@ -13,8 +13,8 @@ module Ramaze
   # The Controller is responsible for combining and rendering actions.
 
   class Controller
-    include Ramaze::Helper
-    extend Ramaze::Helper
+    include Helper
+    extend Helper
 
     helper :redirect, :link, :file, :flash, :cgi, :partial
 
@@ -31,8 +31,8 @@ module Ramaze
     trait :pattern_cache => Hash.new{|h,k| h[k] = Controller.pattern_for(k) }
 
     class << self
-      include Ramaze::Helper
-      extend Ramaze::Helper
+      include Helper
+      extend Helper
 
       # When Controller is subclassed the resulting class is placed in
       # Global.controllers and a new trait :actions_cached is set on it.
@@ -42,7 +42,7 @@ module Ramaze
         controller.trait :layout => {:all => nil, :deny => Set.new}
         Global.controllers << controller
         if map = controller.mapping
-          Inform.dev("mapping #{map} => #{controller}")
+          Log.dev("mapping #{map} => #{controller}")
           Global.mapping[map] ||= controller
         end
       end
@@ -52,21 +52,21 @@ module Ramaze
       # they are not assigned yet.
 
       def startup options = {}
-        Inform.dev("found Controllers: #{Global.controllers.inspect}")
+        Log.dev("found Controllers: #{Global.controllers.inspect}")
 
         check_path("Public root: '%s' doesn't exist", Global.public_root)
         check_path("Template root: '%s' doesn't exist", Global.template_root)
 
         require 'ramaze/controller/main' if Global.mapping.empty?
 
-        Inform.debug("mapped Controllers: #{Global.mapping.inspect}")
+        Log.debug("mapped Controllers: #{Global.mapping.inspect}")
       end
 
       # checks paths for existance and logs a warning if it doesn't exist yet.
 
       def check_path(message, *paths)
         paths.each do |path|
-          Inform.warn(message % path) unless File.directory?(path)
+          Log.warn(message % path) unless File.directory?(path)
         end
       end
 
@@ -214,10 +214,10 @@ module Ramaze
       end
 
       def engine(name)
-        name = Ramaze::Template.const_get(name)
+        name = Template.const_get(name)
       rescue NameError => ex
-        Inform.warn ex
-        Inform.warn "Try to use passed engine directly"
+        Log.warn ex
+        Log.warn "Try to use passed engine directly"
       ensure
         trait :engine => name
       end

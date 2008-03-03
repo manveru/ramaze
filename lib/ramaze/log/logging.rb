@@ -7,55 +7,55 @@ module Ramaze
   # The minimal usage is like this:
   #
   #   class MyLogger
-  #     include Informing
+  #     include Logging
   #
-  #     def inform(tag, *args)
+  #     def log(tag, *args)
   #       p tag => args
   #     end
   #   end
 
-  module Informing
+  module Logging
 
     # Takes the tag (:warn|:debug|:error|:info) and the name of a method to be
     # called upon elements of msgs that don't respond to :to_str
-    # Goes on and sends the tag and transformed messages each to the #inform method.
-    # If you include this module you have to define #inform or it will raise.
+    # Goes on and sends the tag and transformed messages each to the #log method.
+    # If you include this module you have to define #log or it will raise.
 
-    def tag_inform(tag, meth, *msgs)
+    def tag_log(tag, meth, *msgs)
       msgs.each do |msg|
         string = (msg.respond_to?(:to_str) ? msg : msg.send(meth))
-        inform(tag, string)
+        log(tag, string)
       end
     end
 
     # Converts everything given to strings and passes them on with :info
 
     def info(*objects)
-      tag_inform(:info, :to_s, *objects)
+      tag_log(:info, :to_s, *objects)
     end
 
     # Converts everything given to strings and passes them on with :warn
 
     def warn(*objects)
-      tag_inform(:warn, :to_s, *objects)
+      tag_log(:warn, :to_s, *objects)
     end
 
     # inspects objects if they are no strings. Tag is :debug
 
     def debug(*objects)
-      tag_inform(:debug, :inspect, *objects)
+      tag_log(:debug, :inspect, *objects)
     end
 
     # inspects objects if they are no strings. Tag is :dev
 
     def dev(*objects)
-      tag_inform(:dev, :inspect, *objects)
+      tag_log(:dev, :inspect, *objects)
     end
 
     alias << debug
 
     # Takes either an Exception or just a String, formats backtraces to be a bit
-    # more readable and passes all of this on to tag_inform :error
+    # more readable and passes all of this on to tag_log :error
 
     def error(ex)
       if ex.respond_to?(:exception)
@@ -65,13 +65,13 @@ module Ramaze
       else
         message = ex.to_s
       end
-      tag_inform(:error, :to_s, *message)
+      tag_log(:error, :to_s, *message)
     end
 
     # raises
 
-    def inform(*args)
-      raise "#inform should be implemented by an instance including this module (#{self})"
+    def log(*args)
+      raise "#log should be implemented by an instance including this module (#{self})"
     end
 
     # nothing

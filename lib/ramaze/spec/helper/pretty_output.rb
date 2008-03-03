@@ -14,7 +14,7 @@ module Bacon
       error = yield
 
       unless error.empty?
-        if defined?(Ramaze::Informing)
+        if defined?(Ramaze::Logging)
           puts '', " #{NAME} -- #{description} [FAILED]".center(70, '-'), ''
           colors = Ramaze::Informer::COLORS
 
@@ -45,10 +45,10 @@ module Bacon
   end
 end
 
-if defined?(Ramaze::Informing)
+if defined?(Ramaze::Logging)
   module Ramaze
     class SpecLogger
-      include Ramaze::Informing
+      include Ramaze::Logging
       include Enumerable
 
       attr_accessor :log
@@ -61,7 +61,7 @@ if defined?(Ramaze::Informing)
         @log.each{|e| yield(e) }
       end
 
-      def inform(tag, str)
+      def log(tag, str)
         @log << [tag, str]
       end
     end
@@ -69,6 +69,6 @@ if defined?(Ramaze::Informing)
 
   module Bacon::PrettyOutput
     RamazeLogger = Ramaze::SpecLogger.new
-    Ramaze::Inform.loggers = [RamazeLogger]
+    Ramaze::Log.loggers = [RamazeLogger]
   end
 end

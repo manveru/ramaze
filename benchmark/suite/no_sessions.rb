@@ -6,5 +6,5 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze::Inform.loggers = []
+Ramaze::Log.loggers = []
 Ramaze::Global.sessions = false

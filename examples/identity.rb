@@ -14,5 +14,5 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze::Inform.loggers.each{|l| l.log_levels << :dev }
+Ramaze::Log.loggers.each{|l| l.log_levels << :dev }
 Ramaze.start :adapter => :mongrel

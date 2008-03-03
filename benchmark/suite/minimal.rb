@@ -10,4 +10,4 @@ end
 
 Ramaze::Global.sourcereload = false
 Ramaze::Global.sessions = false
-Ramaze::Inform.loggers = []
+Ramaze::Log.loggers = []
