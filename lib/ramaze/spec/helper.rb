@@ -3,7 +3,7 @@
 
 begin
   require 'rubygems'
-rescue LoadError => ex
+rescue LoadError
 end
 
 require 'ramaze'
