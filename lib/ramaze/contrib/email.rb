@@ -5,18 +5,18 @@
 #   require 'ramaze/contrib/email'
 #
 #   # Set the required traits:
-#   Ramaze::EmailHelper.trait[ :smtp_server ] = 'smtp.your-isp.com'
-#   Ramaze::EmailHelper.trait[ :smtp_helo_domain ] = "originating-server.com"
-#   Ramaze::EmailHelper.trait[ :smtp_username ] = 'username'
-#   Ramaze::EmailHelper.trait[ :smtp_password ] = 'password'
-#   Ramaze::EmailHelper.trait[ :sender_address ] = 'no-reply@your-domain.com'
+#   Ramaze::EmailHelper.trait :smtp_server      => 'smtp.your-isp.com',
+#                             :smtp_helo_domain => "originating-server.com",
+#                             :smtp_username    => 'username',
+#                             :smtp_password    => 'password',
+#                             :sender_address   => 'no-reply@your-domain.com'
 #
 #   # Optionally, set some other traits:
-#   Ramaze::EmailHelper.trait[ :smtp_auth_type ] = :login
-#   Ramaze::EmailHelper.trait[ :bcc_addresses ] = [ 'admin@your-domain.com' ]
-#   Ramaze::EmailHelper.trait[ :sender_full ] = 'MailBot <no-reply@your-domain.com>'
-#   Ramaze::EmailHelper.trait[ :id_generator ] = lambda { "<#{Time.now.to_i}@your-domain.com>" }
-#   Ramaze::EmailHelper.trait[ :subject_prefix ] = "[SiteName]"
+#   Ramaze::EmailHelper.trait :smtp_auth_type => :login,
+#                             :bcc_addresses  => [ 'admin@your-domain.com' ],
+#                             :sender_full    => 'MailBot <no-reply@your-domain.com>',
+#                             :id_generator   => lambda { "<#{Time.now.to_i}@your-domain.com>" },
+#                             :subject_prefix => "[SiteName]"
 #
 # To send an e-mail:
 #
