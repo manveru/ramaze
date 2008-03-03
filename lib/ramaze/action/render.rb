@@ -6,7 +6,10 @@ module Ramaze
 
     def stack
       Action.stack << self
-      return yield(self)
+      yield self
+    rescue Object => ex
+      Log.error "#{ex} in: #{self}"
+      raise ex
     ensure
       Action.stack.pop
     end
@@ -19,7 +22,7 @@ module Ramaze
     #  #> 'bar'
 
     def render
-      Log.debug("The Action: #{self}")
+      Log.dev("Action: #{self}")
 
       stack do
         if should_cache?
