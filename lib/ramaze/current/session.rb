@@ -69,7 +69,7 @@ module Ramaze
       @session_id = (request.cookies[SESSION_KEY] || random_key)
 
       unless IP_COUNT.nil?
-        ip = request.remote_addr
+        ip = request.ip
         IP_COUNT[ip] << @session_id
         sessions.delete(IP_COUNT[ip].shift) if IP_COUNT[ip].size > IP_COUNT_LIMIT
       end
