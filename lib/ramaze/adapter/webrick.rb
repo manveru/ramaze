@@ -17,10 +17,10 @@ module Ramaze
           options = {
             :Port        => port,
             :BindAddress => host,
-            :Logger      => Inform,
+            :Logger      => Log,
             :AccessLog   => [
-              [Inform, ::WEBrick::AccessLog::COMMON_LOG_FORMAT],
-              [Inform, ::WEBrick::AccessLog::REFERER_LOG_FORMAT]
+              [Log, ::WEBrick::AccessLog::COMMON_LOG_FORMAT],
+              [Log, ::WEBrick::AccessLog::REFERER_LOG_FORMAT]
             ]
           }.merge(options)
 
