@@ -3,7 +3,7 @@
 
 module Ramaze
 
-  # = PartialHelper
+  # = Helper::Partial
   #
   # === Example Usage
   #
@@ -24,9 +24,7 @@ module Ramaze
   #     </body>
   #   </html>
 
-  module PartialHelper
-
-    private
+  module Helper::Partial
     module_function
 
     # Renders a url 'inline'.

@@ -9,7 +9,7 @@ class TCLink < Ramaze::Controller
 end
 
 describe "url encode" do
-  extend Ramaze::CgiHelper
+  extend Ramaze::Helper::CGI
 
   it 'should url_encode strings' do
     # ok, I believe that the web is dumb for this
@@ -28,7 +28,7 @@ describe "url encode" do
 end
 
 describe 'html escape' do
-  extend Ramaze::CgiHelper
+  extend Ramaze::Helper::CGI
 
   it 'should escape html' do
     html_escape('& < >').should == '&amp; &lt; &gt;'

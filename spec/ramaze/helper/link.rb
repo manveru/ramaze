@@ -17,7 +17,7 @@ end
 ramaze
 
 describe "A" do
-  extend Ramaze::LinkHelper
+  extend Ramaze::Helper::Link
   behaves_like 'resolve'
 
   it 'should build links' do
@@ -65,7 +65,7 @@ describe "A" do
 end
 
 describe 'R' do
-  extend Ramaze::LinkHelper
+  extend Ramaze::Helper::Link
 
   it 'should build urls' do
     R(TCLink).should == '/'
@@ -76,7 +76,7 @@ describe 'R' do
 end
 
 describe 'Rs' do
-  extend Ramaze::LinkHelper
+  extend Ramaze::Helper::Link
 
   def resolve(url)
     Ramaze::Controller::resolve(url)
@@ -98,7 +98,7 @@ describe 'Rs' do
 end
 
 describe 'breadcrumbs' do
-  extend Ramaze::LinkHelper
+  extend Ramaze::Helper::Link
 
   it 'should lay out breadcrumbs' do
     breadcrumbs('/file/dir/listing/is/cool').

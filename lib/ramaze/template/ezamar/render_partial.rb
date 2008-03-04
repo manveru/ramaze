@@ -9,7 +9,7 @@ module Ezamar
   # A transformer for <render /> tags.
 
   class RenderPartial
-    extend Ramaze::PartialHelper
+    extend Ramaze::Helper::Partial
 
     # Renders <render src="/path" [optional="option", ...]> in place.
     #

@@ -25,21 +25,48 @@ module Ramaze
     # Usage:
     #   helper :redirect, :link
 
-    def helper *syms
+    def helper(*syms)
       syms.each do |sym|
-        mod_name = sym.to_s.camel_case + 'Helper'
-        begin
-          include ::Ramaze.const_get(mod_name)
-          extend ::Ramaze.const_get(mod_name)
-        rescue NameError
-          glob = "{,#{APPDIR},#{BASEDIR/:ramaze}}/helper/#{sym}.{so,bundle,rb}"
-          files = Dir[glob]
-          ignore = Helper.trait[:ignore]
-          files.reject!{|f| ignore.any?{|i| f =~ i}}
-          raise LoadError, "#{mod_name} not found" unless files.any?
-          require(files.first) ? retry : raise
+        name = sym.to_s
+
+        if mod = find_helper(name)
+          use_helper(mod)
+        else
+          if require_helper(name)
+            redo
+          else
+            raise LoadError, "#{name} not found"
+          end
         end
       end
+    end
+
+    # Will be going to be much simpler after deprecation *sigh*
+    def find_helper(name)
+      ramaze_helper_consts = ::Ramaze::Helper.constants.grep(/^#{name}$/i)
+      ramaze_consts = ::Ramaze.constants.grep(/^#{name}Helper$/i)
+      if mod_name = ramaze_helper_consts.first
+        ::Ramaze::Helper.const_get(mod_name)
+      elsif mod_name = ramaze_consts.first
+        mod = ::Ramaze.const_get(mod_name)
+        new_name = "Ramaze::Helper::" << mod_name.split('::').last[/^(.*)Helper$/, 1]
+        Log.warn "#{mod_name} is being deprecated, use #{new_name} instead"
+        mod
+      end
+    end
+
+    def require_helper(name)
+      glob = "{,#{APPDIR},#{BASEDIR/:ramaze}}/helper/#{name}.{so,bundle,rb}"
+      files = Dir[glob]
+      ignore = Helper.trait[:ignore]
+      files.reject!{|f| ignore.any?{|i| f =~ i }}
+      raise LoadError, "#{name} not found" unless file = files.first
+      require(file)
+    end
+
+    def use_helper(mod)
+      include mod
+      extend mod
     end
   end
 end

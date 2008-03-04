@@ -5,9 +5,7 @@ module Ramaze
 
   # Helper for quickly push out files with the proper mimetype.
 
-  module FileHelper
-    private
-
+  module Helper::SendFile
     # Sets Content-Type to the mimetype of the file and opens the file you pass
     # it, then throws :respond to finish off the request.
 

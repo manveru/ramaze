@@ -2,9 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  module FormattingHelper
-    private
-
+  module Helper::Formatting
     def number_format(n, delimiter = ',')
       delim_l, delim_r = delimiter == ',' ? %w[, .] : %w[. ,]
       h, r = n.to_s.split('.')

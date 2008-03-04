@@ -7,7 +7,7 @@ require 'openid/extensions/pape'
 
 module Ramaze
 
-  openid_store_file = File.join(Dir.tmpdir, 'openid-store')
+  openid_store_file = ::File.join(Dir.tmpdir, 'openid-store')
 
   # Constant for storing meta-information persistent
   OpenIDStore = OpenID::Store::Filesystem.new(openid_store_file)
@@ -16,7 +16,7 @@ module Ramaze
   # It provides a nice and simple way to provide and control access over the
   # OpenID authentication model.
 
-  module IdentityHelper
+  module Helper::Identity
 
     # Simple form for use or overwriting.
     # Has to provide the same functionality when overwritten or directly

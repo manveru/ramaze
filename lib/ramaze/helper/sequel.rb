@@ -2,9 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  module SequelHelper
-    private
-
+  module Helper::Sequel
     def paginator(paginated, target)
       page_count = paginated.page_count
       prev_page = paginated.prev_page

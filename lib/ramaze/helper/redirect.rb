@@ -3,7 +3,7 @@
 
 module Ramaze
 
-  # RedirectHelper actually takes advantage of LinkHelper.link_raw to build the links
+  # Helper::Redirect actually takes advantage of Helper::Link.link_raw to build the links
   # it redirects to.
   # It doesn't do much else than this:
   #     setting a status-code of 303 and a response['Location'] = link
@@ -20,9 +20,7 @@ module Ramaze
   #   - maybe some more options, like a delay
   #
 
-  module RedirectHelper
-
-    private
+  module Helper::Redirect
 
     # render to the browser directly, ignoring any templates
     def respond *args

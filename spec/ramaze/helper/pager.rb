@@ -35,7 +35,7 @@ ramaze
 shared 'pager' do
   behaves_like 'http'
   behaves_like 'resolve'
-  extend Ramaze::PagerHelper
+  extend Ramaze::Helper::Pager
 
   def pager_key
     Ramaze::Pager.trait[:key]

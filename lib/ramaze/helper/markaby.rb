@@ -5,9 +5,7 @@ module Ramaze
 
   # Allows you to use some shortcuts for markaby in your Controller.
 
-  module MarkabyHelper
-    private
-
+  module Helper::Markaby
     # use this inside your controller to directly build Markaby
     # Refer to the Markaby-documentation and testsuite for more examples.
     # Usage:

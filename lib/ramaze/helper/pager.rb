@@ -82,7 +82,7 @@ module Ramaze
 #   .pager li.active {}
 
 class Pager
-  include Ramaze::LinkHelper
+  include Ramaze::Helper::Link
 
   # Items per page.
 
@@ -116,7 +116,7 @@ class Pager
   # key:: key used for getting the current page from GET paramaters
   #
   # Note:  You never have to create this class yourself, use the `paginate()`
-  # convenience method from the PagerHelper.
+  # convenience method from the Helper::Pager.
 
   def initialize(request, limit, total_count, key = trait[:key])
     raise 'limit should be > 0' unless limit > 0
@@ -309,9 +309,7 @@ end
 
 # Pager related helper methods.
 
-module PagerHelper
-
-private
+module Helper::Pager
 
   # Helper method that generates a collection of items and the
   # associated pager object.

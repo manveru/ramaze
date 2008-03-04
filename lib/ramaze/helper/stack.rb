@@ -39,9 +39,7 @@ module Ramaze
   #   end
   # end
 
-  module StackHelper
-    private
-
+  module Helper::Stack
     # redirect to another location and pushing the current location
     # on the session[:STACK]
 

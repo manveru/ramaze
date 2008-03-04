@@ -8,10 +8,10 @@ module Ramaze
   # A simple way to do authentication. Please have a look at the docs for the
   # check_auth method for detailed information
 
-  module AuthHelper
+  module Helper::Auth
     Helper::LOOKUP << self
 
-    # add AspectHelper and StackHelper on inclusion of AuthHelper
+    # add Helper::Aspect and Helper::Stack on inclusion of Helper::Auth
 
     def self.included(klass)
       klass.send(:helper, :aspect, :stack)

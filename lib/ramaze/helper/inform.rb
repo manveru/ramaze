@@ -5,9 +5,8 @@ module Ramaze
 
   # Easy access to Log
 
-  module LogHelper
-
-    private
+  module Helper::Log
+    L = Ramaze::Log
 
     # The various (default) tags you can use are:
     #
@@ -32,8 +31,10 @@ module Ramaze
     #   # [2007-04-04 23:40:59] ERROR  hello.rb:23:in `index'
     #   # ... rest of backtrace ...
 
-    def inform tag, *args
-      Log.send(tag, *args)
+    def log tag, *args
+      L.warn "Helper::Log is being deprecated, use Log directly instead"
+      L.send(tag, *args)
     end
+    alias inform log
   end
 end

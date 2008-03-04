@@ -2,13 +2,11 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  # LinkHelper is included into the Controller by default
+  # Helper::Link is included into the Controller by default
   #
   # Usage is shown in spec/ramaze/helper/link.rb and the rdocs below.
 
-  module LinkHelper
-
-    private
+  module Helper::Link
 
     # Builds a basic <a> tag.
     #

@@ -4,11 +4,11 @@
 require 'nitro/helper/form'
 
 module Ramaze
+  module Helper
 
-  # This helper simply includes the Nitro::FormHelper so you can use its methods
-  # in your Controller.
+    # This helper simply includes the Nitro::FormHelper so you can use its methods
+    # in your Controller.
 
-  module NitroformHelper
-    include ::Nitro::FormHelper
+    Nitroform = ::Nitro::FormHelper
   end
 end

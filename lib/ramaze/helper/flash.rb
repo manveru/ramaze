@@ -22,9 +22,7 @@ module Ramaze
   #
   # On the request after this, flash[:error] is gone.
 
-  module FlashHelper
-    private
-
+  module Helper::Flash
     # answers with Session.current.flash
 
     def flash

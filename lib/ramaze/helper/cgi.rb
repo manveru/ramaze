@@ -5,36 +5,34 @@ module Ramaze
 
   # Shortcuts to some CGI methods
 
-  module CgiHelper
-    private
-
+  module Helper::CGI
     # shortcut for CGI.escape
 
     def url_encode(*args)
-      CGI.escape(*args.map{|arg| arg.to_s})
+      ::CGI.escape(*args.map{|arg| arg.to_s})
     end
 
     # shortcut for CGI.unescape
 
     def url_decode(*args)
-      CGI.unescape(*args.map{|arg| arg.to_s})
+      ::CGI.unescape(*args.map{|arg| arg.to_s})
     end
 
     # shortcut for CGI.escapeHTML
 
     def html_escape(string)
-      CGI.escapeHTML(string.to_s)
+      ::CGI.escapeHTML(string.to_s)
     end
 
     # shortcut for CGI.unescapeHTML
 
     def html_unescape(string)
-      CGI.unescapeHTML(string.to_s)
+      ::CGI.unescapeHTML(string.to_s)
     end
 
     # safely escape all HTML and code
     def c(string)
-      CGI.escapeHTML(string.to_s).gsub(/#/, '&#35;')
+      ::CGI.escapeHTML(string.to_s).gsub(/#/, '&#35;')
     end
 
     # one-letter versions help in case like #{h foo.inspect}

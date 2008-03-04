@@ -6,11 +6,12 @@ module Ramaze
   # This helper is providing easy access to a couple of Caches to use for
   # smaller amounts of data.
 
-  module CacheHelper
+  module Helper::Cache
+    C = Ramaze::Cache
 
     # Create the Cache.value_cache on inclusion if it doesn't exist yet.
     def self.included(klass)
-      Cache.add(:value_cache) unless Cache::CACHES.has_key?(:value_cache)
+      C.add(:value_cache) unless C::CACHES.has_key?(:value_cache)
     end
 
     # Example:
@@ -59,7 +60,7 @@ module Ramaze
     # for example heavy calculations or time-consuming queries.
 
     def value_cache
-      Cache.value_cache
+      C.value_cache
     end
 
     # action_cache holds rendered output of actions for which caching is enabled.
@@ -123,7 +124,7 @@ module Ramaze
     #   action_cache.delete '/path/to/action'
 
     def action_cache
-      Cache.actions
+      C.actions
     end
 
     # This refers to the class-trait of cached actions, you can

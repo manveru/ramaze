@@ -16,7 +16,7 @@ module Ramaze
   #
   #   helper :aspect
 
-  module AspectHelper
+  module Helper::Aspect
 
     # Define traits on class this module is included into.
 

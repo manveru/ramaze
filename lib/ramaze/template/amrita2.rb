@@ -9,7 +9,7 @@ class Amrita2::Template
 
   include Ramaze::Helper
   extend Ramaze::Helper
-  helper :link, :file, :flash, :cgi
+  helper :link, :sendfile, :flash, :cgi
 end
 
 module Ramaze

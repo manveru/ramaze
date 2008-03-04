@@ -14,7 +14,7 @@ class User < Sequel::Model(:user)
 end
 
 class Page < Sequel::Model(:page)
-  include Ramaze::LinkHelper
+  include Ramaze::Helper::Link
 
   set_schema do
     primary_key :id

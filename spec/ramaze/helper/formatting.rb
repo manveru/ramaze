@@ -1,8 +1,8 @@
 require 'spec/helper'
 require 'ramaze/helper/formatting'
 
-describe 'FormattingHelper' do
-  extend Ramaze::FormattingHelper
+describe 'Helper::Formatting' do
+  extend Ramaze::Helper::Formatting
 
   it 'should format numbers' do
     number_format(2_123_456).should == '2,123,456'
