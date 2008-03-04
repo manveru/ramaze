@@ -83,7 +83,7 @@ module Facebook
     end
 
     def valid?
-      return false unless private_methods.include? 'request' and not request['fb_sig'].empty?
+      return false unless respond_to?(:request) and not request['fb_sig'].empty?
       request['facebook.valid?'] ||= \
         request['fb_sig'] == Digest::MD5.hexdigest(request.params.map{|k,v| "#{$1}=#{v}" if k =~ /^fb_sig_(.+)$/ }.compact.sort.join+SECRET)
     end
@@ -94,7 +94,7 @@ module Facebook
 
     def redirect url
       url[0,0] = URL unless url =~ /^http/
-      if private_methods.include? 'response'
+      if respond_to?(:response)
         response.build "<fb:redirect url='#{url}'/>"
         throw :respond
       else

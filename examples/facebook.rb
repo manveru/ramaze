@@ -79,17 +79,21 @@ class MainController < Ramaze::Controller
   helper :formatting # for time_diff
   helper :facebook
 
-  before_all {
+  before {
     # show some information about current user in logs
     # INFO   Facebook {:user=>15601088, :in_canvas=>true, :added=>true}
-    inform :info, "Facebook " + fb.params.reject{|k,v| k.to_s !~ /^(in|is|user|added)/}.inspect if fb[:user]
+    if fb[:user]
+      inform :info, "Facebook " + fb.params.reject{|k,v| k.to_s !~ /^(in|is|user|added|locale|request)/}.inspect
+    else
+      # require_add: redirect to add url
+      # fb.redirect fb.addurl
+    end
 
     # suggest setting SESSION key if one is not set, and current user is an admin
     # INFO   Set a default session key: SESSION = 'b3638446fa02466210c49f42-15601088'
     if Facebook::SESSION.empty? and Facebook::ADMINS.include? fb[:user]
       inform :info, "Set a default session key: SESSION = '#{fb[:session_key]}'"
     end
-    nil
   }
 
   def install
