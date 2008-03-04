@@ -224,13 +224,19 @@ def authors
 
   mapping = {}
   `darcs show authors`.split("\n").each do |line|
-    author = line.split
-    email  = author.pop.gsub(/<(.*?)>/, '\1')
-    name   = author.join(' ')
-    name   = author_map[email] if name.empty?
-    fail "#{email} doesn't have a name" unless name
-    mapping[name] ||= { :email => email, :patches => 0 }
-    mapping[name][:patches] += 1
+    atoms = line.split
+    patches = atoms.shift.to_i
+
+    if email = atoms.find{|a| a.gsub!(/(.*?@.*?)/, '\1') }
+      email.tr!('<>', '')
+      atoms.delete email
+    end
+
+    name = atoms.join(' ')
+    name = author_map.fetch(email) if name.empty?
+    patches += mapping.fetch(name, {}).fetch(:patches, 0)
+
+    mapping[name] = { :email => email, :patches => patches }
   end
 
   max = mapping.map{|k,v| k.size }.max
