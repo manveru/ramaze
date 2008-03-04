@@ -18,8 +18,8 @@ module Bacon
           puts '', " #{NAME} -- #{description} [FAILED]".center(70, '-'), ''
           colors = Ramaze::Informer::COLORS
 
-          until RamazeLogger.log.empty?
-            tag, line = RamazeLogger.log.shift
+          until RamazeLogger.history.empty?
+            tag, line = RamazeLogger.history.shift
             out = "%6s | %s" % [tag.to_s, line]
             puts out.send(colors[tag])
           end
@@ -51,18 +51,18 @@ if defined?(Ramaze::Logging)
       include Ramaze::Logging
       include Enumerable
 
-      attr_accessor :log
+      attr_accessor :history
 
       def initialize
-        @log = []
+        @history = []
       end
 
       def each
-        @log.each{|e| yield(e) }
+        @history.each{|e| yield(e) }
       end
 
       def log(tag, str)
-        @log << [tag, str]
+        @history << [tag, str]
       end
     end
   end
