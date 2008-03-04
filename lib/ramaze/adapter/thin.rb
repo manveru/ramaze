@@ -11,7 +11,7 @@ module Ramaze
         # start server on given host and port.
         def run_server host, port
           server = ::Thin::Server.new(host, port, self)
-          server.silent = true
+          ::Thin::Logging.silent = true
           server.timeout = 3
 
           thread = Thread.new{ server.start }
