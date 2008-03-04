@@ -9,7 +9,7 @@ module Ramaze
 
         # start server on given host and port.
         def run_server host, port
-          server = ::Ebb::Server.new(self, :Host => host, :Port => port)
+          server = ::Ebb::Server.new(self, :port => port)
 
           thread = Thread.new{ server.start }
           thread[:adapter] = server
