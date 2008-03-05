@@ -1,37 +1,42 @@
 module Ramaze
-  # TODO:
-  #   * refactor _writer/_reader to use a common method, but how to solve block
-  #     scope issues?
   module ThreadAccessor
-    def thread_accessor(*names)
-      thread_writer(*names)
-      thread_reader(*names)
-    end
-
-    def thread_writer(*names)
+    def ThreadAccessor.each(*names)
       names.each do |name|
         if name.respond_to?(:to_hash)
           name.to_hash.each do |key, meth|
-            key = key.to_sym
-            define_method("#{meth}="){|obj| Thread.current[key] = obj }
+            key, meth = key.to_sym, meth.to_sym
+            yield key, meth
           end
         else
-          name = name.to_sym
-          define_method("#{name}="){|obj| Thread.current[name] = obj }
+          key = meth = name.to_sym
+          yield key, meth
         end
       end
     end
 
-    def thread_reader(*names)
-      names.each do |name|
-        if name.respond_to?(:to_hash)
-          name.to_hash.each do |key, meth|
-            key = key.to_sym
-            define_method(meth){ Thread.current[key] }
+    def thread_accessor(*names, &initializer)
+      thread_writer(*names)
+      thread_reader(*names, &initializer)
+    end
+
+    def thread_writer(*names)
+      ThreadAccessor.each(*names) do |key, meth|
+        define_method("#{meth}="){|obj| Thread.current[key] = obj }
+      end
+    end
+
+    def thread_reader(*names, &initializer)
+      ThreadAccessor.each(*names) do |key, meth|
+        if initializer
+          define_method(meth) do
+            unless Thread.current.key?(key)
+              Thread.current[key] = instance_eval(&initializer)
+            else
+              Thread.current[key]
+            end
           end
         else
-          name = name.to_sym
-          define_method(name){ Thread.current[name] }
+          define_method(meth){ Thread.current[key] }
         end
       end
     end
