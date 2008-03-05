@@ -8,9 +8,8 @@ module Ramaze
       include Trinity
 
       def call(env)
-        before.call if before
-
         setup(env)
+        before.call if before
 
         if filter = Global.record
           request = Current.request
