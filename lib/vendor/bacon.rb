@@ -122,6 +122,7 @@ module Bacon
 
     def it(description, &block)
       return  unless description =~ RestrictName
+      block ||= lambda { should.flunk "not implemented" }
       Counter[:specifications] += 1
       run_requirement description, block
     end
@@ -138,9 +139,25 @@ module Bacon
       Bacon.handle_requirement description do
         begin
           Counter[:depth] += 1
-          @before.each { |block| instance_eval(&block) }
-          instance_eval(&spec)
-          @after.each { |block| instance_eval(&block) }
+          rescued = false
+          begin
+            @before.each { |block| instance_eval(&block) }
+            prev_req = Counter[:requirements]
+            instance_eval(&spec)
+          rescue Object => e
+            rescued = true
+            raise e
+          ensure
+            if Counter[:requirements] == prev_req
+              raise Error.new(:missing,
+                              "empty specification: #{@name} #{description}")
+            end
+            begin
+              @after.each { |block| instance_eval(&block) }
+            rescue Object => e
+              raise e  unless rescued
+            end
+          end
         rescue Object => e
           ErrorLog << "#{e.class}: #{e.message}\n"
           e.backtrace.find_all { |line| line !~ /bin\/bacon|\/bacon\.rb:\d+/ }.
@@ -186,7 +203,7 @@ end
 
 class Proc
   def raise?(*exceptions)
-    exceptions << RuntimeError if exceptions.empty?
+    exceptions = [RuntimeError]  if exceptions.empty?
     call
 
   # Only to work in 1.9.0, rescue with splat doesn't work there right now
@@ -231,7 +248,7 @@ end
 module Kernel
   private
 
-  def describe(name, &block)  Bacon::Context.new(name.to_s, &block) end
+  def describe(*args, &block)  Bacon::Context.new(args.join(' '), &block) end
   def shared(name, &block)    Bacon::Shared[name] = block           end
 end
 
@@ -279,8 +296,8 @@ class Should
 
     r = yield(@object, *args)
     if Bacon::Counter[:depth] > 0
-      raise Bacon::Error.new(:failed, description)  unless @negated ^ r
       Bacon::Counter[:requirements] += 1
+      raise Bacon::Error.new(:failed, description)  unless @negated ^ r
     end
     @negated ^ r ? r : false
   end
