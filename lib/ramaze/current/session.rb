@@ -49,7 +49,9 @@ module Ramaze
     COOKIE = { :path => '/' }
 
     class << self
-      thread_accessor :session => :current
+      def current
+        Current.session
+      end
 
       # called from Ramaze::startup and adds Cache.sessions if cookies are
       # enabled

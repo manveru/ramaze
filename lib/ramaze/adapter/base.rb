@@ -40,8 +40,6 @@ module Ramaze
           else
             respond env
           end
-
-          Current.current.finish
         end
 
         # Initializes Request with env and an empty Response. Records the
@@ -49,14 +47,7 @@ module Ramaze
         # Then goes on and calls Dispatcher::handle with request and response.
 
         def respond env
-          current = Current.new(env)
-
-          if filter = Global.record
-            request = current.request
-            Record << request if filter[request]
-          end
-
-          Dispatcher.handle
+          Current.call env
         end
       end
     end

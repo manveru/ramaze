@@ -4,7 +4,7 @@
 module Ramaze
   class Response < Rack::Response
     class << self
-      thread_accessor :response => :current
+      def current() Current.response end
     end
 
     def build(body = body, status = status, header = header)

@@ -24,7 +24,6 @@ module Ramaze
 
         def process(path)
           Log.info("Dynamic request from #{request.ip}: #{request.request_uri}")
-          Current.session = Session.new
 
           catch(:respond) {
             body = Controller.handle(path)

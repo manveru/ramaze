@@ -15,9 +15,7 @@ module Ramaze
       #
       # You can call this from everywhere with Ramaze::Request.current
 
-      def current
-        Thread.current[:request]
-      end
+      def current() Current.request end
     end
 
     # you can access the original @request via this method_missing,
