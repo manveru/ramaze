@@ -9,7 +9,7 @@ module Ramaze
 
       def call(env)
         setup(env)
-        before.call if before
+        before_call
 
         if filter = Global.record
           request = Current.request
@@ -20,7 +20,7 @@ module Ramaze
 
         finish
       ensure
-        after.call if after
+        after_call
       end
 
       def setup(env)
@@ -39,9 +39,31 @@ module Ramaze
         @before
       end
 
+      def before_call
+        if before
+          begin
+            before.call
+          rescue Object => e
+            Ramaze::Log.error e 
+            raise
+          end
+        end
+      end
+
       def after(&block)
         @after = block if block
         @after
+      end
+
+      def after_call
+        if after
+          begin
+            after.call
+          rescue Object => e
+            Ramaze::Log.error e 
+            raise
+          end
+        end
       end
     end
   end
