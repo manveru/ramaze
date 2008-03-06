@@ -204,24 +204,6 @@ task 'tutorial' => ['tutorial2html'] do
 end
 
 def authors
-  author_map = {
-    'ahoward'                                 => 'Ara T. Howard',
-    'ara.t.howard@gmail.com'                  => 'Ara T. Howard',
-    'blueonyx@dev-area.net'                   => 'Martin Hilbig',
-    'clive@crous.co.za'                       => 'Clive Crous',
-    'comp.lang.zenix+ramaze@gmail.com'        => 'zenix',
-    'jesusisramazing.10.pistos@geoshell.com'  => 'Pistos',
-    'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
-    'keita.yamaguchi@gmail.com'               => 'Keita Yamaguchi',
-    'leo.borisenko@gmail.com'                 => 'Leo Borisenko',
-    'manveru@weez-int.com'                    => 'Michael Fellinger',
-    'm.fellinger@gmail.com'                   => 'Michael Fellinger',
-    'outtenr@gmail.com'                       => 'Richard Outten',
-    'rff.rff@gmail.com'                       => 'Gabriele Renzi',
-    'skaar@waste.org'                         => 'skaar',
-    'stephan@spaceboyz.net'                   => 'Stephan Maka',
-  }
-
   mapping = {}
   `darcs show authors`.split("\n").each do |line|
     atoms = line.split
@@ -233,7 +215,7 @@ def authors
     end
 
     name = atoms.join(' ')
-    name = author_map.fetch(email) if name.empty?
+    name = AUTHOR_MAP.fetch(email) if name.empty?
     patches += mapping.fetch(name, {}).fetch(:patches, 0)
 
     mapping[name] = { :email => email, :patches => patches }

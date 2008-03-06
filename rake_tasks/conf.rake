@@ -51,5 +51,23 @@ You can now do following:
 #{'=' * 60}
 }.strip
 
+AUTHOR_MAP = {
+  'ahoward'                                 => 'Ara T. Howard',
+  'ara.t.howard@gmail.com'                  => 'Ara T. Howard',
+  'blueonyx@dev-area.net'                   => 'Martin Hilbig',
+  'clive@crous.co.za'                       => 'Clive Crous',
+  'comp.lang.zenix+ramaze@gmail.com'        => 'zenix',
+  'jesusisramazing.10.pistos@geoshell.com'  => 'Pistos',
+  'jesuswasramazing.10.pistos@geoshell.com' => 'Pistos',
+  'keita.yamaguchi@gmail.com'               => 'Keita Yamaguchi',
+  'leo.borisenko@gmail.com'                 => 'Leo Borisenko',
+  'manveru@weez-int.com'                    => 'Michael Fellinger',
+  'm.fellinger@gmail.com'                   => 'Michael Fellinger',
+  'outtenr@gmail.com'                       => 'Richard Outten',
+  'rff.rff@gmail.com'                       => 'Gabriele Renzi',
+  'skaar@waste.org'                         => 'skaar',
+  'stephan@spaceboyz.net'                   => 'Stephan Maka',
+}
+
 # * Browse and try the Examples in
 #     #{File.join(Gem.path, 'gems', 'ramaze-' + VERS, 'examples')}
