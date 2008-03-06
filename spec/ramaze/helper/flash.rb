@@ -18,6 +18,17 @@ class TCFlashHelperFirstController < Ramaze::Controller
   def then_here
     flash[:first].to_s
   end
+
+  def set(*hash)
+    Hash[*hash].each do |key, value|
+      flash[key] = value
+    end
+    hash.inspect
+  end
+
+  def box
+    flashbox
+  end
 end
 
 class TCFlashHelperSecondController < Ramaze::Controller
@@ -57,46 +68,53 @@ class TCFlashHelperThirdController < Ramaze::Controller
   end
 end
 
-describe "FlashHelper" do
+describe Ramaze::Helper::Flash do
   behaves_like 'browser'
   ramaze :adapter => :webrick
 
-  it "twice" do
+  should "set and forget flash twice" do
     Browser.new('/') do
       get('/first_here')
       get('/then_here').should == 'hey'
-      get('/then_here').should == ''
-      get('/then_here').should == ''
+      2.times{ get('/then_here').should.be.empty }
       get('/first_here')
       get('/then_here').should == 'hey'
-      get('/then_here').should == ''
+      get('/then_here').should.be.empty
     end
   end
 
-  it "over seperate controllers" do
+  should "work over multiple controllers" do
     Browser.new do
       get('/first_here')
       get('/second/then_here').should == 'hey'
-      get('/then_here').should == ''
-      get('/second/then_here').should == ''
+      get('/then_here').should.be.empty
+      get('/second/then_here').should.be.empty
       get('/second/first_here')
       get('/then_here').should == 'hey'
-      get('/second/then_here').should == ''
+      get('/second/then_here').should.be.empty
     end
   end
 
-  it "single" do
-    Browser.new do
-      get('/third/set/foo').should == 'foo'
-    end
-  end
-
-  it "single" do
+  should "set and retrieve custom value" do
     Browser.new do
       get('/third/set/foo').should == 'foo'
       get('/third/retrieve').should == 'foo'
-      get('/third/retrieve').should == ''
-      get('/third/retrieve').should == ''
+      2.times{ get('/third/retrieve').should.be.empty }
+    end
+  end
+
+  should "show a flashbox" do
+    Browser.new do
+      error_div = "<div class='flash' id='flash_error'>stuff failed</div>"
+      success_div = "<div class='flash' id='flash_success'>other things worked</div>"
+
+      get('/set/error/stuff%20failed')
+      get('/box').should == error_div
+
+      get('/set/error/stuff%20failed/success/other%20things%20worked')
+      get('/box').should == [error_div, success_div].join("\n")
+
+      get('/box').should.be.empty
     end
   end
 end

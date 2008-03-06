@@ -23,10 +23,17 @@ module Ramaze
   # On the request after this, flash[:error] is gone.
 
   module Helper::Flash
+    trait :tag => "<div class='flash' id='flash_%key'>%value</div>"
     # answers with Session.current.flash
 
     def flash
       Session.current.flash
+    end
+
+    def flashbox(tag = Helper::Flash.trait[:tag])
+      flash.sort.map{|(key, value)|
+        tag.gsub(/%key/, key).gsub(/%value/, value)
+      }.join("\n")
     end
   end
 end
