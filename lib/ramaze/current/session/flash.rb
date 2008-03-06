@@ -10,6 +10,10 @@ module Ramaze
     # Please see the FlashHelper for details on the usage as you won't need
     # to touch this class at all.
     class Flash
+      include Enumerable
+      def each(&block)
+        combined.each(&block)
+      end
 
       # the current session[:FLASH_PREVIOUS]
       def previous
