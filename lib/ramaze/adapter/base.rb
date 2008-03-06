@@ -34,12 +34,14 @@ module Ramaze
         # calls .finish on the current response after ::respond has finished.
 
         def call(env)
+          returned = nil
           if Global.benchmarking
-            time = Benchmark.measure{ respond(env) }
+            time = Benchmark.measure{ returned = respond(env) }
             Log.debug('request took %.5fs [~%.0f r/s]' % [time.real, 1.0/time.real])
           else
-            respond env
+            returned = respond env
           end
+          returned
         end
 
         # Initializes Request with env and an empty Response. Records the
