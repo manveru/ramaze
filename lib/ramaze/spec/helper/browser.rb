@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 class Browser
-  attr_reader :cookie
+  attr_reader :cookie, :http
 
   def initialize(url = '/', base = '/', &block)
     @base     = base
