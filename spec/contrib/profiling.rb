@@ -1,5 +1,7 @@
 require 'spec/helper'
 
+spec_require 'ruby-prof'
+
 Ramaze.contrib :profiling
 
 class MainController < Ramaze::Controller
