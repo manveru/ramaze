@@ -1,9 +1,9 @@
 require __DIR__/:facebook/:facebook
 
 module Ramaze
-  module FacebookHelper
+  module Helper::Facebook
     def self.included(klass)
-      klass.send(:helper, :aspect, :inform)
+      klass.send(:helper, :aspect)
     end
 
     def error

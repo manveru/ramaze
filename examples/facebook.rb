@@ -83,7 +83,7 @@ class MainController < Ramaze::Controller
     # show some information about current user in logs
     # INFO   Facebook {:user=>15601088, :in_canvas=>true, :added=>true}
     if fb[:user]
-      inform :info, "Facebook " + fb.params.reject{|k,v| k.to_s !~ /^(in|is|user|added|locale|request)/}.inspect
+      Log.info, "Facebook " + fb.params.reject{|k,v| k.to_s !~ /^(in|is|user|added|locale|request)/}.inspect
     else
       # require_add: redirect to add url
       # fb.redirect fb.addurl
