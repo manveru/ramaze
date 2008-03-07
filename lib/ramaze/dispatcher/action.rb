@@ -29,7 +29,8 @@ module Ramaze
             body = Controller.handle(path)
             response = Response.current.build(body)
           }
-          FILTER.inject(response){|r,f| f.call(r) }
+          FILTER.each{|f| f.call(response)}
+          response
         rescue Ramaze::Error => ex
           ex
         end
