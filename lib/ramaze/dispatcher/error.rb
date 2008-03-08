@@ -59,7 +59,28 @@ module Ramaze
           end
         rescue Object => ex
           Log.error(ex)
-          response.build(::CGI.escapeHTML(ex.message), status)
+          begin
+            m = ex.message
+            c = ex.class
+            b = (ex.backtrace || []).join("\n")
+            body = <<-html
+            ==== Error ====\n
+              #{ m } (#{ c })
+              #{ b }\n
+            ==== Request ====\n
+              #{ Request.current.pretty }\n
+            ==== Request ====\n
+              #{ Response.current.pretty }\n
+            ==== Session ====\n
+              #{ Session.current.pretty }\n
+            ==== Global ====\n
+              #{ Global.pretty }\n
+            html
+            response['Content-Type'] = 'text/plain'
+            response.build(body.unindent, status)
+          rescue Object
+            raise
+          end
         end
 
         # Only logs new errors with full backtrace, repeated errors are shown
