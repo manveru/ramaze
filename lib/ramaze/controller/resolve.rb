@@ -132,8 +132,8 @@ module Ramaze
       # controller.
 
       def template_paths
-        if @template_root
-          @template_root
+        if paths = template_root
+          paths
         else
           template_root(Global.template_root / Global.mapping.invert[self])
         end
