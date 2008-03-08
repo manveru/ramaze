@@ -59,7 +59,7 @@ module Ramaze
           end
         rescue Object => ex
           Log.error(ex)
-          response.build(ex.message, status)
+          response.build(::CGI.escapeHTML(ex.message), status)
         end
 
         # Only logs new errors with full backtrace, repeated errors are shown
