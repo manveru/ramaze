@@ -15,8 +15,11 @@ module Ramaze
   end
 
   require 'ramaze/action/render'
+  require 'ramaze/helper/link'
 
   class Action
+    include Helper::Link
+
     class << self
 
       # Instantiate with given Hash, takes both string/symbol keys.

@@ -39,7 +39,6 @@ module Ramaze
 
       def inherited controller
         controller.trait :actions_cached => {}
-        controller.trait :layout => {:all => nil, :deny => Set.new}
         Global.controllers << controller
         if map = controller.mapping
           Log.dev("mapping #{map} => #{controller}")
@@ -114,23 +113,26 @@ module Ramaze
       #  the layout-action where @content may or may not be used, returning
       #  whatever the layout returns.
 
-      def layout(meth_or_hash)
-        if meth_or_hash.respond_to?(:to_hash)
-          meth_or_hash.each do |layout_name, *actions|
-            layout_name = R(self, layout_name) if layout_name.to_s !~ /\A\//
-            actions.flatten.each do |action|
-              trait[:layout][action.to_s] = layout_name
-            end
-          end
+      def layout(*meth_or_hash)
+        if meth_or_hash.empty?
+          trait[:layout] ||= {:all => nil, :deny => Set.new}
         else
-          layout_name = R(self, meth_or_hash) if meth_or_hash.to_s !~ /\A\//
-          trait[:layout][:all] = layout_name || meth_or_hash
+          meth_or_hash = meth_or_hash.first
+          if meth_or_hash.respond_to?(:to_hash)
+            meth_or_hash.each do |layout_name, *actions|
+              actions.flatten.each do |action|
+                layout[action.to_s] = layout_name
+              end
+            end
+          else
+            layout[:all] = meth_or_hash
+          end
         end
       end
 
       def deny_layout(*actions)
         actions.each do |action|
-          trait[:layout][:deny] << action.to_s
+          layout[:deny] << action.to_s
         end
       end
 

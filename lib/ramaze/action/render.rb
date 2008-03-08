@@ -107,9 +107,10 @@ module Ramaze
     end
 
     # Determine whether or not we have a layout to process and sets it up
-    # correctly to be rendered in the same context as current action.
-    # Will return false if the layout is the same as current action to avoid
-    # infinite recursion and also if no layout on this controller was found.
+    # correctly to be rendered in the same context as current action.  Will
+    # return false if the layout is the same as current action to avoid
+    # infinite recursion and also if no layout on this controller or its
+    # ancestors was found.
 
     def layout
       return false unless layouts = controller.ancestral_trait[:layout]
@@ -118,6 +119,9 @@ module Ramaze
       denied = layouts[:deny].to_a
 
       if layout = possible.first
+        if layout.to_s !~ /\A\// # late bind layout action to current controller
+          layout = R(controller, layout)
+        end
         layout_action = Controller.resolve(layout)
 
         return false if denied.any?{|deny| deny === path} or layout_action.path == path
