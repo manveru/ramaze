@@ -195,7 +195,7 @@ module Ramaze
             if file
               file = file.to_s
               unless Pathname(file).absolute?
-                root = template_root || Global.template_root
+                root = [template_root || Global.template_root].flatten.first
                 file = File.join(root, file)
               end
               info[:file] = file
