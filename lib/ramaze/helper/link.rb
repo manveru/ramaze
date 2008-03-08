@@ -7,6 +7,7 @@ module Ramaze
   # Usage is shown in spec/ramaze/helper/link.rb and the rdocs below.
 
   module Helper::Link
+  private
 
     # Builds a basic <a> tag.
     #
