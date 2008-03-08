@@ -120,7 +120,7 @@ module Ramaze
       if layout = possible.first
         layout_action = Controller.resolve(layout)
 
-        return false if denied.include?(path) or layout_action.path == path
+        return false if denied.any?{|deny| deny === path} or layout_action.path == path
 
         if layout_action.controller != controller
           instance.instance_variables.each do |x|
