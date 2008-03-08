@@ -51,7 +51,7 @@ module Ramaze
       options = { :controller => current.controller,
                   :instance => current.instance.dup }
 
-      roots = [options[:controller].template_root].flatten
+      roots = [options[:controller].template_paths].flatten
 
       if (files = Dir["{#{roots.join(',')}}"/"{#{file},#{file}.*}"]).any?
         options[:template] = files.first.squeeze '/'
