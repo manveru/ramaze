@@ -112,7 +112,7 @@ module Ramaze
     # infinite recursion and also if no layout on this controller was found.
 
     def layout
-      return false unless layouts = controller.trait[:layout]
+      return false unless layouts = controller.ancestral_trait[:layout]
 
       possible = [layouts[path], layouts[:all]].compact
       denied = layouts[:deny].to_a
