@@ -7,8 +7,7 @@ class Amrita2::Template
 
   # Ramaze helpers are available in template contexts.
 
-  include Ramaze::Helper
-  extend Ramaze::Helper
+  include Ramaze::Helper::Methods
   helper :link, :sendfile, :flash, :cgi
 end
 

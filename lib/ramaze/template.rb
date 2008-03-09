@@ -23,10 +23,10 @@ module Ramaze
     end
 
     # The superclass for all templates, contains the shared behaviour of
-    # the templates and includes Ramaze::Helper
+    # the templates and includes Ramaze::Helper::Methods
 
     class Template
-      include Ramaze::Helper
+      include Ramaze::Helper::Methods
 
       class << self
 

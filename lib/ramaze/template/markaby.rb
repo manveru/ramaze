@@ -10,6 +10,8 @@ module Ramaze
     # Can be found at: http://code.whytheluckystiff.net/markaby/
 
     class Markaby < Template
+      include Ramaze::Helper::Methods
+
       ENGINES[self] = %w[ mab ]
 
       class << self

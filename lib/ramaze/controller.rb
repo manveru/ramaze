@@ -13,8 +13,7 @@ module Ramaze
   # The Controller is responsible for combining and rendering actions.
 
   class Controller
-    include Helper
-    extend Helper
+    include Helper::Methods
 
     helper :redirect, :link, :sendfile, :flash, :cgi, :partial
 
@@ -31,9 +30,6 @@ module Ramaze
     trait :pattern_cache => Hash.new{|h,k| h[k] = Controller.pattern_for(k) }
 
     class << self
-      include Helper
-      extend Helper
-
       # When Controller is subclassed the resulting class is placed in
       # Global.controllers and a new trait :actions_cached is set on it.
 

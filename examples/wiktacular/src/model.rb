@@ -81,7 +81,7 @@ class WikiEntry
 end
 
 class EntryView
-  extend Ramaze::Helper
+  include Ramaze::Helper::Methods
   helper :cgi, :link
 
   class << self

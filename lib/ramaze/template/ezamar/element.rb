@@ -56,8 +56,7 @@
 class Ezamar::Element
   attr_accessor :content
 
-  include Ramaze::Helper
-  extend Ramaze::Helper
+  include Ramaze::Helper::Methods
 
   helper :redirect, :link
 
