@@ -160,5 +160,22 @@ module Ramaze
         end
       }
     end
+
+    # Answers with a subset of request.params with only the key/value pairs for
+    # which you pass the keys.
+    # Valid keys are objects that respond to :to_s
+    #
+    # Example:
+    #   request.params
+    #   # => {'name' => 'jason', 'age' => '45', 'job' => 'lumberjack'}
+    #   request.sub('name')
+    #   # => {'name' => 'jason'}
+    #   request.sub(:name, :job)
+    #   # => {'name' => 'jason', 'job' => 'lumberjack'}
+
+    def subset(*keys)
+      keys = keys.map{|k| k.to_s }
+      params.reject{|k,v| not keys.include?(k) }
+    end
   end
 end
