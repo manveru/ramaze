@@ -52,7 +52,7 @@ module Ramaze
       # Delete a key
 
       def delete(key)
-        session[:FLASH].delete(key)
+        current.delete(key)
       end
 
       private
