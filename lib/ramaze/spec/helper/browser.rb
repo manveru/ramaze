@@ -42,6 +42,14 @@ class Browser
     erequest(:get, url, hash)
   end
 
+  def hget(*args)
+    @page = Hpricot(get(*args))
+  end
+
+  def hpost(*args)
+    @page = Hpricot(post(*args))
+  end
+
   def request method, url, hash = {}
     @http.uri = url2uri(url)
     @http.request_headers['referer'] = @history.last.path rescue '/'
