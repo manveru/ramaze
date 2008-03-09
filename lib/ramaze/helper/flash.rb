@@ -49,8 +49,10 @@ module Ramaze
     # contents of each element of flash
 
     def flashbox(tag = Helper::Flash.trait[:tag])
-      flash.sort.map{|(key, value)|
-        tag.gsub(/%key/, key).gsub(/%value/, value)
+      flash.map{|key, value|
+        [key.to_s, value.to_s]
+      }.sort.map{|(key, value)|
+        tag.gsub(/%key/, key.to_s).gsub(/%value/, value.to_s)
       }.join("\n")
     end
   end
