@@ -6,10 +6,10 @@ module Ramaze
       end
 
       def user
-        if instance_variable_defined?('@user')
-          @user
+        if instance_variable_defined?('@user_helper')
+          @user_helper
         else
-          @user = Wrapper.new session, ancestral_trait[:user_model]
+          @user_helper = Wrapper.new ancestral_trait[:user_model]
         end
       end
 
