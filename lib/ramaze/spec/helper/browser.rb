@@ -50,6 +50,22 @@ class Browser
     @page = Hpricot(post(*args))
   end
 
+  def find_link(text)
+    link = @page.at("a[text()='#{text}']")
+    link.should.not.be.nil if link.respond_to?(:should)
+    link[:href]
+  end
+
+  def follow_link(text)
+    hget find_link(text)
+  end
+
+  def follow_links(*texts)
+    texts.each do |text|
+      follow_link text
+    end
+  end
+
   def request method, url, hash = {}
     @http.uri = url2uri(url)
     @http.request_headers['referer'] = @history.last.path rescue '/'
