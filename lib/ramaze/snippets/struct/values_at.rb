@@ -3,10 +3,6 @@
 
 # Extensions for Struct
 
-class Symbol
-  undef_method :to_int if method_defined?(:to_int)
-end
-
 class Struct
 
   # Example:
@@ -18,7 +14,7 @@ class Struct
   #  # => [15, 10]
 
   def values_at(*keys)
-    if keys.all?{|key| key.respond_to?(:to_int) }
+    if keys.all?{|key| key.respond_to?(:to_int) and not key.is_a?(Symbol) }
       keys.map{|key| values[key.to_int] }
     else
       keys.map{|k| self[k] }
