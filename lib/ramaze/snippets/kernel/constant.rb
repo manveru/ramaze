@@ -17,7 +17,7 @@ module Kernel
   #   require 'test/unit'
   #   Test.constant("Unit::Assertions")   # -> Test::Unit::Assertions
   #   Test.constant("::Test::Unit")       # -> Test::Unit
-  #
+
   def constant(const)
     const = const.to_s.dup
     base = const.sub!(/^::/, '') ? Object : ( self.kind_of?(Module) ? self : self.class )
