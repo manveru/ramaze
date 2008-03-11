@@ -111,7 +111,7 @@ module Ramaze
 
       def layout(*meth_or_hash)
         if meth_or_hash.empty?
-          trait[:layout] ||= ( ancestral_trait[:layout] || {:all => nil, :deny => Set.new} )
+          trait[:layout] ||= ( ancestral_trait[:layout] || {:all => nil, :deny => Set.new} ).dup
         else
           meth_or_hash = meth_or_hash.first
           if meth_or_hash.respond_to?(:to_hash)
