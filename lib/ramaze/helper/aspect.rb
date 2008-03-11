@@ -18,43 +18,47 @@ module Ramaze
 
   module Helper::Aspect
 
-    # Define traits on class this module is included into.
-
-    def self.included(klass)
-      klass.trait[:aspects] ||= { :before => {}, :after => {} }
-    end
-
     private
+
+    # lazily and smartly inherit copy of aspects trait from parent, or
+    # bootstrap our own 
+    def aspects
+      trait[:aspects] ||= (
+        if hash = ancestral_trait[:aspects]
+          { :before => hash[:before].dup, :after => hash[:after].dup }
+        else
+          { :before => {}, :after => {} }
+        end
+      )
+    end
 
     # run block before given actions or, if no actions specified, all actions.
     def before(*meths, &block)
       return before_all(*meths, &block) if meths.empty?
-      aspects = trait[:aspects][:before]
       meths.each do |meth|
-        aspects[meth.to_s] = block
+        aspects[:before][meth.to_s] = block
       end
     end
     alias pre before
 
     # Run block before all actions.
     def before_all(&block)
-      trait[:aspects][:before][:all] = block
+      aspects[:before][:all] = block
     end
     alias pre_all before_all
 
     # run block after given actions or, if no actions specified, all actions.
     def after(*meths, &block)
       return after_all(*meths, &block) if meths.empty?
-      aspects = trait[:aspects][:after]
       meths.each do |meth|
-        aspects[meth.to_s] = block
+        aspects[:after][meth.to_s] = block
       end
     end
     alias post after
 
     # Run block after all actions.
     def after_all(&block)
-      trait[:aspects][:after][:all] = block
+      aspects[:after][:all] = block
     end
     alias post_all after_all
 
@@ -68,8 +72,8 @@ module Ramaze
 
     # run block before and after all actions.
     def wrap_all(&block)
-      trait[:aspects][:before][:all] = block
-      trait[:aspects][:after][:all] = block
+      aspects[:before][:all] = block
+      aspects[:after][:all] = block
     end
   end
 
