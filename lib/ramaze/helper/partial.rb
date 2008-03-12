@@ -73,5 +73,13 @@ module Ramaze
 
       Ramaze::Action(options).render
     end
+
+    # shortcut to render_partial, accepts a method and contructs a link to the
+    # current controller, then calls render_partial on that
+
+    def render_action method, *params
+      render_partial(Rs(method), *params)
+    end
+
   end
 end
