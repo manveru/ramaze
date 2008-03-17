@@ -136,13 +136,16 @@ module Ramaze
 
       old = current.delete(:FLASH)
       current[:FLASH_PREVIOUS] = old if old
+
+      request, response = Current.request, Current.response
+
       hash = {:value => session_id}.merge(COOKIE)
-      response = Current.response
       response.set_cookie(SESSION_KEY, hash)
 
       # set client side session cookie
-      if val = Current.request['session.client'] and !val.empty?
-        cookie = hash.merge :value => marshal(val)
+      if val = request['session.client'] and
+         (!val.empty? or request.cookies["#{SESSION_KEY}-client"])
+        cookie = hash.merge(:value => marshal(val))
         response.set_cookie("#{SESSION_KEY}-client", cookie)
       end
     end

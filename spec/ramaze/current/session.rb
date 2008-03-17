@@ -17,6 +17,10 @@ class TrinitySessionController < Ramaze::Controller
   def set
     session.client[:val] = 789
   end
+
+  def del
+    session.client.delete(:val)
+  end
 end
 
 describe "Session" do
@@ -38,10 +42,10 @@ end
 
 describe "Session cookie store" do
   behaves_like 'http'
-  ramaze :sessions => true, :session_store => :cookie
+  ramaze :sessions => true
 
-  @secret = Ramaze::Session.trait[:secret] = 'abc'
   Ramaze::Session::SESSION_KEY.replace('sess')
+  @secret = Ramaze::Session.trait[:secret] = 'abc'
 
   # Marshal a session hash into safe cookie data. Include an integrity hash.
   def marshal(session)
@@ -83,5 +87,11 @@ describe "Session cookie store" do
   it 'bad cookie should be ignored' do
     r = get('/val', :cookie => marshal({ :val => 456 }) + 'wrong')
     r.body.should.not == '456'
+  end
+
+  it 'should allow removing the last key/value pair' do
+    r = get('/del', :cookie => "sess-client="+marshal({ :val => 456 }))
+    r.body.should == '456'
+    r.headers['Set-Cookie'].should == "sess-client=#{CGI.escape(marshal({}))}; path=/"
   end
 end
