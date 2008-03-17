@@ -36,6 +36,7 @@ module Ramaze
           file = resolve_path(path)
 
           if ::File.file?(file) or ::File.file?(file=file/'index')
+            return unless in_public?(file)
             response['Content-Type'] = Tool::MIME.type_for(file) unless ::File.extname(file).empty?
             mtime = ::File.mtime(file)
             response['Last-Modified'] = mtime.httpdate
@@ -61,6 +62,16 @@ module Ramaze
           else
             joined
           end
+        end
+
+        def in_public?(path)
+          expand(path).start_with?(expand(Global.public_root))
+        end
+
+        private
+
+        def expand(path)
+          ::File.expand_path(path)
         end
 
         def log(file)
