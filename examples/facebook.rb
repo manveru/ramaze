@@ -76,14 +76,17 @@ end unless defined? Facebook::ID
 #   facebook.addurl '/url' # add url for app that redirects to /url after successful install
 
 class MainController < Ramaze::Controller
-  helper :formatting # for time_diff
+  helper :formatting
   helper :facebook
 
   before {
     # show some information about current user in logs
     # INFO   Facebook {:user=>15601088, :in_canvas=>true, :added=>true}
     if fb[:user]
-      Log.info, "Facebook " + fb.params.reject{|k,v| k.to_s !~ /^(in|is|user|added|locale|request)/}.inspect
+      # use facebook session_key as session cookie
+      session.session_id = fb[:session_key] if fb[:session_key]
+
+      Ramaze::Log.info "Facebook " + fb.params.reject{|k,v| k.to_s !~ /^(in|is|user|added|locale|request)/}.inspect
     else
       # require_add: redirect to add url
       # fb.redirect fb.addurl
@@ -92,18 +95,18 @@ class MainController < Ramaze::Controller
     # suggest setting SESSION key if one is not set, and current user is an admin
     # INFO   Set a default session key: SESSION = 'b3638446fa02466210c49f42-15601088'
     if Facebook::SESSION.empty? and Facebook::ADMINS.include? fb[:user]
-      inform :info, "Set a default session key: SESSION = '#{fb[:session_key]}'"
+      Ramaze::Log.info "Set a default session key: SESSION = '#{fb[:session_key]}'"
     end
   }
 
   def install
-    inform :info, "#{fb[:user]} installed app" if request['installed'] == '1'
+    Ramaze::Log.info "#{fb[:user]} installed app" if request['installed'] == '1'
     facebook.profile.setFBML :uid => fb[:user], :markup => "Isn't this a great surprise!?"
     facebook.redirect request['next'] || '/'
   end
 
   def uninstall
-    inform :info, "#{fb[:user]} uninstalled app"
+    Ramaze::Log.info "#{fb[:user]} uninstalled app"
   end
 
   def main

@@ -47,7 +47,7 @@ module Facebook
                                                               else
                                                                 v.to_s
                                                               end
-                                               }.sort
+                                                  }.sort
 
       data = Array["sig=#{Digest::MD5.hexdigest(args.join+SECRET)}", *args].join('&')
 
@@ -71,7 +71,10 @@ module Facebook
               end
             end
 
-      ret = ret.first if ret.is_a? Array and ret.size == 1 and ret.first.is_a? Hash
+      unless method == 'fql.query'
+        ret = ret.first if ret.is_a? Array and ret.size == 1 and ret.first.is_a? Hash
+      end
+
       raise Facebook::Error, ret['error_msg'] if ret.is_a? Hash and ret['error_code']
 
       ret
@@ -83,7 +86,7 @@ module Facebook
     end
 
     def valid?
-      return false unless respond_to?(:request) and not request['fb_sig'].empty?
+      return false unless respond_to?(:request) and not request['fb_sig'].nil?
       request['facebook.valid?'] ||= \
         request['fb_sig'] == Digest::MD5.hexdigest(request.params.map{|k,v| "#{$1}=#{v}" if k =~ /^fb_sig_(.+)$/ }.compact.sort.join+SECRET)
     end
