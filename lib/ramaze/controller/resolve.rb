@@ -161,9 +161,11 @@ module Ramaze
           ancestor <= Ramaze::Controller
         } + Helper::LOOKUP.to_a
 
-        meths = ancs.map{|a|
-          a.instance_methods(false).map{|iv| iv.to_s }
-        }.flatten.uniq
+        ancs.reverse.inject [] do |meths, anc|
+          meths +
+            anc.public_instance_methods(false).map{|im| im.to_s } -
+            anc.private_instance_methods(false).map{|im| im.to_s }
+        end
       end
 
       # Generate all possible permutations for given path.
