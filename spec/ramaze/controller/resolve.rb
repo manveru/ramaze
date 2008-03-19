@@ -15,7 +15,7 @@ end
 
 describe 'Controller resolving' do
   behaves_like 'http'
-  ramaze
+  ramaze :template_root => __DIR__/:view
 
   it 'should work with .' do
     get('/file.ext').body.should == 'file.ext'

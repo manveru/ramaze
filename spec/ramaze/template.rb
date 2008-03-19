@@ -32,7 +32,7 @@ end
 
 class TCMultipleTemplateRoots < Ramaze::Controller
   map '/multiple'
-  template_root __DIR__/:helper/:template, __DIR__/:template/:ezamar
+  template_root __DIR__/:helper/:view, __DIR__/:template/:ezamar
 
   def sum
     @num1, @num2 = 1, 2
@@ -49,7 +49,7 @@ class TCMultipleTemplateRoots < Ramaze::Controller
 end
 
 describe "testing ramaze template" do
-  ramaze
+  ramaze :template_root => __DIR__/:view
 
   def getpage page
     content = Ramaze::Controller.handle(page)

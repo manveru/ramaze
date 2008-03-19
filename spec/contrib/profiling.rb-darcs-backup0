@@ -11,16 +11,13 @@ class MainController < Ramaze::Controller
 end
 
 output = StringIO.new
-Ramaze::Inform.loggers << Ramaze::Informer.new(output)
+Ramaze::Log.loggers << Ramaze::Informer.new(output)
 
 describe 'Profiling' do
   behaves_like "http"
-  ramaze :public_root => __DIR__/:public
+  ramaze
 
   it "should profile" do
-    output = StringIO.new
-    Ramaze::Log.loggers << Ramaze::Informer.new(output)
-
     get('/')
     output.string.should =~ /Thread ID:\s\d+/
     output.string.should =~ /Total:/

@@ -70,7 +70,7 @@ end
 
 describe "Testing Template overriding" do
   behaves_like 'http'
-  ramaze
+  ramaze :template_root => __DIR__/:view
 
   it "simple request to greet" do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'

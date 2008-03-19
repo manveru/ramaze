@@ -10,7 +10,6 @@ end
 class TCActionOtherLayout < Ramaze::Controller
   map '/other'
   layout '/other_wrapper'
-  template_root __DIR__/:template
 
   def index
     "Others Hello"
@@ -19,7 +18,8 @@ end
 
 describe "Testing Actionless Templates" do
   behaves_like 'http'
-  ramaze :actionless_templates => false
+  ramaze :actionless_templates => false,
+         :template_root => __DIR__/:view
 
   it "should not find template file for non existant method" do
     get('/non_existant_method').status.should == 404

@@ -23,21 +23,24 @@ end
 describe 'Action rendering' do
   behaves_like 'http'
 
-  @public_root = __DIR__ / :public
-  FileUtils.mkdir_p @public_root
-  ramaze :file_cache => true
+  FileUtils.mkdir_p(public_root = __DIR__/:public)
 
-  def req(path) r = get(path); [r.content_type, r.body] end
+  ramaze :file_cache => true, :public_root => public_root
 
-  it 'should cache to file' do
+  def req(path)
+    r = get(path)
+    [ r.content_type, r.body ]
+  end
+
+  should 'cache to file' do
     lambda{ req('/') }.should.not.change{ req('/') }
-    File.file?(@public_root/'index').should == true
+    File.file?(public_root/'index').should == true
   end
 
-  it 'should create subdirs as needed' do
+  should 'create subdirs as needed' do
     lambda{ req('/other') }.should.not.change{ req('/other') }
-    File.file?(@public_root/'other'/'index').should == true
+    File.file?(public_root/'other/index').should == true
   end
 
-  FileUtils.rm_rf @public_root
+  FileUtils.rm_rf public_root
 end
