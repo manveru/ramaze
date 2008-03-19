@@ -51,13 +51,24 @@ module Ramaze
       options = { :controller => current.controller,
                   :instance => current.instance.dup }
 
-      roots = [options[:controller].template_paths].flatten
+      file = file.to_s
 
-      if (files = Dir["{#{roots.join(',')}}"/"{#{file},#{file}.*}"]).any?
-        options[:template] = files.first.squeeze '/'
+      if Pathname(file).absolute?
+        file = file.squeeze '/'
+        unless File.exist?(file)
+          Log.warn "render_template: #{file} does not exist."
+          return ''
+        end
+        options[:template] = file
       else
-        Log.warn "render_template: #{file} does not exist in the following directories: #{roots.join(',')}."
-        return ''
+        roots = [options[:controller].template_paths].flatten
+
+        if (files = Dir["{#{roots.join(',')}}"/"{#{file},#{file}.*}"]).any?
+          options[:template] = files.first.squeeze '/'
+        else
+          Log.warn "render_template: #{file} does not exist in the following directories: #{roots.join(',')}."
+          return ''
+        end
       end
 
       binding = options[:instance].scope
