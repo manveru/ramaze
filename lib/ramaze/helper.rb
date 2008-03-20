@@ -39,17 +39,10 @@ module Ramaze
         end
       end
 
-      # Will be going to be much simpler after deprecation *sigh*
       def find_helper(name)
         ramaze_helper_consts = ::Ramaze::Helper.constants.grep(/^#{name}$/i)
-        ramaze_consts = ::Ramaze.constants.grep(/^#{name}Helper$/i)
         if mod_name = ramaze_helper_consts.first
           ::Ramaze::Helper.const_get(mod_name)
-        elsif mod_name = ramaze_consts.first
-          mod = ::Ramaze.const_get(mod_name)
-          new_name = "Ramaze::Helper::" << mod_name.split('::').last[/^(.*)Helper$/, 1]
-          Log.warn "#{mod_name} is being deprecated, use #{new_name} instead"
-          mod
         end
       end
 

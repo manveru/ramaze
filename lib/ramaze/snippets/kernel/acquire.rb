@@ -31,9 +31,4 @@ module Kernel
       end
     end
   end
-
-  def aquire *globs
-    warn "Kernel#aquire is being deprecated, use Kernel#acquire instead"
-    acquire *globs
-  end
 end

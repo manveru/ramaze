@@ -11,7 +11,7 @@ class MainController < Ramaze::Controller
 end
 
 output = StringIO.new
-Ramaze::Inform.loggers << Ramaze::Informer.new(output)
+Ramaze::Log.loggers << Ramaze::Informer.new(output)
 
 describe 'Profiling' do
   behaves_like "http"

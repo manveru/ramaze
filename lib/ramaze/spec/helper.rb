@@ -45,11 +45,6 @@ rescue LoadError => ex
   exit
 end
 
-def testcase_requires(*following)
-  warn "'testcase_requires' is being deprecated, please use 'spec_require' instead"
-  spec_require(*following)
-end
-
 shared "http" do
   require 'ramaze/spec/helper/mock_http'
   extend MockHTTP
