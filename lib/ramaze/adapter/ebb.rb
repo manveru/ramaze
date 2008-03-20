@@ -1,8 +1,6 @@
 require 'ebb'
 
 module Ramaze
-  Global.test_connections = true
-
   module Adapter
     class Ebb < Base
       class << self

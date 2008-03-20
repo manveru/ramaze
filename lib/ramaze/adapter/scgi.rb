@@ -4,8 +4,6 @@
 require 'rack/handler/scgi'
 
 module Ramaze
-  Global.test_connections = true
-
   module Adapter
     # Our Scgi adapter acts as wrapper for the Rack::Handler::SCGI.
     class Scgi < Base
