@@ -73,7 +73,7 @@ describe Ramaze::Helper::Flash do
   ramaze :adapter => :webrick
 
   should "set and forget flash twice" do
-    Browser.new('/') do
+    Browser.new do
       get('/first_here')
       get('/then_here').should == 'hey'
       2.times{ get('/then_here').should.be.empty }

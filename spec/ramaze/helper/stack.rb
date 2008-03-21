@@ -56,6 +56,7 @@ describe "StackHelper" do
 
   it "indirect login" do
     Browser.new do
+      get('/')
       get('/foo').should == 'logged in'
       get('/secure').should == 'secret content'
       eget('/').should == {:logged_in => true}
@@ -64,6 +65,7 @@ describe "StackHelper" do
 
   it "indirect login with params" do
     Browser.new do
+      get('/')
       eget('/bar', 'x' => 'y').should == {'x' => 'y'}
       eget('/').should == {:logged_in => true}
     end

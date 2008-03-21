@@ -36,7 +36,7 @@ describe Ramaze::Helper::User do
   ramaze :adapter => :webrick
 
   should 'login' do
-    Browser.new '/status' do
+    Browser.new do
       get('/status').should == 'false'
       get('/login', 'name' => 'arthur', 'password' => '42')
       get('/status').should == 'true'

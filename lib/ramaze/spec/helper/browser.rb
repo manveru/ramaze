@@ -4,12 +4,11 @@
 class Browser
   attr_reader :cookie, :http
 
-  def initialize(url = '/', base = '/', &block)
+  def initialize(base = '/', &block)
     @base     = base
     @history  = []
-    @http     = SimpleHttp.new(url2uri(url))
-
-    get url
+    @uri      = URI("http://localhost:#{Ramaze::Global.port}")
+    @http     = SimpleHttp.new(@uri)
 
     story(&block) if block_given?
   end
@@ -18,28 +17,28 @@ class Browser
     instance_eval(&block) if block_given?
   end
 
-  def get url = '/', hash = {}
-    request(:get, url, hash)
+  def get path = '/', hash = {}
+    request(:get, path, hash)
   end
 
-  def post url = '/', hash = {}
-    request(:post, url, hash)
+  def post path = '/', hash = {}
+    request(:post, path, hash)
   end
 
-  def erequest method, url, hash = {}
-    response = request(method, url, hash)
+  def erequest method, path, hash = {}
+    response = request(method, path, hash)
     eval(response)
   rescue Object => ex
     p :response => response
     ex.message
   end
 
-  def epost url = '/', hash = {}
-    erequest(:post, url, hash)
+  def epost path = '/', hash = {}
+    erequest(:post, path, hash)
   end
 
-  def eget url = '/', hash = {}
-    erequest(:get, url, hash)
+  def eget path = '/', hash = {}
+    erequest(:get, path, hash)
   end
 
   def hget(*args)
@@ -66,8 +65,8 @@ class Browser
     end
   end
 
-  def request method, url, hash = {}
-    @http.uri = url2uri(url)
+  def request method, path, hash = {}
+    @http.uri = @uri + "/#{@base}/#{path}".squeeze('/')
     @http.request_headers['referer'] = @history.last.path rescue '/'
 
     if method == :get and not hash.empty?
@@ -85,14 +84,5 @@ class Browser
   def get_cookie
     @cookie = @http.response_headers['set-cookie']
     @http.request_headers['cookie'] = @cookie
-  end
-
-  def url2uri url
-    uri = URI.parse(url)
-    uri.scheme = 'http'
-    uri.host = 'localhost'
-    uri.port = Ramaze::Global.port
-    uri.path = "/#{@base}/#{url}".squeeze('/')
-    uri
   end
 end

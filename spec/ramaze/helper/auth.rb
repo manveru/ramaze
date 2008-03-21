@@ -54,7 +54,7 @@ describe "StackHelper" do
   ].each do |controller|
 
     it controller.to_s do
-      Browser.new('/', Ramaze::Global.mapping.invert[controller]) do
+      Browser.new(Ramaze::Global.mapping.invert[controller]) do
         get('/secured').should == ''
         post('/login', 'username' => 'manveru', 'password' => 'password')
         get('/secured').should == 'Secret content'
