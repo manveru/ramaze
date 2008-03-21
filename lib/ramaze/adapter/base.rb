@@ -47,7 +47,11 @@ module Ramaze
         # Then goes on and calls Dispatcher::handle with request and response.
 
         def respond env
-          Current.call env
+          if Global.server == Thread.current
+            Thread.new{ Current.call(env) }.value
+          else
+            Current.call(env)
+          end
         end
       end
     end
