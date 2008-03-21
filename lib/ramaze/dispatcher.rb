@@ -46,7 +46,7 @@ module Ramaze
         Dispatcher::Error.process(error, meta)
       end
 
-      # protcets against recursive dispatch and reassigns the path_info in the
+      # protects against recursive dispatch and reassigns the path_info in the
       # request, the rest of the request is kept intact.
       def dispatch_to(path)
         if request.path_info == path
