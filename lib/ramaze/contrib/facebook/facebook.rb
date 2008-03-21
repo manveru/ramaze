@@ -53,7 +53,7 @@ module Facebook
 
       begin
         ret = post(data)
-      rescue Errno::ECONNRESET
+      rescue Errno::ECONNRESET, Errno::EPIPE
         @server = connect
         retry
       end while ret.empty? and @server = connect
