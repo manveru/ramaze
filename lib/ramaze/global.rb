@@ -8,9 +8,6 @@ module Ramaze
     o "Set the adapter Ramaze will run on.",
       :adapter => :webrick, :cli => [:webrick, :mongrel, :thin]
 
-    o "All running threads of Adapter will be collected here.",
-      :adapters => Set.new
-
     o "Set the size of Backtrace shown.",
       :backtrace_size => 10, :cli => 10
 
@@ -85,6 +82,9 @@ module Ramaze
     o "Don't wait until all adapter-threads are finished or killed.",
       :run_loose => false, :cli => false
 
+    o "The running server will be put here from Adapter.",
+      :server => nil
+
     o "Turn on session for all requests.",
       :sessions => true, :cli => true
 
@@ -96,9 +96,6 @@ module Ramaze
 
     o "Interval in seconds of the background SourceReload",
       :sourcereload => 3, :cli => 3
-
-    o "How many adapters Ramaze should spawn.",
-      :spawn => 1, :cli => 1, :short => :s
 
     o "Test before start if adapters will be able to connect",
       :test_connections => true, :cli => true

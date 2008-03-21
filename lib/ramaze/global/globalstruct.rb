@@ -89,11 +89,6 @@ module Ramaze
       cache = Ramaze.const_get(class_name)
     end
 
-    # a range built from port and the number of spawns.
-    def ports
-      (port.to_i..(port.to_i + (spawn.to_i - 1)))
-    end
-
     # reassigns the interval in the instance of SourceReload that is running or
     # just waiting.
     def sourcereload=(interval)

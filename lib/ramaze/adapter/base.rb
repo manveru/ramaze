@@ -14,11 +14,9 @@ module Ramaze
         # Afterwards adds a trap for the value of Global.shutdown_trap which
         # calls Ramaze.shutdown when triggered (usually by SIGINT).
 
-        def start host, ports
-          ports.each do |port|
-            Global.adapters.add(run_server(host, port))
-            trap(Global.shutdown_trap){ Ramaze.shutdown }
-          end
+        def start host, port
+          Global.server = run_server(host, port)
+          trap(Global.shutdown_trap){ Ramaze.shutdown }
         end
 
         # Does nothing

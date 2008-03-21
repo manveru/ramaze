@@ -32,10 +32,10 @@ module Ramaze
         start_adapter
 
         Timeout.timeout(3) do
-          sleep 0.01 until Global.adapters.any?
+          sleep 0.01 until Global.server
         end
 
-        Global.adapters.each{|a| a.join} unless Global.run_loose
+        Global.server.join unless Global.run_loose
 
       rescue SystemExit
         Ramaze.shutdown
@@ -44,25 +44,24 @@ module Ramaze
         Ramaze.shutdown
       end
 
-      # Takes Global.adapter and starts if test_connections is positive that
-      # connections can be made to the specified host and ports.
+      # Takes Global.adapter and starts if test_connections is positive that a
+      # connection can be made to the specified host and port.
       # If you set Global.adapter to false it won't start any but deploy a
       # dummy which is useful for testing purposes where you just send fake
       # requests to Dispatcher.
 
       def start_adapter
         if adapter = Global.adapter
-          host, ports = Global.host, Global.ports
+          host, port = Global.host, Global.port
 
           if Global.test_connections
-            Log.info("Adapter: #{adapter}, testing connection to #{host}:#{ports}")
-            test_connections(host, ports)
-            Log.info("and we're running: #{host}:#{ports}")
+            test_connection(host, port)
+            Log.info("Ramaze is ready to run on: #{host}:#{port}")
           end
 
-          adapter.start(host, ports)
+          adapter.start(host, port)
         else # run dummy
-          Global.adapters.add Thread.new{ sleep }
+          Global.server = Thread.new{ sleep }
           Log.warn("Seems like Global.adapter is turned off", "Continue without adapter.")
         end
       rescue LoadError => ex
@@ -73,34 +72,20 @@ module Ramaze
       # them to finish, then goes on to kill them and exit still.
 
       def shutdown
-        Timeout.timeout(1) do
-          Global.adapters.each do |adapter|
-            a = adapter[:adapter]
-            a.shutdown if a.respond_to?(:shutdown)
-          end
+        Timeout.timeout(3) do
+          a = Global.server[:adapter]
+          a.shutdown if a.respond_to?(:shutdown)
         end
       rescue Timeout::Error
-        Global.adapters.each{|a| a.kill! }
+        Global.server.kill!
         # Hard exit! because it won't be able to kill Webrick otherwise
         exit!
-      end
-
-      # check the given host and ports via test_connection.
-      # Shuts down if no connection is possible.
-
-      def test_connections host, ports
-        ports.each do |port|
-          unless test_connection(host, port)
-            Log.error("Cannot open connection on #{host}:#{port}")
-            Ramaze.shutdown
-          end
-        end
       end
 
       # Opens a TCPServer temporarily and returns true if a connection is
       # possible and false if none can be made
 
-      def test_connection host, port
+      def test_connection(host, port)
         Timeout.timeout(1) do
           testsock = TCPServer.new(host, port)
           testsock.close
@@ -108,7 +93,8 @@ module Ramaze
         end
       rescue => ex
         Log.error(ex)
-        false
+        Log.error("Cannot open connection on #{host}:#{port}")
+        Ramaze.shutdown
       end
     end
   end
