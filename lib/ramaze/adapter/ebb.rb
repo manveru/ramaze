@@ -5,27 +5,17 @@ module Ramaze
     class Ebb < Base
       class << self
 
-        # start server on given host and port.
         def run_server host, port
-          server = ::Ebb::Server.new(self, :port => port)
-
-          thread = Thread.new{ server.start }
-          thread[:adapter] = server
+          ::Ebb.log = StringIO.new
+          thread = Thread.new{ ::Ebb.start_server self, :port => port }
+          thread[:adapter] = self
           thread
         end
-      end
-    end
-  end
 
-  class Response
-    def finish(&block)
-      @block = block
+        def shutdown
+          ::Ebb.stop_server
+        end
 
-      if [201, 204, 304].include?(status.to_i)
-        header.delete "Content-Type"
-        [status.to_i, header.to_hash, '']
-      else
-        [status.to_i, header.to_hash, [body].flatten.join]
       end
     end
   end
