@@ -37,6 +37,20 @@ module Requester
     ex.message
   end
 
+  def hget(url = '/', hash = {})
+    @response = get(url, hash)
+    @body = @response.body
+    @status = @response.status
+    Hpricot(@body)
+  end
+
+  def hpost(url = '/', hash = {})
+    @response = post(url, hash)
+    @body = @response.body
+    @status = @response.status
+    Hpricot(@body)
+  end
+
   def url2uri url
     uri = URI.parse(url)
     #p uri.methods.sort.grep(/=/)

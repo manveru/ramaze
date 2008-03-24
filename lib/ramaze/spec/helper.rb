@@ -56,7 +56,10 @@ shared 'browser' do
 end
 
 shared 'requester' do
+  require 'ramaze/spec/helper/mock_http'
   require 'ramaze/spec/helper/requester'
+  extend Requester
+  extend MockHTTP
 end
 
 shared 'xpath' do
