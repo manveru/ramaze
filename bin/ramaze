@@ -121,7 +121,12 @@ if execute
 elsif not instant
   begin
     puts "running `#{runner}'"
+
+    Ramaze::SEEED.replace(runner)
+    Ramaze::APPDIR.replace(File.dirname(File.expand_path(runner)))
+
     require runner.to_s
+
     options[:runner] = runner
   rescue LoadError => ex
     puts ex
