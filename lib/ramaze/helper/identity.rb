@@ -17,6 +17,7 @@ module Ramaze
   # OpenID authentication model.
 
   module Helper::Identity
+    LOOKUP << self
 
     # Simple form for use or overwriting.
     # Has to provide the same functionality when overwritten or directly
