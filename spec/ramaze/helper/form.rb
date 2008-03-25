@@ -48,7 +48,7 @@ describe 'Helper::Form' do
     should 'handle class' do
       form = hget('/new').at(:form)
       inputs = (form/:input)
-      inputs.map{|i| i[:name] }.sort.should == %w[birthday level name online]
+      inputs.map{|i| i[:name] }.sort.should == %w[level name online]
       form.at(:textarea)[:name].should == 'description'
     end
 
@@ -79,6 +79,23 @@ describe 'Helper::Form' do
         {"name" => "online", "checked" => "checked", "type" => "checkbox", "value" => "true"}
       form.at('input[@name=level]').raw_attributes.should ==
         {"name" => "level", "type" => "text", "value" => "2"}
+
+      # TODO:
+      # find a way to XPATH to input[@name="birthday[day]"]
+      # the [] in the name seems to break things, works fine with ()
+
+      # check date
+
+      selects = (form/'select[@name]').select{|s| s[:name] =~ /birthday/ }
+
+      day = selects.find{|s| s[:name] == 'birthday[day]' }
+      day.at('[@selected]')[:value].to_i.should == Date.today.day
+
+      month = selects.find{|s| s[:name] == 'birthday[month]' }
+      month.at('[@selected]')[:value].to_i.should == Date.today.month
+
+      year = selects.find{|s| s[:name] == 'birthday[year]' }
+      year.at('[@selected]')[:value].to_i.should == Date.today.year
     end
 
     should 'handle options' do

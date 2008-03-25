@@ -27,6 +27,7 @@ module Ramaze
     def field_for(hash)
       return if hash[:primary_key]
       args = args_for(hash)
+
       case type = hash[:type]
       when :integer
         field_integer(*args)
@@ -36,6 +37,8 @@ module Ramaze
         field_textarea(*args)
       when :varchar
         field_input(*args)
+      when :date
+        field_date(*args)
       else
         Log.warn "Unknown field: %p" % hash
         field_input(*args)
@@ -46,30 +49,77 @@ module Ramaze
 
     def generate
       columns = object_class.schema.instance_variable_get('@columns')
-      columns.map{|hash| field_for(hash) }.join("\n")
+      columns.map{|hash| field_for(hash) }.flatten.join("\n")
     end
 
 
     def form_attributes
       options.inject([]){|s,(k,v)| s << "#{k}='#{v}'" }.join(' ')
     end
+
+    def start_tag(name, hash)
+      hash.inject("<#{name}"){|s,(k,v)| s << " #{k}='#{v}'" }
+    end
+
+    def closed_tag(name, hash)
+      start_tag(name, hash) << ' />'
+    end
+
+    def textarea(value, hash = {})
+      start_tag(:textarea, hash) << ">#{value}</textarea>"
+    end
+
+    def input(hash = {})
+      closed_tag(:input, hash)
+    end
+
+    def checkbox(hash = {})
+      hash[:type] = :checkbox
+      input(hash)
+    end
+
+    def option(value, hash = {})
+      start_tag(:option, hash) << ">#{value}</option>"
+    end
   end
 
   class ClassForm < Form
     def field_input(name)
-      "<input type='text' name='#{name}' />"
+      input :name => name
     end
 
     def field_textarea(name)
-      "<textarea name='#{name}'></textarea>"
+      textarea '', :name => name
     end
 
     def field_integer(name)
-      field_input(name)
+      input :name => name
     end
 
     def field_boolean(name)
-      "<input type='checkbox' name='#{name}' />"
+      checkbox :name => name
+    end
+
+    def field_date(name)
+      [ :day, :month, :year #, :hour, :minute, :second
+      ].map{|part|
+        [ "<select name='#{name}[#{part}]'>",
+          send("field_date_#{part}"),
+          "</select>"
+        ]
+      }
+    end
+
+    def field_date_day
+      (1..31).map{|d| option(d, :value => d) }
+    end
+
+    def field_date_month
+      (1..12).map{|d| option(d, :value => d) }
+    end
+
+    def field_date_year
+      (1900..2100).map{|d| option(d, :value => d) }
     end
 
     def args_for(hash)
@@ -96,13 +146,42 @@ module Ramaze
 
     def field_boolean(name, value)
       if value
-        "<input type='checkbox' name='#{name}' value='#{value}' checked='checked' />"
+        checkbox :name => name, :value => value, :checked => :checked
       else
-        "<input type='checkbox' name='#{name}' value='#{value}' />"
+        checkbox :name => name, :value => value
       end
     end
 
     def field_date(name, value)
+      [ :day, :month, :year #, :hour, :minute, :second
+      ].map{|part|
+        [ "<select name='#{name}[#{part}]'>",
+          send("field_date_#{part}", value),
+          "</select>"
+        ]
+      }
+    end
+
+    def field_date_day(value)
+      option_range_selected(0..31, value.day)
+    end
+
+    def field_date_month(value)
+      option_range_selected(1..12, value.month)
+    end
+
+    def field_date_year(value)
+      option_range_selected(1900..2100, value.year)
+    end
+
+    def option_range_selected(range, value)
+      range.map do |r|
+        if r == value
+          option(r, :value => r, :selected => :selected)
+        else
+          option(r, :value => r)
+        end
+      end
     end
 
     def args_for(hash)
