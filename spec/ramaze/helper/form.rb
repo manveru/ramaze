@@ -8,8 +8,11 @@ class User < Sequel::Model(:user)
   set_schema do
     primary_key :id
 
+    boolean :online
     varchar :name
+    integer :level
     text :description
+    date :birthday
   end
 end
 
@@ -44,7 +47,8 @@ describe 'Helper::Form' do
 
     should 'handle class' do
       form = hget('/new').at(:form)
-      form.at(:input)[:name].should == 'name'
+      inputs = (form/:input)
+      inputs.map{|i| i[:name] }.sort.should == %w[birthday level name online]
       form.at(:textarea)[:name].should == 'description'
     end
 
@@ -57,14 +61,24 @@ describe 'Helper::Form' do
   describe 'instances' do
     behaves_like 'requester'
 
-    User.create :name => 'manveru', :description => 'Ramaze dev'
+    data = {
+      :name        => 'manveru',
+      :description => 'Ramaze dev',
+      :online      => true,
+      :level       => 2,
+      :birthday    => Time.now
+    }
+    User.create data
 
     should 'handle class' do
       form = hget('/edit/1').at(:form)
-      form.at(:input)[:name].should == 'name'
-      form.at(:input)[:value].should == 'manveru'
-      form.at(:textarea)[:name].should == 'description'
-      form.at(:textarea).inner_text.should == 'Ramaze dev'
+
+      form.at('input[@name=name]').raw_attributes.should ==
+        { "name" => "name", "type" => "text", "value" => "manveru"}
+      form.at('input[@name=online]').raw_attributes.should ==
+        {"name" => "online", "checked" => "checked", "type" => "checkbox", "value" => "true"}
+      form.at('input[@name=level]').raw_attributes.should ==
+        {"name" => "level", "type" => "text", "value" => "2"}
     end
 
     should 'handle options' do
