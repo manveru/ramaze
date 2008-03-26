@@ -3,7 +3,6 @@
 
 # StdLib
 require 'abbrev'
-require 'benchmark'
 require 'cgi'
 require 'digest/md5'
 require 'fileutils'

@@ -11,12 +11,29 @@ class TCAdapterController < Ramaze::Controller
   end
 end
 
-ramaze ramaze_options.merge(:spawn => 10)
+$output = StringIO.new
+Ramaze::Log.loggers << Ramaze::Informer.new($output)
 
 describe "Adapter" do
+  ramaze ramaze_options
   behaves_like "http"
 
   it 'should do a simple request' do
     get('/').body.should == 'The index'
+  end
+
+  it 'should measure request processing time' do
+    Ramaze::Global.benchmarking = true
+    $output.string = ""
+    get('/')
+    $output.string.should =~ /request took/
+    Ramaze::Global.benchmarking = false
+  end
+
+  it 'should not measure request processing time' do
+    Ramaze::Global.benchmarking = false
+    $output.string = ""
+    get('/')
+    $output.string.should.not =~ /request took/
   end
 end
