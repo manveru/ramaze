@@ -13,6 +13,7 @@ class User < Sequel::Model(:user)
     integer :level
     text :description
     date :birthday
+    time :created
   end
 end
 
@@ -66,7 +67,8 @@ describe 'Helper::Form' do
       :description => 'Ramaze dev',
       :online      => true,
       :level       => 2,
-      :birthday    => Time.now
+      :birthday    => Time.now,
+      :created     => Time.now,
     }
     User.create data
 
@@ -86,16 +88,26 @@ describe 'Helper::Form' do
 
       # check date
 
+      date = data[:birthday]
       selects = (form/'select[@name]').select{|s| s[:name] =~ /birthday/ }
 
-      day = selects.find{|s| s[:name] == 'birthday[day]' }
-      day.at('[@selected]')[:value].to_i.should == Date.today.day
+      { :day => date.day, :month => date.month, :year => date.year,
+      }.each do |key, value|
+        select = selects.find{|s| s[:name] == "birthday[#{key}]" }
+        select.at('[@selected]')[:value].to_i.should == value
+      end
 
-      month = selects.find{|s| s[:name] == 'birthday[month]' }
-      month.at('[@selected]')[:value].to_i.should == Date.today.month
+      # check time
 
-      year = selects.find{|s| s[:name] == 'birthday[year]' }
-      year.at('[@selected]')[:value].to_i.should == Date.today.year
+      time = data[:created]
+      selects = (form/'select[@name]').select{|s| s[:name] =~ /created/ }
+
+      { :day => time.day, :month => time.month, :year => time.year,
+        :hour => time.hour, :min => time.min, :sec => time.sec,
+      }.each do |key, value|
+        select = selects.find{|s| s[:name] == "created[#{key}]" }
+        select.at('[@selected]')[:value].to_i.should == value
+      end
     end
 
     should 'handle options' do

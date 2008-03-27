@@ -2,11 +2,7 @@ module Ramaze
   module Helper
     module Form
       def form_for(object, options = {})
-        if object.respond_to?(:schema)
-          Ramaze::ClassForm.new(object, options)
-        else
-          Ramaze::InstanceForm.new(object, options)
-        end
+        Ramaze::Form.pick(object, options)
       end
     end
   end
@@ -14,13 +10,36 @@ module Ramaze
   class Form
     attr_accessor :object, :options
 
+    YEARS, MONTHS, DAYS, HOURS, MINUTES, SECONDS =
+      (1900..2100), (1..12), (1..31), (0..23), (0..59), (0..59)
+
+    # How _elegant_ ...
+    def self.pick(object, options = {})
+      if defined?(Sequel::Model)
+        if object.is_a?(Sequel::Model)
+          options[:layer] ||= Layer::Sequel
+          InstanceForm.new(object, options)
+        elsif object.ancestors.include?(Sequel::Model)
+          options[:layer] ||= Layer::Sequel
+          ClassForm.new(object, options)
+        end
+      else
+        raise "Unknown ORM for: %p" % object
+      end
+    end
+
     def initialize(object, options = {})
       @object, @options = object, options
+      if layer = options.delete(:layer)
+        extend layer
+      end
     end
 
     def to_s
       out = "<form #{form_attributes}>"
+      out << "<fieldset>"
       out << generate
+      out << "</fieldset>"
       out << "</form>"
     end
 
@@ -28,30 +47,29 @@ module Ramaze
       return if hash[:primary_key]
       args = args_for(hash)
 
-      case type = hash[:type]
-      when :integer
-        field_integer(*args)
-      when :boolean
-        field_boolean(*args)
-      when :text
-        field_textarea(*args)
-      when :varchar
-        field_input(*args)
-      when :date
-        field_date(*args)
-      else
-        Log.warn "Unknown field: %p" % hash
-        field_input(*args)
-      end
+      inner =
+        case type = hash[:type]
+        when :integer
+          field_integer(*args)
+        when :boolean
+          field_boolean(*args)
+        when :text
+          field_textarea(*args)
+        when :varchar
+          field_input(*args)
+        when :date
+          field_date(*args)
+        when :time
+          field_time(*args)
+        else
+          Log.warn "Unknown field: %p" % hash
+          field_input(*args)
+        end
+
+      "<label>#{args.first}: </label>\n#{inner}"
     end
 
     private
-
-    def generate
-      columns = object_class.schema.instance_variable_get('@columns')
-      columns.map{|hash| field_for(hash) }.flatten.join("\n")
-    end
-
 
     def form_attributes
       options.inject([]){|s,(k,v)| s << "#{k}='#{v}'" }.join(' ')
@@ -81,6 +99,36 @@ module Ramaze
     def option(value, hash = {})
       start_tag(:option, hash) << ">#{value}</option>"
     end
+
+    def field_date_generic
+      [ [ :day, DAYS ],
+        [ :month, MONTHS ],
+        [ :year, YEARS ],
+      ].map{|(sel, range)|
+        yield(sel, range).join
+      }.join("\n")
+    end
+
+    def field_time_generic
+      [ [ :day, DAYS ],
+        [ :month, MONTHS ],
+        [ :year, YEARS ],
+        [ :hour, HOURS ],
+        [ :min, MINUTES ],
+        [ :sec, SECONDS ]
+      ].map{|(sel, range)|
+        yield(sel, range).join
+      }.join("\n")
+    end
+
+    module Layer
+      module Sequel
+        def generate
+          columns = object_class.schema.instance_variable_get('@columns')
+          columns.map{|hash| field_for(hash) }.flatten.join("<br />\n")
+        end
+      end
+    end
   end
 
   class ClassForm < Form
@@ -101,25 +149,19 @@ module Ramaze
     end
 
     def field_date(name)
-      [ :day, :month, :year #, :hour, :minute, :second
-      ].map{|part|
-        [ "<select name='#{name}[#{part}]'>",
-          send("field_date_#{part}"),
-          "</select>"
-        ]
+      field_date_generic{|sel, range|
+        [ "<select name='#{name}[#{sel}]'>",
+          range.map{|d| option(d, :value => d) },
+          "</select>" ]
       }
     end
 
-    def field_date_day
-      (1..31).map{|d| option(d, :value => d) }
-    end
-
-    def field_date_month
-      (1..12).map{|d| option(d, :value => d) }
-    end
-
-    def field_date_year
-      (1900..2100).map{|d| option(d, :value => d) }
+    def field_time(name)
+      field_time_generic{|sel, range|
+        [ "<select name='#{name}[#{sel}]'>",
+          range.map{|d| option(d, :value => d) },
+          "</select>" ]
+      }
     end
 
     def args_for(hash)
@@ -153,25 +195,19 @@ module Ramaze
     end
 
     def field_date(name, value)
-      [ :day, :month, :year #, :hour, :minute, :second
-      ].map{|part|
-        [ "<select name='#{name}[#{part}]'>",
-          send("field_date_#{part}", value),
-          "</select>"
-        ]
-      }
+      field_date_generic do |sel, range|
+        [ "<select name='#{name}[#{sel}]'>",
+          option_range_selected(range, value.send(sel)),
+          "</select>" ]
+      end
     end
 
-    def field_date_day(value)
-      option_range_selected(0..31, value.day)
-    end
-
-    def field_date_month(value)
-      option_range_selected(1..12, value.month)
-    end
-
-    def field_date_year(value)
-      option_range_selected(1900..2100, value.year)
+    def field_time(name, value)
+      field_time_generic do |sel, range|
+        [ "<select name='#{name}[#{sel}]'>",
+          option_range_selected(range, value.send(sel)),
+          "</select>" ]
+      end
     end
 
     def option_range_selected(range, value)
