@@ -262,7 +262,7 @@ end
 desc "upload packages to rubyforge"
 task 'release' => ['distribute'] do
   sh 'rubyforge login'
-  #sh "rubyforge add_release ramaze ramaze #{VERS} pkg/ramaze-#{VERS}.gem"
+  sh "rubyforge add_release ramaze ramaze #{VERS} pkg/ramaze-#{VERS}.gem"
 
   require 'open-uri'
   require 'hpricot'
