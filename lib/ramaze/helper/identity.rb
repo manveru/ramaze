@@ -48,7 +48,7 @@ module Ramaze
       openid_request.return_to_args['did_pape'] = 'y'
 
       root         = "http://#{request.http_host}/"
-      return_to    = root[0..-2] + Rs(:openid_complete)
+      return_to    = request.url.sub(/#{Ramaze::Global.mapping.invert[self.class]}.*$/, Rs(:openid_complete))
       immediate = false
       if openid_request.send_redirect?(root, return_to, immediate)
         redirect_url = openid_request.redirect_url(root, return_to, immediate)
@@ -70,11 +70,11 @@ module Ramaze
     # TODO:
     #   - maybe using StackHelper, but this is a really minimal overlap?
     def openid_complete
-      openid_response = openid_consumer.complete(request.params, request.request_uri)
+      openid_response = openid_consumer.complete(request.params, request.url)
 
       case openid_response.status
       when OpenID::Consumer::FAILURE
-        flash[:error] = 'OpenID - Verification failed.'
+        flash[:error] = 'OpenID - Verification failed: ' + openid_response.message
       when OpenID::Consumer::SUCCESS
         session[:openid_identity] = openid_response.identity_url
         flash[:success] = 'OpenID - Verification done.'
