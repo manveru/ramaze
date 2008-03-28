@@ -1,58 +1,122 @@
-__DIR__ = File.expand_path(File.dirname(__FILE__))
+require "optparse"
+
 class String
   def /(o) File.join(self, o.to_s) end
 end
 
-def memsize(pid)
-  (`ps -p #{pid} -o rss=`.strip.to_f/10.24).round/100.0
-end
+class RamazeBenchmark
+  attr_reader :results
+  attr_accessor :requests, :adapter, :port, :log, :display_code, :target
 
-PORT = rand(32768-1)+32768
-REQUESTS = 100
-CONCURRENT = 10
-SIGNAL = 'SIGKILL'
+  def initialize()
+    @adapter = :webrick
+    @port = rand(32768-1)+32768
+    @requests = 100
+    @concurrent = 10
+    @signal = 'SIGKILL'
+    @log = false
+    @display_code = false
+    @target = nil
+  end
 
-class Results
-  def initialize(*a) @a = a end
-  def method_missing(*a) @a.each {|x| x.__send__(*a) } end
-end
+  def start
+    __DIR__ = File.expand_path(File.dirname(__FILE__))
+    Dir[__DIR__/"suite"/"*.rb"].each do |filename|
+      next unless @target.kind_of?(Regexp) and @target.match(filename)
+      benchmark(filename, @adapter)
+    end
+  end
 
-results = Results.new(File.open(__DIR__/'results.txt', 'w'), $stderr)
+  def memsize(pid)
+    (`ps -p #{pid} -o rss=`.strip.to_f/10.24).round/100.0
+  end
 
-Dir[__DIR__/"suite"/"*.rb"].each do |filename|
-  file = filename.scan(/\/([^\/]+)\.rb/).to_s
-  next if ARGV.size > 0 && !ARGV.include?(file)
+  def l(line = "\n")
+    puts line
+  end
 
-  results.puts "====== #{file} ======"
-  results.puts "<code ruby>\n#{File.read(filename)}\n</code>\n\n"
+  def flush
+    $stdout.flush
+  end
 
-  adapters = case file
-             when 'simple' then %w[ webrick mongrel ]
-             else []
-             end << 'evented_mongrel'
+  def ab
+    `ab -c #{@concurrent} -n #{@requests} http://127.0.0.1:#{@port}/`.split("\n")
+  end
 
-  adapters.each do |adapter|
+  def benchmark(filename, adapter)
+    file = filename.scan(/\/([^\/]+)\.rb/).to_s
+    #next if ARGV.size > 0 && !ARGV.include?(file)
 
-    results.puts "=== #{adapter} ==="
+    l "====== #{file} ======"
+    l "Adapter:".ljust(24) + adapter.to_s
+    l "Requests:".ljust(24) + @requests.to_s
+    l "Concurrent:".ljust(24) + @concurrent.to_s
+    if @display_code
+      l "<code ruby>\n#{File.read(filename)}\n</code>\n\n"
+    end
 
     ramaze = fork do
-      require filename
-      Ramaze.start :adapter => adapter, :port => PORT
+      begin
+        require filename
+        unless @log
+          Ramaze::Log.loggers = []
+        end
+        Ramaze.start :adapter => adapter, :port => @port
+      rescue LoadError => ex
+        l "ERROR: " + ex.to_s
+      end
     end
 
     # wait for ramaze to start up
     sleep 1
 
-    results.puts "  Mem usage before:".ljust(26) + "#{memsize(ramaze)}MB"
-    results.puts `ab -c #{CONCURRENT} -n #{REQUESTS} http://127.0.0.1:#{PORT}/`.grep(/^(Fail|Req|Time)/).map{|l|"  #{l}"}
-    results.puts "  Mem usage after:".ljust(26)  + "#{memsize(ramaze)}MB"
+    l "Mem usage before:".ljust(24) + "#{memsize(ramaze)}MB"
+    l ab.grep(/^(Fail|Req|Time)/)
+    l "Mem usage after:".ljust(24)  + "#{memsize(ramaze)}MB"
+    l
 
-    results.puts "\n"
-    results.flush
+    flush
 
-    Process.kill(SIGNAL, ramaze)
+    Process.kill(@signal, ramaze)
     Process.waitpid2(ramaze)
   end
 end
 
-results.close
+$bm = RamazeBenchmark.new
+
+OptionParser.new do |opt|
+  opt.on('-a', '--adapter [name]') do |adapter|
+    $bm.adapter = adapter
+  end
+
+  opt.on('-r', '--request-size [n]') do |n|
+    $bm.requests = n
+  end
+
+  opt.on('-c', '--concurrent [n]') do |n|
+    $bm.concurrent = n
+  end
+
+  opt.on('--code') do |n|
+    $bm.display_code = true
+  end
+
+  opt.on('-p', '--port [n]') do |n|
+    $bm.port = n
+  end
+
+  opt.on('-l', '--log') do |log|
+    $bm.log = log
+  end
+
+  opt.on('--target [name]') do |name|
+    $bm.target = Regexp.compile(name)
+  end
+
+  opt.on('-h', '--help') do
+    puts opt.help
+    exit
+  end
+end.parse!(ARGV)
+
+$bm.start
