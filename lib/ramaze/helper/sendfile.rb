@@ -10,9 +10,7 @@ module Ramaze
     # it, then throws :respond to finish off the request.
 
     def send_file(file, mime_type = Tool::MIME.type_for(file))
-      response.header["Content-Type"] = mime_type
-      response.body = File.open(file)
-      throw(:respond)
+      respond File.open(file), 200, 'Content-Type' => mime_type
     end
   end
 end
