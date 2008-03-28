@@ -5,7 +5,7 @@ module Ramaze #:nodoc:
   module Version #:nodoc:
     MAJOR = 0
     MINOR = 3
-    TINY  = 9
+    TINY  = 9.5
 
     STRING = [MAJOR, MINOR, TINY].join('.')
   end
