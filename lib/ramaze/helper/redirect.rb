@@ -48,6 +48,8 @@ module Ramaze
       raw_redirect(target, opts)
     end
 
+    # Do not perform any mutations on the target like #redirect does.
+    # Suitable if you have to redirect to a different subdomain or host.
     def raw_redirect(target, opts = {})
       target = target.to_s
       header = {'Location' => target}
@@ -59,6 +61,7 @@ module Ramaze
       throw(:redirect, [body, status, header])
     end
 
+    # Are we being redirected?
     def redirected?
       request[:redirected]
     end

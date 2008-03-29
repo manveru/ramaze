@@ -44,6 +44,7 @@ module Ramaze
         Log.dev("Added caches for: #{keys.join(', ')}")
       end
 
+      # Define a new cache available by Cache::key
       def add_on(key, cache_class)
         CACHES[key] = new(cache_class)
         CACHES[key].instance_variable_set("@cache_name", key)

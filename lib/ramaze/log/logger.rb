@@ -15,6 +15,7 @@ module Ramaze
       __send__(tag, args.join("\n"))
     end
 
+    # Stub for compatibility
     def dev(*args)
       debug(*args)
     end

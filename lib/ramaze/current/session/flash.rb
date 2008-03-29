@@ -11,6 +11,8 @@ module Ramaze
     # to touch this class at all.
     class Flash
       include Enumerable
+
+      # iterate over the combined session
       def each(&block)
         combined.each(&block)
       end

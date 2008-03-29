@@ -3,6 +3,14 @@
 
 module Ramaze
   module Helper::Formatting
+
+    # Format a floating number nicely for display.
+    #
+    # Usage:
+    #   number_format(123.123)       # => '123.123'
+    #   number_format(123456.12345) # => '123,456.12345'
+    #   number_format(123456.12345, '.') # => '123.456,12345'
+
     def number_format(n, delimiter = ',')
       delim_l, delim_r = delimiter == ',' ? %w[, .] : %w[. ,]
       h, r = n.to_s.split('.')

@@ -35,6 +35,7 @@ module Ramaze
           template.render_with(data)
         end
 
+        # Compile a template, return instance of Amrita2::Template
         def compile(action, template)
           ::Amrita2::Template.new(template)
         end

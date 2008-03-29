@@ -39,6 +39,7 @@ module Ramaze
         stack.last
       end
 
+      # Return the stacked actions for the current request
       def stack
         Thread.current[:action_stack] ||= []
       end
@@ -108,6 +109,7 @@ module Ramaze
       self[:binding] ||= instance.instance_eval{ binding }
     end
 
+    # Try to figure out a sane name for current action.
     def name
       File.basename((self[:method] || self[:template]).to_s).split('.').first
     end

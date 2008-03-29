@@ -35,6 +35,8 @@ module Ramaze
           end
         end
 
+        # Nicely formatted listing for given path, template is "stolen" from
+        # lighttpd
         def list_for(path)
           root = ::File.expand_path(Global.public_root)
           display = path.gsub(/^#{Regexp.escape(root)}\/?/, '/')

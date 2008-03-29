@@ -49,6 +49,7 @@ module Ramaze
     COOKIE = { :path => '/' }
 
     class << self
+      # Shortcut for Current.session
       def current
         Current.session
       end

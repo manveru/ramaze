@@ -68,6 +68,8 @@ module Ramaze
           caching_compile(action, template)
         end
 
+        # If Global.compile is enabled try t find the action in the cache,
+        # otherwise give a new compiled object back
         def caching_compile(action, template)
           if Global.compile
             Cache.compiled[action.relaxed_hash] ||= compile(action, template)

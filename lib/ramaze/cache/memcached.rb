@@ -63,6 +63,7 @@ module Ramaze
       get_multi(*keys).values_at(*keys)
     end
 
+    # Flush everything, dangerous!
     def clear
       @cache.flush_all
     end

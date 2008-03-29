@@ -9,6 +9,8 @@ end
 require 'ramaze'
 require 'ramaze/spec/helper/bacon'
 
+# Invoke ramaze with a set of default options suitable for testing.
+# you may pass your options that will override the defaults.
 def ramaze(options = {})
   options = {
     :adapter      => false,

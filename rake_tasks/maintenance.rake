@@ -324,8 +324,14 @@ task 'undocumented-module' do
 
   all = {}
   files = Dir['lib/**/*.rb']
+  ignore = [
+    %r'contrib/gettext/(mo|po)\.rb',
+    %r'snippets/dictionary\.rb',
+  ]
 
   files.each do |file|
+    next if ignore.any?{|i| file =~ i}
+    puts "scanning #{file}"
     t, m = SimpleDoc.new(File.read(file)).scan
     all[file] = [t, m]
   end
@@ -374,11 +380,11 @@ end
 desc "list all undocumented methods"
 task 'undocumented' do
 	$VERBOSE = false
-	Rake::Task['undocumented-module'].execute
+	Rake::Task['undocumented-module'].invoke
 end
 
 desc "list all undocumented methods verbosely"
 task 'undocumented-verbose' do
 	$VERBOSE = true
-	Rake::Task['undocumented-module'].execute
+	Rake::Task['undocumented-module'].invoke
 end
