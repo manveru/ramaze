@@ -12,7 +12,7 @@ class Thread
         Thread.current[k] = thread[k] unless k.to_s =~ /^__/
       end
 
-      yield *args
+      yield(*args)
     end
   end
 end

@@ -12,7 +12,7 @@ module Ramaze
   #   Ramaze.contrib :gzip_filter
 
   def self.contrib(*args)
-    Contrib.load *args
+    Contrib.load(*args)
   end
 
   # A module used for loading contrib modules.

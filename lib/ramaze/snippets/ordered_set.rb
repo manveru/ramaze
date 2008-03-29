@@ -19,7 +19,7 @@ class OrderedSet < BlankSlate
   def method_missing(meth, *args, &block)
     case meth.to_s
     when /push|unshift|\<\</
-      @set.delete *args
+      @set.delete(*args)
     when '[]='
       @set.map! do |e|
         if ::Array === args.last

@@ -13,6 +13,7 @@ class Struct
   #  point.values_at(0, 1)
   #  # => [15, 10]
 
+  undef values_at
   def values_at(*keys)
     if keys.all?{|key| key.respond_to?(:to_int) and not key.is_a?(Symbol) }
       keys.map{|key| values[key.to_int] }
