@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze/template/ezamar/engine'
-require 'ramaze/helper/partial'
+
 
 module Ezamar
 
