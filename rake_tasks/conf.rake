@@ -52,6 +52,7 @@ You can now do following:
 }.strip
 
 AUTHOR_MAP = {
+  'andy@tinnedfruit.org'                    => 'Andy Smith',
   'ahoward'                                 => 'Ara T. Howard',
   'ara.t.howard@gmail.com'                  => 'Ara T. Howard',
   'blueonyx@dev-area.net'                   => 'Martin Hilbig',
