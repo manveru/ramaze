@@ -37,7 +37,7 @@ opts = OptionParser.new do |opt|
     options[:create] = project_name
   end
 
-  opt.on('-eSTRING', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
+  opt.on('-e', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
     options[:execute] = execute
   end
 
@@ -117,6 +117,7 @@ unless ARGV.any? or [runner, execute, instant].any?
 end
 
 if execute
+  require 'ramaze/controller/main' if instant
   eval execute
 elsif not instant
   begin
