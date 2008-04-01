@@ -97,6 +97,8 @@ module Ramaze
       sri.interval = interval if sri
     end
 
+    # Find a suitable template_root, if none of these is a directory just use
+    # the currently set one.
     def template_root
       [ tr = self[:template_root],
         APPDIR/tr,
@@ -104,12 +106,15 @@ module Ramaze
       ].find{|path| File.directory?(path) } || self[:template_root]
     end
 
+    # Find a suitable public_root, if none of these is a directory just use the
+    # currently set one.
     def public_root
       [ pr = self[:public_root],
         APPDIR/pr,
       ].find{|path| File.directory?(path) } || self[:public_root]
     end
 
+    # Inject the Ramaze::Dispatcher::Directory if this is set to true
     def list_directories=(active)
       require 'ramaze/dispatcher'
       d = Ramaze::Dispatcher

@@ -24,6 +24,7 @@ module Ramaze
           nagoro.result(:file => file, :binding => action.binding)
         end
 
+        # Use file_or_result instead of reaction_or_file
         def wrap_compile(action, template = nil)
           template ||= file_or_result(action)
           caching_compile(action, template)

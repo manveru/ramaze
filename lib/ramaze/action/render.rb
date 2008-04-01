@@ -50,6 +50,9 @@ module Ramaze
       end
     end
 
+    # Uses files in the Global.public_root to provide a static ressource on
+    # next request and returns the rendered action
+
     def cached_render_file
       rendered = uncached_render
 
@@ -59,6 +62,9 @@ module Ramaze
 
       rendered
     end
+
+    # Using memory to cache, more sophisticated in terms of control but limited
+    # in terms of your RAM.
 
     def cached_render_memory
       action_cache = Cache.actions
@@ -145,6 +151,8 @@ module Ramaze
         layout_action
       end
     end
+
+    # List the cached actions, just a shortcut really
 
     def actions_cached
       controller.trait[:actions_cached]

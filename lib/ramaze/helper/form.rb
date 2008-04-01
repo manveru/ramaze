@@ -1,6 +1,10 @@
 module Ramaze
   module Helper
     module Form
+      # Pass it an object for your ORM and options for the <form> tag
+      # Usage:
+      #   form_for(User, :action => '/create')
+      #   form_for(Tag, :action => '/find', :method => 'GET')
       def form_for(object, options = {})
         Ramaze::Form.pick(object, options)
       end
@@ -13,7 +17,15 @@ module Ramaze
     YEARS, MONTHS, DAYS, HOURS, MINUTES, SECONDS =
       (1900..2100), (1..12), (1..31), (0..23), (0..59), (0..59)
 
-    # How _elegant_ ...
+    # TODO:
+    #   How _elegant_ ...
+    #   Tries to find the right module for extending the Form instance.
+    #   It's problematic since the boundaries of what an model instance or model
+    #   class looks like is very fuzzy, also a problem is that the ORM may not be
+    #   available/required.
+    #
+    #   Maybe we can abstract that a bit by going through an array of procs for
+    #   testing?
     def self.pick(object, options = {})
       if defined?(Sequel::Model)
         if object.is_a?(Sequel::Model)
@@ -28,6 +40,7 @@ module Ramaze
       end
     end
 
+    # Create new instance of Form plus the layer for the ORM
     def initialize(object, options = {})
       @object, @options = object, options
       if layer = options.delete(:layer)
@@ -35,6 +48,7 @@ module Ramaze
       end
     end
 
+    # Generate and return the final form
     def to_s
       out = "<form #{form_attributes}>"
       out << "<fieldset>"
@@ -43,6 +57,7 @@ module Ramaze
       out << "</form>"
     end
 
+    # Decide on the strucuture of the tag based on the hash
     def field_for(hash)
       return if hash[:primary_key]
       args = args_for(hash)
@@ -121,8 +136,13 @@ module Ramaze
       }.join("\n")
     end
 
+    # Here go all the layers that are extended for specific ORMs
     module Layer
+      # Layer for Sequel, only generate needs to be implemented, may change in
+      # future if we abstract more for different ORMs
       module Sequel
+        # A bit nasty, get the @columns of the object and generate its
+        # field_for
         def generate
           columns = object_class.schema.instance_variable_get('@columns')
           columns.map{|hash| field_for(hash) }.flatten.join("<br />\n")
@@ -131,23 +151,29 @@ module Ramaze
     end
   end
 
+  # Form for the model class itself, very similar to an empty instance.
   class ClassForm < Form
+    # <input name="name" />
     def field_input(name)
       input :name => name
     end
 
+    # <textarea name="name"></textarea>
     def field_textarea(name)
       textarea '', :name => name
     end
 
+    # <input name="name" />
     def field_integer(name)
       input :name => name
     end
 
+    # <input type="checkbox" name="name" />
     def field_boolean(name)
       checkbox :name => name
     end
 
+    # <select> with lots of <option>s
     def field_date(name)
       field_date_generic{|sel, range|
         [ "<select name='#{name}[#{sel}]'>",
@@ -156,6 +182,7 @@ module Ramaze
       }
     end
 
+    # <select> with lots of <option>s
     def field_time(name)
       field_time_generic{|sel, range|
         [ "<select name='#{name}[#{sel}]'>",
@@ -164,15 +191,18 @@ module Ramaze
       }
     end
 
+    # picks the :name
     def args_for(hash)
       [ hash[:name] ]
     end
 
+    # Should be that way, at least for Sequel
     def object_class
       @object
     end
   end
 
+  # Form for instances of the model class
   class InstanceForm < Form
     def field_input(name, value)
       "<input type='text' name='#{name}' value='#{value}'/>"

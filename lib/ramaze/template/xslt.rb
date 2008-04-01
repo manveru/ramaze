@@ -44,6 +44,7 @@ module Ramaze
 
         private
 
+        # further abstraction for the transform
         def do_transform(action)
           result, file = result_and_file(action)
 

@@ -151,6 +151,8 @@ module Ramaze
         return nil, []
       end
 
+      # List or create a list of action methods to be cached
+
       def cached_action_methods
         Cache.action_methods[self] ||= action_methods
       end
@@ -212,6 +214,11 @@ module Ramaze
 
         all_extensions
       end
+
+      # Raises Ramaze::Error::NoFilter
+      # TODO:
+      #   * is this called at all for anybody?
+      #     I think everybody does have filters.
 
       def raise_no_filter(path)
         raise Ramaze::Error::NoFilter, "No Filter found for `#{path}'"

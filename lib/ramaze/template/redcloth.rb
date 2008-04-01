@@ -10,6 +10,7 @@ module Ramaze
       ENGINES[self] = %w[ redcloth ]
 
       class << self
+        # Take the action and directly transform it into html by RedCloth
         def transform(action)
           restrictions = action.controller.trait[:redcloth_options] || []
           rules = action.controller.trait[:redcloth_options] || []
