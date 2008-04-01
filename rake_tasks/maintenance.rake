@@ -289,6 +289,8 @@ task 'undocumented-module' do
   require 'strscan'
   require 'term/ansicolor'
 
+  $stdout.sync = true
+
   class String
     include Term::ANSIColor
   end
@@ -311,7 +313,7 @@ task 'undocumented-module' do
               #p @s.matched
             elsif @s.scan(/(?:module ).*/)
               #p @s.matched
-            elsif @s.scan(/(?:def )[\w?!*=+\/-]+(?=[\(\s])/)
+            elsif @s.scan(/(?:[\s$]def\s+)[\w?!*=+\/-]+(?=[\(\s])/)
               total << @s.matched.split.last
               prev = @s.pre_match.split("\n")
               prev.delete_if{|s| s.strip.empty?}
@@ -334,14 +336,17 @@ task 'undocumented-module' do
   ignore = [
     %r'contrib/gettext/(mo|po)\.rb',
     %r'snippets/dictionary\.rb',
+    %r'lib/vendor',
   ]
 
+  print "scanning ~#{files.size} files "
   files.each do |file|
     next if ignore.any?{|i| file =~ i}
-    puts "scanning #{file}"
+    print "."
     t, m = SimpleDoc.new(File.read(file)).scan
     all[file] = [t, m]
   end
+  puts " done."
 
   failed = all.reject{|k,(t,m)| m.size == 0}
 
@@ -363,7 +368,7 @@ task 'undocumented-module' do
     color = colors.find{|k,v| k.include?(ratio)}.last
     complete = ms.to_f/ts.to_f
     mthc = "method"
-    if ratio != 100
+    if ms > 0
       puts "#{file.ljust(max)}\t[#{[mss, tss].join('/').center(8)}]".send(color)
       mthc = "methods" if ts > 1
       if $VERBOSE
@@ -381,7 +386,21 @@ task 'undocumented-module' do
   colors.sort_by{|k,v| k.begin}.each do |r, color|
     print "[#{r.inspect}] ".send(color)
   end
-  puts
+  puts "", ""
+
+  documented = 0
+  undocumented = 0
+
+  all.values.each do |(d,m)|
+    documented += d.size
+    undocumented += m.size
+  end
+
+  total = documented + undocumented
+  ratio = (documented * 100.0) / total
+
+  puts "Total documented: #{documented}, undocumented: #{undocumented}"
+  puts "%.2f%% of Ramaze is documented!" % ratio
 end
 
 desc "list all undocumented methods"
