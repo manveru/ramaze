@@ -16,6 +16,18 @@ module Ramaze
     ]
 
     module Methods
+      def self.included other
+        other.send :extend, Trinity
+        other.send :extend, Methods
+        other.send :include, Trinity
+        super
+      end
+
+      def self.extend_object other
+        other.send :extend, Trinity
+        super
+      end
+
       private
 
       # This loads the helper-files from /ramaze/helper/helpername.rb and
@@ -58,18 +70,6 @@ module Ramaze
       def use_helper(mod)
         include mod
         extend mod
-      end
-
-      def Methods.included other
-        other.send :extend, Trinity
-        other.send :include, Trinity
-        other.send :extend, Methods
-        super
-      end
-
-      def Methods.extend_object other
-        other.send :extend, Trinity
-        super
       end
     end
   end

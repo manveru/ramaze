@@ -4,6 +4,8 @@
 module Ramaze
   class Action
 
+    # Use your block and jump into the Action::stack - this allows you to call
+    # nested actions.
     def stack
       Action.stack << self
       yield self

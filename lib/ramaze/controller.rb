@@ -126,6 +126,19 @@ module Ramaze
         end
       end
 
+      # Deny layout for passed names of actions.
+      # Name should be name of the method or template without extension, as
+      # String or Symbol
+      #
+      # Usage:
+      #   class MainController < Ramaze::Controller
+      #     deny_layout :atom
+      #
+      #     def atom
+      #       "I won't have layout"
+      #     end
+      #   end
+
       def deny_layout(*actions)
         actions.each do |action|
           layout[:deny] << action.to_s
@@ -210,6 +223,15 @@ module Ramaze
             trait "#{this}_template" => {:controller => controller, :action => action} 
         end
       end
+
+      # This is a method to specify the templating engine for your controller.
+      # It basically just is sugar for:
+      #   trait :engine => Haml
+      #
+      # Usage:
+      #   class MainController < Ramaze::Controller
+      #     engine :Haml
+      #   end
 
       def engine(name)
         name = Template.const_get(name)
