@@ -2,6 +2,7 @@ module Bacon
   module PrettyOutput
     NAME = ''
 
+    # store name and run
     def handle_specification(name)
       NAME.replace name
 			puts NAME
@@ -9,6 +10,7 @@ module Bacon
 			puts
     end
 
+    # Core, yields the requirement and outputs problems
     def handle_requirement(description)
 	    print "- #{description}\n"
       error = yield
@@ -29,6 +31,7 @@ module Bacon
       end
     end
 
+    # Show nicer output on error
     def general_error
       puts "", ErrorLog
       ErrorLog.scan(/^\s*(.*?):(\d+): #{NAME} - (.*?)$/) do
@@ -37,6 +40,7 @@ module Bacon
       ErrorLog.replace ''
     end
 
+    # output summary
     def handle_summary
 	    puts
       puts "%d tests, %d assertions, %d failures, %d errors" %
@@ -47,20 +51,24 @@ end
 
 if defined?(Ramaze::Logging)
   module Ramaze
+    # Special Logger, stores everything in its history
     class SpecLogger
       include Ramaze::Logging
       include Enumerable
 
       attr_accessor :history
 
+      # Create new history
       def initialize
         @history = []
       end
 
+      # Yield the history
       def each
         @history.each{|e| yield(e) }
       end
 
+      # general log
       def log(tag, str)
         @history << [tag, str]
       end

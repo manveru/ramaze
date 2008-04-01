@@ -3,7 +3,9 @@
 
 require(File.join(File.dirname(__FILE__), 'blankslate'))
 
+# Basically an Set, but with Order, ain't that obivous?
 class OrderedSet < BlankSlate
+  # Create new instances, optionally pass the first set
   def initialize(*args)
     if args.size == 1
       @set = args.shift
@@ -16,6 +18,8 @@ class OrderedSet < BlankSlate
     @set.uniq!
   end
 
+  # Delegate everything, but controlled, keep elements unique.
+  # Warning, this is not really atomic.
   def method_missing(meth, *args, &block)
     case meth.to_s
     when /push|unshift|\<\</

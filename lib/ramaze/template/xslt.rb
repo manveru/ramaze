@@ -54,10 +54,12 @@ module Ramaze
           xslt.serve
         end
 
+        # Synchronize the block to run with the mutex
         def ext_functions_synchronize &block
           XSLT_EXT_FUNCTIONS_LOCK.synchronize &block
         end
 
+        # Expose functors
         def register_ext_functions instance, fun_xmlns
 
           instance.methods.each do |method|
@@ -82,6 +84,7 @@ module Ramaze
           o = Class.new.new
 
           class << o
+            # Delayed creation of method
             def create_method(name, &block)
               self.class.send(:define_method, name, &block)
             end
