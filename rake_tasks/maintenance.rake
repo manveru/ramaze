@@ -311,7 +311,7 @@ task 'undocumented-module' do
               #p @s.matched
             elsif @s.scan(/(?:module ).*/)
               #p @s.matched
-            elsif @s.scan(/(?:def )[\w?!*+\/-]+(?=[\(\s])/)
+            elsif @s.scan(/(?:def )[\w?!*=+\/-]+(?=[\(\s])/)
               total << @s.matched.split.last
               prev = @s.pre_match.split("\n")
               prev.delete_if{|s| s.strip.empty?}
