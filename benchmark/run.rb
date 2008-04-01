@@ -1,12 +1,14 @@
 require "optparse"
+require "timeout"
+require "net/http"
 
 class String
   def /(o) File.join(self, o.to_s) end
 end
 
 class RamazeBenchmark
-  attr_reader :results
   attr_accessor :requests, :adapter, :port, :log, :display_code, :target
+  attr_accessor :concurrent, :path, :benchmarker
 
   def initialize()
     @adapter = :webrick
@@ -17,106 +19,130 @@ class RamazeBenchmark
     @log = false
     @display_code = false
     @target = nil
+    @host = "localhost"
+    @path = "/"
+    @target = /.+/
+    @ljust = 24
+    yield self
   end
 
   def start
     __DIR__ = File.expand_path(File.dirname(__FILE__))
     Dir[__DIR__/"suite"/"*.rb"].each do |filename|
-      next unless @target.kind_of?(Regexp) and @target.match(filename)
-      benchmark(filename, @adapter)
+      benchmark(filename) if @target.match(filename)
     end
   end
 
+  # start to measure
+  def benchmark(filename)
+    file = filename.scan(/\/([^\/]+)\.rb/).to_s
+
+    l "====== #{file} ======"
+    l :Adapter,    @adapter
+    l :Requests,   @requests
+    l :Concurrent, @concurrent
+    l :Path,       @path
+    l "<code ruby>\n#{File.read(filename)}\n</code>\n\n" if @display_code
+
+    ramaze(filename) do |pid|
+      l "Mem usage before", "#{memsize(pid)}MB"
+      l ab.grep(/^(Fail|Req|Time)/)
+      l "Mem usage after", "#{memsize(pid)}MB"
+      l
+    end
+  end
+
+  private
+
+  # memory usage size
   def memsize(pid)
     (`ps -p #{pid} -o rss=`.strip.to_f/10.24).round/100.0
   end
 
-  def l(line = "\n")
-    puts line
+  # output
+  def l(line = "\n", val = nil)
+    puts (val ? (line.to_s + ":").ljust(@ljust) + val.to_s : line)
   end
 
-  def flush
-    $stdout.flush
+  # url of ramaze server
+  def url
+    "http://#{@host}:#{@port}#{@path}"
   end
 
+  # apache benchmark
   def ab
-    `ab -c #{@concurrent} -n #{@requests} http://127.0.0.1:#{@port}/`.split("\n")
+    `ab -c #{@concurrent} -n #{@requests} #{url}/`.split("\n")
   end
 
-  def benchmark(filename, adapter)
-    file = filename.scan(/\/([^\/]+)\.rb/).to_s
-    #next if ARGV.size > 0 && !ARGV.include?(file)
-
-    l "====== #{file} ======"
-    l "Adapter:".ljust(24) + adapter.to_s
-    l "Requests:".ljust(24) + @requests.to_s
-    l "Concurrent:".ljust(24) + @concurrent.to_s
-    if @display_code
-      l "<code ruby>\n#{File.read(filename)}\n</code>\n\n"
-    end
-
-    ramaze = fork do
+  # startup
+  def ramaze(filename)
+    pid = fork do
       begin
         require filename
-        unless @log
-          Ramaze::Log.loggers = []
-        end
+        Ramaze::Log.loggers = [] unless @log
         Ramaze.start :adapter => adapter, :port => @port
-      rescue LoadError => ex
-        l "ERROR: " + ex.to_s
-      end
+      rescue LoadError => ex; l :Error, ex; end
     end
 
-    # wait for ramaze to start up
-    sleep 1
+    yield pid if wait_to_startup
 
-    l "Mem usage before:".ljust(24) + "#{memsize(ramaze)}MB"
-    l ab.grep(/^(Fail|Req|Time)/)
-    l "Mem usage after:".ljust(24)  + "#{memsize(ramaze)}MB"
-    l
+    Process.kill(@signal, pid)
+    Process.waitpid2(pid)
+  end
 
-    flush
-
-    Process.kill(@signal, ramaze)
-    Process.waitpid2(ramaze)
+  # wait for ramaze to start up
+  def wait_to_startup
+    begin
+      Timeout.timeout(5) do
+        loop do
+          begin
+            sleep 1; Net::HTTP.new(@host, @port).head("/"); return true
+          rescue Errno::ECONNREFUSED; end
+        end
+      end
+    rescue TimeoutError
+      l "Error", "failed to start benchmark script"; return false
+    end
   end
 end
 
-$bm = RamazeBenchmark.new
+RamazeBenchmark.new do |bm|
+  OptionParser.new do |opt|
+    opt.on('-a', '--adapter NAME', '[webrick] Specify adapter') do |adapter|
+      bm.adapter = adapter
+    end
 
-OptionParser.new do |opt|
-  opt.on('-a', '--adapter [name]') do |adapter|
-    $bm.adapter = adapter
-  end
+    opt.on('-n', '--requests NUM', '[100] Number of requests') do |n|
+      bm.requests = n
+    end
 
-  opt.on('-r', '--request-size [n]') do |n|
-    $bm.requests = n
-  end
+    opt.on('-c', '--concurrent NUM', '[10] Number of multiple requests') do |n|
+      bm.concurrent = n
+    end
 
-  opt.on('-c', '--concurrent [n]') do |n|
-    $bm.concurrent = n
-  end
+    opt.on('--code', 'Display benchmark code') do |n|
+      bm.display_code = true
+    end
 
-  opt.on('--code') do |n|
-    $bm.display_code = true
-  end
+    opt.on('-p', '--port NUM', '[random(32768-65535)] Specify port number') do |n|
+      bm.port = n
+    end
 
-  opt.on('-p', '--port [n]') do |n|
-    $bm.port = n
-  end
+    opt.on('--path PATH', '[/] Specify request path') do |path|
+      bm.path = path
+    end
 
-  opt.on('-l', '--log') do |log|
-    $bm.log = log
-  end
+    opt.on('-l', '--log', 'Display server log') do |log|
+      bm.log = true
+    end
 
-  opt.on('--target [name]') do |name|
-    $bm.target = Regexp.compile(name)
-  end
+    opt.on('--target REGEXP', '[/.+/] Specify benchmark scripts to measure') do |name|
+      bm.target = Regexp.compile(name)
+    end
 
-  opt.on('-h', '--help') do
-    puts opt.help
-    exit
-  end
-end.parse!(ARGV)
-
-$bm.start
+    opt.on('-h', '--help', 'Show this message') do
+      puts opt.help
+      exit
+    end
+  end.parse!(ARGV)
+end.start
