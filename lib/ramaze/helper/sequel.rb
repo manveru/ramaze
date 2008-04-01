@@ -3,6 +3,9 @@
 
 module Ramaze
   module Helper::Sequel
+
+    # Very crude paginator, may contain serious bugs, please fix :)
+    # pass it the result of YourModel.paginate, target is where links point to.
     def paginator(paginated, target)
       page_count = paginated.page_count
       prev_page = paginated.prev_page

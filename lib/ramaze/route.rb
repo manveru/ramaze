@@ -41,18 +41,22 @@ module Ramaze
     trait[:routes] ||= Dictionary.new
 
     class << self
+      # Retrieve key from trait
       def [](key)
         trait[:routes][key]
       end
 
+      # Set key to value in trait
       def []=(key, value)
         trait[:routes][key] = value
       end
 
+      # remove all routes
       def clear
         trait[:routes].clear
       end
 
+      # Resolve path according to routes.
       def resolve(path)
         trait[:routes].each do |key, val|
           if key.is_a?(Regexp)
@@ -78,6 +82,7 @@ module Ramaze
     end
   end
 
+  # Shortcut for defining new routes.
   def self.Route(name, &block)
     Route[name] = block
   end

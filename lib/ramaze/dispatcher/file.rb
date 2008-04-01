@@ -64,6 +64,8 @@ module Ramaze
           end
         end
 
+        # Determine whether a path is in the public directory for better
+        # security.
         def in_public?(path)
           expand(path).start_with?(expand(Global.public_root))
         end
