@@ -378,6 +378,7 @@ task 'undocumented-module' do
         print "#{mthc.capitalize}: "
       end
       puts m.join(', ')
+      puts "vim #{file} '+/def #{m.first}'"
       puts
     end
   end
