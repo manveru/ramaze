@@ -17,6 +17,19 @@ module Ramaze
     YEARS, MONTHS, DAYS, HOURS, MINUTES, SECONDS =
       (1900..2100), (1..12), (1..31), (0..23), (0..59), (0..59)
 
+    DATE_GENERIC = [
+      [ :day,   DAYS ],
+      [ :month, MONTHS ],
+      [ :year,  YEARS ] ]
+
+    TIME_GENERIC = [
+      [ :day,   DAYS ],
+      [ :month, MONTHS ],
+      [ :year,  YEARS ],
+      [ :hour,  HOURS ],
+      [ :min,   MINUTES ],
+      [ :sec,   SECONDS ] ]
+
     # TODO:
     #   How _elegant_ ...
     #   Tries to find the right module for extending the Form instance.
@@ -86,52 +99,52 @@ module Ramaze
 
     private
 
+    # inject to attributes for the <form>
     def form_attributes
       options.inject([]){|s,(k,v)| s << "#{k}='#{v}'" }.join(' ')
     end
 
+    # Start tag with name and attributes
     def start_tag(name, hash)
       hash.inject("<#{name}"){|s,(k,v)| s << " #{k}='#{v}'" }
     end
 
+    # Make a closed tag with name and attributes
     def closed_tag(name, hash)
       start_tag(name, hash) << ' />'
     end
 
+    # Textarea with attributes from hash and the value from @object
     def textarea(value, hash = {})
       start_tag(:textarea, hash) << ">#{value}</textarea>"
     end
 
+    # <input> with optional attributes from hash
     def input(hash = {})
       closed_tag(:input, hash)
     end
 
+    # <input type="checkbox" with optional attributes from hash.
     def checkbox(hash = {})
       hash[:type] = :checkbox
       input(hash)
     end
 
+    # <option value="value"> with optional attributes from hash
     def option(value, hash = {})
       start_tag(:option, hash) << ">#{value}</option>"
     end
 
+    # Yield method names and values for the Date instance
     def field_date_generic
-      [ [ :day, DAYS ],
-        [ :month, MONTHS ],
-        [ :year, YEARS ],
-      ].map{|(sel, range)|
+      DATE_GENERIC.map{|(sel, range)|
         yield(sel, range).join
       }.join("\n")
     end
 
+    # Yield method names and values for the Time/DateTime instance
     def field_time_generic
-      [ [ :day, DAYS ],
-        [ :month, MONTHS ],
-        [ :year, YEARS ],
-        [ :hour, HOURS ],
-        [ :min, MINUTES ],
-        [ :sec, SECONDS ]
-      ].map{|(sel, range)|
+      TIME_GENERIC.map{|(sel, range)|
         yield(sel, range).join
       }.join("\n")
     end
@@ -204,6 +217,7 @@ module Ramaze
 
   # Form for instances of the model class
   class InstanceForm < Form
+    # <input type='text' name='name' value='value' />
     def field_input(name, value)
       "<input type='text' name='#{name}' value='#{value}'/>"
     end
@@ -212,10 +226,12 @@ module Ramaze
       "<textarea name='#{name}'>#{value}</textarea>"
     end
 
+    # <input type="text" name="name" value="value" />
     def field_integer(name, value)
       field_input(name, value)
     end
 
+    # <input type="checkbox" ...
     def field_boolean(name, value)
       if value
         checkbox :name => name, :value => value, :checked => :checked
@@ -255,6 +271,7 @@ module Ramaze
       [ name, @object.send(name) ]
     end
 
+    # Class for @object, atm Sequel specific?
     def object_class
       @object.class
     end
