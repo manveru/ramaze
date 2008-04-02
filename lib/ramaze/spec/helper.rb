@@ -61,6 +61,8 @@ shared 'requester' do
   extend MockHTTP
 end
 
+# make it easier to use XPATH on the MockResponse#body - in cases you can't use
+# Hpricot or if you want to keep dependencies down
 shared 'xpath' do
   behaves_like 'http'
 
@@ -68,36 +70,44 @@ shared 'xpath' do
   require 'rexml/xpath'
 
   class Rack::MockResponse
+    # Delegate to REXML::XPath::match
     def match(xpath = '*')
       REXML::XPath::match(REXML::Document.new(body), xpath)
     end
     alias / match
     alias search match
 
+    # Delegate to REXML::XPath::first
     def first(xpath = '*')
       REXML::XPath::first(REXML::Document.new(body), xpath)
     end
     alias at first
 
+    # Delegate to REXML::XPath::each
     def each(xpath = '*', &block)
       REXML::XPath::each(REXML::Document.new(body), xpath, &block)
     end
   end
 
+  # Delegate to REXML::XPath::match
   def xp_match(obj, xpath = '*')
     XPath::match(rexml_doc(body), xpath, &block)
   end
   alias xp_search xp_match
 
+  # Delegate to REXML::XPath::first
   def xp_first(obj, xpath = '*')
     XPath::first(rexml_doc(body), xpath, &block)
   end
   alias xp_at xp_first
 
+  # Delegate to REXML::XPath::each
   def xp_each(obj, xpath = '*', &block)
     XPath::each(rexml_doc(body), xpath, &block)
   end
 
+  # Delegate to REXML::Document.new - return the obj if it's already an
+  # instance.
   def rexml_doc(obj)
     case obj
     when REXML::Document, REXML::Element
@@ -109,10 +119,12 @@ shared 'xpath' do
 end
 
 shared 'resolve' do
+  # shortcut for Ramaze::Controller::resolve
   def resolve(url)
     Ramaze::Controller::resolve(url)
   end
 
+  # Shortcut to stack on the instance of Action return from resolve
   def stack(url, &block)
     resolve(url).stack(&block)
   end
