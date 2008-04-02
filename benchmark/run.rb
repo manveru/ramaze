@@ -8,7 +8,8 @@ end
 
 class RamazeBenchmark
   attr_accessor :requests, :adapter, :port, :log, :display_code, :target
-  attr_accessor :concurrent, :path, :benchmarker
+  attr_accessor :concurrent, :path, :benchmarker, :informer, :sessions
+  attr_accessor :show_log, :ignored_tags
 
   def initialize()
     @adapter = :webrick
@@ -16,13 +17,13 @@ class RamazeBenchmark
     @requests = 100
     @concurrent = 10
     @signal = 'SIGKILL'
-    @log = false
-    @display_code = false
-    @target = nil
     @host = "localhost"
     @path = "/"
     @target = /.+/
     @ljust = 24
+    @informer = true
+    @sessions = true
+    @ignored_tags = [:debug, :dev]
     yield self
   end
 
@@ -42,6 +43,8 @@ class RamazeBenchmark
     l :Requests,   @requests
     l :Concurrent, @concurrent
     l :Path,       @path
+    l :Informer,   @informer
+    l :Sessions,   @sessions
     l "<code ruby>\n#{File.read(filename)}\n</code>\n\n" if @display_code
 
     ramaze(filename) do |pid|
@@ -61,7 +64,7 @@ class RamazeBenchmark
 
   # output
   def l(line = "\n", val = nil)
-    puts (val ? (line.to_s + ":").ljust(@ljust) + val.to_s : line)
+    puts (val.nil? ? line : (line.to_s + ":").ljust(@ljust) + val.to_s)
   end
 
   # url of ramaze server
@@ -71,7 +74,7 @@ class RamazeBenchmark
 
   # apache benchmark
   def ab
-    `ab -c #{@concurrent} -n #{@requests} #{url}/`.split("\n")
+    `ab -c #{@concurrent} -n #{@requests} #{url}`.split("\n")
   end
 
   # startup
@@ -79,7 +82,15 @@ class RamazeBenchmark
     pid = fork do
       begin
         require filename
-        Ramaze::Log.loggers = [] unless @log
+        Ramaze::Log.ignored_tags = @ignored_tags
+        if @informer
+          unless @show_log
+            Ramaze::Log.loggers = [Ramaze::Informer.new("/dev/null")]
+          end
+        else
+          Ramaze::Log.loggers = []
+        end
+        Ramaze::Global.sessions = @sessions
         Ramaze.start :adapter => adapter, :port => @port
       rescue LoadError => ex; l :Error, ex; end
     end
@@ -106,8 +117,10 @@ class RamazeBenchmark
   end
 end
 
+Signal.trap(:INT, proc{exit})
+
 RamazeBenchmark.new do |bm|
-  OptionParser.new do |opt|
+  OptionParser.new(false, 24, "  ") do |opt|
     opt.on('-a', '--adapter NAME', '[webrick] Specify adapter') do |adapter|
       bm.adapter = adapter
     end
@@ -124,7 +137,8 @@ RamazeBenchmark.new do |bm|
       bm.display_code = true
     end
 
-    opt.on('-p', '--port NUM', '[random(32768-65535)] Specify port number') do |n|
+    opt.on('-p', '--port NUM',
+           '[random(32768-65535)] Specify port number') do |n|
       bm.port = n
     end
 
@@ -132,11 +146,25 @@ RamazeBenchmark.new do |bm|
       bm.path = path
     end
 
-    opt.on('-l', '--log', 'Display server log') do |log|
-      bm.log = true
+    opt.on('--no-informer', 'Disable informer') do
+      bm.informer = false
     end
 
-    opt.on('--target REGEXP', '[/.+/] Specify benchmark scripts to measure') do |name|
+    opt.on('--ignored-tags TAGS',
+           '[debug,dev] Specify ignored tags for Ramaze::Log') do |tags|
+      bm.ignored_tags = tags.split(",").map{|e| e.to_sym }
+    end
+
+    opt.on('--show-log', 'Show log') do
+      bm.show_log = true
+    end
+
+    opt.on('--no-sessions', 'Disable sessions') do
+      bm.sessions = false
+    end
+
+    opt.on('--target REGEXP',
+           '[/.+/] Specify benchmark scripts to measure') do |name|
       bm.target = Regexp.compile(name)
     end
 
@@ -144,5 +172,13 @@ RamazeBenchmark.new do |bm|
       puts opt.help
       exit
     end
-  end.parse!(ARGV)
+
+    begin
+      opt.parse!(ARGV)
+    rescue OptionParser::ParseError => ex
+      puts "[ERROR] " + ex
+      puts opt.help
+      exit
+    end
+  end
 end.start
