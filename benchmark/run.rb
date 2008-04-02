@@ -7,9 +7,50 @@ class String
 end
 
 class RamazeBenchmark
+
+  class BasicWriter
+    def initialize
+      @ljust = 24
+    end
+
+    def write(key, val)
+      if key == :Name
+        puts "====== #{val} ======"
+      else
+        puts((key.to_s + ":").ljust(@ljust) + val.to_s)
+      end
+    end
+
+    def flush
+      puts
+      $stdout.flush
+    end
+  end
+
+  class CSVWriter
+    def initialize
+      @keys, @vals = [], []
+    end
+
+    def write(key, val)
+      @keys << key
+      @vals << (val =~ /^\d[\d.]+/ ? $& : val)
+    end
+
+    def flush
+      unless @header
+        puts FasterCSV.generate{|csv| csv << @keys }
+        @header = true
+      end
+
+      puts FasterCSV.generate{|csv| csv << @vals }
+      @keys, @vals = [], []
+    end
+  end
+
   attr_accessor :requests, :adapter, :port, :log, :display_code, :target
   attr_accessor :concurrent, :path, :benchmarker, :informer, :sessions
-  attr_accessor :show_log, :ignored_tags
+  attr_accessor :show_log, :ignored_tags, :format
 
   def initialize()
     @adapter = :webrick
@@ -20,7 +61,6 @@ class RamazeBenchmark
     @host = "localhost"
     @path = "/"
     @target = /.+/
-    @ljust = 24
     @informer = true
     @sessions = true
     @ignored_tags = [:debug, :dev]
@@ -36,23 +76,26 @@ class RamazeBenchmark
 
   # start to measure
   def benchmark(filename)
-    file = filename.scan(/\/([^\/]+)\.rb/).to_s
-
-    l "====== #{file} ======"
+    l :Name,       filename.scan(/\/([^\/]+)\.rb/).to_s
     l :Adapter,    @adapter
     l :Requests,   @requests
     l :Concurrent, @concurrent
     l :Path,       @path
     l :Informer,   @informer
     l :Sessions,   @sessions
-    l "<code ruby>\n#{File.read(filename)}\n</code>\n\n" if @display_code
+    if @display_code
+      l :Code, "<code ruby>\n#{File.read(filename)}\n</code>\n\n"
+    end
 
     ramaze(filename) do |pid|
       l "Mem usage before", "#{memsize(pid)}MB"
-      l ab.grep(/^(Fail|Req|Time)/)
+      ab.grep(/^(Fail|Req|Time)/).each do |line|
+        l *line.split(/:\s*/)
+      end
       l "Mem usage after", "#{memsize(pid)}MB"
-      l
     end
+
+    @writer.flush
   end
 
   private
@@ -63,8 +106,9 @@ class RamazeBenchmark
   end
 
   # output
-  def l(line = "\n", val = nil)
-    puts (val.nil? ? line : (line.to_s + ":").ljust(@ljust) + val.to_s)
+  def l(key, val)
+    @writer ||= (@format == :csv ? CSVWriter.new : BasicWriter.new)
+    @writer.write(key, val)
   end
 
   # url of ramaze server
@@ -123,6 +167,11 @@ RamazeBenchmark.new do |bm|
   OptionParser.new(false, 24, "  ") do |opt|
     opt.on('-a', '--adapter NAME', '[webrick] Specify adapter') do |adapter|
       bm.adapter = adapter
+    end
+
+    opt.on('--csv', 'Output CSV format') do
+      require "fastercsv"
+      bm.format = :csv
     end
 
     opt.on('-n', '--requests NUM', '[100] Number of requests') do |n|
