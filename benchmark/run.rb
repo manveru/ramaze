@@ -25,6 +25,8 @@ class RamazeBenchmark
       puts
       $stdout.flush
     end
+
+    def close; end
   end
 
   class CSVWriter
@@ -46,6 +48,41 @@ class RamazeBenchmark
       puts FasterCSV.generate{|csv| csv << @vals }
       @keys, @vals = [], []
     end
+
+    def close; end
+  end
+
+  class GruffWriter
+    def initialize
+      @table = {}
+      @labels = []
+    end
+
+    def write(key, val)
+      case key.to_s
+      when "Name"
+        @labels << val
+      when "Requests per second"
+        @table[@labels[-1]] = (val =~ /^\d[\d.]+/ ? $&.to_f : val)
+      end
+    end
+
+    def flush; end
+
+    def close
+      g = Gruff::SideBar.new(800)
+      g.title = "Ramaze Benchmark"
+      @labels.delete_if{|label| not @table[label].kind_of?(Numeric) }
+      g.data("", @labels.map{|label| @table[label]}, '#6886B4')
+      labels = {}
+      0.upto(@labels.size-1) {|i| labels[i] = @labels[i] }
+      g.labels = labels
+      g.sort = false
+      g.hide_legend = true
+      g.x_axis_label = "reqs/s"
+      g.minimum_value = 0
+      g.write
+    end
   end
 
   attr_accessor :requests, :adapter, :port, :log, :display_code, :target
@@ -64,14 +101,21 @@ class RamazeBenchmark
     @informer = true
     @sessions = true
     @ignored_tags = [:debug, :dev]
+    @format = "text"
     yield self
   end
 
   def start
+    @writer = case @format
+              when "csv"  ; CSVWriter.new
+              when "gruff"; GruffWriter.new
+              when "text" ; BasicWriter.new
+              end
     __DIR__ = File.expand_path(File.dirname(__FILE__))
     Dir[__DIR__/"suite"/"*.rb"].each do |filename|
       benchmark(filename) if @target.match(filename)
     end
+    @writer.close
   end
 
   # start to measure
@@ -107,7 +151,6 @@ class RamazeBenchmark
 
   # output
   def l(key, val)
-    @writer ||= (@format == :csv ? CSVWriter.new : BasicWriter.new)
     @writer.write(key, val)
   end
 
@@ -169,9 +212,12 @@ RamazeBenchmark.new do |bm|
       bm.adapter = adapter
     end
 
-    opt.on('--csv', 'Output CSV format') do
-      require "fastercsv"
-      bm.format = :csv
+    opt.on('--format (text|csv|gruff)', '[text] Specify output format') do |name|
+      case name
+      when "csv"; require "fastercsv"
+      when "gruff"; require "gruff"
+      end
+      bm.format = name
     end
 
     opt.on('-n', '--requests NUM', '[100] Number of requests') do |n|
