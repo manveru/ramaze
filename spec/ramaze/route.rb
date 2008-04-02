@@ -46,6 +46,7 @@ describe 'Route' do
 
   it 'should be possible to define simple string routes' do
     @route['/foobar'] = '/bar'
+    @route['/foobar'].should == '/bar'
   end
 
   it 'should be possible to define routes' do
