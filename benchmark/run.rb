@@ -86,7 +86,7 @@ class RamazeBenchmark
   end
 
   attr_accessor :requests, :adapters, :port, :log, :display_code, :target
-  attr_accessor :concurrent, :path, :benchmarker, :informer, :sessions
+  attr_accessor :concurrent, :paths, :benchmarker, :informer, :sessions
   attr_accessor :show_log, :ignored_tags, :format
 
   def initialize()
@@ -96,7 +96,7 @@ class RamazeBenchmark
     @concurrent = 10
     @signal = 'SIGKILL'
     @host = "localhost"
-    @path = "/"
+    @paths = ["/"]
     @target = /.+/
     @informer = true
     @sessions = true
@@ -112,21 +112,23 @@ class RamazeBenchmark
               when "text" ; BasicWriter.new
               end
     __DIR__ = File.expand_path(File.dirname(__FILE__))
-    @adapters.each do |adapter|
-      Dir[__DIR__/"suite"/"*.rb"].each do |filename|
-        benchmark(filename, adapter) if @target.match(filename)
+    Dir[__DIR__/"suite"/"*.rb"].each do |filename|
+      @adapters.each do |adapter|
+        @paths.each do |path|
+          benchmark(filename, adapter, path) if @target.match(filename)
+        end
       end
     end
     @writer.close
   end
 
   # start to measure
-  def benchmark(filename, adapter)
+  def benchmark(filename, adapter, path)
     l :Name,       filename.scan(/\/([^\/]+)\.rb/).to_s
     l :Adapter,    adapter
     l :Requests,   @requests
     l :Concurrent, @concurrent
-    l :Path,       @path
+    l :Path,       path
     l :Informer,   @informer
     l :Sessions,   @sessions
     if @display_code
@@ -135,7 +137,7 @@ class RamazeBenchmark
 
     ramaze(filename, adapter) do |pid|
       l "Mem usage before", "#{memsize(pid)}MB"
-      ab.grep(/^(Fail|Req|Time)/).each do |line|
+      ab(path).each do |line|
         l *line.split(/:\s*/)
       end
       l "Mem usage after", "#{memsize(pid)}MB"
@@ -157,13 +159,14 @@ class RamazeBenchmark
   end
 
   # url of ramaze server
-  def url
-    "http://#{@host}:#{@port}#{@path}"
+  def url(path)
+    "http://#{@host}:#{@port}#{path}"
   end
 
   # apache benchmark
-  def ab
-    `ab -c #{@concurrent} -n #{@requests} #{url}`.split("\n")
+  def ab(path)
+    re = /^(Fail|Req|Time|Total transferred|Document Length|Transfer rate)/
+    `ab -c #{@concurrent} -n #{@requests} #{url(path)}`.split("\n").grep(re)
   end
 
   # startup
@@ -211,7 +214,7 @@ Signal.trap(:INT, proc{exit})
 
 RamazeBenchmark.new do |bm|
   OptionParser.new(false, 24, "  ") do |opt|
-    opt.on('-a', '--adapters NAME', '[webrick] Specify adapters') do |adapters|
+    opt.on('-a', '--adapters NAMES', '[webrick] Specify adapters') do |adapters|
       bm.adapters = adapters.split(",")
     end
 
@@ -240,8 +243,8 @@ RamazeBenchmark.new do |bm|
       bm.port = n
     end
 
-    opt.on('--path PATH', '[/] Specify request path') do |path|
-      bm.path = path
+    opt.on('--paths PATHS', '[/] Specify request paths') do |paths|
+      bm.paths = paths.split(",")
     end
 
     opt.on('--no-informer', 'Disable informer') do
