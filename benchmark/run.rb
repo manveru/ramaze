@@ -85,12 +85,12 @@ class RamazeBenchmark
     end
   end
 
-  attr_accessor :requests, :adapter, :port, :log, :display_code, :target
+  attr_accessor :requests, :adapters, :port, :log, :display_code, :target
   attr_accessor :concurrent, :path, :benchmarker, :informer, :sessions
   attr_accessor :show_log, :ignored_tags, :format
 
   def initialize()
-    @adapter = :webrick
+    @adapters = [:webrick]
     @port = rand(32768-1)+32768
     @requests = 100
     @concurrent = 10
@@ -112,16 +112,18 @@ class RamazeBenchmark
               when "text" ; BasicWriter.new
               end
     __DIR__ = File.expand_path(File.dirname(__FILE__))
-    Dir[__DIR__/"suite"/"*.rb"].each do |filename|
-      benchmark(filename) if @target.match(filename)
+    @adapters.each do |adapter|
+      Dir[__DIR__/"suite"/"*.rb"].each do |filename|
+        benchmark(filename, adapter) if @target.match(filename)
+      end
     end
     @writer.close
   end
 
   # start to measure
-  def benchmark(filename)
+  def benchmark(filename, adapter)
     l :Name,       filename.scan(/\/([^\/]+)\.rb/).to_s
-    l :Adapter,    @adapter
+    l :Adapter,    adapter
     l :Requests,   @requests
     l :Concurrent, @concurrent
     l :Path,       @path
@@ -131,7 +133,7 @@ class RamazeBenchmark
       l :Code, "<code ruby>\n#{File.read(filename)}\n</code>\n\n"
     end
 
-    ramaze(filename) do |pid|
+    ramaze(filename, adapter) do |pid|
       l "Mem usage before", "#{memsize(pid)}MB"
       ab.grep(/^(Fail|Req|Time)/).each do |line|
         l *line.split(/:\s*/)
@@ -165,7 +167,7 @@ class RamazeBenchmark
   end
 
   # startup
-  def ramaze(filename)
+  def ramaze(filename, adapter)
     pid = fork do
       begin
         require filename
@@ -178,6 +180,7 @@ class RamazeBenchmark
           Ramaze::Log.loggers = []
         end
         Ramaze::Global.sessions = @sessions
+        Ramaze::Global.sourcereload = false
         Ramaze.start :adapter => adapter, :port => @port
       rescue LoadError => ex; l :Error, ex; end
     end
@@ -208,8 +211,8 @@ Signal.trap(:INT, proc{exit})
 
 RamazeBenchmark.new do |bm|
   OptionParser.new(false, 24, "  ") do |opt|
-    opt.on('-a', '--adapter NAME', '[webrick] Specify adapter') do |adapter|
-      bm.adapter = adapter
+    opt.on('-a', '--adapters NAME', '[webrick] Specify adapters') do |adapters|
+      bm.adapters = adapters.split(",")
     end
 
     opt.on('--format (text|csv|gruff)', '[text] Specify output format') do |name|
