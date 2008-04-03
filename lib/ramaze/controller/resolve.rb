@@ -62,6 +62,8 @@ module Ramaze
             first_controller ||= controller
 
             action = controller.resolve_action(method, *params)
+            next unless action
+
             template = action.template
 
             valid_action =
@@ -106,11 +108,14 @@ module Ramaze
           template ||= resolve_template(path)
         end
 
-        Action.create :path       => path,
-                      :method     => method,
-                      :params     => params,
-                      :template   => template,
-                      :controller => self
+        action =
+          Action.create :path       => path,
+                        :method     => method,
+                        :params     => params,
+                        :template   => template,
+                        :controller => self
+        return false unless action.valid_rest?
+        action
       end
 
       # Search the #template_paths for a fitting template for path.

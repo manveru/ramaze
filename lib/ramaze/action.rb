@@ -128,6 +128,17 @@ module Ramaze
 
     def after_process
     end
+
+    def valid_rest?
+      return true unless rest = controller.trait[:REST]
+      meth = Request.current.request_method
+
+      return true if rest[:any].include?(name)
+
+      if rest.has_key?(meth)
+        rest[meth].include?(name)
+      end
+    end
   end
 
   # Shortcut to create new instances of Action via Action::fill
