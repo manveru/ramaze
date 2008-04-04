@@ -25,11 +25,15 @@ module Ramaze
           trait[:REST][:active] = hm
         end
 
-        def on_get; on('GET') end
-        def on_put; on('PUT') end
-        def on_post; on('POST') end
-        def on_delete; on('DELETE') end
-        def on_any; on(:any) end
+        (%w[GET PUT POST DELETE] << :any).each do |http_method|
+          define_method("on_#{http_method.downcase}") do |*args|
+            if args.empty?
+              on(http_method)
+            else
+              trait[:REST][http_method] += args.flatten
+            end
+          end
+        end
       end
     end
   end
