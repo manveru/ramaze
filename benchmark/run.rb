@@ -14,7 +14,7 @@ class RamazeBenchmark
     end
 
     def write(key, val)
-      if key == :Name
+      if key == "Name"
         puts "====== #{val} ======"
       else
         puts((key.to_s + ":").ljust(@ljust) + val.to_s)
@@ -53,41 +53,99 @@ class RamazeBenchmark
   end
 
   class GruffWriter
+    RPS = "Requests per second"
+
     def initialize
-      @table = {}
-      @labels = []
+      @benchmarks = {}
+      @order = []
     end
 
     def write(key, val)
-      case key.to_s
-      when "Name"
-        @labels << val
-      when "Requests per second"
-        @table[@labels[-1]] = (val =~ /^\d[\d.]+/ ? $&.to_f : val)
-      end
+      @benchmark ||= {}
+      @benchmark[key] = (val =~ /^\d[\d.]+/ ? $&.to_f : val)
     end
 
-    def flush; end
+    def flush
+      if @benchmark["Requests per second"]
+        name = @benchmark["Name"]
+        @benchmarks[name] ||= []
+        @benchmarks[name] << @benchmark
+        @order << name unless @order.include?(name)
+      end
+      @benchmark = nil
+    end
 
     def close
       g = Gruff::SideBar.new(800)
       g.title = "Ramaze Benchmark"
-      @labels.delete_if{|label| not @table[label].kind_of?(Numeric) }
-      g.data("", @labels.map{|label| @table[label]}, '#6886B4')
-      labels = {}
-      0.upto(@labels.size-1) {|i| labels[i] = @labels[i] }
-      g.labels = labels
+      setup_gruff_data(g)
+      g.labels = gruff_labels
       g.sort = false
-      g.hide_legend = true
-      g.x_axis_label = "reqs/s"
+      g.hide_legend = true if graph_type == :simple
+      g.x_axis_label = "requests/sec"
       g.minimum_value = 0
       g.write
+    end
+
+    private
+
+    def gruff_labels
+      table = {}
+      @order.each_with_index do |bname, idx|
+        table[idx] = bname
+      end
+      return table
+    end
+
+    def adapters
+      @benchmarks.to_a[0][1].map{|bm| bm["Adapter"]}.uniq
+    end
+
+    def paths
+      @benchmarks.to_a[0][1].map{|bm| bm["Path"]}.uniq
+    end
+
+    def graph_type
+      case [adapters.size > 1, paths.size > 1]
+      when [true , true ]; :both
+      when [true , false]; :adapter
+      when [false, true ]; :path
+      else :simple; end
+    end
+
+    def setup_gruff_data(g)
+      case graph_type
+      when :simple
+        g.data("", @order.map{|name| @benchmarks[name][0][RPS] }, '#6886B4')
+      when :adapter
+        adapters.each do |adapter|
+          g.data(adapter, @order.map{|name|
+                   @benchmarks[name].find{|bm| bm["Adapter"] == adapter}[RPS]
+                 })
+        end
+      when :path
+        paths.each do |path|
+          g.data(path, @order.map{|name|
+                   @benchmarks[name].find{|bm| bm["Path"] == path}[RPS]
+                 })
+        end
+      when :both
+        adapters.each do |adapter|
+          paths.each do |path|
+            g.data("#{adapter}, #{path}", @order.map{|name|
+                     @benchmarks[name].find{|bm|
+                       bm["Adapter"] == adapter && bm["Path"] == path
+                     }[RPS]
+                   })
+          end
+        end
+      end
     end
   end
 
   attr_accessor :requests, :adapters, :port, :log, :display_code, :target
   attr_accessor :concurrent, :paths, :benchmarker, :informer, :sessions
-  attr_accessor :show_log, :ignored_tags, :format
+  attr_accessor :show_log, :ignored_tags, :formats
 
   def initialize()
     @adapters = [:webrick]
@@ -101,16 +159,22 @@ class RamazeBenchmark
     @informer = true
     @sessions = true
     @ignored_tags = [:debug, :dev]
-    @format = "text"
+    @formats = ["text"]
+    @writers = []
     yield self
   end
 
   def start
-    @writer = case @format
-              when "csv"  ; CSVWriter.new
-              when "gruff"; GruffWriter.new
-              when "text" ; BasicWriter.new
-              end
+    # setup writers
+    @formats.each do |format|
+      case format
+      when "csv"  ; @writers << CSVWriter.new
+      when "gruff"; @writers << GruffWriter.new
+      when "text" ; @writers << BasicWriter.new
+      end
+    end
+
+    # benchmarks
     __DIR__ = File.expand_path(File.dirname(__FILE__))
     Dir[__DIR__/"suite"/"*.rb"].each do |filename|
       @adapters.each do |adapter|
@@ -119,11 +183,16 @@ class RamazeBenchmark
         end
       end
     end
-    @writer.close
+
+    # close writers
+    @writers.each do |writer|
+      writer.close
+    end
   end
 
   # start to measure
   def benchmark(filename, adapter, path)
+    # output informations
     l :Name,       filename.scan(/\/([^\/]+)\.rb/).to_s
     l :Adapter,    adapter
     l :Requests,   @requests
@@ -135,6 +204,7 @@ class RamazeBenchmark
       l :Code, "<code ruby>\n#{File.read(filename)}\n</code>\n\n"
     end
 
+    # real benchmark
     ramaze(filename, adapter) do |pid|
       l "Mem usage before", "#{memsize(pid)}MB"
       ab(path).each do |line|
@@ -143,7 +213,10 @@ class RamazeBenchmark
       l "Mem usage after", "#{memsize(pid)}MB"
     end
 
-    @writer.flush
+    # flush writers
+    @writers.each do |writer|
+      writer.flush
+    end
   end
 
   private
@@ -155,7 +228,9 @@ class RamazeBenchmark
 
   # output
   def l(key, val)
-    @writer.write(key, val)
+    @writers.each do |writer|
+      writer.write(key.to_s, val)
+    end
   end
 
   # url of ramaze server
@@ -204,7 +279,7 @@ class RamazeBenchmark
           rescue Errno::ECONNREFUSED; end
         end
       end
-    rescue TimeoutError
+    rescue Timeout::Error
       l "Error", "failed to start benchmark script"; return false
     end
   end
@@ -218,12 +293,14 @@ RamazeBenchmark.new do |bm|
       bm.adapters = adapters.split(",")
     end
 
-    opt.on('--format (text|csv|gruff)', '[text] Specify output format') do |name|
-      case name
-      when "csv"; require "fastercsv"
-      when "gruff"; require "gruff"
+    opt.on('--formats (text|csv|gruff)', '[text] Specify output formats') do |formats|
+      bm.formats = formats.split(",")
+      bm.formats.each do |format|
+        case format
+        when "csv"  ; require "fastercsv"
+        when "gruff"; require "gruff"
+        end
       end
-      bm.format = name
     end
 
     opt.on('-n', '--requests NUM', '[100] Number of requests') do |n|
