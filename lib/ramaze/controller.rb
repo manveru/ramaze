@@ -72,7 +72,7 @@ module Ramaze
       def mapping
         global_mapping = Global.mapping.invert[self]
         return global_mapping if global_mapping
-        if ancestral_trait[:automap]
+        if ancestral_trait[:automap] && self.to_s !~ /#<Class:/
           name = self.to_s.gsub('Controller', '').gsub('::', '/').clone
           name == 'Main' ? '/' : "/#{name.snake_case}"
         end
