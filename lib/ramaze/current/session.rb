@@ -60,6 +60,12 @@ module Ramaze
       def startup(options = {})
         Cache.add(:sessions) if Global.sessions
       end
+
+      # shortcut to Cache.sessions
+
+      def sessions
+        Cache.sessions
+      end
     end
 
     # Initialize a new Session, requires the original Rack::Request instance
