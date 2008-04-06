@@ -82,8 +82,16 @@ module Ramaze
     end
   end
 
+  class Rewrite < Route
+    trait[:routes] ||= Dictionary.new
+  end
+
   # Shortcut for defining new routes.
-  def self.Route(name, &block)
-    Route[name] = block
+  def self.Route(name, value = nil, &block)
+    Route[name] = value || block
+  end
+
+  def self.Rewrite(name, value = nil, &block)
+    Rewrite[name] = value || block
   end
 end
