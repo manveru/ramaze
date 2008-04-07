@@ -61,10 +61,10 @@ module Ramaze
         Cache.add(:sessions) if Global.sessions
       end
 
-      # shortcut to Cache.sessions
+      # retrieve a specific session given a session id
 
-      def sessions
-        Cache.sessions
+      def [](sess_id)
+        Session.new(sess_id)
       end
     end
 
@@ -73,17 +73,24 @@ module Ramaze
     #
     # sets @session_id and @session_flash
 
-    def initialize(request = Current.request)
+    def initialize(sess_or_request = Current.request)
       return unless Global.sessions
-      @session_id = (request.cookies[SESSION_KEY] || random_key)
 
-      unless IP_COUNT.nil?
+      if sess_or_request.is_a?(Request)
+        request = sess_or_request
+        @session_id = request.cookies[SESSION_KEY] || random_key
+      else
+        request = nil
+        @session_id = sess_or_request
+      end
+
+      unless IP_COUNT.nil? or request.nil?
         ip = request.ip
         IP_COUNT[ip] << @session_id
         sessions.delete(IP_COUNT[ip].shift) if IP_COUNT[ip].size > IP_COUNT_LIMIT
       end
 
-      @flash = Ramaze::Session::Flash.new
+      @flash = Session::Flash.new(self)
     end
 
     # relay all messages we don't understand to the currently active session
@@ -96,7 +103,7 @@ module Ramaze
     # existing already, the session itself is an instance of SessionHash
 
     def current
-      sessions[session_id] ||= Session::Hash.new
+      sessions[session_id] ||= Session::Hash.new(self)
     end
 
     # shortcut to Cache.sessions

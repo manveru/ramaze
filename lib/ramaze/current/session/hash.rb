@@ -9,7 +9,8 @@ module Ramaze
 
       # Sets @hash to an empty Hash
 
-      def initialize
+      def initialize sess
+        @session = sess
         @hash = {}
       end
 
@@ -20,7 +21,7 @@ module Ramaze
         old = @hash.dup
         result = @hash.send(*args, &block)
         unless old == @hash
-          Cache.sessions[Current.session.session_id] = self
+          Cache.sessions[@session.session_id] = self
         end
         result
       end

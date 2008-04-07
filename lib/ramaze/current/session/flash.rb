@@ -12,6 +12,10 @@ module Ramaze
     class Flash
       include Enumerable
 
+      def initialize sess
+        @session = sess
+      end
+
       # iterate over the combined session
       def each(&block)
         combined.each(&block)
@@ -59,10 +63,10 @@ module Ramaze
 
       private
 
-      # Session.current or {}
+      # Associated session object
 
       def session
-        Current.session || {}
+        @session
       end
     end
   end
