@@ -34,4 +34,10 @@ there
     str.ui!
     str.should == %(1\n  2\n3)
   end
+
+  it 'should use indentation from the last line if first line is not indented' do
+    %(a{
+      abc
+    }).ui.should == %(a{\n  abc\n})
+  end
 end

@@ -2,7 +2,12 @@ class String
   # Useful for writing indented String and unindent on demand, based on the
   # first line with indentation.
   def unindent
-    space = self.split("\n").find{|l| !l.strip.empty?}.to_s[/^(\s+)/, 1]
+    find_indent = proc{ |l| l.find{|l| !l.strip.empty?}.to_s[/^(\s+)/, 1] }
+
+    lines = self.split("\n")
+    space = find_indent[lines]
+    space = find_indent[lines.reverse] unless space
+
     strip.gsub(/^#{space}/, '')
   end
   alias ui unindent
