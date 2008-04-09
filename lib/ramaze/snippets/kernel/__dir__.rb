@@ -16,7 +16,7 @@ module Kernel
     #
 
     def __DIR__()
-      filename = caller[0][/(.*?):/, 1]
+      filename = caller[0][/^(.*):/, 1]
       File.expand_path(File.dirname(filename))
     end
   end
