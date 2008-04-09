@@ -17,4 +17,8 @@ describe 'Helper::Formatting' do
     time_diff(Time.now-60).should == '1 minute'
     time_diff(Time.now, Time.now+29, true).should == 'half a minute'
   end
+
+  it 'should linkify urls' do
+    auto_link("http://ramaze.net is the coolest framework, but <a href='http://merbivore.com'>merb</a> is good too").should == "<a href=\"http://ramaze.net\">http://ramaze.net</a> is the coolest framework, but <a href='http://merbivore.com'>merb</a> is good too"
+  end
 end
