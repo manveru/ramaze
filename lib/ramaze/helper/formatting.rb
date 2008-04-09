@@ -70,14 +70,15 @@ module Ramaze
 
     # Turns all urls into clickable links.  If a block is given, each url
     # is yielded and the result is used as the link text.
-    def auto_link(text)
+    def auto_link(text, opts = {})
+      html_options = ' ' + opts.map{|k,v| "#{k}='#{v}'"}.join(' ') if opts.any?
       text.gsub(AUTO_LINK_RE) do
         all, a, b, c, d = $&, $1, $2, $3, $4
         if a =~ /<a\s/i # don't replace URL's that are already linked
           all
         else
           text = b + c
-          %(#{a}<a href="#{b=="www."?"http://www.":b}#{c}">#{text}</a>#{d})
+          %(#{a}<a href="#{b=="www."?"http://www.":b}#{c}"#{html_options}>#{text}</a>#{d})
         end
       end
     end
