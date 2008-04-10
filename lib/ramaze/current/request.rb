@@ -107,7 +107,14 @@ module Ramaze
       def params
         return {} if put?
         return @ramaze_params if @ramaze_params
-        @rack_params ||= rack_params
+        
+        begin
+          @rack_params ||= rack_params
+        rescue EOFError => ex
+          @rack_params = {}
+          Log.error(ex)
+        end
+        
         @ramaze_params = {}
 
         @rack_params.each do |key, value|
