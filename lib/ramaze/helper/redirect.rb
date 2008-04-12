@@ -23,6 +23,12 @@ module Ramaze
   module Helper::Redirect
 
     # render to the browser directly, ignoring any templates
+    #
+    # Usage:
+    #   respond 'Page not found', 404
+    #   respond render_template('forbidden.erb'), 403
+    #   respond File.open('file.jpg'), 200, 'Content-Type' => 'image/jpeg'
+
     def respond *args
       response.build(*args)
       throw :respond
