@@ -65,6 +65,7 @@ AUTHOR_MAP = {
   'manveru@weez-int.com'                    => 'Michael Fellinger',
   'm.fellinger@gmail.com'                   => 'Michael Fellinger',
   'outtenr@gmail.com'                       => 'Richard Outten',
+  'ryan@wonko.com'                          => 'Ryan Grove',
   'rff.rff@gmail.com'                       => 'Gabriele Renzi',
   'skaar@waste.org'                         => 'skaar',
   'stephan@spaceboyz.net'                   => 'Stephan Maka',
