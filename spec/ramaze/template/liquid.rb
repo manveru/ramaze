@@ -26,7 +26,7 @@ end
 
 class TCTemplateLiquidController < Ramaze::Controller
   map '/'
-  template_root 'spec/ramaze/template/liquid/'
+  view_root 'spec/ramaze/template/liquid/'
   engine :Liquid
   trait :liquid_options => { :filters => ProductsFilter }
 

@@ -7,7 +7,7 @@ spec_require 'markaby'
 
 class TCTemplateMarkabyController < Ramaze::Controller
   map '/'
-  template_root 'spec/ramaze/template/markaby/'
+  view_root 'spec/ramaze/template/markaby/'
   engine :Markaby
 
   helper :markaby

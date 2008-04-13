@@ -35,8 +35,8 @@ describe 'wiktacular' do
   end
 
   it 'should start' do
-    ramaze :public_root   => base/:public,
-           :template_root => base/:template
+    ramaze :public_root => base/:public,
+           :view_root   => base/:template
     get('/').status.should == 200
   end
 

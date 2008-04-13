@@ -6,7 +6,7 @@ spec_require 'remarkably/engines/html'
 
 class TCTemplateRemarkablyController < Ramaze::Controller
   map '/'
-  template_root 'spec/ramaze/template/remarkably/'
+  view_root 'spec/ramaze/template/remarkably/'
   engine :Remarkably
 
   include Remarkably::Common

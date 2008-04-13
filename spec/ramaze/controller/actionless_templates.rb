@@ -19,7 +19,7 @@ end
 describe "Testing Actionless Templates" do
   behaves_like 'http'
   ramaze :actionless_templates => false,
-         :template_root => __DIR__/:view
+         :view_root => __DIR__/:view
 
   it "should not find template file for non existant method" do
     get('/non_existant_method').status.should == 404

@@ -9,7 +9,8 @@ require 'start'
 describe 'Rammit' do
   behaves_like 'http'
   base = File.expand_path(__DIR__/'..')
-  ramaze :template_root => base/'template', :public_root => base/'public'
+  ramaze :view_root   => base/'template',
+         :public_root => base/'public'
 
   it 'should have intro page' do
     got = get('/')

@@ -4,7 +4,7 @@ spec_require 'erubis'
 spec_require 'redcloth'
 
 class TCTemplateRedClothController < Ramaze::Controller
-  template_root __DIR__/:redcloth
+  view_root __DIR__/:redcloth
   engine :RedCloth
 
   def index

@@ -8,7 +8,7 @@ spec_require 'tagz'
 
 class TCTemplateTagzController < Ramaze::Controller
   map '/'
-  template_root 'spec/ramaze/template/tagz/'
+  view_root 'spec/ramaze/template/tagz/'
   engine :Tagz
 
   helper :tagz

@@ -133,14 +133,14 @@ module Ramaze
       end
 
       # Composes an array with the template-paths to look up in the right order.
-      # Usually this is composed of Global.template_root and the mapping of the
+      # Usually this is composed of Global.view_root and the mapping of the
       # controller.
 
       def template_paths
-        if paths = template_root
+        if paths = view_root
           paths
         else
-          template_root(Global.template_root / Global.mapping.invert[self])
+          view_root(Global.view_root / Global.mapping.invert[self])
         end
       end
 

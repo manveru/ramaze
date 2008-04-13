@@ -7,7 +7,7 @@ spec_require 'sass/engine'
 
 class TCTemplateSassController < Ramaze::Controller
   map '/'
-  template_root __DIR__/:sass
+  view_root __DIR__/:sass
   engine :Sass
 
   define_method('style.css') do

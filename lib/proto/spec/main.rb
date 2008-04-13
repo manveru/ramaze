@@ -5,7 +5,7 @@ require __DIR__/'..'/'start'
 
 describe MainController do
   behaves_like 'http', 'xpath'
-  ramaze :template_root => __DIR__/'../view',
+  ramaze :view_root => __DIR__/'../view',
          :public_root => __DIR__/'../public'
 
   it 'should show start page' do

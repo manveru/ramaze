@@ -3,7 +3,7 @@ require 'spec/helper'
 spec_require 'builder'
 
 class TCTemplateBuilder < Ramaze::Controller
-  template_root 'spec/ramaze/template/builder'
+  view_root 'spec/ramaze/template/builder'
   map '/'
   engine :Builder
 

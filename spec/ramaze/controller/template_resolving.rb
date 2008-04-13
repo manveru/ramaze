@@ -4,6 +4,7 @@
 require 'spec/helper'
 
 class MainController < Ramaze::Controller
+  view_root __DIR__/:view
 
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"
@@ -44,10 +45,7 @@ class OtherController < MainController
 end
 
 class AnotherController < Ramaze::Controller
-
-  Root = File.expand_path(
-    MainController.template_root || Ramaze::Global.template_root
-  )
+  Root = __DIR__/:view
   Absolute = lambda{|path| File.join Root, path}
   Relative = lambda{|path| path}
 
@@ -59,7 +57,7 @@ class AnotherController < Ramaze::Controller
   def greet_relative(type, message = "Message")
     @greet = "#{type} : #{message}"
   end
-  template :greet_relative, :file => Relative["greet.xhtml"]
+  template :greet_relative, :file => "greet.xhtml"
 
   def greet_controller_action(type, message = "Message")
     @greet = "#{type} : #{message}"
@@ -70,7 +68,7 @@ end
 
 describe "Testing Template overriding" do
   behaves_like 'http'
-  ramaze :template_root => __DIR__/:view
+  ramaze :view_root => __DIR__/:view
 
   it "simple request to greet" do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'

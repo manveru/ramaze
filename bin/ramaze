@@ -13,146 +13,47 @@ rescue LoadError
   require 'ramaze'
 end
 
-RAMAZE_VERSION = "Ramaze Version #{Ramaze::VERSION}"
+runner = ARGV.reverse.find{|arg| File.file?(arg) }
+runner ||= 'start.rb' if File.file?('start.rb')
 
-options = {:origin => :console, :create => false, :force => true}
-cli_options = Ramaze::CLI_OPTIONS
-cli_abbrevs = cli_options.map{|o| o.name.to_s}.abbrev
+if runner
+  overlay = {
+    :root => File.dirname(runner),
+    :runner => runner, :origin => :console,
+  }
 
-# options occupied by custom switches
-%w[e h i].each{|key| cli_abbrevs.delete key}
-cli_abbrevs = Hash[*cli_abbrevs.select{|k,v| k.size == 1}.flatten].invert
+  additions = lambda do |op|
+    op.separator ''
+    op.separator 'Specialized options:'
 
-opts = OptionParser.new do |opt|
-  ruby_version = "ruby #{RUBY_VERSION} (#{RUBY_RELEASE_DATE}) [#{RUBY_PLATFORM}]"
-  ramaze_version = "#{RAMAZE_VERSION}, on #{ruby_version}"
-
-  opt.banner = "Usage: ramaze start.rb [OPTIONS]"
-  opt.define_head ramaze_version
-
-  opt.separator ''
-  opt.separator 'Specialized options:'
-
-  opt.on('--create PROJECT', "A new application based on proto.") do |project_name|
-    options[:create] = project_name
-  end
-
-  opt.on('-e', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
-    options[:execute] = execute
-  end
-
-  opt.on('-i', '--instant', "Start up with bare-bones Controller") do |instant|
-    options[:instant] = instant
-  end
-
-  opt.separator ''
-  opt.separator 'Global options, value in [] shows default.'
-
-  cli_options.each do |option|
-    cli_name = option.name.to_s.gsub('_', '-')
-    short_option = (option.short || cli_abbrevs[option.name.to_s])
-    short_option = "-#{short_option}" if short_option
-    long_option = '--' + cli_name
-    doc = "[#{option.cli.inspect}] #{option.doc}"
-
-    case option.cli
-    when TrueClass
-      params = [short_option, "--[no-]#{cli_name}", doc]
-    when FalseClass
-      params = [short_option, long_option, doc]
-    when Numeric
-      params = [short_option, "#{long_option} NUM", Integer, doc]
-    when String
-      params = [short_option, "#{long_option} STRING", String, doc]
-    when Array
-      index = option.cli.map(&:to_s)
-      aliases = index.abbrev
-      list = "  (#{index.join(', ')})"
-      doc = "[#{option.default.inspect}] #{option.doc}"
-
-      params = [short_option, "#{long_option} CHOICE", index, aliases, doc, list]
-    else
-      pp option
-      next
+    op.on('--create PROJECT', 'New application from proto') do |project_name|
+      require 'ramaze/tool/create'
+      Ramaze::Tool::Create.create(project_name)
+      exit
     end
 
-    opt.on(*params.compact) do |input|
-      options[option.name] = input
+    op.on('-i', '--instant', "Start up with bare-bones Controller") do |instant|
+      require 'ramaze/controller/main'
+    end
+
+    op.on('-e', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
+      eval execute
     end
   end
 
-  opt.separator ''
-  opt.separator 'Common options:'
-
-  opt.on_tail('-h', '--help', 'Show this message') do
-    puts opts
-    exit
+  [overlay, ENV, ARGV].each do |opt|
+    Ramaze::Global.merge!(opt, &additions)
   end
 
-  opt.on_tail('-v', '--version', "Show version") do
-    puts ramaze_version
-    exit
+  runner = File.expand_path(runner)
+  daemonize = Ramaze::Global.daemonize
+
+  unless daemonize.empty?
+    Ramaze::daemonize(runner, daemonize)
+  else
+    require runner
+    Ramaze.start :force => true
   end
-end
-
-begin
-  opts.parse!(ARGV)
-rescue OptionParser::MissingArgument => ex
-  puts ex
-  exit 1
-end
-
-runner = (ARGV + ['start.rb']).find{|f| File.exists?(f)}
-execute = options.delete :execute
-instant = options.delete :instant
-
-if project = options.delete(:create)
-  require 'ramaze/tool/create'
-  Ramaze::Tool::Create.create(project)
-  exit
-end
-
-unless ARGV.any? or [runner, execute, instant].any?
-  abort(opts.to_s)
-end
-
-if execute
-  require 'ramaze/controller/main' if instant
-  eval execute
-elsif not instant
-  begin
-    puts "running `#{runner}'"
-
-    Ramaze::SEEED.replace(runner)
-    Ramaze::APPDIR.replace(File.dirname(File.expand_path(runner)))
-
-    require runner.to_s
-
-    options[:runner] = runner
-  rescue LoadError => ex
-    puts ex
-    puts ex.backtrace
-    puts "Maybe i cannot find `#{runner}'"
-    puts "You could provide a file to execute like:"
-    puts "$ ramaze myapp.rb"
-    exit
-  end
-end
-
-if options.delete(:console)
-  options[:run_loose] = true
-  ARGV.clear # Avoid passing args to IRB
-
-  Ramaze.start(options)
-
-  require 'irb'
-  require 'irb/completion'
-
-  def exit() Ramaze.shutdown end
-
-  ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
-  IRB.start
-  Ramaze.shutdown
 else
-  Ramaze.start(options)
+  puts Ramaze::Global.option_parser
 end

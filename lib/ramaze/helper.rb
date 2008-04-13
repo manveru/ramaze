@@ -59,7 +59,8 @@ module Ramaze
       end
 
       def require_helper(name)
-        glob = "{,#{APPDIR},#{BASEDIR/:ramaze}}/helper/#{name}.{so,bundle,rb}"
+        paths = ['', Global.root, BASEDIR/:ramaze].join(',')
+        glob = "{#{paths}}/helper/#{name}.{so,bundle,rb}"
         files = Dir[glob]
         ignore = Helper.trait[:ignore]
         files.reject!{|f| ignore.any?{|i| f =~ i }}

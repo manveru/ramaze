@@ -6,7 +6,7 @@ require 'spec/helper'
 spec_require 'xml/libxml', 'xml/xslt', 'ramaze/gestalt', 'rexml/document'
 
 class TCTemplateXSLTController < Ramaze::Controller
-  template_root 'spec/ramaze/template/xslt/'
+  view_root 'spec/ramaze/template/xslt/'
   engine :XSLT
   trait :xslt_options => { :fun_xmlns => 'urn:test' }
   map '/'

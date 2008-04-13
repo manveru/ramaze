@@ -20,7 +20,7 @@ end
 class TCActionOtherLayout < Ramaze::Controller
   map '/other'
   layout '/other_wrapper'
-  template_root __DIR__/:view
+  view_root __DIR__/:view
 
   def index
     "Others Hello"
@@ -140,7 +140,7 @@ end
 
 describe 'Action rendering' do
   behaves_like 'http'
-  ramaze :template_root => __DIR__/:view
+  ramaze :view_root => __DIR__/:view
 
   it 'should work with layouts' do
     get('/').body.should == "<pre>Hello, World!</pre>"

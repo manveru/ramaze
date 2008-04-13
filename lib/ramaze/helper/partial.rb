@@ -43,7 +43,7 @@ module Ramaze
       options.keys.each {|x| Request.current.params[x] = saved[x] }
     end
 
-    # Render the template file in template_root of the
+    # Render the template file in view_root of the
     # current controller.
 
     def render_template(file, vars = {})

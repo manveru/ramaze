@@ -21,7 +21,7 @@ end
 class TCTemplateController < Ramaze::Controller
   map '/'
   engine :TestTemplate
-  template_root __DIR__/:template/:ramaze
+  view_root __DIR__/:template/:ramaze
 
   def index *args
   end
@@ -32,7 +32,7 @@ end
 
 class TCMultipleTemplateRoots < Ramaze::Controller
   map '/multiple'
-  template_root __DIR__/:helper/:view, __DIR__/:template/:ezamar
+  view_root __DIR__/:helper/:view, __DIR__/:template/:ezamar
 
   def sum
     @num1, @num2 = 1, 2
@@ -49,7 +49,7 @@ class TCMultipleTemplateRoots < Ramaze::Controller
 end
 
 describe "testing ramaze template" do
-  ramaze :template_root => __DIR__/:view
+  ramaze :view_root => __DIR__/:view
 
   def getpage page
     content = Ramaze::Controller.handle(page)
@@ -93,12 +93,12 @@ describe "testing ramaze template" do
 
     @file.should =~ /external\.test$/
     @params.should == []
-    file = TCTemplateController.template_root.first/'external.test'
+    file = TCTemplateController.view_root.first/'external.test'
     @file.should == file
   end
 end
 
-describe 'multiple template_roots' do
+describe 'multiple view_roots' do
   def get(*args) Ramaze::Controller.handle(args) end
 
   it 'should work' do

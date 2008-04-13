@@ -6,7 +6,7 @@ spec_require 'nagoro'
 
 class TCTemplateNagoroController < Ramaze::Controller
   map :/
-  template_root __DIR__/:nagoro
+  view_root __DIR__/:nagoro
   engine :Nagoro
 
   def index text

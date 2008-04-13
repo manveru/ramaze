@@ -50,7 +50,7 @@ module Ramaze
         Log.dev("found Controllers: #{Global.controllers.inspect}")
 
         check_path("Public root: '%s' doesn't exist", Global.public_root)
-        check_path("Template root: '%s' doesn't exist", Global.template_root)
+        check_path("View root: '%s' doesn't exist", Global.view_root)
 
         require 'ramaze/controller/main' if Global.mapping.empty?
 
@@ -145,17 +145,22 @@ module Ramaze
         end
       end
 
-      # Define a template_root for Controller, returns the current template_root
+      # Define a view_root for Controller, returns the current view_root
       # if no argument is given.
       # Runs every given path through Controller::check_path
 
-      def template_root *args
+      def view_root *args
         if args.empty?
-          @template_root
+          @view_root
         else
-          check_path("#{self}.template_root: '%s' doesn't exist", *args)
-          @template_root = args.flatten
+          check_path("#{self}.view_root: '%s' doesn't exist", *args)
+          @view_root = args.flatten
         end
+      end
+
+      def template_root(*args)
+        Ramaze.deprecated("Controller::template_root", "Controller::view_root")
+        view_root(*args)
       end
 
       # This is used for template rerouting, takes action, optionally a
@@ -206,7 +211,7 @@ module Ramaze
             if file
               file = file.to_s
               unless Pathname(file).absolute?
-                root = [template_root || Global.template_root].flatten.first
+                root = [view_root || Global.view_root].flatten.first
                 file = File.join(root, file)
               end
               info[:file] = file

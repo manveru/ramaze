@@ -8,8 +8,8 @@ require 'start'
 
 describe 'Blog' do
   behaves_like 'http'
-  ramaze :public_root   => base/:public,
-         :template_root => base/:view
+  ramaze :public_root => base/:public,
+         :view_root   => base/:view
 
   after do
     Entry.each{|e| e.delete unless e.id == 1 }

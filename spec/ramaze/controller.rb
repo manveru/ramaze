@@ -5,7 +5,7 @@ require 'spec/helper'
 
 class TCControllerController < Ramaze::Controller
   map '/'
-  template_root 'spec/ramaze/template/ezamar'
+  view_root 'spec/ramaze/template/ezamar'
 
   def index
     @text = "World"

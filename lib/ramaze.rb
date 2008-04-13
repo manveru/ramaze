@@ -30,8 +30,6 @@ require 'rack/response'
 
 # The main namespace for Ramaze
 module Ramaze
-  SEEED = $0.dup
-  APPDIR = File.dirname(File.expand_path($0))
   BASEDIR = File.dirname(File.expand_path(__FILE__))
   $LOAD_PATH.unshift BASEDIR
   $LOAD_PATH.uniq!
@@ -46,7 +44,7 @@ require 'ramaze/log'
 require 'ramaze/trinity'
 require 'ramaze/current'
 require 'ramaze/adapter'
-require 'ramaze/global'
+require 'ramaze/option'
 require 'ramaze/cache'
 require 'ramaze/tool'
 
@@ -74,19 +72,19 @@ module Ramaze
     # each class in trait[:essentials] by calling ::startup on them.
 
     def startup options = {}
-      runner_from_caller = caller[0][/^(.*?):\d+/, 1]
-      runner = options.delete(:runner) || runner_from_caller
+      force = options.delete(:force)
 
-      if $0 == runner or options.delete(:force)
+      runner = options[:runner] ||= caller[0][/^(.*?):\d+/, 1]
+      Global.merge!(options)
+
+      if $0 == runner or force
         Log.info("Starting up Ramaze (Version #{VERSION})")
-        SEEED.replace(runner)
-        APPDIR.replace(File.dirname(File.expand_path(runner)))
 
         trait[:essentials].each do |obj|
           obj.startup(options)
         end
       else
-        Global.startup(options)
+        Log.info "Ramaze already started, skip start."
       end
     end
 

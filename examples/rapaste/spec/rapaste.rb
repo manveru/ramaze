@@ -8,8 +8,8 @@ require 'start'
 
 describe 'RaPaste' do
   behaves_like 'http'
-  ramaze :public_root   => base/:public,
-         :template_root => base/:view
+  ramaze :public_root => base/:public,
+         :view_root   => base/:view
 
   it 'should show an empty list on the list page' do
     page = get('/list')

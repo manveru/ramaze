@@ -2,7 +2,7 @@ require "rubygems"
 require "ramaze"
 
 class MainController < Ramaze::Controller
-  template_root __DIR__/:template
+  view_root __DIR__/:template
   engine :Tenjin
 
   def index

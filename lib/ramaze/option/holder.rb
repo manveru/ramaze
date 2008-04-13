@@ -1,6 +1,135 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'ramaze/option/merger'
+
+module Ramaze
+  module Option
+    class Holder
+      include Merger
+
+      def initialize(options = {})
+        @members = Set.new
+
+        options.each do |key, value|
+          add_option(key, value, complain = false)
+        end
+      end
+
+      def add_option(key, value, complain = true)
+        Log.warn("Adding #{key} to #{self}") if complain
+
+        self.class.class_eval do
+          attr_reader key unless method_defined?(key)
+          attr_writer key unless method_defined?("#{key}=")
+        end
+
+        self[key] = value
+      end
+
+      def [](key)
+        __send__(key)
+      end
+
+      def []=(key, value)
+        @members << key.to_s.to_sym
+        __send__("#{key}=", value)
+      end
+
+      include Enumerable
+
+      def each
+        @members.each do |member|
+          yield member, self[member]
+        end
+      end
+
+      def startup(options)
+        options.each do |key, value|
+          self[key] = value
+        end
+
+        self.root ||= File.dirname(File.expand_path(runner))
+      end
+
+      # Modified options
+
+      def port=(number)
+        @port = number.to_i
+      end
+
+      def public_root=(pr)
+        @public_root = pr
+      end
+
+      # Find a suitable public_root, if none of these is a directory just use the
+      # currently set one.
+      def public_root
+        [ pr = @public_root,
+          root/pr,
+        ].find{|path| File.directory?(path) } || @public_root
+      end
+
+      def view_root=(vr)
+        @view_root = vr
+      end
+
+      # Find a suitable view_root, if none of these is a directory just use
+      # the currently set one.
+      def view_root
+        [ vr = @view_root,
+          root/vr,
+          root/'template',
+        ].find{|path| File.directory?(path) } || @view_root
+      end
+
+      def template_root=(tr)
+        Ramaze::deprecated "Global.template_root=", "Global.view_root="
+        self.view_root = tr
+      end
+
+      def template_root
+        Ramaze::deprecated "Global.template_root", "Global.view_root"
+        self.view_root
+      end
+
+      def adapter
+        find_from_aliases(@adapter, :adapter_aliases, Ramaze::Adapter, "ramaze/adapter")
+      end
+
+      def cache
+        find_from_aliases(@cache, :cache_aliases, Ramaze, "ramaze/cache")
+      end
+
+      private
+
+      def find_from_aliases(name, alias_key, mod, path)
+        case name
+        when String, Symbol
+          name = name.to_s
+          name = self[alias_key][name] || name
+          find_require(name, mod, path)
+        else
+          name
+        end
+      end
+
+      def find_require(name, mod, path)
+        class_name = name.to_s
+        file_path = File.join(path, class_name.downcase)
+
+        require(file_path) unless mod.const_defined?(class_name)
+
+        mod.const_get(class_name)
+      end
+    end
+  end
+end
+
+__END__
+
+# This is still here for quick reference
+
 module Ramaze
   unless defined?(GlobalStruct) # prevent problems for SourceReload
     class GlobalStruct < Struct.new('Global', *OPTIONS.keys)
@@ -147,6 +276,14 @@ module Ramaze
       end
 
       @table[key] = value
+    end
+
+    def to_hash
+      h = {}
+      each do |key, value|
+        h[key] = value
+      end
+      h
     end
   end
 end

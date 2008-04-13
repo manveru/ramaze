@@ -8,8 +8,8 @@ require 'start'
 
 describe 'Wikore' do
   behaves_like 'http'
-  ramaze :public_root   => base/:public,
-         :template_root => base/:template
+  ramaze :public_root => base/:public,
+         :view_root   => base/:template
 
   def check_redirect(to = '/')
     response = yield

@@ -40,7 +40,7 @@ end
 
 describe "PartialHelper" do
   behaves_like 'http'
-  ramaze :template_root => __DIR__/:view
+  ramaze :view_root => __DIR__/:view
 
   it "should render partials" do
     get('/').body.should == '<html><head><title>Title</title></head></html>'
