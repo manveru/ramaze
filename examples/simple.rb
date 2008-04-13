@@ -28,7 +28,7 @@ class SimpleController < Ramaze::Controller
     request.inspect
   end
 
-  def join first, second
+  def join(first, second)
     [first, second].join
   end
 
@@ -41,7 +41,7 @@ class SimpleController < Ramaze::Controller
   end
   
   def post_or_get
-    request.post? ? 'POST' : 'GET'
+    request.request_method
   end
 end
 
