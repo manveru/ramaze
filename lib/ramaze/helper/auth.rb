@@ -32,7 +32,7 @@ module Ramaze
         session[:username] = username
         inside_stack? ? answer : redirect_referrer
       else
-        if AUTH_ELEMENT and AUTH_ELEMENT.to_s.split.any?
+        if defined? AUTH_ELEMENT and AUTH_ELEMENT.to_s.split.any?
           open_element = "<#{AUTH_ELEMENT}>"
           close_element = "</#{AUTH_ELEMENT}>"
         end
