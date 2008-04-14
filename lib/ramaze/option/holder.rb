@@ -55,6 +55,12 @@ module Ramaze
         end
       end
 
+      # batch-assignment of key/value from hash, yields self if a block is given.
+      def setup(hash = {})
+        merge!(hash)
+        yield(self) if block_given?
+      end
+
       # Modified options
 
       def port=(number)
