@@ -43,7 +43,7 @@ module Ramaze
         meta = { :path => path,
                  :request => request,
                  :controller => Thread.current[:controller] }
-        Dispatcher::Error.process(error, meta)
+        Dispatcher::Error.call(error, meta)
       end
 
       # protects against recursive dispatch and reassigns the path_info in the
@@ -103,13 +103,13 @@ module Ramaze
         }
       end
 
-      # Calls .process(path) on every class in Dispatcher::FILTER until one
+      # Calls .call(path) on every object in Dispatcher::FILTER until one
       # returns something else than false/nil.
 
       def filter(path)
         result = nil
         FILTER.each do |dispatcher|
-          result = dispatcher.process(path)
+          result = dispatcher.call(path)
           return result if result and not result.respond_to?(:exception)
         end
 
@@ -117,7 +117,7 @@ module Ramaze
           :path => path,
           :controller => Thread.current[:controller]
         }
-        Dispatcher::Error.process(result, meta)
+        Dispatcher::Error.call(result, meta)
       end
     end
   end

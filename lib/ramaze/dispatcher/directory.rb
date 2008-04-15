@@ -12,7 +12,7 @@ module Ramaze
         # Entry point from Dispatcher::filter.
         # Just a forwarder to build_listing, automatticly exiting if there is
         # an error (defined by returning false in build_listing)
-        def process(path)
+        def call(path)
           if Global.list_directories
             response = build_listing(path)
             Response.current.build(*response) if response

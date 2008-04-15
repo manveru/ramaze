@@ -22,7 +22,7 @@ module Ramaze
         # success. The response is then passed to each member of FILTER for
         # post-processing.
 
-        def process(path)
+        def call(path)
           Log.info("Dynamic request from #{request.ip}: #{request.request_uri}")
 
           catch(:respond) {

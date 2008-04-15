@@ -29,7 +29,7 @@ module Ramaze
         # In case metainfo has a controller we try to get the action for the
         # path on it, dispatching there if we find one.
         # Otherwise a plain-text error message is set as response.
-        def process(error, metainfo = {})
+        def call(error, metainfo = {})
           log_error(error)
 
           Thread.current[:exception] = error
@@ -41,7 +41,7 @@ module Ramaze
 
           if controller = metainfo[:controller]
             newpath = (controller.mapping + path).squeeze('/')
-            action_response = Dispatcher::Action.process(newpath)
+            action_response = Dispatcher::Action.call(newpath)
             case action_response
             when Ramaze::Error
               Log.debug("No custom error page found on #{controller}, going to #{path}")

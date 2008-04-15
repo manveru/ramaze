@@ -21,7 +21,7 @@ module Ramaze
         # Entry point from Dispatcher::filter.
         # searches for the file and builds a response with status 200 if found.
 
-        def process(path)
+        def call(path)
           return unless file = open_file(CGI.unescape(path))
           if file == :NotModified
             return response.build([], STATUS_CODE['Not Modified'])
