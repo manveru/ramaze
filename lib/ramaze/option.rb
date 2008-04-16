@@ -21,8 +21,10 @@ module Ramaze
 
     o "Hash of aliases for caches",
       :cache_aliases, {
-        "memory" => "MemoryCache",
-        "yaml"   => "YAMLStoreCache"
+        "memory"    => "MemoryCache",
+        "yaml"      => "YAMLStoreCache",
+        "memcache"  => "MemcachedCache",
+        "memcached" => "MemcachedCache",
       }
 
     o "Disable templates without actions",
