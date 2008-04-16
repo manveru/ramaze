@@ -84,7 +84,7 @@ module Ramaze
           obj.startup(options)
         end
       else
-        Log.info "Ramaze already started, skip start."
+        Log.info "Ramaze already started, skipped start."
       end
     end
 
