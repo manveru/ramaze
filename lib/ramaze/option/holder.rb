@@ -49,6 +49,9 @@ module Ramaze
           self[key] = value
         end
 
+        merge!(ARGV)
+        merge!(ENV)
+
         self.root ||= File.dirname(File.expand_path(runner))
         [self.load_engines].flatten.compact.each do |engine|
           Ramaze::Template.const_get(engine)
