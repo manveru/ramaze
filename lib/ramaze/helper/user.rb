@@ -1,17 +1,14 @@
 module Ramaze
   module Helper
+    # In order to use this helper, define the :user_model trait in your controller
     module User
-      # Define the :user_model trait
-      def self.inherited(klass)
-        klass.trait :user_model => ::User
-      end
 
       # yield or instantinate Wrapper for @user_helper
       def user
         if instance_variable_defined?('@user_helper')
           @user_helper
         else
-          @user_helper = Wrapper.new ancestral_trait[:user_model]
+          @user_helper = Wrapper.new(self, ancestral_trait[:user_model])
         end
       end
 
@@ -21,24 +18,33 @@ module Ramaze
       class Wrapper
         thread_accessor :session
         attr_accessor :user
+        attr_reader :model, :controller
+
+        # user.id should bounce to the model
+        undef_method(:id) if method_defined?(:id)
 
         # new Wrapper, pass it your definition of user.
-        def initialize(model)
+        def initialize(controller, model)
           raise ArgumentError, "No model defined for Helper::User" unless model
-          @model = model
+          @controller, @model = controller, model
           @user = nil
           login(persist)
         end
 
         # Do we have a @user yet?
         def logged_in?
-          !!@user
+          !!user
         end
 
         def login?(hash)
           credentials = {}
           hash.each{|k,v| credentials[k.to_sym] = v.to_s }
-          @model[credentials]
+
+          if checker = controller.trait[:user_check]
+            checker.call(credentials)
+          else
+            model.check(credentials)
+          end
         end
 
         def persist
@@ -64,7 +70,7 @@ module Ramaze
 
         # Refer everything not known
         def method_missing(meth, *args, &block)
-          @user.send(meth, *args, &block)
+          user.send(meth, *args, &block)
         end
       end
     end

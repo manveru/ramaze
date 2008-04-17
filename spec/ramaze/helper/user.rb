@@ -1,15 +1,12 @@
 require 'spec/helper'
 
 class MockSequelUser
-  # mocks what User[:name => 'arthur', :password => '42'] would do
-  def self.[](hash)
-    name = hash[:name] || hash['name']
-    pass = hash[:password] || hash['password']
-    new if name == 'arthur' and pass == '42'
-  end
-
   def profile
     "Arthur Dent, fearful human in outer space!"
+  end
+
+  def self.check(hash)
+    new if hash[:name] == 'arthur' and hash[:password] == '42'
   end
 end
 
