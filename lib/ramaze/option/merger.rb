@@ -91,7 +91,7 @@ module Ramaze
           opt.separator 'Common options:'
 
           opt.on('-h', '--help', 'Show this message') do
-            puts opts
+            puts opt
             exit
           end
 
