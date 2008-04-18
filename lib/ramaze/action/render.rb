@@ -68,27 +68,45 @@ module Ramaze
 
     def cached_render_memory
       action_cache = Cache.actions
-      full_path = self.controller.mapping/extended_path
+      opts = cache_options
+      cache = action_cache[full_path] ||= {}
 
-      # backwards compat with trait :actions_cached => []
-      cache_opts = actions_cached.is_a?(Hash) ? actions_cached[path.to_sym] : {}
-
-      if cache_opts[:key]
-        action_cache[full_path] ||= {}
-        cache = action_cache[full_path][ cache_opts[:key].call ] ||= {}
+      if opts and key = opts[:key]
+        result = key.call
+        cache = cache[result] ||= {}
+        cached_memory_common(opts, cache){|c|
+          # avoid trouble with memcached
+          hash = Cache.actions[full_path][result] || {}
+          hash[result] = c
+          Cache.actions[full_path] = hash
+        }
       else
-        cache = action_cache[full_path] ||= {}
+        cached_memory_common(opts, cache){|c| action_cache[full_path] = c }
       end
+    end
 
-      if cache.size > 0 and (cache_opts[:ttl].nil? or cache[:time] + cache_opts[:ttl] > Time.now)
-        Log.debug("Using Cached version")
+    def cached_memory_common(opts, cache)
+      if in_cache?(opts, cache)
+        Log.debug "Action already cached"
         Response.current['Content-Type'] = cache[:type]
       else
-        Log.debug("Compiling Action")
+        Log.debug "Action will be rendered for caching"
         cache.replace({ :time => Time.now, :content => uncached_render, :type => Response.current['Content-Type'] })
       end
 
+      # give a chance to sync the cache, hashes are nasty in terms of syncing back up
+      yield(cache)
+
       cache[:content]
+    end
+
+    def in_cache?(opts, cache)
+      if cache.size > 0
+        return true unless opts
+        ttl = opts[:ttl]
+        return true unless ttl
+        cache[:time] + ttl > Time.now
+      end
     end
 
     # The 'normal' rendering process. Passes the Action instance to
@@ -156,6 +174,11 @@ module Ramaze
 
     def actions_cached
       controller.trait[:actions_cached]
+    end
+
+    # backwards compat with trait :actions_cached => []
+    def cache_options
+      actions_cached.is_a?(Hash) ? actions_cached[path.to_sym] : {}
     end
 
     # return true if the action is flagged for caching. Called by

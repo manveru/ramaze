@@ -44,13 +44,10 @@ module Ramaze
     def cache *args
       return value_cache if args.size == 0
 
-      if args.last.is_a? Hash
-        opts = args.pop
-      end
-      opts ||= {}
+      opts = args.last.is_a?(Hash) ? args.pop : {}
 
-      args.each do |arg|
-        actions_cached[arg.to_sym] = opts unless arg.nil?
+      args.compact.each do |arg|
+        actions_cached[arg.to_sym] = opts
       end
     end
 

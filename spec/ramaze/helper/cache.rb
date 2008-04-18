@@ -86,58 +86,75 @@ class TCCacheHelperOldController < Ramaze::Controller
   end
 end
 
-describe "CacheHelper" do
-  behaves_like 'http'
-  ramaze
 
-  def req(path='/', *args) get(path, *args).body end
 
-  it "testrun" do
-    req.should == 'TCCacheHelperController'
-  end
+# TODO:
+#   * specs fail horribly with the yaml store.
+caches = {:memory => 'Hash'}
 
-  it "cached value" do
-    3.times do
-      lambda{ req('/cached_value') }.should.not.change{ req('/cached_value') }
+begin
+  require 'memcache'
+  caches[:memcached] = 'Ramaze::MemcachedCache'
+rescue LoadError
+  puts "skipping memcached"
+end
+
+caches.each do |cache, name|
+  Ramaze::Global.cache = cache
+
+  describe "CacheHelper on #{name}" do
+    behaves_like 'http'
+    ramaze
+
+    def req(path='/', *args) get(path, *args).body end
+
+    it "testrun" do
+      req.should == 'TCCacheHelperController'
     end
 
-    3.times do
-      lambda{ req('/uncache_values') }.should.change{ req('/cached_value') }
+    it "cached value" do
+      3.times do
+        lambda{ req('/cached_value') }.should.not.change{ req('/cached_value') }
+      end
+
+      3.times do
+        lambda{ req('/uncache_values') }.should.change{ req('/cached_value') }
+      end
+
+      lambda{ req('/uncache_values') }.should.change{ req('/alt_cached_value') }
     end
 
-    lambda{ req('/uncache_values') }.should.change{ req('/alt_cached_value') }
-  end
+    it "cached action" do
+      3.times do
+        lambda{ req('/cached_action') }.should.not.change{ req('/cached_action') }
+      end
 
-  it "cached action" do
-    3.times do
-      lambda{ req('/cached_action') }.should.not.change{ req('/cached_action') }
+      3.times do
+        lambda{ req('/uncache_actions') }.should.change{ req('/cached_action') }
+      end
     end
 
-    3.times do
-      lambda{ req('/uncache_actions') }.should.change{ req('/cached_action') }
+    it "should support options" do
+      req('/ttl/cached_list').should == {:index=>{:ttl=>1}}.inspect
+      req('/key/cached_list').should =~ /^\{:name=>\{:key=>/
     end
-  end
 
-  it "should support options" do
-    req('/ttl/cached_list').should == {:index=>{:ttl=>1}}.inspect
-    req('/key/cached_list').should =~ /^\{:name=>\{:key=>/
-  end
+    it "should expire cache after time-to-live" do
+      orig_value = req('/ttl')
+      req('/ttl').should == orig_value
+      sleep 1
+      req('/ttl').should.not == orig_value
+    end
 
-  it "should expire cache after time-to-live" do
-    orig_value = req('/ttl')
-    req('/ttl').should == orig_value
-    sleep 1
-    req('/ttl').should.not == orig_value
-  end
+    it "should cache using key lambda if provided" do
+      req('/key/name', :name=>'Aman').should == req('/key/name', :name=>'Aman')
+      req('/key/name', :name=>'Bob').should =~ /^hi Bob/
+    end
 
-  it "should cache using key lambda if provided" do
-    lambda{ req('/key/name', :name=>'Aman') }.should.not.change{ req('/key/name', :name=>'Aman') }
-    req('/key/name', :name=>'Bob').should =~ /^hi Bob/
-  end
-
-  it "should remain backwards compatible" do
-    lambda{ req('/old') }.should.not.change{ req('/old') }
-    lambda{ req('/old/action/two/three') }.should.not.change{ req('/old/action/one/two') }
-    req('/old/action/two/three').should =~ /^twothree/
+    it "should remain backwards compatible" do
+      lambda{ req('/old') }.should.not.change{ req('/old') }
+      lambda{ req('/old/action/two/three') }.should.not.change{ req('/old/action/one/two') }
+      req('/old/action/two/three').should =~ /^twothree/
+    end
   end
 end

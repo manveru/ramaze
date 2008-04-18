@@ -116,7 +116,11 @@ module Ramaze
 
     # combined path to current action, from path and params
     def extended_path
-      @extended_path ||= Array[path, *params].join('/')
+      Array[path, *params].join('/')
+    end
+
+    def full_path
+      self.controller.mapping/extended_path
     end
 
     # Hook for AspectHelper
