@@ -88,6 +88,11 @@ describe "Cache wrapper" do
     @cache.fetch(:monkeys, :default).should == :default
   end
 
+  should 'be assignable with #set and retrievable with #get' do
+    @cache.set(:ninjas, :totally_sweet)
+    @cache.get(:ninjas).should == :totally_sweet
+  end
+
   should 'expire key after ttl' do
     @cache[:cow].should == nil
     @cache.store(:cow, :moo, :ttl => 1)

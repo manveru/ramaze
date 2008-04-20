@@ -90,6 +90,8 @@ module Ramaze
       default
     end
 
+    alias get fetch
+
     # Sets key to value. Supports the following options:
     #   [+:ttl+] time to live in seconds
     def store(key, value, opts = {})
@@ -99,6 +101,8 @@ module Ramaze
       }
       value
     end
+
+    alias set store
 
     # Answers with value for each key.
     def values_at(*keys)
