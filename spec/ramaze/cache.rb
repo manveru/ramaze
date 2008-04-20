@@ -57,17 +57,73 @@ caches.each do |cache, name|
       @cache.values_at(:baz, :beh).should == [:foo, :feh]
     end
 
-    it "different cache namespaces should not overlap" do
-      Ramaze::Cache.add :foo
-      Ramaze::Cache.add :bar
-
-      key = "foobar"
-      Ramaze::Cache.foo[key] = 'foo'
-      Ramaze::Cache.bar[key] = 'bar'
-
-      Ramaze::Cache.foo[key].should.not == Ramaze::Cache.bar[key]
-    end
-
     FileUtils.rm(@cache.file) if cache == :yaml
+  end
+end
+
+describe "Cache wrapper" do
+  before do
+    @cache = Ramaze::Cache.new(Hash)
+  end
+
+  after do
+    @cache.clear
+  end
+
+  it "should be assignable with #[]= and retrievable with #[]" do
+    @cache[:foo] = :bar
+    @cache[:foo].should == :bar
+  end
+
+  it "should return nil if key not found" do
+    @cache[:baz].should == nil
+  end
+
+  it "should be assignable with #store and retrievable with #fetch" do
+    @cache.store(:foo, :bar)
+    @cache.fetch(:foo).should == :bar
+  end
+
+  it "should return default value if key not found" do
+    @cache.fetch(:monkeys, :default).should == :default
+  end
+
+  it "should expire key after ttl" do
+    @cache[:cow].should == nil
+    @cache.store(:cow, :moo, :ttl => 2)
+    @cache[:cow].should == :moo
+    sleep(2.1)
+    @cache[:cow].should == nil
+  end
+
+  it "should delete keys" do
+    @cache[:abc] = :cba
+    @cache[:def] = :fed
+    @cache.delete(:abc, :def)
+    @cache[:abc].should == nil
+    @cache[:def].should == nil
+  end
+
+  it "should show values for multiple keys" do
+    @cache[:baz] = :foo
+    @cache[:beh] = :feh
+    @cache.values_at(:baz, :beh).should == [:foo, :feh]
+  end
+
+  it "should clear" do
+    @cache[:moo] = :cow
+    @cache.clear
+    @cache[:moo].should == nil
+  end
+
+  it "different cache namespaces should not overlap" do
+    Ramaze::Cache.add :foo
+    Ramaze::Cache.add :bar
+
+    key = "foobar"
+    Ramaze::Cache.foo[key] = 'foo'
+    Ramaze::Cache.bar[key] = 'bar'
+
+    Ramaze::Cache.foo[key].should.not == Ramaze::Cache.bar[key]
   end
 end
