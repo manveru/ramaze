@@ -14,12 +14,12 @@ end
 
 caches.each do |cache, name|
   describe "#{name} setup" do
-    it "should be assignable to Global" do
+    should 'be assignable to Global' do
       Ramaze::Global.cache = cache
       Ramaze::Global.cache.to_s.should == name
     end
 
-    it "should do .new" do
+    should 'do .new' do
       @cache = Ramaze::Global.cache.new
       @cache.class.name.should == name
     end
@@ -35,23 +35,23 @@ caches.each do |cache, name|
       @cache.clear
     end
 
-    it "should be assignable with #[]=" do
+    should 'be assignable with #[]=' do
       @cache[:foo] = :bar
       @cache[:foo].should == :bar
     end
 
-    it "should be retrievable with #[]" do
+    should 'be retrievable with #[]' do
       @cache[:yoh] = :bar
       @cache[:yoh].should == :bar
     end
 
-    it "should delete keys" do
+    should 'delete keys' do
       @cache[:bar] = :duh
       @cache.delete(:bar)
       @cache[:bar].should == nil
     end
 
-    it "should show values for multiple keys" do
+    should 'show values for multiple keys' do
       @cache[:baz] = :foo
       @cache[:beh] = :feh
       @cache.values_at(:baz, :beh).should == [:foo, :feh]
@@ -70,33 +70,33 @@ describe "Cache wrapper" do
     @cache.clear
   end
 
-  it "should be assignable with #[]= and retrievable with #[]" do
+  should 'be assignable with #[]= and retrievable with #[]' do
     @cache[:foo] = :bar
     @cache[:foo].should == :bar
   end
 
-  it "should return nil if key not found" do
+  should 'return nil if key not found' do
     @cache[:baz].should == nil
   end
 
-  it "should be assignable with #store and retrievable with #fetch" do
+  should 'be assignable with #store and retrievable with #fetch' do
     @cache.store(:foo, :bar)
     @cache.fetch(:foo).should == :bar
   end
 
-  it "should return default value if key not found" do
+  should 'return default value if key not found' do
     @cache.fetch(:monkeys, :default).should == :default
   end
 
-  it "should expire key after ttl" do
+  should 'expire key after ttl' do
     @cache[:cow].should == nil
-    @cache.store(:cow, :moo, :ttl => 2)
+    @cache.store(:cow, :moo, :ttl => 1)
     @cache[:cow].should == :moo
-    sleep(2.1)
+    sleep(1)
     @cache[:cow].should == nil
   end
 
-  it "should delete keys" do
+  should 'delete keys' do
     @cache[:abc] = :cba
     @cache[:def] = :fed
     @cache.delete(:abc, :def)
@@ -104,19 +104,19 @@ describe "Cache wrapper" do
     @cache[:def].should == nil
   end
 
-  it "should show values for multiple keys" do
+  should 'show values for multiple keys' do
     @cache[:baz] = :foo
     @cache[:beh] = :feh
     @cache.values_at(:baz, :beh).should == [:foo, :feh]
   end
 
-  it "should clear" do
+  should 'clear' do
     @cache[:moo] = :cow
     @cache.clear
     @cache[:moo].should == nil
   end
 
-  it "different cache namespaces should not overlap" do
+  should 'not allow different cache namespaces to overlap' do
     Ramaze::Cache.add :foo
     Ramaze::Cache.add :bar
 
