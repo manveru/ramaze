@@ -67,46 +67,35 @@ module Ramaze
     # in terms of your RAM.
 
     def cached_render_memory
-      action_cache = Cache.actions
-      opts = cache_options
-      cache = action_cache[full_path] ||= {}
+      cache = Cache.actions
+      options = cache_options
+      store_options = {}
+      key = full_path
 
-      if opts and key = opts[:key]
-        result = key.call
-        cache = cache[result] ||= {}
-        cached_memory_common(opts, cache){|c|
-          # avoid trouble with memcached
-          hash = Cache.actions[full_path][result] || {}
-          hash[result] = c
-          Cache.actions[full_path] = hash
-        }
-      else
-        cached_memory_common(opts, cache){|c| action_cache[full_path] = c }
+      if options.respond_to?(:values_at)
+        block, ttl = options.values_at(:key, :ttl)
+
+        key = [full_path, block.call] if block
+        store_options[:ttl] = ttl if ttl
       end
+
+      cached_memory_process(cache, key, store_options)
     end
 
-    def cached_memory_common(opts, cache)
-      if in_cache?(opts, cache)
+    def cached_memory_process(cache, key, store_options)
+      stored = cache[key] || {}
+
+      if content = stored[:content]
         Log.debug "Action already cached"
-        Response.current['Content-Type'] = cache[:type]
+        Response.current['Content-Type'] = stored[:type]
       else
         Log.debug "Action will be rendered for caching"
-        cache.replace({ :time => Time.now, :content => uncached_render, :type => Response.current['Content-Type'] })
+        stored[:content] = uncached_render
+        stored[:type] = Response.current['Content-Type']
+        cache.store(key, stored, store_options)
       end
 
-      # give a chance to sync the cache, hashes are nasty in terms of syncing back up
-      yield(cache)
-
-      cache[:content]
-    end
-
-    def in_cache?(opts, cache)
-      if cache.size > 0
-        return true unless opts
-        ttl = opts[:ttl]
-        return true unless ttl
-        cache[:time] + ttl > Time.now
-      end
+      stored[:content]
     end
 
     # The 'normal' rendering process. Passes the Action instance to
