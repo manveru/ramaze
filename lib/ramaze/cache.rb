@@ -60,31 +60,51 @@ module Ramaze
       @cache = cache.new
     end
 
-    # Get key.
+    # Gets the value for the given key, or +nil+ if not found.
     def [](key)
-      @cache["#{@cache_name}:#{key}"]
+      fetch(key)
     end
 
-    # Set key to value.
+    # Sets _key_ to _value_ with an infinite time to live.
     def []=(key, value)
-      @cache["#{@cache_name}:#{key}"] = value
+      store(key, value)
     end
 
-    # deletes the keys of each argument passed from Cache instance.
+    # Empties this cache.
+    def clear
+      @cache.clear
+    end
+
+    # Deletes each passed key from this cache.
     def delete(*args)
       args.each do |arg|
         @cache.delete("#{@cache_name}:#{arg}")
       end
     end
 
-    # Empty this cache
-    def clear
-      @cache.clear
+    # Gets the value of the given key, or _default_ if not found.
+    def fetch(key, default = nil)
+      return default unless entry = @cache["#{@cache_name}:#{key}"]
+      return entry[:value] if entry[:expires].nil? || entry[:expires] > Time.now
+      @cache.delete("#{@cache_name}:#{key}")
+      default
+    end
+
+    # Sets key to value. Supports the following options:
+    #   [+:ttl+] time to live in seconds
+    def store(key, value, opts = {})
+      @cache["#{@cache_name}:#{key}"] = {
+        :expires => opts[:ttl] ? Time.now + opts[:ttl].to_i : nil,
+        :value   => value
+      }
+      value
     end
 
     # Answers with value for each key.
     def values_at(*keys)
-      @cache.values_at(*keys.map {|key| "#{@cache_name}:#{key}" })
+      values = []
+      keys.each {|key| values << fetch(key) }
+      values
     end
   end
 end
