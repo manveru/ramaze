@@ -95,6 +95,7 @@ module Ramaze
     # Sets key to value. Supports the following options:
     #   [+:ttl+] time to live in seconds
     def store(key, value, opts = {})
+      opts = {:ttl => opts} if opts.is_a?(Integer)
       @cache["#{@cache_name}:#{key}"] = {
         :expires => opts[:ttl] ? Time.now + opts[:ttl].to_i : nil,
         :value   => value

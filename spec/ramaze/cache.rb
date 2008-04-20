@@ -101,6 +101,12 @@ describe "Cache wrapper" do
     @cache[:cow].should == nil
   end
 
+  should 'accept an int as the ttl parameter for #store' do
+    @cache[:cow].should == nil
+    @cache.store(:cow, :moo, 1)
+    @cache[:cow].should == :moo
+  end
+
   should 'delete keys' do
     @cache[:abc] = :cba
     @cache[:def] = :fed
