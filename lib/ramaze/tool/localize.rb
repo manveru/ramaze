@@ -157,6 +157,14 @@ module Ramaze
       rescue Errno::ENOENT => e
         Log.error e
       end
+
+      def languages
+        trait[:languages]
+      end
+
+      def default_language
+        trait[:default_language]
+      end
     end
   end
 end
