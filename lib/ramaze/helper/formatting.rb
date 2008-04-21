@@ -84,5 +84,9 @@ module Ramaze
     end
     alias :autolink :auto_link
 
+    def nl2br(string, xhtml = true)
+      br = xhtml ? '<br />' : '<br>'
+      string.gsub(/\n/, br)
+    end
   end
 end
