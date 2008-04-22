@@ -79,7 +79,7 @@ module Ramaze
               list = "  " << cli.join(', ')
               doc = "[#{value}] #{doc}"
               aliases = cli.abbrev
-              option = [short_option, "#{long_option} CHOICE", cli, aliases, doc, list]
+              option = [short_option, "#{long_option} CHOICE", aliases, doc, list]
             else
               option = [short_option, long_option, doc]
             end
