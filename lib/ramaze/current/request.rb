@@ -184,5 +184,11 @@ module Ramaze
       keys = keys.map{|k| k.to_s }
       params.reject{|k,v| not keys.include?(k) }
     end
+
+    def domain
+      scheme = env['rack.url_scheme'] || 'http'
+      host = env['HTTP_HOST']
+      URI("#{scheme}://#{host}/")
+    end
   end
 end
