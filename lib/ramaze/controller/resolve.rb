@@ -83,7 +83,7 @@ module Ramaze
               # TODO:
               #   * dangerous as well
               #     Cache.resolved[path] = action
-              return action.dup
+              return action
             end
           end
         end
