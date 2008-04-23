@@ -3,7 +3,10 @@
 
 module Ramaze
   class Controller
-    FILTER = [ :cached, :default ] unless defined?(FILTER)
+    # TODO:
+    #   * fix caching, see todos below
+    #     FILTER = [ :cached, :default ] unless defined?(FILTER)
+    FILTER = [ :default ] unless defined?(FILTER)
 
     class << self
 
@@ -54,7 +57,10 @@ module Ramaze
 
         raise_no_controller(path) if controllers.empty? or mapping.empty?
 
-        patterns = Cache.patterns[path] ||= pattern_for(path)
+        # TODO:
+        #   * following code is dangerous (DoS):
+        #     patterns = Cache.patterns[path] ||= pattern_for(path)
+        patterns = pattern_for(path)
         first_controller = nil
 
         patterns.each do |controller, method, params|
@@ -74,7 +80,9 @@ module Ramaze
               end
 
             if valid_action
-              Cache.resolved[path] = action
+              # TODO:
+              #   * dangerous as well
+              #     Cache.resolved[path] = action
               return action.dup
             end
           end
