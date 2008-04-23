@@ -97,7 +97,7 @@ describe "Cache wrapper" do
     @cache[:cow].should == nil
     @cache.store(:cow, :moo, :ttl => 1)
     @cache[:cow].should == :moo
-    sleep(1)
+    sleep(1.1)
     @cache[:cow].should == nil
   end
 
