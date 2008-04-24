@@ -60,11 +60,18 @@ ramaze options.merge(:public_root => 'spec/ramaze/public')
 describe "Request" do
   behaves_like 'http'
 
+  Request = Ramaze::Request
+
   it 'to_ivs' do
     got = get('/to_ivs', 'foo' => 'a')
     got.body.should == '@foo => a'
     got = get('/to_ivs', 'bar' => 'b', 'foo' => 'c')
     got.body.should == '@bar => b, @foo => c'
+  end
+
+  should 'show locales' do
+    r = Request.new('HTTP_ACCEPT_LANGUAGE' => 'en-ca,en-us;q=1,en;q=0.6')
+    r.locales.should == %w[en-ca en-us en]
   end
 
   describe "POST" do

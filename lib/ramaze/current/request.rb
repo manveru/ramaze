@@ -190,5 +190,9 @@ module Ramaze
       host = env['HTTP_HOST']
       URI("#{scheme}://#{host}/")
     end
+
+    def locales
+      env['HTTP_ACCEPT_LANGUAGE'].to_s.split(/(?:,|;q=[\d.,]+)/)
+    end
   end
 end

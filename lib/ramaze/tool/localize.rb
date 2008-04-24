@@ -101,11 +101,10 @@ module Ramaze
 
       def set_session_locale
         session[:LOCALE] = trait[:default_language]
-        accepted_langs = request.http_accept_language rescue 'en'
+        accepted_langs = request.locales << trait[:default_language]
 
         mapping = trait[:mapping]
         dict = dictionary
-        accepted_langs = accepted_langs.scan(/([^,;]+)(?:;q=[^,]+)?/m)[0]
 
         accepted_langs.each do |language|
           language = mapping[language] || language
