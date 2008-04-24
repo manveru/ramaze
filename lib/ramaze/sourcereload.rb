@@ -91,10 +91,10 @@ module Ramaze
             file
           else
             path = paths.find{|pa|
-              ex = File.expand_path(pa/file)
+              ex = File.expand_path(File.join(pa, file))
               File.exists?(ex)
             }
-            File.expand_path(path/file) if path
+            File.expand_path(File.join(path, file)) if path
           end
         }.compact
       end
