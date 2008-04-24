@@ -49,7 +49,7 @@ describe 'Helper::Form' do
     should 'handle class' do
       form = hget('/new').at(:form)
       inputs = (form/:input)
-      inputs.map{|i| i[:name] }.sort.should == %w[level name online]
+      inputs.map{|i| i[:name] }.compact.sort.should == %w[level name online]
       form.at(:textarea)[:name].should == 'description'
     end
 
