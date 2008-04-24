@@ -67,6 +67,8 @@ module Ramaze
       out << "<fieldset>"
       out << generate
       out << "</fieldset>"
+      out << '<input type="submit" />'
+      out << '<input type="reset" />'
       out << "</form>"
     end
 
