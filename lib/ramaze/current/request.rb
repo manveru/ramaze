@@ -185,10 +185,10 @@ module Ramaze
       params.reject{|k,v| not keys.include?(k) }
     end
 
-    def domain
+    def domain(path = '/')
       scheme = env['rack.url_scheme'] || 'http'
       host = env['HTTP_HOST']
-      URI("#{scheme}://#{host}/")
+      URI("#{scheme}://#{host}#{path}")
     end
 
     def locales

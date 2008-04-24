@@ -48,9 +48,10 @@ module Ramaze
         openid_request.add_extension(papereq)
         openid_request.return_to_args['did_pape'] = 'y'
 
-        root         = "http://#{request.http_host}/"
-        return_to    = request.url.sub(/#{Ramaze::Global.mapping.invert[self.class]}.*$/, Rs(:openid_complete))
-          immediate = false
+        root      = "http://#{request.http_host}/"
+        return_to = request.domain(Rs(:openid_complete)).to_s
+        immediate = false
+
         if openid_request.send_redirect?(root, return_to, immediate)
           redirect_url = openid_request.redirect_url(root, return_to, immediate)
           raw_redirect redirect_url
