@@ -27,6 +27,7 @@ module Ramaze
 
           if ::File.directory?(dir)
             Log.debug("Serving directory listing: #{dir}")
+            Session.current.drop! if Session.current
 
             status = Ramaze::STATUS_CODE['OK']
             header = {'Content-Type' => "text/html"}

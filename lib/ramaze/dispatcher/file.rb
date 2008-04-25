@@ -23,6 +23,7 @@ module Ramaze
 
         def call(path)
           return unless file = open_file(CGI.unescape(path))
+          Session.current.drop! if Session.current
           if file == :NotModified
             return response.build([], STATUS_CODE['Not Modified'])
           end

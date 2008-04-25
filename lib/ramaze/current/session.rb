@@ -28,6 +28,10 @@ module Ramaze
 
     attr_accessor :flash
 
+    # Flag whether or not to drop this session on the floor 
+
+    attr_accessor :dropped
+
     # secret salt for client-side session data
 
     trait :secret => 'change_me_please_123'
@@ -91,6 +95,8 @@ module Ramaze
       end
 
       @flash = Session::Flash.new(self)
+      @current = nil
+      @dropped = false
     end
 
     # relay all messages we don't understand to the currently active session
@@ -103,7 +109,10 @@ module Ramaze
     # existing already, the session itself is an instance of SessionHash
 
     def current
-      sessions[session_id] ||= Session::Hash.new(self)
+      unless @current
+        @current = ( sessions[session_id] ||= Session::Hash.new(self) )
+      end
+      @current
     end
 
     # shortcut to Cache.sessions
@@ -136,6 +145,12 @@ module Ramaze
       current.inspect
     end
 
+    # don't finish this session
+    
+    def drop!
+      self.dropped = true
+    end
+
     # at the end of a request delete the current[:FLASH] and assign it to
     # current[:FLASH_PREVIOUS]
     #
@@ -147,6 +162,7 @@ module Ramaze
 
     def finish
       return unless Global.sessions
+      return if dropped
 
       old = current.delete(:FLASH)
       current[:FLASH_PREVIOUS] = old if old
