@@ -46,7 +46,7 @@ module Ramaze
 
     # Holds the default cookie used for sessions
 
-    COOKIE = { :path => '/' }
+    COOKIE = { :path => '/' } unless defined?(COOKIE)
 
     class << self
       # Shortcut for Current.session
