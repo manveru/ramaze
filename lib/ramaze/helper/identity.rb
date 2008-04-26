@@ -4,6 +4,7 @@
 require 'openid'
 require 'openid/store/filesystem'
 require 'openid/extensions/pape'
+require 'openid/extensions/sreg'
 
 module Ramaze
 
@@ -45,7 +46,10 @@ module Ramaze
         papereq = OpenID::PAPE::Request.new
         papereq.add_policy_uri(OpenID::PAPE::AUTH_PHISHING_RESISTANT)
         papereq.max_auth_age = 2*60*60
+	sregreq = OpenID::SReg::Request.new
+	sregreq.request_fields(['fullname', 'nickname', 'dob', 'email', 'gender', 'postcode', 'country', 'language', 'timezone'])
         openid_request.add_extension(papereq)
+	openid_request.add_extension(sregreq)
         openid_request.return_to_args['did_pape'] = 'y'
 
         root      = "http://#{request.http_host}/"
@@ -79,6 +83,7 @@ module Ramaze
           flash[:error] = 'OpenID - Verification failed: ' + openid_response.message
         when OpenID::Consumer::SUCCESS
           session[:openid_identity] = openid_response.identity_url
+	  session[:openid_sreg] = OpenID::SReg::Response.from_success_response(openid_response)
           flash[:success] = 'OpenID - Verification done.'
         end
 
