@@ -61,6 +61,12 @@ module Ramaze
         current.delete(key)
       end
 
+      # check if combined is empty
+
+      def empty?
+        combined.empty?
+      end
+
       private
 
       # Associated session object

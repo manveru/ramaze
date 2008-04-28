@@ -29,6 +29,10 @@ class TCFlashHelperFirstController < Ramaze::Controller
   def box
     flashbox
   end
+
+  def check_empty
+    flash.empty?
+  end
 end
 
 class TCFlashHelperSecondController < Ramaze::Controller
@@ -115,6 +119,15 @@ describe Ramaze::Helper::Flash do
       get('/box').should == [error_div, success_div].join("\n")
 
       get('/box').should.be.empty
+    end
+  end
+
+  should 'check if flash is empty' do
+    Browser.new do
+      get('/check_empty').should == 'true'
+      get('/set/one/two')
+      get('/check_empty').should == 'false'
+      get('/check_empty').should == 'true'
     end
   end
 end
