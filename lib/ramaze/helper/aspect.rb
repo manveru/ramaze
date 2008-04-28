@@ -80,20 +80,33 @@ module Ramaze
   class Action
 
     # overwrites the default Action hook and runs the neccesary blocks in its
-    # scope.
+    # scope. before actions are run starting from Ramaze::Controller down the
+    # ancestor chain.
     def before_process
-      return unless path and aspects = controller.ancestral_trait[:aspects]
-      [ aspects[:before][name], aspects[:before][:all] ].compact.map do |block|
-        instance.instance_eval(&block) if block
+      return unless path
+      cancestors = controller.ancestors.select{|a| a <= Controller}
+      cancestors.reverse.each do |controller| 
+        if aspects = controller.trait[:aspects]
+          [ aspects[:before][name], aspects[:before][:all] ].compact.map do |block|
+            instance.instance_eval(&block) if block
+          end
+        end
       end
     end
 
+
     # overwrites the default Action hook and runs the neccesary blocks in its
-    # scope.
+    # scope. before actions are run starting from Ramaze::Controller down the
+    # ancestor chain.
     def after_process
-      return unless path and aspects = controller.ancestral_trait[:aspects]
-      [ aspects[:after][name], aspects[:after][:all] ].compact.map do |block|
-        instance.instance_eval(&block) if block
+      return unless path
+      cancestors = controller.ancestors.select{|a| a <= Controller}
+      cancestors.reverse.each do |controller| 
+        if aspects = controller.trait[:aspects]
+          [ aspects[:after][name], aspects[:after][:all] ].compact.map do |block|
+            instance.instance_eval(&block) if block
+          end
+        end
       end
     end
   end
