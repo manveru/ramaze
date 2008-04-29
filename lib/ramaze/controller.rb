@@ -262,6 +262,12 @@ module Ramaze
         Thread.current[:controller] = action.controller
         action.render
       end
+
+      def relevant_ancestors(parent = Ramaze::Controller)
+        ancestors.select do |anc|
+          anc.ancestors.include?(parent)
+        end
+      end
     end
 
     private

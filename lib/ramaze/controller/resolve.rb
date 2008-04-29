@@ -172,9 +172,7 @@ module Ramaze
 
       # methodnames that may be used for current controller.
       def action_methods
-        ancs = ancestors.select{|ancestor|
-          ancestor.ancestors.include?(Ramaze::Controller)
-        } + Helper::LOOKUP.to_a
+        ancs = relevant_ancestors + Helper::LOOKUP.to_a
 
         ancs.reverse.inject [] do |meths, anc|
           meths +

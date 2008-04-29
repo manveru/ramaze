@@ -83,15 +83,7 @@ module Ramaze
     # scope. before actions are run starting from Ramaze::Controller down the
     # ancestor chain.
     def before_process
-      return unless path
-      cancestors = controller.ancestors.select{|a| a <= Controller}
-      cancestors.reverse.each do |controller| 
-        if aspects = controller.trait[:aspects]
-          [ aspects[:before][name], aspects[:before][:all] ].compact.map do |block|
-            instance.instance_eval(&block) if block
-          end
-        end
-      end
+      common_aspect(:before)
     end
 
 
@@ -99,15 +91,20 @@ module Ramaze
     # scope. before actions are run starting from Ramaze::Controller down the
     # ancestor chain.
     def after_process
+      common_aspect(:after)
+    end
+
+    def common_aspect(aspect)
       return unless path
-      cancestors = controller.ancestors.select{|a| a <= Controller}
-      cancestors.reverse.each do |controller| 
-        if aspects = controller.trait[:aspects]
-          [ aspects[:after][name], aspects[:after][:all] ].compact.map do |block|
-            instance.instance_eval(&block) if block
-          end
+
+      controller.relevant_ancestors.reverse_each do |controller|
+        next unless aspects = controller.trait[:aspects]
+
+        [ aspects[aspect][name], aspects[aspect][:all] ].compact.map do |block|
+          instance.instance_eval(&block) if block
         end
       end
     end
+
   end
 end
