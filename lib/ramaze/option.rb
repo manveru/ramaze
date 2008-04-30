@@ -51,6 +51,9 @@ module Ramaze
     o "Alternative caches",
       :cache_alternative, {}
 
+    o "Don't cache action if session flash data is present for a request.",
+      :no_cache_flash, true, :cli => true
+
     o "Compile Templates",
       :compile, false, :cli => false
 

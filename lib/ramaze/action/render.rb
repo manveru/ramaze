@@ -25,10 +25,16 @@ module Ramaze
 
     def render
       Log.dev("Action: #{self}")
-
       stack do
         if should_cache?
-          cached_render
+          # Ignore cache if there is flash session data as the response probably
+          # expects to include it, making it unique for this user and request.
+          if Global.no_cache_flash && !Current.session.flash.empty?
+            Log.debug("Action caching ignored as session flash data is present.")
+            uncached_render
+          else
+            cached_render
+          end
         else
           uncached_render
         end
