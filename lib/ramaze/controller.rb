@@ -170,8 +170,8 @@ module Ramaze
       #   class MainController
       #     template :index, OtherController, :list
       #     template :foo, :bar
-      #     template :bar, :file => '/absolute/path' 
-      #     template :baz, :file => 'relative/path' 
+      #     template :bar, :file => '/absolute/path'
+      #     template :baz, :file => 'relative/path'
       #     template :abc, :controller => OtherController
       #     template :xyz, :controller => OtherController, :action => 'list'
       #
@@ -225,7 +225,7 @@ module Ramaze
           else
             controller, action, *ignored = argv
             controller, action = self, controller unless action
-            trait "#{this}_template" => {:controller => controller, :action => action} 
+            trait "#{this}_template" => {:controller => controller, :action => action}
         end
       end
 

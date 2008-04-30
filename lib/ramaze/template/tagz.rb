@@ -8,11 +8,11 @@ module Ramaze
 
     # Is responsible for compiling a template using the Tagz templating engine.
     # Can be found at: http://rubyforge.org/projects/codeforpeople/
-    #   gem install tagz 
-    # be sure you get version 1.0 or higher 
+    #   gem install tagz
+    # be sure you get version 1.0 or higher
 
     class Tagz < Template
-      ENGINES[self] = %w[ rb tagz ] 
+      ENGINES[self] = %w[ rb tagz ]
 
       class << self
 
@@ -21,9 +21,9 @@ module Ramaze
         def transform action
           result, file = result_and_file(action)
           if file
-            markup = "tagz{#{ file }}" 
+            markup = "tagz{#{ file }}"
             action.instance.extend Methods
-            result = eval markup, action.binding, file 
+            result = eval markup, action.binding, file
           end
           result
         end
@@ -39,10 +39,10 @@ module Ramaze
 
       private
         def << s
-          tagz << s; self 
+          tagz << s; self
         end
 
-        def concat *a 
+        def concat *a
           a.each{|s| tagz << s}; self
         end
 
@@ -71,7 +71,7 @@ module Ramaze
         end
 
         def __ *a
-          concat eol 
+          concat eol
         end
       end
     end

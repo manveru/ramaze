@@ -50,17 +50,17 @@ describe "AspectHelper" do
 
   it 'should use before' do
     get('/test_before')
-    request[:before].should == 42 
+    request[:before].should == 42
   end
 
   it 'should use after' do
     get('/test_after')
-    request[:after].should == 42 
+    request[:after].should == 42
   end
 
   it 'should use wrap' do
     get('/test_wrap')
-    request[:wrap].should == 42 
+    request[:wrap].should == 42
   end
 
   it 'should before_all and after_all' do

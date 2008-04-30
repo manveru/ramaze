@@ -47,7 +47,7 @@ module Ramaze::FileCache
   def self.delete *keys
     keys.map do |key|
       dirname = File.join Root, key
-      Fu.rm_rf dirname rescue next 
+      Fu.rm_rf dirname rescue next
     end
   end
 

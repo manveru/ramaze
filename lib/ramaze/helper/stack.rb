@@ -42,7 +42,7 @@ module Ramaze
   module Helper::Stack
     # redirect to another location and pushing the current location
     # on the session[:STACK]
-    
+
     def push frame
       (session[:STACK] ||= []) << frame
     end

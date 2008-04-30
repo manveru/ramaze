@@ -126,7 +126,7 @@ module Bacon
       Counter[:specifications] += 1
       run_requirement description, block
     end
-    
+
     def should(*args, &block)
       if Counter[:depth]==0
         it('should '+args.first,&block)

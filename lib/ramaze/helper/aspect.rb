@@ -21,7 +21,7 @@ module Ramaze
     private
 
     # lazily and smartly inherit copy of aspects trait from parent, or
-    # bootstrap our own 
+    # bootstrap our own
     def aspects
       trait[:aspects] ||= (
         if hash = ancestral_trait[:aspects]

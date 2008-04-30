@@ -28,7 +28,7 @@ module Ramaze
 
     attr_accessor :flash
 
-    # Flag whether or not to drop this session on the floor 
+    # Flag whether or not to drop this session on the floor
 
     attr_accessor :dropped
 
@@ -146,7 +146,7 @@ module Ramaze
     end
 
     # don't finish this session
-    
+
     def drop!
       self.dropped = true
     end

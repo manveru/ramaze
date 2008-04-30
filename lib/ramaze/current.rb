@@ -44,7 +44,7 @@ module Ramaze
           begin
             before.call
           rescue Object => e
-            Ramaze::Log.error e 
+            Ramaze::Log.error e
             raise
           end
         end
@@ -60,7 +60,7 @@ module Ramaze
           begin
             after.call
           rescue Object => e
-            Ramaze::Log.error e 
+            Ramaze::Log.error e
             raise
           end
         end
