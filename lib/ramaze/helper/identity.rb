@@ -37,19 +37,21 @@ module Ramaze
       # OpenID server we redirect the user to it, the browser will return to
       # openid_complete when the authentication is complete.
       def openid_begin
-        url = request['url']
+        url = request['url'] # The OpenID URL pointing to a user's OpenID page (ex: http://username.myopenid.com)
         redirect_referrer if url.to_s.empty?
-        session[:openid_entry] = request.referrer
+        session[:openid][:entry] = request.referrer
 
         openid_request = openid_consumer.begin(url)
 
-        papereq = OpenID::PAPE::Request.new
+        # We want these communications to be a secure as the server can support!
+	papereq = OpenID::PAPE::Request.new
         papereq.add_policy_uri(OpenID::PAPE::AUTH_PHISHING_RESISTANT)
         papereq.max_auth_age = 2*60*60
-	sregreq = OpenID::SReg::Request.new
-	sregreq.request_fields(['fullname', 'nickname', 'dob', 'email', 'gender', 'postcode', 'country', 'language', 'timezone'])
         openid_request.add_extension(papereq)
-	openid_request.add_extension(sregreq)
+        # Request information about the person
+        sregreq = OpenID::SReg::Request.new
+        sregreq.request_fields(['fullname', 'nickname', 'dob', 'email', 'gender', 'postcode', 'country', 'language', 'timezone'])
+        openid_request.add_extension(sregreq)
         openid_request.return_to_args['did_pape'] = 'y'
 
         root      = "http://#{request.http_host}/"
@@ -69,8 +71,8 @@ module Ramaze
       end
 
       # After having authenticated at the OpenID server browsers are redirected
-      # back here and on success we set the session[:openid_identity] and a little
-      # default flash message. Then we redirect to wherever session[:openid_entry]
+      # back here and on success we set the session[:openid][:identity] and a little
+      # default flash message. Then we redirect to wherever session[:openid][:entry]
       # points us to, which was set on openid_begin to the referrer
       #
       # TODO:
@@ -82,14 +84,14 @@ module Ramaze
         when OpenID::Consumer::FAILURE
           flash[:error] = 'OpenID - Verification failed: ' + openid_response.message
         when OpenID::Consumer::SUCCESS
-          session[:openid_identity] = openid_response.identity_url
-	  session[:openid_sreg] = OpenID::SReg::Response.from_success_response(openid_response)
+          session[:openid][:identity] = openid_response.identity_url
+	  session[:openid][:sreg] = OpenID::SReg::Response.from_success_response(openid_response)
           flash[:success] = 'OpenID - Verification done.'
         end
 
         session.delete(:_openid_consumer_service)
 
-        raw_redirect session[:openid_entry]
+        raw_redirect session[:openid][:entry]
       end
 
       private
