@@ -13,6 +13,11 @@ module Ramaze
 
       ENGINES[self] = %w[ rhtml ]
 
+      # Allow for swapping in a differnt Erubis engine (it supplies several) and
+      # passing options to the engine.
+      trait[:engine] ||= ::Erubis::Eruby
+      trait[:options] ||= {}
+
       class << self
 
         # Entry-point for Action#render
@@ -24,8 +29,9 @@ module Ramaze
 
         # Creates an instance of ::Erubis::Eruby, sets the filename
         # from the template and returns the instance.
+
         def compile(action, template)
-          eruby = ::Erubis::Eruby.new(template)
+          eruby = ancestral_trait[:engine].new(template, ancestral_trait[:options])
           eruby.init_evaluator(:filename => (action.template || __FILE__))
           eruby
         end

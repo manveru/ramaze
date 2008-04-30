@@ -10,10 +10,8 @@ class MainController < Ramaze::Controller
   end
 
   def internal(*args)
-    @context = {
-      :args => args,
-      :place => :internal
-    }
+    @args = args
+    @place = :internal
     <<'__TENJIN__'
 <html>
   <head>
@@ -47,10 +45,8 @@ __TENJIN__
   end
 
   def external(*args)
-    @context = {
-      :args => args,
-      :place => :external
-    }
+    @args = args
+    @place = :external
   end
 end
 

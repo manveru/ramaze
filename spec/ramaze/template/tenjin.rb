@@ -11,10 +11,8 @@ class TCTemplateTenjinController < Ramaze::Controller
   end
 
   def external(num1, num2)
-    @context = {
-      :num1 => num1.to_i,
-      :num2 => num2.to_i
-    }
+    @num1 = num1.to_i
+    @num2 = num2.to_i
   end
 
   def internal
@@ -22,7 +20,7 @@ class TCTemplateTenjinController < Ramaze::Controller
   end
 
   def escape_html
-    @context = {:html => "<br />"}
+    @html = '<br />'
     '#{@html}${@html}'
   end
 end
