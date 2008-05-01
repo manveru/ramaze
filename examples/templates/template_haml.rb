@@ -6,7 +6,7 @@ class MainController < Ramaze::Controller
   engine :Haml
 
   def index
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{#{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)}}
   end
 
   def internal *args
