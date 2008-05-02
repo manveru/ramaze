@@ -63,6 +63,9 @@ module Ramaze
     o "Active contribs",
       :contribs, Set.new
 
+    o "Set default Content-Type for responses",
+      :content_type, "text/html"
+
     o "All subclasses of Controller are collected here.",
       :controllers, Set.new
 

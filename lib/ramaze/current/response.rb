@@ -8,6 +8,11 @@ module Ramaze
       def current() Current.response end
     end
 
+    def initialize(body = [], status = 200, header = {}, &block)
+      header['Content-Type'] ||= Global.content_type
+      super
+    end
+
     # Build/replace this responses data
     def build(body = body, status = status, header = header)
       header.each do |key, value|
