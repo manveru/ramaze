@@ -10,6 +10,7 @@ module Ramaze
 
     def initialize(body = [], status = 200, header = {}, &block)
       header['Content-Type'] ||= Global.content_type
+      header['Accept-Charset'] = Global.accept_charset if Global.accept_charset
       super
     end
 
