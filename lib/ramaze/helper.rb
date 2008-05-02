@@ -28,8 +28,6 @@ module Ramaze
         super
       end
 
-      private
-
       # This loads the helper-files from /ramaze/helper/helpername.rb and
       # includes it into Ramaze::Template (or wherever it is called)
       #
@@ -50,6 +48,8 @@ module Ramaze
           end
         end
       end
+
+      private
 
       def find_helper(name)
         ramaze_helper_consts = ::Ramaze::Helper.constants.grep(/^#{name}$/i)
