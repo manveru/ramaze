@@ -2,9 +2,9 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 begin
-  require 'digest/sha1'
-rescue LoadError
   require 'digest/sha2'
+rescue LoadError
+  require 'digest/sha1'
 end
 
 require 'ramaze/current/session/flash'
