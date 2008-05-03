@@ -52,24 +52,40 @@ module Ramaze
 
     COOKIE = { :path => '/' } unless defined?(COOKIE)
 
-    class << self
-      # Shortcut for Current.session
-      def current
-        Current.session
-      end
+    # Shortcut for Current.session
+    def self.current
+      Current.session
+    end
 
-      # called from Ramaze::startup and adds Cache.sessions if cookies are
-      # enabled
+    # called from Ramaze::startup and adds Cache.sessions if cookies are
+    # enabled
 
-      def startup(options = {})
-        Cache.add(:sessions) if Global.sessions
-      end
+    def self.startup(options = {})
+      Cache.add(:sessions) if Global.sessions
+    end
 
-      # retrieve a specific session given a session id
+    # retrieve a specific session given a session id
 
-      def [](sess_id)
-        Session.new(sess_id)
-      end
+    def self.[](sess_id)
+      Session.new(sess_id)
+    end
+
+    # generate a random (and hopefully unique) id for the current session.
+    #
+    # It consists of the current time, the current request, the current PID of
+    # ruby and object_id of this instance.
+    #
+    # All this is joined by some calls to Kernel#rand and returned as a
+    # Digest::SHA256::hexdigest
+
+    def self.random_key
+      h = [
+        Time.now.to_f.to_s, rand,
+        Current.request.hash, rand,
+        Process.pid, rand,
+        object_id, rand
+      ].join
+      Digest::SHA256.hexdigest(h)
     end
 
     # Initialize a new Session, requires the original Rack::Request instance
@@ -82,7 +98,7 @@ module Ramaze
 
       if sess_or_request.is_a?(Request)
         request = sess_or_request
-        @session_id = request.cookies[SESSION_KEY] || random_key
+        @session_id = request.cookies[SESSION_KEY] || Session.random_key
       else
         request = nil
         @session_id = sess_or_request
@@ -119,24 +135,6 @@ module Ramaze
 
     def sessions
       Cache.sessions
-    end
-
-    # generate a random (and hopefully unique) id for the current session.
-    #
-    # It consists of the current time, the current request, the current PID of
-    # ruby and object_id of this instance.
-    #
-    # All this is joined by some calls to Kernel#rand and returned as a
-    # Digest::SHA256::hexdigest
-
-    def random_key
-      h = [
-        Time.now.to_f.to_s, rand,
-        Current.request.hash, rand,
-        Process.pid, rand,
-        object_id, rand
-      ].join
-      Digest::SHA256.hexdigest(h)
     end
 
     # Inspect on Session.current

@@ -117,7 +117,27 @@ module Ramaze
         find_from_aliases(@cache, :cache_aliases, Ramaze, "ramaze/cache")
       end
 
+      def cookie_secret
+        return @cookie_secret if @cookie_secret
+        file = cookie_secret_path
+
+        if File.file?(file) and File.readable?(file)
+          @cookie_secret = File.read(file).strip
+        else
+          self.cookie_secret = Session.random_key
+        end
+      end
+
+      def cookie_secret=(cs)
+        @cookie_secret = cs
+        File.open(cookie_secret_path, 'w+'){|io| io.write(cs) }
+      end
+
       private
+
+      def cookie_secret_path
+        File.expand_path(root/cookie_secret_file)
+      end
 
       def find_from_aliases(name, alias_key, mod, path)
         case name
