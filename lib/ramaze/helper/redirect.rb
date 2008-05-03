@@ -29,9 +29,9 @@ module Ramaze
     #   respond render_template('forbidden.erb'), 403
     #   respond File.open('file.jpg'), 200, 'Content-Type' => 'image/jpeg'
 
-    def respond *args
+    def respond(*args)
       response.build(*args)
-      throw :respond
+      throw(:respond)
     end
 
     # Usage:
@@ -41,7 +41,7 @@ module Ramaze
     #   redirect 'foo/bar'
     #   redirect 'foo/bar', :status => 301
 
-    def redirect target, opts = {}
+    def redirect(target, opts = {})
       target = target.to_s
 
       unless target =~ %r!^https?://!

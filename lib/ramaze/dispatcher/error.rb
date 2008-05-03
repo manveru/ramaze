@@ -62,7 +62,7 @@ module Ramaze
           begin
             m = ex.message
             c = ex.class
-            b = (ex.backtrace || []).join("\n")
+            b = [ex.backtrace].flatten.join("\n")
             body = <<-html
             ==== Error ====\n
               #{ m } (#{ c })

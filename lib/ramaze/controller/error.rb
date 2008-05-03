@@ -26,18 +26,18 @@ module Ramaze
       end
 
       backtrace_size = Global.backtrace_size
-      @backtrace = error.backtrace[0..20].map do |line|
+      @backtrace = error.backtrace[0..20].map{|line|
         file, lineno, meth = *Ramaze.parse_backtrace(line)
         lines = Ramaze.caller_lines(file, lineno, backtrace_size)
 
         [ lines, lines.object_id.abs, file, lineno, meth ]
-      end
+      }
 
       # for backwards-compat with old error.zmr
       @colors = [255] * @backtrace.size
 
-      @title = ::CGI.escapeHTML(title)
-      @editor = (ENV['EDITOR'] || 'vim')
+      @title = h(title)
+      @editor = ENV['EDITOR'] || 'vim'
       title
     rescue Object => ex
       Log.error(ex)

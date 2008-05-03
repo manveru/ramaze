@@ -27,8 +27,9 @@ module Ramaze
 
           catch(:respond) {
             body = Controller.handle(path)
-            response = Response.current.build(body)
+            Response.current.build(body)
           }
+
           FILTER.each{|f| f.call(response)}
           response
         rescue Ramaze::Error => ex
