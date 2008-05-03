@@ -13,6 +13,25 @@ rescue LoadError
   require 'ramaze'
 end
 
+additions = lambda do |op|
+  op.separator ''
+  op.separator 'Specialized options:'
+
+  op.on('--create PROJECT', 'New application from proto') do |project_name|
+    require 'ramaze/tool/create'
+    Ramaze::Tool::Create.create(project_name)
+    exit
+  end
+
+  op.on('-i', '--instant', "Start up with bare-bones Controller") do |instant|
+    require 'ramaze/controller/main'
+  end
+
+  op.on('-e', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
+    eval execute
+  end
+end
+
 runner = ARGV.reverse.find{|arg| File.file?(arg) }
 runner ||= 'start.rb' if File.file?('start.rb')
 
@@ -21,25 +40,6 @@ if runner
     :root => File.dirname(runner),
     :runner => runner, :origin => :console,
   }
-
-  additions = lambda do |op|
-    op.separator ''
-    op.separator 'Specialized options:'
-
-    op.on('--create PROJECT', 'New application from proto') do |project_name|
-      require 'ramaze/tool/create'
-      Ramaze::Tool::Create.create(project_name)
-      exit
-    end
-
-    op.on('-i', '--instant', "Start up with bare-bones Controller") do |instant|
-      require 'ramaze/controller/main'
-    end
-
-    op.on('-e', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
-      eval execute
-    end
-  end
 
   [overlay, ENV, ARGV].each do |opt|
     Ramaze::Global.merge!(opt, &additions)
@@ -55,5 +55,6 @@ if runner
     Ramaze.start :force => true
   end
 else
-  puts Ramaze::Global.option_parser
+  Ramaze::Global.merge!(ARGV, &additions)
+  puts Ramaze::Global.option_parser(&additions)
 end
