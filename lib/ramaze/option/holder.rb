@@ -130,7 +130,13 @@ module Ramaze
 
       def cookie_secret=(cs)
         @cookie_secret = cs
-        File.open(cookie_secret_path, 'w+'){|io| io.write(cs) }
+        file = cookie_secret_path
+
+        if File.writable?(file)
+          File.open(file, 'w+'){|io| io.write(cs) }
+        else
+          Log.warn("Unable to write cookie secret file: #{file}")
+        end
       end
 
       private
