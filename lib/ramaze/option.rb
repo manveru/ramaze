@@ -126,12 +126,6 @@ module Ramaze
     o "The runner of your application (start.rb)",
       :runner, "/home/manveru/c/ramaze/examples/hello.rb"
 
-    o "File the cookie secret is stored in, relative to #root",
-      :cookie_secret_file, '/.cookie_secret'
-
-    o "The cookie secret, will be cached in a file after first access",
-      :cookie_secret, Session.random_key
-
     o "The running server will be put here from Adapter.",
       :server, nil
 
