@@ -117,28 +117,6 @@ module Ramaze
         find_from_aliases(@cache, :cache_aliases, Ramaze, "ramaze/cache")
       end
 
-      def cookie_secret
-        return @cookie_secret if @cookie_secret
-        file = cookie_secret_path
-
-        if File.file?(file) and File.readable?(file)
-          @cookie_secret = File.read(file).strip
-        else
-          self.cookie_secret = Session.random_key
-        end
-      end
-
-      def cookie_secret=(cs)
-        @cookie_secret = cs
-        file = cookie_secret_path
-
-        if File.writable?(file)
-          File.open(file, 'w+'){|io| io.write(cs) }
-        else
-          Log.warn("Unable to write cookie secret file: #{file}")
-        end
-      end
-
       private
 
       def find_from_aliases(name, alias_key, mod, path)
