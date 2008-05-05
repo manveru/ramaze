@@ -11,6 +11,7 @@ module Ramaze
 
   module Helper
     LOOKUP = Set.new
+    PATH = ['']
     trait :ignore => [
       /#{Regexp.escape(File.expand_path(BASEDIR/'../spec/ramaze/helper/'))}\//
     ]
@@ -59,7 +60,7 @@ module Ramaze
       end
 
       def require_helper(name)
-        paths = ['', Global.root, BASEDIR/:ramaze].join(',')
+        paths = (PATH + [Global.root, BASEDIR/:ramaze]).join(',')
         glob = "{#{paths}}/helper/#{name}.{so,bundle,rb}"
         files = Dir[glob]
         ignore = Helper.trait[:ignore]
