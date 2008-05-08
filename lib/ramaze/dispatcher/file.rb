@@ -35,8 +35,8 @@ module Ramaze
 
         def open_file(path)
           file = resolve_path(path)
-
-          if ::File.file?(file) or ::File.file?(file=file/'index')
+          
+          if ::File.file?(file)
             return unless in_public?(file)
             response['Content-Type'] = Tool::MIME.type_for(file) unless ::File.extname(file).empty?
             mtime = ::File.mtime(file)
@@ -55,6 +55,11 @@ module Ramaze
           end
         end
 
+        # If path matches a directory in public_root, return that directory path, unless
+        # there is an index file in that directory, in which case return path for that.
+        # If path is not a directory, simply return given path in public_root.
+        # Either way, the returned path always starts with public_root.
+        
         def resolve_path(path)
           joined = ::File.join(Global.public_root, path)
 
