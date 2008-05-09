@@ -28,7 +28,7 @@ RDOC_OPTS = %w[
   --op rdoc
   --line-numbers
   --inline-source
-  --main doc/README
+  --main README
   --opname index.html
   --title "Ramaze\ documentation"
   --exclude "^(_darcs|spec|examples|bin|pkg)/"
@@ -37,7 +37,7 @@ RDOC_OPTS = %w[
   --accessor "trait"
 ]
 RDOC_FILES = %w[
-  lib doc doc/README doc/FAQ doc/CHANGELOG
+  lib doc README doc/FAQ doc/CHANGELOG
 ]
 POST_INSTALL_MESSAGE = %{
 #{'=' * 60}

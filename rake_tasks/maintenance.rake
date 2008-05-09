@@ -20,7 +20,7 @@ task 'add-copyright' do
   end
 end
 
-desc "doc/README to html"
+desc "README to html"
 Rake::RDocTask.new('readme2html-build') do |rd|
   rd.options = %w[
     --quiet
@@ -28,12 +28,12 @@ Rake::RDocTask.new('readme2html-build') do |rd|
   ]
 
   rd.rdoc_dir = 'readme'
-  rd.rdoc_files = ['doc/README']
-  rd.main = 'doc/README'
+  rd.rdoc_files = ['README']
+  rd.main = 'README'
   rd.title = "Ramaze documentation"
 end
 
-desc "doc/README to doc/README.html"
+desc "README to doc/README.html"
 task 'readme2html' => ['readme-build', 'readme2html-build'] do
   cp('readme/files/doc/README.html', 'doc/README.html')
   rm_rf('readme')
@@ -91,7 +91,7 @@ task 'fix-end-spaces' do
   end
 end
 
-desc "Compile the doc/README from the parts of doc/readme"
+desc "Compile the README from the parts of doc/readme"
 task 'readme-build' do
   require 'enumerator'
 
@@ -107,7 +107,7 @@ task 'readme-build' do
     'And thanks to...',     'thanks',
   ]
 
-  File.open('doc/README', 'w+') do |readme|
+  File.open('README', 'w+') do |readme|
     readme.puts COPYRIGHT.map{|l| l[1..-1]}, ''
 
     chapters.each_slice(2) do |title, file|
