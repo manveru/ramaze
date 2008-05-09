@@ -38,10 +38,10 @@ module Ramaze
           @before
         end
 
-        # Tries to find the block assigned by #beofre and calls it, logs and
+        # Tries to find the block assigned by #before and calls it, logs and
         # raises again any errors encountered during this process.
 
-        def before_call
+        def before_call env
           if before
             begin
               before.call(env)
