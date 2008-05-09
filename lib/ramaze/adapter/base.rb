@@ -25,6 +25,33 @@ module Ramaze
           Log.debug("Stopping #{self.class}")
         end
 
+        # Helper to assign a new block to before_call
+        # Usage:
+        #   Ramaze::Adapter.before do |env|
+        #     if env['PATH_INFO'] =~ /suerpfast/
+        #       [200, {'Content-Type' => 'text/plain'}, ['super fast!']]
+        #     end
+        #   end
+
+        def before(&block)
+          @before = block if block
+          @before
+        end
+
+        # Tries to find the block assigned by #beofre and calls it, logs and
+        # raises again any errors encountered during this process.
+
+        def before_call
+          if before
+            begin
+              before.call(env)
+            rescue Object => e
+              Ramaze::Log.error e
+              raise e
+            end
+          end
+        end
+
         # This is called by Rack with the usual env, subsequently calls
         # ::respond with it.
         #
@@ -32,15 +59,16 @@ module Ramaze
         # calls .finish on the current response after ::respond has finished.
 
         def call(env)
-          returned = nil
-          if Global.benchmarking
+          if returned = before_call(env)
+            returned
+          elsif Global.benchmarking
             require 'benchmark'
             time = Benchmark.measure{ returned = respond(env) }
             Log.debug('request took %.5fs [~%.0f r/s]' % [time.real, 1.0/time.real])
+            returned
           else
-            returned = respond env
+            respond(env)
           end
-          returned
         end
 
         # Initializes Request with env and an empty Response. Records the
