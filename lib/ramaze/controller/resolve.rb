@@ -18,11 +18,6 @@ module Ramaze
       def resolve(path, routed = false)
         @routed = routed
 
-        if Action.stack.size == 0 && new_path = Rewrite.resolve(path)
-          path = new_path
-          Log.dev("Rewriting `#{path}' to `#{path}'")
-        end
-
         FILTER.each do |filter|
           answer = if filter.respond_to?(:call)
                      filter.call(path)

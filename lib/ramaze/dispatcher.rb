@@ -31,6 +31,11 @@ module Ramaze
       def handle
         path = request.path_info.squeeze('/')
 
+        if new_path = Rewrite.resolve(path)
+          path = new_path
+          Log.dev("Rewriting `#{path}' to `#{path}'")
+        end
+
         case path
         when *Global.ignore
           unless ::File.exist?(Dispatcher::File.resolve_path(path))
