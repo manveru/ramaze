@@ -6,6 +6,11 @@ BIN_FILES = %w( ramaze )
 
 BASEDIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
+DEPENDENCIES = {
+  'rack' => '>=0.3.0',
+  'rake' => '>=0.7.3',
+}
+
 NAME = "ramaze"
 VERS = Ramaze::VERSION
 COPYRIGHT = [

@@ -16,12 +16,13 @@ spec =
         s.require_path = "lib"
         s.post_install_message = POST_INSTALL_MESSAGE
 
-        s.add_dependency('rake', '>=0.7.3')
-        s.add_dependency('rack', '>=0.3.0')
-        # s.required_ruby_version = '>= 1.8.5'
+        DEPENDENCIES.each do |lib, ver|
+          s.add_dependency(lib, ver)
+        end
 
         s.files = (RDOC_FILES + %w[Rakefile README] + Dir["{examples,bin,doc,spec,lib,rake_tasks}/**/*"]).uniq
 
+        # s.required_ruby_version = '>= 1.8.5'
         # s.extensions = FileList["ext/**/extconf.rb"].to_a
     end
 
@@ -40,4 +41,45 @@ end
 desc "uninstall the ramaze gem"
 task :uninstall => [:clean] do
   sh %{sudo gem uninstall #{NAME}}
+end
+
+desc "Create an updated version of /ramaze.gemspec"
+task :gemspec do
+  gemspec = <<-OUT.strip
+Gem::Specification.new do |s|
+  s.name = %name%
+  s.version = %version%
+
+  s.summary = %summary%
+  s.description = %description%
+  s.platform = %platform%
+  s.has_rdoc = %has_rdoc%
+  s.author = %author%
+  s.email = %email%
+  s.homepage = %homepage%
+  s.executables = %executables%
+  s.bindir = %bindir%
+  s.require_path = %require_path%
+  s.post_install_message = %post_install_message%
+
+  %dependencies%
+
+  %files%
+end
+  OUT
+
+  gemspec.gsub!(/%(\w+)%/) do
+    case key = $1
+    when 'version'
+      spec.version.to_s.dump
+    when 'dependencies'
+      DEPENDENCIES.map{|l, v|
+        "s.add_dependency(%p, %p)" % [l, v]
+      }.join("\n  ")
+    else
+      spec.send($1).pretty_inspect.strip
+    end
+  end
+
+  File.open("#{NAME}.gemspec", 'w+'){|file| file.puts(gemspec) }
 end
