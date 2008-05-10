@@ -8,7 +8,6 @@ class String
   #   '<div>foo bar</div>'.esc(:html)
   #   'foo bar'.esc(:uri)
   #   'foo bar'.esc(:cgi)
-  #   "foo 'bar'".esc(:sql)
 
   def escape which = :html
     case which
@@ -18,7 +17,8 @@ class String
       ::CGI.escape(self)
     when :uri
       ::URI.escape(self)
-    when :sql  # TODO - leverage DBI or something
+    when :sql
+      Ramaze::deprecated("String#escape(:sql)")
       gsub(%r/'/, "''")
     else
       raise ArgumentError, "do not know how to escape '#{ which }'"
