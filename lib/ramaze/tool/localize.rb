@@ -39,7 +39,9 @@ module Ramaze
       # application is started from another pwd.
       # That is why we, by default, use a dynamic lambda and set the path
       # relative to Global.root.
-      trait :file => lambda{|locale| Global.root/"conf/locale_#{locale}.yaml" }
+      trait :file => lambda{|locale|
+        Ramaze::Global.root/"conf/locale_#{locale}.yaml"
+      }
 
       # The pattern that is substituted with the translation of the current locale.
       trait :regex => /\[\[(.*?)\]\]/
@@ -143,7 +145,7 @@ module Ramaze
 
           locales.each do |locale|
             begin
-              dict[locale] = YAML.load_file(trait[:file] % locale)
+              dict[locale] = YAML.load_file(file_for(locale))
             rescue Errno::ENOENT
               dict[locale] = {}
             end
@@ -156,20 +158,24 @@ module Ramaze
 
         def store(*locales)
           locales.uniq.compact.each do |locale|
-            Log.dev "saving localized to: #{trait[:file] % locale}"
+            file = file_for(locale)
             data = dictionary[locale].ya2yaml
 
-            file_source = trait[:file]
-            if file_source.respond_to?(:call)
-              file = file_source.call(locale)
-            else
-              file = file_source % locale
-            end
-
+            Log.dev "saving localized to: #{file}"
             File.open(file, 'w+'){|fd| fd << data }
           end
         rescue Errno::ENOENT => e
           Log.error e
+        end
+
+        def file_for(locale)
+          file_source = trait[:file]
+
+          if file_source.respond_to?(:call)
+            file = file_source.call(locale)
+          else
+            file = file_source % locale
+          end
         end
 
         # alias for trait[:languages]
