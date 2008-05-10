@@ -23,6 +23,20 @@ class TCLocalize < Ramaze::Controller
     session[:LOCALE] = lang
     '[[this]] [[is]] [[a]] [[test]]'
   end
+
+  def try_session_de
+    # stub to set accepted to de
+    def request.locales; %w[de en-us]; end
+
+    '[[this]] [[is]] [[a]] [[test]]'
+  end
+
+  def try_session_en
+    # stub to set accepted to en-us
+    def request.locales; %w[en-us de]; end
+
+    '[[this]] [[is]] [[a]] [[test]]'
+  end
 end
 
 describe "Localize" do
@@ -61,6 +75,14 @@ describe "Localize" do
   it "advanced" do
     get('/advanced').body.should == 'this is a test'
     get('/advanced/de').body.should == 'Das ist ein Test'
+  end
+
+  should 'set correct session locale from request.locales' do
+    get('/try_session_de').body.should == 'Das ist ein Test'
+  end
+
+  should 'set correct session locale with regex mapping' do
+    get('/try_session_en').body.should == 'this is a test'
   end
 
   FileUtils.rm_rf(@dir)
