@@ -1,3 +1,4 @@
+#!/usr/bin/env rackup
 # start.ru for ramaze apps
 # use thin>=0.6.3
 # thin start -r start.ru
