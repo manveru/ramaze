@@ -35,9 +35,7 @@ module Ramaze
               #XXX curl sends quotes to qop, firefox does not
               qop = authorization.gsub(/.* qop="?(.*?)"?,.*/,"\\1")
 
-              password = block.call( username )
-
-              ha1 = MD5.new( "#{username}:#{realm}:#{password}" )
+              ha1 = block.call( username )
               ha2 = MD5.new( "#{request.request_method}:#{request.fullpath}" )
 
               their_response = authorization.gsub(/.*response="([^"]*).*/,"\\1")

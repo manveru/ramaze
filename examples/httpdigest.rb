@@ -18,15 +18,15 @@ class SecretController < Ramaze::Controller
   helper :httpdigest
 
   before_all do
-    @username = httpdigest 'this area', REALM do |username|
-      { 'admin' => 'secret',
-        'root' => 'access',
+    @username = httpdigest 'secret area', REALM do |username|
+      { 'admin' => MD5.new("admin:#{REALM}:secret"),
+        'root' => MD5.new("root:#{REALM}:access"),
       }[ username ]
     end
   end
 
   def index
-    "Hello <em>#@username</em>, welcome to SECRET world."
+    "Hello <em>#@username</em>, welcome to SECRET world"
   end
 end
 
@@ -36,17 +36,14 @@ class GuestController < Ramaze::Controller
   helper :httpdigest
 
   before_all do
-    unless session[:username]
-      username = httpdigest('guest area',REALM) do |username|
-        username_used = username
-        username
-      end
-      session[:username] = username if username
+    @username = httpdigest('guest area',REALM) do |username|
+      username_used = username
+      MD5.new("#{username}:#{REALM}:#{username}")
     end
   end
 
-  def index *args
-    "Hello <em>#{session[:username]}</em>, welcome to GUEST world."
+  def index
+    "Hello <em>#@username</em>, welcome to GUEST world."
   end
 end
 
