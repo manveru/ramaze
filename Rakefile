@@ -22,6 +22,7 @@ load 'rake_tasks/maintenance.rake'
 load 'rake_tasks/spec.rake'
 load 'rake_tasks/darcs.rake'
 load 'rake_tasks/coverage.rake'
+load 'rake_tasks/git.rake'
 
 task :default => ['spec']
 task :test => ['spec']
