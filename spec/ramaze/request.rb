@@ -102,6 +102,11 @@ describe "Request" do
       eval(post('/test_post', 'foo[1][2]' => 'eins zwei').body).should ==
         {'foo' => {'1' => {'2' => 'eins zwei'}}}
     end
+
+    should 'handle key&key[nested]' do
+      eval(post('/test_post', 'a' => 'b', 'a[c]' => 'd').body).should ==
+        {'a' => {'c' => 'd'}}
+    end
   end
 
   describe "PUT" do
