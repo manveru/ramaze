@@ -4,6 +4,13 @@
 module Ramaze
   module Adapter
 
+    # (Rack) middleware injected around Adapter::Base::call
+    MIDDLEWARE = OrderedSet.new(
+      Ramaze::Current,
+      Rack::ShowStatus,
+      Rack::ShowExceptions
+    )
+
     # This class is holding common behaviour for its subclasses.
 
     class Base
@@ -75,9 +82,17 @@ module Ramaze
         # request into Ramaze::Record if Global.record is true.
         # Then goes on and calls Dispatcher::handle with request and response.
 
-        def respond env
+        def respond(env)
           if Global.server == Thread.current
-            Thread.new{ Current.call(env) }.value
+            Thread.new{ middleware_respond(env) }.value
+          else
+            middleware_respond(env)
+          end
+        end
+
+        def middleware_respond(env)
+          if Global.middleware
+            MIDDLEWARE.inject{|app, middleware| middleware.new(app) }.call(env)
           else
             Current.call(env)
           end

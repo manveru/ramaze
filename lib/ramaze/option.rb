@@ -102,6 +102,9 @@ module Ramaze
     o "All paths to controllers are mapped here.",
       :mapping, {}
 
+    o "Activate middleware",
+      :middleware, false
+
     o "For your own modes to decide on",
       :mode, :live, :cli => [:live, :dev]
 

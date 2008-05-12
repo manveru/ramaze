@@ -44,11 +44,8 @@ module Ramaze
         end
 
         general_dispatch path
-      rescue Object => error
-        meta = { :path => path,
-                 :request => request,
-                 :controller => Thread.current[:controller] }
-        Dispatcher::Error.call(error, meta)
+      rescue Object => exception
+        error(exception)
       end
 
       # protects against recursive dispatch and reassigns the path_info in the
@@ -118,11 +115,22 @@ module Ramaze
           return result if result and not result.respond_to?(:exception)
         end
 
-        meta = {
-          :path => path,
-          :controller => Thread.current[:controller]
-        }
-        Dispatcher::Error.call(result, meta)
+        error(result, :path => path)
+      end
+
+      def error(obj, meta = {})
+        controller = Thread.current[:controller]
+        meta[:controller] ||= controller if controller
+
+        if Global.middleware
+          message = "No action for '#{meta[:path]}'"
+          message << " on '#{CGI.escapeHTML(controller.to_s)}'" if controller
+
+          raise(obj) if obj.respond_to?(:message)
+          raise(Ramaze::Error, message)
+        else
+          Dispatcher::Error.call(obj, meta)
+        end
       end
     end
   end
