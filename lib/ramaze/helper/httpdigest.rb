@@ -5,8 +5,6 @@ module Ramaze
       require 'uuid'
       require 'md5'
 
-      LOOKUP << self
-
       protected
 
       def httpdigest uid, realm, &block
