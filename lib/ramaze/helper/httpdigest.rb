@@ -5,7 +5,7 @@ module Ramaze
       require 'uuid'
       require 'md5'
 
-      protected
+      private
 
       def httpdigest uid, realm, &block
         session_opaque = "authentication_digest_opaque_#{uid}"
