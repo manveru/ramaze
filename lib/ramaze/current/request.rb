@@ -129,7 +129,13 @@ module Ramaze
               if i + 1 >= keys.size
                 ref[k] = value
               else
-                ref = ref[k] ||= {}
+                # in case the value is a string we cannot let it be ref next
+                # time, so throw it away
+                if ref[k].is_a?(String)
+                  ref = ref[k] = {}
+                else
+                  ref = ref[k] ||= {}
+                end
               end
             end
           else
