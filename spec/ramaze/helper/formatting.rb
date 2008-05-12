@@ -25,4 +25,17 @@ describe 'Helper::Formatting' do
     auto_link("http://ramaze.net", :target => '_blank').should ==
       "<a href=\"http://ramaze.net\" target='_blank'>http://ramaze.net</a>"
   end
+
+  should 'ordinalize numbers' do
+    ordinal(1).should == '1st'
+    ordinal(2).should == '2nd'
+    ordinal(3).should == '3rd'
+    ordinal(4).should == '4th'
+    ordinal(10).should == '10th'
+    ordinal(12).should == '12th'
+    ordinal(21).should == '21st'
+    ordinal(23).should == '23rd'
+    ordinal(100).should == '100th'
+    ordinal(133).should == '133rd'
+  end
 end

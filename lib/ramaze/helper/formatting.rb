@@ -17,6 +17,32 @@ module Ramaze
       [h.reverse.scan(/\d{1,3}/).join(delim_l).reverse, r].compact.join(delim_r)
     end
 
+    # Answer with the ordinal version of a number.
+    #
+    # Usage:
+    #   ordinal(1)   # => "1st"
+    #   ordinal(2)   # => "2nd"
+    #   ordinal(3)   # => "3rd"
+    #   ordinal(13)  # => "13th"
+    #   ordinal(33)  # => "33rd"
+    #   ordinal(100) # => "100th"
+    #   ordinal(133) # => "133rd"
+
+    def ordinal(number)
+      number = number.to_i
+
+      case number % 100
+      when 11..13; "#{number}th"
+      else
+        case number % 10
+        when 1; "#{number}st"
+        when 2; "#{number}nd"
+        when 3; "#{number}rd"
+        else    "#{number}th"
+        end
+      end
+    end
+
     # stolen and adapted from rails
     def time_diff from_time, to_time = Time.now, include_seconds = false
       distance_in_minutes = (((to_time - from_time).abs)/60).round
