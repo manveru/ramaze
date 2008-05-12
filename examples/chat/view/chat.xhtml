@@ -1,0 +1,29 @@
+<div id="main" style="height: 250px; overflow: auto;">
+  #{listen}
+</div>
+<form onsubmit="return say();">
+  <input type="text" name="message" style="width: 100%" id="talk" />
+</form>
+<script type="text/javascript">
+  function update(){
+    $('#main').load("/listen")
+  };
+
+  function say(){
+    var input = $('input#talk')[0];
+    var text = input.value;
+
+    // TODO: escape text, /&|;/ currently breaks it.
+    if( text != undefined ){
+      $.get("/say", "text="+text, update, "text/plain");
+    };
+
+    input.value = '';
+    return false;
+  };
+
+  $('body').ready(function(){
+    // setInterval(update, 1000);
+    $('input#talk').focus();
+  });
+</script>
