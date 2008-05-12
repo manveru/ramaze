@@ -15,31 +15,21 @@ module Ramaze
 
         authorized = false
 
-        if request.env['HTTP_AUTHORIZATION']
+        if session[session_nonce] and request.env['HTTP_AUTHORIZATION']
           
-          authorization = request.env['HTTP_AUTHORIZATION']
-
-          authentication_type = authorization.split[0]
+          auth_split = request.env['HTTP_AUTHORIZATION'].split
+          authentication_type = auth_split[0]
+          authorization = auth_split[1..-1].join(' ').scan(/((?:"(?:\\.|[^"])+?"|[^",]+)+)(?:,\s*|\Z)/n).collect{|v|v[0]}.inject({}){|r,c|k,*v=c.split('=');r[k]=v.join('=').gsub(/"?(.*?)"?/,'\\1');r}
 
           if authentication_type == 'Digest'
 
-            their_nonce= authorization.gsub(/.* nonce="(.*?)".*/,"\\1")
+            if authorization["nonce"] == session[session_nonce]
 
-            if their_nonce == session[session_nonce]
-
-              username = authorization.gsub(/.* username="(.*?)".*/,"\\1")
-              nonceCount = authorization.gsub(/.* nc=([0-9]+).*/,"\\1")
-              cnonce= authorization.gsub(/.* cnonce="(.*?)".*/,"\\1")
-              #XXX curl sends quotes to qop, firefox does not
-              qop = authorization.gsub(/.* qop="?(.*?)"?,.*/,"\\1")
-
-              ha1 = block.call( username )
+              ha1 = block.call( authorization["username"] )
               ha2 = MD5.new( "#{request.request_method}:#{request.fullpath}" )
 
-              their_response = authorization.gsub(/.*response="([^"]*).*/,"\\1")
-              our_response = MD5.new( "#{ha1}:#{session[session_nonce]}:#{nonceCount}:#{cnonce}:#{qop}:#{ha2}" ).to_s;
+              authorized = ( authorization["response"] == MD5.new( "#{ha1}:#{authorization["nonce"]}:#{authorization["nc"]}:#{authorization["cnonce"]}:#{authorization["qop"]}:#{ha2}" ).to_s )
 
-              authorized = ( their_response == our_response )
             end
 
           end
@@ -52,7 +42,7 @@ module Ramaze
           respond 'Unauthorized', 401
         end
 
-        username
+        authorization["username"]
       end
     end
   end
