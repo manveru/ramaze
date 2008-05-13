@@ -38,7 +38,7 @@ module Ramaze
 
       def add *keys
         keys.each{|key|
-          klass = Global.cache_alternative.fetch(key, self)
+          klass = Global.cache_alternative.fetch(key, MemoryCache)
           add_on(key, klass)
         }
         Log.dev("Added caches for: #{keys.join(', ')}")
