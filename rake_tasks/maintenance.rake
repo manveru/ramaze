@@ -203,29 +203,45 @@ task 'tutorial' => ['tutorial2html'] do
   end
 end
 
+def existing_authors
+  authors = {}
+
+  File.readlines('doc/AUTHORS').each do |line|
+    if line =~ /\s+(.*?)\s*:\s*(.*@.*)/
+      authors[$1] = {:email => $2, :patches => 0}
+    end
+  end
+
+  authors
+end
+
 def authors
-  mapping = {}
-  `darcs show authors`.split("\n").each do |line|
-    atoms = line.gsub(/(\t)'|'$/,'\1').split
-    patches = atoms.shift.to_i
+  format = "%an ** %ae"
+  log = `git-log --pretty=format:'#{format}'`
 
-    if email = atoms.find{|a| a.gsub!(/(.*?@.*?)/, '\1') }
-      email.tr!('<>', '')
-      atoms.delete email
+  mapping = existing_authors
+
+  log.split("\n").each do |line|
+    name, email = line.split(' ** ')
+
+    if name =~ /(\S+@\S+)/
+      email ||= $1
+      name.sub!(email, '').strip!
     end
 
-    name = atoms.join(' ')
-
-    if name.empty?
-      name = AUTHOR_MAP.fetch(email)
-    else
-      name = AUTHOR_MAP.fetch(name, name)
+    email_start = /^#{Regexp.escape(name)}@(.*)/
+    AUTHOR_MAP.each do |e, a|
+      if e =~ email_start
+        email, name = e, a
+        break
+      end
     end
 
-    patches += mapping.fetch(name, {}).fetch(:patches, 0)
+    name = AUTHOR_MAP[name] || name
+    email = AUTHOR_MAP.index(name) || email
 
-    mapping[name] ||= { :email => email }
-    mapping[name][:patches] = patches
+    mapping[name] ||= {:email => email, :patches => 0}
+    mapping[name][:patches] += 1
   end
 
   max = mapping.map{|k,v| k.size }.max
@@ -234,11 +250,14 @@ end
 
 desc "Update /doc/AUTHORS"
 task 'authors' do
+  # get the authors before we overwrite the file
+  authors = authors().sort_by{|k,v| k}
+
   File.open('doc/AUTHORS', 'w+') do |fp|
     fp.puts "Following persons (in alphabetical order) have contributed to Ramaze:"
     fp.puts
-    authors.sort_by{|k,v| k}.each do |name, author|
-      fp.puts "   #{name}  -  #{author[:email]}"
+    authors.each do |name, author|
+      fp.puts "   #{name}  :  #{author[:email]}"
     end
     fp.puts
   end
@@ -246,7 +265,7 @@ end
 
 desc "show how many patches we made so far"
 task :patchsize do
-  patches = `darcs show repo`[/Num Patches: (\d+)/, 1].to_i
+  patches = `git rev-list HEAD | wc -l`.to_i
   puts "currently we have #{patches} patches"
   init = Time.parse("Sat Oct 14 04:22:49 JST 2006")
   days = (Time.now - init) / (3600 * 24)

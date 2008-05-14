@@ -75,6 +75,7 @@ AUTHOR_MAP = {
   'rff.rff@gmail.com'                       => 'Gabriele Renzi',
   'skaar@waste.org'                         => 'skaar',
   'stephan@spaceboyz.net'                   => 'Stephan Maka',
+  'samcarr@gmail.com'                       => 'samcarr',
 }
 
 # * Browse and try the Examples in
