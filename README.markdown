@@ -1,7 +1,7 @@
-          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
  All files in this distribution are subject to the terms of the Ruby license.
 
-= About Ramaze
+# About Ramaze
 
 Ramaze is a very simple and straight-forward web-framework.
 The philosophy of it could be expressed in a mix of KISS and POLS, trying to
@@ -23,7 +23,7 @@ provides this feature at a better level without trying to enforce any structural
 layout of the resulting framework.
 
 
-= Features Overview
+# Features Overview
 
 Ramaze offers following features at the moment:
 
@@ -175,7 +175,7 @@ Ramaze offers following features at the moment:
   * Custom sophisticated Error-handling
 
 
-= Basic Principles
+# Basic Principles
 
 There are some basic principles that Ramaze tries to follow:
 
@@ -235,7 +235,7 @@ There are some basic principles that Ramaze tries to follow:
   deciding whether the changes the patch applies are valid and don't break the framework.
 
 
-= Installation
+# Installation
 
 * via RubyGems
 
@@ -246,46 +246,55 @@ There are some basic principles that Ramaze tries to follow:
   in case you have RubyGems installed.
 
 
-* via darcs
+* via git
 
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
 
-    $ darcs get --partial http://darcs.ramaze.net/ramaze
+    $ git clone git://gitweb.com/manveru/ramaze
 
-  Please read the man page or `darcs help` for more information about updating
+  Please read the man page or `git help` for more information about updating
   and creating your own patches.
   This is at the moment the premier way to use Ramaze, since it is the way I use
   it.
 
-  Some hints for the usage of Darcs.
+  Some hints for the usage of Git.
 
   * use require 'ramaze' from everywhere
 
-    add a file to your site_ruby named 'ramaze.rb'
-    the content should be: "require '/path/to/darcs/repo/ramaze/lib/ramaze'"
+    add a file to your site\_ruby named 'ramaze.rb'
+    the content should be: "require '/path/to/git/repo/ramaze/lib/ramaze'"
 
-  * get the latest version (from inside the ramaze-directory)
+  * get the latest version (from inside the ramaze directory)
 
-    $ darcs pull
+    $ git pull
 
-  * record a patch
+  * Reset the repo to original state (if you screw up something)
 
-    $ darcs record
+    $ git reset --hard # resets the whole repo
+    $ git checkout master lib/ramaze.rb # revert changes to lib/ramaze.rb only
+
+  * record a patch for all your changes
+
+    $ git commit -a # commit all changes
+
+  * record a patch for specific changes
+
+    $ git add -p # pick the hunks you want to commit
+    $ git commit
 
   * output your patches into a bundle ready to be mailed (compress it before
     sending to make sure it arrives in the way you sent it)
 
-    $ darcs send -o ramaze_bundle
-    $ gzip -c ramaze_bundle > ramaze_bundle.gz
+    $ git pull # make sure you are on latest revision to avoid conflicts
+    $ git format-patch origin/HEAD # spit out 00xx-blah.patch files
+
+    # From here on you can use either git-send-email or go the manual route
+    $ tar -cjf ramaze\_bundle.tar.bz2 \*.patch
+    # add this bz2 as attachment and send to ramaze@googlegroups.com
 
 
-* via install.rb
-
-  Support for install.rb has been canceled and the file removed.
-
-
-= Getting Started
+# Getting Started
 
 Now that you have a vague idea of what you're about to get into you might just
 want to get a way to get up and running ASAP.
@@ -307,7 +316,7 @@ Some places to get started are:
 
 
 
-= A couple of Examples
+# A couple of Examples
 
 There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
@@ -340,16 +349,16 @@ Examples include:
   Not yet fully functional, but coming along.
 
 * examples/whywiki
-  A basic examples of a minimalistic application, based on the Wiki of _why in
+  A basic examples of a minimalistic application, based on the Wiki of \_why in
   his camping-framework.
 
 * examples/templates
   examples of real usage of the templating-engines. Tries to implement the same
-  functionality in each template_*.rb file using a different engine.
+  functionality in each `template_*.rb` file using a different engine.
 
 
 
-= How to find Help
+# How to find Help
 
 For help you can:
 
@@ -358,7 +367,7 @@ For help you can:
 - Join the Mailinglist at http://ramaze.rubyforge.org
 
 
-= Appendix
+# Appendix
 
 * Performance
   * Serving
@@ -372,7 +381,7 @@ For help you can:
     Also, using MemCache gives you high-end performance and security.
 
 
-= And thanks to...
+# And thanks to...
 
 There is a large number of people who made Ramaze possibe by their ongoing
 efforts in the world of open source and by encouraging and helping me.

@@ -17,6 +17,7 @@ COPYRIGHT = [
   "#          Copyright (c) #{Time.now.year} Michael Fellinger m.fellinger@gmail.com",
   "# All files in this distribution are subject to the terms of the Ruby license."
 ]
+README = 'README.markdown'
 CLEAN.include %w[
   **/.*.sw?
   *.gem
@@ -27,22 +28,22 @@ CLEAN.include %w[
   pkg
   rdoc
 ]
-RDOC_OPTS = %w[
+RDOC_OPTS = %W[
   --all
   --quiet
   --op rdoc
   --line-numbers
   --inline-source
-  --main README
+  --main #{README}
   --opname index.html
   --title "Ramaze\ documentation"
-  --exclude "^(_darcs|spec|examples|bin|pkg)/"
+  --exclude "^(spec|examples|bin|pkg)/"
   --exclude "lib/proto"
   --include "doc"
   --accessor "trait"
 ]
-RDOC_FILES = %w[
-  lib doc README doc/FAQ doc/CHANGELOG
+RDOC_FILES = %W[
+  lib doc #{README} doc/FAQ doc/CHANGELOG
 ]
 POST_INSTALL_MESSAGE = %{
 #{'=' * 60}
