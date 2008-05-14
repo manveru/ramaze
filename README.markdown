@@ -290,7 +290,7 @@ There are some basic principles that Ramaze tries to follow:
         $ git format-patch origin/HEAD # spit out 00xx-blah.patch files
 
         # From here on you can use either git-send-email or go the manual route
-        $ tar -cjf ramaze\_bundle.tar.bz2 \*.patch
+        $ tar -cjf ramaze_bundle.tar.bz2 *.patch
         # add this bz2 as attachment and send to ramaze@googlegroups.com
 
 
