@@ -251,7 +251,7 @@ There are some basic principles that Ramaze tries to follow:
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
 
-    $ git clone git://gitweb.com/manveru/ramaze
+      $ git clone git://gitweb.com/manveru/ramaze
 
   Please read the man page or `git help` for more information about updating
   and creating your own patches.
@@ -267,31 +267,31 @@ There are some basic principles that Ramaze tries to follow:
 
   * get the latest version (from inside the ramaze directory)
 
-    $ git pull
+        $ git pull
 
   * Reset the repo to original state (if you screw up something)
 
-    $ git reset --hard # resets the whole repo
-    $ git checkout master lib/ramaze.rb # revert changes to lib/ramaze.rb only
+        $ git reset --hard # resets the whole repo
+        $ git checkout master lib/ramaze.rb # revert changes to lib/ramaze.rb only
 
   * record a patch for all your changes
 
-    $ git commit -a # commit all changes
+        $ git commit -a # commit all changes
 
   * record a patch for specific changes
 
-    $ git add -p # pick the hunks you want to commit
-    $ git commit
+        $ git add -p # pick the hunks you want to commit
+        $ git commit
 
   * output your patches into a bundle ready to be mailed (compress it before
     sending to make sure it arrives in the way you sent it)
 
-    $ git pull # make sure you are on latest revision to avoid conflicts
-    $ git format-patch origin/HEAD # spit out 00xx-blah.patch files
+        $ git pull # make sure you are on latest revision to avoid conflicts
+        $ git format-patch origin/HEAD # spit out 00xx-blah.patch files
 
-    # From here on you can use either git-send-email or go the manual route
-    $ tar -cjf ramaze\_bundle.tar.bz2 \*.patch
-    # add this bz2 as attachment and send to ramaze@googlegroups.com
+        # From here on you can use either git-send-email or go the manual route
+        $ tar -cjf ramaze\_bundle.tar.bz2 \*.patch
+        # add this bz2 as attachment and send to ramaze@googlegroups.com
 
 
 # Getting Started
