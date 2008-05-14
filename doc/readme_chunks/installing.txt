@@ -7,40 +7,49 @@
   in case you have RubyGems installed.
 
 
-* via darcs
+* via git
 
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
 
-    $ darcs get --partial http://darcs.ramaze.net/ramaze
+    $ git clone git://gitweb.com/manveru/ramaze
 
-  Please read the man page or `darcs help` for more information about updating
+  Please read the man page or `git help` for more information about updating
   and creating your own patches.
   This is at the moment the premier way to use Ramaze, since it is the way I use
   it.
 
-  Some hints for the usage of Darcs.
+  Some hints for the usage of Git.
 
   * use require 'ramaze' from everywhere
 
-    add a file to your site_ruby named 'ramaze.rb'
-    the content should be: "require '/path/to/darcs/repo/ramaze/lib/ramaze'"
+    add a file to your site\_ruby named 'ramaze.rb'
+    the content should be: "require '/path/to/git/repo/ramaze/lib/ramaze'"
 
-  * get the latest version (from inside the ramaze-directory)
+  * get the latest version (from inside the ramaze directory)
 
-    $ darcs pull
+    $ git pull
 
-  * record a patch
+  * Reset the repo to original state (if you screw up something)
 
-    $ darcs record
+    $ git reset --hard # resets the whole repo
+    $ git checkout master lib/ramaze.rb # revert changes to lib/ramaze.rb only
+
+  * record a patch for all your changes
+
+    $ git commit -a # commit all changes
+
+  * record a patch for specific changes
+
+    $ git add -p # pick the hunks you want to commit
+    $ git commit
 
   * output your patches into a bundle ready to be mailed (compress it before
     sending to make sure it arrives in the way you sent it)
 
-    $ darcs send -o ramaze_bundle
-    $ gzip -c ramaze_bundle > ramaze_bundle.gz
+    $ git pull # make sure you are on latest revision to avoid conflicts
+    $ git format-patch origin/HEAD # spit out 00xx-blah.patch files
 
-
-* via install.rb
-
-  Support for install.rb has been canceled and the file removed.
+    # From here on you can use either git-send-email or go the manual route
+    $ tar -cjf ramaze\_bundle.tar.bz2 \*.patch
+    # add this bz2 as attachment and send to ramaze@googlegroups.com

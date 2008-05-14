@@ -29,10 +29,10 @@ Examples include:
   Not yet fully functional, but coming along.
 
 * examples/whywiki
-  A basic examples of a minimalistic application, based on the Wiki of _why in
+  A basic examples of a minimalistic application, based on the Wiki of \_why in
   his camping-framework.
 
 * examples/templates
   examples of real usage of the templating-engines. Tries to implement the same
-  functionality in each template_*.rb file using a different engine.
+  functionality in each `template_*.rb` file using a different engine.
 
