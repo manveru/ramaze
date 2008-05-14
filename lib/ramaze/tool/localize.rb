@@ -168,13 +168,16 @@ module Ramaze
           Log.error e
         end
 
+        # Call trait[:file] with the passed locale if it reponds to that,
+        # otherwise we call #to_s and % with the locale on it.
+
         def file_for(locale)
           file_source = trait[:file]
 
           if file_source.respond_to?(:call)
             file = file_source.call(locale)
           else
-            file = file_source % locale
+            file = file_source.to_s % locale
           end
         end
 
