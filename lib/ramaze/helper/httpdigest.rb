@@ -1,9 +1,9 @@
+require 'uuid'
+require 'md5'
+
 module Ramaze
   module Helper
     module HttpDigest
-
-      require 'uuid'
-      require 'md5'
 
       private
 
