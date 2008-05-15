@@ -19,7 +19,7 @@ module Ramaze
           
           auth_split = request.env['HTTP_AUTHORIZATION'].split
           authentication_type = auth_split[0]
-          authorization = auth_split[1..-1].join(' ').scan(/((?:"(?:\\.|[^"])+?"|[^",]+)+)(?:,\s*|\Z)/n).collect{|v|v[0]}.inject({}){|r,c|k,*v=c.split('=');r[k]=v.join('=').gsub(/"?(.*?)"?/,'\\1');r}
+          authorization = Rack::Auth::Digest::Params.parse( auth_split[1..-1].join(' ') )
 
           if authentication_type == 'Digest'
 
