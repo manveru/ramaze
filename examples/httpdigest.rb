@@ -18,9 +18,9 @@ class SecretController < Ramaze::Controller
   helper :httpdigest
 
   before_all do
-    @username = httpdigest 'secret area', REALM do |username|
-      { 'admin' => MD5.new("admin:#{REALM}:secret"),
-        'root' => MD5.new("root:#{REALM}:access"),
+    @username = httpdigest('secret area',REALM) do |username|
+      { 'admin' => MD5.hexdigest("admin:#{REALM}:secret"),
+        'root' => MD5.hexdigest("root:#{REALM}:access"),
       }[ username ]
     end
   end
@@ -38,7 +38,7 @@ class GuestController < Ramaze::Controller
   before_all do
     @username = httpdigest('guest area',REALM) do |username|
       username_used = username
-      MD5.new("#{username}:#{REALM}:#{username}")
+      MD5.hexdigest([username,REALM,username].join(':'))
     end
   end
 
