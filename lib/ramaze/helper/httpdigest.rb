@@ -17,7 +17,7 @@ module Ramaze
           auth_split = request.env['HTTP_AUTHORIZATION'].split
           authentication_type = auth_split[0]
           authorization = Rack::Auth::Digest::Params.parse( auth_split[1..-1].join(' ') )
-          response, username, nonce, nc, cnonce, qop =
+          digest_response, username, nonce, nc, cnonce, qop =
             authorization.values_at(*%w[response username nonce nc cnonce qop])
 
           if authentication_type == 'Digest'
@@ -26,7 +26,7 @@ module Ramaze
               ha2 = MD5.hexdigest("#{request.request_method}:#{request.fullpath}")
               md5 = MD5.hexdigest([ha1, nonce, nc, cnonce, qop, ha2].join(':'))
 
-              authorized = response == md5
+              authorized = digest_response == md5
             end
           end
         end
@@ -37,7 +37,7 @@ module Ramaze
             %|Digest realm="#{realm}",| +
             %|qop="auth,auth-int",| +
             %|nonce="#{session[session_nonce]}",| +
-            %|opaque="#{session[session_opage]}"|
+            %|opaque="#{session[session_opaque]}"|
           respond('Unauthorized', 401)
         end
 
