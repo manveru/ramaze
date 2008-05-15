@@ -64,7 +64,7 @@ Gem::Specification.new do |s|
 
   %dependencies%
 
-  %files%
+  s.files = %files%
 end
   OUT
 
