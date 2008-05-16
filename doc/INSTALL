@@ -1,34 +1,80 @@
-= Installating Ramaze
-
 * via RubyGems
 
-  The simplest way of installing Ramaze is via 
+  The simplest way of installing Ramaze is via the gem.
 
-    $ gem install ramaze
+  [Rubygems](http://rubygems.org) is the package manager for ruby apps and
+  libraries and provides you with the last tagged version of Ramaze.
 
-  in case you have RubyGems installed.
-  (this will work as soon as I have registered on RubyForge ;)
+      $ gem install ramaze
 
-* via install.rb
+  Versions are made as we see fit and get an announcment out (usually that's
+  the major obstacle as there is a lot to announce).
 
-  Ramaze provides a basic install.rb that should take care of the installation
-  you can use it like 
+  If you want to install the nightly gem of Ramaze you can do this with:
 
-    $ ruby install.rb
+      $ gem install ramaze --source=http://gem.ramaze.net/
+   
+  We also use the gem building process on github, which locates gems at
+  http://gems.github.com - so you can get a version from there as well:
 
-  you may need root-privileges to do
-  that, depending on what options you provide.
-  (please note that I haven't tested the install.rb extensively yet, so if you
-  find some quirks, please send me patches or a simple note)
+      $ gem install manveru-ramaze --source=http://gems.github.com/
 
-* via darcs
+* via git
 
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
 
-    $ darcs get --partial http://manveru.mine.nu/ramaze
+      $ git clone git://gitweb.com/manveru/ramaze
 
-  Please read the man page or `darcs help` for more information about updating
+  Please read the `man git` or `git help` for more information about updating
   and creating your own patches.
-  This is at the moment the premier way to use Ramaze, since it is the way I use
-  it.
+  This is at the moment the premier way to use Ramaze, since it is the way I
+  use it.
+
+  Some hints for the usage of Git.
+
+  * use require 'ramaze' from everywhere
+
+    add a file to your site\_ruby named 'ramaze.rb'
+    the content should be: "require '/path/to/git/repo/ramaze/lib/ramaze'"
+
+  * Pull the latest version
+
+        $ git pull
+
+  * Reset the repo to original state (if you screw up something)
+
+        $ git reset --hard # resets the whole repo
+
+  * Revert changes to (for example) lib/ramaze.rb only
+
+        $ git checkout master lib/ramaze.rb
+
+  * Add and commit all changes.
+
+        $ git commit -a
+
+  * Adding only specific changes.
+
+        # Add hunks you want to commit to the staging area (index)
+        $ git add -p
+
+  * Commit the changes into the history of your repository
+
+        # Create a commit from the hunks added
+        $ git commit
+
+  * output your patches into a bundle ready to be mailed (compress it before
+    sending to make sure it arrives in the way you sent it)
+
+    At the end of this process you will have a tar.bz2 for all your changes
+    that you can mail to ramaze@googlegroups.com
+
+        # make sure you are on latest revision to avoid conflicts
+        $ git pull
+
+        # create 00xx-blah.patch files against the remote repo
+        $ git format-patch origin/HEAD
+
+        # From here on you can use either git-send-email or go the manual route
+        $ tar -cjf ramaze_bundle.tar.bz2 *.patch
