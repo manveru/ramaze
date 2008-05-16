@@ -13,12 +13,27 @@ class Struct
   #  # => [10, 15]
   #  point.values_at(0, 1)
   #  # => [15, 10]
+  #  point.values_at(0..1)
+  #  # => [15, 10]
 
   def values_at(*keys)
     if keys.all?{|key| key.respond_to?(:to_int) and not key.is_a?(Symbol) }
       keys.map{|key| values[key.to_int] }
     else
-      keys.map{|k| self[k] }
+      out = []
+
+      keys.each do |key|
+        case key
+        when Range
+          key.each do |r|
+            out << self[r]
+          end
+        else
+          out << self[key]
+        end
+      end
+
+      out
     end
   end
 end

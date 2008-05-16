@@ -41,4 +41,12 @@ describe "Struct#values_at" do
     @point.values_at(0,:x,'x',:y).should == [1,1,1,2]
   end
 
+  should 'work with ranges' do
+    @point.values_at(0..1).should == [1,2]
+  end
+
+  should 'work with multiple ranges' do
+    @point.values_at(0..1, 0..1).should == [1,2,1,2]
+  end
+
 end
