@@ -1,5 +1,5 @@
 require 'spec/helper'
-require 'examples/linking'
+require 'examples/basic/linking'
 
 describe 'Linking' do
   behaves_like 'http'

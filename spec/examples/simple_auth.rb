@@ -1,5 +1,5 @@
 require 'spec/helper'
-require 'examples/simple_auth'
+require 'examples/misc/simple_auth'
 
 describe "SimpleAuth" do
   behaves_like 'browser'

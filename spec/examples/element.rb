@@ -1,5 +1,5 @@
 require 'spec/helper'
-require 'examples/element'
+require 'examples/basic/element'
 
 describe 'Element' do
   behaves_like 'http'

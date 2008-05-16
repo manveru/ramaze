@@ -1,5 +1,5 @@
 require 'spec/helper'
-require 'examples/caching'
+require 'examples/helpers/cache'
 
 describe 'Caching' do
   behaves_like 'http'
