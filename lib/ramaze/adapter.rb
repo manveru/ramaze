@@ -79,7 +79,7 @@ module Ramaze
       rescue Timeout::Error
         Global.server.kill!
         # Hard exit! because it won't be able to kill Webrick otherwise
-        exit!
+        exit
       end
 
       # Opens a TCPServer temporarily and returns true if a connection is

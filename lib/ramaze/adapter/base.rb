@@ -23,7 +23,7 @@ module Ramaze
 
         def start host, port
           Global.server = run_server(host, port)
-          trap(Global.shutdown_trap){ Ramaze.shutdown }
+          trap(Global.shutdown_trap){ exit }
         end
 
         # Does nothing
