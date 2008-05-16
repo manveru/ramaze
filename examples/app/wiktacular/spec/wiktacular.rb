@@ -151,8 +151,7 @@ describe 'wiktacular' do
     a.inner_html.should == "chunky bacon"
   end
 
-  after do
-    WikiEntry.new(NEWPAGE).delete
+  should 'delete page for cleanup' do
+    WikiEntry.new(NEWPAGE).delete.first.should =~ /#{NEWPAGE}$/
   end
-
 end
