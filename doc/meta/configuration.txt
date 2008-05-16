@@ -18,9 +18,10 @@ Global with Ramaze so it is written Ramaze::Global.
 
 #### Basic assignment:
 
-  Global.spawn = 10
+  Global.port = 10
 
-if you do that before calling Ramaze::start Ramaze will spawn the given number of servers.
+if you do that before calling Ramaze::start Ramaze will choose the given number
+as port.
 
 
 #### Multiple assignment:
