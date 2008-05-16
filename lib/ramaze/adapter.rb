@@ -4,6 +4,7 @@
 require 'ramaze/trinity'
 require 'ramaze/tool/record'
 require 'ramaze/adapter/base'
+require 'ramaze/adapter/fake'
 
 # for OSX compatibility
 Socket.do_not_reverse_lookup = true
@@ -60,12 +61,13 @@ module Ramaze
           end
 
           adapter.start(host, port)
-        else # run dummy
-          Global.server = Thread.new{ sleep }
+        else
+          Fake.start
           Log.warn("Seems like Global.adapter is turned off", "Continue without adapter.")
         end
       rescue LoadError => ex
-        Log.warn(ex, "Continue without adapter.")
+        Log.error(ex)
+        Log.warn("Continue without adapter.")
       end
 
       # Calls ::shutdown on all running adapters and waits up to 1 second for
@@ -73,13 +75,12 @@ module Ramaze
 
       def shutdown
         Timeout.timeout(3) do
-          a = Global.server[:adapter]
-          a.shutdown if a.respond_to?(:shutdown)
+          if Global.server.respond_to?(:shutdown)
+            Global.server.shutdown
+          end
         end
       rescue Timeout::Error
         Global.server.kill!
-        # Hard exit! because it won't be able to kill Webrick otherwise
-        exit
       end
 
       # Opens a TCPServer temporarily and returns true if a connection is

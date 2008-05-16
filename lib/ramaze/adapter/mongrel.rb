@@ -9,16 +9,12 @@ module Ramaze
 
     # Our Mongrel adapter acts as wrapper for the Rack::Handler::Mongrel.
     class Mongrel < Base
-      class << self
 
-        # start server on given host and port.
-        def run_server host, port
-          server = ::Mongrel::HttpServer.new(host, port)
-          server.register('/', ::Rack::Handler::Mongrel.new(self))
-          thread = server.run
-          thread[:adapter] = server
-          thread
-        end
+      # start server on given host and port.
+      def self.startup(host, port)
+        @server = ::Mongrel::HttpServer.new(host, port)
+        @server.register('/', ::Rack::Handler::Mongrel.new(self))
+        @server.run
       end
     end
   end

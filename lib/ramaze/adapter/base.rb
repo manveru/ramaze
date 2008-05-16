@@ -21,15 +21,31 @@ module Ramaze
         # Afterwards adds a trap for the value of Global.shutdown_trap which
         # calls Ramaze.shutdown when triggered (usually by SIGINT).
 
-        def start host, port
-          Global.server = run_server(host, port)
+        def start(host = nil, port = nil)
+          @thread = startup(host, port)
+          Global.server = self
+
           trap(Global.shutdown_trap){ exit }
         end
 
-        # Does nothing
+        def start_server(host, port)
+          Ramaze::deprecated("Adapter::Base::start_server", "Adapter::Base::startup")
+          startup(host, port)
+        end
 
-        def stop
-          Log.debug("Stopping #{self.class}")
+        # Does nothing by default
+
+        def shutdown
+          if @server.respond_to?(:stop)
+            Log.dev "Stopping @server"
+            @server.stop
+          else
+            Log.dev "Cannot stop @server, skipping this step."
+          end
+        end
+
+        def join
+          @thread.join
         end
 
         # Helper to assign a new block to before_call

@@ -95,13 +95,15 @@ module Ramaze
     def shutdown
       Log.info "Initiate shutdown"
 
-      trait[:essentials].each do |obj|
-        obj.shutdown if obj.respond_to?(:shutdown)
+      Timeout.timeout(5) do
+        trait[:essentials].each do |obj|
+          obj.shutdown if obj.respond_to?(:shutdown)
+        end
+
+        puts "Ramazement is over, have a nice day."
+
+        exit
       end
-
-      puts "Ramazement is over, have a nice day."
-
-      Timeout.timeout(3){ exit }
     rescue Timeout::Error
       puts "Shutdown timed out, issuing exit!"
       exit!

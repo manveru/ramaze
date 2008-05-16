@@ -7,14 +7,10 @@ module Ramaze
   module Adapter
     # Our Scgi adapter acts as wrapper for the Rack::Handler::SCGI.
     class Scgi < Base
-      class << self
-
-        # start SCGI in a new thread
-        def run_server host, port
-          Thread.new do
-            Thread.current[:task] = :cgi
-            Rack::Handler::SCGI.run(self, :Host=>host, :Port=>port)
-          end
+      # start SCGI in a new thread
+      def self.startup(host, port)
+        Thread.new do
+          Rack::Handler::SCGI.run(self, :Host => host, :Port => port)
         end
       end
     end

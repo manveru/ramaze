@@ -8,28 +8,19 @@ module Ramaze
   module Adapter
     # Our WEBrick adapter acts as wrapper for the Rack::Handler::WEBrick.
     class WEBrick < Base
-      class << self
+      OPTIONS = {
+        :Logger      => Log,
+        :AccessLog   => [
+          [Log, ::WEBrick::AccessLog::COMMON_LOG_FORMAT],
+          [Log, ::WEBrick::AccessLog::REFERER_LOG_FORMAT]
+        ]
+      }
 
-        # start server on given host and port, see below for possible options.
-        def run_server host, port, options = {}
-          options = {
-            :Port        => port,
-            :BindAddress => host,
-            :Logger      => Log,
-            :AccessLog   => [
-              [Log, ::WEBrick::AccessLog::COMMON_LOG_FORMAT],
-              [Log, ::WEBrick::AccessLog::REFERER_LOG_FORMAT]
-            ]
-          }.merge(options)
-
-
-          server = ::WEBrick::HTTPServer.new(options)
-          server.mount("/", ::Rack::Handler::WEBrick, self)
-          thread = Thread.new(server) do |adapter|
-            Thread.current[:adapter] = adapter
-            adapter.start
-          end
-        end
+      def self.startup(host, port)
+        options = OPTIONS.merge(:BindAddress => host, :Port => port)
+        @server = ::WEBrick::HTTPServer.new(options)
+        @server.mount('/', ::Rack::Handler::WEBrick, self)
+        Thread.new{ @server.start }
       end
     end
   end

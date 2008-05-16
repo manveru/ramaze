@@ -2,14 +2,8 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'ramaze'
+require 'ramaze/adapter/fake'
 require 'rack/mock'
-
-module Ramaze
-  module Adapter
-    class Fake < Base
-    end
-  end
-end
 
 module MockHTTP
   DEFAULTS = {
