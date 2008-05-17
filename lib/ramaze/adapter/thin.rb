@@ -10,7 +10,7 @@ module Ramaze
         ::Thin::Logging.silent = true
         @server.timeout = 3
 
-        Thread.new{ server.start }
+        Thread.new{ @server.start }
       end
 
       def self.shutdown
