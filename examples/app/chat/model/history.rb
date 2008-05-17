@@ -7,6 +7,7 @@ class History
   end
 
   def write(nick, text)
+    text.strip!
     return if text.empty?
     @history.shift until @history.size < @size
     @history << Message.new(nick, text, Time.now)
@@ -14,11 +15,10 @@ class History
   end
 
   def to_html
-    @history.map{|message|
-      "<div class='message'>" +
-        [:nick, :time, :text].map{|key|
-        span_for(message, key)
-      }.join("\n") + "</div>"
+    @history.map {|message|
+      '<div class="message">' <<
+          [:time, :nick, :text].map{|key| span_for(message, key)}.join("\n") <<
+      '</div>'
     }.join("\n")
   end
 
