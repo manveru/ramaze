@@ -27,7 +27,7 @@ class MainController < Ramaze::Controller
   end
 
   def listen
-    HISTORY.to_html
+    respond HISTORY.to_html
   end
 
   [ "Hello, World!",

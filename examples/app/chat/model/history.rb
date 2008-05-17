@@ -10,7 +10,7 @@ class History
     text.strip!
     return if text.empty?
     @history.shift until @history.size < @size
-    @history << Message.new(nick, text, Time.now)
+    @history << Message.new(h(nick), h(text), Time.now)
     true
   end
 
@@ -23,7 +23,7 @@ class History
   end
 
   def span_for(message, key)
-    "<span class='#{key}'>#{h(message[key])}</span>"
+    "<span class='#{key}'>#{message[key]}</span>"
   end
 
   include Enumerable
