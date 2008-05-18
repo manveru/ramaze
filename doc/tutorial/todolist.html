@@ -1,126 +1,66 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  <html>
-    <head>
-      <title>Ramaze Tutorial: Todolist</title>
-      <style>
-        body {
-          background: #eee;
-        }
-        code {
-          background: #ddd;
-        }
-        pre code {
-          background: #ddd;
-          width: 70%;
-          display: block;
-          margin: 1em;
-          padding: 0.7em;
-          overflow: auto;
-        }
-      </style>
-      <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    </head>
-    <body>
-      
-  <h1>To-do List Tutorial</h1>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC
+    "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN"
+    "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns:svg='http://www.w3.org/2000/svg' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+<head><meta content='application/xhtml+xml;charset=utf-8' http-equiv='Content-type' /><title>To-do List Tutorial</title></head>
+<body>
+<h1 id='todo_list_tutorial'>To-do List Tutorial</h1>
+<div class='maruku_toc'><ul style='list-style: none;'><li><a href='#step_zero_introduction'>Step Zero, Introduction</a></li><li><a href='#first_step_create'>First Step, Create</a></li><li><a href='#second_step_m_like_model'>Second Step, M, like Model</a></li><li><a href='#third_step_v_like_view'>Third Step, V, like View</a></li><li><a href='#fourth_step_c_like_controller'>Fourth Step, C, like Controller</a></li><li><a href='#fifth_step_getting_dynamic'>Fifth Step, getting dynamic</a></li><li><a href='#sixth_step_open_and_close_tasks'>Sixth Step, open and close tasks</a></li><li><a href='#seventh_step_delete_tasks'>Seventh Step, delete tasks</a></li><li><a href='#eighth_step_elements'>Eighth Step, Elements</a></li><li><a href='#ninth_step_prettify'>Ninth Step, Prettify</a></li><li><a href='#tenth_step_configuration'>Tenth Step, Configuration</a></li><li><a href='#eleventh_step_refactor_with_aspecthelper'>Eleventh Step, Refactor with AspectHelper</a></li><li><a href='#twelfth_step_validation_and_errors'>Twelfth Step, Validation and Errors</a></li></ul></div>
+<h2 id='step_zero_introduction'>Step Zero, Introduction</h2>
 
-<div class="menu">
-  <h3>Table of Contents</h3>
-  <li>
-    <ol><a href="#Step_Zero,_Introduction">Step Zero, Introduction</a></ol>
-    <ol><a href="#First_Step,_Create">First Step, Create</a></ol>
-    <ol><a href="#Second_Step,_M,_like_Model">Second Step, M, like Model</a></ol>
-    <ol><a href="#Third_Step,_V,_like_View">Third Step, V, like View</a></ol>
-    <ol><a href="#Fourth_Step,_C,_like_Controller">Fourth Step, C, like Controller</a></ol>
-    <ol><a href="#Fifth_Step,_getting_dynamic">Fifth Step, getting dynamic</a></ol>
-    <ol><a href="#Sixth_Step,_open_and_close_tasks">Sixth Step, open and close tasks</a></ol>
-    <ol><a href="#Seventh_Step,_delete_tasks">Seventh Step, delete tasks</a></ol>
-    <ol><a href="#Eighth_Step,_Elements">Eighth Step, Elements</a></ol>
-    <ol><a href="#Ninth_Step,_Prettify">Ninth Step, Prettify</a></ol>
-    <ol><a href="#Tenth_Step,_Configuration">Tenth Step, Configuration</a></ol>
-    <ol><a href="#Eleventh_Step,_Refactor_with_AspectHelper">Eleventh Step, Refactor with AspectHelper</a></ol>
-    <ol><a href="#Twelfth_Step,_Validation_and_Errors">Twelfth Step, Validation and Errors</a></ol>
-  </li>
-</div>
+<p>Welcome to our official tutorial, the mandatory to-do list. I&#8217;m writing this while doing the steps to assure it will work for you.</p>
 
+<p>The tutorial assumes that you have Ramaze installed already. The easiest way to do that is <code>gem install ramaze</code>, for other ways of installation please see the documentation at http://ramaze.rubyforge.org</p>
 
-<a name="Step_Zero,_Introduction"><h2>Step Zero, Introduction</h2></a>
+<p>Should you encounter any problems while doing this tutorial, this might either be because Ramaze changed (which happens very often while it is still young) or I actually made some mistake while writing it.</p>
 
-<p>Welcome to our official tutorial, the mandatory to-do list.
-I'm writing this while doing the steps to assure it will work for you.</p>
+<p>In either case it would make me (and all other poor fellows who happen to try this tutorial) very happy if you could spare some time and report the issue either on the Bug tracker at http://rubyforge.org/projects/ramaze or just drop by on IRC ( irc.freenode.org channel: #ramaze ).</p>
 
-<p>The tutorial assumes that you have Ramaze installed already. The easiest way to
-do that is <code>gem install ramaze</code>, for other ways of installation please see the
-documentation at http://ramaze.rubyforge.org</p>
+<p>There is also a Mailing list available where you can keep yourself updated on what is going on with little effort, it is also located on the project-page at RubyForge.</p>
 
-<p>Should you encounter any problems while doing this tutorial, this might either
-be because Ramaze changed (which happens very often while it is still young)
-or I actually made some mistake while writing it.</p>
-
-<p>In either case it would make me (and all other poor fellows who happen to try
-this tutorial) very happy if you could spare some time and report the issue
-either on the Bug tracker at http://rubyforge.org/projects/ramaze or just
-drop by on IRC ( irc.freenode.org channel: #ramaze ).</p>
-
-<p>There is also a Mailing list available where you can keep yourself updated on
-what is going on with little effort, it is also located on the project-page at
-RubyForge.</p>
-
-<p>Additionally, we now have added tests for the resulting application that you
-can find in spec/examples/todolist.rb</p>
+<p>Additionally, we now have added tests for the resulting application that you can find in spec/examples/todolist.rb</p>
 
 <p>Date of last update: Thu Jan 31 04:37:16 JST 2008</p>
 
-<p>Thanks in advance.
-The author of the tutorial, Michael 'manveru' Fellinger</p>
+<p>Thanks in advance. The author of the tutorial, Michael &#8216;manveru&#8217; Fellinger</p>
 
-<a name="First_Step,_Create"><h2>First Step, Create</h2></a>
+<h2 id='first_step_create'>First Step, Create</h2>
 
-<p>We are using <code>ramaze --create todolist</code> to create a new application.
-Ramaze will then create the directory and fill it with a skeleton of a quite
-sophisticated hello-world example out of which we will create the actual
-to-do list.</p>
+<p>We are using <code>ramaze --create todolist</code> to create a new application. Ramaze will then create the directory and fill it with a skeleton of a quite sophisticated hello-world example out of which we will create the actual to-do list.</p>
 
 <p>So run:</p>
 
-<pre><code>$ ramaze --create todolist
-</code></pre>
+<pre><code>$ ramaze --create todolist</code></pre>
 
 <p>done.</p>
 
-<a name="Second_Step,_M,_like_Model"><h2>Second Step, M, like Model</h2></a>
+<h2 id='second_step_m_like_model'>Second Step, M, like Model</h2>
 
-<p>Ramaze comes at the moment only with a simple wrapper of the YAML::Store.
-So we are going to base this on the tools available, you can just do the same
-with your ORM or database-library of choice.</p>
+<p>Ramaze comes at the moment only with a simple wrapper of the YAML::Store. So we are going to base this on the tools available, you can just do the same with your ORM or database-library of choice.</p>
 
 <p>So first, create a <code>model/todolist.rb</code> for our application:</p>
 
-<pre><code>require 'ramaze/store/default'
-TodoList = Ramaze::Store::Default.new('todolist.yaml')
-</code></pre>
+<pre><code>require &#39;ramaze/store/default&#39;
+TodoList = Ramaze::Store::Default.new(&#39;todolist.yaml&#39;)</code></pre>
 
-<p>Let's add some items as well to have a base to start from.</p>
+<p>Let&#8217;s add some items as well to have a base to start from.</p>
 
-<pre><code>{ 'Laundry'     =&gt; {:done =&gt; false},
-  'Wash dishes' =&gt; {:done =&gt; false},
+<pre><code>{ &#39;Laundry&#39;     =&gt; {:done =&gt; false},
+  &#39;Wash dishes&#39; =&gt; {:done =&gt; false},
 }.each do |title, value|
   TodoList[title] = value
-end
-</code></pre>
+end</code></pre>
 
-<a name="Third_Step,_V,_like_View"><h2>Third Step, V, like View</h2></a>
+<h2 id='third_step_v_like_view'>Third Step, V, like View</h2>
 
-<p>Now let's get our hands dirty and just edit the templates for our to-do list.</p>
+<p>Now let&#8217;s get our hands dirty and just edit the templates for our to-do list.</p>
 
-<p>Start with editing <code>view/index.xhtml</code>, it is using the default templating
-of Ramaze, called Ezamar.</p>
+<p>Start with editing <code>view/index.xhtml</code>, it is using the default templating of Ramaze, called Ezamar.</p>
 
 <p>The index.xhtml currently contains a default welcome page, remove the contents.</p>
 
-<p>Let's put some things in there, I'll explain the syntax as we go, it's quite
-simple.</p>
+<p>Let&#8217;s put some things in there, I&#8217;ll explain the syntax as we go, it&#8217;s quite simple.</p>
 
 <pre><code>&lt;html&gt;
   &lt;head&gt;
@@ -131,96 +71,72 @@ simple.</p>
     &lt;ul&gt;
       &lt;?r
         TodoList.each do |title, value|
-          status = value[:done] ? 'done' : 'not done'
+          status = value[:done] ? &#39;done&#39; : &#39;not done&#39;
         ?&gt;
         &lt;li&gt;#{c title}: #{status}&lt;/li&gt;
       &lt;?r end ?&gt;
     &lt;/ul&gt;
   &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+&lt;/html&gt;</code></pre>
 
-<p>I will assume that you are familiar with basic Ruby already, so we will
-concentrate on the things new here.</p>
+<p>I will assume that you are familiar with basic Ruby already, so we will concentrate on the things new here.</p>
 
-<p><code>&lt;?r ?&gt;</code> defines an area of ruby-code. Later, when the template is transformed
-into pure Ruby it will be evaluated. We iterate over the TodoList model and
-pass the title and value into a block. In that block we can just get the values
-of title and status (which we define based on the value) displayed on the
-page.</p>
+<p><code>&lt;?r ?&gt;</code> defines an area of ruby-code. Later, when the template is transformed into pure Ruby it will be evaluated. We iterate over the TodoList model and pass the title and value into a block. In that block we can just get the values of title and status (which we define based on the value) displayed on the page.</p>
 
-<p>The whole Template would expand to something like this (only showing the
-interesting part)</p>
+<p>The whole Template would expand to something like this (only showing the interesting part)</p>
 
 <pre><code>&lt;ul&gt;
   &lt;li&gt;Laundry: not done&lt;/li&gt;
   &lt;li&gt;Wash dishes: not done&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
+&lt;/ul&gt;</code></pre>
 
-<p>That wasn't too bad, huh?</p>
+<p>That wasn&#8217;t too bad, huh?</p>
 
-<p>Now, so we can get our instant pleasure of seeing the result of our (hard) work,
-let's see how to start ramaze.</p>
+<p>Now, so we can get our instant pleasure of seeing the result of our (hard) work, let&#8217;s see how to start ramaze.</p>
 
 <p>In the <code>todolist</code> directory run <code>ramaze</code>.</p>
 
-<p>This will start an instance of Ramaze and run your application on it. You can
-now access it by browsing to http://localhost:7000/</p>
+<p>This will start an instance of Ramaze and run your application on it. You can now access it by browsing to http://localhost:7000/</p>
 
-<p>7000 is the default-port Ramaze will run on, to change it you can just run
-<code>ramaze -p 7070</code> or similar. Also be sure to look at the output of
-<code>ramaze --help</code> to see some other options.</p>
+<p>7000 is the default-port Ramaze will run on, to change it you can just run <code>ramaze -p 7070</code> or similar. Also be sure to look at the output of <code>ramaze --help</code> to see some other options.</p>
 
-<a name="Fourth_Step,_C,_like_Controller"><h2>Fourth Step, C, like Controller</h2></a>
+<h2 id='fourth_step_c_like_controller'>Fourth Step, C, like Controller</h2>
 
 <p>The last part of the MVC-paradigm is the Controller.</p>
 
-<p>Wouldn't it be nice to have a way to add and remove items on our to-do list?
-Editing the model every time would be quite tiresome and limited.</p>
+<p>Wouldn&#8217;t it be nice to have a way to add and remove items on our to-do list? Editing the model every time would be quite tiresome and limited.</p>
 
-<p>Well, come along, I'll introduce you to Controller.</p>
+<p>Well, come along, I&#8217;ll introduce you to Controller.</p>
 
-<p>In the way MVC is structured, the Controller provides the data in a nice way
-for the View, removing all of the data-preparation and most of the logic from
-the templates. This makes it firstly simple to change the front end of your
-application and secondly provides excellent ways of changing the complete
-Structure of the Model or View independent from each other.</p>
+<p>In the way MVC is structured, the Controller provides the data in a nice way for the View, removing all of the data-preparation and most of the logic from the templates. This makes it firstly simple to change the front end of your application and secondly provides excellent ways of changing the complete Structure of the Model or View independent from each other.</p>
 
-<p>OK, enough of the theory, you will see the benefits in an instant. Go on and
-edit the file <code>controller/main.rb</code>.</p>
+<p>OK, enough of the theory, you will see the benefits in an instant. Go on and edit the file <code>controller/main.rb</code>.</p>
 
 <p>The contents of it are like following:</p>
 
 <pre><code>class MainController &lt; Controller
   def index
-    @welcome = "Welcome to Ramaze!"
+    @welcome = &quot;Welcome to Ramaze!&quot;
   end
 
   def notemplate
-    "there is no template associated with this action"
+    &quot;there is no template associated with this action&quot;
   end
-end
-</code></pre>
+end</code></pre>
 
-<p>The only methods right now are <code>#index</code> and <code>#notemplate</code>.
-The relationship between the methods on the controller and the templates is
-1:1, so the method <code>#index</code> is combined with the template <code>index.xhtml</code>. This
-combination is called an <code>action</code>.</p>
+<p>The only methods right now are <code>#index</code> and <code>#notemplate</code>. The relationship between the methods on the controller and the templates is 1:1, so the method <code>#index</code> is combined with the template <code>index.xhtml</code>. This combination is called an <code>action</code>.</p>
 
-<p>Let's get back to editing and change the method <code>#index</code> to this:</p>
+<p>Let&#8217;s get back to editing and change the method <code>#index</code> to this:</p>
 
 <pre><code>def index
   @tasks = TodoList.original
   @tasks.each do |title, value|
-    status = value[:done] ? 'done' : 'not done'
+    status = value[:done] ? &#39;done&#39; : &#39;not done&#39;
     @tasks[title] = status
   end
-end
-</code></pre>
+end</code></pre>
 
-<p>This will take care of the logic inside the template, which now should be
-changed to do following:</p>
+<p>This will take care of the logic inside the template, which now should be changed to do following:</p>
 
 <pre><code>&lt;html&gt;
   &lt;head&gt;
@@ -238,32 +154,28 @@ changed to do following:</p>
       &lt;/ul&gt;
     &lt;?r end ?&gt;
   &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+&lt;/html&gt;</code></pre>
 
 <p>The rest of the template can stay the same.</p>
 
-<p>Now, if you browse to http://localhost:7000/ again you will not notice any
-change, which is how it should be. The only change is that if there are no
-Tasks it will say so.</p>
+<p>Now, if you browse to http://localhost:7000/ again you will not notice any change, which is how it should be. The only change is that if there are no Tasks it will say so.</p>
 
 <p>Some things you should know:</p>
 
 <ul>
 <li>Instance-variables defined in the Controller are available in the View.</li>
+
 <li>The return-value of the Controller does not matter if a template is present.</li>
 </ul>
 
-<a name="Fifth_Step,_getting_dynamic"><h2>Fifth Step, getting dynamic</h2></a>
+<h2 id='fifth_step_getting_dynamic'>Fifth Step, getting dynamic</h2>
 
-<p>We set out to build the ultimate to-do list, but there are still some things
-missing. First off, we want to add new tasks, so let's get that done.</p>
+<p>We set out to build the ultimate to-do list, but there are still some things missing. First off, we want to add new tasks, so let&#8217;s get that done.</p>
 
 <p>Add a link on the <code>view/index.xhtml</code> like this:</p>
 
 <pre><code>&lt;h1&gt;TodoList&lt;/h1&gt;
-&lt;a href="/new"&gt;New Task&lt;/a&gt;
-</code></pre>
+&lt;a href=&quot;/new&quot;&gt;New Task&lt;/a&gt;</code></pre>
 
 <p>Open a new file <code>view/new.xhtml</code> with a form to add a new task.</p>
 
@@ -273,52 +185,39 @@ missing. First off, we want to add new tasks, so let's get that done.</p>
   &lt;/head&gt;
   &lt;body&gt;
     &lt;h1&gt;New Task&lt;/h1&gt;
-    &lt;a href="/"&gt;Back to TodoList&lt;/a&gt;
-    &lt;form method="POST" action="create"&gt;
-      Task: &lt;input type="text" name="title" /&gt;&lt;br /&gt;
-      &lt;input type="submit" /&gt;
+    &lt;a href=&quot;/&quot;&gt;Back to TodoList&lt;/a&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;create&quot;&gt;
+      Task: &lt;input type=&quot;text&quot; name=&quot;title&quot; /&gt;&lt;br /&gt;
+      &lt;input type=&quot;submit&quot; /&gt;
     &lt;/form&gt;
   &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+&lt;/html&gt;</code></pre>
 
-<p>We will not need a method for this on our controller, in fact, actions can
-consist of either method and template or only one of them. The Controller
-can act as a View and the View can work like you may know it from PHP.</p>
+<p>We will not need a method for this on our controller, in fact, actions can consist of either method and template or only one of them. The Controller can act as a View and the View can work like you may know it from PHP.</p>
 
-<p>If you try to use this form you will notice that we have not yet defined a way
-to actually create the task.</p>
+<p>If you try to use this form you will notice that we have not yet defined a way to actually create the task.</p>
 
-<p>You will get the default Ramaze error-page instead. Please take your time to
-explore it and see how Ramaze reacted on the error.</p>
+<p>You will get the default Ramaze error-page instead. Please take your time to explore it and see how Ramaze reacted on the error.</p>
 
-<p>It will show you the back trace and what state the application is in at the
-moment, the request and response and the contents of the session. This is very
-useful for debugging and development, you can provide your own set of
-error-pages before going into production (or deactivate them fully) though.</p>
+<p>It will show you the back trace and what state the application is in at the moment, the request and response and the contents of the session. This is very useful for debugging and development, you can provide your own set of error-pages before going into production (or deactivate them fully) though.</p>
 
-<p>OK, let's implement the action for <code>#create</code>, all we want to do is take the
-requests parameters and create a new task for it, this looks like following on
-your MainController.</p>
+<p>OK, let&#8217;s implement the action for <code>#create</code>, all we want to do is take the requests parameters and create a new task for it, this looks like following on your MainController.</p>
 
 <pre><code>def create
-  title = request['title']
+  title = request[&#39;title&#39;]
   TodoList[title] = {:done =&gt; false}
   redirect Rs()
-end
-</code></pre>
+end</code></pre>
 
-<p>That's all folks!</p>
+<p>That&#8217;s all folks!</p>
 
-<p>We get the title from the request-object, put it into our TodoList as undone
-and redirect back to the mapping of the current Controller ('/' in this case).</p>
+<p>We get the title from the request-object, put it into our TodoList as undone and redirect back to the mapping of the current Controller (&#8217;/&#8217; in this case).</p>
 
-<p>Now you can create as many tasks as you want, please don't get overworked ;)</p>
+<p>Now you can create as many tasks as you want, please don&#8217;t get overworked ;)</p>
 
-<a name="Sixth_Step,_open_and_close_tasks"><h2>Sixth Step, open and close tasks</h2></a>
+<h2 id='sixth_step_open_and_close_tasks'>Sixth Step, open and close tasks</h2>
 
-<p>Since the nature of tasks is to be done eventually
-we will need some way to mark it as done or open tasks again.</p>
+<p>Since the nature of tasks is to be done eventually we will need some way to mark it as done or open tasks again.</p>
 
 <p>Jump into <code>view/index.xhtml</code> and do the following:</p>
 
@@ -326,47 +225,36 @@ we will need some way to mark it as done or open tasks again.</p>
   &lt;li&gt;
     #{c title}: #{status} - [ #{toggle} ]
   &lt;/li&gt;
-&lt;?r end ?&gt;
-</code></pre>
+&lt;?r end ?&gt;</code></pre>
 
-<p>We added a new element here, <code>toggle</code>, the Controller should give us
-a link to change the status corresponding to the status of the task, so off
-we go and change the index method on the controller once again:</p>
+<p>We added a new element here, <code>toggle</code>, the Controller should give us a link to change the status corresponding to the status of the task, so off we go and change the index method on the controller once again:</p>
 
 <pre><code>def index
   @tasks = []
   TodoList.original.each do |title, value|
     if value[:done]
-      status = 'done'
-      toggle = A('Open Task', :href =&gt; Rs(:open, title))
+      status = &#39;done&#39;
+      toggle = A(&#39;Open Task&#39;, :href =&gt; Rs(:open, title))
     else
-      status = 'not done'
-      toggle = A('Close Task', :href =&gt; Rs(:close, title))
+      status = &#39;not done&#39;
+      toggle = A(&#39;Close Task&#39;, :href =&gt; Rs(:close, title))
     end
     @tasks &lt;&lt; [title, status, toggle]
   end
   @tasks.sort!
-end
-</code></pre>
+end</code></pre>
 
 <p>Wow, quite some new stuff here. Let me explain that in detail.</p>
 
-<p>We first decide whether a task is done or not, then go on and provide a link to
-toggle the status, A and Rs are both methods that help you do that.
-The result will be something like:</p>
+<p>We first decide whether a task is done or not, then go on and provide a link to toggle the status, A and Rs are both methods that help you do that. The result will be something like:</p>
 
-<pre><code>&lt;a href="/open/Wash+dishes"&gt;Close Task&lt;/a&gt;
-</code></pre>
+<pre><code>&lt;a href=&quot;/open/Wash+dishes&quot;&gt;Close Task&lt;/a&gt;</code></pre>
 
-<p>Rs actually is responsible to build the links href, for more information please
-take a look at the RDoc for LinkHelper.</p>
+<p>Rs actually is responsible to build the links href, for more information please take a look at the RDoc for LinkHelper.</p>
 
-<p>Also, you might have noticed that the tasks were changing order on every reload,
-which is because we were using an Hash, which are per definition unsorted, so
-now we use an array to hold our tasks and sort it.</p>
+<p>Also, you might have noticed that the tasks were changing order on every reload, which is because we were using an Hash, which are per definition unsorted, so now we use an array to hold our tasks and sort it.</p>
 
-<p>As usual since the links for open and close don't lead anywhere, add the
-corresponding methods to the Controller:</p>
+<p>As usual since the links for open and close don&#8217;t lead anywhere, add the corresponding methods to the Controller:</p>
 
 <pre><code>def open title
   task_status title, false
@@ -384,49 +272,37 @@ def task_status title, status
   task = TodoList[title]
   task[:done] = status
   TodoList[title] = task
-end
-</code></pre>
+end</code></pre>
 
-<p>Oh, now what have we got here?
-<code>private</code> declares that methods from here on are only to be used within the
-Controller itself, we define an <code>#task_status</code> method that takes the title and
-status to be set so we don't have to repeat that code in <code>#open</code> and <code>#close</code>
-and follow the DRY (Don't repeat yourself) paradigm.</p>
+<p>Oh, now what have we got here? <code>private</code> declares that methods from here on are only to be used within the Controller itself, we define an <code>#task_status</code> method that takes the title and status to be set so we don&#8217;t have to repeat that code in <code>#open</code> and <code>#close</code> and follow the DRY (Don&#8217;t repeat yourself) paradigm.</p>
 
-<p>Another thing we have not encountered so far is that you can define your public
-methods to take parameters on their own, they will be calculated from requests.</p>
+<p>Another thing we have not encountered so far is that you can define your public methods to take parameters on their own, they will be calculated from requests.</p>
 
-<pre><code>'/open/Wash+dishes'
-</code></pre>
+<pre><code>&#39;/open/Wash+dishes&#39;</code></pre>
 
 <p>will translate into:</p>
 
-<pre><code>open('Wash dishes')
-</code></pre>
+<pre><code>open(&#39;Wash dishes&#39;)</code></pre>
 
-<p>Which in turn will call <code>task_status('Wash dishes', false)</code></p>
+<p>Which in turn will call <code>task_status(&#39;Wash dishes&#39;, false)</code></p>
 
-<p>That's it, go on and try it :)</p>
+<p>That&#8217;s it, go on and try it :)</p>
 
-<a name="Seventh_Step,_delete_tasks"><h2>Seventh Step, delete tasks</h2></a>
+<h2 id='seventh_step_delete_tasks'>Seventh Step, delete tasks</h2>
 
-<p>Well, creating, opening and closing work now, one of the things you will
-consider is to delete a task permanently.</p>
+<p>Well, creating, opening and closing work now, one of the things you will consider is to delete a task permanently.</p>
 
-<p>This is just two little changes away, so let's add the link for deletion in our
-Controller:</p>
+<p>This is just two little changes away, so let&#8217;s add the link for deletion in our Controller:</p>
 
-<pre><code>delete = A('Delete', :href =&gt; Rs(:delete, title))
-@tasks &lt;&lt; [title, status, toggle, delete]
-</code></pre>
+<pre><code>delete = A(&#39;Delete&#39;, :href =&gt; Rs(:delete, title))
+@tasks &lt;&lt; [title, status, toggle, delete]</code></pre>
 
-<p>and an corresponding method while we're at it:</p>
+<p>and an corresponding method while we&#8217;re at it:</p>
 
 <pre><code>def delete title
   TodoList.delete title
   redirect Rs()
-end
-</code></pre>
+end</code></pre>
 
 <p>Now jumping to <code>view/index.xhtml</code> again, change it so it shows the link:</p>
 
@@ -434,22 +310,17 @@ end
   &lt;li&gt;
     #{c title}: #{status} [ #{toggle} | #{delete} ]
   &lt;/li&gt;
-&lt;?r end ?&gt;
-</code></pre>
+&lt;?r end ?&gt;</code></pre>
 
 <p>Voilà, you now have acquired the Certificate of Ramazeness.</p>
 
-<p>Just kidding, but that really are the basics, in the next few steps I will
-explain some more advanced concepts of Ramaze and Ezamar.</p>
+<p>Just kidding, but that really are the basics, in the next few steps I will explain some more advanced concepts of Ramaze and Ezamar.</p>
 
-<a name="Eighth_Step,_Elements"><h2>Eighth Step, Elements</h2></a>
+<h2 id='eighth_step_elements'>Eighth Step, Elements</h2>
 
-<pre><code>&lt;Page&gt;&lt;/Page&gt;
-</code></pre>
+<pre><code>&lt;Page&gt;&lt;/Page&gt;</code></pre>
 
-<p>This is called an Element, Ramaze will go and search for a class that matches
-the name Page and responds to <code>#render</code>. Then it will go and hand the content in
-between to that Element.</p>
+<p>This is called an Element, Ramaze will go and search for a class that matches the name Page and responds to <code>#render</code>. Then it will go and hand the content in between to that Element.</p>
 
 <p>Sounds weird?</p>
 
@@ -462,20 +333,17 @@ between to that Element.</p>
   &lt;body&gt;
     &lt;h1&gt;some title&lt;/h1&gt;
   &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+&lt;/html&gt;</code></pre>
 
 <p>How about replacing that with something short and reusable:</p>
 
-<pre><code>&lt;Page title="TodoList"&gt;
+<pre><code>&lt;Page title=&quot;TodoList&quot;&gt;
   your other content
-&lt;/Page&gt;
-</code></pre>
+&lt;/Page&gt;</code></pre>
 
-<p>Would be nice of course, and when you start having more templates it makes an
-awful lot of sense being able to change the enclosing stuff in one place.</p>
+<p>Would be nice of course, and when you start having more templates it makes an awful lot of sense being able to change the enclosing stuff in one place.</p>
 
-<p>So let's apply DRY here as well.</p>
+<p>So let&#8217;s apply DRY here as well.</p>
 
 <p>Take a look at the <code>src/element/page.rb</code></p>
 
@@ -492,15 +360,11 @@ awful lot of sense being able to change the enclosing stuff in one place.</p>
     &lt;/html&gt;
     }
   end
-end
-</code></pre>
+end</code></pre>
 
-<p>Alright, most things we need are in place already, the most important thing
-is the <code>#content</code> method that we call with <code>#{content}</code> inside the string in
-<code>#render</code>.</p>
+<p>Alright, most things we need are in place already, the most important thing is the <code>#content</code> method that we call with <code>#{content}</code> inside the string in <code>#render</code>.</p>
 
-<p>Just adopt it to your liking, I'll just use the things we had in our templates
-so far:</p>
+<p>Just adopt it to your liking, I&#8217;ll just use the things we had in our templates so far:</p>
 
 <pre><code>class Page &lt; Ezamar::Element
   def render
@@ -516,17 +380,16 @@ so far:</p>
     &lt;/html&gt;
     }
   end
-end
-</code></pre>
+end</code></pre>
 
 <p>Please note that instance variables reflecting the parameters are set.</p>
 
-<p>And let's change our templates as well.</p>
+<p>And let&#8217;s change our templates as well.</p>
 
 <p>First the <code>view/index.xhtml</code></p>
 
-<pre><code>&lt;Page title="TodoList"&gt;
-  &lt;a href="/new"&gt;New Task&lt;/a&gt;
+<pre><code>&lt;Page title=&quot;TodoList&quot;&gt;
+  &lt;a href=&quot;/new&quot;&gt;New Task&lt;/a&gt;
   &lt;?r if @tasks.empty? ?&gt;
     No Tasks
   &lt;?r else ?&gt;
@@ -538,27 +401,23 @@ end
       &lt;?r end ?&gt;
     &lt;/ul&gt;
   &lt;?r end ?&gt;
-&lt;/Page&gt;
-</code></pre>
+&lt;/Page&gt;</code></pre>
 
 <p>and the <code>view/new.xhtml</code></p>
 
-<pre><code>&lt;Page title="New Task"&gt;
-  &lt;a href="/"&gt;Back to TodoList&lt;/a&gt;
-  &lt;form method="POST" action="create"&gt;
-    Task: &lt;input type="text" name="title" /&gt;&lt;br /&gt;
-    &lt;input type="submit" /&gt;
+<pre><code>&lt;Page title=&quot;New Task&quot;&gt;
+  &lt;a href=&quot;/&quot;&gt;Back to TodoList&lt;/a&gt;
+  &lt;form method=&quot;POST&quot; action=&quot;create&quot;&gt;
+    Task: &lt;input type=&quot;text&quot; name=&quot;title&quot; /&gt;&lt;br /&gt;
+    &lt;input type=&quot;submit&quot; /&gt;
   &lt;/form&gt;
-&lt;/Page&gt;
-</code></pre>
+&lt;/Page&gt;</code></pre>
 
-<p>Alright, now just go and look at the result in the browser, try changing
-the things inside the Element and look at how it behaves.</p>
+<p>Alright, now just go and look at the result in the browser, try changing the things inside the Element and look at how it behaves.</p>
 
-<a name="Ninth_Step,_Prettify"><h2>Ninth Step, Prettify</h2></a>
+<h2 id='ninth_step_prettify'>Ninth Step, Prettify</h2>
 
-<p>We structure the data inside the list a little bit, in this case into a table,
-to get it line up properly and look actually structured.</p>
+<p>We structure the data inside the list a little bit, in this case into a table, to get it line up properly and look actually structured.</p>
 
 <p>So, from what we have right now:</p>
 
@@ -568,25 +427,22 @@ to get it line up properly and look actually structured.</p>
       #{c title}: #{status} [ #{toggle} | #{delete} ]
     &lt;/li&gt;
   &lt;?r end ?&gt;
-&lt;/ul&gt;
-</code></pre>
+&lt;/ul&gt;</code></pre>
 
 <p>To something like this:</p>
 
 <pre><code>&lt;table&gt;
   &lt;?r @tasks.each do |title, status, toggle, delete| ?&gt;
     &lt;tr&gt;
-      &lt;td class="title"&gt;  #{c title}  &lt;/td&gt;
-      &lt;td class="status"&gt; #{status} &lt;/td&gt;
-      &lt;td class="toggle"&gt; #{toggle} &lt;/td&gt;
-      &lt;td class="delete"&gt; #{delete} &lt;/td&gt;
+      &lt;td class=&quot;title&quot;&gt;  #{c title}  &lt;/td&gt;
+      &lt;td class=&quot;status&quot;&gt; #{status} &lt;/td&gt;
+      &lt;td class=&quot;toggle&quot;&gt; #{toggle} &lt;/td&gt;
+      &lt;td class=&quot;delete&quot;&gt; #{delete} &lt;/td&gt;
     &lt;/tr&gt;
   &lt;?r end ?&gt;
-&lt;/table&gt;
-</code></pre>
+&lt;/table&gt;</code></pre>
 
-<p>And, since we have proper classes to address some style sheets, jump into the
-Page element and add some style sheet:</p>
+<p>And, since we have proper classes to address some style sheets, jump into the Page element and add some style sheet:</p>
 
 <pre><code>&lt;head&gt;
   &lt;title&gt;TodoList&lt;/title&gt;
@@ -598,60 +454,43 @@ Page element and add some style sheet:</p>
     td.status { margin:      1em;               }
     a         { color:       #3a3;              }
   &lt;/style&gt;
-&lt;/head&gt;
-</code></pre>
+&lt;/head&gt;</code></pre>
 
-<p>That looks quite a bit nicer, right?  And yes, if you don't like tables (though
-this is an entirely legit use in my opinion) you can just do it like you want,
-using nested lists or divs/spans, replacing the open/close and delete links with
-nice images and changing the style according to the status.</p>
+<p>That looks quite a bit nicer, right? And yes, if you don&#8217;t like tables (though this is an entirely legit use in my opinion) you can just do it like you want, using nested lists or divs/spans, replacing the open/close and delete links with nice images and changing the style according to the status.</p>
 
 <p>I will leave this as an exercise to the reader.</p>
 
-<a name="Tenth_Step,_Configuration"><h2>Tenth Step, Configuration</h2></a>
+<h2 id='tenth_step_configuration'>Tenth Step, Configuration</h2>
 
-<p>To round up this tutorial a bit, let's introduce you to configuration in Ramaze.
-This will not go into full depth of possibilities or a total coverage of the
-options, since they are bound to change over time.</p>
+<p>To round up this tutorial a bit, let&#8217;s introduce you to configuration in Ramaze. This will not go into full depth of possibilities or a total coverage of the options, since they are bound to change over time.</p>
 
-<p>First of all, the default port Ramaze runs on is 7000, but to make it a usual
-webserver it has to run on port 80.  So, let's add following line in your
-start.rb right after the lines of require you added before:</p>
+<p>First of all, the default port Ramaze runs on is 7000, but to make it a usual webserver it has to run on port 80. So, let&#8217;s add following line in your start.rb right after the lines of require you added before:</p>
 
-<pre><code>Ramaze::Global.port = 80
-</code></pre>
+<pre><code>Ramaze::Global.port = 80</code></pre>
 
-<p>Alright, that wasn't that hard.
-Let's say now you also want to run Mongrel instead of WEBrick, to get nice a bit
-of performance:</p>
+<p>Alright, that wasn&#8217;t that hard. Let&#8217;s say now you also want to run Mongrel instead of WEBrick, to get nice a bit of performance:</p>
 
-<pre><code>Ramaze::Global.adapter = :mongrel
-</code></pre>
+<pre><code>Ramaze::Global.adapter = :mongrel</code></pre>
 
 <p>To do this in a DRY way you could also do following:</p>
 
 <pre><code>Ramaze::Global.setup do |g|
   g.port = 80
   g.adapter = :mongrel
-end
-</code></pre>
+end</code></pre>
 
-<p>It seems to be quite common to put this configuration into separate files so you
-can just require it on demand.  There are other, slightly stronger way to set
-options, which is either using flags on the ramaze executable, or like this:</p>
+<p>It seems to be quite common to put this configuration into separate files so you can just require it on demand. There are other, slightly stronger way to set options, which is either using flags on the ramaze executable, or like this:</p>
 
-<pre><code>Ramaze.start :port =&gt; 80, :adapter =&gt; :mongrel
-</code></pre>
+<pre><code>Ramaze.start :port =&gt; 80, :adapter =&gt; :mongrel</code></pre>
 
-<p>We haven't started Ramaze directly as of yet, but this allows you to ignore the
-ramaze executable and just run your application by <code>ruby start.rb</code>.</p>
+<p>We haven&#8217;t started Ramaze directly as of yet, but this allows you to ignore the ramaze executable and just run your application by <code>ruby start.rb</code>.</p>
 
-<a name="Eleventh_Step,_Refactor_with_AspectHelper"><h2>Eleventh Step, Refactor with AspectHelper</h2></a>
+<h2 id='eleventh_step_refactor_with_aspecthelper'>Eleventh Step, Refactor with AspectHelper</h2>
 
 <p>Now, if you take a closer look at the Controller you will see:</p>
 
 <pre><code>def create
-  title = request['title']
+  title = request[&#39;title&#39;]
   TodoList[title] = {:done =&gt; false}
   redirect R(self)
 end
@@ -669,20 +508,16 @@ end
 def delete title
   TodoList.delete title
   redirect R(self)
-end
-</code></pre>
+end</code></pre>
 
-<p>We did some refactoring before, by introducing <code>#task_status</code>, but here we have
-repetition again: <code>redirect Rs()</code> <em>after</em> each method did its job.</p>
+<p>We did some refactoring before, by introducing <code>#task_status</code>, but here we have repetition again: <code>redirect Rs()</code> <em>after</em> each method did its job.</p>
 
-<p>However, we can take advantage of one of the helpers Ramaze offers, the
-AspectHelper.
-It allows you to easily wrap actions in your controller with other methods</p>
+<p>However, we can take advantage of one of the helpers Ramaze offers, the AspectHelper. It allows you to easily wrap actions in your controller with other methods</p>
 
 <p>In your Controller, replace the previous chunk with following:</p>
 
 <pre><code>def create
-  title = request['title']
+  title = request[&#39;title&#39;]
   TodoList[title] = {:done =&gt; false}
 end
 
@@ -699,82 +534,59 @@ def delete title
 end
 
 helper :aspect
-after(:create, :open, :close, :delete){ redirect(Rs()) }
-</code></pre>
+after(:create, :open, :close, :delete){ redirect(Rs()) }</code></pre>
 
 <p>Alright, that looks a lot nicer already and is definitely easier to maintain.</p>
 
-<p>There is a symmetrical <code>before</code> aspect that you could take advantage of as
-well, and in case you want to add required authentication for all actions of a
-Controller you could use <code>before_all</code> and <code>after_all</code> instead of a list of
-action-names.</p>
+<p>There is a symmetrical <code>before</code> aspect that you could take advantage of as well, and in case you want to add required authentication for all actions of a Controller you could use <code>before_all</code> and <code>after_all</code> instead of a list of action-names.</p>
 
-<a name="Twelfth_Step,_Validation_and_Errors"><h2>Twelfth Step, Validation and Errors</h2></a>
+<h2 id='twelfth_step_validation_and_errors'>Twelfth Step, Validation and Errors</h2>
 
-<p>Right now, all kinds of things could still go wrong when you do things like
-creating tasks with no title at all or try to open/close a task that does not
-exist. So in this step we will add some little checks for these cases.</p>
+<p>Right now, all kinds of things could still go wrong when you do things like creating tasks with no title at all or try to open/close a task that does not exist. So in this step we will add some little checks for these cases.</p>
 
 <p>First we head over to the Controller again and take a look at <code>#create</code>:</p>
 
 <pre><code>def create
-  title = request['title']
+  title = request[&#39;title&#39;]
   TodoList[title] = {:done =&gt; false}
-end
-</code></pre>
+end</code></pre>
 
-<p>Here we just create a new task, no matter what we get. Every seasoned
-web-developer would advise you to be suspicious about all the input you receive
-from your users, so let's apply this advice.</p>
+<p>Here we just create a new task, no matter what we get. Every seasoned web-developer would advise you to be suspicious about all the input you receive from your users, so let&#8217;s apply this advice.</p>
 
 <pre><code>def create
-  if title = request['title']
+  if title = request[&#39;title&#39;]
     title.strip!
     if title.empty?
-      failed("Please enter a title")
-      redirect '/new'
+      failed(&quot;Please enter a title&quot;)
+      redirect &#39;/new&#39;
     end
     TodoList[title] = {:done =&gt; false}
   end
-end
-</code></pre>
+end</code></pre>
 
-<p>First of all we check if we got a request with a value for 'title', if we get
-none we just let the aspect kick in that will redirect the browser to the index.
-Next we strip the title of all spaces around it so we can check if it is empty.
-We will talk about the specifics of our error-handling now.</p>
+<p>First of all we check if we got a request with a value for &#8216;title&#8217;, if we get none we just let the aspect kick in that will redirect the browser to the index. Next we strip the title of all spaces around it so we can check if it is empty. We will talk about the specifics of our error-handling now.</p>
 
-<p>Ramaze has a helper called FlashHelper, that will keep a hash associated with
-the session for one request, afterwards the hash is thrown away. This is
-specifically useful for giving the user feedback while keeping a stateless
-approach.</p>
+<p>Ramaze has a helper called FlashHelper, that will keep a hash associated with the session for one request, afterwards the hash is thrown away. This is specifically useful for giving the user feedback while keeping a stateless approach.</p>
 
-<p>Let me show you our <code>#failed</code> method (it goes in the private section to
-<code>#task_status</code>):</p>
+<p>Let me show you our <code>#failed</code> method (it goes in the private section to <code>#task_status</code>):</p>
 
 <pre><code>def failed(message)
   flash[:error] = message
-end
-</code></pre>
+end</code></pre>
 
-<p>Duh, you may say, wouldn't that fit in the one line instead of the call to
-<code>#failed</code>?
-Indeed, it would, but let me remind you, we have no checks for changing the
-status of a task yet. We will need error-handling there as well, so we just keep
-our code DRY and maintainable by collecting shared behaviour in small pieces.</p>
+<p>Duh, you may say, wouldn&#8217;t that fit in the one line instead of the call to <code>#failed</code>? Indeed, it would, but let me remind you, we have no checks for changing the status of a task yet. We will need error-handling there as well, so we just keep our code DRY and maintainable by collecting shared behaviour in small pieces.</p>
 
 <p>Now on to the <code>#task_status</code>:</p>
 
 <pre><code>def task_status title, status
   unless task = TodoList[title]
-    failed "No such Task: `#{title}'"
+    failed &quot;No such Task: `#{title}&#39;&quot;
     redirect_referer
   end
 
   task[:done] = status
   TodoList[title] = task
-end
-</code></pre>
+end</code></pre>
 
 <p>That used to look like this:</p>
 
@@ -782,35 +594,23 @@ end
   task = TodoList[title]
   task[:done] = status
   TodoList[title] = task
-end
-</code></pre>
+end</code></pre>
 
-<p>So in fact all we added is a check whether a task already exists, set an
-error-message in case it doesn't and redirect to wherever the browser came from.</p>
+<p>So in fact all we added is a check whether a task already exists, set an error-message in case it doesn&#8217;t and redirect to wherever the browser came from.</p>
 
-<p>But what about actually showing the error-messages we so carefully set? Well,
-where do we change the view? Right, in the templates. But both templates we have
-so far (index and new) share this behaviour, so we head over to the Element
-and add in the right place:</p>
+<p>But what about actually showing the error-messages we so carefully set? Well, where do we change the view? Right, in the templates. But both templates we have so far (index and new) share this behaviour, so we head over to the Element and add in the right place:</p>
 
 <pre><code>&lt;body&gt;
   &lt;h1&gt;#{@title}&lt;/h1&gt;
   &lt;?r if flash[:error] ?&gt;
-    &lt;div class="error"&gt;
-      \#{flash[:error]}
+    &lt;div class=&quot;error&quot;&gt;
+      \\#{flash[:error]}
     &lt;/div&gt;
   &lt;?r end ?&gt;
   #{content}
-&lt;/body&gt;
-</code></pre>
+&lt;/body&gt;</code></pre>
 
-<p>The only thing special about it is the <code>\#{flash[:error]}</code>, we have to escape
-the <code>#</code> so it won't evaluate this immediately but wait until it is really
-rendered.
-As a note, If you read this as pure markaby, the double backslash is to output
-properly to HTML, just use one instead.
-Again, you can add some nifty style for that.</p>
+<p>The only thing special about it is the <code>\\#{flash[:error]}</code>, we have to escape the <code>#</code> so it won&#8217;t evaluate this immediately but wait until it is really rendered. As a note, If you read this as pure markaby, the double backslash is to output properly to HTML, just use one instead. Again, you can add some nifty style for that.</p>
 
-<p>To be continued...</p>
-    </body>
-  </html>
+<p>To be continued&#8230;</p>
+</body></html>

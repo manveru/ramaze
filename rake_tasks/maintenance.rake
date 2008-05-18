@@ -119,88 +119,15 @@ task 'readme-build' do
   end
 end
 
-task 'tutorial2html' do
-  require 'bluecloth'
-
-  basefile = File.join('doc', 'tutorial', 'todolist')
-
-  content = File.read(basefile + '.mkd')
-
-  html = BlueCloth.new(content).to_html
-
-  wrap = %{
-  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-  <html>
-    <head>
-      <title>Ramaze Tutorial: Todolist</title>
-      <style>
-        body {
-          background: #eee;
-        }
-        code {
-          background: #ddd;
-        }
-        pre code {
-          background: #ddd;
-          width: 70%;
-          display: block;
-          margin: 1em;
-          padding: 0.7em;
-          overflow: auto;
-        }
-      </style>
-      <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
-    </head>
-    <body>
-      #{html}
-    </body>
-  </html>
-  }.strip
-
-  File.open(basefile + '.html', 'w+'){|f| f.puts(wrap) }
-end
-
 desc "Rebuild doc/tutorial/todolist.html"
-task 'tutorial' => ['tutorial2html'] do
-  require 'hpricot'
+task 'tutorial' do
+  require 'maruku'
 
-  system 'rake tutorial2html'
+  basefile = 'doc/tutorial/todolist'
+  content = File.read(basefile + '.mkd')
+  html = Maruku.new(content).to_html_document
 
-  filename = 'doc/tutorial/todolist.html'
-  file = File.read(filename)
-  doc = Hpricot(file)
-
-  to_links = []
-
-  (doc/:h2).each do |h2|
-    text      = h2.inner_html
-    link_id   = text.gsub(' ', '_')
-    to_links << %{<a href="##{link_id}">#{text}</a>}
-    to_link   = %{<a name="#{link_id}"><h2>#{text}</h2></a>}
-
-    file.gsub!(h2.to_html, to_link)
-  end
-
-  links = to_links.join("</ol>\n    <ol>")
-  h1 = "<h1>To-do List Tutorial</h1>"
-  menu =
-%{
-  #{h1}
-
-<div class="menu">
-  <h3>Table of Contents</h3>
-  <li>
-    <ol>#{links}</ol>
-  </li>
-</div>
-}
-
-  file.gsub!(h1, menu)
-
-  File.open(filename, 'w+') do |f|
-    f.puts file
-  end
+  File.open(basefile + '.html', 'w+'){|io| io << html }
 end
 
 def existing_authors
@@ -379,7 +306,7 @@ task 'undocumented-module' do
   }
 
   puts "\nAll undocumented methods\n\n"
-  
+
   failed.sort.each do |file, (t, m)|
     ts, ms = t.size, m.size
     tss, mss = ts.to_s, ms.to_s

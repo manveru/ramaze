@@ -1,5 +1,8 @@
 # To-do List Tutorial
 
+* Table of Contents
+{:toc}
+
 ## Step Zero, Introduction
 
 Welcome to our official tutorial, the mandatory to-do list.
