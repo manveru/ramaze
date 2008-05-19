@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC
-    "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN"
-    "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
-<html xmlns:svg='http://www.w3.org/2000/svg' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
-<head><meta content='application/xhtml+xml;charset=utf-8' http-equiv='Content-type' /><title>To-do List Tutorial</title></head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg">
+<head><meta content="application/xhtml+xml;charset=utf-8" http-equiv="Content-type" /><title>The official Ramaze todolist tutorial</title><style type="text/css">
+      .ruby .normal {}
+.ruby .comment { color: #005; font-style: italic; }
+.ruby .keyword { color: #A00; font-weight: bold; }
+.ruby .method { color: #077; }
+.ruby .class { color: #074; }
+.ruby .module { color: #050; }
+.ruby .punct { color: #447; font-weight: bold; }
+.ruby .symbol { color: #099; }
+.ruby .string { color: #944; background: #FFE; }
+.ruby .char { color: #F07; }
+.ruby .ident { color: #004; }
+.ruby .constant { color: #07F; }
+.ruby .regex { color: #B66; background: #FEF; }
+.ruby .number { color: #F99; }
+.ruby .attribute { color: #7BB; }
+.ruby .global { color: #7FB; }
+.ruby .expr { color: #227; }
+.ruby .escape { color: #277; }
+
+    </style></head>
 <body>
-<h1 id='todo_list_tutorial'>To-do List Tutorial</h1>
-<div class='maruku_toc'><ul style='list-style: none;'><li><a href='#step_zero_introduction'>Step Zero, Introduction</a></li><li><a href='#first_step_create'>First Step, Create</a></li><li><a href='#second_step_m_like_model'>Second Step, M, like Model</a></li><li><a href='#third_step_v_like_view'>Third Step, V, like View</a></li><li><a href='#fourth_step_c_like_controller'>Fourth Step, C, like Controller</a></li><li><a href='#fifth_step_getting_dynamic'>Fifth Step, getting dynamic</a></li><li><a href='#sixth_step_open_and_close_tasks'>Sixth Step, open and close tasks</a></li><li><a href='#seventh_step_delete_tasks'>Seventh Step, delete tasks</a></li><li><a href='#eighth_step_elements'>Eighth Step, Elements</a></li><li><a href='#ninth_step_prettify'>Ninth Step, Prettify</a></li><li><a href='#tenth_step_configuration'>Tenth Step, Configuration</a></li><li><a href='#eleventh_step_refactor_with_aspecthelper'>Eleventh Step, Refactor with AspectHelper</a></li><li><a href='#twelfth_step_validation_and_errors'>Twelfth Step, Validation and Errors</a></li></ul></div>
-<h2 id='step_zero_introduction'>Step Zero, Introduction</h2>
+<h1 id="todo_list_tutorial">To-do List Tutorial</h1>
+<div class="maruku_toc"><ul style="list-style: none;"><li><a href="#step_zero_introduction">Step Zero, Introduction</a></li><li><a href="#first_step_create">First Step, Create</a></li><li><a href="#second_step_m_like_model">Second Step, M, like Model</a></li><li><a href="#third_step_v_like_view">Third Step, V, like View</a></li><li><a href="#fourth_step_c_like_controller">Fourth Step, C, like Controller</a></li><li><a href="#fifth_step_getting_dynamic">Fifth Step, getting dynamic</a></li><li><a href="#sixth_step_open_and_close_tasks">Sixth Step, open and close tasks</a></li><li><a href="#seventh_step_delete_tasks">Seventh Step, delete tasks</a></li><li><a href="#eighth_step_elements">Eighth Step, Elements</a></li><li><a href="#ninth_step_prettify">Ninth Step, Prettify</a></li><li><a href="#tenth_step_configuration">Tenth Step, Configuration</a></li><li><a href="#eleventh_step_refactor_with_aspecthelper">Eleventh Step, Refactor with AspectHelper</a></li><li><a href="#twelfth_step_validation_and_errors">Twelfth Step, Validation and Errors</a></li></ul></div>
+<h2 id="step_zero_introduction">Step Zero, Introduction</h2>
 
 <p>Welcome to our official tutorial, the mandatory to-do list. I&#8217;m writing this while doing the steps to assure it will work for you.</p>
 
@@ -25,7 +43,7 @@
 
 <p>Thanks in advance. The author of the tutorial, Michael &#8216;manveru&#8217; Fellinger</p>
 
-<h2 id='first_step_create'>First Step, Create</h2>
+<h2 id="first_step_create">First Step, Create</h2>
 
 <p>We are using <code>ramaze --create todolist</code> to create a new application. Ramaze will then create the directory and fill it with a skeleton of a quite sophisticated hello-world example out of which we will create the actual to-do list.</p>
 
@@ -35,24 +53,24 @@
 
 <p>done.</p>
 
-<h2 id='second_step_m_like_model'>Second Step, M, like Model</h2>
+<h2 id="second_step_m_like_model">Second Step, M, like Model</h2>
 
 <p>Ramaze comes at the moment only with a simple wrapper of the YAML::Store. So we are going to base this on the tools available, you can just do the same with your ORM or database-library of choice.</p>
 
 <p>So first, create a <code>model/todolist.rb</code> for our application:</p>
 
-<pre><code>require &#39;ramaze/store/default&#39;
-TodoList = Ramaze::Store::Default.new(&#39;todolist.yaml&#39;)</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="ident">require</span> <span class="punct">&#39;</span><span class="string">ramaze/store/default</span><span class="punct">&#39;</span>
+<span class="constant">TodoList</span> <span class="punct">=</span> <span class="constant">Ramaze</span><span class="punct">::</span><span class="constant">Store</span><span class="punct">::</span><span class="constant">Default</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(&#39;</span><span class="string">todolist.yaml</span><span class="punct">&#39;)</span></code></pre>
 
 <p>Let&#8217;s add some items as well to have a base to start from.</p>
 
-<pre><code>{ &#39;Laundry&#39;     =&gt; {:done =&gt; false},
-  &#39;Wash dishes&#39; =&gt; {:done =&gt; false},
-}.each do |title, value|
-  TodoList[title] = value
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="punct">{</span> <span class="punct">&#39;</span><span class="string">Laundry</span><span class="punct">&#39;</span>     <span class="punct">=&gt;</span> <span class="punct">{</span><span class="symbol">:done</span> <span class="punct">=&gt;</span> <span class="constant">false</span><span class="punct">},</span>
+  <span class="punct">&#39;</span><span class="string">Wash dishes</span><span class="punct">&#39;</span> <span class="punct">=&gt;</span> <span class="punct">{</span><span class="symbol">:done</span> <span class="punct">=&gt;</span> <span class="constant">false</span><span class="punct">},</span>
+<span class="punct">}.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">title</span><span class="punct">,</span> <span class="ident">value</span><span class="punct">|</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">value</span>
+<span class="keyword">end</span></code></pre>
 
-<h2 id='third_step_v_like_view'>Third Step, V, like View</h2>
+<h2 id="third_step_v_like_view">Third Step, V, like View</h2>
 
 <p>Now let&#8217;s get our hands dirty and just edit the templates for our to-do list.</p>
 
@@ -62,7 +80,7 @@ end</code></pre>
 
 <p>Let&#8217;s put some things in there, I&#8217;ll explain the syntax as we go, it&#8217;s quite simple.</p>
 
-<pre><code>&lt;html&gt;
+<pre><code class="nagoro" lang="nagoro">&lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;TodoList&lt;/title&gt;
   &lt;/head&gt;
@@ -85,7 +103,7 @@ end</code></pre>
 
 <p>The whole Template would expand to something like this (only showing the interesting part)</p>
 
-<pre><code>&lt;ul&gt;
+<pre><code class="nagoro" lang="nagoro">&lt;ul&gt;
   &lt;li&gt;Laundry: not done&lt;/li&gt;
   &lt;li&gt;Wash dishes: not done&lt;/li&gt;
 &lt;/ul&gt;</code></pre>
@@ -100,7 +118,7 @@ end</code></pre>
 
 <p>7000 is the default-port Ramaze will run on, to change it you can just run <code>ramaze -p 7070</code> or similar. Also be sure to look at the output of <code>ramaze --help</code> to see some other options.</p>
 
-<h2 id='fourth_step_c_like_controller'>Fourth Step, C, like Controller</h2>
+<h2 id="fourth_step_c_like_controller">Fourth Step, C, like Controller</h2>
 
 <p>The last part of the MVC-paradigm is the Controller.</p>
 
@@ -114,47 +132,47 @@ end</code></pre>
 
 <p>The contents of it are like following:</p>
 
-<pre><code>class MainController &lt; Controller
-  def index
-    @welcome = &quot;Welcome to Ramaze!&quot;
-  end
+<pre><code class="ruby" lang="ruby"><span class="keyword">class </span><span class="class">MainController</span> <span class="punct">&lt;</span> <span class="constant">Controller</span>
+  <span class="keyword">def </span><span class="method">index</span>
+    <span class="attribute">@welcome</span> <span class="punct">=</span> <span class="punct">&quot;</span><span class="string">Welcome to Ramaze!</span><span class="punct">&quot;</span>
+  <span class="keyword">end</span>
 
-  def notemplate
-    &quot;there is no template associated with this action&quot;
-  end
-end</code></pre>
+  <span class="keyword">def </span><span class="method">notemplate</span>
+    <span class="punct">&quot;</span><span class="string">there is no template associated with this action</span><span class="punct">&quot;</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 
 <p>The only methods right now are <code>#index</code> and <code>#notemplate</code>. The relationship between the methods on the controller and the templates is 1:1, so the method <code>#index</code> is combined with the template <code>index.xhtml</code>. This combination is called an <code>action</code>.</p>
 
 <p>Let&#8217;s get back to editing and change the method <code>#index</code> to this:</p>
 
-<pre><code>def index
-  @tasks = TodoList.original
-  @tasks.each do |title, value|
-    status = value[:done] ? &#39;done&#39; : &#39;not done&#39;
-    @tasks[title] = status
-  end
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">index</span>
+  <span class="attribute">@tasks</span> <span class="punct">=</span> <span class="constant">TodoList</span><span class="punct">.</span><span class="ident">original</span>
+  <span class="attribute">@tasks</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">title</span><span class="punct">,</span> <span class="ident">value</span><span class="punct">|</span>
+    <span class="ident">status</span> <span class="punct">=</span> <span class="ident">value</span><span class="punct">[</span><span class="symbol">:done</span><span class="punct">]</span> <span class="punct">?</span> <span class="punct">&#39;</span><span class="string">done</span><span class="punct">&#39;</span> <span class="punct">:</span> <span class="punct">&#39;</span><span class="string">not done</span><span class="punct">&#39;</span>
+    <span class="attribute">@tasks</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">status</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 
 <p>This will take care of the logic inside the template, which now should be changed to do following:</p>
 
-<pre><code>&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;TodoList&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;TodoList&lt;/h1&gt;
+<pre><code class="ruby" lang="ruby"><span class="punct">&lt;</span><span class="ident">html</span><span class="punct">&gt;</span>
+  <span class="punct">&lt;</span><span class="ident">head</span><span class="punct">&gt;</span>
+    <span class="punct">&lt;</span><span class="ident">title</span><span class="punct">&gt;</span><span class="constant">TodoList</span><span class="punct">&lt;/</span><span class="regex">title&gt;
+  &lt;</span><span class="punct">/</span><span class="ident">head</span><span class="punct">&gt;</span>
+  <span class="punct">&lt;</span><span class="ident">body</span><span class="punct">&gt;</span>
+    <span class="punct">&lt;</span><span class="ident">h1</span><span class="punct">&gt;</span><span class="constant">TodoList</span><span class="punct">&lt;/</span><span class="regex">h1&gt;
     &lt;?r if @tasks.empty? ?&gt;
       No Tasks
     &lt;?r else ?&gt;
       &lt;ul&gt;
         &lt;?r @tasks.each do |title, status| ?&gt;
-          &lt;li&gt;#{c title}: #{status}&lt;/li&gt;
-        &lt;?r end ?&gt;
-      &lt;/ul&gt;
+          &lt;li&gt;<span class="expr">#{c title}</span>: <span class="expr">#{status}</span>&lt;</span><span class="punct">/</span><span class="ident">li</span><span class="punct">&gt;</span>
+        <span class="punct">&lt;</span><span class="char">?r</span> <span class="keyword">end</span> <span class="char">?&gt;</span>
+      <span class="punct">&lt;/</span><span class="regex">ul&gt;
     &lt;?r end ?&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
+  &lt;</span><span class="punct">/</span><span class="ident">body</span><span class="punct">&gt;</span>
+<span class="punct">&lt;/</span><span class="regex">html&gt;</span></code></pre>
 
 <p>The rest of the template can stay the same.</p>
 
@@ -168,7 +186,7 @@ end</code></pre>
 <li>The return-value of the Controller does not matter if a template is present.</li>
 </ul>
 
-<h2 id='fifth_step_getting_dynamic'>Fifth Step, getting dynamic</h2>
+<h2 id="fifth_step_getting_dynamic">Fifth Step, getting dynamic</h2>
 
 <p>We set out to build the ultimate to-do list, but there are still some things missing. First off, we want to add new tasks, so let&#8217;s get that done.</p>
 
@@ -203,11 +221,11 @@ end</code></pre>
 
 <p>OK, let&#8217;s implement the action for <code>#create</code>, all we want to do is take the requests parameters and create a new task for it, this looks like following on your MainController.</p>
 
-<pre><code>def create
-  title = request[&#39;title&#39;]
-  TodoList[title] = {:done =&gt; false}
-  redirect Rs()
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">create</span>
+  <span class="ident">title</span> <span class="punct">=</span> <span class="ident">request</span><span class="punct">[&#39;</span><span class="string">title</span><span class="punct">&#39;]</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span><span class="symbol">:done</span> <span class="punct">=&gt;</span> <span class="constant">false</span><span class="punct">}</span>
+  <span class="ident">redirect</span> <span class="constant">Rs</span><span class="punct">()</span>
+<span class="keyword">end</span></code></pre>
 
 <p>That&#8217;s all folks!</p>
 
@@ -215,34 +233,34 @@ end</code></pre>
 
 <p>Now you can create as many tasks as you want, please don&#8217;t get overworked ;)</p>
 
-<h2 id='sixth_step_open_and_close_tasks'>Sixth Step, open and close tasks</h2>
+<h2 id="sixth_step_open_and_close_tasks">Sixth Step, open and close tasks</h2>
 
 <p>Since the nature of tasks is to be done eventually we will need some way to mark it as done or open tasks again.</p>
 
 <p>Jump into <code>view/index.xhtml</code> and do the following:</p>
 
-<pre><code>&lt;?r @tasks.each do |title, status, toggle| ?&gt;
-  &lt;li&gt;
-    #{c title}: #{status} - [ #{toggle} ]
-  &lt;/li&gt;
-&lt;?r end ?&gt;</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="punct">&lt;</span><span class="char">?r</span> <span class="attribute">@tasks</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">title</span><span class="punct">,</span> <span class="ident">status</span><span class="punct">,</span> <span class="ident">toggle</span><span class="punct">|</span> <span class="char">?&gt;</span>
+  <span class="punct">&lt;</span><span class="ident">li</span><span class="punct">&gt;</span>
+    <span class="comment">#{c title}: #{status} - [ #{toggle} ]</span>
+  <span class="punct">&lt;/</span><span class="regex">li&gt;
+&lt;?r end</span></code></pre>
 
 <p>We added a new element here, <code>toggle</code>, the Controller should give us a link to change the status corresponding to the status of the task, so off we go and change the index method on the controller once again:</p>
 
-<pre><code>def index
-  @tasks = []
-  TodoList.original.each do |title, value|
-    if value[:done]
-      status = &#39;done&#39;
-      toggle = A(&#39;Open Task&#39;, :href =&gt; Rs(:open, title))
-    else
-      status = &#39;not done&#39;
-      toggle = A(&#39;Close Task&#39;, :href =&gt; Rs(:close, title))
-    end
-    @tasks &lt;&lt; [title, status, toggle]
-  end
-  @tasks.sort!
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">index</span>
+  <span class="attribute">@tasks</span> <span class="punct">=</span> <span class="punct">[]</span>
+  <span class="constant">TodoList</span><span class="punct">.</span><span class="ident">original</span><span class="punct">.</span><span class="ident">each</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">title</span><span class="punct">,</span> <span class="ident">value</span><span class="punct">|</span>
+    <span class="keyword">if</span> <span class="ident">value</span><span class="punct">[</span><span class="symbol">:done</span><span class="punct">]</span>
+      <span class="ident">status</span> <span class="punct">=</span> <span class="punct">&#39;</span><span class="string">done</span><span class="punct">&#39;</span>
+      <span class="ident">toggle</span> <span class="punct">=</span> <span class="constant">A</span><span class="punct">(&#39;</span><span class="string">Open Task</span><span class="punct">&#39;,</span> <span class="symbol">:href</span> <span class="punct">=&gt;</span> <span class="constant">Rs</span><span class="punct">(</span><span class="symbol">:open</span><span class="punct">,</span> <span class="ident">title</span><span class="punct">))</span>
+    <span class="keyword">else</span>
+      <span class="ident">status</span> <span class="punct">=</span> <span class="punct">&#39;</span><span class="string">not done</span><span class="punct">&#39;</span>
+      <span class="ident">toggle</span> <span class="punct">=</span> <span class="constant">A</span><span class="punct">(&#39;</span><span class="string">Close Task</span><span class="punct">&#39;,</span> <span class="symbol">:href</span> <span class="punct">=&gt;</span> <span class="constant">Rs</span><span class="punct">(</span><span class="symbol">:close</span><span class="punct">,</span> <span class="ident">title</span><span class="punct">))</span>
+    <span class="keyword">end</span>
+    <span class="attribute">@tasks</span> <span class="punct">&lt;&lt;</span> <span class="punct">[</span><span class="ident">title</span><span class="punct">,</span> <span class="ident">status</span><span class="punct">,</span> <span class="ident">toggle</span><span class="punct">]</span>
+  <span class="keyword">end</span>
+  <span class="attribute">@tasks</span><span class="punct">.</span><span class="ident">sort!</span>
+<span class="keyword">end</span></code></pre>
 
 <p>Wow, quite some new stuff here. Let me explain that in detail.</p>
 
@@ -256,53 +274,53 @@ end</code></pre>
 
 <p>As usual since the links for open and close don&#8217;t lead anywhere, add the corresponding methods to the Controller:</p>
 
-<pre><code>def open title
-  task_status title, false
-  redirect Rs()
-end
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">open</span> <span class="ident">title</span>
+  <span class="ident">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="constant">false</span>
+  <span class="ident">redirect</span> <span class="constant">Rs</span><span class="punct">()</span>
+<span class="keyword">end</span>
 
-def close title
-  task_status title, true
-  redirect Rs()
-end
+<span class="keyword">def </span><span class="method">close</span> <span class="ident">title</span>
+  <span class="ident">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="constant">true</span>
+  <span class="ident">redirect</span> <span class="constant">Rs</span><span class="punct">()</span>
+<span class="keyword">end</span>
 
-private
+<span class="ident">private</span>
 
-def task_status title, status
-  task = TodoList[title]
-  task[:done] = status
-  TodoList[title] = task
-end</code></pre>
+<span class="keyword">def </span><span class="method">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="ident">status</span>
+  <span class="ident">task</span> <span class="punct">=</span> <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span>
+  <span class="ident">task</span><span class="punct">[</span><span class="symbol">:done</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">status</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">task</span>
+<span class="keyword">end</span></code></pre>
 
 <p>Oh, now what have we got here? <code>private</code> declares that methods from here on are only to be used within the Controller itself, we define an <code>#task_status</code> method that takes the title and status to be set so we don&#8217;t have to repeat that code in <code>#open</code> and <code>#close</code> and follow the DRY (Don&#8217;t repeat yourself) paradigm.</p>
 
 <p>Another thing we have not encountered so far is that you can define your public methods to take parameters on their own, they will be calculated from requests.</p>
 
-<pre><code>&#39;/open/Wash+dishes&#39;</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="punct">&#39;</span><span class="string">/open/Wash+dishes</span><span class="punct">&#39;</span></code></pre>
 
 <p>will translate into:</p>
 
-<pre><code>open(&#39;Wash dishes&#39;)</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="ident">open</span><span class="punct">(&#39;</span><span class="string">Wash dishes</span><span class="punct">&#39;)</span></code></pre>
 
 <p>Which in turn will call <code>task_status(&#39;Wash dishes&#39;, false)</code></p>
 
 <p>That&#8217;s it, go on and try it :)</p>
 
-<h2 id='seventh_step_delete_tasks'>Seventh Step, delete tasks</h2>
+<h2 id="seventh_step_delete_tasks">Seventh Step, delete tasks</h2>
 
 <p>Well, creating, opening and closing work now, one of the things you will consider is to delete a task permanently.</p>
 
 <p>This is just two little changes away, so let&#8217;s add the link for deletion in our Controller:</p>
 
-<pre><code>delete = A(&#39;Delete&#39;, :href =&gt; Rs(:delete, title))
-@tasks &lt;&lt; [title, status, toggle, delete]</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="ident">delete</span> <span class="punct">=</span> <span class="constant">A</span><span class="punct">(&#39;</span><span class="string">Delete</span><span class="punct">&#39;,</span> <span class="symbol">:href</span> <span class="punct">=&gt;</span> <span class="constant">Rs</span><span class="punct">(</span><span class="symbol">:delete</span><span class="punct">,</span> <span class="ident">title</span><span class="punct">))</span>
+<span class="attribute">@tasks</span> <span class="punct">&lt;&lt;</span> <span class="punct">[</span><span class="ident">title</span><span class="punct">,</span> <span class="ident">status</span><span class="punct">,</span> <span class="ident">toggle</span><span class="punct">,</span> <span class="ident">delete</span><span class="punct">]</span></code></pre>
 
 <p>and an corresponding method while we&#8217;re at it:</p>
 
-<pre><code>def delete title
-  TodoList.delete title
-  redirect Rs()
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">delete</span> <span class="ident">title</span>
+  <span class="constant">TodoList</span><span class="punct">.</span><span class="ident">delete</span> <span class="ident">title</span>
+  <span class="ident">redirect</span> <span class="constant">Rs</span><span class="punct">()</span>
+<span class="keyword">end</span></code></pre>
 
 <p>Now jumping to <code>view/index.xhtml</code> again, change it so it shows the link:</p>
 
@@ -316,7 +334,7 @@ end</code></pre>
 
 <p>Just kidding, but that really are the basics, in the next few steps I will explain some more advanced concepts of Ramaze and Ezamar.</p>
 
-<h2 id='eighth_step_elements'>Eighth Step, Elements</h2>
+<h2 id="eighth_step_elements">Eighth Step, Elements</h2>
 
 <pre><code>&lt;Page&gt;&lt;/Page&gt;</code></pre>
 
@@ -347,40 +365,40 @@ end</code></pre>
 
 <p>Take a look at the <code>src/element/page.rb</code></p>
 
-<pre><code>class Page &lt; Ezamar::Element
-  def render
-    %{
+<pre><code class="ruby" lang="ruby"><span class="keyword">class </span><span class="class">Page</span> <span class="punct">&lt;</span> <span class="constant">Ezamar</span><span class="punct">::</span><span class="constant">Element</span>
+  <span class="keyword">def </span><span class="method">render</span>
+    <span class="punct">%{</span><span class="string">
     &lt;html&gt;
       &lt;head&gt;
         &lt;title&gt;Welcome to Ramaze&lt;/title&gt;
       &lt;/head&gt;
       &lt;body&gt;
-        #{content}
+        <span class="expr">#{content}</span>
       &lt;/body&gt;
     &lt;/html&gt;
-    }
-  end
-end</code></pre>
+    </span><span class="punct">}</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 
 <p>Alright, most things we need are in place already, the most important thing is the <code>#content</code> method that we call with <code>#{content}</code> inside the string in <code>#render</code>.</p>
 
 <p>Just adopt it to your liking, I&#8217;ll just use the things we had in our templates so far:</p>
 
-<pre><code>class Page &lt; Ezamar::Element
-  def render
-    %{
+<pre><code class="ruby" lang="ruby"><span class="keyword">class </span><span class="class">Page</span> <span class="punct">&lt;</span> <span class="constant">Ezamar</span><span class="punct">::</span><span class="constant">Element</span>
+  <span class="keyword">def </span><span class="method">render</span>
+    <span class="punct">%{</span><span class="string">
     &lt;html&gt;
       &lt;head&gt;
         &lt;title&gt;TodoList&lt;/title&gt;
       &lt;/head&gt;
       &lt;body&gt;
-        &lt;h1&gt;#{@title}&lt;/h1&gt;
-        #{content}
+        &lt;h1&gt;<span class="expr">#{@title}</span>&lt;/h1&gt;
+        <span class="expr">#{content}</span>
       &lt;/body&gt;
     &lt;/html&gt;
-    }
-  end
-end</code></pre>
+    </span><span class="punct">}</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 
 <p>Please note that instance variables reflecting the parameters are set.</p>
 
@@ -415,7 +433,7 @@ end</code></pre>
 
 <p>Alright, now just go and look at the result in the browser, try changing the things inside the Element and look at how it behaves.</p>
 
-<h2 id='ninth_step_prettify'>Ninth Step, Prettify</h2>
+<h2 id="ninth_step_prettify">Ninth Step, Prettify</h2>
 
 <p>We structure the data inside the list a little bit, in this case into a table, to get it line up properly and look actually structured.</p>
 
@@ -460,55 +478,55 @@ end</code></pre>
 
 <p>I will leave this as an exercise to the reader.</p>
 
-<h2 id='tenth_step_configuration'>Tenth Step, Configuration</h2>
+<h2 id="tenth_step_configuration">Tenth Step, Configuration</h2>
 
 <p>To round up this tutorial a bit, let&#8217;s introduce you to configuration in Ramaze. This will not go into full depth of possibilities or a total coverage of the options, since they are bound to change over time.</p>
 
 <p>First of all, the default port Ramaze runs on is 7000, but to make it a usual webserver it has to run on port 80. So, let&#8217;s add following line in your start.rb right after the lines of require you added before:</p>
 
-<pre><code>Ramaze::Global.port = 80</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="constant">Ramaze</span><span class="punct">::</span><span class="constant">Global</span><span class="punct">.</span><span class="ident">port</span> <span class="punct">=</span> <span class="number">80</span></code></pre>
 
 <p>Alright, that wasn&#8217;t that hard. Let&#8217;s say now you also want to run Mongrel instead of WEBrick, to get nice a bit of performance:</p>
 
-<pre><code>Ramaze::Global.adapter = :mongrel</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="constant">Ramaze</span><span class="punct">::</span><span class="constant">Global</span><span class="punct">.</span><span class="ident">adapter</span> <span class="punct">=</span> <span class="symbol">:mongrel</span></code></pre>
 
 <p>To do this in a DRY way you could also do following:</p>
 
-<pre><code>Ramaze::Global.setup do |g|
-  g.port = 80
-  g.adapter = :mongrel
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="constant">Ramaze</span><span class="punct">::</span><span class="constant">Global</span><span class="punct">.</span><span class="ident">setup</span> <span class="keyword">do</span> <span class="punct">|</span><span class="ident">g</span><span class="punct">|</span>
+  <span class="ident">g</span><span class="punct">.</span><span class="ident">port</span> <span class="punct">=</span> <span class="number">80</span>
+  <span class="ident">g</span><span class="punct">.</span><span class="ident">adapter</span> <span class="punct">=</span> <span class="symbol">:mongrel</span>
+<span class="keyword">end</span></code></pre>
 
 <p>It seems to be quite common to put this configuration into separate files so you can just require it on demand. There are other, slightly stronger way to set options, which is either using flags on the ramaze executable, or like this:</p>
 
-<pre><code>Ramaze.start :port =&gt; 80, :adapter =&gt; :mongrel</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="constant">Ramaze</span><span class="punct">.</span><span class="ident">start</span> <span class="symbol">:port</span> <span class="punct">=&gt;</span> <span class="number">80</span><span class="punct">,</span> <span class="symbol">:adapter</span> <span class="punct">=&gt;</span> <span class="symbol">:mongrel</span></code></pre>
 
 <p>We haven&#8217;t started Ramaze directly as of yet, but this allows you to ignore the ramaze executable and just run your application by <code>ruby start.rb</code>.</p>
 
-<h2 id='eleventh_step_refactor_with_aspecthelper'>Eleventh Step, Refactor with AspectHelper</h2>
+<h2 id="eleventh_step_refactor_with_aspecthelper">Eleventh Step, Refactor with AspectHelper</h2>
 
 <p>Now, if you take a closer look at the Controller you will see:</p>
 
-<pre><code>def create
-  title = request[&#39;title&#39;]
-  TodoList[title] = {:done =&gt; false}
-  redirect R(self)
-end
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">create</span>
+  <span class="ident">title</span> <span class="punct">=</span> <span class="ident">request</span><span class="punct">[&#39;</span><span class="string">title</span><span class="punct">&#39;]</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span><span class="symbol">:done</span> <span class="punct">=&gt;</span> <span class="constant">false</span><span class="punct">}</span>
+  <span class="ident">redirect</span> <span class="constant">R</span><span class="punct">(</span><span class="constant">self</span><span class="punct">)</span>
+<span class="keyword">end</span>
 
-def open title
-  task_status title, false
-  redirect R(self)
-end
+<span class="keyword">def </span><span class="method">open</span> <span class="ident">title</span>
+  <span class="ident">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="constant">false</span>
+  <span class="ident">redirect</span> <span class="constant">R</span><span class="punct">(</span><span class="constant">self</span><span class="punct">)</span>
+<span class="keyword">end</span>
 
-def close title
-  task_status title, true
-  redirect R(self)
-end
+<span class="keyword">def </span><span class="method">close</span> <span class="ident">title</span>
+  <span class="ident">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="constant">true</span>
+  <span class="ident">redirect</span> <span class="constant">R</span><span class="punct">(</span><span class="constant">self</span><span class="punct">)</span>
+<span class="keyword">end</span>
 
-def delete title
-  TodoList.delete title
-  redirect R(self)
-end</code></pre>
+<span class="keyword">def </span><span class="method">delete</span> <span class="ident">title</span>
+  <span class="constant">TodoList</span><span class="punct">.</span><span class="ident">delete</span> <span class="ident">title</span>
+  <span class="ident">redirect</span> <span class="constant">R</span><span class="punct">(</span><span class="constant">self</span><span class="punct">)</span>
+<span class="keyword">end</span></code></pre>
 
 <p>We did some refactoring before, by introducing <code>#task_status</code>, but here we have repetition again: <code>redirect Rs()</code> <em>after</em> each method did its job.</p>
 
@@ -516,53 +534,53 @@ end</code></pre>
 
 <p>In your Controller, replace the previous chunk with following:</p>
 
-<pre><code>def create
-  title = request[&#39;title&#39;]
-  TodoList[title] = {:done =&gt; false}
-end
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">create</span>
+  <span class="ident">title</span> <span class="punct">=</span> <span class="ident">request</span><span class="punct">[&#39;</span><span class="string">title</span><span class="punct">&#39;]</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span><span class="symbol">:done</span> <span class="punct">=&gt;</span> <span class="constant">false</span><span class="punct">}</span>
+<span class="keyword">end</span>
 
-def open title
-  task_status title, false
-end
+<span class="keyword">def </span><span class="method">open</span> <span class="ident">title</span>
+  <span class="ident">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="constant">false</span>
+<span class="keyword">end</span>
 
-def close title
-  task_status title, true
-end
+<span class="keyword">def </span><span class="method">close</span> <span class="ident">title</span>
+  <span class="ident">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="constant">true</span>
+<span class="keyword">end</span>
 
-def delete title
-  TodoList.delete title
-end
+<span class="keyword">def </span><span class="method">delete</span> <span class="ident">title</span>
+  <span class="constant">TodoList</span><span class="punct">.</span><span class="ident">delete</span> <span class="ident">title</span>
+<span class="keyword">end</span>
 
-helper :aspect
-after(:create, :open, :close, :delete){ redirect(Rs()) }</code></pre>
+<span class="ident">helper</span> <span class="symbol">:aspect</span>
+<span class="ident">after</span><span class="punct">(</span><span class="symbol">:create</span><span class="punct">,</span> <span class="symbol">:open</span><span class="punct">,</span> <span class="symbol">:close</span><span class="punct">,</span> <span class="symbol">:delete</span><span class="punct">){</span> <span class="ident">redirect</span><span class="punct">(</span><span class="constant">Rs</span><span class="punct">())</span> <span class="punct">}</span></code></pre>
 
 <p>Alright, that looks a lot nicer already and is definitely easier to maintain.</p>
 
 <p>There is a symmetrical <code>before</code> aspect that you could take advantage of as well, and in case you want to add required authentication for all actions of a Controller you could use <code>before_all</code> and <code>after_all</code> instead of a list of action-names.</p>
 
-<h2 id='twelfth_step_validation_and_errors'>Twelfth Step, Validation and Errors</h2>
+<h2 id="twelfth_step_validation_and_errors">Twelfth Step, Validation and Errors</h2>
 
 <p>Right now, all kinds of things could still go wrong when you do things like creating tasks with no title at all or try to open/close a task that does not exist. So in this step we will add some little checks for these cases.</p>
 
 <p>First we head over to the Controller again and take a look at <code>#create</code>:</p>
 
-<pre><code>def create
-  title = request[&#39;title&#39;]
-  TodoList[title] = {:done =&gt; false}
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">create</span>
+  <span class="ident">title</span> <span class="punct">=</span> <span class="ident">request</span><span class="punct">[&#39;</span><span class="string">title</span><span class="punct">&#39;]</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span><span class="symbol">:done</span> <span class="punct">=&gt;</span> <span class="constant">false</span><span class="punct">}</span>
+<span class="keyword">end</span></code></pre>
 
 <p>Here we just create a new task, no matter what we get. Every seasoned web-developer would advise you to be suspicious about all the input you receive from your users, so let&#8217;s apply this advice.</p>
 
-<pre><code>def create
-  if title = request[&#39;title&#39;]
-    title.strip!
-    if title.empty?
-      failed(&quot;Please enter a title&quot;)
-      redirect &#39;/new&#39;
-    end
-    TodoList[title] = {:done =&gt; false}
-  end
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">create</span>
+  <span class="keyword">if</span> <span class="ident">title</span> <span class="punct">=</span> <span class="ident">request</span><span class="punct">[&#39;</span><span class="string">title</span><span class="punct">&#39;]</span>
+    <span class="ident">title</span><span class="punct">.</span><span class="ident">strip!</span>
+    <span class="keyword">if</span> <span class="ident">title</span><span class="punct">.</span><span class="ident">empty?</span>
+      <span class="ident">failed</span><span class="punct">(&quot;</span><span class="string">Please enter a title</span><span class="punct">&quot;)</span>
+      <span class="ident">redirect</span> <span class="punct">&#39;</span><span class="string">/new</span><span class="punct">&#39;</span>
+    <span class="keyword">end</span>
+    <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="punct">{</span><span class="symbol">:done</span> <span class="punct">=&gt;</span> <span class="constant">false</span><span class="punct">}</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
 
 <p>First of all we check if we got a request with a value for &#8216;title&#8217;, if we get none we just let the aspect kick in that will redirect the browser to the index. Next we strip the title of all spaces around it so we can check if it is empty. We will talk about the specifics of our error-handling now.</p>
 
@@ -570,31 +588,31 @@ end</code></pre>
 
 <p>Let me show you our <code>#failed</code> method (it goes in the private section to <code>#task_status</code>):</p>
 
-<pre><code>def failed(message)
-  flash[:error] = message
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">failed</span><span class="punct">(</span><span class="ident">message</span><span class="punct">)</span>
+  <span class="ident">flash</span><span class="punct">[</span><span class="symbol">:error</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">message</span>
+<span class="keyword">end</span></code></pre>
 
 <p>Duh, you may say, wouldn&#8217;t that fit in the one line instead of the call to <code>#failed</code>? Indeed, it would, but let me remind you, we have no checks for changing the status of a task yet. We will need error-handling there as well, so we just keep our code DRY and maintainable by collecting shared behaviour in small pieces.</p>
 
 <p>Now on to the <code>#task_status</code>:</p>
 
-<pre><code>def task_status title, status
-  unless task = TodoList[title]
-    failed &quot;No such Task: `#{title}&#39;&quot;
-    redirect_referer
-  end
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="ident">status</span>
+  <span class="keyword">unless</span> <span class="ident">task</span> <span class="punct">=</span> <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span>
+    <span class="ident">failed</span> <span class="punct">&quot;</span><span class="string">No such Task: `<span class="expr">#{title}</span>&#39;</span><span class="punct">&quot;</span>
+    <span class="ident">redirect_referer</span>
+  <span class="keyword">end</span>
 
-  task[:done] = status
-  TodoList[title] = task
-end</code></pre>
+  <span class="ident">task</span><span class="punct">[</span><span class="symbol">:done</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">status</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">task</span>
+<span class="keyword">end</span></code></pre>
 
 <p>That used to look like this:</p>
 
-<pre><code>def task_status title, status
-  task = TodoList[title]
-  task[:done] = status
-  TodoList[title] = task
-end</code></pre>
+<pre><code class="ruby" lang="ruby"><span class="keyword">def </span><span class="method">task_status</span> <span class="ident">title</span><span class="punct">,</span> <span class="ident">status</span>
+  <span class="ident">task</span> <span class="punct">=</span> <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span>
+  <span class="ident">task</span><span class="punct">[</span><span class="symbol">:done</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">status</span>
+  <span class="constant">TodoList</span><span class="punct">[</span><span class="ident">title</span><span class="punct">]</span> <span class="punct">=</span> <span class="ident">task</span>
+<span class="keyword">end</span></code></pre>
 
 <p>So in fact all we added is a check whether a task already exists, set an error-message in case it doesn&#8217;t and redirect to wherever the browser came from.</p>
 

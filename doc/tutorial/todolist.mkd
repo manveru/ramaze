@@ -1,3 +1,6 @@
+Title: The official Ramaze todolist tutorial
+HTML use syntax: true
+
 # To-do List Tutorial
 
 * Table of Contents
@@ -57,6 +60,7 @@ So first, create a `model/todolist.rb` for our application:
 
 	require 'ramaze/store/default'
     TodoList = Ramaze::Store::Default.new('todolist.yaml')
+{:lang=ruby}
 
 Let's add some items as well to have a base to start from.
 
@@ -65,7 +69,7 @@ Let's add some items as well to have a base to start from.
     }.each do |title, value|
       TodoList[title] = value
     end
-
+{:lang=ruby}
 
 ## Third Step, V, like View
 
@@ -95,6 +99,7 @@ simple.
         </ul>
       </body>
     </html>
+{:lang=nagoro}
 
 I will assume that you are familiar with basic Ruby already, so we will
 concentrate on the things new here.
@@ -112,6 +117,7 @@ interesting part)
       <li>Laundry: not done</li>
       <li>Wash dishes: not done</li>
     </ul>
+{:lang=nagoro}
 
 That wasn't too bad, huh?
 
@@ -157,6 +163,7 @@ The contents of it are like following:
         "there is no template associated with this action"
       end
     end
+{:lang=ruby}
 
 The only methods right now are `#index` and `#notemplate`.
 The relationship between the methods on the controller and the templates is
@@ -172,6 +179,7 @@ Let's get back to editing and change the method `#index` to this:
         @tasks[title] = status
       end
     end
+{:lang=ruby}
 
 This will take care of the logic inside the template, which now should be
 changed to do following:
@@ -193,6 +201,7 @@ changed to do following:
         <?r end ?>
       </body>
     </html>
+{:lang=ruby}
 
 The rest of the template can stay the same.
 
@@ -255,6 +264,7 @@ your MainController.
       TodoList[title] = {:done => false}
       redirect Rs()
     end
+{:lang=ruby}
 
 That's all folks!
 
@@ -276,7 +286,8 @@ Jump into `view/index.xhtml` and do the following:
       <li>
         #{c title}: #{status} - [ #{toggle} ]
       </li>
-    <?r end ?>
+    <?r end
+{:lang=ruby}
 
 We added a new element here, `toggle`, the Controller should give us
 a link to change the status corresponding to the status of the task, so off
@@ -296,6 +307,7 @@ we go and change the index method on the controller once again:
       end
       @tasks.sort!
     end
+{:lang=ruby}
 
 Wow, quite some new stuff here. Let me explain that in detail.
 
@@ -332,6 +344,7 @@ corresponding methods to the Controller:
       task[:done] = status
       TodoList[title] = task
     end
+{:lang=ruby}
 
 Oh, now what have we got here?
 `private` declares that methods from here on are only to be used within the
@@ -343,10 +356,12 @@ Another thing we have not encountered so far is that you can define your public
 methods to take parameters on their own, they will be calculated from requests.
 
     '/open/Wash+dishes'
+{:lang=ruby}
 
 will translate into:
 
     open('Wash dishes')
+{:lang=ruby}
 
 Which in turn will call `task_status('Wash dishes', false)`
 
@@ -363,6 +378,7 @@ Controller:
 
     delete = A('Delete', :href => Rs(:delete, title))
     @tasks << [title, status, toggle, delete]
+{:lang=ruby}
 
 and an corresponding method while we're at it:
 
@@ -370,6 +386,7 @@ and an corresponding method while we're at it:
       TodoList.delete title
       redirect Rs()
     end
+{:lang=ruby}
 
 Now jumping to `view/index.xhtml` again, change it so it shows the link:
 
@@ -433,6 +450,7 @@ Take a look at the `src/element/page.rb`
         }
       end
     end
+{:lang=ruby}
 
 Alright, most things we need are in place already, the most important thing
 is the `#content` method that we call with `#{content}` inside the string in
@@ -456,6 +474,7 @@ so far:
         }
       end
     end
+{:lang=ruby}
 
 Please note that instance variables reflecting the parameters are set.
 
@@ -554,12 +573,14 @@ webserver it has to run on port 80.  So, let's add following line in your
 start.rb right after the lines of require you added before:
 
     Ramaze::Global.port = 80
+{:lang=ruby}
 
 Alright, that wasn't that hard.
 Let's say now you also want to run Mongrel instead of WEBrick, to get nice a bit
 of performance:
 
     Ramaze::Global.adapter = :mongrel
+{:lang=ruby}
 
 To do this in a DRY way you could also do following:
 
@@ -567,12 +588,14 @@ To do this in a DRY way you could also do following:
       g.port = 80
       g.adapter = :mongrel
     end
+{:lang=ruby}
 
 It seems to be quite common to put this configuration into separate files so you
 can just require it on demand.  There are other, slightly stronger way to set
 options, which is either using flags on the ramaze executable, or like this:
 
     Ramaze.start :port => 80, :adapter => :mongrel
+{:lang=ruby}
 
 We haven't started Ramaze directly as of yet, but this allows you to ignore the
 ramaze executable and just run your application by `ruby start.rb`.
@@ -602,6 +625,7 @@ Now, if you take a closer look at the Controller you will see:
       TodoList.delete title
       redirect R(self)
     end
+{:lang=ruby}
 
 We did some refactoring before, by introducing `#task_status`, but here we have
 repetition again: `redirect Rs()` _after_ each method did its job.
@@ -631,6 +655,7 @@ In your Controller, replace the previous chunk with following:
 
     helper :aspect
     after(:create, :open, :close, :delete){ redirect(Rs()) }
+{:lang=ruby}
 
 Alright, that looks a lot nicer already and is definitely easier to maintain.
 
@@ -652,6 +677,7 @@ First we head over to the Controller again and take a look at `#create`:
       title = request['title']
       TodoList[title] = {:done => false}
     end
+{:lang=ruby}
 
 Here we just create a new task, no matter what we get. Every seasoned
 web-developer would advise you to be suspicious about all the input you receive
@@ -667,6 +693,7 @@ from your users, so let's apply this advice.
         TodoList[title] = {:done => false}
       end
     end
+{:lang=ruby}
 
 First of all we check if we got a request with a value for 'title', if we get
 none we just let the aspect kick in that will redirect the browser to the index.
@@ -684,6 +711,7 @@ Let me show you our `#failed` method (it goes in the private section to
     def failed(message)
       flash[:error] = message
     end
+{:lang=ruby}
 
 Duh, you may say, wouldn't that fit in the one line instead of the call to
 `#failed`?
@@ -702,6 +730,7 @@ Now on to the `#task_status`:
       task[:done] = status
       TodoList[title] = task
     end
+{:lang=ruby}
 
 That used to look like this:
 
@@ -710,6 +739,7 @@ That used to look like this:
       task[:done] = status
       TodoList[title] = task
     end
+{:lang=ruby}
 
 So in fact all we added is a check whether a task already exists, set an
 error-message in case it doesn't and redirect to wherever the browser came from.

@@ -122,12 +122,22 @@ end
 desc "Rebuild doc/tutorial/todolist.html"
 task 'tutorial' do
   require 'maruku'
+  require 'hpricot'
 
+  syntax_dir = File.dirname(Gem::latest_load_paths.grep(/syntax-/).first)
+  ruby_css = File.join(syntax_dir, 'data/ruby.css')
   basefile = 'doc/tutorial/todolist'
+
   content = File.read(basefile + '.mkd')
   html = Maruku.new(content).to_html_document
 
-  File.open(basefile + '.html', 'w+'){|io| io << html }
+  doc = Hpricot(html)
+  css = %(<style type="text/css">
+      #{File.read(ruby_css)}
+    </style>)
+  doc.at('title').after(css)
+
+  File.open(basefile + '.html', 'w+'){|io| io << doc.to_s }
 end
 
 def existing_authors
