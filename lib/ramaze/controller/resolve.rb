@@ -60,10 +60,12 @@ module Ramaze
         # TODO:
         #   * following code is dangerous (DoS):
         #     patterns = Cache.patterns[path] ||= pattern_for(path)
-        patterns = pattern_for(path)
+
         first_controller = nil
 
-        patterns.each do |controller, method, params|
+        # Look through the possible ways of interpreting the path until we find
+        # one that matches an existing controller action.
+        patterns_for(path) do |controller, method, params|
           if controller = mapping[controller]
             first_controller ||= controller
 
@@ -181,34 +183,33 @@ module Ramaze
         end
       end
 
-      # Generate all possible permutations for given path.
-      def pattern_for(path)
-        atoms = path.to_s.split('/').grep(/\S/)
-        atoms.unshift('')
-        patterns, joiner = [], '/'
+      # Iterator that yields potential ways in which a given path could be mapped
+      # to controller, action and params. It produces them in strict order, with
+      # longest controller path favoured, then longest action path.
 
-        atoms.size.times do |enum|
-          enum += 1
-          pattern = atoms.dup
+      def patterns_for path
+        # Split into fragments, and remove empty ones (which split may have output).
+        # The to_s is vital as sometimes we are passed an array.
+        fragments = path.to_s.split '/'
+        fragments.delete ''
 
-          controller = pattern[0, enum].join(joiner)
-          controller.gsub!(/^__/, '/')
-          controller = "/" if controller == ""
+        # Work through all the possible splits of controller and 'the rest' (action
+        # + params) starting with longest possible controller.
+        fragments.length.downto(0) do |ca_split|
+          controller = '/' + fragments[0...ca_split].join('/')
 
-          pattern = pattern[enum..-1]
-          args, temp = [], []
-
-          patterns << [controller, 'index', atoms[enum..-1]]
-
-          until pattern.empty?
-            args << pattern.shift
-            joined = args.join('__')
-            patterns << [controller, joined, pattern.dup]
-            patterns << [controller, "#{joined}__index", pattern.dup]
+          # Work on the remaining portion, generating all the action/params splits.
+          fragments.length.downto(ca_split) do |ap_split|
+            action = fragments[ca_split...ap_split].join '__'
+            params = fragments[ap_split..-1]
+            if action.empty?
+              yield controller, 'index', params
+            else
+              yield controller, "#{action}__index", params
+              yield controller, action, params
+            end
           end
         end
-
-        patterns.reverse!
       end
 
       # Uses custom defined engines and all available engines and throws it

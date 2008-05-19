@@ -114,9 +114,12 @@ describe "Controller" do
     ],
   }
 
-  it "dry pattern_for" do
+  it "dry patterns_for" do
     @hash.each do |path, correct|
-      patterns = Ramaze::Controller.pattern_for(path)
+      patterns = []
+      Ramaze::Controller.patterns_for(path) do |controller, action, params|
+        patterns << [controller, action, params]
+      end
       patterns.should == correct
     end
   end
