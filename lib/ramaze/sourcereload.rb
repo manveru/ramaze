@@ -71,7 +71,8 @@ module Ramaze
         next if (@mtimes[file] ||= mtime) == mtime
 
         Log.debug("reload #{file}")
-        @mtimes[file] = mtime if safe_load(file)
+        safe_load(file) # ignore status, we don't want load errors to flood us
+        @mtimes[file] = mtime
       end
       SourceReloadHooks.after_reload
     end
@@ -117,10 +118,8 @@ module Ramaze
       SourceReloadHooks.before_safe_load(file)
       load(file)
       SourceReloadHooks.after_safe_load_succeed(file)
-      true
     rescue Object => ex
       SourceReloadHooks.after_safe_load_failed(file, ex)
-      false
     end
   end
 
