@@ -85,7 +85,7 @@ Ramaze offers following features at the moment:
   * [Sass](http://haml.hamptoncatlin.com/docs/sass)
 
     Sass is a meta-language on top of CSS that‘s used to describe the style of
-    a document cleanly and structurally, with more power than flat CSS allows. 
+    a document cleanly and structurally, with more power than flat CSS allows.
 
   * Ezamar
 
@@ -98,7 +98,7 @@ Ramaze offers following features at the moment:
   * MemCache
 
 * Helper
-  * Active by default 
+  * Active by default
     * CGI
 
       Shortcuts for escape/unescape of the CGI module.
@@ -197,7 +197,7 @@ There are some basic principles that Ramaze tries to follow:
   available, giving you full control over your system.
 
   Even the most essential parts of Ramaze can easily be replaced and/or modified
-  without losing the advantage of the whole framework. 
+  without losing the advantage of the whole framework.
 
 * Minimal dependencies
 
@@ -345,7 +345,7 @@ Some places to get started are:
 
 There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
-To start up an example, you can use the Ramaze binary located in bin/ramaze 
+To start up an example, you can use the Ramaze binary located in bin/ramaze
 for example:
 
   $ ramaze examples/hello.rb
@@ -396,12 +396,12 @@ For help you can:
 
 * Performance
   * Serving
-  
+
     For best performance you should consider using Mongrel to host your
     application.
 
   * Caching
-  
+
     You can easily cache your pages using the CacheHelper.
     Also, using MemCache gives you high-end performance and security.
 
