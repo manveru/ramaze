@@ -70,6 +70,8 @@ module Ezamar
     # Takes a binding and evals it with the previously set options.
 
     def result(binding)
+      # for Ruby 1.9, or it complains Proc is not a Binding
+      binding = binding.binding if binding.respond_to?(:binding)
       eval(@compiled, binding, @options[:file]).strip
     end
   end
