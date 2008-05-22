@@ -12,10 +12,6 @@ module Ramaze
 
         Thread.new{ @server.start }
       end
-
-      def self.shutdown
-        @server.stop
-      end
     end
   end
 end
