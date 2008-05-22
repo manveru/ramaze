@@ -65,7 +65,7 @@ module Ramaze
 
     o "Set default Content-Type for responses",
       :content_type, "text/html"
-    
+
     o "Set default Accept-Charset for responses. No header set if nil.",
       :accept_charset, nil
 
