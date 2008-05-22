@@ -49,6 +49,7 @@ if runner
   daemonize = Ramaze::Global.daemonize
 
   unless daemonize.empty?
+    require 'ramaze/tool/daemonize'
     Ramaze::daemonize(runner, daemonize)
   else
     require runner
