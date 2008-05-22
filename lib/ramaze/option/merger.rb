@@ -79,10 +79,12 @@ module Ramaze
               list = "  " << cli.join(', ')
               doc = "[#{value}] #{doc}"
               aliases = cli.abbrev
-              option = [short_option, "#{long_option} CHOICE", aliases, doc, list]
+              option = [short_option, "#{long_option} CHOICE", cli, doc, list]
             else
               option = [short_option, long_option, doc]
             end
+
+            option.delete(nil)
 
             opt.on(*option){|o| Ramaze::Global[key] = o }
           end
