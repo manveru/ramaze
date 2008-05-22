@@ -95,7 +95,7 @@ module Ramaze
 
     def _gestalt_build_tag name, attr={}, text=[]
       @out << "<#{name}"
-      @out << attr.inject(''){ |s,v| s << %{ #{v[0]}="#{_gestalt_escape_entities(v[1])}"} }
+      @out << attr.map{|k,v| %[ #{k}="#{_gestalt_escape_entities(v)}"] }.join
       if text != [] or block_given?
         @out << ">"
         @out << _gestalt_escape_entities([text].join)
