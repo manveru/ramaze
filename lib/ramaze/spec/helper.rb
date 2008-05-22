@@ -90,20 +90,20 @@ shared 'xpath' do
   end
 
   # Delegate to REXML::XPath::match
-  def xp_match(obj, xpath = '*')
-    XPath::match(rexml_doc(body), xpath, &block)
+  def xp_match(obj, xpath = '*', &block)
+    REXML::XPath::match(rexml_doc(obj), xpath, &block)
   end
   alias xp_search xp_match
 
   # Delegate to REXML::XPath::first
-  def xp_first(obj, xpath = '*')
-    XPath::first(rexml_doc(body), xpath, &block)
+  def xp_first(obj, xpath = '*', &block)
+    REXML::XPath::first(rexml_doc(obj), xpath, &block)
   end
   alias xp_at xp_first
 
   # Delegate to REXML::XPath::each
   def xp_each(obj, xpath = '*', &block)
-    XPath::each(rexml_doc(body), xpath, &block)
+    REXML::XPath::each(rexml_doc(obj), xpath, &block)
   end
 
   # Delegate to REXML::Document.new - return the obj if it's already an
