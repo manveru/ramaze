@@ -72,6 +72,9 @@ module Ramaze
       end
 
       binding = options[:instance].scope
+      
+      # For Ruby 1.9/1.8.7
+      binding = binding.binding if binding.respond_to?(:binding)
 
       vars.each do |name, value|
         options[:instance].instance_variable_set("@#{name}", value)
