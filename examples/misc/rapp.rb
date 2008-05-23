@@ -17,7 +17,7 @@ end
 
 class MainController < Ramaze::Controller
   def index
-    @posts = Post.order(:created_at.DESC).first(10)
+    @posts = Post.order(:created_at.desc).first(10)
 %q(<h1>Welcome to Rapp</h1>
 <h2>A minimal chat wall</h2>
 <p>Recent Posts:</p>

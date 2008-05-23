@@ -1,6 +1,6 @@
 require 'sequel'
 
-DB = Sequel("sqlite:///#{__DIR__}/../blog.db")
+DB = Sequel.connect("sqlite:///#{__DIR__}/../blog.db")
 
 class Entry < Sequel::Model(:entry)
   set_schema do
