@@ -13,7 +13,7 @@ class PasteController < Ramaze::Controller
   deny_layout :plain, :save_theme
 
   def list(start = 1)
-    ordered = Paste.order(:created.DESC)
+    ordered = Paste.order(:created.desc)
     @paginated = ordered.paginate(start.to_i, 10)
     @pager = paginator(@paginated, '/list')
     @pastes = @paginated
@@ -23,7 +23,7 @@ class PasteController < Ramaze::Controller
   def search
     if needle = request['substring'] and not needle.empty?
       limit = 50
-      @pastes = Paste.where( "text LIKE '%' || ? || '%'", request[ 'substring' ] ).limit( limit ).order( :created.DESC ).all
+      @pastes = Paste.where( "text LIKE '%' || ? || '%'", request[ 'substring' ] ).limit( limit ).order( :created.desc ).all
       @hit_limit = ( @pastes.size == limit )
       @style = session[ :theme ] || STYLE
     end
@@ -51,7 +51,7 @@ class PasteController < Ramaze::Controller
     @syntax = @paste.syntax_name
     @formatted = @paste.view(format, style)
 
-    ordered = Paste.order(:created.DESC)
+    ordered = Paste.order(:created.desc)
     @paginated = ordered.paginate(id.to_i, 1)
     @pager = paginator(@paginated, '/')
   end

@@ -2,7 +2,7 @@ class MainController < Ramaze::Controller
   layout '/layout'
 
   def index
-    @entries = Entry.order(:created.DESC).all
+    @entries = Entry.order(:created.desc).all
   end
 
   def delete id
