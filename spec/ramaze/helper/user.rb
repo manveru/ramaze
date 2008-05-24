@@ -6,7 +6,7 @@ class MockSequelUser
   end
 
   def self.check(hash)
-    new if hash[:name] == 'arthur' and hash[:password] == '42'
+    new if hash.values_at('name', 'password') == ['arthur', '42']
   end
 end
 
