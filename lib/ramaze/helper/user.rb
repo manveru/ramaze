@@ -31,19 +31,22 @@ module Ramaze
           login(persist)
         end
 
+        def is?(obj)
+          if user and obj.respond_to?(:pk)
+            user.class == obj.class and pk == obj.pk
+          end
+        end
+
         # Do we have a @user yet?
         def logged_in?
           !!user
         end
 
         def login?(hash)
-          credentials = {}
-          hash.each{|k,v| credentials[k.to_sym] = v.to_s }
-
-          if checker = controller.trait[:user_check]
-            checker.call(credentials)
+          if checker = controller.ancestral_trait[:user_check]
+            checker.call(hash)
           else
-            model.check(credentials)
+            model.check(hash)
           end
         end
 
@@ -71,6 +74,14 @@ module Ramaze
         # Refer everything not known
         def method_missing(meth, *args, &block)
           user.send(meth, *args, &block)
+        end
+
+        def owns?(obj)
+          if user
+            user.owns?(obj)
+          else
+            false
+          end
         end
       end
     end
