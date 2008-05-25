@@ -33,13 +33,19 @@ module Ramaze
     # options:  optional, will be used as request parameters.
 
     def render_partial(url, options = {})
+      # Save any request params that clash with the ones we're about to add in.
       saved = {}
       options.keys.each {|x| saved[x] = Request.current.params[x] }
 
-      Request.current.params.update(options)
+      # Add/overwrite with the specified params. Ensure keys are strings since
+      # request[:foo] converts key to string when performing lookup.
+      options.each do |key, value|
+        Request.current.params[key.to_s] = value
+      end
 
       Controller.handle(url)
     ensure
+      # Always reinstate the original
       options.keys.each {|x| Request.current.params[x] = saved[x] }
     end
 

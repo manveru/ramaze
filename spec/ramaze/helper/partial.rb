@@ -14,6 +14,14 @@ class TCPartialHelperController < Ramaze::Controller
     "Title"
   end
 
+  def with_params
+    '<html><head><title>#{render_partial("/message", {:msg=>"hello"})}</title></head></html>'
+  end
+
+  def message
+    "Message: #{request[:msg]}"
+  end
+
   def composed
     @here = 'there'
     'From Action | ' +
@@ -44,6 +52,10 @@ describe "PartialHelper" do
 
   it "should render partials" do
     get('/').body.should == '<html><head><title>Title</title></head></html>'
+  end
+
+  it "should render partials with params" do
+    get('/with_params').body.should == '<html><head><title>Message: hello</title></head></html>'
   end
 
   it 'should be able to render a template in the current scope' do
