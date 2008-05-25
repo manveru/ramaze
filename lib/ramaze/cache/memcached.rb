@@ -16,7 +16,7 @@ module Ramaze
 
     def initialize(host = 'localhost', port = '11211', namespace = Global.runner)
       namespace = Digest::SHA1.hexdigest(namespace)[0..16]
-      @cache = MemCache.new("#{host}:#{port}", :namespace => namespace, :multithread => true)
+      @cache = MemCache.new(["#{host}:#{port}"], :namespace => namespace, :multithread => true)
     end
 
     # please read the documentation of memcache-client for further methods.
