@@ -5,22 +5,22 @@ class MockSequelUser
     "Arthur Dent, fearful human in outer space!"
   end
 
-  def self.check(hash)
-    new if hash.values_at('name', 'password') == ['arthur', '42']
+  def self.authenticate(hash)
+    new if hash.values_at('name', 'password') == %w[arthur 42]
   end
 end
 
-class HelperUser < Ramaze::Controller
+class SpecUserHelper < Ramaze::Controller
   map '/'
   helper :user
   trait :user_model => MockSequelUser
 
   def status
-    user.logged_in?.to_s
+    logged_in?
   end
 
   def login
-    user.login
+    user_login
   end
 
   def profile

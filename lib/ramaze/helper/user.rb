@@ -1,87 +1,113 @@
 module Ramaze
   module Helper
-    # In order to use this helper, define the :user_model trait in your controller
-    module User
 
-      # yield or instantinate Wrapper for @user_helper
+    # This helper provides a convenience wrapper for handling authentication
+    # and persistence of users.
+    #
+    # Example:
+    #
+    # class MainController < Ramaze::Controller
+    #   def index
+    #     if user?
+    #       A('login', :href => Rs(:login))
+    #     else
+    #       "Hello #{user.name}"
+    #     end
+    #   end
+    #
+    #   def login
+    #     user_login if reuqest.post?
+    #   end
+    # end
+
+    module User
+      # return existing or instantiate User::Wrapper
       def user
-        if instance_variable_defined?('@user_helper')
-          @user_helper
-        else
-          @user_helper = Wrapper.new(self, ancestral_trait[:user_model])
-        end
+        model = ancestral_trait[:user_model] ||= ::User
+        callback = ancestral_trait[:user_callback] ||= nil
+        Thread.current[:user] ||= Wrapper.new(model, callback)
+      end
+
+      # shortcut for user.user_login but default argument are request.params
+
+      def user_login(creds = request.params)
+        user._login(creds)
+      end
+
+      # shortcut for user.user_logout
+
+      def user_logout
+        user._logout
+      end
+
+      def logged_in?
+        user._logged_in?
       end
 
       # Wrapper for the ever-present "user" in your application.
       # It wraps around an arbitrary instance and worries about authentication
       # and storing information about the user in the session.
+      #
+      # In order to not interfere with the wrapped instance/model we start our
+      # methods with an underscore.
+      # Suggestions on improvements as usual welcome.
       class Wrapper
-        thread_accessor :session
-        attr_accessor :user
-        attr_reader :model, :controller
-
-        # user.id should bounce to the model
-        undef_method(:id) if method_defined?(:id)
-
-        # new Wrapper, pass it your definition of user.
-        def initialize(controller, model)
-          raise ArgumentError, "No model defined for Helper::User" unless model
-          @controller, @model = controller, model
-          @user = nil
-          login(persist)
+        # make it a BlankSlate
+        instance_methods.each do |meth|
+          undef_method(meth) unless meth.to_s =~ /^__.+__$/
         end
 
-        def is?(obj)
-          if user and obj.respond_to?(:pk)
-            user.class == obj.class and pk == obj.pk
+        attr_accessor :_model, :_callback, :_user
+
+        def initialize(model, callback)
+          @_model, @_callback = model, callback
+          @_user = nil
+          _login
+        end
+
+        def _login(creds = _persistence)
+          if @_user = _would_login?(creds)
+            self._persistence = creds
           end
         end
 
-        # Do we have a @user yet?
-        def logged_in?
-          !!user
-        end
-
-        def login?(hash)
-          if checker = controller.ancestral_trait[:user_check]
-            checker.call(hash)
+        # The callback should return an instance of the user, otherwise it
+        # should answer with nil.
+        #
+        # This will not actually login, just check whether the credentials
+        # would result in a user.
+        def _would_login?(creds)
+          if c = @_callback
+            c.call(creds)
+          elsif _model.respond_to?(:authenticate)
+            _model.authenticate(creds)
           else
-            model.check(hash)
+            Log.warn("Helper::User has no callback and model doesn't respond to #authenticate")
+            nil
           end
         end
 
-        def persist
-          session[:USER] ||= {}
+        def _logout
+          _persistence.clear
+          Thread.current[:user] = nil
         end
 
-        def persist=(hash)
-          session[:USER] = hash
+        def _logged_in?
+          !!_user
         end
 
-        def login(hash = Request.current.params)
-          return if hash.empty?
-          if found = login?(hash)
-            @user = found
-            self.persist = hash
-          end
+        def _persistence=(creds)
+          Current.session[:USER] = creds
         end
 
-        # Clear the persistance layer, forgetting all information we have.
-        def logout
-          persist.clear
+        def _persistence
+          Current.session[:USER] || {}
         end
 
         # Refer everything not known
         def method_missing(meth, *args, &block)
-          user.send(meth, *args, &block)
-        end
-
-        def owns?(obj)
-          if user
-            user.owns?(obj)
-          else
-            false
-          end
+          return unless _user
+          _user.send(meth, *args, &block)
         end
       end
     end
