@@ -8,10 +8,6 @@ module Ramaze
   #
   # For examples please look at the spec/ramaze/helper/aspect.rb
   #
-  # This is not a default helper due to the possible performance-issues.
-  # However, it should be only an overhead of about 6-8 calls, so if you
-  # want this feature it shouldn't have too large impact ;)
-  #
   # Like every other helper, you can use it in your controller with:
   #
   #   helper :aspect
