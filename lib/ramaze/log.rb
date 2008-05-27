@@ -22,6 +22,6 @@ module Ramaze
   autoload :Logger,    "ramaze/log/logger.rb"
 
   unless defined?(Log)
-    Log = LogHub.new(Informer)
+    Log = Logging::LogHub.new(Logging::Logger::Informer)
   end
 end

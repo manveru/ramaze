@@ -12,7 +12,7 @@ class TCAdapterController < Ramaze::Controller
 end
 
 $output = StringIO.new
-Ramaze::Log.loggers << Ramaze::Informer.new($output)
+Ramaze::Log.loggers << Ramaze::Logging::Logger::Informer.new($output)
 
 describe "Adapter" do
   ramaze ramaze_options
