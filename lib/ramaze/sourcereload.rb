@@ -35,7 +35,6 @@ module Ramaze
       interval = Global.sourcereload
       instance = new(interval)
       Thread.main[:sourcereload] = instance
-      instance.reload # initial scan of all files
       instance.start if interval
     end
 
