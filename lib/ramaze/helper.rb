@@ -53,6 +53,7 @@ module Ramaze
       private
 
       def find_helper(name)
+        name = name.to_s.camel_case
         ramaze_helper_consts = ::Ramaze::Helper.constants.grep(/^#{name}$/i)
         if mod_name = ramaze_helper_consts.first
           ::Ramaze::Helper.const_get(mod_name)
