@@ -45,8 +45,10 @@ module Ramaze
         cmd << "--version" << version if version
         cmd << "--source" << source if source
 
-        print cmd * ' '
+        puts cmd * ' '
         Gem::GemRunner.new.run(cmd)
+      rescue Gem::SystemExitException => e
+        raise unless e.exit_code == 0
       end
     end
   end
