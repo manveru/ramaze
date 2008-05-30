@@ -77,7 +77,7 @@ Message-Id: #{id}
         end
       rescue => e
         Log.error "Failed to send e-mail to #{recipient}"
-        Log.error e
+        Log.error [ e.class.to_s, e.message, *e.backtrace ].join( "\t\n" )
       end
     end
   end
