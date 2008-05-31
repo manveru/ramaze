@@ -86,8 +86,8 @@ module Ramaze
     # Every found file is yielded to the rotate method.
 
     def rotation
-      files = Array[$0, *$LOADED_FEATURES]
-      paths = Array['./', *$LOAD_PATH]
+      files = Array[$0, *$LOADED_FEATURES].uniq
+      paths = Array['./', *$LOAD_PATH].uniq
 
       files.each do |file|
         if Pathname.new(file).absolute?
