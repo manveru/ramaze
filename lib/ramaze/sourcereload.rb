@@ -17,37 +17,43 @@ module Ramaze
     end
 
     def self.restart
-      Log.debug("Restart SourceReload")
+      Log.dev("Restart SourceReload")
       shutdown
       startup
     end
 
     # Maybe make this better?
     def self.shutdown
-      if sr = Thread.main[:sourcereload]
-        Log.debug("Shutdown SourceReload")
-        sr.thread[:interval] = false
-        sleep 0.1 while sr.thread.alive?
-      end
+      new(false)
     end
 
     attr_reader :thread
+    attr_accessor :interval
 
     # Setup the @mtimes hash. any new file will be assigned it's last modified
     # time (mtime) so we don't reload a file when we see it the first time.
     #
     # The thread only runs if Global.sourcereload is set.
     def initialize(interval = Global.sourcereload)
-      Log.debug("Startup SourceReload")
-      @mtimes = Hash.new{|h,k| h[k] = mtime(k) }
-      @interval = interval
+      if sr = Thread.main[:sourcereload]
+        sr.interval = interval
+      else
+        @interval = interval
+        startup
+      end
+    end
 
-      @thread = Thread.new(interval){|iv|
+    def startup
+      return unless @interval
+      Log.debug("Startup SourceReload")
+
+      @mtimes = Hash.new{|h,k| h[k] = mtime(k) }
+
+      @thread = Thread.new{
         current = Thread.current
         current.priority = -1
-        current[:interval] = iv
 
-        while iv = current[:interval]
+        while iv = @interval
           rotate
           sleep iv
         end

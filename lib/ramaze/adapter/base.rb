@@ -107,6 +107,8 @@ module Ramaze
         end
 
         def middleware_respond(env)
+          Thread.current.priority = 1
+
           if Global.middleware
             MIDDLEWARE.inject{|app, middleware| middleware.new(app) }.call(env)
           else
