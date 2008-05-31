@@ -39,6 +39,7 @@ Thread.abort_on_exception = true
 
 # Bootstrap
 require 'ramaze/version'
+require 'ramaze/sourcereload'
 require 'ramaze/snippets'
 require 'ramaze/log'
 require 'ramaze/trinity'
@@ -50,7 +51,6 @@ require 'ramaze/tool'
 
 # Startup
 require 'ramaze/controller'
-require 'ramaze/sourcereload'
 
 # Complete
 require 'ramaze/dispatcher'

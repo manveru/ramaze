@@ -13,24 +13,45 @@ module Ramaze
     # Called from Ramaze::startup, just assigns a new instance to
     # Global.sourcreloader
     def self.startup(options = {})
-      Global.sourcereloader = new
+      Thread.main[:sourcereload] = new
     end
+
+    def self.restart
+      Log.debug("Restart SourceReload")
+      shutdown
+      startup
+    end
+
+    # Maybe make this better?
+    def self.shutdown
+      if sr = Thread.main[:sourcereload]
+        Log.debug("Shutdown SourceReload")
+        sr.thread[:interval] = false
+        sleep 0.1 while sr.thread.alive?
+      end
+    end
+
+    attr_reader :thread
 
     # Setup the @mtimes hash. any new file will be assigned it's last modified
     # time (mtime) so we don't reload a file when we see it the first time.
     #
     # The thread only runs if Global.sourcereload is set.
-    def initialize
+    def initialize(interval = Global.sourcereload)
+      Log.debug("Startup SourceReload")
       @mtimes = Hash.new{|h,k| h[k] = mtime(k) }
+      @interval = interval
 
-      Thread.new do
-        Thread.current.priority = -1
+      @thread = Thread.new(interval){|iv|
+        current = Thread.current
+        current.priority = -1
+        current[:interval] = iv
 
-        while interval = Global.sourcereload
+        while iv = current[:interval]
           rotate
-          sleep interval
+          sleep iv
         end
-      end
+      }
     end
 
     # One iteration of rotate will look for files that changed since the last
@@ -42,7 +63,7 @@ module Ramaze
     #
     #   trap :HUP do
     #     Ramaze::Log.info "reloading source"
-    #     Ramaze::Global.sourcereloader.rotate
+    #     Thread.main[:sourcereload].rotate
     #   end
     #
 
@@ -53,9 +74,7 @@ module Ramaze
         mtime = mtime(file)
 
         if mtime > @mtimes[file]
-          Log.debug("reload #{file}")
           safe_load(file)
-          @mtimes[file] = mtime(file)
         end
       end
 
@@ -76,7 +95,9 @@ module Ramaze
         else
           paths.each do |path|
             full = File.join(path, file)
-            break yield(full) if File.file?(full)
+            if File.file?(full)
+              break yield(full)
+            end
           end
         end
       end
@@ -96,6 +117,8 @@ module Ramaze
       after_safe_load_succeed(file)
     rescue Object => ex
       after_safe_load_failed(file, ex)
+    ensure
+      @mtimes[file] = mtime(file)
     end
   end
 
@@ -115,6 +138,7 @@ module Ramaze
     # Overwrite to add actions before a file is Kernel::load-ed
 
     def before_safe_load(file)
+      Log.debug("reload #{file}")
     end
 
     # Overwrite to add actions after a file is Kernel::load-ed successfully,
