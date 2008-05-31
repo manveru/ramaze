@@ -144,6 +144,9 @@ module Ramaze
     o "Interval in seconds of the background SourceReload",
       :sourcereload, 3, :cli => 3
 
+    o "The running SourceReload will be placed here",
+      :sourcereloader, nil
+
     o "Test before start if adapters will be able to connect",
       :test_connections, true, :cli => true
 

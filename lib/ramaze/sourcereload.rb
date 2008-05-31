@@ -9,132 +9,107 @@ module Ramaze
   # manner.
 
   class SourceReload
-    attr_accessor :thread, :interval, :map
 
-    # Reload everything which falls under this regex
-    trait :reload_glob => Regexp.union(/^\.\//, Dir.pwd, 'ramaze')
-
-    # Take interval for files that are going to be reloaded.
-
-    def initialize(interval = 1)
-      @interval = interval
-      @map, @files, @paths = [], [], []
-      @mtimes = {}
-    end
-
-    # start reloader-thread and assign it to this instance.
-
-    def start
-      Log.dev("initialize automatic source reload every #{interval} seconds")
-      @thread = reloader
-    end
-
-    # Takes value of Global.sourcereload and unless it's false calls #start
-
+    # Called from Ramaze::startup, just assigns a new instance to
+    # Global.sourcreloader
     def self.startup(options = {})
-      interval = Global.sourcereload
-      instance = new(interval)
-      Thread.main[:sourcereload] = instance
-      instance.start if interval
+      Global.sourcereloader = new
     end
 
-    # Start reload loop in separate Thread
+    # Setup the @mtimes hash. any new file will be assigned it's last modified
+    # time (mtime) so we don't reload a file when we see it the first time.
+    #
+    # The thread only runs if Global.sourcereload is set.
+    def initialize
+      @mtimes = Hash.new{|h,k| h[k] = mtime(k) }
 
-    def reloader
       Thread.new do
-        loop do
-          reload
-          sleep(@interval)
+        Thread.current.priority = -1
+
+        while interval = Global.sourcereload
+          rotate
+          sleep interval
         end
       end
     end
 
-    # One iteration of reload will look for files that changed since the last
+    # One iteration of rotate will look for files that changed since the last
     # iteration and will try to #safe_load it.
     # This method is quite handy if you want direct control over when your
-    # code is reloaded
+    # code is reloaded.
     #
     # Usage example:
     #
     #   trap :HUP do
     #     Ramaze::Log.info "reloading source"
-    #     Thread.main[:sourcereload].reload
+    #     Ramaze::Global.sourcereloader.rotate
     #   end
     #
 
-    def reload
-      SourceReloadHooks.before_reload
-      all_reload_files.each do |file|
+    def rotate
+      before_rotation
+
+      rotation do |file|
         mtime = mtime(file)
 
-        next if (@mtimes[file] ||= mtime) == mtime
-
-        Log.debug("reload #{file}")
-        safe_load(file) # ignore status, we don't want load errors to flood us
-        @mtimes[file] = mtime
+        if mtime > @mtimes[file]
+          Log.debug("reload #{file}")
+          safe_load(file)
+          @mtimes[file] = mtime(file)
+        end
       end
-      SourceReloadHooks.after_reload
+
+      after_rotation
     end
 
-    # Scans loaded features and paths for file-paths, filters them in the end
-    # according to the trait[:reload_glob]
+    # Iterates over the $LOADED_FEATURES ($") and $LOAD_PATH ($:) and tries to
+    # find either absolute paths or tries to find one by combining paths and files.
+    # Every found file is yielded to the rotate method.
 
-    def all_reload_files
+    def rotation
       files = Array[$0, *$LOADED_FEATURES]
       paths = Array['./', *$LOAD_PATH]
 
-      unless [@files, @paths] == [files, paths]
-        @files, @paths = files.dup, paths.dup
-
-        @map = files.map{|file|
-          if Pathname.new(file).absolute?
-            file
-          else
-            path = paths.find{|pa|
-              ex = File.expand_path(File.join(pa, file))
-              File.exists?(ex)
-            }
-            File.expand_path(File.join(path, file)) if path
+      files.each do |file|
+        if Pathname.new(file).absolute?
+          yield(file) if File.file?(file)
+        else
+          paths.each do |path|
+            full = File.join(path, file)
+            break yield(full) if File.file?(full)
           end
-        }.compact
+        end
       end
-
-      @map.grep(class_trait[:reload_glob])
     end
 
     # Safe mtime
-
     def mtime(file)
       File.mtime(file)
     rescue Errno::ENOENT
       false
     end
 
-    # A safe Kernel::load, issuing the SourceReloadHooks depending on the
-    # result.
-
+    # A safe Kernel::load, issuing the hooks depending on the results
     def safe_load(file)
-      SourceReloadHooks.before_safe_load(file)
+      before_safe_load(file)
       load(file)
-      SourceReloadHooks.after_safe_load_succeed(file)
+      after_safe_load_succeed(file)
     rescue Object => ex
-      SourceReloadHooks.after_safe_load_failed(file, ex)
+      after_safe_load_failed(file, ex)
     end
   end
 
   # Holds hooks that are called before and after #reload and #safe_load
 
   module SourceReloadHooks
-    module_function
+    # Overwrite to add actions before the reload rotation is started.
 
-    # Overwrite to add actions before the reload cycle is started.
-
-    def before_reload
+    def before_rotation
     end
 
-    # Overwrite to add actions after the reload cycle has ended.
+    # Overwrite to add actions after the reload rotation has ended.
 
-    def after_reload
+    def after_rotation
     end
 
     # Overwrite to add actions before a file is Kernel::load-ed
@@ -149,7 +124,7 @@ module Ramaze
       Cache.compiled.clear
       Cache.resolved.clear
       Cache.action_methods.clear
-      SourceReloadHooks.after_safe_load(file)
+      after_safe_load(file)
     end
 
     # Overwrite to add custom hook in addition to default Cache cleaning
@@ -163,5 +138,9 @@ module Ramaze
     def after_safe_load_failed(file, error)
       Log.error(error)
     end
+  end
+
+  class SourceReload
+    include SourceReloadHooks
   end
 end
