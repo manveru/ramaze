@@ -1,7 +1,6 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-Ramaze.skip_start
 require __DIR__/'..'/'start'
 
 describe MainController do
