@@ -116,7 +116,7 @@ describe Ramaze::Helper::Flash do
       get('/box').should == error_div
 
       get('/set/error/stuff%20failed/success/other%20things%20worked')
-      get('/box').should == [error_div, success_div].join("\n")
+      get('/box').split("\n").sort.should == [error_div, success_div].sort
 
       get('/box').should.be.empty
     end

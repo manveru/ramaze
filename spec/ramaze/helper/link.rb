@@ -14,11 +14,11 @@ class TCLink2 < Ramaze::Controller
   def index; end
 end
 
-ramaze
-
 describe "A" do
   extend Ramaze::Helper::Link
   behaves_like 'resolve'
+
+  ramaze
 
   it 'should build links' do
     A('title', :href => '/').should == %(<a href="/">title</a>)

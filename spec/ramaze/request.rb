@@ -55,10 +55,10 @@ class TCRequestController < Ramaze::Controller
 end
 
 options = ramaze_options rescue {}
-ramaze options.merge(:public_root => 'spec/ramaze/public')
 
 describe "Request" do
   behaves_like 'http'
+  ramaze options.merge(:public_root => 'spec/ramaze/public')
 
   Request = Ramaze::Request
 

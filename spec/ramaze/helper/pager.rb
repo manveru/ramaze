@@ -30,12 +30,12 @@ class TCPagerController < Ramaze::Controller
 
 end
 
-ramaze
-
 shared 'pager' do
   behaves_like 'http'
   behaves_like 'resolve'
   extend Ramaze::Helper::Pager
+
+  ramaze
 
   def pager_key
     Ramaze::Pager.trait[:key]

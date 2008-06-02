@@ -42,7 +42,7 @@ describe 'WikiController' do
 
     body.at('a[@href=/]').inner_html.should == '&lt; Home'
     body.at('h1').inner_html.should == 'Edit Home'
-    body.at('form[@action=/save]>textarea[@name=text]').should.not == nil
+    body.at('form/textarea').should.not == nil
   end
 
   it 'should create pages' do
