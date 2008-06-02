@@ -11,19 +11,21 @@ require 'ramaze/spec/helper/bacon'
 
 # Invoke ramaze with a set of default options suitable for testing.
 # you may pass your options that will override the defaults.
-def ramaze(options = {})
-  options = {
-    :adapter      => false,
-    :run_loose    => true,
-    :error_page   => false,
-    :port         => 7007,
-    :host         => '127.0.0.1',
-    :force        => true,
-    :sourcereload => false,
-    :origin       => :spec,
-  }.merge(options)
+class Bacon::Context
+  def ramaze(options = {})
+    options = {
+      :adapter      => false,
+      :run_loose    => true,
+      :error_page   => false,
+      :port         => 7007,
+      :host         => '127.0.0.1',
+      :force        => true,
+      :sourcereload => false,
+      :origin       => :spec,
+    }.merge(options)
 
-  Ramaze.start(options)
+    Ramaze.start(options)
+  end
 end
 
 SPEC_REQUIRE_DEPENDENCY = {
