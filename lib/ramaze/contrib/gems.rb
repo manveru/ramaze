@@ -14,7 +14,14 @@ module Ramaze
         @gems << GemStone.new(name, options)
       end
 
-      def setup
+      def options opts = {}
+        @options ||= { :docs => true }
+        @options.merge! opts unless opts.empty?
+        @options
+      end
+
+      def setup opts = {}
+        options(opts)
         @gems.each{|gem| gem.setup }
       end
     end
@@ -42,6 +49,8 @@ module Ramaze
         version, source = options.values_at(:version, :source)
 
         cmd = %w[install] << name
+        cmd << "--no-rdoc" << "--no-ri" unless Gems.options[:docs]
+        cmd << "--install-dir" << Gems.options[:install_dir] if Gems.options[:install_dir]
         cmd << "--version" << version if version
         cmd << "--source" << source if source
 
