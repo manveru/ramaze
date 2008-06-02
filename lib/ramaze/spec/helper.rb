@@ -12,6 +12,9 @@ require 'ramaze/spec/helper/bacon'
 # Invoke ramaze with a set of default options suitable for testing.
 # you may pass your options that will override the defaults.
 class Bacon::Context
+  # Skip start from required files
+  Ramaze.trait[:started] = true
+
   def ramaze(options = {})
     options = {
       :adapter      => false,
@@ -19,12 +22,11 @@ class Bacon::Context
       :error_page   => false,
       :port         => 7007,
       :host         => '127.0.0.1',
-      :force        => true,
       :sourcereload => false,
       :origin       => :spec,
     }.merge(options)
 
-    Ramaze.start(options)
+    Ramaze.start!(options)
   end
 end
 

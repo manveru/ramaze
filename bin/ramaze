@@ -52,8 +52,9 @@ if runner
     require 'ramaze/tool/daemonize'
     Ramaze::daemonize(runner, daemonize)
   else
+    Ramaze.trait[:started] = true
     require runner
-    Ramaze.start :force => true
+    Ramaze.start!
   end
 else
   Ramaze::Global.merge!(ARGV, &additions)

@@ -66,6 +66,8 @@ module Ramaze
     Global, Cache, Contrib, Controller, Session, SourceReload, Adapter
   ]
 
+  trait :started => false
+
   class << self
 
     # The one place to start Ramaze, takes an Hash of options to pass on to
@@ -73,12 +75,14 @@ module Ramaze
 
     def startup options = {}
       force = options.delete(:force)
+      force ||= !trait[:started]
 
-      runner = options[:runner] ||= caller[0][/^(.*?):\d+/, 1]
+      options[:runner] ||= caller[0][/^(.*?):\d+/, 1]
       Global.merge!(options)
 
-      if $0 == runner or force
+      if force
         Log.info("Starting up Ramaze (Version #{VERSION})")
+        trait[:started] = true
 
         trait[:essentials].each do |obj|
           obj.startup(options)
@@ -86,6 +90,15 @@ module Ramaze
       else
         Log.info "Ramaze already started, skipped start."
       end
+    end
+
+    def skip_start
+      trait[:started] = true
+    end
+
+    def start!(options = {})
+      trait[:started] = false
+      startup(options)
     end
 
     # This will be called when you hit ^C or send SIGINT.
