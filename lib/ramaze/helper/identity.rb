@@ -92,8 +92,14 @@ module Ramaze
         when OpenID::Consumer::FAILURE
           flash[:error] = "OpenID - Verification failed: #{openid_response.message}"
         when OpenID::Consumer::SUCCESS
+          # Backwards compatibility
           session[:openid][:identity] = openid_response.identity_url
           session[:openid][:sreg] = OpenID::SReg::Response.from_success_response(openid_response)
+
+          # Forward compatibility :)
+          session[:openid_identity] = openid_response.identity_url
+          session[:openid_sreg] = OpenID::SReg::Response.from_success_response(openid_response)
+
           flash[:success] = 'OpenID - Verification done.'
         end
 
