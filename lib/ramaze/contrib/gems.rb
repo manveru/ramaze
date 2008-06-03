@@ -34,6 +34,9 @@ module Ramaze
       end
 
       def setup(ran = false)
+        # rubygems resets the path after each successful install
+        Gem.use_paths Gems.options[:install_dir] if Gems.options[:install_dir]
+
         Gem.activate(name, *[@options[:version]].compact)
         require options[:lib] || name
       rescue LoadError => error
