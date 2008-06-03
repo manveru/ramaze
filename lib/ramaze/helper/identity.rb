@@ -41,6 +41,7 @@ module Ramaze
         # for example: http://username.myopenid.com)
         url = request['url']
         redirect_referrer if url.to_s.empty?
+        session[:openid] ||= {}
         session[:openid][:entry] = request.referrer
 
         openid_request = openid_consumer.begin(url)
