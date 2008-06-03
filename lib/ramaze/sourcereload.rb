@@ -45,7 +45,7 @@ module Ramaze
 
     def startup
       return unless @interval
-      Log.debug("Startup SourceReload")
+      Log.dev("Startup SourceReload")
 
       @mtimes = Hash.new{|h,k| h[k] = mtime(k) }
 
