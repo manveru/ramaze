@@ -23,7 +23,7 @@ module Ramaze
         # post-processing.
 
         def call(path)
-          Log.info("Dynamic request from #{request.ip}: #{request.request_uri}")
+          log(path)
 
           catch(:respond) {
             body = Controller.handle(path)
@@ -34,6 +34,14 @@ module Ramaze
           response
         rescue Ramaze::Error => ex
           ex
+        end
+
+        def log(path)
+          case path
+          when *Global.boring
+          else
+            Log.info("Dynamic request from #{request.ip}: #{request.request_uri}")
+          end
         end
       end
     end
