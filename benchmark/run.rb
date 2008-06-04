@@ -153,7 +153,7 @@ class RamazeBenchmark
     @requests = 100
     @concurrent = 10
     @signal = 'SIGKILL'
-    @host = "localhost"
+    @host = "127.0.0.1"
     @paths = ["/"]
     @target = /.+/
     @informer = true
@@ -252,7 +252,7 @@ class RamazeBenchmark
         Ramaze::Log.ignored_tags = @ignored_tags
         if @informer
           unless @show_log
-            Ramaze::Log.loggers = [Ramaze::Informer.new("/dev/null")]
+            Ramaze::Log.loggers = [Ramaze::Logging::Logger::Informer.new("/dev/null")]
           end
         else
           Ramaze::Log.loggers = []
