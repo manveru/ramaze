@@ -18,8 +18,7 @@ module Ramaze
   #   def login pass
   #     if pass == 'password'
   #       session[:logged_in] = true
-  #       answer if inside_stack?
-  #       redirect '/'
+  #       answer '/'
   #     else
   #       "failed"
   #     end
@@ -43,23 +42,29 @@ module Ramaze
     # redirect to another location and pushing the current location
     # on the session[:STACK]
 
-    def push frame
+    def push(frame)
       (session[:STACK] ||= []) << frame
     end
 
-    def call this
+    def call(this)
       push request.fullpath
       redirect this
     end
 
     # return to the last location on session[:STACK]
+    # The optional alternative paramter will be used to redirect in case you
+    # are not inside_stack?
+    # If the session has no stack and no alternative is given this won't do
+    # anything
 
-    def answer
+    def answer(alternative = nil)
       if inside_stack?
         stack = session[:STACK]
         target = stack.pop
         session.delete(:STACK) if stack.empty?
         redirect target
+      elsif alternative
+        redirect alternative
       end
     end
 
