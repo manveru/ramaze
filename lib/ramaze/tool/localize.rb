@@ -1,7 +1,7 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-$KCODE = 'UTF-8'
+#$KCODE = 'UTF-8'
 require 'ya2yaml'
 
 # Localize helps transforming arbitrary text into localized forms using
