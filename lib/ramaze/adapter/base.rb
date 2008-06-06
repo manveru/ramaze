@@ -15,6 +15,7 @@ module Ramaze
 
     class Base
       class << self
+        attr_reader :thread
 
         # For the specified host and for all given ports call run_server and
         # add the returned thread to the Global.adapters ThreadGroup.
@@ -99,7 +100,7 @@ module Ramaze
         # Then goes on and calls Dispatcher::handle with request and response.
 
         def respond(env)
-          if Global.server == Thread.current
+          if Global.server.thread == Thread.current
             Thread.new{ middleware_respond(env) }.value
           else
             middleware_respond(env)
