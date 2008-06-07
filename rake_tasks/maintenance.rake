@@ -10,13 +10,20 @@ task 'add-copyright' do
 
   Dir['{lib,test}/**/*{.rb}'].each do |file|
     file = File.expand_path(file)
-    next if file =~ /_darcs/ or ignore.include? file
+    next if ignore.include? file
     lines = File.readlines(file).map{|l| l.chomp}
     unless lines.first(COPYRIGHT.size) == COPYRIGHT
       puts "#{file} seems to need attention, first 4 lines:"
       puts lines[0..3]
       puts
     end
+  end
+end
+
+desc "Update doc/CHANGELOG"
+task 'doc/CHANGELOG' do
+  File.open('doc/CHANGELOG', 'w+') do |f|
+    f.puts `git log`
   end
 end
 
@@ -70,7 +77,6 @@ end
 desc "remove those annoying spaces at the end of lines"
 task 'fix-end-spaces' do
   Dir['{lib,spec}/**/*.rb'].each do |file|
-    next if file =~ /_darcs/
     lines = File.readlines(file)
     new = lines.dup
     lines.each_with_index do |line, i|

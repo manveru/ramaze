@@ -13,7 +13,6 @@ task :fill do
     'js' => 'javascript'
   }.each do |ext, syntax|
     Dir[base/"**/*.#{ext}"].each do |file|
-      next if file =~ /_darcs/
       p syntax => file
 
       begin

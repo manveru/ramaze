@@ -4,7 +4,7 @@ require 'coderay'
 require 'ramaze'
 
 # where is the source
-RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'../_darcs/current') unless defined? RAMAZE_SRC
+RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'../') unless defined? RAMAZE_SRC
 
 # delete cached filetree when source changes
 module Ramaze::SourceReloadHooks

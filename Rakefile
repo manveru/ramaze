@@ -20,7 +20,6 @@ load 'rake_tasks/conf.rake'
 load 'rake_tasks/gem.rake'
 load 'rake_tasks/maintenance.rake'
 load 'rake_tasks/spec.rake'
-load 'rake_tasks/darcs.rake'
 load 'rake_tasks/coverage.rake'
 load 'rake_tasks/git.rake'
 
@@ -42,35 +41,6 @@ task :jquery do
     end
     puts " done."
   end
-end
-
-desc "sanitize the code and darcs record"
-task :record => ['fix-end-spaces', 'add-copyright'] do
-  sh "darcs record"
-end
-
-desc "create the doc/changes.xml"
-task 'changes-xml' do
-  File.open('doc/changes.xml', 'w+') do |f|
-    f.print(`darcs changes --xml`)
-  end
-end
-
-desc "create the doc/changes.txt"
-task 'changes-text' do
-  File.open('doc/changes.txt', 'w+') do |f|
-    f.print(`darcs changes --human-readable`)
-  end
-end
-
-desc "create both doc/changes.txt and doc/changes.xml"
-task :changes => ['changes-xml', 'changes-text'] do
-  puts(`darcs changes`.split("\n").first(25))
-end
-
-desc "copy the doc/changes.txt to doc/CHANGELOG"
-task :changelog => :changes do
-  cp 'doc/changes.txt', 'doc/CHANGELOG'
 end
 
 task :rcov_dir do
