@@ -160,20 +160,6 @@ task 'request' do
   end
 end
 
-desc "runs all the testdocs (not functional yet)"
-task "testdoc" do
-  require '../testdoc/lib/testdoc'
-  Dir['lib/ramaze/helper/*.rb'].each do |file|
-    p file
-    begin
-      require file
-      TestDoc.rspec_run(file)
-    rescue Object => ex
-      puts ex
-    end
-  end
-end
-
 desc 'listing of available traits per class/module'
 task 'traits' do
   nodes = Hash.new{|h,k| h[k] = []}
