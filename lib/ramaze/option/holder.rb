@@ -77,11 +77,9 @@ module Ramaze
       # Find a suitable public_root, if none of these is a directory just use the
       # currently set one.
       def public_root
-        r = [ pr = @public_root,
-          root/pr,
+        [ @public_root,
+          root/@public_root
         ].find{|path| File.directory?(path) } || @public_root
-
-        File.expand_path(r)
       end
 
       def view_root=(vr)
@@ -91,12 +89,10 @@ module Ramaze
       # Find a suitable view_root, if none of these is a directory just use
       # the currently set one.
       def view_root
-        r = [ vr = @view_root,
-          root/vr,
+        [ @view_root,
+          root/@view_root,
           root/'template',
         ].find{|path| File.directory?(path) } || @view_root
-
-        File.expand_path(r)
       end
 
       def template_root=(tr)
