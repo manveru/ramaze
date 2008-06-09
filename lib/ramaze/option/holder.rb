@@ -123,8 +123,11 @@ module Ramaze
             @sourcereload = interval
             Ramaze::SourceReload.restart
           else
-            Log.warn("sourcereload= %p not Numeric, ignored" % interval)
+            Log.warn("sourcereload= %p not Numeric, ignoring." % interval)
           end
+        else
+          @sourcereload = interval
+          Ramaze::SourceReload.shutdown
         end
       end
 
