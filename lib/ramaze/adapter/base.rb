@@ -26,7 +26,10 @@ module Ramaze
           @thread = startup(host, port)
           Global.server = self
 
-          trap(Global.shutdown_trap){ exit }
+          trap(Global.shutdown_trap){
+            trap(Global.shutdown_trap){ exit!  }
+            exit
+          }
         end
 
         def start_server(host, port)
