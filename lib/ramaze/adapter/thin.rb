@@ -1,8 +1,6 @@
 require 'thin'
 require 'rack/handler/thin'
 
-EM.epoll
-
 module Ramaze
   module Adapter
     class Thin < Base
