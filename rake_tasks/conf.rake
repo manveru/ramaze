@@ -1,17 +1,5 @@
-AUTHOR = "manveru"
-EMAIL = "m.fellinger@gmail.com"
-DESCRIPTION = "Ramaze is a simple and modular web framework"
-HOMEPATH = 'http://ramaze.rubyforge.org'
-BIN_FILES = %w( ramaze )
-
 BASEDIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
-DEPENDENCIES = {
-  'rack' => '>=0.3.0',
-  'rake' => '>=0.7.3',
-}
-
-NAME = "ramaze"
 VERS = Ramaze::VERSION
 COPYRIGHT = [
   "#          Copyright (c) #{Time.now.year} Michael Fellinger m.fellinger@gmail.com",

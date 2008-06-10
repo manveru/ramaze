@@ -8,9 +8,12 @@ require 'rake/clean'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
-require 'fileutils'
-require 'time'
+
 require 'pp'
+require 'date'
+require 'time'
+require 'fileutils'
+
 include FileUtils
 
 $:.unshift File.join(File.dirname(__FILE__), "lib")

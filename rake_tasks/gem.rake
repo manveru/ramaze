@@ -1,50 +1,43 @@
-spec =
-    Gem::Specification.new do |s|
-        s.name = NAME
-        s.version = VERS
-        s.platform = Gem::Platform::RUBY
-        s.has_rdoc = true
-        s.extra_rdoc_files = RDOC_FILES
-        s.rdoc_options += RDOC_OPTS
-        s.summary = DESCRIPTION
-        s.description = DESCRIPTION
-        s.author = AUTHOR
-        s.email = EMAIL
-        s.homepage = HOMEPATH
-        s.executables = BIN_FILES
-        s.bindir = "bin"
-        s.require_path = "lib"
-        s.post_install_message = POST_INSTALL_MESSAGE
+GEMSPEC =
+  Gem::Specification.new{|s|
+  s.name = "ramaze"
+  s.version = Date.today.strftime('%Y.%m.%d')
+  s.summary = "Ramaze is a simple and modular web framework"
+  s.description = s.summary
 
-        DEPENDENCIES.each do |lib, ver|
-          s.add_dependency(lib, ver)
-        end
+  s.author = "Michael 'manveru' Fellinger"
+  s.email = "m.fellinger@gmail.com"
+  s.homepage = "http://ramaze.rubyforge.org"
+  s.rubyforge_project = "ramaze"
 
-        s.files = (RDOC_FILES + %w[Rakefile] + [README] + Dir["{examples,bin,doc,spec,lib,rake_tasks}/**/*"]).uniq
+  s.bindir = "bin"
+  s.require_path = "lib"
 
-        # s.required_ruby_version = '>= 1.8.5'
-        # s.extensions = FileList["ext/**/extconf.rb"].to_a
-    end
+  s.executables = Dir["#{s.bindir}/*"].map{|f| File.basename(f) }
+  s.files = FileList.new('**/*'){|fl|
+    fl.exclude(/^pkg\//)
+  }
 
-Rake::GemPackageTask.new(spec) do |p|
-    p.need_tar = true
-    p.gem_spec = spec
+  s.platform = Gem::Platform::RUBY
+  s.has_rdoc = true
+  s.post_install_message = POST_INSTALL_MESSAGE
+
+  s.add_dependency('rack', '>=0.3.0')
+}
+
+namespace :gem do
+  desc "Update /ramaze.gemspec"
+  task 'gemspec' do
+    update_gemspec(GEMSPEC)
+  end
 end
 
-desc "package and install ramaze"
-task :install do
-  name = "#{NAME}-#{VERS}.gem"
-  sh %{rake package}
-  sh %{sudo gem install pkg/#{name}}
+Rake::GemPackageTask.new(GEMSPEC) do |pkg|
+  pkg.need_tar = true
+  pkg.need_zip = true
 end
 
-desc "uninstall the ramaze gem"
-task :uninstall => [:clean] do
-  sh %{sudo gem uninstall #{NAME}}
-end
-
-desc "Create an updated version of /ramaze.gemspec"
-task :gemspec do
+def update_gemspec(spec)
   gemspec = <<-OUT.strip
 Gem::Specification.new do |s|
   s.name = %name%
@@ -73,13 +66,13 @@ end
     when 'version'
       spec.version.to_s.dump
     when 'dependencies'
-      DEPENDENCIES.map{|l, v|
-        "s.add_dependency(%p, %p)" % [l, v]
+      spec.dependencies.map{|dep|
+        "s.add_dependency('#{dep.name}', '#{dep.version_requirements}')"
       }.join("\n  ")
     else
       spec.send($1).pretty_inspect.strip
     end
   end
 
-  File.open("#{NAME}.gemspec", 'w+'){|file| file.puts(gemspec) }
+  File.open("ramaze.gemspec", 'w+'){|file| file.puts(gemspec) }
 end
