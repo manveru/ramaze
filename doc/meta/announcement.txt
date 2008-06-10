@@ -1,4 +1,4 @@
-This time we are proud to announce Version 0.3.5 of Ramaze, the light and
+This time we are proud to announce Version 2008.06 of Ramaze, the light and
 modular open source web framework.
 
 This release features a lot of work directly from our community and we are
@@ -10,11 +10,14 @@ implementation and usage. Ramaze is under development by a growing community
 and in production use at companies.
 
 
-Home page:   http://ramaze.net
-Screencasts: http://ramaze.net/screencasts
+Home page:    http://ramaze.net
+Screencasts:  http://ramaze.net/screencasts
 
-View source: http://source.ramaze.net
-Darcsweb:    http://darcs.ramaze.net
+View source:  http://source.ramaze.net
+Github:       http://github.com/manveru/ramaze
+
+Nightly gems: http://gems.ramaze.net
+git clone:    git://github.com/manveru/ramaze
 
 IRC: #ramaze on irc.freenode.net
 
@@ -32,56 +35,41 @@ Simple example:
   Ramaze.start
 
 
+This is a special release, and the first of the upcoming new series of monthly releases.
+As you may have noticed, Ramaze has changed to a date base versioning system,
+although this means that people who have waited for a 1.0 for the past years
+may be disappointed it provides much larger flexibility in detecting new
+versions and comparing them with nightly builds.
+
+Another change is the switch from darcs to git and moving our primary
+repository to github. There have been serious performance issues regarding
+darcs as Ramaze gathered a longer history, using git allows us to move on at a
+faster pace again.
+
+Please regard this release as a major step from the previous one, over 450
+patches have been applied and there were changes in the internal API.
+
+We are unable to nicely summarize these changes, so this release will not have
+a list of the most important ones, if you are concerned about a specific area
+feel free to ask on the Mailing list or stop by on IRC.
+
 Special (alphabetic) thanks go to:
 
-  Aman 'tmm1' Gupta         - patches and support
-  Carlo Zottmann            - first patch!
-  Chris 'celldee' Duncan    - first patch!
-  Gabriele 'riffraff' Renzi - patches for file dispatcher
-  jeedee                    - new Ramaze logo
-  Jonathan 'Kashia' Buch    - patches and support
-  Keita Yamaguchi           - first patch!
-  Pistos                    - lots of friendly support
-  skaar                     - first patch!
-
-
-Selected summary of the 62 patches from 0.3.0 to 0.3.5:
-
-  Core
-    - Ramaze::Contrib::Route made available by default as Ramaze::Route
-      (backwards compatibility retained)
-    - Support added for ETag and If-Modified-Since in Dispatcher::File
-    - Adapter for LiteSpeed webserver added
-    - Added ability to set default session cookie options using Session::COOKIE
-    - Support added for Content-Language based localization and gettext
-
-  Templates
-    - Support added for passing in locals to render_template
-    - Added support for symbol argument to template_root
-    - render_template no longer requires template extensions
-    - Dots allowed in template extensions (template.html.erb)
-
-  Templating Engines
-    - Builder templating engine added to produce XML
-    - RedCloth templating engine added
-    - Amrita2 templating engine updated to latest release
-
-  Helpers
-    - Simple EmailHelper added
-    - IdentityHelper updated for latest ruby-openid
-    - MarukuHelper added
-    - AuthHelper cleaned up
-    - LinkHelper improved: A(), R(), Rs() and breadcrumbs
-
-  Examples
-    - All examples were standardized to include rubygems
-    - Simple file upload example added
-    - Search and diff functionality added to Rapaste
-
-  Misc
-    - Read and read/write issues fixed in Ramaze::Store
-    - Fix applied for running Ramaze apps within IDEs on Windows
-
+  Aman 'tmm1' Gupta         - Tons of patches, support
+  andy                      - Cleanup
+  Ara T. Howard             - Tagz templating engine
+  Clive Crous               - Patches, cleanup
+  evaryont                  - Patches for identity helper
+  James Tucker              - OSX compatibility, cleanup and fixes
+  Jonathan 'Kashia' Buch    - Patches, support and the first ramaze paper
+  Keita Yamaguchi           - Much work on the benchmark suite
+  Leo Borisenko             - Fix for SourceReload on windows
+  Pistos                    - Mathetes, patches and lots of friendly support
+  Riku Räisäenen            - Patches for scaffolding example
+  Ryan Grove                - Various fixes and patches
+  Sam Carr                  - Patches and action matching speedup
+  Thomas Leitner            - Patches for identity helper
+  Wang Jinjing              - patches, 1.9/1.8.7 compatibility
 
 A complete Changelog is available at
 http://darcs.ramaze.net/ramaze/doc/CHANGELOG
