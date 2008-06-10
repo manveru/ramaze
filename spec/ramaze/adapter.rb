@@ -15,7 +15,7 @@ $output = StringIO.new
 Ramaze::Log.loggers << Ramaze::Logging::Logger::Informer.new($output)
 
 describe "Adapter" do
-  ramaze ramaze_options
+  ramaze ramaze_options ||= {}
   behaves_like "http"
 
   it 'should do a simple request' do
@@ -35,5 +35,15 @@ describe "Adapter" do
     $output.string = ""
     get('/')
     $output.string.should.not =~ /request took/
+  end
+
+  it 'should allow using an Adapter.before block' do
+    Ramaze::Adapter.before do |env|
+      [ 200, {'Content-Type'=>'text/plain'}, 'i am before' ]
+    end
+
+    ret = get('/')
+    ret.status.should == 200
+    ret.body.should == 'i am before'
   end
 end

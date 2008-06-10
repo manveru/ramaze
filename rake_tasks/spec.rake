@@ -19,7 +19,7 @@ task 'spec' do
     Dir[root/'examples/**/spec/**/*.rb']
 
   ignore = [
-    root/'spec/ramaze/adapter.rb', root/'spec/ramaze/request.rb',
+    root/'spec/ramaze/request.rb',
   ].map{|i| Dir[i].map{|f| File.expand_path(f) }}.flatten
 
   config = RbConfig::CONFIG

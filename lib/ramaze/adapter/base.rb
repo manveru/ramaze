@@ -11,6 +11,19 @@ module Ramaze
       Rack::ShowExceptions
     )
 
+    # Helper to assign a new block to before_call
+    # Usage:
+    #   Ramaze::Adapter.before do |env|
+    #     if env['PATH_INFO'] =~ /suerpfast/
+    #       [200, {'Content-Type' => 'text/plain'}, ['super fast!']]
+    #     end
+    #   end
+
+    def self.before(&block)
+      @before = block if block
+      @before
+    end
+
     # This class is holding common behaviour for its subclasses.
 
     class Base
@@ -52,26 +65,13 @@ module Ramaze
           @thread.join
         end
 
-        # Helper to assign a new block to before_call
-        # Usage:
-        #   Ramaze::Adapter.before do |env|
-        #     if env['PATH_INFO'] =~ /suerpfast/
-        #       [200, {'Content-Type' => 'text/plain'}, ['super fast!']]
-        #     end
-        #   end
-
-        def before(&block)
-          @before = block if block
-          @before
-        end
-
         # Tries to find the block assigned by #before and calls it, logs and
         # raises again any errors encountered during this process.
 
         def before_call env
-          if before
+          if Adapter.before
             begin
-              before.call(env)
+              Adapter.before.call(env)
             rescue Object => e
               Ramaze::Log.error e
               raise e
