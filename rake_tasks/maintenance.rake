@@ -1,3 +1,11 @@
+def version_today
+  Date.today.strftime("%Y.%m.%d")
+end
+
+def version_month
+  Date.today.strftime("%Y.%m")
+end
+
 namespace :maintenance do
   desc "add copyright to all .rb files in the distribution"
   task 'add-copyright' do
@@ -21,13 +29,6 @@ namespace :maintenance do
     end
   end
 
-  desc "Update doc/CHANGELOG"
-  task 'doc/CHANGELOG' do
-    File.open('doc/CHANGELOG', 'w+') do |f|
-      f.puts `git log`
-    end
-  end
-
   desc "#{README} to doc/README.html"
   Rake::RDocTask.new('readme2html-build') do |rd|
     rd.options = %w[
@@ -39,12 +40,6 @@ namespace :maintenance do
     rd.rdoc_files = [README]
     rd.main = README
     rd.title = "Ramaze documentation"
-  end
-
-  desc "#{README} to doc/README.html"
-  task 'readme2html' => ['readme-build'] do
-    sh "maruku #{README}"
-    mv 'README.html', 'doc/README.html'
   end
 
   desc "generate doc/TODO from the TODO tags in the source"
@@ -94,34 +89,6 @@ namespace :maintenance do
             f.puts(line)
           end
         end
-      end
-    end
-  end
-
-  desc "Compile the #{README} from the parts of doc/readme"
-  task 'readme-build' do
-    require 'enumerator'
-
-    chapters = [
-      'About Ramaze',         'introduction',
-      'Features Overview',    'features',
-      'Basic Principles',     'principles',
-      'Installation',         'installing',
-      'Getting Started',      'getting_started',
-      'A couple of Examples', 'examples',
-      'How to find Help',     'getting_help',
-      'Appendix',             'appendix',
-      'And thanks to...',     'thanks',
-    ]
-
-    File.open(README, 'w+') do |readme|
-      readme.puts COPYRIGHT.map{|l| l[1..-1]}, ''
-
-      chapters.each_slice(2) do |title, file|
-        file = File.join('doc', 'readme_chunks', "#{file}.txt")
-        chapter = File.read(file)
-        readme.puts "# #{title}", '', chapter
-        readme.puts '', '' unless title == chapters[-2]
       end
     end
   end

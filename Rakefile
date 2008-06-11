@@ -20,15 +20,16 @@ $:.unshift File.join(File.dirname(__FILE__), "lib")
 
 require 'ramaze/version'
 load 'rake_tasks/conf.rake'
-load 'rake_tasks/gem.rake'
 load 'rake_tasks/maintenance.rake'
 load 'rake_tasks/spec.rake'
 load 'rake_tasks/coverage.rake'
+load 'rake_tasks/release.rake'
 load 'rake_tasks/git.rake'
+load 'rake_tasks/gem.rake'
 
-task :default => ['spec']
-task :test => ['spec']
-task :package => ['jquery']
+# task :default => ['spec']
+# task :test => ['spec']
+# task :package => ['jquery']
 
 desc 'download latest jquery and put in /lib/proto/public/js/jquery.js'
 task :jquery do
@@ -152,5 +153,46 @@ task 'traits' do
       print '  ', trait, "\n"
     end
     puts
+  end
+end
+
+desc "Update doc/CHANGELOG"
+task 'doc/CHANGELOG' do
+  File.open('doc/CHANGELOG', 'w+') do |f|
+    f.puts `git log`
+  end
+end
+
+desc "#{README} to doc/README.html"
+task 'doc/README.html' => [README] do
+  sh "maruku #{README}"
+  mv 'README.html', 'doc/README.html'
+end
+
+desc "Compile the #{README} from the parts of doc/readme"
+task README do
+  require 'enumerator'
+
+  chapters = [
+    'About Ramaze',         'introduction',
+    'Features Overview',    'features',
+    'Basic Principles',     'principles',
+    'Installation',         'installing',
+    'Getting Started',      'getting_started',
+    'A couple of Examples', 'examples',
+    'How to find Help',     'getting_help',
+    'Appendix',             'appendix',
+    'And thanks to...',     'thanks',
+  ]
+
+  File.open(README, 'w+') do |readme|
+    readme.puts COPYRIGHT.map{|l| l[1..-1]}, ''
+
+    chapters.each_slice(2) do |title, file|
+      file = File.join('doc', 'readme_chunks', "#{file}.txt")
+      chapter = File.read(file)
+      readme.puts "# #{title}", '', chapter
+      readme.puts '', '' unless title == chapters[-2]
+    end
   end
 end

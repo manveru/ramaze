@@ -1,8 +1,63 @@
-task :release => ['doc/CHANGELOG', 'doc/README'] do
+def latest_release_id
+  require 'open-uri'
+  require 'hpricot'
+
+  url = "http://rubyforge.org/frs/?group_id=3034"
+  doc = Hpricot(open(url))
+  a = (doc/:a).find{|a| a[:href] =~ /release_id/}
+
+  version = a.inner_html
+  release_id = Hash[*a[:href].split('?').last.split('=').flatten]['release_id']
 end
 
-task 'git:tag' do
-  require 'git'
-  git = Git.open('.')
-  git.add_tag GEMSPEC.version
+def update_version_rb(version)
+  File.open('lib/ramaze/version.rb', 'w+') do |v|
+    v.puts COPYRIGHT
+    v.puts
+    v.puts "module Ramaze"
+    v.puts "  VERSION = #{version.to_s.dump}"
+    v.puts "end"
+  end
+end
+
+def prepare_package(version)
+  update_version_rb(version)
+  spec = generate_gemspec(version)
+
+  Rake::GemPackageTask.new(spec) do |pkg|
+    pkg.need_tar = true
+    pkg.need_zip = true
+  end
+
+  Rake::Task['package'].invoke
+end
+
+namespace :release do
+  desc 'Nightly release to gems.ramaze.net'
+  task 'nightly' do
+    prepare_package(version_today)
+
+    location = '/srv/www/gems/gems'
+
+    sh "scp pkg/*.{gem,tgz,zip} ramaze.net:#{location}"
+    sh "ssh ramaze.net '
+source ~/.zsh/export.sh
+cd #{location}/../
+gem generate_index'"
+  end
+
+  desc 'Monthly release to rubyforge'
+  task 'monthly' do
+    prepare_package(v = version_month)
+
+    sh "rubyforge login"
+    sh "rubyforge add_release ramaze ramaze #{v} pkg/ramaze-#{v}.gem"
+
+    release_id = latest_release_id
+
+    files = Dir['pkg/*'].reject{|f| File.directory?(f) or f =~ /\.gem$/ }
+    files.each do |file|
+      sh "rubyforge add_file ramaze ramaze #{release_id} '#{file}'"
+    end
+  end
 end

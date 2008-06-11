@@ -1,40 +1,29 @@
-GEMSPEC =
+def generate_gemspec(version)
   Gem::Specification.new{|s|
-  s.name = "ramaze"
-  s.version = Date.today.strftime('%Y.%m.%d')
-  s.summary = "Ramaze is a simple and modular web framework"
-  s.description = s.summary
+    s.name = "ramaze"
+    s.version = version
+    s.summary = "Ramaze is a simple and modular web framework"
+    s.description = s.summary
 
-  s.author = "Michael 'manveru' Fellinger"
-  s.email = "m.fellinger@gmail.com"
-  s.homepage = "http://ramaze.rubyforge.org"
-  s.rubyforge_project = "ramaze"
+    s.author = "Michael 'manveru' Fellinger"
+    s.email = "m.fellinger@gmail.com"
+    s.homepage = "http://ramaze.rubyforge.org"
+    s.rubyforge_project = "ramaze"
 
-  s.bindir = "bin"
-  s.require_path = "lib"
+    s.bindir = "bin"
+    s.require_path = "lib"
 
-  s.executables = Dir["#{s.bindir}/*"].map{|f| File.basename(f) }
-  s.files = FileList.new('**/*'){|fl|
-    fl.exclude(/^pkg\//)
+    s.executables = Dir["#{s.bindir}/*"].map{|f| File.basename(f) }
+    s.files = FileList.new('**/*'){|fl|
+      fl.exclude(/^pkg\//)
+    }
+
+    s.platform = Gem::Platform::RUBY
+    s.has_rdoc = true
+    s.post_install_message = POST_INSTALL_MESSAGE
+
+    s.add_dependency('rack', '>=0.3.0')
   }
-
-  s.platform = Gem::Platform::RUBY
-  s.has_rdoc = true
-  s.post_install_message = POST_INSTALL_MESSAGE
-
-  s.add_dependency('rack', '>=0.3.0')
-}
-
-namespace :gem do
-  desc "Update /ramaze.gemspec"
-  task 'gemspec' do
-    update_gemspec(GEMSPEC)
-  end
-end
-
-Rake::GemPackageTask.new(GEMSPEC) do |pkg|
-  pkg.need_tar = true
-  pkg.need_zip = true
 end
 
 def update_gemspec(spec)
