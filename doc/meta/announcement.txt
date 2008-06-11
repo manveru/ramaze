@@ -16,8 +16,9 @@ Screencasts:  http://ramaze.net/screencasts
 View source:  http://source.ramaze.net
 Github:       http://github.com/manveru/ramaze
 
-Nightly gems: http://gems.ramaze.net
-git clone:    git://github.com/manveru/ramaze
+Nightly gems:    http://gems.ramaze.net
+Git clone:       git://github.com/manveru/ramaze
+Current tarball: http://github.com/manveru/ramaze/tarball/master
 
 IRC: #ramaze on irc.freenode.net
 
@@ -72,7 +73,7 @@ Special (alphabetic) thanks go to:
   Wang Jinjing              - patches, 1.9/1.8.7 compatibility
 
 A complete Changelog is available at
-http://darcs.ramaze.net/ramaze/doc/CHANGELOG
+http://github.com/manveru/ramaze/tree/master/doc/CHANGELOG?raw=true
 
 
 Known issues:
