@@ -10,11 +10,11 @@ implementation and usage. Ramaze is under development by a growing community
 and in production use at companies.
 
 
-Home page:    http://ramaze.net
-Screencasts:  http://ramaze.net/screencasts
+Home page:       http://ramaze.net
+Screencasts:     http://ramaze.net/screencasts
 
-View source:  http://source.ramaze.net
-Github:       http://github.com/manveru/ramaze
+Source browser:  http://source.ramaze.net
+Repository:      http://github.com/manveru/ramaze
 
 Nightly gems:    http://gems.ramaze.net
 Git clone:       git://github.com/manveru/ramaze
