@@ -272,10 +272,22 @@ There are some basic principles that Ramaze tries to follow:
 
   Some hints for the usage of Git.
 
-  * use require 'ramaze' from everywhere
+  * use `require 'ramaze'` from everywhere
 
-    add a file to your site\_ruby named 'ramaze.rb'
-    the content should be: "require '/path/to/git/repo/ramaze/lib/ramaze'"
+    Simply add the path to your repository to the RUBYLIB environment variable.
+    If you are using bash you can simply put following line into your .bashrc:
+
+        $ export RUBYLIB="$HOME/path/to/repo/lib/"
+
+    Of course you should put the real path instead, you can also add multiple
+    paths, or create your personal `site_ruby`:
+
+        $ export RUBYLIB="$HOME/ruby/ramaze/lib:$HOME/.site_ruby:$HOME/ruby/bacon/lib"
+
+  * use `require 'ramaze'` systemwide from everywhere
+
+    add a file to your `site_ruby` directory named 'ramaze.rb'
+    the content should be: `require '/path/to/git/repo/ramaze/lib/ramaze'`
 
   * Pull the latest version
 
