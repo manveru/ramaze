@@ -5,7 +5,7 @@ begin
   when :memory
     DB = Sequel.sqlite
   else
-    DB = Sequel.sqlite 'wikore.db'
+    DB = Sequel.connect("sqlite://#{__DIR__}/wikore.db")
   end
 rescue NoMethodError
   raise LoadError, 'Install latest Sequel gem'

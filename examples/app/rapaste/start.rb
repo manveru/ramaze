@@ -16,7 +16,7 @@ STYLE = 'iplastic'
 
 Ramaze::Log.debug "done."
 
-DB = Sequel.sqlite
+DB = Sequel.connect("sqlite://#{__DIR__}/rapaste.sqlite")
 
 require 'model/paste'
 require 'controller/paste'
