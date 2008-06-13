@@ -17,9 +17,6 @@ class String
       ::CGI.escape(self)
     when :uri
       ::URI.escape(self)
-    when :sql
-      Ramaze::deprecated("String#escape(:sql)")
-      gsub(%r/'/, "''")
     else
       raise ArgumentError, "do not know how to escape '#{ which }'"
     end

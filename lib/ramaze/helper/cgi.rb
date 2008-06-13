@@ -35,11 +35,6 @@ module Ramaze
       ::CGI.escapeHTML(string.to_s).gsub(/#/, '&#35;')
     end
 
-    def c(string)
-      Ramaze::deprecated("Helper::CGI#c", "Helper::CGI#h")
-      h(string)
-    end
-
     # one-letter versions help in case like #{h foo.inspect}
     # ERb/ERuby/Rails compatible
     alias u url_encode

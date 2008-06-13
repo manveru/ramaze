@@ -95,16 +95,6 @@ module Ramaze
         ].find{|path| File.directory?(path) } || @view_root
       end
 
-      def template_root=(tr)
-        Ramaze::deprecated "Global.template_root=", "Global.view_root="
-        self.view_root = tr
-      end
-
-      def template_root
-        Ramaze::deprecated "Global.template_root", "Global.view_root"
-        self.view_root
-      end
-
       def adapter
         find_from_aliases(@adapter, :adapter_aliases, Ramaze::Adapter, "ramaze/adapter")
       end

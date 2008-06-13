@@ -45,11 +45,6 @@ module Ramaze
           }
         end
 
-        def start_server(host, port)
-          Ramaze::deprecated("Adapter::Base::start_server", "Adapter::Base::startup")
-          startup(host, port)
-        end
-
         # Does nothing by default
 
         def shutdown

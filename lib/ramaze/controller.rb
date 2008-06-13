@@ -158,11 +158,6 @@ module Ramaze
         end
       end
 
-      def template_root(*args)
-        Ramaze.deprecated("Controller::template_root", "Controller::view_root")
-        view_root(*args)
-      end
-
       # This is used for template rerouting, takes action, optionally a
       # controller and action to route to.
       #
