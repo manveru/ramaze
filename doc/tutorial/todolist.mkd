@@ -95,7 +95,7 @@ simple.
             TodoList.each do |title, value|
               status = value[:done] ? 'done' : 'not done'
             ?>
-            <li>#{c title}: #{status}</li>
+            <li>#{h title}: #{status}</li>
           <?r end ?>
         </ul>
       </body>
@@ -196,7 +196,7 @@ changed to do following:
         <?r else ?>
           <ul>
             <?r @tasks.each do |title, status| ?>
-              <li>#{c title}: #{status}</li>
+              <li>#{h title}: #{status}</li>
             <?r end ?>
           </ul>
         <?r end ?>
@@ -285,7 +285,7 @@ Jump into `view/index.xhtml` and do the following:
 
     <?r @tasks.each do |title, status, toggle| ?>
       <li>
-        #{c title}: #{status} - [ #{toggle} ]
+        #{h title}: #{status} - [ #{toggle} ]
       </li>
     <?r end
 {:lang=ruby}
@@ -393,7 +393,7 @@ Now jumping to `view/index.xhtml` again, change it so it shows the link:
 
     <?r @tasks.each do |title, status, toggle, delete| ?>
       <li>
-        #{c title}: #{status} [ #{toggle} | #{delete} ]
+        #{h title}: #{status} [ #{toggle} | #{delete} ]
       </li>
     <?r end ?>
 
@@ -491,7 +491,7 @@ First the `view/index.xhtml`
         <ul>
           <?r @tasks.each do |title, status, toggle, delete| ?>
             <li>
-              #{c title}: #{status} [ #{toggle} | #{delete} ]
+              #{h title}: #{status} [ #{toggle} | #{delete} ]
             </li>
           <?r end ?>
         </ul>
@@ -522,7 +522,7 @@ So, from what we have right now:
     <ul>
       <?r @tasks.each do |title, status, toggle, delete| ?>
         <li>
-          #{c title}: #{status} [ #{toggle} | #{delete} ]
+          #{h title}: #{status} [ #{toggle} | #{delete} ]
         </li>
       <?r end ?>
     </ul>
@@ -532,7 +532,7 @@ To something like this:
     <table>
       <?r @tasks.each do |title, status, toggle, delete| ?>
         <tr>
-          <td class="title">  #{c title}  </td>
+          <td class="title">  #{h title}  </td>
           <td class="status"> #{status} </td>
           <td class="toggle"> #{toggle} </td>
           <td class="delete"> #{delete} </td>
