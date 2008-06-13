@@ -4,25 +4,23 @@
 require 'logger'
 
 module Ramaze
-  module Logging
-    module Logger
+  module Logger
 
-      # Informer for the Stdlib Logger
+    # Informer for the Stdlib Logger
 
-      class Logger < ::Logger
+    class Logger < ::Logger
 
-        # integration to Logging
+      # integration to Logging
 
-        def log(tag, *args)
-          __send__(tag, args.join("\n"))
-        end
-
-        # Stub for compatibility
-        def dev(*args)
-          debug(*args)
-        end
+      def log(tag, *args)
+        __send__(tag, args.join("\n"))
       end
 
+      # Stub for compatibility
+      def dev(*args)
+        debug(*args)
+      end
     end
+
   end
 end

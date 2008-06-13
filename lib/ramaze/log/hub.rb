@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  module Logging
+  module Logger
 
     # Bundles different informer instances and sends incoming messages to each.
     # This is the default with Informer as only member.

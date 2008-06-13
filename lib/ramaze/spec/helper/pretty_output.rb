@@ -16,9 +16,9 @@ module Bacon
       error = yield
 
       unless error.empty?
-        if defined?(Ramaze::Logging::Logging)
+        if defined?(Ramaze::Logging)
           puts '', " #{NAME} -- #{description} [FAILED]".center(70, '-'), ''
-          colors = Ramaze::Logging::Logger::Informer::COLORS
+          colors = Ramaze::Logger::Informer::COLORS
 
           until RamazeLogger.history.empty?
             tag, line = RamazeLogger.history.shift

@@ -4,8 +4,8 @@ describe 'Informer' do
   before do
     @out = []
     def @out.puts(*args) push(*args) end
-    Ramaze::Logging::Logger::Informer.trait[:colorize] = false
-    @inform = Ramaze::Logging::Logger::Informer.new(@out)
+    Ramaze::Logger::Informer.trait[:colorize] = false
+    @inform = Ramaze::Logger::Informer.new(@out)
   end
 
   def format(tag, string)
@@ -39,27 +39,27 @@ describe 'Informer' do
   end
 
   it 'should choose stdout on init(stdout,:stdout,STDOUT)' do
-    a = Ramaze::Logging::Logger::Informer.new(STDOUT)
-    b = Ramaze::Logging::Logger::Informer.new(:stdout)
-    c = Ramaze::Logging::Logger::Informer.new('stdout')
+    a = Ramaze::Logger::Informer.new(STDOUT)
+    b = Ramaze::Logger::Informer.new(:stdout)
+    c = Ramaze::Logger::Informer.new('stdout')
     [a,b,c].each { |x| x.out.should == $stdout}
   end
 
   it 'should choose stderr on init(stderr,:stderr,STDERR)' do
-    a = Ramaze::Logging::Logger::Informer.new(STDERR)
-    b = Ramaze::Logging::Logger::Informer.new(:stderr)
-    c = Ramaze::Logging::Logger::Informer.new('stderr')
+    a = Ramaze::Logger::Informer.new(STDERR)
+    b = Ramaze::Logger::Informer.new(:stderr)
+    c = Ramaze::Logger::Informer.new('stderr')
     [a,b,c].each { |x| x.out.should == $stderr}
   end
 
   it 'should use IO when supplied' do
-    i = Ramaze::Logging::Logger::Informer.new(s = StringIO.new)
+    i = Ramaze::Logger::Informer.new(s = StringIO.new)
     i.out.should == s
   end
 
   it 'should open file otherwise' do
     begin
-      i = Ramaze::Logging::Logger::Informer.new('tmp.dummy')
+      i = Ramaze::Logger::Informer.new('tmp.dummy')
       out = i.out
       out.should.be.instance_of(File)
       out.path.should == 'tmp.dummy'

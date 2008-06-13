@@ -4,38 +4,36 @@
 require 'syslog'
 
 module Ramaze
-  module Logging
-    module Logger
+  module Logger
 
-      # Informer for Syslog from rubys standard-library.
+    # Informer for Syslog from rubys standard-library.
 
-      class Syslog
-        include ::Syslog
+    class Syslog
+      include ::Syslog
 
-        # opens syslog
+      # opens syslog
 
-        def initialize
-          open unless ::Syslog.opened?
-        end
-
-        # alias for default syslog methods so they match ramaze
-        alias error err
-        alias warn warning
-        alias dev debug
-
-        # just sends all messages received to ::Syslog
-        def inform(tag, *args)
-          self.__send__(tag, *args)
-        end
-
-        public :error, :warn
-
-        # Has to call the modules singleton-method.
-        def inspect
-          ::Syslog.inspect
-        end
+      def initialize
+        open unless ::Syslog.opened?
       end
 
+      # alias for default syslog methods so they match ramaze
+      alias error err
+      alias warn warning
+      alias dev debug
+
+      # just sends all messages received to ::Syslog
+      def inform(tag, *args)
+        self.__send__(tag, *args)
+      end
+
+      public :error, :warn
+
+      # Has to call the modules singleton-method.
+      def inspect
+        ::Syslog.inspect
+      end
     end
+
   end
 end
