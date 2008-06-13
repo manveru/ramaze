@@ -89,7 +89,6 @@ module Ramaze
     end
 
     def cached_memory_process(cache, key, store_options)
-      key = Digest::SHA1.hexdigest(key.to_s)
       stored = cache[key] || {}
 
       if content = stored[:content]
