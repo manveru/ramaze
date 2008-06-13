@@ -6,7 +6,7 @@ class Binding
   #   usage: x = 42; p binding.locals #=> {'x'=> 42}
   def locals
     Kernel::eval '
-      local_variables.inject({}){|h,v| h.update v => eval(v)}
+      local_variables.map{|v| v.to_s}.inject({}){|h,v| h.update v => eval(v)}
     ', self
   end
 
