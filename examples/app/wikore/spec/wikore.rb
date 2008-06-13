@@ -107,5 +107,5 @@ describe 'Wikore' do
     end
   end
 
-  FileUtils.rm('wikore.db')
+  FileUtils.rm_f(DB_FILE)
 end
