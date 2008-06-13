@@ -46,4 +46,6 @@ describe 'RaPaste' do
     page = get('/1')
     (Hpricot(page.body)/'div#paste_body').inner_text.should =~ /spec paste/
   end
+
+  FileUtils.rm_f(DB_FILE)
 end
