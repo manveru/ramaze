@@ -1,5 +1,6 @@
 # from merb/core_ext/get_args.rb
 begin
+  require 'parse_tree'
   require 'ruby2ruby'
 
   class ParseTreeArray < Array

@@ -1,5 +1,5 @@
 require 'spec/helper'
-spec_require 'ruby2ruby'
+spec_require 'parse_tree', 'ruby2ruby'
 
 Ramaze.contrib :auto_params
 
@@ -100,7 +100,7 @@ describe 'Parameterized actions' do
 end if method(:puts).respond_to? :get_args
 
 describe 'Normal behavior' do
-  extend MockHTTP
+  behaves_like 'http'
   ramaze
 
   it 'should work with no arguments' do
