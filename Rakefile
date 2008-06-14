@@ -26,6 +26,7 @@ load 'rake_tasks/coverage.rake'
 load 'rake_tasks/release.rake'
 load 'rake_tasks/git.rake'
 load 'rake_tasks/gem.rake'
+load 'rake_tasks/metric.rake'
 
 # task :default => ['spec']
 # task :test => ['spec']
