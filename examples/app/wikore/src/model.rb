@@ -22,7 +22,7 @@ module Model
 
   class Page < Sequel::Model(:page)
     set_schema do
-      instance_eval &PAGE_SCHEMA
+      instance_eval(&PAGE_SCHEMA)
       text :title, :unique => true, :null => false
     end
 
@@ -42,7 +42,7 @@ module Model
 
   class OldPage < Sequel::Model(:old_page)
     set_schema do
-      instance_eval &PAGE_SCHEMA
+      instance_eval(&PAGE_SCHEMA)
       text :title, :unique => false, :null => false
     end
   end
