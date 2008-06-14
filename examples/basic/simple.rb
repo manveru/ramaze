@@ -35,11 +35,11 @@ class SimpleController < Ramaze::Controller
   def join_all *strings
     strings.join
   end
-  
+
   def sum first, second
     first.to_i + second.to_i
   end
-  
+
   def post_or_get
     request.request_method
   end
