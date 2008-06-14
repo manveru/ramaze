@@ -197,30 +197,30 @@ module Ramaze
 
       def template(this, *argv)
         case argv.first
-          when Hash
-            options, *ignored = argv
-            controller = options[:controller] || options['controller']
-            action = options[:action] || options['action']
-            file = options[:file] || options['file']
-            info = {}
-            if file
-              file = file.to_s
-              unless Pathname(file).absolute?
-                root = [view_root || Global.view_root].flatten.first
-                file = File.join(root, file)
-              end
-              info[:file] = file
-            else
-              controller ||= self
-              action = (action || 'index').to_s
-              info[:controller] = controller
-              info[:action] = action
+        when Hash
+          options, *ignored = argv
+          controller = options[:controller] || options['controller']
+          action = options[:action] || options['action']
+          file = options[:file] || options['file']
+          info = {}
+          if file
+            file = file.to_s
+            unless Pathname(file).absolute?
+              root = [view_root || Global.view_root].flatten.first
+              file = File.join(root, file)
             end
-            trait "#{this}_template" => info
+            info[:file] = file
           else
-            controller, action, *ignored = argv
-            controller, action = self, controller unless action
-            trait "#{this}_template" => {:controller => controller, :action => action}
+            controller ||= self
+            action = (action || 'index').to_s
+            info[:controller] = controller
+            info[:action] = action
+          end
+          trait "#{this}_template" => info
+        else
+          controller, action, *ignored = argv
+          controller, action = self, controller unless action
+          trait "#{this}_template" => {:controller => controller, :action => action}
         end
       end
 
