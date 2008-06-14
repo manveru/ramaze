@@ -55,8 +55,8 @@ module Ramaze
         end
 
         # Synchronize the block to run with the mutex
-        def ext_functions_synchronize &block
-          XSLT_EXT_FUNCTIONS_LOCK.synchronize &block
+        def ext_functions_synchronize(&block)
+          XSLT_EXT_FUNCTIONS_LOCK.synchronize(&block)
         end
 
         # Expose functors
