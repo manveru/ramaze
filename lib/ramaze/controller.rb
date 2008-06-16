@@ -67,7 +67,8 @@ module Ramaze
 
       # if trait[:automap] is set and controller is not in Global.mapping yet
       # this will build a new default mapping-point, MainController is put
-      # at '/' by default.
+      # at '/' by default. For other Class names, String#snake_case is called,
+      # e.g. FooBarController is mapped at '/foo_bar'.
 
       def mapping
         global_mapping = Global.mapping.invert[self]
@@ -264,6 +265,10 @@ module Ramaze
         STATE[:controller] = action.controller
         action.render
       end
+
+      # By default, returns all ancestors of current Controller that have
+      # Ramaze::Controller as their ancestor. Optional argument parent
+      # can be used return ancestors that have parent as an ancestor.
 
       def relevant_ancestors(parent = Ramaze::Controller)
         ancestors.select do |anc|

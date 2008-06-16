@@ -79,6 +79,10 @@ module Ramaze
 
         private
 
+        # Shortcut for Ramaze::Dispatcher::File#expand_path(path).
+        # Returns the absolute path of passed argument e.g.
+        # "/Users/rikur/ramaze_tests/public/foo.txt"
+
         def expand(path)
           ::File.expand_path(path)
         end

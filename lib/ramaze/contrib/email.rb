@@ -67,6 +67,8 @@ Message-Id: #{id}
         send_smtp( email, recipient, subject )
       end
 
+      # the raw mail sending method used by Ramaze::EmailHelper
+
       def send_smtp( email, recipient, subject )
         options = trait.values_at(:smtp_server, :smtp_port, :smtp_helo_domain,
                                   :smtp_username, :smtp_password, :smtp_auth_type)

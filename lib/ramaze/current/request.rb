@@ -28,9 +28,13 @@ module Ramaze
       super
     end
 
+    # the full request URI provided by Rack::Request e.g. http://localhost:7000/controller/action?foo=bar.xhtml
+
     def request_uri
       env['REQUEST_URI'] || path_info
     end
+
+    # the IP address(s) making the request provided by Rack::Request. You shouldn't trust it
 
     def ip
       if addr = env['HTTP_X_FORWARDED_FOR']
@@ -47,9 +51,8 @@ module Ramaze
     ipv6 = %w[ fc00::/7 fe80::/10 fec0::/10 ::1 ]
     LOCAL = (ipv4 + ipv6).map{|a| IPAddr.new(a)} unless defined?(LOCAL)
 
-    # --
-    # Mongrel somehow puts together multiple IPs when proxy is involved.
-    # ++
+    # returns true if the IP address making the request is from local network.
+    # Optional argument address can be used to check any IP address.
 
     def local_net?(address = ip)
       addr = IPAddr.new(address)
@@ -62,6 +65,8 @@ module Ramaze
       return params[key.to_s] if rest.empty?
       [key, *rest].map{|k| params[k.to_s] }
     end
+
+    # Sets any arguments passed as @instance_variables for the current action.
 
     def to_ivs(*args)
       instance = Action.current.instance
@@ -156,11 +161,17 @@ module Ramaze
       }
     end
 
+    # Returns a string presentation of the request, useful for debugging
+    # parameters of the action.
+
     def to_s
       p, c, e = params.inspect, cookies.inspect, http_vars.inspect
       %{#<Ramaze::Request params=#{p} cookies=#{c} env=#{e}>}
     end
     alias inspect to_s
+
+    # Pretty prints current action with parameters, cookies and
+    # enviroment variables.
 
     def pretty_print pp
       p, c, e = params, cookies, http_vars
@@ -197,6 +208,9 @@ module Ramaze
       host = env['HTTP_HOST']
       URI("#{scheme}://#{host}#{path}")
     end
+
+    # Returns and array of locales from env['HTTP_ACCEPT_LANGUAGE].
+    # e.g. ["fi", "en", "ja", "fr", "de", "es", "it", "nl", "sv"]
 
     def locales
       env['HTTP_ACCEPT_LANGUAGE'].to_s.split(/(?:,|;q=[\d.,]+)/)

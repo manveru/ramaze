@@ -219,16 +219,19 @@ module Ramaze
 
   # Form for instances of the model class
   class InstanceForm < Form
-    # <input type='text' name='name' value='value' />
+    # returns <input type='text' name='name' value='value' />
     def field_input(name, value)
       "<input type='text' name='#{name}' value='#{value}'/>"
     end
+
+    # returns <textarea name='name'>#{value}</textarea>
 
     def field_textarea(name, value)
       "<textarea name='#{name}'>#{value}</textarea>"
     end
 
-    # <input type="text" name="name" value="value" />
+    # returns <input type="text" name="name" value="value" />
+
     def field_integer(name, value)
       field_input(name, value)
     end

@@ -35,6 +35,8 @@ module Ramaze
           ex
         end
 
+        # Logs the request via Log#info unless it's boring.
+
         def log(path)
           case path
           when *Global.boring
