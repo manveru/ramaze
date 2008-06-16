@@ -53,6 +53,8 @@ module Ramaze
 
       private
 
+      # returns the Ramaze::Helper::Name Module Constant if exists.
+
       def find_helper(name)
         name = name.to_s.camel_case
         ramaze_helper_consts = ::Ramaze::Helper.constants.grep(/^#{name}$/i)
@@ -60,6 +62,9 @@ module Ramaze
           ::Ramaze::Helper.const_get(mod_name)
         end
       end
+
+      # Loads helper from /lib/ramaze/helper/name.(so, bundle, rb)
+      # raises LoadError if helper not found.
 
       def require_helper(name)
         paths = (PATH + [Global.root, "#{BASEDIR}/ramaze"]).join(',')
@@ -70,6 +75,8 @@ module Ramaze
         raise LoadError, "file for #{name} not found" unless file = files.first
         require(file)
       end
+
+      # injects the helper via include and extend, takes Constant as argument.
 
       def use_helper(mod)
         include mod

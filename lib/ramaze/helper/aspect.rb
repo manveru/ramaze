@@ -76,7 +76,7 @@ module Ramaze
   class Action
 
     # overwrites the default Action hook and runs the neccesary blocks in its
-    # scope. before actions are run starting from Ramaze::Controller down the
+    # scope before actions are run, starting from Ramaze::Controller down the
     # ancestor chain.
     def before_process
       common_aspect(:before)
@@ -84,7 +84,7 @@ module Ramaze
 
 
     # overwrites the default Action hook and runs the neccesary blocks in its
-    # scope. before actions are run starting from Ramaze::Controller down the
+    # scope after actions are run, starting from Ramaze::Controller down the
     # ancestor chain.
     def after_process
       common_aspect(:after)

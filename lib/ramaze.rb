@@ -99,9 +99,13 @@ module Ramaze
       end
     end
 
+    # A shortcut for setting Ramaze.trait[:started] = true.
+
     def skip_start
       trait[:started] = true
     end
+
+    # Forces the startup of Ramaze regardless if trait[:started] is set.
 
     def start!(options = {})
       trait[:started] = false
