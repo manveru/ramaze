@@ -337,12 +337,12 @@ namespace :maintenance do
   desc "list all undocumented methods"
   task 'undocumented' do
     $VERBOSE = false
-    Rake::Task['undocumented-module'].invoke
+    Rake::Task['maintenance:undocumented-module'].invoke
   end
 
   desc "list all undocumented methods verbosely"
   task 'undocumented-verbose' do
     $VERBOSE = true
-    Rake::Task['undocumented-module'].invoke
+    Rake::Task['maintenance:undocumented-module'].invoke
   end
 end
