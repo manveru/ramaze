@@ -12,7 +12,7 @@ module Ramaze
         "fcgi"                => "Fcgi",
         "thin"                => "Thin",
         "ebb"                 => "Ebb",
-        "cgi"                 => "CGI",
+        "cgi"                 => "Cgi",
         "lsws"                => "LSWS",
         "scgi"                => "SCGI",
         "webrick"             => "WEBrick",

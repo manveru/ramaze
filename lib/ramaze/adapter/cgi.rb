@@ -12,6 +12,7 @@ module Ramaze
       # to make it compatible with other adapters but have no influence and
       # can be omitted
       def self.startup(host = nil, port = nil)
+        Global.server=self
         Thread.new{ Rack::Handler::CGI.run(self) }
       end
     end
