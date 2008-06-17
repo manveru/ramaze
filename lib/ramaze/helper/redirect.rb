@@ -59,7 +59,7 @@ module Ramaze
     def raw_redirect(target, opts = {})
       target = target.to_s
       header = {'Location' => target}
-      status = opts[:status] || STATUS_CODE["See Other"]
+      status = opts[:status] || STATUS_CODE["Moved Temporarily"]
       body = %{You are being redirected, please follow <a href="#{target}">this link to: #{target}</a>!}
 
       Log.info("Redirect to '#{target}'")
