@@ -9,13 +9,13 @@ module Ramaze
     # shortcut for CGI.escape
 
     def url_encode(*args)
-      ::CGI.escape(*args.map{|arg| arg.to_s})
+      ::Rack::Utils.escape(*args.map{|a| a.to_s })
     end
 
     # shortcut for CGI.unescape
 
     def url_decode(*args)
-      ::CGI.unescape(*args.map{|arg| arg.to_s})
+      ::Rack::Utils.unescape(*args.map{|a| a.to_s })
     end
 
     # shortcut for CGI.escapeHTML
