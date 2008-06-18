@@ -21,7 +21,7 @@ module Ramaze
     # shortcut for CGI.escapeHTML
 
     def html_escape(string)
-      ::CGI.escapeHTML(string.to_s)
+      ::Rack::Utils.escape_html(string)
     end
 
     # shortcut for CGI.unescapeHTML
@@ -32,7 +32,7 @@ module Ramaze
 
     # safely escape all HTML and code
     def h(string)
-      ::CGI.escapeHTML(string.to_s).gsub(/#/, '&#35;')
+      ::Rack::Utils.escape_html(string).gsub(/#/, '&#35;')
     end
 
     # one-letter versions help in case like #{h foo.inspect}
