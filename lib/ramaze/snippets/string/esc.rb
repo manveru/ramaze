@@ -12,9 +12,9 @@ class String
   def escape which = :html
     case which
     when :html
-      ::CGI.escapeHTML(self)
+      Rack::Utils.escape_html(self)
     when :cgi
-      ::CGI.escape(self)
+      Rack::Utils.escape(self)
     when :uri
       ::URI.escape(self)
     else

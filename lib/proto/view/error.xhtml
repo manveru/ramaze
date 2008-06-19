@@ -49,7 +49,7 @@ Click on any of them to view the surrounding source code.</p>
   ?>
   <div class="additional">
     <h3 id="#{hash}">#{title}</h3>
-    <pre style="display:none" id="is_#{hash}">#{CGI.escapeHTML(content.pretty_inspect)}</pre>
+    <pre style="display:none" id="is_#{hash}">#{Rack::Utils.escape_html(content.pretty_inspect)}</pre>
   </div>
 <?r end ?>
 

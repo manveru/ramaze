@@ -47,11 +47,11 @@ module Ramaze
       self[:params] = par.map{ |pa|
         case pa
         when Array
-          pa.map{|p| CGI.unescape(p.to_s)}
+          pa.map{|p| Rack::Utils.unescape(p)}
         when nil
           nil
         else
-          CGI.unescape(pa.to_s)
+          Rack::Utils.unescape(pa)
         end
       } unless par.nil?
       self[:params] ||= []
