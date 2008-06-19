@@ -43,13 +43,11 @@ module Ramaze
       nil
     end
 
-    # out of some reason MemCache sometimes doesn't respond to
-    # get_multi, have to investigate this further.
-    #
-    # for now, i'll just use the dumbed down version and ask it
-    # whether it implements this functionality or not.
+    # Fetch for multiple keys at once.
 
     def get_multi(*keys)
+      # MemCache only responds to get_multi if the memcache-client_extensions gem
+      # is installed, so we check first and resort to another approach if not.
       if @cache.respond_to?(:get_multi)
         @cache.get_multi(*keys)
       else
