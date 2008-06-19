@@ -46,6 +46,23 @@ if runner
   end
 
   runner = File.expand_path(runner)
+  
+  console = Ramaze::Global.console
+
+  if console
+    ARGV.clear #Avoid passing args to IRB
+
+    Ramaze.trait[:started] = true
+    require runner
+
+    require 'irb'
+    require 'irb/completion'
+
+    ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
+    IRB.start
+    Ramaze.shutdown
+  end
+  
   daemonize = Ramaze::Global.daemonize
 
   unless daemonize.empty?
