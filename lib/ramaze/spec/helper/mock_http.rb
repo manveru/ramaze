@@ -57,7 +57,7 @@ module MockHTTP
 	def make_query query
 		return query unless query and not query.is_a?(String)
     query.map{|key, value|
-      "#{CGI::escape(key.to_s)}=#{CGI::escape(value.to_s)}"
+      "#{Rack::Utils.escape(key)}=#{Rack::Utils.escape(value)}"
     }.join('&')
 	end
 end

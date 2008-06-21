@@ -48,9 +48,7 @@ module Ramaze
       def add_on(key, cache_class)
         CACHES[key] = new(cache_class)
         CACHES[key].instance_variable_set("@cache_name", key)
-        self.class.class_eval do
-          define_method(key){ CACHES[key] }
-        end
+        eval("def self.%s; CACHES[%p]; end" % [key, key])
       end
 
     end

@@ -124,7 +124,7 @@ module Ramaze
 
         if Global.middleware
           message = "No action for '#{meta[:path]}'"
-          message << " on '#{CGI.escapeHTML(controller.to_s)}'" if controller
+          message << " on '#{Rack::Utils.escape_html(controller)}'" if controller
 
           raise(obj) if obj.respond_to?(:message)
           raise(Ramaze::Error, message)

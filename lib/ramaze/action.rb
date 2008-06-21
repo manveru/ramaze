@@ -59,10 +59,10 @@ module Ramaze
       self[:method] = (meth.empty? ? nil : meth)
     end
 
-    # runs all parameters assigned through flatten and CGI::unescape
+    # runs all parameters assigned through flatten and unescape
 
     def params=(*par)
-      self[:params] = par.flatten.compact.map{|pa| CGI.unescape(pa.to_s)}
+      self[:params] = par.flatten.compact.map{|pa| Rack::Utils.unescape(pa) }
     end
 
     # Use this as key for caches.

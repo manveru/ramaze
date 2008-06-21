@@ -7,13 +7,11 @@ module Ramaze
   # Usage is shown in spec/ramaze/helper/link.rb and the rdocs below.
 
   module Helper::Link
-  private
-
     # Builds a basic <a> tag.
     #
     # `text` is mandatory, the second hash of options will be transformed into
     # arguments of the tag, :href is a special case and its segments will be
-    # CGI.escaped.
+    # escaped.
     #
     # If you pass no :href, the text will be run through Rs and its result is
     # used instead. If you really want an empty href, use :href => ''
@@ -30,7 +28,7 @@ module Ramaze
 
       hash[:href] ||= Rs(*args)
       text = hash.delete(:text) || args.last || hash[:title] || hash[:href]
-      hash[:href] = hash[:href].to_s.gsub(/[^\/?;=]+/) {|m| CGI.escape(m) }
+      hash[:href] = hash[:href].to_s.gsub(/[^\/?;=]+/){|m| Rack::Utils.escape(m) }
 
       args = ['']
       hash.each {|k,v| args << %(#{k}="#{v}") if k and v }
@@ -72,7 +70,7 @@ module Ramaze
       front = atoms.join('/').squeeze('/')
 
       if args
-        rear = args.inject('?'){|s,(k,v)| s << "#{CGI.escape k.to_s}=#{CGI.escape v.to_s};"}[0..-2]
+        rear = args.inject('?'){|s,(k,v)| s << "#{Rack::Utils.escape(k)}=#{Rack::Utils.escape(v)};"}[0..-2]
         front + rear
       else
         front

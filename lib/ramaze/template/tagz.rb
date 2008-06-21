@@ -55,11 +55,11 @@ module Ramaze
         end
 
         def p *a
-          a.each{|elem| tagz << "#{ CGI.escapeHTML elem.inspect }#{ eol }"}
+          a.each{|elem| tagz << "#{ Rack::Utils.escape_html elem.inspect }#{ eol }"}
         end
 
         def pp *a
-          a.each{|elem| tagz << "#{ CGI.escapeHTML PP.pp(elem, '') }#{ eol }"}
+          a.each{|elem| tagz << "#{ Rack::Utils.escape_html PP.pp(elem, '') }#{ eol }"}
         end
 
         def eol
