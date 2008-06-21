@@ -10,7 +10,7 @@ begin
 rescue LoadError => ex
   puts ex
   puts "For nice colors on windows, please `gem install win32console`"
-  Ramaze::Informer.trait[:colorize] = false
+  Ramaze::Logger::Informer.trait[:colorize] = false
 end
 
 module Ramaze
