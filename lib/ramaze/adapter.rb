@@ -57,7 +57,7 @@ module Ramaze
 
           if Global.test_connections
             test_connection(host, port)
-            Log.info("Ramaze is ready to run on: #{host}:#{port}")
+            Log.info("Ramaze is ready to run on: #{host}:#{port} using #{Global.adapter}")
           end
 
           adapter.start(host, port)
