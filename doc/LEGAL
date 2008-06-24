@@ -14,7 +14,7 @@ lib/proto/js/jquery.js
   Author: John Resig
 
 lib/ramaze/spec/helper/simple_http.rb
-  License: GPL
+  License: Ruby
   Author: Tim Becker
 
 lib/ramaze/template/xslt.rb
