@@ -7,21 +7,16 @@ Example:
   require 'ramaze'
   require 'ramaze/gestalt'
 
-  def random_color
-    ('#' << '%02x' * 3) % (1..3).map{ rand(255) }
-  end
+  page = Ramaze::Gestalt.build{
+    title = 'Hello, World!'
 
-  puts Ramaze::Gestalt.build{
     html do
-      head do
-        title{"Hello World"}
-      end
+      head{ title(title) }
       body do
-        h1{"Hello, World!"}
-        div(:style => 'width:100%') do
-          10.times do
-            div(:style => "width:#{rand(100)}%;height:#{rand(100)}%;background:#{random_color}"){ '&nbsp;' }
-          end
+        h1(title)
+        p 'I count to 10'
+        ('1'..'10').each do |count|
+          div(:style => 'width: 25px; height: 25px'){ count }
         end
       end
     end
