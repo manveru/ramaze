@@ -67,7 +67,7 @@ module Ramaze
         end or atom.to_s
       end
 
-      front = atoms.join('/').squeeze('/')
+      front = [Global.prefix, *atoms].join('/').squeeze('/')
 
       if args
         rear = args.inject('?'){|s,(k,v)| s << "#{Rack::Utils.escape(k)}=#{Rack::Utils.escape(v)};"}[0..-2]

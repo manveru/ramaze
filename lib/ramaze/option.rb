@@ -117,6 +117,9 @@ module Ramaze
     o "Specify directory to serve static files",
       :public_root, "public", :cli => "public"
 
+    o "Prefix for incoming and outgoing links",
+      :prefix, '/'
+
     o "Record all Request objects by assigning a filtering Proc to me.",
       :record, false
 
