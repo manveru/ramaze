@@ -72,26 +72,26 @@ describe 'wiktacular' do
   end
 
   def edit_page(name, text='new text')
-    page = post('/save','handle'=>name,'text'=>text) 
-    page.status.should == 303
+    page = post('/save','handle'=>name,'text'=>text)
+    page.status.should == 302
     page.location.should == '/index/'+name
   end
-  
+
   def delete_page(name)
     page = get('/delete/'+name)
-    page.status.should == 303
+    page.status.should == 302
     page.location.should == '/'
   end
 
   def revert_page(name)
     page = get('/revert/'+name)
-    page.status.should == 303
+    page.status.should == 302
     page.location.should == '/'+name
   end
 
   def unrevert_page(name)
     page = get('/revert/'+name)
-    page.status.should == 303
+    page.status.should == 302
     page.location.should == '/'+name
   end
 

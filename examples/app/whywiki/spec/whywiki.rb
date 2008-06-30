@@ -26,7 +26,7 @@ describe 'WikiController' do
   it 'should start' do
     ramaze :public_root => base/:public,
            :view_root   => base/:template
-    get('/').status.should == 303
+    get('/').status.should == 302
   end
 
   it 'should have main page' do
@@ -46,7 +46,7 @@ describe 'WikiController' do
   end
 
   it 'should create pages' do
-    post('/save','text'=>'the text','page'=>'ThePage').status.should == 303
+    post('/save','text'=>'the text','page'=>'ThePage').status.should == 302
     page = Hpricot(get('/show/ThePage').body)
     body = page.at('body>div')
     body.should.not == nil

@@ -13,7 +13,7 @@ describe 'Wikore' do
 
   def check_redirect(to = '/')
     response = yield
-    response.status.should == 303
+    response.status.should == 302
     response.body.should =~ /<a href="#{to}">/
   end
 

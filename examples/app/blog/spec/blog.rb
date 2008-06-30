@@ -31,7 +31,7 @@ describe 'Blog' do
 
   def create_page(title,content)
     page = post('/create','title'=>title,'content'=>content)
-    page.status.should == 303
+    page.status.should == 302
     page.location.should == '/'
   end
 
@@ -78,7 +78,7 @@ describe 'Blog' do
     entries.size.should == 2
     delete_link = entries.last.at("a:contains('delete')")
     page = get(delete_link[:href])
-    page.status.should == 303
+    page.status.should == 302
     page.location.should == '/'
     (check_page/'div.entry').size.should == 1
   end
