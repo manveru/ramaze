@@ -48,7 +48,7 @@ describe 'Blog' do
     form.at('textarea').inner_html.should == ''
     form.at('input[@type=submit]')['value'].should == 'Add Entry'
   end
-  
+
   it 'should add new pages' do
     create_page('new page', 'cool! a new page')
     doc = check_page

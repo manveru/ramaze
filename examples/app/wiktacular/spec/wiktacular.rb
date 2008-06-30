@@ -60,7 +60,7 @@ describe 'wiktacular' do
   it 'should not have foobar page' do
     doc = check_page('/foobar')
     doc.at('div#text').inner_html.strip.should == 'No Entry'
-  end 
+  end
 
   it 'should allow page editing' do
     doc = check_page('/edit/main')
