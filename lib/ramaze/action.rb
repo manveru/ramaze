@@ -62,7 +62,7 @@ module Ramaze
     # runs all parameters assigned through flatten and unescape
 
     def params=(*par)
-      self[:params] = par.flatten.compact.map{|pa| Rack::Utils.unescape(pa) }
+      self[:params] = par.flatten.compact.map{|pa| Rack::Utils.unescape(pa.to_s) }
     end
 
     # Use this as key for caches.
