@@ -123,17 +123,15 @@ module Ramaze
         case name
         when String, Symbol
           name = name.to_s
-          name = self[alias_key][name] || name
-          find_require(name, mod, path)
+          class_name = self[alias_key][name] || name
+          find_require(name, class_name, mod, path)
         else
           name
         end
       end
 
-      def find_require(name, mod, path)
-        class_name = name.to_s
-        file_path = File.join(path, class_name.downcase)
-
+      def find_require(name, class_name, mod, path)
+        file_path = File.join(path, name)
         require(file_path) unless mod.const_defined?(class_name)
 
         mod.const_get(class_name)
