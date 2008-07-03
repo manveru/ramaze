@@ -63,7 +63,7 @@ class PasteController < Ramaze::Controller
     response['Content-Type'] = 'text/plain'
     respond paste.text
   end
-    
+
   def save_theme( theme_name )
     session[ :theme ] = theme_name
   end

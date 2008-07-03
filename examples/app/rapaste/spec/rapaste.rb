@@ -33,7 +33,7 @@ describe 'RaPaste' do
 
   it 'should create a new paste' do
     page = post('/save', 'syntax' => 'plain_text', 'text' => 'spec paste')
-    page.status.should == 303
+    page.status.should == 302
     page.original_headers['Location'].should == '/1'
   end
 

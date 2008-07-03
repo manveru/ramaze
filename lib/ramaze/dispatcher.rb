@@ -30,7 +30,8 @@ module Ramaze
       # for the given path from rack_request.
       def handle
         path = request.path_info.squeeze('/')
-        path.sub!(/^#{Regexp.escape(Global.prefix)}/, '')
+        path.sub!(/^#{Regexp.escape(Global.prefix)}/, '/')
+        path.squeeze!('/')
 
         if new_path = Rewrite.resolve(path)
           path = new_path

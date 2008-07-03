@@ -82,7 +82,7 @@ describe 'todolist' do
 
   it 'should POST new task and redirect to /' do
     result = post('/create', 'title' => 'spectask')
-    result.status.should == 303
+    result.status.should == 302
   end
 
   it 'should show have the new task' do
@@ -90,10 +90,10 @@ describe 'todolist' do
   end
 
   it 'should toggle the spectask' do
-    get('/close/spectask').status.should == 303
+    get('/close/spectask').status.should == 302
     spectask.should.not == nil
     spectask_status.should == 'done'
-    get('/open/spectask').status.should == 303
+    get('/open/spectask').status.should == 302
     spectask.should.not == nil
     spectask_status.should == 'not done'
   end
@@ -101,21 +101,21 @@ describe 'todolist' do
   it 'should raise on modifying a not existing task' do
     %w[open close].each do |action|
       response = get("/#{action}/nothere", :referrer => "/")
-      response.status.should == 303
+      response.status.should == 302
       response.original_headers['Location'].should == '/'
       error_on_page('/', response).should == "No such Task: `nothere'"
     end
   end
 
   it 'should delete the new task' do
-    get('/delete/spectask').status.should == 303
+    get('/delete/spectask').status.should == 302
     task_titles.should.not.include('spectask')
   end
 
   it 'should not create empty tasks but show a subtle error message' do
     response = post('/create', 'title' => '', :referrer => "/new")
 
-    response.status.should == 303
+    response.status.should == 302
     response.original_headers['Location'].should == '/new'
 
     error_on_page('/new', response).should == 'Please enter a title'
