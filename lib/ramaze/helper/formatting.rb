@@ -114,5 +114,12 @@ module Ramaze
       br = xhtml ? '<br />' : '<br>'
       string.gsub(/\n/, br)
     end
+
+    # Maybe port to ruby < 1.8.7 ?
+    def obfuscate_email(string)
+      string = string.to_s
+      text = string.each_byte.map{|c| "&#%03d" % c}.join
+      %(<a href="mailto:#{string}">#{text}</a>)
+    end
   end
 end
