@@ -10,13 +10,13 @@ module Ramaze
 
   class SourceReload
 
-    # Called from Ramaze::startup, just assigns a new instance to
-    # Global.sourcreloader
+    # Called from Ramaze::startup
     def self.startup(options = {})
       Thread.main[:sourcereload] = new
     end
 
     def self.restart
+      return unless running?
       Log.dev("Restart SourceReload")
       shutdown
       startup
@@ -24,7 +24,11 @@ module Ramaze
 
     # Maybe make this better?
     def self.shutdown
-      new(false)
+      Thread.main[:sourcereload].thread.kill if running?
+    end
+
+    def self.running?
+      !Thread.main[:sourcereload].nil?
     end
 
     attr_reader :thread
@@ -45,7 +49,7 @@ module Ramaze
 
     def startup
       return unless @interval
-      Log.dev("Startup SourceReload")
+      Log.debug("Startup SourceReload")
 
       @mtimes = Hash.new{|h,k| h[k] = mtime(k) }
 
