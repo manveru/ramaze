@@ -24,7 +24,9 @@ module Ramaze
 
     # Maybe make this better?
     def self.shutdown
-      Thread.main[:sourcereload].thread.kill if running?
+      if running? and thread = Thread.main[:sourcereload].thread
+        thread.kill
+      end
     end
 
     def self.running?
