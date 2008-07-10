@@ -452,7 +452,6 @@ Gem::Specification.new do |s|
  "lib/ramaze/snippets/kernel/pretty_inspect.rb",
  "lib/ramaze/snippets/metaid.rb",
  "lib/ramaze/snippets/numeric",
- "lib/ramaze/snippets/numeric/filesize.rb",
  "lib/ramaze/snippets/numeric/filesize_format.rb",
  "lib/ramaze/snippets/numeric/time.rb",
  "lib/ramaze/snippets/object",
