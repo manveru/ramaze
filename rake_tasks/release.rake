@@ -37,12 +37,12 @@ namespace :release do
   task 'nightly' do
     prepare_package(version_today)
 
-    location = '/srv/www/gems/gems'
+    location = 'web/gems/'
 
-    sh "scp pkg/*.{gem,tgz,zip} ramaze.net:#{location}"
-    sh "ssh ramaze.net '
+    sh "scp pkg/*.{gem,tgz,zip} ramaze@ramaze.net:#{location}"
+    sh "ssh ramaze@ramaze.net '
 source ~/.zsh/export.sh
-cd #{location}/../
+cd #{location}
 gem generate_index'"
   end
 
