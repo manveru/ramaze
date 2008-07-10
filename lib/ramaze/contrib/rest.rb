@@ -1,4 +1,4 @@
-Ramaze::Route['REST dispatch'] = lambda do |path, request|
+Ramaze::Rewrite['REST dispatch'] = lambda do |path, request|
   path << '/' unless path[-1] == '/'
 
   method = if request.request_method == 'POST' and request.params.has_key?('method')
