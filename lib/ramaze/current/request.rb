@@ -33,7 +33,8 @@ module Ramaze
     end
 
     def ip
-      env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR']
+      (addr = env['HTTP_X_FORWARDED_FOR']) ? addr.split(',').last.strip :
+                                             env['REMOTE_ADDR']
     end
 
     # Request is from a local network?
@@ -48,7 +49,6 @@ module Ramaze
     # ++
 
     def local_net?(address = ip)
-      address = address.to_s.split(',').first
       addr = IPAddr.new(address)
       LOCAL.find{|range| range.include?(addr) }
     rescue ArgumentError => ex
