@@ -33,8 +33,11 @@ module Ramaze
     end
 
     def ip
-      (addr = env['HTTP_X_FORWARDED_FOR']) ? addr.split(',').last.strip :
-                                             env['REMOTE_ADDR']
+      if addr = env['HTTP_X_FORWARDED_FOR']
+        addr.split(',').last.strip
+      else
+        env['REMOTE_ADDR']
+      end
     end
 
     # Request is from a local network?
