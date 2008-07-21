@@ -1,4 +1,4 @@
-This time we are proud to announce Version 2008.06 of Ramaze, the light and
+This time we are proud to announce Version 2008.07 of Ramaze, the light and
 modular open source web framework.
 
 This release features a lot of work directly from our community and we are
@@ -36,41 +36,25 @@ Simple example:
   Ramaze.start
 
 
-This is a special release, and the first of the upcoming new series of monthly releases.
-As you may have noticed, Ramaze has changed to a date base versioning system,
-although this means that people who have waited for a 1.0 for the past years
-may be disappointed it provides much larger flexibility in detecting new
-versions and comparing them with nightly builds.
+Some of 52 patches since 2008.06:
 
-Another change is the switch from darcs to git and moving our primary
-repository to github. There have been serious performance issues regarding
-darcs as Ramaze gathered a longer history, using git allows us to move on at a
-faster pace again.
-
-Please regard this release as a major step from the previous one, over 450
-patches have been applied and there were changes in the internal API.
-
-We are unable to nicely summarize these changes, so this release will not have
-a list of the most important ones, if you are concerned about a specific area
-feel free to ask on the Mailing list or stop by on IRC.
+  - Loggers are now in Ramaze::Logger namespace
+  - Global.prefix for nested deployment via webserver in front
+  - Binding#locals fixed for Ruby 1.9
+  - Redirects now use HTTP status 302 instead of 303
+  - Logger::Syslog works again
 
 Special (alphabetic) thanks go to:
 
-  Aman 'tmm1' Gupta         - Tons of patches, support
-  andy                      - Cleanup
-  Ara T. Howard             - Tagz templating engine
-  Clive Crous               - Patches, cleanup
-  evaryont                  - Patches for identity helper
-  James Tucker              - OSX compatibility, cleanup and fixes
-  Jonathan 'Kashia' Buch    - Patches, support and the first ramaze paper
-  Keita Yamaguchi           - Much work on the benchmark suite
-  Leo Borisenko             - Fix for SourceReload on windows
-  Pistos                    - Mathetes, patches and lots of friendly support
-  Riku Räisäenen            - Patches for scaffolding example
-  Ryan Grove                - Various fixes and patches
-  Sam Carr                  - Patches and action matching speedup
-  Thomas Leitner            - Patches for identity helper
-  Wang Jinjing              - patches, 1.9/1.8.7 compatibility
+  Pistos                  - The usual Mathetes, patches and lots of friendly support
+  Aman 'tmm1' Gupta       - Time snippets for numeric
+  Clinton R. Nixon        - More REST and some fixes
+  Jean-Francois Chevrette - Restore --console feature
+  raggi                   - Various fixes
+  Rob Lievaart            - Fix Logger::Syslog
+  Sam Carr                - Cleanup of Cache
+  Wang Jinjing            - 1.9 compatibility
+  Yasushi Abe             - First patch!
 
 A complete Changelog is available at
 http://github.com/manveru/ramaze/tree/master/doc/CHANGELOG?raw=true
