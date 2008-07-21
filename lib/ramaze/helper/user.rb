@@ -82,7 +82,7 @@ module Ramaze
           elsif _model.respond_to?(:authenticate)
             _model.authenticate(creds)
           else
-            Log.warn("Helper::User has no callback and model doesn't respond to #authenticate")
+            Log.warn("Helper::User has no callback and %p doesn't respond to #authenticate" % _model)
             nil
           end
         end
