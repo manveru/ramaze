@@ -85,7 +85,7 @@ module Ramaze
       def map(*syms)
         Global.mapping.delete_if{|k,v| v == self}
 
-        syms.each do |sym|
+        syms.compact.each do |sym|
           Global.mapping[sym.to_s] = self
         end
       end
