@@ -218,9 +218,15 @@ module Ramaze
           end
           trait "#{this}_template" => info
         else
-          controller, action, *ignored = argv
-          controller, action = self, controller unless action
-          trait "#{this}_template" => {:controller => controller, :action => action}
+          # Only explicitly set the controller to use, if it was explicitly given.
+          # This helps ensure that template mappings still work in subclasses
+          # of this controller.
+          first, second, *ignored = argv
+          if second
+            trait "#{this}_template" => {:controller => first, :action => second}
+          else
+            trait "#{this}_template" => {:action => first}
+          end
         end
       end
 

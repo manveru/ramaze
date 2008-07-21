@@ -104,10 +104,13 @@ module Ramaze
 
       def resolve_action(path, *parameter)
         path, parameter = path.to_s, parameter.map{|e| e.to_s}
-        if info = trait["#{path}_template"]
+        # Use ancestral_trait so if template is set in superclass, it is still found.
+        if info = ancestral_trait["#{path}_template"]
           template = info[:file]
           unless template
             controller, action = info.values_at :controller, :action
+            # Controller may not have been explicitly set, in which case use self.
+            controller ||= self
             template = controller.resolve_template(action)
           end
         end
