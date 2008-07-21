@@ -29,7 +29,7 @@ module Ramaze
 
     # safely escape all HTML and code
     def h(string)
-      Rack::Utils.escape_html(string).gsub(/#/, '&#35;')
+      Rack::Utils.escape_html(string).gsub(/#([{@$]@?)/, '&#35;\1')
     end
 
     # one-letter versions help in case like #{h foo.inspect}
