@@ -8,8 +8,8 @@ module Ramaze
       Thread.new do
         begin
           block.call
-        rescue
-          parent_thread.raise($!)
+        rescue Exception => e
+          parent_thread.raise(e)
         end
       end
     end
