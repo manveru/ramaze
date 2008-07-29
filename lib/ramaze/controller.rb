@@ -151,7 +151,7 @@ module Ramaze
 
       def view_root *args
         if args.empty?
-          @view_root
+          @view_root ||= Global.view_root / mapping
         else
           check_path("#{self}.view_root: '%s' doesn't exist", *args)
           @view_root = args.flatten
