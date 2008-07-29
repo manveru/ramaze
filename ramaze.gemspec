@@ -416,6 +416,7 @@ Gem::Specification.new do |s|
  "lib/ramaze/helper/simple_captcha.rb",
  "lib/ramaze/helper/stack.rb",
  "lib/ramaze/helper/tagz.rb",
+ "lib/ramaze/helper/thread.rb",
  "lib/ramaze/helper/user.rb",
  "lib/ramaze/helper/xhtml.rb",
  "lib/ramaze/helper.rb",
