@@ -51,12 +51,7 @@ module Ramaze
       # In order to not interfere with the wrapped instance/model we start our
       # methods with an underscore.
       # Suggestions on improvements as usual welcome.
-      class Wrapper
-        # make it a BlankSlate
-        instance_methods.each do |meth|
-          undef_method(meth) unless meth.to_s =~ /^__.+__$/
-        end
-
+      class Wrapper < BlankSlate
         attr_accessor :_model, :_callback, :_user
 
         def initialize(model, callback)
