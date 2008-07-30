@@ -187,13 +187,20 @@ module Ramaze
 
       # methodnames that may be used for current controller.
       def action_methods
-        ancs = relevant_ancestors + Helper::LOOKUP.to_a
-
+        ancs = relevant_ancestors + action_modules
         ancs.reverse.inject [] do |meths, anc|
           meths +
             anc.public_instance_methods(false).map{|im| im.to_s } -
             anc.private_instance_methods(false).map{|im| im.to_s }
         end
+      end
+
+      # Array of all modules (so including Ramaze helpers) that are included in
+      # this controller and where the module is also in the Helper::LOOKUP set.
+      # Hence this is the included modules whose public methods may be exposed
+      # as actions of this controller.
+      def action_modules
+        Helper::LOOKUP.find_all {|mod| self.include?(mod)}
       end
 
       # Iterator that yields potential ways in which a given path could be mapped
