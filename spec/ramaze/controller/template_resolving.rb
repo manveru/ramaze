@@ -44,7 +44,7 @@ class OtherController < MainController
 
 end
 
-class AnotherController < Ramaze::Controller
+class AnotherController < MainController
   Root = __DIR__/:view
   Absolute = lambda{|path| File.join Root, path}
   Relative = lambda{|path| path}

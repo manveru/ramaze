@@ -150,12 +150,10 @@ module Ramaze
       # Runs every given path through Controller::check_path
 
       def view_root *args
-        if args.empty?
-          @view_root ||= Global.view_root / mapping
-        else
-          check_path("#{self}.view_root: '%s' doesn't exist", *args)
-          @view_root = args.flatten
-        end
+        return @view_root if args.empty?
+
+        check_path("#{self}.view_root: '%s' doesn't exist", *args)
+        @view_root = args.flatten
       end
 
       # This is used for template rerouting, takes action, optionally a
