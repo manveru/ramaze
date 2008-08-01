@@ -15,9 +15,19 @@ module Ramaze
 
         # Get MIME-type for the given filename based on extension.
         # Answers with an empty string if none is found.
-        def type_for file
+        def type_for(file)
           ext = File.extname(file)
           trait[:types][ext].to_s
+        end
+
+        def ext_for(mime)
+          exts = []
+
+          trait[:types].each do |ext, mime_type|
+            exts << ext if mime == mime_type
+          end
+
+          exts.sort_by{|e| e.size }.first
         end
       end
     end
