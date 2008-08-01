@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "ramaze"
-  s.version = "2008.07"
+  s.version = "2008.08"
 
   s.summary = "Ramaze is a simple and modular web framework"
   s.description = "Ramaze is a simple and modular web framework"
