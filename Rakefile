@@ -28,8 +28,8 @@ load 'rake_tasks/git.rake'
 load 'rake_tasks/gem.rake'
 load 'rake_tasks/metric.rake'
 
-# task :default => ['spec']
-# task :test => ['spec']
+task :default => ['spec']
+task :test => ['spec']
 # task :package => ['jquery']
 
 desc 'download latest jquery and put in /lib/proto/public/js/jquery.js'

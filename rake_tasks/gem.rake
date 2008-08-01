@@ -65,3 +65,9 @@ end
 
   File.open("ramaze.gemspec", 'w+'){|file| file.puts(gemspec) }
 end
+
+spec = generate_gemspec(version_today)
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.need_zip = true
+  pkg.need_tar = true
+end
