@@ -48,7 +48,7 @@ module Ramaze
     #     end
     #
 
-    def self.build &block
+    def self.build(&block)
       self.new(&block).to_s
     end
 
@@ -58,24 +58,24 @@ module Ramaze
     #
     # Useful for distributed building of one page.
 
-    def initialize &block
-      @out = ''
+    def initialize(&block)
+      @out = []
       instance_eval(&block) if block_given?
     end
 
     # catching all the tags. passing it to _gestalt_build_tag
 
-    def method_missing meth, *args, &block
+    def method_missing(meth, *args, &block)
       _gestalt_call_tag meth, args, &block
     end
 
     # workaround for Kernel#p to make <p /> tags possible.
 
-    def p *args, &block
+    def p(*args, &block)
       _gestalt_call_tag :p, args, &block
     end
 
-    def _gestalt_call_tag name, args, &block
+    def _gestalt_call_tag(name, args, &block)
       if args.size == 1 and args[0].kind_of? Hash
         # args are just attributes, children in block...
         _gestalt_build_tag name, args[0], &block
@@ -88,7 +88,7 @@ module Ramaze
     # build a tag for `name`, using `args` and an optional block that
     # will be yielded
 
-    def _gestalt_build_tag name, attr={}, text=[]
+    def _gestalt_build_tag(name, attr = {}, text = [])
       @out << "<#{name}"
       @out << attr.map{|k,v| %[ #{k}="#{_gestalt_escape_entities(v)}"] }.join
       if text != [] or block_given?
@@ -117,7 +117,7 @@ module Ramaze
     end
 
     def to_s
-      @out.to_s
+      @out.join
     end
     alias to_str to_s
   end
