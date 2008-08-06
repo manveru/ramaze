@@ -22,6 +22,18 @@ class TCOtherCache < Ramaze::Controller
   cache :index
 end
 
+class TCIndexCache < Ramaze::Controller
+  map '/withparams'
+  helper :cache
+
+  def index(somearg = nil)
+    rand + somearg.to_f
+  end
+  alias :nonindex :index
+
+  cache :index, :nonindex
+end
+
 describe 'Action rendering' do
   behaves_like 'http'
 
@@ -42,6 +54,16 @@ describe 'Action rendering' do
   should 'create subdirs as needed' do
     lambda{ req('/other') }.should.not.change{ req('/other') }
     File.file?(public_root/'other/index').should == true
+  end
+
+  should 'cache action with params' do
+    lambda{ req('/withparams/nonindex/42') }.should.not.change{ req('/withparams/nonindex/42') }
+    File.file?(public_root/'withparams/nonindex/42').should == true
+  end
+
+  should 'cache index action with params' do
+    lambda{ req('/withparams/42') }.should.not.change{ req('/withparams/42') }
+    File.file?(public_root/'withparams/42').should == true
   end
 
   FileUtils.rm_rf public_root

@@ -116,7 +116,7 @@ module Ramaze
 
     # combined path to current action, from path and params
     def extended_path
-      Array[path, *params].join('/')
+      (path == "index" && !params.empty? ? params : Array[path, *params]).join('/')
     end
 
     def full_path
