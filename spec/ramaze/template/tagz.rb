@@ -57,6 +57,6 @@ describe "Tagz" do
 
   it "should not respond to tagz" do
     response = get('/tagz')
-    response.status.should == 404
+    response.status.should == 500
   end
 end

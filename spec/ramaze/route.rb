@@ -126,6 +126,6 @@ describe 'Route' do
   it 'should not recurse given a bad route' do
     Ramaze::Route[ %r!^/good/(.+)$! ] = "/bad/%s"
     r = get('/good/hi')
-    r.status.should == 404
+    r.status.should == 500
   end
 end
