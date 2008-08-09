@@ -101,18 +101,12 @@ module Ramaze
         # Then goes on and calls Dispatcher::handle with request and response.
 
         def respond(env)
-          if Global.server.respond_to?(:thread) and Global.server.thread == Thread.current
-            Thread.new{ middleware_respond(env) }.value
-          else
-            middleware_respond(env)
-          end
-        end
+          middleware = Adapter.trait[:middleware]
 
-        def middleware_respond(env)
-          if Global.middleware
-            Adapter.trait[:middleware].call(env)
+          if Global.server.respond_to?(:thread) and Global.server.thread == Thread.current
+            Thread.new{ middleware.call(env) }.value
           else
-            Current.call(env)
+            middleware.call(env)
           end
         end
       end

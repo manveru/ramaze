@@ -51,7 +51,7 @@ module Ramaze
             end
           end
 
-          if path and Global.error_page and error.message !~ /`#{path}'/
+          if path and error.message !~ /`#{path}'/
             response.status = status
             return Dispatcher.dispatch_to(path)
           else

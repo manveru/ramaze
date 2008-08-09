@@ -75,7 +75,7 @@ module Ramaze
     o "Instruction for daemonize, only works with bin/ramaze for now",
       :daemonize, 'start', :cli => [:start, :stop]
 
-    o "Turn on customized error pages.",
+    o "Turn on customized error pages. Use Rack::ShowException otherwise.",
       :error_page, true, :cli => true
 
     o "Caching actions to the filesystem in Global.public_root",

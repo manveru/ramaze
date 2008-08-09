@@ -124,14 +124,14 @@ module Ramaze
         controller = Thread.current[:controller]
         meta[:controller] ||= controller if controller
 
-        if Global.middleware
+        if Global.error_page
+          Dispatcher::Error.call(obj, meta)
+        else
           message = "No action for '#{meta[:path]}'"
           message << " on '#{Rack::Utils.escape_html(controller)}'" if controller
 
           raise(obj) if obj.respond_to?(:message)
           raise(Ramaze::Error, message)
-        else
-          Dispatcher::Error.call(obj, meta)
         end
       end
     end
