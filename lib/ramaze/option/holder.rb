@@ -104,17 +104,7 @@ module Ramaze
       end
 
       def sourcereload=(interval)
-        if interval
-          if interval.is_a?(Numeric)
-            @sourcereload = interval
-            Ramaze::SourceReload.restart
-          else
-            Log.warn("sourcereload= %p not Numeric, ignoring." % interval)
-          end
-        else
-          @sourcereload = interval
-          Ramaze::SourceReload.shutdown
-        end
+        Ramaze::Reloader::OPTIONS[:cooldown] = interval
       end
 
       private

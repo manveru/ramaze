@@ -7,9 +7,12 @@ module Ramaze
     # (Rack) middleware injected around Adapter::Base::call
     MIDDLEWARE = OrderedSet.new(
       Ramaze::Current,
+      Ramaze::Reloader,
       Rack::ShowStatus,
       Rack::ShowExceptions
     )
+
+    trait :middleware => MIDDLEWARE.inject{|app, middleware| middleware.new(app) }
 
     # Helper to assign a new block to before_call
     # Usage:
@@ -106,10 +109,8 @@ module Ramaze
         end
 
         def middleware_respond(env)
-          Thread.current.priority = 1
-
           if Global.middleware
-            MIDDLEWARE.inject{|app, middleware| middleware.new(app) }.call(env)
+            Adapter.trait[:middleware].call(env)
           else
             Current.call(env)
           end

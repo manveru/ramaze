@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+  Reloader::OPTIONS[:cooldown] = nil
 
   # SourceReload provides a way to reload changed files automatically during
   # runtime. Its default behaviour in Ramaze is to check periodically for

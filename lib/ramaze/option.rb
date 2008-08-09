@@ -103,7 +103,7 @@ module Ramaze
       :mapping, {}
 
     o "Activate middleware",
-      :middleware, false
+      :middleware, true
 
     o "For your own modes to decide on",
       :mode, :live, :cli => [:live, :dev]
@@ -144,7 +144,7 @@ module Ramaze
     o "What signal to trap to call Ramaze::shutdown",
       :shutdown_trap, "SIGINT"
 
-    o "Interval in seconds of the background SourceReload",
+    o "Interval in seconds of the Reloader",
       :sourcereload, 3, :cli => 3
 
     o "Test before start if adapters will be able to connect",
