@@ -14,7 +14,7 @@ module Ramaze
     # Helper to assign a new block to before_call
     # Usage:
     #   Ramaze::Adapter.before do |env|
-    #     if env['PATH_INFO'] =~ /suerpfast/
+    #     if env['PATH_INFO'] =~ /superfast/
     #       [200, {'Content-Type' => 'text/plain'}, ['super fast!']]
     #     end
     #   end
@@ -30,10 +30,10 @@ module Ramaze
       class << self
         attr_reader :thread
 
-        # For the specified host and for all given ports call run_server and
-        # add the returned thread to the Global.adapters ThreadGroup.
-        # Afterwards adds a trap for the value of Global.shutdown_trap which
-        # calls Ramaze.shutdown when triggered (usually by SIGINT).
+        # Call ::startup with the given host and port.
+        # Sets Global.server to itself.
+        # Adds a trap that is triggered by the value of Global.shutdown_trap,
+        # which is SIGINT by default.
 
         def start(host = nil, port = nil)
           @thread = startup(host, port)
