@@ -9,6 +9,7 @@ module Ramaze
   #
   # It does not depend on Ramaze itself, but you might have to adjust the
   # Reloader::Hooks module or include your own module to override the hooks.
+  # You also might have to set the Log constant.
   #
   # What makes it especially suited for use in a production environment is that
   # any file will only be checked once and there will only be made one system
@@ -100,7 +101,7 @@ module Ramaze
       load(file)
       after_safe_load_succeed(file)
     rescue Object => ex
-      Ramaze::Log.error(ex)
+      Log.error(ex)
       after_safe_load_failed(file, ex)
     end
 
@@ -116,7 +117,7 @@ module Ramaze
           @cache[file] = path
           yield(path, stat)
         else
-          Ramaze::Log::warn "Couldn't figure path for #{file}"
+          Log::warn "Couldn't figure path for #{file}"
         end
       end
     end
@@ -156,7 +157,7 @@ module Ramaze
 
       # Overwrite to add actions before a file is Kernel::load-ed
       def before_safe_load(file)
-        Ramaze::Log.debug("reload #{file}")
+        Log.debug("reload #{file}")
       end
 
       # Overwrite to add actions after a file is Kernel::load-ed successfully,
@@ -175,7 +176,7 @@ module Ramaze
       # Overwrite to add actions after a file is Kernel::load-ed unsuccessfully,
       # by default we output an error-message with the exception.
       def after_safe_load_failed(file, error)
-        Ramaze::Log.error(error)
+        Log.error(error)
       end
     end
 
