@@ -362,7 +362,7 @@ module Ramaze
       reorder
       self
     end
-    alias :merge! update
+    alias merge! update
 
     def merge( hsh2 )
       self.dup.update(hsh2)
@@ -390,7 +390,7 @@ module Ramaze
     def length
       @order.length
     end
-    alias :size :length
+    alias size length
 
     def empty?
       @hash.empty?

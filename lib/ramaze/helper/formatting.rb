@@ -108,7 +108,7 @@ module Ramaze
         end
       end
     end
-    alias :autolink :auto_link
+    alias autolink auto_link
 
     def nl2br(string, xhtml = true)
       br = xhtml ? '<br />' : '<br>'
