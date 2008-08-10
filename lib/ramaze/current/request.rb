@@ -11,7 +11,7 @@ module Ramaze
   class Request < ::Rack::Request
     class << self
 
-      # get the current request out of Thread.current[:request]
+      # get the current request out of STATE[:request]
       #
       # You can call this from everywhere with Ramaze::Request.current
 

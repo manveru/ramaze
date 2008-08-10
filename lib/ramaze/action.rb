@@ -41,7 +41,7 @@ module Ramaze
 
       # Return the stacked actions for the current request
       def stack
-        Thread.current[:action_stack] ||= []
+        STATE[:action_stack] ||= []
       end
     end
 

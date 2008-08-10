@@ -258,7 +258,7 @@ module Ramaze
 
       def handle path
         action = resolve(path)
-        Thread.current[:controller] = action.controller
+        STATE[:controller] = action.controller
         action.render
       end
 

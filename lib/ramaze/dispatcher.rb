@@ -54,7 +54,7 @@ module Ramaze
       # request, the rest of the request is kept intact.
       def dispatch_to(path)
         if request.path_info == path
-          if error = Thread.current[:exception]
+          if error = STATE[:exception]
             raise error
           else
             raise "Recursive redirect from #{path} to #{path}"
@@ -121,7 +121,7 @@ module Ramaze
       end
 
       def error(obj, meta = {})
-        controller = Thread.current[:controller]
+        controller = STATE[:controller]
         meta[:controller] ||= controller if controller
 
         if Global.error_page

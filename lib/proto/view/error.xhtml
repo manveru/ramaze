@@ -40,9 +40,9 @@ Click on any of them to view the surrounding source code.</p>
 </table>
 
 <?r
-  { 'Session'   => Thread.current[:session],
-    'Request'   => Thread.current[:request],
-    'Response'  => Thread.current[:response],
+  { 'Session'   => Ramaze::STATE[:session],
+    'Request'   => Ramaze::STATE[:request],
+    'Response'  => Ramaze::STATE[:response],
     'Global'    => Global,
   }.each do |title, content|
     hash = [title, content].object_id.abs

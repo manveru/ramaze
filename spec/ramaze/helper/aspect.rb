@@ -8,14 +8,14 @@ class TCAspectController < Ramaze::Controller
   trait :foo => :bar
   helper :aspect
 
-  def test_before() request[:before] += 2 end
-  before(:test_before){ request[:before] = 40 }
+  def test_before() $helper_aspect_spec_test_before += 2 end
+  before(:test_before){ $helper_aspect_spec_test_before = 40 }
 
-  def test_after() request[:after] = 40 end
-  after(:test_after){ request[:after] += 2 }
+  def test_after() $helper_aspect_spec_test_after = 40 end
+  after(:test_after){ $helper_aspect_spec_test_after += 2 }
 
   def test_wrap() end
-  wrap(:test_wrap){ request[:wrap] ||= 0; request[:wrap] += 21 }
+  wrap(:test_wrap){ $helper_aspect_spec_test_wrap ||= 0; $helper_aspect_spec_test_wrap += 21 }
 
   wrap(:test_template) { '<aspect>' }
 end
@@ -29,8 +29,8 @@ class TCAspectAllController < Ramaze::Controller
   def test_all_first() 'first' end
   def test_all_second() 'second' end
 
-  before_all{ request[:all] = 40 }
-  after_all{ request[:all] += 2 }
+  before_all{ $helper_aspect_spec_all = 40 }
+  after_all{ $helper_aspect_spec_all += 2 }
 
   def test_all_after() 'after' end
 
@@ -42,51 +42,60 @@ end
 describe "AspectHelper" do
   behaves_like 'http'
   ramaze :error_page => false
-  extend Ramaze::Trinity
 
   it "shouldn't overwrite traits on inclusion" do
     TCAspectController.trait[:foo].should == :bar
   end
 
   it 'should use before' do
+    $helper_aspect_spec_test_before = nil
     get('/test_before')
-    request[:before].should == 42
+    $helper_aspect_spec_test_before.should == 42
   end
 
   it 'should use after' do
+    $helper_aspect_spec_test_after = nil
     get('/test_after')
-    request[:after].should == 42
+    $helper_aspect_spec_test_after.should == 42
   end
 
   it 'should use wrap' do
+    $helper_aspect_spec_test_wrap = nil
     get('/test_wrap')
-    request[:wrap].should == 42
+    $helper_aspect_spec_test_wrap.should == 42
   end
 
   it 'should before_all and after_all' do
+    $helper_aspect_spec_all = nil
     get('/all/test_all_first')
-    request[:all].should == 42
+    $helper_aspect_spec_all.should == 42
+
+    $helper_aspect_spec_all = nil
     get('/all/test_all_second')
-    request[:all].should == 42
+    $helper_aspect_spec_all.should == 42
   end
 
   it 'should before_all and after_all for templates' do
+    $helper_aspect_spec_all = nil
     get('/all/test_template')
-    request[:all].should == 42
+    $helper_aspect_spec_all.should == 42
   end
 
   it 'should before_all and after_all for all defined actions' do
+    $helper_aspect_spec_all = nil
     get('/all/test_all_after')
-    request[:all].should == 42
+    $helper_aspect_spec_all.should == 42
   end
 
   it 'should not apply aspects to render_template' do
+    $helper_aspect_spec_all = nil
     get('/all/loop').body.gsub(/\s/,'').should == '12345'
-    request[:all].should == 42
+    $helper_aspect_spec_all.should == 42
   end
 
   it 'should not apply aspects to layouts' do
+    $helper_aspect_spec_all = nil
     get('/all/loop_with_layout').body.gsub(/\s/,'').should == '<div>12345</div>'
-    request[:all].should == 42
+    $helper_aspect_spec_all.should == 42
   end
 end

@@ -32,7 +32,7 @@ module Ramaze
         def call(error, metainfo = {})
           log_error(error)
 
-          Thread.current[:exception] = error
+          STATE[:exception] = error
           response = Response.current
 
           key = error.class.ancestors.find{|a| HANDLE_ERROR[a]}
@@ -99,7 +99,7 @@ module Ramaze
         # Handle to current exception.
         # Only works inside request/response cycle.
         def current
-          Thread.current[:exception]
+          STATE[:exception]
         end
 
       end
