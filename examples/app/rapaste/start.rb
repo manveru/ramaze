@@ -22,4 +22,4 @@ DB = Sequel.connect("sqlite://#{DB_FILE}")
 require 'model/paste'
 require 'controller/paste'
 
-Ramaze.start
+Ramaze.start :adapter => :mongrel, :port => 9952
