@@ -250,7 +250,7 @@ module Ramaze
       # Raises Ramaze::Error::NoFilter
       # TODO:
       #   * is this called at all for anybody?
-      #     I think everybody does have filters.
+      #     I think everybody has filters.
 
       def raise_no_filter(path)
         raise Ramaze::Error::NoFilter, "No Filter found for `#{path}'"
