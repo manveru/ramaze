@@ -24,7 +24,7 @@ module Ramaze
 
     # Shortcut if you don't need specific versions but tons of gems
     def gems(*args)
-      gems.each{|g| gem(g) }
+      args.each{|g| gem(g) }
     end
 
     def global(hash = nil)
