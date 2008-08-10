@@ -1,4 +1,5 @@
 Ramaze::Route[%r!^/(\d+)\.(?:te?xt|plain|rb|css|js)$!] = '/plain/%d'
+Ramaze::Route[%r!^/(\d+)\.(?:html)$!] = '/html/%d'
 Ramaze::Route[%r!^/(?:te?xt|plain|rb|css|js)/(\d+)$!] = '/plain/%d'
 Ramaze::Route[%r!^/(\d+)\.(\w+)$!] = '/view/%d/%s'
 Ramaze::Route[%r!^/(\d+)$!] = '/view/%d/html'
@@ -61,6 +62,12 @@ class PasteController < Ramaze::Controller
   def plain(id)
     paste = paste_for(id)
     response['Content-Type'] = 'text/plain'
+    respond paste.text
+  end
+
+  def html(id)
+    paste = paste_for(id)
+    response['Content-Type'] = 'text/html'
     respond paste.text
   end
 
