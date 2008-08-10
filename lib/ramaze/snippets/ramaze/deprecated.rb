@@ -1,5 +1,7 @@
 module Ramaze
-  DEPRECATED_CONSTANTS = {}
+  DEPRECATED_CONSTANTS = {
+    :ThreadAccessor => :StateAccessor
+  }
 
   def self.deprecated(from, to = nil)
     message = "%s is deprecated"
@@ -10,7 +12,7 @@ module Ramaze
   def self.const_missing(name)
     if to = DEPRECATED_CONSTANTS[name]
       Log.warn "Ramaze::#{name} is deprecated, use #{to} instead"
-      to
+      constant(to)
     else
       super
     end
