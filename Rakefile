@@ -48,6 +48,35 @@ task :jquery do
   end
 end
 
+desc 'Check gemspec file list against real file list'
+task :check_gemspec do
+  base_dir = File.expand_path(File.dirname(__FILE__))
+  gemspec_files = eval(File.read(File.join(base_dir,'ramaze.gemspec'))).files.map{|file|File.join(base_dir,file)}
+
+  deleted_files = gemspec_files.select{|file|!File.exists?(file)}.map{|file|file[(base_dir.size+1)..-1]}
+
+  added_files = Dir.glob(File.join(File.dirname(__FILE__),'**/*')).select do |file|
+    !gemspec_files.index(file)
+  end.map do |file|
+    file[(base_dir.size+1)..-1]
+  end.select do |file|
+    !( file == 'pkg' or file =~ /.*\.gem/ )
+  end
+
+  unless deleted_files.empty?
+    puts "The following files appear in the gemspec but cannot be found:"
+    deleted_files.each do |file|
+      puts "\t#{file}"
+    end
+  end
+  unless added_files.empty?
+    puts "The following files exist, but cannot be found in the gemspec:"
+    added_files.each do |file|
+      puts "\t#{file}"
+    end
+  end
+end
+
 task :rcov_dir do
   mkdir_p 'doc/output/tools/rcov/'
 end
