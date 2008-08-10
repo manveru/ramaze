@@ -67,6 +67,14 @@ module Ramaze
         combined.empty?
       end
 
+      def merge!(hash)
+        current.merge!(hash)
+      end
+
+      def merge(hash)
+        current.merge(hash)
+      end
+
       private
 
       # Associated session object
