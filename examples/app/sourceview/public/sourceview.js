@@ -22,7 +22,7 @@ function setup() {
 
     if (curfile) {
       $('#repourl').empty().append(
-        $('<a/>').attr('href', 'http://github.com/manveru/ramaze/tree/master/'+curfile)
+        $('<a/>').attr('href', 'http://github.com/manveru/ramaze/tree/master'+curfile)
                  .text('download '+curfile.substr(1))
       );
       urchinTracker(curfile);
