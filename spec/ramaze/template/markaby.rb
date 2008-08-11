@@ -36,7 +36,7 @@ end
 
 describe "Markaby" do
   behaves_like 'http'
-  ramaze
+  ramaze :error_page => true
 
   it "index" do
     get('/').body.should == '<h1>Markaby Index</h1>'
