@@ -106,7 +106,7 @@ module Ramaze
       :middleware, true
 
     o "For your own modes to decide on",
-      :mode, :live, :cli => [:live, :dev]
+      :mode, :live, :cli => [:live, :dev, :spec]
 
     o "The place ramaze was started from, useful mostly for debugging",
       :origin, :main
