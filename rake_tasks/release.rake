@@ -62,11 +62,15 @@ gem generate_index'"
   end
 
   desc 'Prepare and push gemspec to github'
-  task 'gemspec' do
-    update_gemspec(generate_gemspec(version_month))
+  task 'gemspec' => 'gemspec-prepare' do
     sh "git commit -m 'Update ramaze.gemspec' ramaze.gemspec"
     sh 'git fetch'
     sh 'git rebase origin/master'
     sh 'git push'
+  end
+
+  desc 'Prepare gemspec for push to github'
+  task 'gemspec-prepare' do
+    update_gemspec(generate_gemspec(version_month))
   end
 end
