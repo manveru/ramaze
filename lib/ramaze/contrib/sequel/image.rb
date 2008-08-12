@@ -23,10 +23,6 @@
 #       #     Resizes the image to +width+ and +height+ using a cubic-bspline
 #       #     filter.
 #       #
-#       # * cropped_resize(width, height)
-#       #     The magic one, basically cropped_thumbnail but takes +width+ and
-#       #     +height+.
-#       #
 #       # * thumbnail(size)
 #       #     Creates a proportional thumbnail of the image scaled so its
 #       #     longest edge is resized to +size+.
