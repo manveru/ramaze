@@ -2,20 +2,64 @@ require 'ramaze/gestalt'
 
 module Ramaze
   module Helper
+
+    # Helper for pagination and pagination-navigation.
+    #
+    # See detailed API docs for Paginator below.
+    # Also have a look at the examples/helpers/paginate.rb
+
     module Paginate
+
+      # Define default options in your Controller, they are being retrieved by
+      # ancestral_trait, so you can also put it into a common superclass
+
       trait :paginate => {
         :limit => 10,
         :var   => 'pager',
       }
 
-      def paginate(dataset, hash = {})
-        options = ancestral_trait[:paginate].merge(hash)
+      # Returns a new Paginator instance.
+      #
+      # Note that the pagination relies on being inside a Ramaze request to
+      # gain necessary metadata about the page it resides on, you cannot use it
+      # outside of Ramaze yet.
+      #
+      # The examples below are meant to be used within your controller or view.
+      #
+      # Usage with Array:
+      #   data = (1..100).to_a
+      #   @pager = paginate(data, :limit => 30, :page => 2)
+      #   @pager.navigation
+      #   @pager.each{|e| puts(e) }
+      #
+      # Usage with Sequel:
+      #   data = Article.filter(:public => true)
+      #   @pager = paginate(data, :limit => 5)
+      #   @pager.navigation
+      #   @pager.each{|e| puts(e)
+      #
+      # +dataset+ may be a Sequel dataset or Array
+      # +options+ Takes precedence to trait[:paginate] and may contain
+      #           following pairs:
+      #   :limit  The number of elements used when you call #each on the
+      #           paginator
+      #   :var    The variable name being used in the request, this is helpful
+      #           if you want to use two or more independent paginations on the
+      #           same page.
+      #   :page   The page you are currently on, if not given it will be
+      #           retrieved from current request variables. Defaults to 1 if
+      #           neither exists.
+
+      def paginate(dataset, options = {})
+        options = ancestral_trait[:paginate].merge(options)
         limit = options[:limit]
         var   = options[:var]
         page  = options[:page] || (request[var] || 1).to_i
 
         Paginator.new(dataset, page, limit, var)
       end
+
+      # Provides easy pagination and navigation
 
       class Paginator
         include Ramaze::Helper::Link
@@ -26,21 +70,38 @@ module Ramaze
           @pager = pager_for(data)
         end
 
-        def pager_for(obj)
-          case obj
-          when Array
-            ArrayPager.new(obj, @page, @limit)
-          else
-            obj.paginate(@page, @limit)
-          end
-        end
+        # Returns String with navigation div.
+        #
+        # This cannot be customized very nicely, but you can style it easily
+        # with CSS.
+        #
+        # Output with 5 elements, page 1, limit 3:
+        #   <div class="pager">
+        #     <span class="first grey">&lt;&lt;</span>
+        #     <span class="previous grey">&lt;</span>
+        #     <a class="current" href="/index?pager=1">1</a>
+        #     <a href="/index?pager=2">2</a>
+        #     <a class="next" href="/index?pager=2">&gt;</a>
+        #     <a class="last" href="/index?pager=2">&gt;&gt;</a>
+        #   </div>
+        #
+        # Output with 5 elements, page 2, limit 3:
+        #   <div class="pager" />
+        #     <a class="first" href="/index?user_page=1">&lt;&lt;</a>
+        #     <a class="previous" href="/index?user_page=1">&lt;</a>
+        #     <a href="/index?user_page=1">1</a>
+        #     <a class="current" href="/index?user_page=2">2</a>
+        #     <span class="next grey">&gt;</span>
+        #     <span class="last grey">&gt;&gt;</span>
+        #   </div>
+
 
         def navigation
           out = [ g.div(:class => :pager) ]
 
           if first_page?
-            out << g.span(:class => 'first grey'){ '<<' }
-            out << g.span(:class => 'previous grey'){ '<' }
+            out << g.span(:class => 'first grey'){ h('<<') }
+            out << g.span(:class => 'previous grey'){ h('<') }
           else
             out << link(1, '<<', :class => :first)
             out << link(prev_page, '<', :class => :previous)
@@ -53,8 +114,8 @@ module Ramaze
           out << link(current_page, current_page, :class => :current)
 
           if last_page?
-            out << g.span(:class => 'next grey'){ '>' }
-            out << g.span(:class => 'last grey'){ '>>' }
+            out << g.span(:class => 'next grey'){ h('>') }
+            out << g.span(:class => 'last grey'){ h('>>') }
           else
             (next_page..page_count).each do |n|
               out << link(n)
@@ -68,11 +129,36 @@ module Ramaze
           out.map{|e| e.to_s}.join("\n")
         end
 
+        # Useful to omit pager if it's of no use.
+
+        def needed?
+          @pager.page_count > 1
+        end
+
+        # Forward everything to the inner @pager
+
+        def method_missing(meth, *args, &block)
+          @pager.send(meth, *args, &block)
+        end
+
+        private
+
+        def pager_for(obj)
+          case obj
+          when Array
+            ArrayPager.new(obj, @page, @limit)
+          else
+            obj.paginate(@page, @limit)
+          end
+        end
+
         def link(n, text = n, hash = {})
           text = h(text.to_s)
 
           params = Ramaze::Request.current.params.merge(@var => n)
-          hash[:href] = Rs(Ramaze::Action.current.name, params)
+          name = Ramaze::Action.current.name
+          name = '/' if name == 'index' # make nicer...
+          hash[:href] = Rs(name, params)
 
           g.a(hash){ text }
         end
@@ -81,13 +167,7 @@ module Ramaze
           Ramaze::Gestalt.new
         end
 
-        def needed?
-          @pager.page_count > 1
-        end
-
-        def method_missing(meth, *args, &block)
-          @pager.send(meth, *args, &block)
-        end
+        # Wrapper for Array to behave like the Sequel pagination
 
         class ArrayPager
           def initialize(array, page, limit)
