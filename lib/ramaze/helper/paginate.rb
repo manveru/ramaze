@@ -155,8 +155,8 @@ module Ramaze
         def link(n, text = n, hash = {})
           text = h(text.to_s)
 
-          params = Ramaze::Request.current.params.merge(@var => n)
-          name = Ramaze::Action.current.name
+          params = Ramaze::Request.current.params.merge(@var.to_s => n)
+          name = Ramaze::Action.stack.first.name
           name = '/' if name == 'index' # make nicer...
           hash[:href] = Rs(name, params)
 
