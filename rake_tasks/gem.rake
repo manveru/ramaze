@@ -16,7 +16,8 @@ def generate_gemspec(version)
     s.executables = Dir["#{s.bindir}/*"].map{|f| File.basename(f) }
     s.files = FileList.new('**/*'){|fl|
       fl.exclude(/^pkg\//)
-    }
+      fl.exclude(/^tags$/)
+    }.sort
 
     s.platform = Gem::Platform::RUBY
     s.has_rdoc = true
