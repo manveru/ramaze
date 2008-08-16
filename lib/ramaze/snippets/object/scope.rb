@@ -1,11 +1,18 @@
-class Object
+module Ramaze
+  module CoreExtensions
 
-  # returns a new clean binding for this object
-  #   usage: eval 'self', object.scope  #=> returns object
-  #
+    # Extensions for Object
+    module Object
 
-  def scope
-    lambda{}
+      # returns a new clean binding for this object
+      #   usage: eval 'self', object.scope  #=> returns object
+      #
+
+      def scope
+        lambda{}
+      end
+
+    end
+
   end
-
 end

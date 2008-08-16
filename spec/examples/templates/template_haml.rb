@@ -21,5 +21,3 @@ describe 'Template Haml' do
     end
   end
 end
-
-

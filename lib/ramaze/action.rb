@@ -10,7 +10,7 @@ module Ramaze
     # The Action holds information that is essential to render the action for a
     # request.
 
-    class Action < Struct.new('Action', *members)
+    class Action < Ramaze::Struct.new('Action', *members)
     end
   end
 
@@ -145,7 +145,7 @@ module Ramaze
     end
   end
 
-  # Shortcut to create new instances of Action via Action::fill
+  # Shortcut to create new instances of Action
 
   def self.Action(hash = {})
     Action.create(hash)

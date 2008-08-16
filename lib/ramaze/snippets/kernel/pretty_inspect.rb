@@ -3,13 +3,19 @@
 
 require 'pp'
 
-# Extensions for Kernel
+module Ramaze
+  module CoreExtensions
 
-module Kernel
-  unless defined?(pretty_inspect)
-    # returns a pretty printed object as a string.
-    def pretty_inspect
-      PP.pp(self, '')
+    # Extensions for Kernel
+
+    module Kernel
+      unless defined?(pretty_inspect)
+        # returns a pretty printed object as a string.
+        def pretty_inspect
+          PP.pp(self, '')
+        end
+      end
     end
+
   end
 end

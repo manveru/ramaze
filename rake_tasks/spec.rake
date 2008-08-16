@@ -4,8 +4,7 @@
 require 'rake'
 require 'pp'
 
-require 'lib/ramaze/snippets/divide'
-require 'lib/ramaze/snippets/string/color'
+require 'lib/ramaze/snippets'
 
 desc 'Run all specs'
 task 'spec' do

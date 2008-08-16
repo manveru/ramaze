@@ -90,7 +90,7 @@ task :rcov_summary => :rcov_dir do
 end
 
 desc "generate rdoc"
-task :rdoc => [:clean, :readme2html] do
+task :rdoc => [:clean] do
   sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
 end
 
