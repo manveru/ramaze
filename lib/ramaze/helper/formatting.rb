@@ -104,6 +104,7 @@ module Ramaze
           all
         else
           text = b + c
+          text = yield(text) if block_given?
           %(#{a}<a href="#{b=="www."?"http://www.":b}#{c}"#{html_options}>#{text}</a>#{d})
         end
       end

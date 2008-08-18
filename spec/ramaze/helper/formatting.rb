@@ -26,6 +26,11 @@ describe 'Helper::Formatting' do
       "<a href=\"http://ramaze.net\" target='_blank'>http://ramaze.net</a>"
   end
 
+  it 'should auto_link urls, setting the result of the given block as the link text' do
+    auto_link('http://ramaze.net rocks, so does http://rubyonrails.org.') { |url| url.sub!(%r{http://}, '') }.should ==
+      '<a href="http://ramaze.net">ramaze.net</a> rocks, so does <a href="http://rubyonrails.org">rubyonrails.org</a>.'
+  end
+
   should 'ordinalize numbers' do
     ordinal(1).should == '1st'
     ordinal(2).should == '2nd'
