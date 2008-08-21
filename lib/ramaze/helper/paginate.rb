@@ -116,7 +116,7 @@ module Ramaze
           if last_page?
             out << g.span(:class => 'next grey'){ h('>') }
             out << g.span(:class => 'last grey'){ h('>>') }
-          else
+          elsif next_page
             (next_page..page_count).each do |n|
               out << link(n)
             end
