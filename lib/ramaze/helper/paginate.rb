@@ -144,6 +144,8 @@ module Ramaze
         private
 
         def pager_for(obj)
+          @page = @page < 1 ? 1 : @page
+
           case obj
           when Array
             ArrayPager.new(obj, @page, @limit)
