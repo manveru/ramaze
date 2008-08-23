@@ -68,6 +68,8 @@ module Ramaze
         def initialize(data = [], page = 1, limit = 10, var = 'pager')
           @data, @page, @limit, @var = data, page, limit, var
           @pager = pager_for(data)
+          @page = @page > page_count ? page_count : @page
+          @pager = pager_for(data)
         end
 
         # Returns String with navigation div.
@@ -96,7 +98,7 @@ module Ramaze
         #   </div>
 
 
-        def navigation
+        def navigation(limit = 8)
           out = [ g.div(:class => :pager) ]
 
           if first_page?
@@ -107,7 +109,10 @@ module Ramaze
             out << link(prev_page, '<', :class => :previous)
           end
 
-          (1...current_page).each do |n|
+          lower = limit ? (current_page - limit) : 1
+          lower = lower < 1 ? 1 : lower
+
+          (lower...current_page).each do |n|
             out << link(n)
           end
 
@@ -117,7 +122,9 @@ module Ramaze
             out << g.span(:class => 'next grey'){ h('>') }
             out << g.span(:class => 'last grey'){ h('>>') }
           elsif next_page
-            (next_page..page_count).each do |n|
+            higher = limit ? (next_page + limit) : page_count
+            higher = [higher, page_count].min
+            (next_page..higher).each do |n|
               out << link(n)
             end
 
