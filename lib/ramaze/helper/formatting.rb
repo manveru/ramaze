@@ -122,5 +122,37 @@ module Ramaze
       text = string.each_byte.map{|c| "&#%03d" % c}.join
       %(<a href="mailto:#{string}">#{text}</a>)
     end
+
+    # Returns Hash with tags as keys and their weight as value.
+    #
+    # Example:
+    #     tags = %w[ruby ruby code ramaze]
+    #     tagcloud(tags)
+    #     # => {"code"=>0.75, "ramaze"=>0.75, "ruby"=>1.0}
+    #
+    # The weight can be influenced by adjusting the +min+ and +max+ parameters,
+    # please make sure that +max+ is larger than +min+ to get meaningful output.
+    #
+    # This is not thought as immediate output to your template but rather to
+    # help either implementing your own algorithm or using the result as input
+    # for your tagcloud.
+    #
+    # Example:
+    #     - tagcloud(tags).each do |tag, weight|
+    #       - style = "font-size: %0.2fem" % weight
+    #       %a{:style => style, :href => Rs(tag)}= h(tag)
+
+    def tagcloud(tags, min = 0.5, max = 1.5)
+      result = {}
+      total = tags.size.to_f
+      diff = max - min
+
+      tags.uniq.each do |tag|
+        count = tags.count(tag)
+        result[tag] = ((count / total) * diff) + min
+      end
+
+      result
+    end
   end
 end
