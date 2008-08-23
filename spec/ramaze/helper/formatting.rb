@@ -43,4 +43,12 @@ describe 'Helper::Formatting' do
     ordinal(100).should == '100th'
     ordinal(133).should == '133rd'
   end
+
+  should 'generate tagclouds' do
+    tags = %w[ruby ruby code ramaze]
+    tagcloud(tags).should ==
+      {"code"=>0.75, "ramaze"=>0.75, "ruby"=>1.0}
+    tagcloud(tags, 0.5, 2.0).should ==
+      {"code"=>0.875, "ramaze"=>0.875, "ruby"=>1.25}
+  end
 end
