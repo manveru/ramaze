@@ -1,6 +1,8 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'ramaze/tool/project_creator'
+
 module Ramaze
   module Tool
 
@@ -14,60 +16,32 @@ module Ramaze
     # where project is the directory you want the content put into.
 
     class Create
-      class << self
 
-        # a method to create a new project by copying the contents of lib/proto
-        # to the position you specify (project)
-        #
-        # It is just a nice wrapper showing you what files/directories are put
-        # in place.
+      # Default options passed to Create::create
+      #   :proto  is the directory to duplicate
+      #   :amend  no files may be overwritten but missing files will be added
+      #   :force  will overwrite existing files
+      #   :layout copy one subdirectory in +proto+
 
-        def create project
-          @basedir = ::Ramaze::BASEDIR / 'proto'
-          @destdir = Dir.pwd / project
+      DEFAULT = {
+        :proto => File.join(::Ramaze::BASEDIR, 'proto'),
+        :amend => false,
+        :force => false,
+        :layout => '/',
+      }
 
-          if File.directory?(@destdir)
-            puts "Error: #{project}/ already exists. Rename or delete directory and try again."
-            return
-          end
+      # Using ProjectCreator to copy all files and directories from lib/proto
+      # to another location.
+      # +options+ are described in the DEFAULT constant and should be:
+      #   :force  => (true|false|nil)
+      #   :amend  => (true|false|nil)
+      #   :layout => (String|nil)
+      #   :proto  => String
 
-          puts "Creating project #{project}"
-
-          FileUtils.mkdir_p(project)
-
-          puts "Copying skeleton project to new project (#@destdir)..."
-
-          directories, files =
-            Dir[@basedir / '**' / '*'].partition{ |f| File.directory?(f) }
-
-          # gem packaging removes empty model directory, so add it in ourselves
-          create_dirs(*Array[ @basedir/'model', *directories ].uniq)
-          copy_files(*files)
-
-          puts "\nStart your new ramaze app: ruby #{project}/start.rb"
-        end
-
-        # create the directories recursivly
-
-        def create_dirs(*dirs)
-          dirs.each do |dir|
-            dest = dir.gsub(@basedir, @destdir)
-
-            puts "Create directory: '#{dest}'"
-            FileUtils.mkdir_p(dest)
-          end
-        end
-
-        # copy the files over
-
-        def copy_files(*files)
-          files.each do |file|
-            dest = file.gsub(@basedir, @destdir)
-
-            puts "Copy file: '#{dest}'"
-            FileUtils.cp(file, dest)
-          end
-        end
+      def self.create(project, options = {})
+        options = DEFAULT.merge(options)
+        creator = ProjectCreator.new(project, options)
+        creator.create
       end
     end
   end
