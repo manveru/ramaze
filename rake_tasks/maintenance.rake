@@ -114,6 +114,44 @@ namespace :maintenance do
     File.open(basefile + '.html', 'w+'){|io| io << doc.to_s }
   end
 
+  # This task is so full of hacks, it may break any second, but it just feels
+  # good to have proper highlighting for sh, ezamar and ruby generated from
+  # markdown without any external CSS to worry about.
+  desc 'Rebuild doc/tutorial/todolist.html using UltraViolet'
+  task 'tutorial-uv' do
+    require 'maruku'
+    require 'uv'
+    require 'hpricot'
+    require 'ramaze/contrib/maruku_uv'
+
+    # Inject ezamar syntax
+    Uv.init_syntaxes
+    ezamar = 'lib/ramaze/template/ezamar/textpow.syntax'
+    syntaxes = Uv.instance_variable_get('@syntaxes')
+    syntaxes['ezamar'] = Textpow::SyntaxNode.load(ezamar)
+
+    base = 'doc/tutorial/todolist'
+    original = File.read(base + '.mkd')
+    maruku = Maruku.new(original)
+    style = maruku.attributes[:uv_style]
+
+    html = maruku.to_html_document
+
+    uv_lib = Gem::latest_load_paths.grep(/ultraviolet/).first
+    uv_root = File.dirname(uv_lib)
+    css = Dir["#{uv_root}/**/#{style}.css"].first
+
+    doc = Hpricot(html)
+    css = %(<style type="text/css">
+              pre { margin: 1em; padding: 1em; }
+              #{File.read(css)}
+            </style>)
+
+    doc.at('title').after(css)
+
+    File.open(base + '.html', 'w+'){|io| io << doc.to_s }
+  end
+
   def existing_authors
     authors = {}
 

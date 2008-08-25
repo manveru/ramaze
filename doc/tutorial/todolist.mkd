@@ -1,6 +1,6 @@
 Title: The official Ramaze todolist tutorial
-HTML use syntax: true
-
+html_use_syntax: true
+uv_style: iplastic
 
 # To-do List Tutorial
 
@@ -46,7 +46,8 @@ to-do list.
 
 So run:
 
-    $ ramaze --create todolist
+    ramaze --create todolist
+{:lang=shell-unix-generic}
 
 done.
 
@@ -59,7 +60,7 @@ with your ORM or database-library of choice.
 
 So first, create a `model/todolist.rb` for our application:
 
-	require 'ramaze/store/default'
+    require 'ramaze/store/default'
     TodoList = Ramaze::Store::Default.new('todolist.yaml')
 {:lang=ruby}
 
@@ -100,7 +101,7 @@ simple.
         </ul>
       </body>
     </html>
-{:lang=nagoro}
+{:lang=html}
 
 I will assume that you are familiar with basic Ruby already, so we will
 concentrate on the things new here.
@@ -118,7 +119,7 @@ interesting part)
       <li>Laundry: not done</li>
       <li>Wash dishes: not done</li>
     </ul>
-{:lang=nagoro}
+{:lang=html}
 
 That wasn't too bad, huh?
 
@@ -202,7 +203,7 @@ changed to do following:
         <?r end ?>
       </body>
     </html>
-{:lang=ruby}
+{:lang=ezamar}
 
 The rest of the template can stay the same.
 
@@ -224,6 +225,7 @@ Add a link on the `view/index.xhtml` like this:
 
     <h1>TodoList</h1>
     <a href="/new">New Task</a>
+{:lang=ezamar}
 
 Open a new file `view/new.xhtml` with a form to add a new task.
 
@@ -240,6 +242,7 @@ Open a new file `view/new.xhtml` with a form to add a new task.
         </form>
       </body>
     </html>
+{:lang=ezamar}
 
 We will not need a method for this on our controller, in fact, actions can
 consist of either method and template or only one of them. The Controller
@@ -288,7 +291,7 @@ Jump into `view/index.xhtml` and do the following:
         #{h title}: #{status} - [ #{toggle} ]
       </li>
     <?r end
-{:lang=ruby}
+{:lang=ezamar}
 
 We added a new element here, `toggle`, the Controller should give us
 a link to change the status corresponding to the status of the task, so off
@@ -317,6 +320,7 @@ toggle the status, A and Rs are both methods that help you do that.
 The result will be something like:
 
     <a href="/open/Wash+dishes">Close Task</a>
+{:lang=ezamar}
 
 Rs actually is responsible to build the links href, for more information please
 take a look at the RDoc for LinkHelper.
@@ -364,7 +368,10 @@ will translate into:
     open('Wash dishes')
 {:lang=ruby}
 
-Which in turn will call `task_status('Wash dishes', false)`
+Which in turn will call 
+
+    task_status('Wash dishes', false)
+{:lang=ruby}
 
 That's it, go on and try it :)
 
@@ -396,6 +403,7 @@ Now jumping to `view/index.xhtml` again, change it so it shows the link:
         #{h title}: #{status} [ #{toggle} | #{delete} ]
       </li>
     <?r end ?>
+{:lang=ezamar}
 
 Voilà, you now have acquired the Certificate of Ramazeness.
 
@@ -406,6 +414,7 @@ explain some more advanced concepts of Ramaze and Ezamar.
 ## Eighth Step, Elements
 
     <Page></Page>
+{:lang=ezamar}
 
 This is called an Element, Ramaze will go and search for a class that matches
 the name Page and responds to `#render`. Then it will go and hand the content in
@@ -423,12 +432,14 @@ Let us have a look at our templates, they got some repetitive stuff, like:
         <h1>some title</h1>
       </body>
     </html>
+{:lang=ezamar}
 
 How about replacing that with something short and reusable:
 
     <Page title="TodoList">
       your other content
     </Page>
+{:lang=html}
 
 Would be nice of course, and when you start having more templates it makes an
 awful lot of sense being able to change the enclosing stuff in one place.
@@ -497,6 +508,7 @@ First the `view/index.xhtml`
         </ul>
       <?r end ?>
     </Page>
+{:lang=ezamar}
 
 and the `view/new.xhtml`
 
@@ -507,6 +519,7 @@ and the `view/new.xhtml`
         <input type="submit" />
       </form>
     </Page>
+{:lang=ezamar}
 
 Alright, now just go and look at the result in the browser, try changing
 the things inside the Element and look at how it behaves.
@@ -526,6 +539,7 @@ So, from what we have right now:
         </li>
       <?r end ?>
     </ul>
+{:lang=ezamar}
 
 To something like this:
 
@@ -539,6 +553,7 @@ To something like this:
         </tr>
       <?r end ?>
     </table>
+{:lang=ezamar}
 
 And, since we have proper classes to address some style sheets, jump into the
 Page element and add some style sheet:
@@ -554,6 +569,7 @@ Page element and add some style sheet:
         a         { color:       #3a3;              }
       </style>
     </head>
+{:lang=ezamar}
 
 That looks quite a bit nicer, right?  And yes, if you don't like tables (though
 this is an entirely legit use in my opinion) you can just do it like you want,
@@ -759,6 +775,7 @@ and add in the right place:
       <?r end ?>
       #{content}
     </body>
+{:lang=ezamar}
 
 The only thing special about it is the `\\#{flash[:error]}`, we have to escape
 the `#` so it won't evaluate this immediately but wait until it is really
