@@ -1,6 +1,9 @@
 #{@pager}
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript">
+  $(function() {
+    $('#paste_body').dblclick(function(){ $('.line-numbers').toggle() });
+  });
   function change_style(name){
     $('link')[1].href = '/css/' + name + '.css';
     $('pre')[0].className = name;
