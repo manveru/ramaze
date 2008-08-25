@@ -1,7 +1,7 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-require __DIR__/'..'/'start'
+require __DIR__/'../start'
 
 describe MainController do
   behaves_like 'http', 'xpath'
@@ -11,6 +11,7 @@ describe MainController do
   it 'should show start page' do
     got = get('/')
     got.status.should == 200
+    puts got.body
     got.at('//title').text.strip.should ==
       MainController.new.index
   end
