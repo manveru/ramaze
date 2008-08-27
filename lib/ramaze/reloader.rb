@@ -106,7 +106,7 @@ module Ramaze
     end
 
     def rotation
-      files = [$0, *$LOADED_FEATURES].uniq
+      files = [$0, __FILE__, *$LOADED_FEATURES].uniq
       paths = ['./', *$LOAD_PATH].uniq
 
       files.each do |file|
