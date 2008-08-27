@@ -3,13 +3,22 @@
 
 # gzip_filter.rb
 #
-# Use this to compress "large" pages with gzip.  All major browsers support gzipped pages.
-# This filter brought to you by your friends in #ramaze: Pistos, manveru, rikur and Kashia.
+# Use this to compress "large" pages with gzip.  All major browsers support
+# gzipped pages.
+# This filter brought to you by your friends in #ramaze:
+# Pistos, manveru, rikur and Kashia.
 #
 # Usage, in start.rb:
 #
 #   require 'ramaze/contrib/gzip_filter'
 #   Ramaze::Dispatcher::Action::FILTER << Ramaze::Filter::Gzip
+#
+# Setting options (at any point in your code):
+#
+#   Ramaze::Filter::Gzip.trait(
+#     :threshold    => 1024,
+#     :content_type => /^text\/.*/
+#   )
 
 require 'zlib'
 
@@ -17,8 +26,9 @@ module Ramaze
   module Filter
     class Gzip
 
-      trait :enabled => true
-      trait :threshold => 32768 # bytes
+      trait :enabled => true,
+            :content_type => /^text\/.*/,
+            :threshold => 32768 # bytes
 
       class << self
 
@@ -34,7 +44,9 @@ module Ramaze
           accepts = request.env[ 'HTTP_ACCEPT_ENCODING' ]
           return response if accepts.nil? || ( accepts !~ /(x-gzip|gzip)/ )
 
-          if response.content_type == 'text/html' && response.body.size > trait[ :threshold ]
+          acceptable_size = response.body.size >= trait[ :threshold ]
+
+          if response.content_type =~ /text\/.+/ && acceptable_size
             output = StringIO.new
             def output.close
               # Zlib closes the file handle, so we want to circumvent this
