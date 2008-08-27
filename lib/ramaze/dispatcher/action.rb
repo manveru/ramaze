@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  module Dispatcher
+  class Dispatcher
 
     # This dispatcher is responsible for relaying requests to Controller::handle
     # and filtering the results using FILTER.

@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  module Dispatcher
+  class Dispatcher
 
     # Generates a directory listing, see Ramaze::Controller::Directory for more
     # information and how to create your own directory listing page

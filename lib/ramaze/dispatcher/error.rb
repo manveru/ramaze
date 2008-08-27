@@ -2,7 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  module Dispatcher
+  class Dispatcher
 
     # Last resort dispatcher, tries to recover as much information as possible
     # from the past request and takes the appropiate actions.

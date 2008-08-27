@@ -5,14 +5,30 @@ module Ramaze
   module Adapter
 
     # (Rack) middleware injected around Adapter::Base::call
-    MIDDLEWARE = OrderedSet.new(
-      Ramaze::Current,
-      Ramaze::Reloader,
+    MIDDLEWARE = OrderedSet[
+      Rack::ShowExceptions,
       Rack::ShowStatus,
-      Rack::ShowExceptions
-    )
+      Rack::Deflater,
+      Ramaze::Reloader,
+      Ramaze::Current,
+      Ramaze::Dispatcher,
+    ]
 
-    trait :middleware => MIDDLEWARE.inject{|app, middleware| middleware.new(app) }
+    def self.middleware(mws = MIDDLEWARE)
+      if @middleware and trait[:previous] == mws
+        @middleware
+      else
+        Log.debug("Rebuild @middleware")
+        trait :previous => mws.dup
+        inner_app = mws.last
+        cascade = mws[0...-1].reverse
+
+        @middleware = cascade.inject(inner_app){|app, mw| mw.new(app) }
+      end
+    end
+
+    @middleware = nil
+    @middleware = middleware
 
     # Helper to assign a new block to before_call
     # Usage:
@@ -31,6 +47,7 @@ module Ramaze
 
     class Base
       class << self
+
         attr_reader :thread
 
         # Call ::startup with the given host and port.
@@ -102,9 +119,10 @@ module Ramaze
 
         def respond(env)
           Ramaze::STATE.wrap do
-            Adapter.trait[:middleware].call(env)
+            Adapter::middleware.call(env)
           end
         end
+
       end
     end
   end

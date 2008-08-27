@@ -14,10 +14,13 @@ module Ramaze
   # The Dispatcher receives requests from adapters and sets up the proper environment
   # to process them and respond.
 
-  module Dispatcher
+  class Dispatcher
+    def initialize(*args)
+      Dispatcher.call(*args)
+    end
 
     # requests are passed to every
-    FILTER = [ Dispatcher::File, Dispatcher::Action ] unless defined?(FILTER)
+    FILTER = OrderedSet[ Dispatcher::File, Dispatcher::Action, ]
 
     # Response codes to cache the output of for repeated requests.
     trait :shielded => [ STATUS_CODE["Not Found"] ]
@@ -28,7 +31,9 @@ module Ramaze
       # Entry point for Adapter#respond, takes a Rack::Request and
       # Rack::Response, sets up the environment and the goes on to dispatch
       # for the given path from rack_request.
-      def handle
+      #
+      # +env+ will be ignored, it's just for compatibility with rack middleware
+      def call(env = nil)
         path = request.path_info.squeeze('/')
         path.sub!(/^#{Regexp.escape(Global.prefix)}/, '/')
         path.squeeze!('/')
@@ -49,6 +54,7 @@ module Ramaze
       rescue Object => exception
         error(exception)
       end
+      alias handle call
 
       # protects against recursive dispatch and reassigns the path_info in the
       # request, the rest of the request is kept intact.
