@@ -17,7 +17,7 @@
 #
 #   Ramaze::Filter::Gzip.trait(
 #     :threshold    => 1024,
-#     :content_type => /^text\/.*/
+#     :content_type => /^text\/.+/
 #   )
 
 require 'zlib'
@@ -27,7 +27,7 @@ module Ramaze
     class Gzip
 
       trait :enabled => true,
-            :content_type => /^text\/.*/,
+            :content_type => /^text\/.+/,
             :threshold => 32768 # bytes
 
       class << self
@@ -37,23 +37,24 @@ module Ramaze
         # Enables being plugged into Dispatcher::Action::FILTER
 
         def call( response, options = {} )
-          return response if not trait[ :enabled ]
-          return response if response.body.nil?
-          return response if response.body.respond_to?( :read )
+          return response unless trait[ :enabled ]
+          return response unless body = response.body
+          return response if body.respond_to?( :read )
 
           accepts = request.env[ 'HTTP_ACCEPT_ENCODING' ]
           return response if accepts.nil? || ( accepts !~ /(x-gzip|gzip)/ )
 
-          acceptable_size = response.body.size >= trait[ :threshold ]
+          acceptable_size = body.size >= trait[ :threshold ]
+          acceptable_type = response.content_type =~ trait[:content_type]
 
-          if response.content_type =~ /text\/.+/ && acceptable_size
+          if acceptable_type and acceptable_size
             output = StringIO.new
             def output.close
               # Zlib closes the file handle, so we want to circumvent this
               rewind
             end
             gz = Zlib::GzipWriter.new( output )
-            gz.write( response.body )
+            gz.write( body )
             gz.close
 
             response.body = output.string
