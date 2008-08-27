@@ -33,6 +33,11 @@ module Ramaze
   BASEDIR = File.dirname(File.expand_path(__FILE__))
   $LOAD_PATH.unshift BASEDIR
   $LOAD_PATH.uniq!
+
+  # Shortcut to the HTTP_STATUS_CODES of Rack::Utils
+  # inverted for easier access
+
+  STATUS_CODE = Rack::Utils::HTTP_STATUS_CODES.invert
 end
 
 Thread.abort_on_exception = true

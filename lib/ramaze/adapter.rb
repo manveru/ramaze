@@ -11,11 +11,6 @@ Socket.do_not_reverse_lookup = true
 
 module Ramaze
 
-  # Shortcut to the HTTP_STATUS_CODES of Rack::Utils
-  # inverted for easier access
-
-  STATUS_CODE = Rack::Utils::HTTP_STATUS_CODES.invert
-
   # This module holds all classes and methods related to the adapters like
   # webrick or mongrel.
   # It's responsible for starting and stopping them.
