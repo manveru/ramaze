@@ -5,6 +5,10 @@ require(File.join(File.dirname(__FILE__), 'blankslate'))
 
 # Basically an Set, but with Order, ain't that obivous?
 class OrderedSet < BlankSlate
+  def self.[](*args)
+    new(*args)
+  end
+
   # Create new instances, optionally pass the first set
   def initialize(*args)
     if args.size == 1
