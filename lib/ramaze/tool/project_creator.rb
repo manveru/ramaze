@@ -17,6 +17,7 @@ class ProjectCreator
   end
 
   def proto
+    PROTO.map!{|pr| File.expand_path(pr) }
     proto = options[:proto] ||= PROTO.find{|f| File.directory?(f) }
     layout = options[:layout] ||= '/'
     File.expand_path(File.join(proto, layout))
