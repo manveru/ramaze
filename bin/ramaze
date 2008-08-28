@@ -59,6 +59,7 @@ if runner
     require 'irb/completion'
 
     ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
+    Ramaze.start! :run_loose => true
     IRB.start
     Ramaze.shutdown
   end
