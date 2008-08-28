@@ -8,7 +8,7 @@ module Ramaze
     MIDDLEWARE = OrderedSet[
       Rack::ShowExceptions,
       Rack::ShowStatus,
-      Rack::Deflater,
+      # Rack::Deflater,
       Ramaze::Reloader,
       Ramaze::Current,
       Ramaze::Dispatcher,
