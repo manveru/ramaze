@@ -1,7 +1,7 @@
 require "ruby-prof"
 
 module Ramaze
-  module Dispatcher
+  class Dispatcher
     class ActionProfiler < Action
       def self.call(path)
         if RubyProf.running?
