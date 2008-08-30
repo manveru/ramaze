@@ -37,7 +37,7 @@ describe 'Dispatcher::File' do
   it 'should send Last-Modified' do
     res = get '/test_download.css'
     res.headers['Last-Modified'].should.not.be == nil
-    res.headers['Last-Modified'].should == File.stat(@public_root/'test_download.css').mtime.httpdate
+    res.headers['Last-Modified'].should == File.mtime(@public_root/'test_download.css').httpdate
   end
 
   it 'should respect ETag with IF_NONE_MATCHES' do

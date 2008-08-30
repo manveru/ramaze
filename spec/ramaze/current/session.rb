@@ -35,7 +35,7 @@ describe "Session" do
     (Ramaze::Session::IP_COUNT_LIMIT + 2).times do
       r = get('/')
       r.body.should == "nothing"
-      r.headers.should == {'Content-Type' => 'text/html'}
+      r.headers['Content-Type'].should == 'text/html'
     end
   end
 end

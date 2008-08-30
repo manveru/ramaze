@@ -40,7 +40,7 @@ module Ramaze
             return unless in_public?(file)
             response['Content-Type'] = Tool::MIME.type_for(file) unless ::File.extname(file).empty?
             mtime = ::File.mtime(file)
-            # response['Last-Modified'] = mtime.httpdate
+            response['Last-Modified'] = mtime.httpdate
             response['ETag']= Digest::MD5.hexdigest(file+mtime.to_s).inspect
             if modified_since = request.env['HTTP_IF_MODIFIED_SINCE']
               return :NotModified unless Time.parse(modified_since) < mtime

@@ -26,8 +26,7 @@ module Ramaze
           log(path)
 
           catch(:respond) {
-            body = Controller.handle(path)
-            Response.current.build([body])
+            response.write Controller.handle(path)
           }
 
           FILTER.each{|f| f.call(response)}

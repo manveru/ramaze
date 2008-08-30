@@ -20,9 +20,20 @@ module Ramaze
         self[key] = value
       end
 
-      body.clear
-      write(new_body.to_s)
-      self.status = status
+      self.body, self.status = new_body, status
+    end
+
+    def body=(obj)
+      if obj.respond_to?(:stat)
+        @length = obj.stat.size
+        @body = obj
+      elsif obj.respond_to?(:size)
+        @body = []
+        @length = 0
+        write(obj)
+      else
+        raise(ArgumentError, "Invalid body: %p" % obj)
+      end
     end
   end
 end
