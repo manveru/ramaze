@@ -7,12 +7,12 @@ describe "SimpleAuth" do
 
   it 'should show start page' do
     Browser.new do
-      http.basic_authentication "username", "password"
+      http.basic_authentication "jill", "password1"
       get('/').should == "Secret Info"
     end
 
     Browser.new do
-      http.basic_authentication "admin", "secret"
+      http.basic_authentication "jack", "password2"
       get('/').should == "Secret Info"
     end
   end

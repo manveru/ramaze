@@ -2,21 +2,33 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  LOGINS = {
-   :username => 'password',
-   :admin => 'secret'
-  }.map{|k,v| ["#{k}:#{v}"].pack('m').strip} unless defined? LOGINS
+  trait :logins => {
+   'jill' => 'password1',
+   'jack' => 'password2',
+  }.map{|k,v| ["#{k}:#{v}"].pack('m').strip }
 
   helper :aspect
 
   before_all do
-    response['WWW-Authenticate'] = %(Basic realm="Login Required")
-    respond 'Unauthorized', 401 unless auth = request.env['HTTP_AUTHORIZATION'] and
-                                       LOGINS.include? auth.split.last
+    check_auth
   end
 
   def index
     'Secret Info'
+  end
+
+  private
+
+  def check_auth
+    response['WWW-Authenticate'] = 'Basic realm="Login Required"'
+
+    if auth = request.env['HTTP_AUTHORIZATION']
+      if class_trait[:logins].include?(auth.split.last)
+        return true
+      end
+    end
+
+    respond 'Unauthorized', 401
   end
 end
 

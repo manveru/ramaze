@@ -15,13 +15,14 @@ module Ramaze
     end
 
     # Build/replace this responses data
-    def build(body = body, status = status, header = header)
+    def build(new_body = body, status = status, header = header)
       header.each do |key, value|
         self[key] = value
       end
 
-      self.body, self.status = body, status
-      self
+      body.clear
+      write(new_body.to_s)
+      self.status = status
     end
   end
 end

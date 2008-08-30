@@ -27,7 +27,7 @@ module Ramaze
 
           catch(:respond) {
             body = Controller.handle(path)
-            Response.current.build(body)
+            Response.current.build([body])
           }
 
           FILTER.each{|f| f.call(response)}
