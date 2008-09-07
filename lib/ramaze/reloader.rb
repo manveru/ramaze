@@ -117,7 +117,7 @@ module Ramaze
           @cache[file] = path
           yield(path, stat)
         else
-          Log::warn "Couldn't figure path for #{file}"
+          # Quite harmless, we just couldn't figure out path for #{file}
         end
       end
     end
