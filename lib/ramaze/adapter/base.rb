@@ -18,7 +18,6 @@ module Ramaze
       if @middleware and trait[:previous] == mws
         @middleware
       else
-        Log.debug("Rebuild @middleware")
         trait :previous => mws.dup
         inner_app = mws.last
         cascade = mws[0...-1].reverse
