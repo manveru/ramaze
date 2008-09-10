@@ -535,7 +535,6 @@ Gem::Specification.new do |s|
  "lib/ramaze/version.rb",
  "lib/vendor",
  "lib/vendor/bacon.rb",
- "pkg",
  "rake_tasks",
  "rake_tasks/conf.rake",
  "rake_tasks/coverage.rake",
