@@ -20,7 +20,7 @@ module Ramaze
     end
 
     # requests are passed to every
-    FILTER = OrderedSet[ Dispatcher::File, Dispatcher::Action, ]
+    FILTER = OrderedSet[ Dispatcher::File, Dispatcher::Action ]
 
     # Response codes to cache the output of for repeated requests.
     trait :shielded => [ STATUS_CODE["Not Found"] ]

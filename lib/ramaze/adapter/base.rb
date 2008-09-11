@@ -11,7 +11,7 @@ module Ramaze
       # Rack::Deflater,
       Ramaze::Reloader,
       Ramaze::Current,
-      Ramaze::Dispatcher,
+      Ramaze::Dispatcher
     ]
 
     def self.middleware(mws = MIDDLEWARE)
