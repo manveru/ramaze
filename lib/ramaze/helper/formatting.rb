@@ -148,7 +148,7 @@ module Ramaze
       diff = max - min
 
       tags.uniq.each do |tag|
-        count = tags.count(tag)
+        count = tags.respond_to?(:count) ? tags.count(tag) : tags.select{|t| t==tag }.size
         result[tag] = ((count / total) * diff) + min
       end
 
