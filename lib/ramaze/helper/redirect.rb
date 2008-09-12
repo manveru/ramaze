@@ -47,7 +47,7 @@ module Ramaze
       unless target =~ %r!^https?://!
         target[0,0] = '/' unless target =~ %r!^/!
         if host = request.env['HTTP_HOST']
-          target[0,0] = "http://#{host}"
+          target[0,0] = "#{request.protocol}://#{host}"
         end
       end
 

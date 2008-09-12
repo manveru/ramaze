@@ -206,10 +206,19 @@ module Ramaze
       params.reject{|k,v| not keys.include?(k) }
     end
 
+    # Is this an SSL request?
+    def ssl?
+      env['HTTPS'] == 'on' || env['HTTP_X_FORWARDED_PROTO'] == 'https'
+    end
+
+    # Returns 'https' if this is an SSL request and 'http' otherwise.
+    def protocol
+      ssl? ? 'https' : 'http'
+    end
+
     def domain(path = '/')
-      scheme = env['rack.url_scheme'] || 'http'
       host = env['HTTP_HOST']
-      URI("#{scheme}://#{host}#{path}")
+      URI("#{protocol}://#{host}#{path}")
     end
 
     # Returns and array of locales from env['HTTP_ACCEPT_LANGUAGE].
