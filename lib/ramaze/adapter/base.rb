@@ -12,7 +12,7 @@ module Ramaze
       Ramaze::Reloader,
       Ramaze::Current,
       Ramaze::Dispatcher
-    ]
+    ] unless defined? MIDDLEWARE
 
     def self.middleware(mws = MIDDLEWARE)
       if @middleware and trait[:previous] == mws

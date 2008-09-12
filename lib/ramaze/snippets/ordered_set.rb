@@ -22,23 +22,30 @@ class OrderedSet < BlankSlate
     @set.uniq!
   end
 
+  %w[ push unshift << ].each do |meth|
+    class_eval %[
+      def #{meth} *args
+        @set.delete(*args)
+        @set.#{meth}(*args)
+      end
+    ]
+  end
+
+  def []= *args
+    @set.map! do |e|
+      if ::Array === args.last
+        args.last.include?(e) ? nil : e
+      else
+        args.last == e ? nil : e
+      end
+    end
+    @set.__send__(:[]=, *args)
+    @set.compact!
+  end
+
   # Delegate everything, but controlled, keep elements unique.
   # Warning, this is not really atomic.
   def method_missing(meth, *args, &block)
-    case meth.to_s
-    when /push|unshift|\<\</
-      @set.delete(*args)
-    when '[]='
-      @set.map! do |e|
-        if ::Array === args.last
-          args.last.include?(e) ? nil : e
-        else
-          args.last == e ? nil : e
-        end
-      end
-    end
     @set.__send__(meth, *args, &block)
-  ensure
-    @set.compact! if meth == :[]=
   end
 end

@@ -11,9 +11,9 @@ module Ramaze
 
       # The response is passed to each filter by sending .call(response) to it.
 
-      FILTER = OrderedSet.new(
+      FILTER = OrderedSet[
         # Ramaze::Tool::Localize,
-      ) unless defined?(FILTER)
+      ] unless defined?(FILTER)
 
       class << self
         include Trinity
