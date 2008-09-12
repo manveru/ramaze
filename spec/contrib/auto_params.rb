@@ -108,7 +108,7 @@ describe 'Normal behavior' do
   end
 
   it 'should raise no action' do
-    get('/none').body.should =~ /^No Action found/
+    get('/none').body.should =~ /No Action found/
   end
 
   it 'should work with included actions' do
