@@ -63,10 +63,14 @@ module Ramaze
 
         def call(response, options = {})
           return response unless trait[:enable]
-          return response if response.body.nil?
-          return response if response.body.respond_to?(:read)
-          response.body = localize_body(response.body, options)
-          response
+
+          body = []
+
+          response.body.each do |chunk|
+            body << localize_body(chunk, options)
+          end
+
+          response.body = body
         end
 
         # Localizes a response body.  It reacts to a regular expression as given
