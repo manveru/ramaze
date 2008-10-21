@@ -59,10 +59,8 @@ module Ramaze
     end
 
     def [](key, *rest)
-      value = params[key.to_s]
-      return value if rest.empty?
-      keys = rest.flatten.map{|k| k.to_s}
-      Array[value, *params.values_at(*keys)]
+      return params[key.to_s] if rest.empty?
+      [key, *rest].map{|k| params[k.to_s] }
     end
 
     def to_ivs(*args)

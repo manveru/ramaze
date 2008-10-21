@@ -27,6 +27,9 @@ class Paste < Sequel::Model(:paste)
 
   def uv(text, style = STYLE, lines = true)
     Uv.parse(text, "xhtml", syntax, lines, style)
+  rescue ArgumentError => ex
+    Ramaze::Log::error(ex)
+    "<pre>#{text}</pre>"
   end
 
   def syntax_name
