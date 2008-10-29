@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "ramaze"
-  s.version = "2008.09"
+  s.version = "2008.10"
 
   s.summary = "Ramaze is a simple and modular web framework"
   s.description = "Ramaze is a simple and modular web framework"
@@ -429,6 +429,7 @@ Gem::Specification.new do |s|
  "lib/ramaze/log/knotify.rb",
  "lib/ramaze/log/logger.rb",
  "lib/ramaze/log/logging.rb",
+ "lib/ramaze/log/rotatinginformer.rb",
  "lib/ramaze/log/syslog.rb",
  "lib/ramaze/log/xosd.rb",
  "lib/ramaze/option",
