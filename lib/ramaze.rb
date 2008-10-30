@@ -79,6 +79,8 @@ module Ramaze
     # each class in trait[:essentials] by calling ::startup on them.
 
     def startup options = {}
+      options = options.to_hash
+
       force = options.delete(:force)
       force ||= !trait[:started]
 
