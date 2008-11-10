@@ -5,6 +5,8 @@ module Ramaze
   module Helper
     module HttpDigest
 
+      UUID_GENERATOR = UUID.new
+
       @session_nonce = "authentication_digest_nonce"
 
       def httpdigest_logout
@@ -14,7 +16,7 @@ module Ramaze
       def httpdigest(uid, realm)
         session_opaque = "authentication_digest_opaque_#{uid}"
 
-        session[session_opaque] ||= UUID.new
+        session[session_opaque] ||= UUID_GENERATOR.generate
 
         authorized = false
 
@@ -38,7 +40,7 @@ module Ramaze
         end
 
         unless authorized
-          session[@session_nonce] = UUID.new
+          session[@session_nonce] = UUID_GENERATOR.generate
           response['WWW-Authenticate'] =
             %|Digest realm="#{realm}",| +
             %|qop="auth,auth-int",| +
