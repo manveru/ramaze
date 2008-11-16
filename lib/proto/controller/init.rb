@@ -7,4 +7,5 @@ class Controller < Ramaze::Controller
   engine :Ezamar
 end
 
-acquire __DIR__/"*.rb"
+# Here go your requires for subclasses of Controller:
+require 'controller/main'
