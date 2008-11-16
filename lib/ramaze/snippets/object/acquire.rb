@@ -27,12 +27,9 @@ module Ramaze
       #   # require 'src/foo.rb' and 'src/bar.so' and 'src/foobar/baz.rb'
       #   acquire 'src/*', 'src/foobar/*'
 
-      def acquire *globs
-        globs.flatten.each do |glob|
-          Dir[glob].each do |file|
-            require file if file =~ /\.(rb|so)$/
-          end
-        end
+      def acquire(*globs)
+        Ramaze.deprecated('Object#acquire', 'Ramaze::acquire')
+        Ramaze.acquire(*globs)
       end
     end
 
