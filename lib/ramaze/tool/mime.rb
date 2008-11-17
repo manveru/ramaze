@@ -9,7 +9,7 @@ module Ramaze
     module MIME
 
       # the mime_types.yaml as full path, we use a copy of mongrels.
-      trait :types => YAML.load_file(BASEDIR/'ramaze'/'tool'/'mime_types.yaml')
+      trait :types => YAML.load_file(File.join(BASEDIR, 'ramaze/tool/mime_types.yaml'))
 
       class << self
 

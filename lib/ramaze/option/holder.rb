@@ -78,7 +78,7 @@ module Ramaze
       # currently set one.
       def public_root
         [ @public_root,
-          root/@public_root
+          File.join(root, @public_root)
         ].find{|path| File.directory?(path) } || @public_root
       end
 
@@ -90,8 +90,8 @@ module Ramaze
       # the currently set one.
       def view_root
         [ @view_root,
-          root/@view_root,
-          root/'template',
+          File.join(root, @view_root),
+          File.join(root, 'template'),
         ].find{|path| File.directory?(path) } || @view_root
       end
 

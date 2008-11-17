@@ -49,7 +49,7 @@ module Ramaze
           const.startup if const.respond_to?(:startup)
           Log.dev "Loaded contrib: #{const}"
         rescue NameError
-          files = Dir["{contrib,#{BASEDIR/:ramaze/:contrib}}/#{name}.{so,bundle,rb}"]
+          files = Dir["{contrib,#{BASEDIR}/ramaze/contrib}/#{name}.{so,bundle,rb}"]
           raise LoadError, "#{mod_name} not found" unless files.any?
           require(files.first) ? retry : raise
         end
