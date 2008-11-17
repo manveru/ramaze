@@ -8,10 +8,10 @@ module Ramaze
     #
     # class MainController < Ramaze::Controller
     #   def index
-    #     if user?
-    #       A('login', :href => Rs(:login))
-    #     else
+    #     if logged_in?
     #       "Hello #{user.name}"
+    #     else
+    #       A('login', :href => Rs(:login))
     #     end
     #   end
     #
