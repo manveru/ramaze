@@ -22,7 +22,7 @@ describe 'Profiling' do
     Ramaze::Log.loggers << Ramaze::Logger::Informer.new(output)
 
     get('/')
-    output.string.should =~ /Thread ID:\s\d+/
+    output.string.should =~ /Thread ID:\s-?\d+/
     output.string.should =~ /Total:/
     output.string.should =~ /self\s+total\s+self\s+wait\s+child\s+call/
   end
