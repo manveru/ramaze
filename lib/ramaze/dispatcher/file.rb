@@ -64,7 +64,8 @@ module Ramaze
           joined = ::File.join(Global.public_root, path)
 
           if ::File.directory?(joined)
-            Dir[joined/"{#{INDICES.join(',')}}"].first || joined
+            glob = ::File.join(joined, "{#{INDICES.join(',')}}")
+            Dir[glob].first || joined
           else
             joined
           end

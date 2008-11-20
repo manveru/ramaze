@@ -136,7 +136,7 @@ module Ramaze
 
       def resolve_template(path)
         path = path.to_s
-        path_converted = path.split('__').inject{|s,v| s/v}
+        path_converted = path.split('__').inject{|s,v| File.join(s, v) }
         possible_paths = [path, path_converted].compact
 
         paths = template_paths.map{|pa|
