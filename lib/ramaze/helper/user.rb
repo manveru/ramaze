@@ -8,10 +8,10 @@ module Ramaze
     #
     # class MainController < Ramaze::Controller
     #   def index
-    #     if user?
-    #       A('login', :href => Rs(:login))
-    #     else
+    #     if logged_in?
     #       "Hello #{user.name}"
+    #     else
+    #       A('login', :href => Rs(:login))
     #     end
     #   end
     #
@@ -77,7 +77,7 @@ module Ramaze
           elsif _model.respond_to?(:authenticate)
             _model.authenticate(creds)
           else
-            Log.warn("Helper::User has no callback and %p doesn't respond to #authenticate" % _model)
+            Log.warn("Helper::User has no callback and there is no %p::authenticate" % _model)
             nil
           end
         end

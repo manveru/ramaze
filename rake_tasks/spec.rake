@@ -11,18 +11,18 @@ task 'spec' do
   non_verbose, non_fatal = ENV['non_verbose'], ENV['non_fatal']
   require 'scanf'
 
-  root = File.expand_path(File.dirname(__FILE__)/'..')
-  libpath = root/'lib'
+  root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  libpath = "#{root}/lib"
 
-  specs = Dir[root/'spec/{ramaze,examples,snippets,contrib}/**/*.rb'] +
-    Dir[root/'examples/**/spec/**/*.rb']
+  specs = Dir["#{root}/spec/{ramaze,examples,snippets,contrib}/**/*.rb"] +
+    Dir["#{root}/examples/**/spec/**/*.rb"]
 
   ignore = [
-    root/'spec/ramaze/request.rb',
+    "#{root}/spec/ramaze/request.rb",
   ].map{|i| Dir[i].map{|f| File.expand_path(f) }}.flatten
 
   config = RbConfig::CONFIG
-  bin = config['bindir']/config['ruby_install_name']
+  bin = File.join(config['bindir'], config['ruby_install_name'])
 
   result_format = '%d tests, %d assertions, %d failures, %d errors'
 

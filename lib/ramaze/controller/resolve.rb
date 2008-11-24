@@ -136,10 +136,15 @@ module Ramaze
 
       def resolve_template(path)
         path = path.to_s
-        path_converted = path.split('__').inject{|s,v| s/v}
+        path_converted = path.split('__').inject{|s,v| File.join(s, v) }
         possible_paths = [path, path_converted].compact
 
-        paths = template_paths.map{|pa| possible_paths.map{|a| pa/a } }.flatten.uniq
+        paths = template_paths.map{|pa|
+          possible_paths.map{|a|
+            File.join(pa, a)
+          }
+        }.flatten.uniq
+
         glob = "{#{paths.join(',')}}.{#{extension_order.join(',')}}"
 
         Dir[glob].first
@@ -153,7 +158,7 @@ module Ramaze
         if paths = view_root
           paths
         else
-          view_root(Global.view_root / Global.mapping.invert[self])
+          view_root(File.join(Global.view_root, Global.mapping.invert[self]))
         end
       end
 

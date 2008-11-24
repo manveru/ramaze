@@ -6,7 +6,8 @@ module Ramaze
   def self.deprecated(from, to = nil)
     message = "%s is deprecated"
     message << ", use %s instead" unless to.nil?
-    Log.warn(message % [from, to])
+    message << " - from: %p"
+    Log.warn(message % [from, to, caller[1]])
   end
 
   def self.const_missing(name)

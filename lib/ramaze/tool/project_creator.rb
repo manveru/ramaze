@@ -5,7 +5,8 @@ require 'fileutils'
 require 'find'
 
 class ProjectCreator
-  PROTO = ['~/.proto/']
+  PROTO = []
+  PROTO << '~/.proto/' if ENV["HOME"] # Guard against Windows
   attr_accessor :name, :options
 
   def initialize(name, options = {})

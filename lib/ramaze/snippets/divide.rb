@@ -6,6 +6,7 @@ class String
   # Usage:
   #   'a' / 'b' # => 'a/b'
   def / obj
+    Ramaze.deprecated('String#/', 'File::join')
     File.join(self, obj.to_s)
   end
 end
@@ -15,6 +16,7 @@ class Symbol
   # Usage:
   #   :dir/:file # => 'dir/file'
   def / obj
+    Ramaze.deprecated('Symbol#/', 'File::join(sym.to_s)')
     self.to_s / obj
   end
 end
