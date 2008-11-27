@@ -45,7 +45,7 @@ module Ramaze
             if require_helper(name)
               redo
             else
-              raise LoadError, "#{name} not found"
+              raise LoadError, "helper #{name} not found"
             end
           end
         end
@@ -67,7 +67,7 @@ module Ramaze
         files = Dir[glob]
         ignore = Helper.trait[:ignore]
         files.reject!{|f| ignore.any?{|i| f =~ i }}
-        raise LoadError, "#{name} not found" unless file = files.first
+        raise LoadError, "file for #{name} not found" unless file = files.first
         require(file)
       end
 
