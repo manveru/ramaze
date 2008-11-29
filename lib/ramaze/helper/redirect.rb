@@ -72,10 +72,28 @@ module Ramaze
       request[:redirected]
     end
 
-    # redirect to the location the browser says it's coming from.
+    # Redirect to the location the browser says it's coming from.
+    # If the current address is the same as the referrer or no referrer exists
+    # yet, we will redirect to +fallback+.
+    #
+    # NOTE:
+    #   * In some cases this may result in a double redirect, given that the
+    #     request query parameters may change order. We don't have a nice way
+    #     of handling that yet, but it should be very, very rare
 
-    def redirect_referer
-      redirect request.referer
+    def redirect_referer(fallback = R(:/))
+      if referer = request.referer and url = request.url
+        referer_uri = URI(referer)
+        request_uri = URI(url)
+
+        if referer_uri == request_uri
+          redirect fallback
+        else
+          redirect referer
+        end
+      else
+        redirect fallback
+      end
     end
     alias redirect_referrer redirect_referer
   end
