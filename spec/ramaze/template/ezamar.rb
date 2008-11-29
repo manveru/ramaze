@@ -5,7 +5,7 @@ require 'spec/helper'
 
 class TCTemplateController < Ramaze::Controller
   map :/
-  view_root __DIR__/:ezamar
+  view_root __DIR__(:ezamar)
   engine :Ezamar
 
   def index text

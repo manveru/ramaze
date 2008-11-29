@@ -15,7 +15,7 @@
 %w(rubygems ramaze bluecloth rubypants haml).each{|lib| require lib }
 
 class BlogPost
-  DIR = __DIR__/:entries
+  DIR = __DIR__(:entries)
 
   def initialize filename
     raise 'Invalid BlogPost filename' unless File.exists?(filename)

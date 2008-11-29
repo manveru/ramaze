@@ -3,7 +3,7 @@ require 'spec/helper'
 spec_require 'tenjin'
 
 class TCTemplateTenjinController < Ramaze::Controller
-  view_root __DIR__/:tenjin
+  view_root __DIR__(:tenjin)
   engine :Tenjin
 
   def index

@@ -1,3 +1,5 @@
+require 'maruku'
+
 module Ramaze
   module Helper::Maruku
     def maruku(text)

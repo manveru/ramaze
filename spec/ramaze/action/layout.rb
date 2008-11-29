@@ -20,7 +20,7 @@ end
 class TCActionOtherLayout < Ramaze::Controller
   map '/other'
   layout '/other_wrapper'
-  view_root __DIR__/:view
+  view_root __DIR__(:view)
 
   def index
     "Others Hello"

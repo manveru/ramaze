@@ -12,7 +12,7 @@ end
 
 describe 'Route' do
   behaves_like 'http'
-  ramaze :public_root => __DIR__/:rewrite
+  ramaze :public_root => __DIR__(:rewrite)
 
   Ramaze::Rewrite[%r|^/index.php(.*)$|] = "%s"
 

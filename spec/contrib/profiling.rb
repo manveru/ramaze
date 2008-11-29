@@ -15,7 +15,7 @@ Ramaze::Log.loggers << Ramaze::Logger::Informer.new(output)
 
 describe 'Profiling' do
   behaves_like "http"
-  ramaze :public_root => File.join(__DIR__, 'public')
+  ramaze :public_root => __DIR__(:public)
 
   it "should profile" do
     output = StringIO.new

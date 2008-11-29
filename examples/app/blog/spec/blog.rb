@@ -3,7 +3,7 @@ require 'ramaze/spec/helper'
 
 spec_require 'hpricot', 'sequel'
 
-$LOAD_PATH.unshift base = __DIR__/'..'
+$LOAD_PATH.unshift base = __DIR__('..')
 require 'start'
 
 describe 'Blog' do
@@ -83,5 +83,5 @@ describe 'Blog' do
     (check_page/'div.entry').size.should == 1
   end
 
-  FileUtils.rm_f(__DIR__/'../blog.db')
+  FileUtils.rm_f(__DIR__('../blog.db'))
 end

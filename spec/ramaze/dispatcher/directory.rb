@@ -12,8 +12,8 @@ describe 'Dispatcher::Directory' do
   /test/six.txt ]
 
   @hierarchy.each do |path|
-    FileUtils.mkdir_p(__DIR__/:public/File.dirname(path))
-    FileUtils.touch(__DIR__/:public/path)
+    FileUtils.mkdir_p(__DIR__(:public, File.dirname(path)))
+    FileUtils.touch(__DIR__(:public, path))
   end
 
   def build_listing(path)
@@ -51,5 +51,5 @@ describe 'Dispatcher::Directory' do
     check '/test', 'Directory listing of /test', files
   end
 
-  FileUtils.rm_rf(__DIR__/:public/:test)
+  FileUtils.rm_rf(__DIR__('public/test'))
 end

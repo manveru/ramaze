@@ -1,4 +1,4 @@
-require __DIR__/:facebook/:facebook
+require __DIR__('facebook/facebook')
 
 module Ramaze
   module Helper::Facebook
