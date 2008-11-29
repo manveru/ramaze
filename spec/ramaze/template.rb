@@ -21,7 +21,7 @@ end
 class TCTemplateController < Ramaze::Controller
   map '/'
   engine :TestTemplate
-  view_root __DIR__/:template/:ramaze
+  view_root __DIR__('template/ramaze')
 
   def index *args
   end
@@ -32,7 +32,7 @@ end
 
 class TCMultipleTemplateRoots < Ramaze::Controller
   map '/multiple'
-  view_root __DIR__/:helper/:view, __DIR__/:template/:ezamar
+  view_root __DIR__('helper/view'), __DIR__('template/ezamar')
 
   def sum
     @num1, @num2 = 1, 2
@@ -49,7 +49,7 @@ class TCMultipleTemplateRoots < Ramaze::Controller
 end
 
 describe "testing ramaze template" do
-  ramaze :view_root => __DIR__/:view
+  ramaze :view_root => __DIR__(:view)
 
   def getpage page
     content = Ramaze::Controller.handle(page)

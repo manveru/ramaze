@@ -2,7 +2,7 @@ require 'fileutils'
 require 'cgi'
 
 class WikiEntry
-  ENTRIES_DIR = __DIR__/'../mkd'
+  ENTRIES_DIR = __DIR__('../mkd')
   class << self
     def [](name)
       if File.exist?(ENTRIES_DIR/File.basename(File.expand_path(name)))

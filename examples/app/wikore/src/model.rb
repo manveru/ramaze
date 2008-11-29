@@ -5,7 +5,7 @@ begin
   when :memory
     DB = Sequel.sqlite
   else
-    DB_FILE = __DIR__/'wikore.db'
+    DB_FILE = __DIR__('wikore.db')
     DB = Sequel.connect("sqlite://#{DB_FILE}")
   end
 rescue NoMethodError

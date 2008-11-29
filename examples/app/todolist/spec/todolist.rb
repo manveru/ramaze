@@ -3,7 +3,7 @@ require 'ramaze/spec/helper'
 
 spec_require 'hpricot'
 
-$LOAD_PATH.unshift base = __DIR__/'..'
+$LOAD_PATH.unshift base = __DIR__('..')
 require 'start'
 
 describe 'todolist' do

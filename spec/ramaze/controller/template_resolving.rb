@@ -4,7 +4,7 @@
 require 'spec/helper'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__/:view
+  view_root __DIR__(:view)
 
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"

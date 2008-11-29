@@ -124,7 +124,7 @@ module Ramaze
     # same as Ramaze::Action#extended_path, with mapping of the current controller prepended.
 
     def full_path
-      self.controller.mapping/extended_path
+      File.join(self.controller.mapping, extended_path)
     end
 
     # Hook for AspectHelper

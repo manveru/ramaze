@@ -1,12 +1,12 @@
 require 'ramaze'
 require 'ramaze/spec/helper'
 
-require __DIR__/'../start'
+require __DIR__('../start')
 
 describe MainController do
   behaves_like 'http', 'xpath'
-  ramaze :view_root => __DIR__/'../view',
-         :public_root => __DIR__/'../public'
+  ramaze :view_root => __DIR__('../view'),
+         :public_root => __DIR__('../public')
 
   it 'should show start page' do
     got = get('/')

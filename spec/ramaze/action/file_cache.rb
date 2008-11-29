@@ -37,7 +37,7 @@ end
 describe 'Action rendering' do
   behaves_like 'http'
 
-  FileUtils.mkdir_p(public_root = __DIR__/:public)
+  FileUtils.mkdir_p(public_root = __DIR__(:public))
 
   ramaze :file_cache => true, :public_root => public_root
 
