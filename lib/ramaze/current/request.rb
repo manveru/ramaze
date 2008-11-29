@@ -67,6 +67,13 @@ module Ramaze
     end
 
     # Sets any arguments passed as @instance_variables for the current action.
+    #
+    # Usage:
+    #   request.params # => {'name' => 'manveru', 'q' => 'google', 'lang' => 'de'}
+    #   to_ivs(:name, :q)
+    #   @q    # => 'google'
+    #   @name # => 'manveru'
+    #   @lang # => nil
 
     def to_ivs(*args)
       instance = Action.current.instance
