@@ -23,7 +23,7 @@ module Ramaze
 
         fallback = Request.current.domain
         fallback.path = fallback_path
-        default = h(fallback.to_s)
+        default = Rack::Utils.escape(fallback.to_s)
 
         return "http://www.gravatar.com/avatar.php?gravatar_id=#{emailhash}&default=#{default}&size=#{size}"
       end
