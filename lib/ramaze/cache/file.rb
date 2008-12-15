@@ -1,6 +1,6 @@
 module Ramaze
   # Persist cache contents to the filesystem.
-  # Will create a `/cache` directory in your APPDIR
+  # By default this will create a `/cache` directory in your APPDIR
   #
   # Usage for sessions only:
   #
@@ -11,55 +11,60 @@ module Ramaze
   #     Ramaze::Global::cache = Ramaze::FileCache
 
   class FileCache
-    HOST = Socket.gethostname
-    ROOT = File.join(Ramaze::APPDIR, 'cache')
-    PID  = Process.pid
+    attr_accessor :root, :subdir
+    attr_reader :host, :pid
 
-    FileUtils.mkdir_p(ROOT)
+    def initialize(root = Ramaze::Global.root, subdir = 'cache')
+      @root, @subdir = root, subdir
+      @host = Socket.gethostname
+      @pid = $$
 
-    def self.[](key)
-      path = File.join(ROOT, key.to_s, "data")
-      Marshal.load(File.read(path))
+      FileUtils.mkdir_p(dir)
+    end
+
+    def dir(*further)
+      File.join(root, subdir, *further)
+    end
+
+    def [](key)
+      Marshal.load(File.read(dir(key.to_s, 'data')))
     rescue
       nil
     end
 
-    def self.[]=(key, value)
-      key     = key.to_s
-      tmp     = File.join(ROOT, key, "data.#{HOST}.#{PID}")
-      path    = File.join(ROOT, key, "data")
-      dirname = File.join(ROOT, key)
+    def []=(key, value)
+      key = key.to_s
+      tmp_name = dir(key, "data.#{host}.#{pid}")
+      key_name = dir(key, 'data')
+      dir_name = dir(key)
 
       data = Marshal.dump(value)
 
-      FileUtils.rm_rf(dirname)
-      FileUtils.mkdir_p(dirname)
-      File.open(tmp, 'w'){|fd| fd.write(data) }
-      FileUtils.mv(tmp, path)
+      FileUtils.rm_rf(dir_name)
+      FileUtils.mkdir_p(dir_name)
+
+      File.open(tmp_name, 'w'){|fd| fd.write(data) }
+
+      FileUtils.mv(tmp_name, key_name)
 
       return value
     end
 
-    def self.values_at(*keys)
+    def values_at(*keys)
       keys.map{|key| self[key] }
     end
 
-    def self.delete(*keys)
+    def delete(*keys)
       keys.map do |key|
-        dirname = File.join(ROOT, key)
-        FileUtils.rm_rf(dirname)
+        FileUtils.rm_rf(dir(key.to_s))
       end
     end
 
-    def self.clear
-      Dir["#{ROOT}/*"].each{|entry| FileUtils.rm_rf(entry) }
+    def clear
+      Dir[dir('*')].each{|entry| FileUtils.rm_rf(entry) }
     end
 
-    def self.new
-      self
-    end
-
-    def self.to_sym
+    def to_sym
       name.split('::').last.to_sym
     end
   end
