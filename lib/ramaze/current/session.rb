@@ -125,7 +125,7 @@ module Ramaze
     # existing already, the session itself is an instance of SessionHash
 
     def current
-      return @current unless @current
+      return @current if @current
       @current = ( sessions[session_id] ||= Session::Hash.new(self) )
     end
 
