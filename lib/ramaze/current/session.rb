@@ -96,7 +96,7 @@ module Ramaze
     def initialize(sess_or_request = Current.request)
       return unless Global.sessions
 
-      if sess_or_request.is_a?(Request)
+      if sess_or_request.respond_to?(:cookies)
         request = sess_or_request
         @session_id = request.cookies[SESSION_KEY] || Session.random_key
       else
@@ -125,10 +125,8 @@ module Ramaze
     # existing already, the session itself is an instance of SessionHash
 
     def current
-      unless @current
-        @current = ( sessions[session_id] ||= Session::Hash.new(self) )
-      end
-      @current
+      return @current unless @current
+      @current = ( sessions[session_id] ||= Session::Hash.new(self) )
     end
 
     # shortcut to Cache.sessions

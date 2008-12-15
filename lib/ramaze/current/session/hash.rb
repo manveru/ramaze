@@ -9,8 +9,8 @@ module Ramaze
 
       # Sets @hash to an empty Hash
 
-      def initialize sess
-        @session = sess
+      def initialize(session)
+        @session = session
         @hash = {}
       end
 
@@ -45,11 +45,10 @@ module Ramaze
 
       # Unmarshal cookie data to a hash and verify its integrity.
       def unmarshal(cookie)
-        if cookie
-          data, digest = cookie.split('--')
-          return nil unless digest == generate_digest(data)
-          Marshal.load(data.unpack('m').first)
-        end
+        return unless cookie
+        data, digest = cookie.split('--')
+        return nil unless digest == generate_digest(data)
+        Marshal.load(data.unpack('m').first)
       end
 
       # Generate the inline SHA512 message digest. Larger (128 bytes) than SHA256
