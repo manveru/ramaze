@@ -18,11 +18,8 @@ module Ramaze
       # Session.current.sessions if anything changes.
 
       def method_missing(*args, &block)
-        old = @hash.dup
         result = @hash.send(*args, &block)
-        unless old == @hash
-          Cache.sessions[@session.session_id] = self
-        end
+        Cache.sessions[@session.session_id] = self
         result
       end
 
