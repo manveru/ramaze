@@ -41,7 +41,7 @@ module Ramaze
 
       # 365.25 days in a year
       def years
-        self * 883612800
+        self * 31557600
       end
       alias year years
 
