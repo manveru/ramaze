@@ -546,7 +546,6 @@ Gem::Specification.new do |s|
     "rake_tasks/metric.rake",
     "rake_tasks/release.rake",
     "rake_tasks/spec.rake",
-    "ramaze-2008.10.gem",
     "ramaze.gemspec",
     "spec",
     "spec/contrib",
