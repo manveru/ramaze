@@ -13,9 +13,7 @@ module Ramaze
   # Reloader::Hooks module or include your own module to override the hooks.
   # You also might have to set the Log constant.
   #
-  # What makes it especially suited for use in a production environment is that
-  # any file will only be checked once and there will only be made one system
-  # call stat(2).
+  # Currently, it uses RInotify if available and falls back to using File.stat.
   #
   # Please note that this will not reload files in the background, it does so
   # only when actively called
@@ -65,6 +63,8 @@ module Ramaze
     def call(env)
       options_reload
 
+      # TODO: delegate throttling to FileWatchers
+      # (no need to throttle when not using stat)
       if @cooldown and Time.now > @last + @cooldown
         if @control
           instance_eval(&@control)
