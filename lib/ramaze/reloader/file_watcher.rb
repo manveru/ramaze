@@ -27,6 +27,10 @@ module Ramaze
         true
       end
 
+      # no need for cleanup
+      def close
+      end
+
       # return files changed since last call
       def changed_files
         changed = []
@@ -42,17 +46,16 @@ module Ramaze
     end
 
     class InotifyFileWatcher
-      POLL_TIMEOUT = 2
+      POLL_INTERVAL = 2 # seconds
       def initialize
         @watcher = RInotify.new
         @changed = []
         @mutex = Mutex.new
+        # TODO: define a finalizer to cleanup? -- reloader never calls #close
         @watcher_thread = Thread.new do
           while true
-            # FIXME:
-            #   if files are added while waiting,
-            #   only events that happen after next call are seen
-            if @watcher.wait_for_events(POLL_TIMEOUT)
+            # don't wait, just ask if events are available
+            if @watcher.wait_for_events(0)
               changed_descriptors = []
               @watcher.each_event do |ev|
                 changed_descriptors << ev.watch_descriptor
@@ -61,6 +64,7 @@ module Ramaze
                 @changed += changed_descriptors.map {|des| @watcher.watch_descriptors[des] }
               end
             end
+            sleep POLL_INTERVAL
           end
         end
       end
@@ -75,6 +79,12 @@ module Ramaze
 
       def remove_watch(file)
         @mutex.synchronize { @watcher.rm_watch(file) }
+        true
+      end
+
+      def close
+        @watcher_thread.terminate
+        @watcher.close
         true
       end
 
