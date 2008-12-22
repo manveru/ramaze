@@ -31,7 +31,7 @@
 #       #     Creates a square thumbnail of the image cropping the longest edge
 #       #     to match the shortest edge, resizes to +size+.
 #
-#       :agorithm => :thumbnail,
+#       :algorithm => :thumbnail,
 #
 #
 #       # Key specifies the filename and accessors, value are arguments to the

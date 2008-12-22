@@ -69,7 +69,7 @@ module Ramaze
       else
         roots = [options[:controller].template_paths].flatten
 
-        if (files = Dir["{#{roots.join(',')}}"/"{#{file},#{file}.*}"]).any?
+        if (files = Dir[File.join("{#{roots.join(',')}}","{#{file},#{file}.*}")]).any?
           options[:template] = files.first.squeeze '/'
         else
           Log.warn "render_template: #{file} does not exist in the following directories: #{roots.join(',')}."
