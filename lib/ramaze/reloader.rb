@@ -1,6 +1,8 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'ramaze/reloader/file_watcher'
+
 module Ramaze
 
   # High performant source reloader
@@ -50,8 +52,8 @@ module Ramaze
     def initialize(app)
       @app = app
       @last = Time.now
-      @mtimes = {}
-      @cache = {}
+      @files = {}
+      @watcher = FileWatcher.new
       options_reload
     end
 
@@ -81,15 +83,12 @@ module Ramaze
     def cycle
       before_cycle
 
-      rotation do |file, stat|
-        if mtime = stat.mtime
-          if mtime > (@mtimes[file] ||= mtime)
-            safe_load(file)
-            @mtimes[file] = mtime
-          end
-        else
-          @cache.delete(file)
-        end
+      rotation do |file|
+        @watcher.watch file
+      end
+
+      @watcher.changed_files.each do |f|
+        safe_load f
       end
 
       after_cycle
@@ -111,37 +110,23 @@ module Ramaze
 
       files.each do |file|
         next if file =~ @ignore
-        path, stat = figure_path(file, paths)
-
-        if path and stat
-          @cache[file] = path
-          yield(path, stat)
-        else
-          # Quite harmless, we just couldn't figure out path for #{file}
+        if not @files.has_key?(file) and path = figure_path(file, paths)
+          @files[file] = path
+          yield path
         end
       end
     end
 
     def figure_path(file, paths)
-      if cached = @cache[file]
-        stat = File.stat(cached)
-        return cached, stat if stat.file?
-      elsif Pathname.new(file).absolute?
-        stat = File.stat(file)
-        return file, stat if stat.file? # do directories really end up in $" ?
+      if Pathname.new(file).absolute?
+        return File.exist?(file) ? file : nil
       end
 
       paths.each do |possible_path|
-        path = File.join(possible_path, file)
-
-        begin
-          stat = File.stat(path)
-          return path, stat if stat.file?
-        rescue Errno::ENOENT, Errno::ENOTDIR
-        end
+        full_path = File.join(possible_path, file)
+        return full_path if File.exist?(full_path)
       end
-
-      return nil
+      nil
     end
 
 

@@ -438,6 +438,7 @@ Gem::Specification.new do |s|
     "lib/ramaze/option/holder.rb",
     "lib/ramaze/option/merger.rb",
     "lib/ramaze/reloader.rb",
+    "lib/ramaze/reloader/file_watcher.rb",
     "lib/ramaze/route.rb",
     "lib/ramaze/setup.rb",
     "lib/ramaze/snippets",
