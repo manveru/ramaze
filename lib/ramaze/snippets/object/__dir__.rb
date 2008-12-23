@@ -16,11 +16,11 @@ module Ramaze
         # This method is convenience for the
         #  File.expand_path(File.dirname(__FILE__))
         # idiom.
-        #
 
-        def __DIR__()
+        def __DIR__(*args)
           filename = caller[0][/^(.*):/, 1]
-          File.expand_path(File.dirname(filename))
+          dir = File.expand_path(File.dirname(filename))
+          ::File.expand_path(::File.join(dir, *args.map{|a| a.to_s}))
         end
       end
     end

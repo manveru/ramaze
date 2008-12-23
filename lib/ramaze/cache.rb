@@ -6,6 +6,7 @@ require 'ramaze/cache/memory'
 module Ramaze
   autoload :YAMLStoreCache, "ramaze/cache/yaml_store.rb"
   autoload :MemcachedCache, "ramaze/cache/memcached.rb"
+  autoload :FileCache, "ramaze/cache/file.rb"
 
   # This is the wrapper of all caches, providing mechanism
   # for switching caching from one adapter to another.

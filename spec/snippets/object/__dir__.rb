@@ -5,4 +5,10 @@ describe '__DIR__' do
   it 'should report the directory of the current file' do
     __DIR__.should == File.dirname(File.expand_path(__FILE__))
   end
+
+  should 'join passed arguments and prefix with directory of current file' do
+    __DIR__(:foo).should == File.join(File.dirname(File.expand_path(__FILE__)), 'foo')
+    __DIR__('foo/bar').should == File.join(File.dirname(File.expand_path(__FILE__)), 'foo/bar')
+    __DIR__(:foo, :bar).should == File.join(File.dirname(File.expand_path(__FILE__)), 'foo/bar')
+  end
 end

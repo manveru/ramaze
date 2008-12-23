@@ -110,17 +110,21 @@ module Ramaze
     end
 
     # Try to figure out a sane name for current action.
+
     def name
       File.basename((self[:method] || self[:template]).to_s).split('.').first
     end
 
     # combined path to current action, from path and params
+
     def extended_path
       (path == "index" && !params.empty? ? params : Array[path, *params]).join('/')
     end
 
+    # same as Ramaze::Action#extended_path, with mapping of the current controller prepended.
+
     def full_path
-      self.controller.mapping/extended_path
+      File.join(self.controller.mapping, extended_path)
     end
 
     # Hook for AspectHelper
@@ -132,6 +136,8 @@ module Ramaze
 
     def after_process
     end
+
+    # Returns true if current request is valid REST request.
 
     def valid_rest?
       return true unless rest = controller.trait[:REST]

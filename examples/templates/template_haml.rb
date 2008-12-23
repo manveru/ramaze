@@ -2,7 +2,7 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__/:template
+  view_root __DIR__(:template)
   engine :Haml
 
   def index
@@ -29,7 +29,7 @@ class MainController < Ramaze::Controller
       = A("#@place/one/two/three")
       %br/
       = A("#@place/one?foo=bar")
-    %div 
+    %div
       The arguments you have passed to this action are:
       - if @args.empty?
         none

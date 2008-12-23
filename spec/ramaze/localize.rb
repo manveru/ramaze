@@ -42,7 +42,7 @@ end
 describe "Localize" do
   behaves_like 'http'
 
-  @dir = __DIR__ / :conf
+  @dir = __DIR__(:conf)
   FileUtils.mkdir_p(@dir)
 
   dict = {

@@ -45,13 +45,15 @@ module Ramaze
             if require_helper(name)
               redo
             else
-              raise LoadError, "#{name} not found"
+              raise LoadError, "helper #{name} not found"
             end
           end
         end
       end
 
       private
+
+      # returns the Ramaze::Helper::Name Module Constant if exists.
 
       def find_helper(name)
         name = name.to_s.camel_case
@@ -61,15 +63,20 @@ module Ramaze
         end
       end
 
+      # Loads helper from /lib/ramaze/helper/name.(so, bundle, rb)
+      # raises LoadError if helper not found.
+
       def require_helper(name)
         paths = (PATH + [Global.root, "#{BASEDIR}/ramaze"]).join(',')
         glob = "{#{paths}}/helper/#{name}.{so,bundle,rb}"
         files = Dir[glob]
         ignore = Helper.trait[:ignore]
         files.reject!{|f| ignore.any?{|i| f =~ i }}
-        raise LoadError, "#{name} not found" unless file = files.first
+        raise LoadError, "file for #{name} not found" unless file = files.first
         require(file)
       end
+
+      # injects the helper via include and extend, takes Constant as argument.
 
       def use_helper(mod)
         include mod

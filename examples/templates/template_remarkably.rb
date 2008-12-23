@@ -2,7 +2,7 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__/:template
+  view_root __DIR__(:template)
   engine :Remarkably
 
   include Remarkably::Common
@@ -31,7 +31,7 @@ class MainController < Ramaze::Controller
           br
         end
         div do
-          text "The arguments you have passed to this action are:" 
+          text "The arguments you have passed to this action are:"
           if args.empty?
             "none"
           else

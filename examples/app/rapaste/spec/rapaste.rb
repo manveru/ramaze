@@ -3,7 +3,7 @@ require 'ramaze/spec/helper'
 
 spec_require 'hpricot', 'uv', 'sequel'
 
-$LOAD_PATH.unshift base = __DIR__/'..'
+$LOAD_PATH.unshift base = __DIR__('..')
 require 'start'
 
 describe 'RaPaste' do

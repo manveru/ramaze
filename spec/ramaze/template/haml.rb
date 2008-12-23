@@ -7,7 +7,7 @@ spec_require 'ramaze/template/haml'
 
 class TCTemplateHamlController < Ramaze::Controller
   map :/
-  view_root __DIR__/:haml
+  view_root __DIR__(:haml)
   engine :Haml
 
   helper :link
@@ -22,7 +22,7 @@ end
 
 class TCRamazeLocals < Ramaze::Controller
   map '/locals'
-  view_root __DIR__/:haml
+  view_root __DIR__(:haml)
 
   def output
     render_template 'locals.haml', :abc => 'def'

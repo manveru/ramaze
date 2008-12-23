@@ -176,7 +176,7 @@ class RamazeBenchmark
 
     # benchmarks
     __DIR__ = File.expand_path(File.dirname(__FILE__))
-    Dir[__DIR__/"suite"/"*.rb"].each do |filename|
+    Dir[__DIR__('suite/*.rb')].each do |filename|
       @adapters.each do |adapter|
         @paths.each do |path|
           benchmark(filename, adapter, path) if @target.match(filename)

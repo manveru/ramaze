@@ -42,8 +42,9 @@ module MockHTTP
 
   def process_request(path, query)
     options = {}
-    FISHING.each{|key, value|
-      options[value] = query.delete(key)} if query.is_a?(Hash)
+    FISHING.each do |key, value|
+      options[value] = query.delete(key) if query.key?(key)
+    end if query.is_a?(Hash)
     [create_url(path, query), options]
   end
 
@@ -54,10 +55,10 @@ module MockHTTP
     uri.to_s
   end
 
-	def make_query query
-		return query unless query and not query.is_a?(String)
+  def make_query query
+    return query unless query and not query.is_a?(String)
     query.map{|key, value|
       "#{Rack::Utils.escape(key)}=#{Rack::Utils.escape(value)}"
     }.join('&')
-	end
+  end
 end

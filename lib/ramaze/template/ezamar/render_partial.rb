@@ -7,6 +7,14 @@ require 'ramaze/template/ezamar/engine'
 module Ezamar
 
   # A transformer for <render /> tags.
+  #
+  # Setup:
+  #
+  #     pipeline = Ramaze::Template::Ezamar::TRANSFORM_PIPELINE
+  #     pipeline.put_after(::Ezamar::Element, ::Ezamar::RenderPartial)
+  #     pipline.uniq!
+  #
+  # See /examples/basic/partial.rb for usage.
 
   class RenderPartial
     extend Ramaze::Helper::Partial

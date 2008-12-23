@@ -111,6 +111,10 @@ module Ramaze
     end
     alias autolink auto_link
 
+    # takes a string and optional argument for outputting compliance HTML
+    # instead of XHTML.
+    # e.g nl2br "a\nb\n\c" #=> 'a<br />b<br />c'
+
     def nl2br(string, xhtml = true)
       br = xhtml ? '<br />' : '<br>'
       string.gsub(/\n/, br)
