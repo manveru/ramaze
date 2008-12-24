@@ -4,6 +4,14 @@ module Ramaze
       def initialize
         # @files[file_path] = stat
         @files = {}
+        @last = Time.now
+      end
+
+      def call(cooldown)
+        if cooldown and Time.now > @last + cooldown
+          yield
+          @last = Time.now
+        end
       end
 
       # start watching a file for changes
@@ -59,6 +67,10 @@ module Ramaze
         @changed = []
         @mutex = Mutex.new
         @watcher_thread = start_watcher
+      end
+
+      def call(cooldown)
+        yield if @changed.any?
       end
 
       # TODO: define a finalizer to cleanup? -- reloader never calls #close

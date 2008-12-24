@@ -49,7 +49,6 @@ module Ramaze
 
     def initialize(app)
       @app = app
-      @last = Time.now
       @files = {}
       @watcher = FileWatcher.new
       options_reload
@@ -63,9 +62,7 @@ module Ramaze
     def call(env)
       options_reload
 
-      # TODO: delegate throttling to FileWatchers
-      # (no need to throttle when not using stat)
-      if @cooldown and Time.now > @last + @cooldown
+      @watcher.call(@cooldown) do
         if @control
           instance_eval(&@control)
         elsif @thread
@@ -73,8 +70,6 @@ module Ramaze
         else
           cycle
         end
-
-        @last = Time.now
       end
 
       @app.call(env)
@@ -83,13 +78,8 @@ module Ramaze
     def cycle
       before_cycle
 
-      rotation do |file|
-        @watcher.watch file
-      end
-
-      @watcher.changed_files.each do |f|
-        safe_load f
-      end
+      rotation{|file| @watcher.watch(file) }
+      @watcher.changed_files.each{|f| safe_load(f) }
 
       after_cycle
     end
