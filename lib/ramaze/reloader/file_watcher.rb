@@ -9,22 +9,19 @@ module Ramaze
       # start watching a file for changes
       # true if succeeded, false if failure
       def watch(file)
-        # if already watching
-        return true if @files.has_key?(file)
-        begin
-          @files[file] = File.stat(file)
-        rescue Errno::ENOENT, Errno::ENOTDIR
-          # doesn't exist => failure
-          return false
+        return true if watching?(file) # if already watching
+        if stat = safe_stat(file)
+          @files[file] = stat
         end
-        # success
-        true
+      end
+
+      def watching?(file)
+        @files.has_key?(file)
       end
 
       # stop watching a file for changes
       def remove_watch(file)
         @files.delete(file)
-        true
       end
 
       # no need for cleanup
@@ -34,51 +31,73 @@ module Ramaze
       # return files changed since last call
       def changed_files
         changed = []
+
         @files.each do |file, stat|
-          new_stat = File.stat(file)
-          if new_stat.mtime > stat.mtime
-            changed << file
-            @files[file] = new_stat
+          if new_stat = safe_stat(file)
+            if new_stat.mtime > stat.mtime
+              changed << file
+              @files[file] = new_stat
+            end
           end
         end
+
         changed
+      end
+
+      def safe_stat(file)
+        File.stat(file)
+      rescue Errno::ENOENT, Errno::ENOTDIR
+        nil
       end
     end
 
     class InotifyFileWatcher
       POLL_INTERVAL = 2 # seconds
+
       def initialize
         @watcher = RInotify.new
         @changed = []
         @mutex = Mutex.new
-        # TODO: define a finalizer to cleanup? -- reloader never calls #close
-        @watcher_thread = Thread.new do
-          while true
-            # don't wait, just ask if events are available
-            if @watcher.wait_for_events(0)
-              changed_descriptors = []
-              @watcher.each_event do |ev|
-                changed_descriptors << ev.watch_descriptor
-              end
-              @mutex.synchronize do
-                @changed += changed_descriptors.map {|des| @watcher.watch_descriptors[des] }
-              end
-            end
+        @watcher_thread = start_watcher
+      end
+
+      # TODO: define a finalizer to cleanup? -- reloader never calls #close
+
+      def start_watcher
+        Thread.new do
+          loop do
+            watcher_cycle
             sleep POLL_INTERVAL
           end
         end
       end
 
-      def watch(file)
-        if not @watcher.watch_descriptors.values.include?(file) and File.exist?(file)
-          @mutex.synchronize { @watcher.add_watch(file, RInotify::MODIFY) }
-          return true
+      def watcher_cycle
+        return unless @watcher.wait_for_events(0)
+        changed_descriptors = []
+
+        @watcher.each_event do |event|
+          changed_descriptors << event.watch_descriptor
         end
-        false
+
+        @mutex.synchronize do
+          changed_descriptors.each do |descriptor|
+            @changed << @watcher.watch_descriptors[descriptor]
+          end
+        end
+      end
+
+      def watch(file)
+        return false if @watcher.watch_descriptors.has_value?(file)
+        return false unless File.exist?(file)
+
+        @mutex.synchronize{ @watcher.add_watch(file, RInotify::MODIFY) }
+
+        true
       end
 
       def remove_watch(file)
-        @mutex.synchronize { @watcher.rm_watch(file) }
+        @mutex.synchronize{ @watcher.rm_watch(file) }
         true
       end
 
@@ -102,7 +121,7 @@ module Ramaze
       gem 'RInotify', '>=0.9' # is older version ok?
       require 'rinotify'
       FileWatcher = InotifyFileWatcher
-    rescue Gem::LoadError, LoadError
+    rescue LoadError
       # stat always available
       FileWatcher = StatFileWatcher
     end
