@@ -1,8 +1,6 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'ramaze/reloader/file_watcher'
-
 module Ramaze
 
   # High performant source reloader
@@ -47,10 +45,21 @@ module Ramaze
       :control => nil, # lambda{ cycle },
     }
 
+    begin
+      gem 'RInotify', '>=0.9' # is older version ok?
+      require 'rinotify'
+      require 'ramaze/reloader/watch_inotify'
+      Watcher = WatchInotify
+    rescue LoadError
+      # stat always available
+      require 'ramaze/reloader/watch_stat'
+      Watcher = WatchStat
+    end
+
     def initialize(app)
       @app = app
       @files = {}
-      @watcher = FileWatcher.new
+      @watcher = Watcher.new
       options_reload
     end
 
