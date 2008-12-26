@@ -88,7 +88,7 @@ module Ramaze
       before_cycle
 
       rotation{|file| @watcher.watch(file) }
-      @watcher.changed_files.each{|f| safe_load(f) }
+      @watcher.changed_files{|f| safe_load(f) }
 
       after_cycle
     end

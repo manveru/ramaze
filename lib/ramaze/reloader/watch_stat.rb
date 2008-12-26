@@ -38,18 +38,14 @@ module Ramaze
 
       # return files changed since last call
       def changed_files
-        changed = []
-
         @files.each do |file, stat|
           if new_stat = safe_stat(file)
             if new_stat.mtime > stat.mtime
-              changed << file
               @files[file] = new_stat
+              yield(file)
             end
           end
         end
-
-        changed
       end
 
       def safe_stat(file)
