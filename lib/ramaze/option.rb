@@ -78,7 +78,7 @@ module Ramaze
     o "Turn on customized error pages. Use Rack::ShowException otherwise.",
       :error_page, true, :cli => true
 
-    o "Caching actions to the filesystem in Global.public_root",
+    o "Cache actions to filesystem, uses String as directory name or Global.public_root if other truism",
       :file_cache, false, :cli => false
 
     o "Specify what IP Ramaze will respond to - 0.0.0.0 for all",
