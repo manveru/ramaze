@@ -196,9 +196,9 @@ module Ramaze
     # Example:
     #   request.params
     #   # => {'name' => 'jason', 'age' => '45', 'job' => 'lumberjack'}
-    #   request.sub('name')
+    #   request.subset('name')
     #   # => {'name' => 'jason'}
-    #   request.sub(:name, :job)
+    #   request.subset(:name, :job)
     #   # => {'name' => 'jason', 'job' => 'lumberjack'}
 
     def subset(*keys)
