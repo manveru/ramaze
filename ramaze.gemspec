@@ -449,6 +449,8 @@ http://mibbit.com/?server=irc.freenode.net&channel=%23ramaze
     "lib/ramaze/option/holder.rb",
     "lib/ramaze/option/merger.rb",
     "lib/ramaze/reloader.rb",
+    "lib/ramaze/reloader/watch_inotify.rb",
+    "lib/ramaze/reloader/watch_stat.rb",
     "lib/ramaze/route.rb",
     "lib/ramaze/setup.rb",
     "lib/ramaze/snippets",

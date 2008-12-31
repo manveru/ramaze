@@ -11,9 +11,7 @@ module Ramaze
   # Reloader::Hooks module or include your own module to override the hooks.
   # You also might have to set the Log constant.
   #
-  # What makes it especially suited for use in a production environment is that
-  # any file will only be checked once and there will only be made one system
-  # call stat(2).
+  # Currently, it uses RInotify if available and falls back to using File.stat.
   #
   # Please note that this will not reload files in the background, it does so
   # only when actively called
@@ -47,11 +45,21 @@ module Ramaze
       :control => nil, # lambda{ cycle },
     }
 
+    begin
+      gem 'RInotify', '>=0.9' # is older version ok?
+      require 'rinotify'
+      require 'ramaze/reloader/watch_inotify'
+      Watcher = WatchInotify
+    rescue LoadError
+      # stat always available
+      require 'ramaze/reloader/watch_stat'
+      Watcher = WatchStat
+    end
+
     def initialize(app)
       @app = app
-      @last = Time.now
-      @mtimes = {}
-      @cache = {}
+      @files = {}
+      @watcher = Watcher.new
       options_reload
     end
 
@@ -63,7 +71,7 @@ module Ramaze
     def call(env)
       options_reload
 
-      if @cooldown and Time.now > @last + @cooldown
+      @watcher.call(@cooldown) do
         if @control
           instance_eval(&@control)
         elsif @thread
@@ -71,8 +79,6 @@ module Ramaze
         else
           cycle
         end
-
-        @last = Time.now
       end
 
       @app.call(env)
@@ -81,16 +87,8 @@ module Ramaze
     def cycle
       before_cycle
 
-      rotation do |file, stat|
-        if mtime = stat.mtime
-          if mtime > (@mtimes[file] ||= mtime)
-            safe_load(file)
-            @mtimes[file] = mtime
-          end
-        else
-          @cache.delete(file)
-        end
-      end
+      rotation{|file| @watcher.watch(file) }
+      @watcher.changed_files{|f| safe_load(f) }
 
       after_cycle
     end
@@ -111,37 +109,23 @@ module Ramaze
 
       files.each do |file|
         next if file =~ @ignore
-        path, stat = figure_path(file, paths)
-
-        if path and stat
-          @cache[file] = path
-          yield(path, stat)
-        else
-          # Quite harmless, we just couldn't figure out path for #{file}
+        if not @files.has_key?(file) and path = figure_path(file, paths)
+          @files[file] = path
+          yield path
         end
       end
     end
 
     def figure_path(file, paths)
-      if cached = @cache[file]
-        stat = File.stat(cached)
-        return cached, stat if stat.file?
-      elsif Pathname.new(file).absolute?
-        stat = File.stat(file)
-        return file, stat if stat.file? # do directories really end up in $" ?
+      if Pathname.new(file).absolute?
+        return File.exist?(file) ? file : nil
       end
 
       paths.each do |possible_path|
-        path = File.join(possible_path, file)
-
-        begin
-          stat = File.stat(path)
-          return path, stat if stat.file?
-        rescue Errno::ENOENT, Errno::ENOTDIR
-        end
+        full_path = File.join(possible_path, file)
+        return full_path if File.exist?(full_path)
       end
-
-      return nil
+      nil
     end
 
 

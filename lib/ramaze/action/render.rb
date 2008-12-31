@@ -49,8 +49,8 @@ module Ramaze
     # true.
 
     def cached_render
-      if Global.file_cache
-        cached_render_file
+      if cache_root = Global.file_cache
+        cached_render_file(cache_root)
       else
         cached_render_memory
       end
@@ -59,12 +59,13 @@ module Ramaze
     # Uses files in the Global.public_root to provide a static ressource on
     # next request and returns the rendered action
 
-    def cached_render_file
+    def cached_render_file(cache_root)
       rendered = uncached_render
 
-      global_epath = Global.public_root/self.controller.mapping/extended_path
+      cr = cache_root.respond_to?(:to_str) ? cache_root.to_str : Global.public_root
+      global_epath = File.join(cr, self.controller.mapping, extended_path)
       FileUtils.mkdir_p(File.dirname(global_epath))
-      File.open(global_epath, 'w+') {|fp| fp.print(rendered) }
+      File.open(global_epath, 'w+'){|fp| fp.print(rendered) }
 
       rendered
     end
