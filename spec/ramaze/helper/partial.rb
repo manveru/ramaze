@@ -5,9 +5,10 @@ require 'spec/helper'
 
 class TCPartialHelperController < Ramaze::Controller
   map '/'
+  provide :html => :nagoro, :xhtml => :nagoro
 
   def index
-    '<html><head><title>#{render_partial("/title")}</title></head></html>'
+    '<html><head><title><render src="/title" /></title></head></html>'
   end
 
   def title
@@ -24,8 +25,7 @@ class TCPartialHelperController < Ramaze::Controller
 
   def composed
     @here = 'there'
-    'From Action | ' +
-    render_template("partial.xhtml")
+    'From Action | ' << render_template("partial.xhtml")
   end
 
   def recursive locals = false
@@ -34,7 +34,7 @@ class TCPartialHelperController < Ramaze::Controller
   end
 
   def test_locals
-    render_template 'locals.xhtml', :say => 'Hello', :to => 'World'
+    render_template('locals.xhtml', :say => 'Hello', :to => 'World')
   end
 
   def test_local_ivars
@@ -46,43 +46,50 @@ class TCPartialHelperController < Ramaze::Controller
   end
 end
 
-describe "PartialHelper" do
-  behaves_like 'http'
-  ramaze :view_root => __DIR__(:view)
+Innate.options.app.root = '/'
+Innate.options.app.view = __DIR__(:view)
 
-  it "should render partials" do
+describe Ramaze::Helper::Partial do
+  def get(*args)
+    Innate::Mock.get(*args)
+  end
+
+  should 'render partials' do
     get('/').body.should == '<html><head><title>Title</title></head></html>'
   end
 
-  it "should render partials with params" do
+  should 'render partials with params' do
     get('/with_params').body.should == '<html><head><title>Message: hello</title></head></html>'
   end
 
-  it 'should be able to render a template in the current scope' do
+  should 'be able to render a template in the current scope' do
     get('/composed').body.should == 'From Action | From Partial there'
   end
 
-  it 'should render_template in a loop' do
+  should 'render_template in a loop' do
     get('/loop').body.gsub(/\s/,'').should == '12345'
   end
 
-  it 'should work recursively' do
+  should 'work recursively' do
     get('/recursive').body.gsub(/\s/,'').should == '{1{2{3{44}4}3}2}'
   end
+end
 
-  it 'should support locals' do
+__END__
+
+  should 'support locals' do
     get('/test_locals').body.should == 'Hello, World!'
   end
 
-  it 'should work recursively with locals' do
+  should 'work recursively with locals' do
     get('/recursive/true').body.gsub(/\s/,'').should == '{1{2{3{44}3}2}1}'
   end
 
-  it 'should set ivars in addition to locals' do
+  should 'set ivars in addition to locals' do
     get('/test_local_ivars').body.gsub(/\s/,'').should == '{1{2{3{44}3}2}1}'
   end
 
-  it 'should not require file extension' do
+  should 'not require file extension' do
     get('/test_without_ext').body.should == 'Hi, World!'
   end
 end
