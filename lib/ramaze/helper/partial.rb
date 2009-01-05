@@ -4,6 +4,8 @@
 module Ramaze
   module Helper
     module Partial
+      DEFAULT << self
+
       module_function
 
       def render_partial(url, options = {})
