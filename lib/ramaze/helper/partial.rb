@@ -2,6 +2,30 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+  module Helper
+    module Partial
+      module_function
+
+      def render_partial(url, options = {})
+        body = nil
+        uri = URI(url)
+        uri.query = Rack::Utils.build_query(options)
+
+        Innate::Mock.session do |session|
+          cookie = Innate::Current.session.cookie
+          session.cookie = cookie
+          body = session.get(uri.to_s, options).body
+        end
+
+        body
+      end
+    end
+  end
+end
+
+__END__
+
+module Ramaze
 
   # = Helper::Partial
   #
