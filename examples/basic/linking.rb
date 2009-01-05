@@ -26,4 +26,4 @@ class LinkToController < Ramaze::Controller
   end
 end
 
-Ramaze.start :adapter => :mongrel
+Ramaze.start
