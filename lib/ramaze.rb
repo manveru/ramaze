@@ -31,6 +31,7 @@ require 'innate'
 require 'ramaze/version'
 require 'ramaze/snippets'
 require 'ramaze/helper'
+require 'ramaze/view'
 require 'ramaze/controller'
 
 module Ramaze
