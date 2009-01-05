@@ -1,7 +1,8 @@
 require 'rubygems'
 require 'ramaze'
+require 'nagoro'
 
-class Page < Ezamar::Element
+class Page < Nagoro::Element
   def render
     %{
      <html>
@@ -17,7 +18,7 @@ class Page < Ezamar::Element
   end
 end
 
-class SideBar < Ezamar::Element
+class SideBar < Nagoro::Element
   def render
     %{
      <div class="sidebar">
@@ -29,6 +30,7 @@ end
 
 class MainController < Ramaze::Controller
   map '/'
+  provide :html => :nagoro
 
   def index
     %{
