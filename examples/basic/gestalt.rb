@@ -1,5 +1,4 @@
 require 'ramaze'
-require 'ramaze/gestalt'
 
 class MainController < Ramaze::Controller
   helper :gestalt
@@ -24,4 +23,4 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze.start :adapter => :mongrel
+Ramaze.start
