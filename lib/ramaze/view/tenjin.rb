@@ -1,6 +1,6 @@
 require 'tenjin'
 
-module Innate
+module Ramaze
   module View
     module Tenjin
       def self.render(action, string = action.view)

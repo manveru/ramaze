@@ -1,6 +1,6 @@
 require 'builder'
 
-module Innate
+module Ramaze
   module View
     module Builder
       module_function

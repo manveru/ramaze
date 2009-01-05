@@ -1,6 +1,6 @@
 require 'haml/engine'
 
-module Innate
+module Ramaze
   module View
     module Haml
       def self.render(action, string = nil)

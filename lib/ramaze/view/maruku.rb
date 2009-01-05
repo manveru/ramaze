@@ -1,6 +1,6 @@
 require 'maruku'
 
-module Innate
+module Ramaze
   module View
     module Maruku
       def self.render(action, string = nil)

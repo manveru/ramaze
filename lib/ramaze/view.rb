@@ -6,12 +6,9 @@ module Ramaze
   module View
     extend Innate::View
 
-    ENGINE = {}
-    TEMP = {}
+    # Combine Kernel#autoload and Innate::View::register
 
-    # Combine Kernel#autoload and Ramaze::View::register
-
-    def auto_register(name, *exts)
+    def self.auto_register(name, *exts)
       autoload(name, "ramaze/view/#{name}".downcase)
       register("Ramaze::View::#{name}", *exts)
     end
@@ -32,5 +29,11 @@ module Ramaze
     auto_register :Tenjin,     :rbhtml
     auto_register :Remarkably, :rem
     auto_register :Tagz,       :rb, :tagz
+  end
+end
+
+module Innate
+  module View
+    include Ramaze::View
   end
 end

@@ -1,6 +1,6 @@
 require 'nagoro'
 
-module Innate
+module Ramaze
   module View
     module Nagoro
       def self.render(action, string = nil)

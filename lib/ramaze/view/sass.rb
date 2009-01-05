@@ -1,6 +1,6 @@
 require 'sass/engine'
 
-module Innate
+module Ramaze
   module View
     module Sass
       def self.render(action, string = nil)
