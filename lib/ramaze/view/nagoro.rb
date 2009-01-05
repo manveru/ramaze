@@ -43,6 +43,8 @@ module Nagoro
       def tag_start(tag, attrs)
         if tag == 'render' and src = attrs.delete('src')
           append(render_partial(src, attrs))
+        else
+          super
         end
       end
 
