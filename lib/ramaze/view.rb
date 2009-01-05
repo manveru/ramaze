@@ -16,11 +16,21 @@ module Ramaze
       register("Ramaze::View::#{name}", *exts)
     end
 
-    auto_register :Builder, :builder
-    auto_register :Haml,    :haml
-    auto_register :Maruku,  :mkd, :md
-    auto_register :Nagoro,  :xhtml
-    auto_register :Sass,    :sass
-    auto_register :Tenjin,  :rbhtml
+    # TODO:
+    # * markaby - though we should advertise remarkably instead
+    # * XSLT    - this one is just crazy, someone up for the task?
+
+    auto_register :Amrita2,    :amrita, :amr, :a2html
+    auto_register :Builder,    :builder
+    auto_register :Erubis,     :erubis, :rhtml
+    auto_register :Haml,       :haml
+    auto_register :Liquid,     :liquid
+    auto_register :Maruku,     :mkd, :md
+    auto_register :Nagoro,     :xhtml
+    auto_register :RedCloth,   :redcloth
+    auto_register :Sass,       :sass
+    auto_register :Tenjin,     :rbhtml
+    auto_register :Remarkably, :rem
+    auto_register :Tagz,       :rb, :tagz
   end
 end

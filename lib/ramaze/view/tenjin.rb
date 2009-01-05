@@ -3,18 +3,16 @@ require 'tenjin'
 module Innate
   module View
     module Tenjin
-      module_function
-
-      def render(action, string = nil)
+      def self.render(action, string = action.view)
         context = build_context(action)
 
         template = ::Tenjin::Template.new
-        template.convert(string || action.view)
+        template.convert(string)
 
         template.render(context)
       end
 
-      def build_context(action)
+      def self.build_context(action)
         hash = action.variables
         instance = action.instance
 
