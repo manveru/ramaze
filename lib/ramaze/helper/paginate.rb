@@ -165,7 +165,7 @@ module Ramaze
           text = h(text.to_s)
 
           params = Ramaze::Request.current.params.merge(@var.to_s => n)
-          name = Ramaze::Request.current.request_path
+          name = Ramaze::Request.current.path_info
           hash[:href] = R(name, params)
 
           g.a(hash){ text }
