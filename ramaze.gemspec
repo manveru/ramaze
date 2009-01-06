@@ -9,10 +9,21 @@ Gem::Specification.new do |s|
   s.author = "Michael 'manveru' Fellinger"
   s.email = "m.fellinger@gmail.com"
   s.homepage = "http://ramaze.rubyforge.org"
+  s.rubyforge_project = "ramaze"
   s.executables = ["ramaze"]
   s.bindir = "bin"
   s.require_path = "lib"
-  s.post_install_message = "============================================================\n\nThank you for installing Ramaze!\nYou can now do following:\n\n* Create a new project using the `ramaze' command:\n    ramaze --create yourproject\n\n============================================================"
+  s.post_install_message = %{
+============================================================
+
+Thank you for installing Ramaze!
+The main website is http://ramaze.net .
+
+Feel free to ask questions in our IRC channel:
+irc.freenode.net #ramaze
+http://mibbit.com/?server=irc.freenode.net&channel=%23ramaze
+
+============================================================}
 
   s.add_dependency('rack', '>= 0.3.0')
 
