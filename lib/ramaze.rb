@@ -30,6 +30,7 @@ require 'innate'
 # bootstrap
 require 'ramaze/version'
 require 'ramaze/snippets'
+require 'ramaze/log'
 require 'ramaze/helper'
 require 'ramaze/view'
 require 'ramaze/controller'

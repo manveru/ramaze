@@ -68,12 +68,6 @@ module Ramaze
       tag_log(:error, :to_s, *message)
     end
 
-    # raises
-
-    def log(*args)
-      raise "#log should be implemented by an instance including this module (#{self})"
-    end
-
     # nothing
 
     def shutdown

@@ -32,9 +32,8 @@ module Ramaze
       # integration to Logging
 
       def log(tag, *args)
-        log(tag, args.join("\n"))
+        super(tag, args.join("\n"))
       end
     end
-
   end
 end
