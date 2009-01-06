@@ -48,6 +48,12 @@ module Model
   end
 
   [Page, OldPage].each do |klass|
-    klass.create_table unless klass.table_exists?
+    begin
+      klass.create_table
+    rescue Sequel::DatabaseError => e
+      if e.message !~ /table.*already exists/
+        raise e
+      end
+    end
   end
 end
