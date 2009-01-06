@@ -16,7 +16,7 @@ module Ramaze
       # instead, in either case with path as argument.
 
       def resolve(path, routed = false)
-        @routed = routed
+        Thread.current[:routed] = routed
 
         FILTER.each do |filter|
           answer = if filter.respond_to?(:call)
@@ -90,7 +90,7 @@ module Ramaze
           end
         end
 
-        if !@routed and new_path = Route.resolve(path)
+        if !Thread.current[:routed] and new_path = Route.resolve(path)
           Log.dev("Routing from `#{path}' to `#{new_path}'")
           return resolve(new_path, true)
         end
