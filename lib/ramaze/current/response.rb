@@ -1,26 +1,23 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
   class Response < Rack::Response
-    class << self
-      # Alias for Current::response
-      def current() Current.response end
-    end
+    # Alias for Current.response
+    def self.current; Current.response; end
 
     def initialize(body = [], status = 200, header = {}, &block)
-      header['Content-Type'] ||= Global.content_type
-      header['Accept-Charset'] = Global.accept_charset if Global.accept_charset
+      modified_header = Ramaze.options.header.merge(header)
+      header.merge!(modified_header)
       super
     end
 
     # Build/replace this responses data
-    def build(new_body = body, status = status, header = header)
-      header.each do |key, value|
-        self[key] = value
-      end
+    def build(new_body = nil, new_status = nil, new_header = nil)
+      self.header.merge!(new_header) if new_header
 
-      self.body, self.status = new_body, status
+      self.body   = new_body if new_body
+      self.status = new_status if new_status
     end
 
     def body=(obj)
