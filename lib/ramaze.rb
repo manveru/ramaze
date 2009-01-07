@@ -36,6 +36,15 @@ require 'ramaze/view'
 require 'ramaze/controller'
 
 module Ramaze
+  # Usually it's just overhead to remember which module has which constant,
+  # so we just assign them here as well.
+  # This will not affect any of the module functions on Innate, you still have
+  # to reference the correct module for them.
+  Innate.constants.each do |const|
+    next if const =~ /ROOT|VERSION/
+    Ramaze.const_set(const, Innate.const_get(const))
+  end
+
   def self.start(*args)
     Innate.start(*args)
   end
