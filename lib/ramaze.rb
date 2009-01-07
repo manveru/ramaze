@@ -40,9 +40,13 @@ module Ramaze
   # so we just assign them here as well.
   # This will not affect any of the module functions on Innate, you still have
   # to reference the correct module for them.
+  # We do not set constants already set from the requires above.
   Innate.constants.each do |const|
-    next if const =~ /ROOT|VERSION/
-    Ramaze.const_set(const, Innate.const_get(const))
+    begin
+      Ramaze.const_get(const)
+    rescue NameError
+      Ramaze.const_set(const, Innate.const_get(const))
+    end
   end
 
   def self.start(*args)
