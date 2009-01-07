@@ -1,4 +1,4 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
@@ -37,53 +37,49 @@ module Ramaze
   #     '/bar' if path == '/foo' and request[:bar] == '1'
   #   end
 
-  class Route
-    trait[:routes] ||= Dictionary.new
+  module Route
+    module_function
 
-    class << self
-      # Retrieve key from trait
-      def [](key)
-        trait[:routes][key]
-      end
+    @routes ||= Dictionary.new
 
-      # Set key to value in trait
-      def []=(key, value)
-        trait[:routes][key] = value
-      end
+    # Retrieve key from trait
+    def [](key)
+      @routes[key]
+    end
 
-      # remove all routes
-      def clear
-        trait[:routes].clear
-      end
+    # Set key to value in trait
+    def []=(key, value)
+      @routes[key] = value
+    end
 
-      # Resolve path according to routes.
-      def resolve(path)
-        trait[:routes].each do |key, val|
-          if key.is_a?(Regexp)
-            if md = path.match(key)
-              return val % md.to_a[1..-1]
-            end
+    # remove all routes
+    def clear
+      @routes.clear
+    end
 
-          elsif val.respond_to?(:call)
-            if new_path = val.call(path, Request.current)
-              return new_path
-            end
+    # Resolve path according to routes.
+    def resolve(path)
+      @routes.each do |key, value|
+        if key.is_a?(Regexp) and md = path.match(key)
+          return value % md.to_a[1..-1]
+        elsif value.respond_to?(:call)
+          new_path = value.call(path, Current.request)
+          return new_path if new_path
 
-          elsif val.is_a?(String)
-            return val if path == key
-
-          else
-            Log.error "Invalid route #{key} => #{val}"
-          end
+        elsif value.is_a?(String)
+          return value if path == key
+        else
+          Log.error("Invalid route %p => %p" % [key, value])
         end
-
-        nil
       end
+
+      nil
     end
   end
 
+  # Equivalent to Route, why the heck do we have that?
   class Rewrite < Route
-    trait[:routes] ||= Dictionary.new
+    @routes ||= Dictionary.new
   end
 
   # Shortcut for defining new routes.
