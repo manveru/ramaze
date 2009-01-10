@@ -34,6 +34,7 @@ require 'ramaze/log'
 require 'ramaze/helper'
 require 'ramaze/view'
 require 'ramaze/controller'
+require 'ramaze/route'
 
 module Ramaze
   # Usually it's just overhead to remember which module has which constant,
