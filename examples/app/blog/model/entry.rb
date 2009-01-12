@@ -23,7 +23,14 @@ class Entry < Sequel::Model(:entry)
   end
 end
 
-Entry.create_table! unless Entry.table_exists?
+begin
+  Entry.create_table!
+rescue Sequel::DatabaseError => e
+  if e.message !~ /table.*already exists/
+    raise e
+  end
+end
+
 
 if Entry.empty?
   Entry.add 'Blog created', 'Exciting news today, this blog was created'
