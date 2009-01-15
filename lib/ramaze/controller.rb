@@ -18,5 +18,9 @@ module Ramaze
       mapping = name == 'Main' ? '/' : "/#{name.snake_case}"
       map(mapping)
     end
+
+    def self.engine(name)
+      provide(:html => name)
+    end
   end
 end
