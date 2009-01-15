@@ -10,7 +10,7 @@
 #     No matter which way we go, we should keep references point to the
 #     original location to avoid too much confusion for core developers.
 module Ramaze
-  ROOT = File.dirname(File.expand_path(__FILE__))
+  ROOT = File.expand_path(File.dirname(__FILE__)) unless defined?(Ramaze::ROOT)
 
   unless $LOAD_PATH.any?{|lp| File.expand_path(lp) == ROOT }
     $LOAD_PATH.unshift(ROOT)
