@@ -11,7 +11,8 @@ module Ramaze
 
     # Create the Cache.value_cache on inclusion if it doesn't exist yet.
     def self.included(klass)
-      C.add(:value_cache) unless C::CACHES.has_key?(:value_cache)
+      klass.extend(self)
+      C.add(:value_cache) unless C.respond_to?(:value_cache)
     end
 
     # Example:
