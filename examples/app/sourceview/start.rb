@@ -4,19 +4,11 @@ require 'coderay'
 require 'ramaze'
 
 # where is the source
-RAMAZE_SRC = File.expand_path(Ramaze::BASEDIR/'../') unless defined? RAMAZE_SRC
-
-# delete cached filetree when source changes
-module Ramaze::SourceReloadHooks
-  module_function
-  def after_safe_load file
-    Ramaze::Cache.actions.clear
-  end
-end
-
 class MainController < Ramaze::Controller
+  SOURCE_PATH = File.expand_path(File.join(Ramaze::ROOT, '../'))
 
   include Remarkably::Common
+
   helper :cache, :aspect
   engine :None
 
@@ -28,47 +20,57 @@ class MainController < Ramaze::Controller
     file = args.join('/')
     return if file.empty? or file =~ /\.{2}/
 
-    file[0,0] = RAMAZE_SRC + '/'
-    CodeRay.scan_file(file).html(:line_numbers => :table) if FileTest.file? file
+    file[0,0] = SOURCE_PATH + '/'
+    CodeRay.scan_file(file).html(:line_numbers => :table) if File.file?(file)
   end
-  before(:source){ %(<link href='/coderay.css' rel='stylesheet' type='text/css' />) unless request.xhr? }
+
+  before(:source){
+    %(<link href='/coderay.css' rel='stylesheet' type='text/css' />) unless request.xhr?
+  }
 
   def filetree
-    ul :class => 'filetree treeview' do
-      Dir.chdir(RAMAZE_SRC) do
-        Dir['{benchmarks,doc,examples,lib,spec}'].collect do |d|
-          dir_listing d
-        end
+    ul(:class => 'filetree treeview'){
+      Dir.chdir(SOURCE_PATH) do
+        Dir['{benchmarks,doc,examples,lib,spec}'].map{|d| dir_listing(d) }
       end
-    end.to_s
+    }.to_s
   end
   cache :filetree
 
   private
 
-  def dir_listing dir
-    li do
-      span dir, :class => 'folder'
+  def dir_listing(dir)
+    li{
+      span(dir, :class => 'folder')
+
       Dir.chdir(dir) do
-        ul :style => 'display: none;' do
-          a '', :href => "##{File.expand_path('.').sub(RAMAZE_SRC,'')}"
+        ul(:style => 'display: none;'){
+          a('', :href => "##{File.expand_path('.').sub(SOURCE_PATH, '')}")
+
           Dir['*'].sort.each do |d|
-            if FileTest.directory? d
-              dir_listing d
+            if File.directory?(d)
+              dir_listing(d)
             else
-              file = File.expand_path(d).sub(RAMAZE_SRC,'')
-              li do
-                span :class => 'file' do
-                  a d, :href => "##{file}"
-                end
-              end
+              file = File.expand_path(d).sub(SOURCE_PATH, '')
+              li{
+                span(:class => 'file'){
+                  a(d, :href => "##{file}")
+                }
+              }
             end
           end
-        end if Dir['*'].any?
+        } if Dir['*'].any?
       end
-    end
+    }
   end
+end
 
+# delete cached filetree when source changes
+module Ramaze::SourceReloadHooks
+  module_function
+  def after_safe_load file
+    Ramaze::Cache.actions.clear
+  end
 end
 
 Ramaze.start :adapter      => :mongrel,
