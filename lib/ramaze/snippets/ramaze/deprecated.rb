@@ -1,6 +1,7 @@
 module Ramaze
   DEPRECATED_CONSTANTS = {
-    :ThreadAccessor => :StateAccessor
+    :ThreadAccessor => :StateAccessor,
+    :BASEDIR        => :ROOT,
   }
 
   def self.deprecated(from, to = nil)
