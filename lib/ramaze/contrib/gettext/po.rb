@@ -52,22 +52,22 @@ EOS
       str = ""
       result = Array.new
       ary.each do |key|
-	      msgid = key.shift.dup
-	      curr_pos = MAX_LINE_LEN
-	      key.each do |e|
-	        if curr_pos + e.size > MAX_LINE_LEN
-	          str << "\n#:"
-	          curr_pos = 3
-	        else
-	          curr_pos += (e.size + 1)
-	        end
-	        str << " " << e
-      	end
-      	msgid.gsub!(/"/, '\"')
-      	msgid.gsub!(/\r/, '')
+        msgid = key.shift.dup
+        curr_pos = MAX_LINE_LEN
+        key.each do |e|
+          if curr_pos + e.size > MAX_LINE_LEN
+            str << "\n#:"
+            curr_pos = 3
+          else
+            curr_pos += (e.size + 1)
+          end
+          str << " " << e
+        end
+        msgid.gsub!(/"/, '\"')
+        msgid.gsub!(/\r/, '')
 
-      	str << "\nmsgid \"" << msgid << "\"\n"
-    	  str << "msgstr \"\"\n"
+        str << "\nmsgid \"" << msgid << "\"\n"
+        str << "msgstr \"\"\n"
       end
       str
     end
@@ -81,15 +81,15 @@ EOS
         msgstr = hash[msgid]
 
         msgid.gsub!(/"/, '\"')
-      	msgid.gsub!(/\r/, '')
+        msgid.gsub!(/\r/, '')
 
-      	if msgstr
-      	  msgstr.gsub!(/"/, '\"')
-        	msgstr.gsub!(/\r/, '')
-      	end
+        if msgstr
+          msgstr.gsub!(/"/, '\"')
+          msgstr.gsub!(/\r/, '')
+        end
 
-      	str << "\nmsgid \"" << msgid << "\"\n"
-    	  str << "msgstr \"" << msgstr << "\"\n"
+        str << "\nmsgid \"" << msgid << "\"\n"
+        str << "msgstr \"" << msgstr << "\"\n"
       end
 
       str
