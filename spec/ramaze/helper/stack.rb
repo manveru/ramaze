@@ -1,23 +1,20 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the Ruby license.
-
 require 'spec/helper'
 
-class TCStackHelperController < Ramaze::Controller
-  map :/
-  helper :stack, :aspect
+class SpecStackHelper < Ramaze::Controller
+  map '/'
+  helper :stack
 
-  def index
+  def session_inspect
     session.inspect
   end
 
-  def foo
-    call Rs(:login) unless logged_in?
-    "logged in"
+  def logged_in_page
+    call(r(:login)) unless logged_in?
+    "the logged in page"
   end
 
-  def bar
-    call Rs(:login) unless logged_in?
+  def logged_in_params
+    call(r(:login)) unless logged_in?
     request.params.inspect
   end
 
@@ -27,11 +24,11 @@ class TCStackHelperController < Ramaze::Controller
 
   def login
     session[:logged_in] = true
-    answer
+    answer(r(:secure))
   end
 
   def logout
-    session.clear
+    session.delete(:logged_in)
   end
 
   private
@@ -41,33 +38,59 @@ class TCStackHelperController < Ramaze::Controller
   end
 end
 
-describe "StackHelper" do
-  behaves_like 'browser'
-  ramaze(:adapter => :webrick)
+Innate.setup_dependencies
 
-  it "conventional login" do
-    Browser.new do
-      get('/secure').should == 'please login'
-      get('/login')
-      get('/secure').should == 'secret content'
-      get('/logout')
+describe Ramaze::Helper::Stack do
+  behaves_like :session
+  @uri = 'http://example.org'
+
+  should 'login directly' do
+    session do |mock|
+      mock.get('/secure').body.should == 'please login'
+
+      got = mock.get('/login')
+      got.status.should == 302
+      got['Location'].should == "#@uri/secure"
+
+      got = mock.get('/secure')
+      got.status.should == 200
+      got.body.should == 'secret content'
+
+      mock.get('/secure').body.should == 'secret content'
+      mock.get('/logout')
+      mock.get('/secure').body.should == 'please login'
     end
   end
 
-  it "indirect login" do
-    Browser.new do
-      get('/')
-      get('/foo').should == 'logged in'
-      get('/secure').should == 'secret content'
-      eget('/').should == {:logged_in => true}
+  should 'login via redirects' do
+    session do |mock|
+      got = mock.get('/logged_in_page')
+      got.status.should == 302
+      got['Location'].should == 'http://example.org/login'
+
+      got = mock.get('/login')
+      got.status.should == 302
+      got['Location'].should == 'http://example.org/logged_in_page'
+
+      got = mock.get('/logged_in_page')
+      got.status.should == 200
+      got.body.should == 'the logged in page'
     end
   end
 
-  it "indirect login with params" do
-    Browser.new do
-      get('/')
-      eget('/bar', 'x' => 'y').should == {'x' => 'y'}
-      eget('/').should == {:logged_in => true}
+  should 'login with params via redirects' do
+    session do |mock|
+      got = mock.get('/logged_in_params?x=y')
+      got.status.should == 302
+      got['Location'].should == 'http://example.org/login'
+
+      got = mock.get('/login')
+      got.status.should == 302
+      got['Location'].should == 'http://example.org/logged_in_params?x=y'
+
+      got = mock.get('/logged_in_params?x=y')
+      got.status.should == 200
+      got.body.should == {'x' => 'y'}.inspect
     end
   end
 end
