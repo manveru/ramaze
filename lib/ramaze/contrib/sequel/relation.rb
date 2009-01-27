@@ -1,5 +1,5 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
-# All files in this distribution are subject to the terms of the Ruby license.     
+# All files in this distribution are subject to the terms of the Ruby license.
 
 # Pretty DSL to express Sequel relations
 #
@@ -43,7 +43,8 @@ module SequelRelation
         end
       end
 
-      return # remove this line for debugging
+=begin
+     # uncomment for debugging
 
       pp TODO
 
@@ -54,6 +55,7 @@ module SequelRelation
           puts "  #{reflection[:type]} => #{key}"
         end
       end
+=end
     end
 
     def the(left_model, &block)
