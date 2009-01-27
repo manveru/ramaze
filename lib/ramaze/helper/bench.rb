@@ -4,7 +4,6 @@ module Ramaze
   module Helper
 
     # Little helper to give you a hand when benching parts of actions
-
     module Bench
 
       # Will first run an empty loop to determine the overhead it imposes, then
@@ -29,7 +28,6 @@ module Ramaze
       #
       # So now we know that the Article.tags call takes the most time and
       # should be improved.
-
       def bench(iterations = 1)
         result = nil
         from = caller[0]
