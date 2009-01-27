@@ -15,6 +15,7 @@ CLEAN.include %w[
   *.yaml
   pkg
   rdoc
+  *coverage*
 ]
 RDOC_OPTS = %W[
   --all

@@ -1,61 +1,37 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'rake'
-require 'pp'
 
-require 'lib/ramaze/snippets'
-
-desc 'Run all specs'
+desc 'run specs'
 task 'spec' do
-  non_verbose, non_fatal = ENV['non_verbose'], ENV['non_fatal']
-  require 'scanf'
+  require 'open3'
 
-  root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-  libpath = "#{root}/lib"
+  specs = Dir['spec/{ramaze,snippets}/**/*.rb']
 
-  specs = Dir["#{root}/spec/{ramaze,examples,snippets,contrib}/**/*.rb"] +
-    Dir["#{root}/examples/**/spec/**/*.rb"]
+  total = specs.size
+  len = specs.sort.last.size
+  left_format = "%4d/%d: %-#{len + 12}s"
 
-  ignore = [
-    "#{root}/spec/ramaze/request.rb",
-  ].map{|i| Dir[i].map{|f| File.expand_path(f) }}.flatten
+  red, green = "\e[31m%s\e[0m", "\e[32m%s\e[0m"
 
-  config = RbConfig::CONFIG
-  bin = File.join(config['bindir'], config['ruby_install_name'])
+  specs.each_with_index do |spec, idx|
+    print(left_format % [idx + 1, total, spec])
 
-  result_format = '%d tests, %d assertions, %d failures, %d errors'
+    Open3.popen3("#{RUBY} #{spec}") do |sin, sout, serr|
+      out = sout.read
+      err = serr.read
 
-  list = (specs - ignore).sort
-  names = list.map{|l| l.sub(root + '/', '') }
-  width = names.sort_by{|s| s.size}.last.size
-  total = names.size
+      md = out.match(/(\d+) tests, (\d+) assertions, (\d+) failures, (\d+) errors/)
+      tests, assertions, failures, errors = all = md.captures.map{|c| c.to_i }
 
-  list.zip(names).each_with_index do |(spec, name), idx|
-    print '%3d/%d: ' % [idx + 1, total]
-    print name.ljust(width + 2)
-
-    stdout = `#{bin} -I#{libpath} #{spec} 2>&1`
-
-    status = $?.exitstatus
-    tests, assertions, failures, errors =
-      stdout[/.*\Z/].to_s.scanf(result_format)
-
-    if stdout =~ /Usually you should not worry about this failure, just install the/
-      lib = stdout[/^no such file to load -- (.*?)$/, 1] ||
-            stdout[/RubyGem version error: (.*)$/, 1]
-      puts "requires #{lib}".yellow
-    elsif status == 0
-      puts "all %3d passed".green % tests
-    else
-      out = result_format % [tests, assertions, failures, errors].map{|e| e.to_s.to_i}
-      puts out.red
-      puts stdout unless non_verbose
-      exit status unless non_fatal
+      if failures + errors > 0
+        puts((red % "%6d tests, %d assertions, %d failures, %d errors") % all)
+        puts out
+        puts err
+      else
+        puts((green % "%6d passed") % tests)
+      end
     end
   end
-
-  puts '', "joy: the emotion evoked by well-being, success, or good fortune or by the
-prospect of possessing what one desires"
-  puts "All specs pass, go enjoy yourself :)"
 end
