@@ -11,4 +11,9 @@ if caller
   end
 end
 
-require 'lib/ramaze/spec/helper/bacon'
+require 'bacon'
+require 'ramaze/spec/helper/pretty_output'
+
+Bacon.extend Bacon::PrettyOutput
+# Bacon.extend Bacon::TestUnitOutput
+Bacon.summary_on_exit
