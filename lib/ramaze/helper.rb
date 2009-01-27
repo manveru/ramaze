@@ -3,7 +3,6 @@
 
 module Ramaze
   module Helper
-    DEFAULT = Innate::Helper::DEFAULT
     EXPOSE = LOOKUP = Innate::Helper::EXPOSE
   end
 
