@@ -50,6 +50,8 @@ module Ramaze
     end
   end
 
+  Innate.options.setup << Controller
+
   def self.start(*args)
     Innate.start(*args)
   end
