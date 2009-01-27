@@ -1,22 +1,46 @@
 require 'spec/helper'
-require 'ramaze/helper/simple_captcha'
+
+class SpecSimpleCaptcha < Ramaze::Controller
+  helper :simple_captcha
+  map '/'
+
+  def ask_question
+    question = simple_captcha
+  end
+
+  def answer_question(with)
+    check_captcha(with) ? 'correct' : 'wrong'
+  end
+end
+
+class SpecCustomCaptcha < SpecSimpleCaptcha
+  map '/fish'
+
+  trait :captcha => lambda{
+    ["the answer to everything", 42]
+  }
+end
+
+Innate.setup_dependencies
 
 describe Ramaze::Helper::SimpleCaptcha do
-  extend Ramaze::Helper::SimpleCaptcha
+  should 'ask question' do
+    Ramaze::Mock.session do |session|
+      question = session.get('/ask_question').body
+      question.should =~ /^\d+ [+-] \d+$/
 
-  # mock session
-  SESSION = {}
-  def session; SESSION; end
+      lh, m, rh = question.split
+      answer = lh.to_i.send(m, rh.to_i)
 
-  should 'generate question and answer' do
-    simple_captcha
-    question = SESSION[:CAPTCHA][:question]
-    question.should =~ /^\d+ [+-] \d+$/
-    lh, m, rh = question.split
+      session.get("/answer_question/#{answer}").body.should == 'correct'
+    end
+  end
 
-    answer = SESSION[:CAPTCHA][:answer]
-    answer.should =~ /^\d+$/
-
-    lh.to_i.send(m, rh.to_i).should == answer.to_i
+  should 'ask custom question' do
+    Ramaze::Mock.session do |session|
+      question = session.get('/fish/ask_question')
+      question.body.should == 'the answer to everything'
+      session.get('/fish/answer_question/42').body.should == 'correct'
+    end
   end
 end
