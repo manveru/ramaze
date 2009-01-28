@@ -16,7 +16,7 @@ class SpecUserHelper < Ramaze::Controller
   trait :user_model => MockSequelUser
 
   def status
-    logged_in?
+    logged_in? ? 'yes' : 'no'
   end
 
   def login
@@ -29,15 +29,14 @@ class SpecUserHelper < Ramaze::Controller
 end
 
 describe Ramaze::Helper::User do
-  behaves_like 'browser'
-  ramaze :adapter => :webrick
+  behaves_like :session
 
   should 'login' do
-    Browser.new do
-      get('/status').should == 'false'
-      get('/login', 'name' => 'arthur', 'password' => '42')
-      get('/status').should == 'true'
-      get('/profile').should == MockSequelUser.new.profile
+    session do |mock|
+      mock.get('/status').body.should == 'no'
+      mock.get('/login?name=arthur&password=42')
+      mock.get('/status').body.should == 'yes'
+      mock.get('/profile').body.should == MockSequelUser.new.profile
     end
   end
 end
