@@ -6,7 +6,7 @@ module Ramaze
       def self.render(action, string)
         return string unless action.view
 
-        markup = "tagz{#{action.view}}"
+        markup = "tagz{#{string}}"
         action.instance.extend(Ramaze::View::Tagz::Methods)
         binding = action.binding
 
