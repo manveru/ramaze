@@ -4,10 +4,15 @@ module Ramaze
   module View
     module Remarkably
       def self.render(action, string)
-        action.instance.instance_eval{
+        string = transform_string(action, string) if action.view
+        string.to_s
+      end
+
+      def self.transform_string(action, string)
+        action.instance.instance_eval do
           args = action.params
           instance_eval(string)
-        }.to_s
+        end
       end
     end
   end
