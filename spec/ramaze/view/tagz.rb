@@ -3,7 +3,7 @@
 
 require 'spec/helper'
 
-Innate.options.app.root = File.dirname(__FILE__)
+Innate.options.app.root = __DIR__
 Innate.options.app.view = 'tagz'
 
 class SpecTagz < Ramaze::Controller
