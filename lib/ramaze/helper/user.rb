@@ -25,7 +25,7 @@ module Ramaze
       def user
         model = ancestral_trait[:user_model] ||= ::User
         callback = ancestral_trait[:user_callback] ||= nil
-        STATE[:user] ||= Wrapper.new(model, callback)
+        request.env['ramaze.helper.user'] ||= Wrapper.new(model, callback)
       end
 
       # shortcut for user.user_login but default argument are request.params
@@ -84,7 +84,7 @@ module Ramaze
 
         def _logout
           _persistence.clear
-          STATE[:user] = nil
+          request.env['ramaze.helper.user'] = nil
         end
 
         def _logged_in?
