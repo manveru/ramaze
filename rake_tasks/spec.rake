@@ -25,7 +25,7 @@ task 'spec' do
       md = out.match(/(\d+) tests, (\d+) assertions, (\d+) failures, (\d+) errors/)
       tests, assertions, failures, errors = all = md.captures.map{|c| c.to_i }
 
-      if failures + errors > 0
+      if tests == 0 || failures + errors > 0
         puts((red % "%6d tests, %d assertions, %d failures, %d errors") % all)
         puts out
         puts err
