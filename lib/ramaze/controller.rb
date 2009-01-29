@@ -10,6 +10,8 @@ module Ramaze
 
     LIST = Set.new
 
+    trait :automap => true
+
     def self.inherited(into)
       Innate::Node.included(into)
       LIST << into
@@ -19,21 +21,14 @@ module Ramaze
       LIST.each{|controller| controller.mapping }
     end
 
-    # if trait[:automap] is set and controller is not in Global.mapping yet
-    # this will build a new default mapping-point, MainController is put
-    # at '/' by default. For other Class names, String#snake_case is called,
-    # e.g. FooBarController is mapped at '/foo_bar'.
-
     def self.mapping
-      existing_mapping = Innate.to(self)
-      return existing_mapping if existing_mapping
+      mapped = Innate.to(self)
+      return mapped if mapped
+      return unless ancestral_trait[:automap]
+      return if self.to_s =~ /#<Class:/ # cannot determine name of anonymous class
 
-      automap if ancestral_trait[:automap] && self.to_s !~ /#<Class:/
-    end
-
-    def automap
       name = self.to_s.gsub('Controller', '').gsub('::', '/').clone
-      return if name.empty?
+      return if name.empty? # won't map a class named Controller
       name == 'Main' ? '/' : "/#{name.snake_case}"
     end
 
