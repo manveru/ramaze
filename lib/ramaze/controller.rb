@@ -17,8 +17,13 @@ module Ramaze
       LIST << into
     end
 
-    def self.setup
-      LIST.each{|controller| controller.mapping }
+    def self.engine(*symbols)
+      symbols.each do |symbol|
+        regex = /#{symbol}/i
+        Innate::View::ENGINE.each do |ext, constant|
+          provide(:html => ext) if constant =~ regex
+        end
+      end
     end
 
     def self.mapping
@@ -30,10 +35,6 @@ module Ramaze
       name = self.to_s.gsub('Controller', '').gsub('::', '/').clone
       return if name.empty? # won't map a class named Controller
       name == 'Main' ? '/' : "/#{name.snake_case}"
-    end
-
-    def self.engine(name)
-      provide(:html => name)
     end
   end
 end
