@@ -1,25 +1,22 @@
 require 'ramaze'
-require 'ramaze/spec/helper'
+require 'ramaze/spec'
 
 require __DIR__('../start')
 
 describe MainController do
-  behaves_like 'http', 'xpath'
-  ramaze :view_root => __DIR__('../view'),
-         :public_root => __DIR__('../public')
+  behaves_like :mock
 
-  it 'should show start page' do
+  should 'show start page' do
     got = get('/')
     got.status.should == 200
-    puts got.body
-    got.at('//title').text.strip.should ==
-      MainController.new.index
+    got['Content-Type'].should == 'text/html'
+    got.body.should =~ /<h1>Welcome to Ramaze!<\/h1>/
   end
 
-  it 'should show /notemplate' do
+  should 'show /notemplate' do
     got = get('/notemplate')
     got.status.should == 200
-    got.at('//div').text.strip.should ==
-      MainController.new.notemplate
+    got['Content-Type'].should == 'text/html'
+    got.body.should =~ /there is no 'notemplate.xhtml' associated with this action/
   end
 end
