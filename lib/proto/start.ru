@@ -13,5 +13,5 @@
 
 cwd = File.dirname(__FILE__)
 require "#{cwd}/start"
-Innate.start(:started => true)
+Ramaze.start(:started => true)
 run Innate.middleware(:innate)

@@ -1,1 +1,4 @@
-require 'ramaze/spec/helper'
+require 'ramaze'
+require 'bacon'
+
+require 'innate/spec'
