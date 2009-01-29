@@ -41,9 +41,24 @@ module Ramaze
     #   <div class='flash' id='flash_error'>Please enter your name</div>
     #   <div class='flash' id='flash_info'>Do you see the fnords?</div>
     #
-    # This is designed to be customized permanently or per usage:
     #
-    #   flashbox("<div class='flash_%key'>%value</div>")
+    # This can be customized permanently in your controller:
+    #
+    #   class MainController < Ramaze::Controller
+    #     trait :flashbox => "<div class='flash_%key'>%value</div>"
+    #
+    #     def show_flashbox
+    #       flashbox
+    #     end
+    #   end
+    #
+    # or on a per-usage basis in your action:
+    #
+    #   class MainController < Ramaze::Controller
+    #     def show_flashbox
+    #       flashbox("<div class='flash_%key'>%value</div>")
+    #     end
+    #   end
     #
     # Where any occurrence of %key and %value will be replaced by the actual
     # contents of each element of flash
