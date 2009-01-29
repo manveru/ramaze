@@ -15,6 +15,8 @@ task 'spec' do
 
   red, green = "\e[31m%s\e[0m", "\e[32m%s\e[0m"
 
+  tt = ta = tf = te = 0
+
   specs.each_with_index do |spec, idx|
     print(left_format % [idx + 1, total, spec])
 
@@ -24,6 +26,7 @@ task 'spec' do
 
       md = out.match(/(\d+) tests, (\d+) assertions, (\d+) failures, (\d+) errors/)
       tests, assertions, failures, errors = all = md.captures.map{|c| c.to_i }
+      tt += tests; ta += assertions; tf += failures; te += errors
 
       if tests == 0 || failures + errors > 0
         puts((red % "%6d tests, %d assertions, %d failures, %d errors") % all)
@@ -34,4 +37,6 @@ task 'spec' do
       end
     end
   end
+
+  puts "#{tt} tests, #{ta} assertions, #{tf} failures, #{te} errors"
 end
