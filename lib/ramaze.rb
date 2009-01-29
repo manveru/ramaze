@@ -17,17 +17,12 @@ module Ramaze
   end
 end
 
-begin
-  require 'rubygems'
-rescue LoadError
-end
-
 # dependencies
 require 'innate'
 
 # stdlib
 
-# bootstrap
+# ramaze core
 require 'ramaze/version'
 require 'ramaze/snippets'
 require 'ramaze/log'
