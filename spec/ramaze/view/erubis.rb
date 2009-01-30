@@ -69,14 +69,11 @@ describe "Ramaze::View::Erubis" do
 # </html>"
   # end
 #
-  # should 'render external template with instance variables' do
-    # got = get('/sum/1/2')
-    # got.status.should == 200
-    # got['Content-Type'].should == 'text/html'
-    # got.body.strip.should ==
-# "<div>
-  # 3
-# </div>"
-  # end
+  should 'render external template with instance variables' do
+    got = get('/sum/1/2')
+    got.status.should == 200
+    got['Content-Type'].should == 'text/html'
+    got.body.strip.should == "<div>3</div>"
+  end
 
 end
