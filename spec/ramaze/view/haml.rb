@@ -22,7 +22,7 @@ class SpecHaml < Ramaze::Controller
       %li
         %a{:href => r(:internal)} Internal template
       %li
-        %a{:href => r(:external)} External remplate
+        %a{:href => r(:external)} External template
     '.ui
   end
 
@@ -54,7 +54,7 @@ describe Ramaze::View::Haml do
     <a href='/internal'>Internal template</a>
   </li>
   <li>
-    <a href='/external'>External remplate</a>
+    <a href='/external'>External template</a>
   </li>
 </ul>"
   end
