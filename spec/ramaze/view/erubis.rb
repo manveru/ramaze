@@ -1,4 +1,4 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
@@ -48,7 +48,7 @@ describe "Ramaze::View::Erubis" do
   <li><a href="/external">External template</a></li>
 </ul>'
   end
-#
+
   should 'render external template' do
     got = get('/external')
     got.status.should == 200
@@ -63,7 +63,7 @@ describe "Ramaze::View::Erubis" do
   </body>
 </html>"
   end
-#
+
   should 'render external template with instance variables' do
     got = get('/sum/1/2')
     got.status.should == 200
