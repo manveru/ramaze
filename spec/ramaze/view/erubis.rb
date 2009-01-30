@@ -8,7 +8,7 @@ Innate.options.app.view = 'erubis'
 
 class SpecErubis < Ramaze::Controller
   map '/'
-  provide :html => :erubis
+  provide :html => :rhtml
 
   def index
     '<h1>Erubis Index</h1>'
