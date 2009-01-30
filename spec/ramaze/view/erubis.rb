@@ -25,11 +25,6 @@ class SpecErubis < Ramaze::Controller
   def sum(num1, num2)
     @num1, @num2 = num1.to_i, num2.to_i
   end
-
-  # def inline *args
-    # @args = args
-    # "<%= @args.inspect %>"
-  # end
 end
 
 describe "Ramaze::View::Erubis" do
