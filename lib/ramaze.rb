@@ -1,4 +1,4 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 # Namespace for Ramaze
@@ -45,7 +45,7 @@ module Ramaze
     end
   end
 
-  def self.start(*args)
-    Innate.start(*args)
+  def self.start(*args, &block)
+    Innate.start(*args, &block)
   end
 end
