@@ -244,7 +244,7 @@ module Ramaze
         t_extensions = Template::ENGINES
         all_extensions = t_extensions.values.flatten
 
-        if engine = trait[:engine]
+        if engine = ancestral_trait[:engine]
           c_extensions = t_extensions.select{|k,v| k == engine}.map{|k,v| v}.flatten
           return (c_extensions + all_extensions).uniq
         end
