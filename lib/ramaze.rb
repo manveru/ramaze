@@ -15,25 +15,21 @@ module Ramaze
   unless $LOAD_PATH.any?{|lp| File.expand_path(lp) == ROOT }
     $LOAD_PATH.unshift(ROOT)
   end
-end
 
-# dependencies
-require 'innate'
+  # dependencies
+  require 'innate'
 
-# stdlib
+  # Ramaze core
+  require 'ramaze/version'
+  require 'ramaze/snippets'
+  require 'ramaze/log'
+  require 'ramaze/helper'
+  require 'ramaze/view'
+  require 'ramaze/controller'
+  require 'ramaze/route'
 
-# ramaze core
-require 'ramaze/version'
-require 'ramaze/snippets'
-require 'ramaze/log'
-require 'ramaze/helper'
-require 'ramaze/view'
-require 'ramaze/controller'
-require 'ramaze/route'
-
-module Ramaze
-  # Usually it's just overhead to remember which module has which constant,
-  # so we just assign them here as well.
+  # Usually it's just mental overhead to remember which module has which
+  # constant, so we just assign them here as well.
   # This will not affect any of the module functions on Innate, you still have
   # to reference the correct module for them.
   # We do not set constants already set from the requires above.
@@ -45,7 +41,6 @@ module Ramaze
     end
   end
 
-  def self.start(*args, &block)
-    Innate.start(*args, &block)
-  end
+  @options = Innate.options
+  class << self; attr_accessor :options; end
 end
