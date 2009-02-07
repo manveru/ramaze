@@ -9,7 +9,7 @@ module Ramaze
         options = OPTIONS.dup
         engine = options.delete(:engine)
 
-        eruby = engine.new.new(string, options)
+        eruby = engine.new(string, options)
         eruby.init_evaluator(:filename => (action.view || __FILE__))
         eruby.result(action.binding)
       end

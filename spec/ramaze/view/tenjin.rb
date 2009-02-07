@@ -24,7 +24,7 @@ class SpecTenjin < Ramaze::Controller
   end
 end
 
-describe 'Innate::View::Haml' do
+describe 'Ramaze::View::Tenjin' do
   behaves_like :mock
 
   should 'render' do

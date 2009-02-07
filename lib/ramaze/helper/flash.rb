@@ -24,10 +24,10 @@ module Ramaze
 
   module Helper::Flash
     trait :flashbox => "<div class='flash' id='flash_%key'>%value</div>"
-    # answers with Session.current.flash
 
+    # answers with Current.session.flash
     def flash
-      Session.current.flash
+      Current.session.flash
     end
 
     # Use in your template to display all flash messages that may be stored.
@@ -47,7 +47,6 @@ module Ramaze
     #
     # Where any occurrence of %key and %value will be replaced by the actual
     # contents of each element of flash
-
     def flashbox(tag = ancestral_trait[:flashbox])
       flash.map{|key, *values|
         values.flatten.map do |value|

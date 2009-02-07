@@ -4,26 +4,22 @@
 require 'spec/helper'
 
 Innate.options.app.root = __DIR__
-Innate.options.app.view = 'haml'
+Innate.options.app.view = 'erubis'
 
-class SpecHaml < Ramaze::Controller
+class SpecErubis < Ramaze::Controller
   map '/'
-  provide :html => :haml
+  provide :html => :rhtml
 
   def index
-    '%h1 Haml Index'
+    '<h1>Erubis Index</h1>'
   end
 
   def links
-    '
-    %ul
-      %li
-        %a{:href => r(:index)} Index page
-      %li
-        %a{:href => r(:internal)} Internal template
-      %li
-        %a{:href => r(:external)} External template
-    '.ui
+    '<ul>
+      <li><a href="<%=r(:index)%>">Index page</a></li>
+      <li><a href="<%=r(:internal)%>">Internal template</a></li>
+      <li><a href="<%=r(:external)%>">External template</a></li>
+    </ul>'.ui
   end
 
   def sum(num1, num2)
@@ -31,14 +27,14 @@ class SpecHaml < Ramaze::Controller
   end
 end
 
-describe Ramaze::View::Haml do
+describe "Ramaze::View::Erubis" do
   behaves_like :mock
 
   should 'render' do
     got = get('/')
     got.status.should == 200
     got['Content-Type'].should == 'text/html'
-    got.body.strip.should == "<h1>Haml Index</h1>"
+    got.body.strip.should == "<h1>Erubis Index</h1>"
   end
 
   should 'use other helper methods' do
@@ -46,17 +42,11 @@ describe Ramaze::View::Haml do
     got.status.should == 200
     got['Content-Type'].should == 'text/html'
     got.body.strip.should ==
-"<ul>
-  <li>
-    <a href='/index'>Index page</a>
-  </li>
-  <li>
-    <a href='/internal'>Internal template</a>
-  </li>
-  <li>
-    <a href='/external'>External template</a>
-  </li>
-</ul>"
+'<ul>
+  <li><a href="/index">Index page</a></li>
+  <li><a href="/internal">Internal template</a></li>
+  <li><a href="/external">External template</a></li>
+</ul>'
   end
 
   should 'render external template' do
@@ -66,10 +56,10 @@ describe Ramaze::View::Haml do
     got.body.strip.should ==
 "<html>
   <head>
-    <title>Haml Test</title>
+    <title>Erubis Test</title>
   </head>
   <body>
-    <h1>Haml Template</h1>
+    <h1>Erubis Template</h1>
   </body>
 </html>"
   end
@@ -78,9 +68,7 @@ describe Ramaze::View::Haml do
     got = get('/sum/1/2')
     got.status.should == 200
     got['Content-Type'].should == 'text/html'
-    got.body.strip.should ==
-"<div>
-  3
-</div>"
+    got.body.strip.should == "<div>3</div>"
   end
+
 end
