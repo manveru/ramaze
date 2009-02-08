@@ -41,6 +41,8 @@ module Ramaze
     end
   end
 
+  extend Innate::SingletonMethods
+
   @options = Innate.options
   class << self; attr_accessor :options; end
 end
