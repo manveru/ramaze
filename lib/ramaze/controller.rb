@@ -37,5 +37,10 @@ module Ramaze
       return if name.empty? # won't map a class named Controller
       name == 'Main' ? '/' : "/#{name.snake_case}"
     end
+
+    def self.template(*args)
+      Ramaze.deprecated('Controller::template', 'Controller::alias_view')
+      alias_view(*args)
+    end
   end
 end
