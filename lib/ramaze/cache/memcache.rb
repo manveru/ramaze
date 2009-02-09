@@ -4,7 +4,7 @@
 require 'memcache'
 
 module Ramaze
-  module Cache
+  class Cache
 
     # Cache based on the memcache library which utilizes the memcache-daemon to
     # store key/value pairs in namespaces.
@@ -14,6 +14,7 @@ module Ramaze
     # It is highly recommended to install memcache-client_extensions for
     # a bit of speedup and more functionality
     class MemCache
+      include Cache::API
 
       # +:multithread+: May be turned off at your own risk.
       #    +:readonly+: You most likely want that to be false.
@@ -39,14 +40,14 @@ module Ramaze
       #   * This will wipe out _all_ data in memcached, use with care.
       def cache_clear
         @store.flush_all
-      rescue MemCache::MemCacheError => e
+      rescue ::MemCache::MemCacheError => e
         Log.error(e)
         nil
       end
 
       def cache_delete(*keys)
         super{|key| @store.delete(key) }
-      rescue MemCache::MemCacheError => e
+      rescue ::MemCache::MemCacheError => e
         Log.error(e)
         nil
       end
@@ -57,7 +58,7 @@ module Ramaze
       def cache_fetch(key, default = nil)
         value = @store[key]
         value.nil? ? default : value
-      rescue MemCache::MemCacheError => e
+      rescue ::MemCache::MemCacheError => e
         Log.error(e)
         nil
       end
@@ -65,7 +66,8 @@ module Ramaze
       def cache_store(key, value, options = {})
         ttl = options[:ttl] || 0
         @store.set(key, value, ttl)
-      rescue MemCache::MemCacheError => e
+        value
+      rescue ::MemCache::MemCacheError => e
         Log.error(e)
         nil
       end
@@ -88,7 +90,7 @@ module Ramaze
       # For everything else that we don't care to document right now.
       def method_missing(*args, &block)
         @store.__send__(*args, &block)
-      rescue MemCache::MemCacheError => e
+      rescue ::MemCache::MemCacheError => e
         Log.error(e)
         nil
       end

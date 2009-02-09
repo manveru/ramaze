@@ -1,140 +1,49 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
+require 'memcache'
 
-caches = {:memory => 'Hash', :yaml => 'Ramaze::YAMLStoreCache'}
+describe Ramaze::Cache::MemCache do
+  Ramaze.options.cache.names = [:one, :two]
+  Ramaze.options.cache.default = Ramaze::Cache::MemCache
+  Ramaze.setup_dependencies
 
-begin
-  require 'memcache'
-  caches[:memcached] = 'Ramaze::MemcachedCache'
-rescue LoadError
-  puts "skipping memcached"
-end
+  cache = Ramaze::Cache.one
+  hello = 'Hello, World!'
 
-caches.each do |cache, name|
-  describe "#{name} setup" do
-    should 'be assignable to Global' do
-      Ramaze::Global.cache = cache
-      Ramaze::Global.cache.to_s.should == name
-    end
-
-    should 'do .new' do
-      @cache = Ramaze::Global.cache.new
-      @cache.class.name.should == name
-    end
+  should 'store without ttl' do
+    cache.store(:hello, hello).should == hello
   end
 
-  describe "#{name} modification" do
-    before do
-      Ramaze::Global.cache = cache
-      @cache = Ramaze::Global.cache.new
-    end
-
-    after do
-      @cache.clear
-    end
-
-    should 'be assignable with #[]=' do
-      @cache[:foo] = :bar
-      @cache[:foo].should == :bar
-    end
-
-    should 'be retrievable with #[]' do
-      @cache[:yoh] = :bar
-      @cache[:yoh].should == :bar
-    end
-
-    should 'delete keys' do
-      @cache[:bar] = :duh
-      @cache.delete(:bar)
-      @cache[:bar].should == nil
-    end
-
-    should 'show values for multiple keys' do
-      @cache[:baz] = :foo
-      @cache[:beh] = :feh
-      @cache.values_at(:baz, :beh).should == [:foo, :feh]
-    end
-
-    FileUtils.rm(@cache.file) if cache == :yaml
-  end
-end
-
-describe "Cache wrapper" do
-  before do
-    @cache = Ramaze::Cache.new(Hash)
+  should 'fetch' do
+    cache.fetch(:hello).should == hello
   end
 
-  after do
-    @cache.clear
+  should 'delete' do
+    cache.delete(:hello)
+    cache.fetch(:hello).should == nil
   end
 
-  should 'be assignable with #[]= and retrievable with #[]' do
-    @cache[:foo] = :bar
-    @cache[:foo].should == :bar
+  should 'delete two key/value pairs at once' do
+    cache.store(:hello, hello).should == hello
+    cache.store(:ramaze, 'ramaze').should == 'ramaze'
+    cache.delete(:hello, :ramaze)
+    cache.fetch(:hello).should == nil
+    cache.fetch(:innate).should == nil
   end
 
-  should 'return nil if key not found' do
-    @cache[:baz].should == nil
-  end
-
-  should 'be assignable with #store and retrievable with #fetch' do
-    @cache.store(:foo, :bar)
-    @cache.fetch(:foo).should == :bar
-  end
-
-  should 'return default value if key not found' do
-    @cache.fetch(:monkeys, :default).should == :default
-  end
-
-  should 'be assignable with #set and retrievable with #get' do
-    @cache.set(:ninjas, :totally_sweet)
-    @cache.get(:ninjas).should == :totally_sweet
-  end
-
-  should 'expire key after ttl' do
-    @cache[:cow].should == nil
-    @cache.store(:cow, :moo, :ttl => 1)
-    @cache[:cow].should == :moo
-    sleep(1.1)
-    @cache[:cow].should == nil
-  end
-
-  should 'accept an int as the ttl parameter for #store' do
-    @cache[:cow].should == nil
-    @cache.store(:cow, :moo, 1)
-    @cache[:cow].should == :moo
-  end
-
-  should 'delete keys' do
-    @cache[:abc] = :cba
-    @cache[:def] = :fed
-    @cache.delete(:abc, :def)
-    @cache[:abc].should == nil
-    @cache[:def].should == nil
-  end
-
-  should 'show values for multiple keys' do
-    @cache[:baz] = :foo
-    @cache[:beh] = :feh
-    @cache.values_at(:baz, :beh).should == [:foo, :feh]
+  should 'store with ttl' do
+    cache.store(:hello, @hello, :ttl => 0.2)
+    cache.fetch(:hello).should == @hello
+    sleep 0.3
+    cache.fetch(:hello).should == nil
   end
 
   should 'clear' do
-    @cache[:moo] = :cow
-    @cache.clear
-    @cache[:moo].should == nil
-  end
-
-  should 'not allow different cache namespaces to overlap' do
-    Ramaze::Cache.add :foo
-    Ramaze::Cache.add :bar
-
-    key = "foobar"
-    Ramaze::Cache.foo[key] = 'foo'
-    Ramaze::Cache.bar[key] = 'bar'
-
-    Ramaze::Cache.foo[key].should.not == Ramaze::Cache.bar[key]
+    cache.store(:hello, @hello)
+    cache.fetch(:hello).should == @hello
+    cache.clear
+    cache.fetch(:hello).should == nil
   end
 end
