@@ -5,7 +5,7 @@ module Ramaze
   module Helper
 
     # A simple way to do authentication without a model.
-    # Please have a look at the docs of Auth#check_auth.
+    # Please have a look at the docs of Auth#auth_login.
     #
     # If you want to do authentication with a model see Helper::User instead.
     module Auth
@@ -39,6 +39,11 @@ module Ramaze
 
       def logged_in?
         !!session[:logged_in]
+      end
+
+      def check_auth(user, pass)
+        Ramaze.deprecated('Helper::User#check_auth', 'Helper::User#auth_login')
+        auth_login(user, pass)
       end
 
       def auth_login(user, pass)
