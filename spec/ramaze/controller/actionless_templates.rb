@@ -6,6 +6,7 @@ require 'spec/helper'
 Ramaze.options.app.root = '/'
 Ramaze.options.app.view = __DIR__(:view)
 Ramaze.options.app.layout = __DIR__(:view)
+Ramaze.options.action.needs_method = true
 
 class MainController < Ramaze::Controller
   map '/'
@@ -30,6 +31,6 @@ describe "Testing Actionless Templates" do
   end
 
   it "should render layout(without method) for normal action" do
-    get('/other/index').body.should == '<p>Others Hello</p>'
+    get('/other').body.should == '<p>Others Hello</p>'
   end
 end
