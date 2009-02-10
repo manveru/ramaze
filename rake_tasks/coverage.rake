@@ -19,6 +19,6 @@ task :rcov => :clean do
   while spec = specs.shift
     puts '', "Gather coverage for #{spec} ..."
     html = specs.empty? ? 'html' : 'no-html'
-    sh(cmd % [html, spec])
+    sh(cmd % [html, spec]){|*a| }
   end
 end
