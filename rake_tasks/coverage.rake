@@ -4,7 +4,7 @@ task :rcov => :clean do
   specs -= Dir['spec/ramaze/cache/common.rb']
 
   # we ignore adapter as this has extensive specs in rack already.
-  ignore = %w[ gem rack bacon innate ]
+  ignore = %w[ gem rack bacon innate hpricot nagoro/lib/nagoro ]
 
   if RUBY_VERSION >= '1.8.7'
     ignore << 'begin_with' << 'end_with'
