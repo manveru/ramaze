@@ -1,5 +1,4 @@
 require 'nagoro'
-require 'ramaze/helper/partial'
 
 module Ramaze
   module View
@@ -38,7 +37,7 @@ module Nagoro
     #   <render src="/hello" tail="foo" />
     #
     class RenderPartial < Base
-      include Ramaze::Helper::Partial
+      include Innate::Helper::Partial
 
       def tag_start(tag, attrs)
         if tag == 'render' and src = attrs.delete('src')
