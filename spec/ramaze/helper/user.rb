@@ -28,6 +28,25 @@ class SpecUserHelper < Ramaze::Controller
   end
 end
 
+Arthur = {
+  :name => 'arthur',
+  :pass => '42',
+  :profile => 'Arthur Dent, fearful human in outer space!'
+}
+
+
+class SpecUserHelperCallback < SpecUserHelper
+  map '/callback'
+  helper :user
+  trait :user_callback => lambda{|hash|
+    Arthur if hash.values_at('name', 'password') == Arthur.values_at(:name, :pass)
+  }
+
+  def profile
+    user[:profile]
+  end
+end
+
 describe Ramaze::Helper::User do
   behaves_like :session
 
@@ -37,6 +56,15 @@ describe Ramaze::Helper::User do
       mock.get('/login?name=arthur&password=42')
       mock.get('/status').body.should == 'yes'
       mock.get('/profile').body.should == MockSequelUser.new.profile
+    end
+  end
+
+  should 'login via the callback' do
+    session do |mock|
+      mock.get('/callback/status').body.should == 'no'
+      mock.get('/callback/login?name=arthur&password=42')
+      mock.get('/callback/status').body.should == 'yes'
+      mock.get('/callback/profile').body.should == MockSequelUser.new.profile
     end
   end
 end
