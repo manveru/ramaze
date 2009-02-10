@@ -1,6 +1,7 @@
 require 'spec/helper'
 
-spec_require 'hpricot', 'sequel'
+require 'hpricot'
+require 'sequel'
 
 DB = Sequel.sqlite
 
@@ -28,7 +29,7 @@ class FormController < Ramaze::Controller
   end
 
   def new_with_options
-    form_for(User, :method => :POST, :action => Rs(:create)).to_s
+    form_for(User, :method => :post, :action => r(:create)).to_s
   end
 
   def edit(id)
@@ -36,83 +37,54 @@ class FormController < Ramaze::Controller
   end
 
   def edit_with_options(id)
-    form_for(User[id], :method => :POST, :action => Rs(:create)).to_s
+    form_for(User[id], :method => :post, :action => r(:create)).to_s
   end
 end
 
-describe 'Helper::Form' do
-  ramaze
+describe Ramaze::Helper::Form do
+  behaves_like :mock
 
-  describe 'raw model' do
-    behaves_like 'requester'
-
-    should 'handle class' do
-      form = hget('/new').at(:form)
-      inputs = (form/:input)
-      inputs.map{|i| i[:name] }.compact.sort.should == %w[level name online]
-      form.at(:textarea)[:name].should == 'description'
-    end
-
-    should 'handle options' do
-      hget('/new_with_options').at(:form).raw_attributes.
-        should == {"action" => "/create", "method" => "POST"}
-    end
+  def hget(uri)
+    got = get(uri)
+    got.status.should == 200
+    Hpricot(got.body)
   end
 
-  describe 'instances' do
-    behaves_like 'requester'
+  it 'provides forms for model class' do
+    form = hget('/new').at(:form)
+    (form/:input).size.should == 5
+    (form/:input).map{|i| i[:name] }.compact.sort.should == %w[level name online]
+    form.at(:textarea)[:name].should == 'description'
+  end
 
-    data = {
-      :name        => 'manveru',
-      :description => 'Ramaze dev',
-      :online      => true,
-      :level       => 2,
-      :birthday    => Time.now,
-      :created     => Time.now,
-    }
-    User.create data
+  it 'provides form for model class with options' do
+    form = hget('/new_with_options').at(:form)
+    form.raw_attributes.should == {'action' => '/create', 'method' => 'post'}
+  end
 
-    should 'handle class' do
-      form = hget('/edit/1').at(:form)
+  data = {
+    :name        => 'manveru',
+    :description => 'Ramaze dev',
+    :online      => true,
+    :level       => 2,
+    :birthday    => Time.now,
+    :created     => Time.now,
+  }
+  User.create(data)
 
-      form.at('input[@name=name]').raw_attributes.should ==
-        { "name" => "name", "type" => "text", "value" => "manveru"}
-      form.at('input[@name=online]').raw_attributes.should ==
-        {"name" => "online", "checked" => "checked", "type" => "checkbox", "value" => "true"}
-      form.at('input[@name=level]').raw_attributes.should ==
-        {"name" => "level", "type" => "text", "value" => "2"}
+  it 'provides form for instance of model' do
+    form = hget('/edit/1').at(:form)
+    form.at('input[@name=name]').raw_attributes.should ==
+      { 'name' => 'name', 'type' => 'text', 'value' => data[:name] }
+    form.at('input[@name=online]').raw_attributes.should ==
+      { "name" => "online", "type" => "checkbox", "checked" => "checked",
+        "value" => data[:online].to_s }
+    form.at('input[@name=level]').raw_attributes.should ==
+      { "name" => "level", "type" => "text", "value" => data[:level].to_s }
+  end
 
-      # TODO:
-      # find a way to XPATH to input[@name="birthday[day]"]
-      # the [] in the name seems to break things, works fine with ()
-
-      # check date
-
-      date = data[:birthday]
-      selects = (form/'select[@name]').select{|s| s[:name] =~ /birthday/ }
-
-      { :day => date.day, :month => date.month, :year => date.year,
-      }.each do |key, value|
-        select = selects.find{|s| s[:name] == "birthday[#{key}]" }
-        select.at('[@selected]')[:value].to_i.should == value
-      end
-
-      # check time
-
-      time = data[:created]
-      selects = (form/'select[@name]').select{|s| s[:name] =~ /created/ }
-
-      { :day => time.day, :month => time.month, :year => time.year,
-        :hour => time.hour, :min => time.min, :sec => time.sec,
-      }.each do |key, value|
-        select = selects.find{|s| s[:name] == "created[#{key}]" }
-        select.at('[@selected]')[:value].to_i.should == value
-      end
-    end
-
-    should 'handle options' do
-      hget('/edit_with_options/1').at(:form).raw_attributes.
-        should == {"action" => "/create", "method" => "POST"}
-    end
+  it 'provides form with options for instance of model' do
+    hget('/edit_with_options/1').at(:form).raw_attributes.should ==
+      {"action" => "/create", "method" => "post"}
   end
 end
