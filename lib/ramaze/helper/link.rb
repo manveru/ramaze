@@ -13,18 +13,25 @@ module Ramaze
         into.extend(self)
       end
 
+      # @return [String]
+      # @see Innate::Helper#anchor
       def A(*args)
         Ramaze.deprecated('Ramaze::Helper::Link#A', 'Ramaze::Helper::Link#a')
         a(*args)
       end
 
-      def R(*args)
+      # @return [String]
+      # @see Innate::Helper#route
+      def R(arg, *args)
         Ramaze.deprecated('Ramaze::Helper::Link#R', 'Ramaze::Helper::Link#r')
-        r(*args)
+        (arg < Controller ? arg.r(*args) : r(arg, *args)).to_s
       end
 
+      # @return [String]
+      # @see Innate::Helper#route
       def Rs(*args)
         Ramaze.deprecated('Ramaze::Helper::Link#Rs', 'Ramaze::Helper::Link#r')
+        r(*args).to_s
       end
 
       # Give it a path with character to split at and one to join the crumbs with.
@@ -51,13 +58,14 @@ module Ramaze
       #   <a href="/mycontroller/action/path">path</a>/
       #   <a href="/mycontroller/action/path/to">to</a>/
       #   <a href="/mycontroller/action/path/to/somewhere">somewhere</a>
-
+      #
+      # @return [String]
       def breadcrumbs(path, split = '/', join = '/', href_prefix = '')
         atoms = path.split(split).reject{|a| a.empty?}
         crumbs = atoms.inject([]){|s,v| s << [s.last,v]}
         bread = crumbs.map do |a|
           href_path = href_prefix + a*'/'
-          A(a[-1], :href=>(href_path))
+          a(a[-1], href_path)
         end
         bread.join(join)
       end
