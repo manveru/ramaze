@@ -5,6 +5,7 @@ require 'innate/helper/link'
 
 module Ramaze
   module Helper
+    # NOTE: The A/R/Rs methods have been deprecated.
     module Link
       include Innate::Helper::Link
 

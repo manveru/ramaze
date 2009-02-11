@@ -37,6 +37,7 @@ module Ramaze
         call(r(:login)) unless logged_in?
       end
 
+      # @return [true false] whether user is logged in right now
       def logged_in?
         !!session[:logged_in]
       end
@@ -46,6 +47,7 @@ module Ramaze
         auth_login(user, pass)
       end
 
+      # @return
       def auth_login(user, pass)
         return unless user and pass
         return if user.empty? or pass.empty?
@@ -69,6 +71,7 @@ module Ramaze
         session.delete(:username)
       end
 
+      # @return [String] template for auth
       def auth_template
         <<-TEMPLATE.strip!
 <form method="post" action="#{r(:login)}">

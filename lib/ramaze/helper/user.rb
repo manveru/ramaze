@@ -3,23 +3,24 @@ module Ramaze
 
     # This helper provides a convenience wrapper for handling authentication
     # and persistence of users.
+    # It will wrap and cache the value returned by the callback or model during
+    # one request/response cycle.
+    # On every request it checks authentication again and retrieves the model.
     #
-    # Example:
+    # Incomplete example:
     #
     # class MainController < Ramaze::Controller
+    #   trait :user_callback => lambda{|auth| }
+    #
     #   def index
-    #     if logged_in?
-    #       "Hello #{user.name}"
-    #     else
-    #       A('login', :href => Rs(:login))
-    #     end
+    #     return "Hello #{user.name}" if logged_in?
+    #     a('login', :login)
     #   end
     #
     #   def login
     #     user_login if reuqest.post?
     #   end
     # end
-
     module User
       # return existing or instantiate User::Wrapper
       def user
@@ -30,16 +31,27 @@ module Ramaze
 
       # shortcut for user.user_login but default argument are request.params
 
+      # shortcut for user._login but default argument are request.params
+      #
+      # @param [Hash] creds the credentials that will be passed to callback or model
+      # @return [nil Hash] the given creds are returned on successful login
+      # @see Ramaze::Helper::User::Wrapper#_login
+      # @author manveru
       def user_login(creds = request.params)
         user._login(creds)
       end
 
-      # shortcut for user.user_logout
-
+      # shortcut for user._logout
+      # @return [nil]
+      # @see Ramaze::Helper::User::Wrapper#_logout
+      # @author manveru
       def user_logout
         user._logout
       end
 
+      # @return [true false] whether the user is logged in already.
+      # @see Ramaze::Helper::User::Wrapper#_logged_in?
+      # @author manveru
       def logged_in?
         user._logged_in?
       end
@@ -50,7 +62,8 @@ module Ramaze
       #
       # In order to not interfere with the wrapped instance/model we start our
       # methods with an underscore.
-      # Suggestions on improvements as usual welcome.
+      #
+      # Patches and suggestions are highly appreciated.
       class Wrapper < BlankSlate
         attr_accessor :_model, :_callback, :_user
 
@@ -60,6 +73,11 @@ module Ramaze
           _login
         end
 
+        # @param [Hash] creds this hash will be stored in the session on successful login
+        # @return [Ramaze::Helper::User::Wrapper] wrapped return value from
+        #                                         model or callback
+        # @see Ramaze::Helper::User#user_login
+        # @autor manveru
         def _login(creds = _persistence)
           if @_user = _would_login?(creds)
             self._persistence = creds
@@ -82,11 +100,16 @@ module Ramaze
           end
         end
 
+        # @see Ramaze::Helper::User#user_logout
+        # @autor manveru
         def _logout
           _persistence.clear
           Current.request.env['ramaze.helper.user'] = nil
         end
 
+        # @return [true false] whether the current user is logged in.
+        # @see Ramaze::Helper::User#logged_in?
+        # @autor manveru
         def _logged_in?
           !!_user
         end
@@ -100,6 +123,7 @@ module Ramaze
         end
 
         # Refer everything not known
+        # THINK: This might be quite confusing... should we raise instead?
         def method_missing(meth, *args, &block)
           return unless _user
           _user.send(meth, *args, &block)
