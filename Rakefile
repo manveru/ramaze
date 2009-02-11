@@ -27,6 +27,7 @@ load 'rake_tasks/release.rake'
 load 'rake_tasks/git.rake'
 load 'rake_tasks/gem.rake'
 load 'rake_tasks/metric.rake'
+load 'rake_tasks/doc.rake'
 
 task :default => ['spec']
 task :test => ['spec']
@@ -87,20 +88,6 @@ task :rcov_summary => :rcov_dir do
   raise LoadError, "Please `gem install rcov` first" if $?.exitstatus == 127
   raise "Run `rake coverage` to generate coverage data first" unless File.exists? 'coverage.data'
   sh "rcov --aggregate coverage.data -o doc/output/tools/rcov/"
-end
-
-desc "generate rdoc"
-task :rdoc => [:clean] do
-  sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
-end
-
-desc "generate improved allison-rdoc"
-task :allison => :clean do
-  opts = RDOC_OPTS
-  path = `allison --path`.strip
-  raise LoadError, "Please `gem install allison` first" if $?.exitstatus == 127
-  opts << %W[--template '#{path}']
-  sh "rdoc #{(RDOC_OPTS + RDOC_FILES).join(' ')}"
 end
 
 desc "create bzip2 and tarball"
