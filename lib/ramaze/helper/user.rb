@@ -22,14 +22,21 @@ module Ramaze
     #   end
     # end
     module User
-      # return existing or instantiate User::Wrapper
-      def user
-        model = ancestral_trait[:user_model] ||= ::User
-        callback = ancestral_trait[:user_callback] ||= nil
-        request.env['ramaze.helper.user'] ||= Wrapper.new(model, callback)
-      end
+      RAMAZE_HELPER_USER = 'ramaze.helper.user'.freeze
 
-      # shortcut for user.user_login but default argument are request.params
+      # Use this method in your application, but do not use it in conditionals
+      # as it will never be nil or false.
+      #
+      # @return [Ramaze::Helper::User::Wrapper] wrapped return value from model or callback
+      def user
+        env = request.env
+        found = env[RAMAZE_HELPER_USER]
+        return found if found
+
+        model, callback = ancestral_trait.values_at(:user_model, :user_callback)
+        model ||= ::User
+        env[RAMAZE_HELPER_USER] = Wrapper.new(model, callback)
+      end
 
       # shortcut for user._login but default argument are request.params
       #
