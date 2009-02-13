@@ -1,0 +1,8 @@
+<html>
+  <head>
+    <title am:src='title' />
+  </head>
+  <body>
+    <h1 am:src='header' />
+  </body>
+</html>

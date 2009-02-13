@@ -18,12 +18,11 @@ module Ramaze
     # * XSLT    - this one is just crazy, someone up for the task?
 
     auto_register :Amrita2,    :amrita, :amr, :a2html
-    auto_register :Builder,    :builder
     auto_register :Erubis,     :erubis, :rhtml
     auto_register :Haml,       :haml
     auto_register :Liquid,     :liquid
     auto_register :Maruku,     :mkd, :md
-    auto_register :Nagoro,     :xhtml
+    auto_register :Nagoro,     :xhtml, :nag
     auto_register :RedCloth,   :redcloth
     auto_register :Sass,       :sass
     auto_register :Tenjin,     :rbhtml

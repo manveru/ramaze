@@ -3,19 +3,21 @@
 
 require 'spec/helper'
 
+Ramaze.options.app.root = '/'
+Ramaze.options.app.view = __DIR__(:view)
+
 class MainController < Ramaze::Controller
-  engine :None
+  map '/'
+  engine :Nagoro
 
-  define_method('file.ext') { 'file.ext' }
-  define_method('css/file.css') { 'file.css' }
-  define_method(:path/:to/:js/'file.js') { 'file.js' }
-
-  define_method(:other/:greet/:other) { @greet = 'hi' }
+  define_method('file.ext'){ 'file.ext' }
+  define_method('css__file.css'){ 'file.css' }
+  define_method('path__to__js__file.js'){ 'file.js' }
+  define_method('other__greet__other'){ @greet = 'hi' }
 end
 
 describe 'Controller resolving' do
-  behaves_like 'http'
-  ramaze :view_root => __DIR__(:view)
+  behaves_like :mock
 
   it 'should work with .' do
     get('/file.ext').body.should == 'file.ext'

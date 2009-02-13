@@ -121,10 +121,9 @@ module Ramaze
     end
 
     # Maybe port to ruby < 1.8.7 ?
-    def obfuscate_email(string)
-      string = string.to_s
-      text = string.each_byte.map{|c| "&#%03d" % c}.join
-      %(<a href="mailto:#{string}">#{text}</a>)
+    def obfuscate_email(email, text = nil)
+      obfuscated = email.to_s.each_byte.map{|c| "&#%03d" % c}.join
+      %(<a href="mailto:#{obfuscated}">#{text || obfuscated}</a>)
     end
 
     # Returns Hash with tags as keys and their weight as value.

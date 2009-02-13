@@ -1,13 +1,9 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'rubygems'
 require 'ramaze'
 
-# you can access it now with http://localhost:7000/
-# This should output
-# Hello, World!
-# in your browser
+# This little app helps me track down memory-leaks in Ramaze.
 
 class MainController < Ramaze::Controller
   def index
@@ -15,18 +11,27 @@ class MainController < Ramaze::Controller
   end
 end
 
-def check
-  os = []
-  ObjectSpace.each_object{|o| os << o }
-  p os.inject(Hash.new(0)){|s,v| s[v.class] += 1; s}.sort_by{|k,v| v}
+def memcheck(top = 10, klass = Object)
+  puts
+  os = Hash.new(0)
+  ObjectSpace.each_object(klass){|o| yield(os, o) }
+  pp sorted = os.sort_by{|k,v| -v }.first(top)
+  puts
+
+  return sorted
+rescue Exception => ex
+  puts ex
+ensure
+  GC.start
 end
 
 Thread.new do
   loop do
-    check
+    # memcheck(10, String){|os, o| os[o] += 1 }
+    memcheck{|os, o| os[o.class] += 1 }
     sleep 5
   end
 end
 
 Ramaze::Log.loggers.clear
-Ramaze.start :adapter => :mongrel, :sourcereload => false
+Ramaze.start :adapter => :webrick, :mode => :live

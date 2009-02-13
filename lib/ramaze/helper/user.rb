@@ -84,7 +84,7 @@ module Ramaze
 
         def _logout
           _persistence.clear
-          request.env['ramaze.helper.user'] = nil
+          Current.request.env['ramaze.helper.user'] = nil
         end
 
         def _logged_in?

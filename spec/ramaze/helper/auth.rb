@@ -3,7 +3,9 @@
 
 require 'spec/helper'
 
-class TCAuthHelperController < Ramaze::Controller
+$password = Digest::SHA1.hexdigest('pass')
+
+class SpecHelperAuth < Ramaze::Controller
   map '/'
   helper :auth
 
@@ -21,46 +23,90 @@ class TCAuthHelperController < Ramaze::Controller
   before(:secured){ login_required }
 end
 
-class TCAuthHashHelperController < TCAuthHelperController
+class SpecHelperAuthHash < SpecHelperAuth
   map '/hash'
   trait :auth_table => {
-      'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'
+      'manveru' => $password
     }
 end
 
-class TCAuthMethodHelperController < TCAuthHelperController
+class SpecHelperAuthMethod < SpecHelperAuth
   map '/method'
   trait :auth_table => :auth_table
 
   def auth_table
-    { 'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8' }
+    { 'manveru' => $password }
   end
 end
 
-class TCAuthLambdaHelperController < TCAuthHelperController
+class SpecHelperAuthLambda < SpecHelperAuth
   map '/lambda'
   trait :auth_table => lambda{
-      { 'manveru' => '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8' }
+      { 'manveru' => $password }
     }
 end
 
-describe "StackHelper" do
-  behaves_like 'browser'
+describe Ramaze::Helper::Auth do
+  behaves_like :session
 
-  ramaze :adapter => :webrick
-  [ TCAuthHashHelperController,
-    TCAuthMethodHelperController,
-    TCAuthLambdaHelperController
-  ].each do |controller|
-
-    it controller.to_s do
-      Browser.new(Ramaze::Global.mapping.invert[controller]) do
-        get('/secured').should == ''
-        post('/login', 'username' => 'manveru', 'password' => 'password')
-        get('/secured').should == 'Secret content'
-        get('/logout')
-        get('/secured').should == ''
-      end
+  def multipart_env(hash)
+    boundary = 'MuLtIpArT56789'
+    data = []
+    hash.each do |key, value|
+      data << "--#{boundary}"
+      data << %(Content-Disposition: form-data; name="#{key}")
+      data << ''
+      data << value
     end
+    data << "--#{boundary}--"
+    body = data.join("\r\n")
+
+    type = "multipart/form-data; boundary=#{boundary}"
+    length = body.respond_to?(:bytesize) ? body.bytesize : body.size
+
+    { 'CONTENT_TYPE' => type,
+      'CONTENT_LENGTH' => length.to_s,
+      :input => StringIO.new(body) }
+  end
+
+  def procedure(prefix)
+    session do |mock|
+      got = mock.get("#{prefix}/secured")
+      got.status.should == 302
+      got['Location'].should =~ (/#{prefix}\/login$/)
+
+      got = mock.get("#{prefix}/login")
+      got.status.should == 200
+      got.body.should =~ (/<form/)
+
+      env = multipart_env('username' => 'manveru', 'password' => 'pass')
+      got = mock.post("#{prefix}/login", env)
+      got.status.should == 302
+      got['Location'].should =~ (/#{prefix}\/secured/)
+
+      got = mock.get("#{prefix}/secured")
+      got.status.should == 200
+      got.body.should == 'Secret content'
+
+      got = mock.get("#{prefix}/logout")
+      got.status.should == 302
+      got['Location'].should =~ (/\/$/)
+
+      got = mock.get("#{prefix}/secured")
+      got.status.should == 302
+      got['Location'].should =~ (/#{prefix}\/login$/)
+    end
+  end
+
+  it 'authenticates by looking into a hash' do
+    procedure('/hash')
+  end
+
+  it 'authenticates by looking into a lambda' do
+    procedure('/lambda')
+  end
+
+  it 'authenticates by looking into a method' do
+    procedure('/method')
   end
 end

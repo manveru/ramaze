@@ -3,13 +3,19 @@
 
 require 'spec/helper'
 
+Ramaze.options.app.root = '/'
+Ramaze.options.app.view = __DIR__(:view)
+Ramaze.options.app.layout = __DIR__(:view)
+Ramaze.options.action.needs_method = true
+
 class MainController < Ramaze::Controller
-  template :non_existant_method, :list
+  map '/'
+  alias_view :non_existant_method, :list
 end
 
 class TCActionOtherLayout < Ramaze::Controller
   map '/other'
-  layout '/other_wrapper'
+  layout 'other_wrapper'
 
   def index
     "Others Hello"
@@ -17,9 +23,7 @@ class TCActionOtherLayout < Ramaze::Controller
 end
 
 describe "Testing Actionless Templates" do
-  behaves_like 'http'
-  ramaze :actionless_templates => false,
-         :view_root => __DIR__(:view), :error_page => true
+  behaves_like :mock
 
   it "should not find template file for non existant method" do
     get('/non_existant_method').status.should == 404
@@ -27,6 +31,6 @@ describe "Testing Actionless Templates" do
   end
 
   it "should render layout(without method) for normal action" do
-    get('/other/index').body.should == '<p>Others Hello</p>'
+    get('/other').body.should == '<p>Others Hello</p>'
   end
 end

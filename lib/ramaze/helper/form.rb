@@ -4,7 +4,7 @@ module Ramaze
       # Pass it an object for your ORM and options for the <form> tag
       # Usage:
       #   form_for(User, :action => '/create')
-      #   form_for(Tag, :action => '/find', :method => 'GET')
+      #   form_for(Tag, :action => '/find', :method => 'post')
       def form_for(object, options = {})
         Ramaze::Form.pick(object, options)
       end

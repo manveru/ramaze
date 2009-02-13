@@ -1,74 +1,74 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
 
+Ramaze.options.app.root = '/'
+Ramaze.options.app.view = __DIR__(:view)
+
 class MainController < Ramaze::Controller
-  view_root __DIR__(:view)
+  map '/'
+  view_root(__DIR__(:view))
+  engine :Nagoro
 
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"
   end
 
   def list
-    @obj = Ramaze::Action.current.method
+    @obj = Ramaze::Current.action.method
   end
 
   alias_method :index, :list
-  template :index, 'list'
-  template :non_existant_method, :list
-
+  alias_view :index, :list
+  alias_view :non_existant_method, :list
 end
 
 class OtherController < MainController
+  map '/other'
 
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)
   end
-  template :greet__mom, MainController, :greet
+  alias_view :greet__mom, :greet, MainController
 
   def greet__other
     @greet = "Other"
   end
-  template :greet__other, :blah
+  alias_view :greet__other, :blah
 
   def greet__another
     @greet = "Another"
   end
-  template :greet__another, :greet__other
+  alias_view :greet__another, :greet__other
 
   def greet__last
     @greet = 'Last'
   end
-  template :greet__last, 'greet/other'
-
+  alias_view :greet__last, 'greet__other'
 end
 
 class AnotherController < MainController
-  Root = __DIR__/:view
-  Absolute = lambda{|path| File.join Root, path}
-  Relative = lambda{|path| path}
+  map '/another'
 
   def greet_absolute(type, message = "Message")
     @greet = "#{type} : #{message}"
   end
-  template :greet_absolute, :file => Absolute["greet.xhtml"]
+  alias_view :greet_absolute, 'greet'
 
   def greet_relative(type, message = "Message")
     @greet = "#{type} : #{message}"
   end
-  template :greet_relative, :file => "greet.xhtml"
+  alias_view :greet_relative, 'greet'
 
   def greet_controller_action(type, message = "Message")
     @greet = "#{type} : #{message}"
   end
-  template :greet_controller_action, :controller => MainController, :action => "greet"
-
+  alias_view :greet_controller_action, :greet, MainController
 end
 
 describe "Testing Template overriding" do
-  behaves_like 'http'
-  ramaze :view_root => __DIR__/:view
+  behaves_like :mock
 
   it "simple request to greet" do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'
