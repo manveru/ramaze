@@ -14,7 +14,7 @@ I'm writing this while doing the steps to assure it will work for you.
 
 The tutorial assumes that you have Ramaze installed already. The easiest way to
 do that is `gem install ramaze`, for other ways of installation please see the
-documentation at http://ramaze.rubyforge.org
+documentation at http://ramaze.net .
 
 Should you encounter any problems while doing this tutorial, this might either
 be because Ramaze changed (which happens very often while it is still young)
@@ -368,7 +368,7 @@ will translate into:
     open('Wash dishes')
 {:lang=ruby}
 
-Which in turn will call 
+Which in turn will call
 
     task_status('Wash dishes', false)
 {:lang=ruby}

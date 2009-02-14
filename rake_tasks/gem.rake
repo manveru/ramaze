@@ -7,7 +7,7 @@ def generate_gemspec(version)
 
     s.author = "Michael 'manveru' Fellinger"
     s.email = "m.fellinger@gmail.com"
-    s.homepage = "http://ramaze.rubyforge.org"
+    s.homepage = "http://ramaze.net"
     s.rubyforge_project = "ramaze"
 
     s.bindir = "bin"

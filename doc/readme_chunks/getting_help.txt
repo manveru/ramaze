@@ -2,4 +2,4 @@ For help you can:
 
 - Visit us in the channel #ramaze on irc.freenode.net
 
-- Join the Mailinglist at http://ramaze.rubyforge.org
+- Join the Mailinglist at http://groups.google.com/group/ramaze
