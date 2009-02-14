@@ -36,11 +36,25 @@ RDOC_FILES = %W[
 POST_INSTALL_MESSAGE = %{
 #{'=' * 60}
 
-Thank you for installing Ramaze!
-You can now do following:
 
-* Create a new project using the `ramaze' command:
+Thank you for installing Ramaze!
+
+At this point, you can learn how to use Ramaze at
+the main website, http://ramaze.net .
+
+Alternatively, you can work off a skeletal prototype project
+using the 'ramaze' command:
+
     ramaze --create yourproject
+
+Feel free to ask questions in our IRC channel:
+irc.freenode.net #ramaze
+http://mibbit.com/?server=irc.freenode.net&channel=%23ramaze
+
+Enjoy!  :)
+
+-- The Ramaze team
+
 
 #{'=' * 60}
 }.strip
