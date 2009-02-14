@@ -2,5 +2,5 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
-  VERSION = "2009.01"
+  VERSION = "2009.02"
 end
