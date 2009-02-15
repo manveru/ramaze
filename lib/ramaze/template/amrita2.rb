@@ -30,9 +30,13 @@ module Ramaze
 
         def transform(action)
           template = wrap_compile(action)
+
           data = action.instance.instance_variable_get("@data") || {}
-          action.instance.extend ::Amrita2::Runtime if data.kind_of? Binding
-          template.render_with(data)
+          binding = action.instance.instance_variable_get("@binding")
+
+          action.instance.extend(::Amrita2::Runtime)
+
+          template.render_with(data, binding)
         end
 
         # Compile a template, return instance of Amrita2::Template
