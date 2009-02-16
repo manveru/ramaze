@@ -226,3 +226,19 @@ task README do
     end
   end
 end
+
+
+task :publish => [:ydoc]
+
+begin
+  require 'grancher/task'
+
+  Grancher::Task.new do |g|
+    g.branch = 'gh-pages'
+#     g.push_to = 'origin'
+    g.message = 'Updated website'
+    g.directory 'ydoc', '.'
+  end
+rescue LoadError
+  # oh well :)
+end
