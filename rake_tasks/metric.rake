@@ -8,7 +8,7 @@ namespace :metric do
     print 'churning '
 
     Dir['lib/**/*.rb'].each do |rb|
-      changes = `git-log --pretty=oneline '#{rb}'`.count("\n")
+      changes = `git log --pretty=oneline '#{rb}'`.count("\n")
       print '.'
       # out[changes, rb]
       churn[rb] = changes
