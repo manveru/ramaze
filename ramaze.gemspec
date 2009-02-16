@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency('rack', '>= 0.3.0')
 
   s.files = [
-    "README.markdown",
+    "README.md",
     "Rakefile",
     "benchmark/results.txt",
     "benchmark/run.rb",
