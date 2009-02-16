@@ -227,6 +227,10 @@ task README do
   end
 end
 
+desc 'Generate YARD documentation'
+task :ydoc do
+  sh('yardoc -o ydoc -r README.md')
+end
 
 task :publish => [:ydoc]
 
