@@ -255,7 +255,7 @@ private
 
   def target_uri(page)
     params = @request.params.merge(@key => page)
-    Rs(Action.current.name, params)
+    r(Current.action.name, params)
   end
 
   # Generate link for the first page.
