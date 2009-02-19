@@ -21,9 +21,8 @@ module Ramaze
     def self.engine(*symbols)
       symbols.each do |symbol|
         regex = /#{symbol}/i
-        Innate::View::ENGINE.each do |ext, constant|
-          provide(:html => ext) if constant =~ regex
-        end
+        exts = Innate::View::ENGINE.map{|ext, const| ext if const=~ regex }
+        provide(:html => exts.compact)
       end
     end
 
