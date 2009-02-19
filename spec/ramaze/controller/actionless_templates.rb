@@ -3,9 +3,8 @@
 
 require 'spec/helper'
 
-Ramaze.options.app.root = '/'
-Ramaze.options.app.view = __DIR__(:view)
-Ramaze.options.app.layout = __DIR__(:view)
+Ramaze.options.app.root = __DIR__
+Ramaze.options.app.layout = 'view'
 Ramaze.options.action.needs_method = true
 
 class MainController < Ramaze::Controller
