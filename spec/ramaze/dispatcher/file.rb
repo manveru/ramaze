@@ -1,60 +1,71 @@
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
 require 'spec/helper'
 
-describe 'Dispatcher::File' do
-  behaves_like 'http'
-  @public_root = 'spec/ramaze/dispatcher/public'
-  ramaze :public_root => @public_root
+# This spec more or less tries to ensure that we integrate with rack and
+# rack-contrib in regards to static file serving.
 
-  it 'should serve from Global.public_root' do
-    css = File.read(@public_root/'test_download.css')
-    re_css = get('/test_download.css')
-    re_css.body.should == css
-    re_css.status.should == 200
+module Ramaze
+  # minimal middleware, no exception handling
+  middleware!(:innate){|m|
+    m.use(Rack::ETag, Rack::ConditionalGet)
+    m.innate
+  }
+end
+
+describe 'Serving static files' do
+  behaves_like :mock
+
+  Ramaze.options.app.root = __DIR__
+  Ramaze.options.app.public = '/public'
+  Ramaze.map('/', lambda{|env| [200, {}, 'nothing']})
+
+  it 'serves from public root' do
+    css = File.read(__DIR__('public/test_download.css'))
+    got = get('/test_download.css')
+    got.body.should == css
+    got.status.should == 200
   end
 
-  it 'should give priority to Global.public_root' do
-    file = (@public_root/'favicon.ico')
-    if RUBY_VERSION >= '1.9.0'
-      original = File.open(file, 'r:ASCII'){|f| f.read}
-    else
-      original = File.read(file)
-    end
-    get('/favicon.ico').body.should == original
+  it 'serves files with spaces' do
+    got = get('/file%20name.txt')
+    got.status.should == 200
+    got.body.should == 'hi'
   end
 
-  it 'should work on files with spaces' do
-    res = get('/file%20name.txt')
-    res.status.should == 200
-    res.body.should == 'hi'
+  it 'sends ETag for string bodies' do
+    got = get('/')
+    got['ETag'].size.should == 34
   end
 
-  it 'should send ETag' do
-    res = get '/test_download.css'
-    res.headers['ETag'].should.not.be == nil
-    res.headers['ETag'].length.should == 34  # "32 hash"
+  it 'sends Last-Modified for file bodies' do
+    got = get('/test_download.css')
+
+    mtime = File.mtime(__DIR__('public/test_download.css'))
+
+    got['Last-Modified'].should == mtime.httpdate
   end
 
-  it 'should send Last-Modified' do
-    res = get '/test_download.css'
-    res.headers['Last-Modified'].should.not.be == nil
-    res.headers['Last-Modified'].should == File.mtime(@public_root/'test_download.css').httpdate
+  it 'respects ETag with HTTP_IF_NONE_MATCH' do
+    got = get('/')
+
+    etag = got['ETag']
+    etag.should.not.be.nil
+
+    got = get('/', 'HTTP_IF_NONE_MATCH' => etag)
+    got.status.should == 304
+    got.body.should == ''
   end
 
-  it 'should respect ETag with IF_NONE_MATCHES' do
-    res = get '/test_download.css'
-    etag = res.headers['ETag']
-    etag.should.not.be == nil
-    res = get '/test_download.css', :if_none_match=>etag
-    res.status.should == 304
-    res.body.should == ''
-  end
+  it 'respects Last-Modified with HTTP_IF_MODIFIED_SINCE' do
+    got = get('/test_download.css')
 
-  it 'should respect If-Modified' do
-    res = get '/test_download.css'
-    mtime = res.headers['Last-Modified']
-    mtime.should.not.be == nil
-    res = get '/test_download.css', :if_modified_since=>mtime
-    res.status.should == 304
-    res.body.should == ''
+    mtime = got['Last-Modified']
+    mtime.should.not.be.nil
+
+    got = get('/test_download.css', 'HTTP_IF_MODIFIED_SINCE' => mtime)
+    got.status.should == 304
+    got.body.should == ''
   end
 end

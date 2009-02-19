@@ -18,6 +18,7 @@ module Ramaze
 
   # dependencies
   require 'innate'
+  require 'rack/contrib'
 
   # Ramaze core
   require 'ramaze/version'
@@ -46,4 +47,17 @@ module Ramaze
 
   @options = Innate.options
   class << self; attr_accessor :options; end
+
+  MIDDLEWARE[:dev] = lambda{|m|
+    m.use(Rack::Lint, Rack::CommonLogger, Rack::ShowExceptions,
+          Rack::ShowStatus, Rack::Head, Rack::ETag, Rack::ConditionalGet,
+          Rack::Reloader)
+    m.innate
+  }
+
+  MIDDLEWARE[:live] = lambda{|m|
+    m.use(Rack::CommonLogger, Rack::ShowStatus, Rack::Head, Rack::ETag,
+          Rack::ConditionalGet)
+    m.innate
+  }
 end
