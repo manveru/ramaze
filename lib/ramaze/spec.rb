@@ -8,6 +8,7 @@ def spec_requires(*libs)
     libs.each{|lib| require(lib) }
   end
 end
+alias spec_require spec_requires
 
 def spec_precondition(name)
   yield
