@@ -3,13 +3,10 @@
 
 require 'spec/helper'
 
-Ramaze.options.app.root = '/'
-Ramaze.options.app.view = __DIR__(:view)
+Ramaze.options.app.root = __DIR__
 
-class MainController < Ramaze::Controller
+class SpecViewAlias < Ramaze::Controller
   map '/'
-  view_root(__DIR__(:view))
-  engine :Nagoro
 
   def greet(type, message = "Message")
     @greet = "#{type} : #{message}"
@@ -24,13 +21,13 @@ class MainController < Ramaze::Controller
   alias_view :non_existant_method, :list
 end
 
-class OtherController < MainController
+class SpecViewAlias2 < SpecViewAlias
   map '/other'
 
   def greet__mom(message = "Moms are cool!")
     greet('Mom', message)
   end
-  alias_view :greet__mom, :greet, MainController
+  alias_view :greet__mom, :greet, SpecViewAlias
 
   def greet__other
     @greet = "Other"
@@ -48,66 +45,35 @@ class OtherController < MainController
   alias_view :greet__last, 'greet__other'
 end
 
-class AnotherController < MainController
-  map '/another'
-
-  def greet_absolute(type, message = "Message")
-    @greet = "#{type} : #{message}"
-  end
-  alias_view :greet_absolute, 'greet'
-
-  def greet_relative(type, message = "Message")
-    @greet = "#{type} : #{message}"
-  end
-  alias_view :greet_relative, 'greet'
-
-  def greet_controller_action(type, message = "Message")
-    @greet = "#{type} : #{message}"
-  end
-  alias_view :greet_controller_action, :greet, MainController
-end
-
-describe "Testing Template overriding" do
+describe "Template aliasing" do
   behaves_like :mock
 
-  it "simple request to greet" do
+  it 'serves normal template' do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'
   end
 
-  it "referencing template from MainController" do
+  it 'references template from another controller' do
     get('/other/greet/mom').body.should == '<html>Mom : Moms are cool!</html>'
   end
 
-  it "should treat template overrides as possible alternatives (only use if found)" do
+  it 'only uses aliased template if one can be found' do
     get('/other/greet/other').body.should == '<html>Other: Other</html>'
   end
 
-  it "should accept template overrides given as symbols" do
+  it 'accepts aliases given as symbols' do
     get('/other/greet/another').body.should == '<html>Other: Another</html>'
   end
 
-  it "should accept template overrides given as strings" do
+  it 'accepts aliases given as strings' do
     get('/other/greet/last').body.should == '<html>Other: Last</html>'
   end
 
-  it "should set template for aliased :index action" do
+  it 'aliases template for index action' do
     get('/list').body.should == '<html>list</html>'
     get('/index').body.should == '<html>index</html>'
   end
 
-  it "should use template overrides for non-existant actions" do
+  it 'uses aliases even for non-existant actions' do
     get('/non_existant_method').body.should == '<html></html>'
-  end
-
-  it "should allow template overrides to be specified by absolute path" do
-    get('/another/greet_absolute/asdf').body.should == '<html>asdf : Message</html>'
-  end
-
-  it "should allow template overrides to be specified by relative path" do
-    get('/another/greet_relative/asdf').body.should == '<html>asdf : Message</html>'
-  end
-
-  it "should allow template overrides to be specified by named controller and action" do
-    get('/another/greet_controller_action/asdf').body.should == '<html>asdf : Message</html>'
   end
 end
