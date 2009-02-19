@@ -6,16 +6,18 @@ require 'rake'
 desc 'run specs'
 task 'spec' do
   require 'open3'
+  require 'scanf'
 
   specs = Dir['spec/{ramaze,snippets}/**/*.rb']
 
+  some_failed = false
   total = specs.size
-  len = specs.sort.last.size
-  left_format = "%4d/%d: %-#{len + 12}s"
-
-  red, green = "\e[31m%s\e[0m", "\e[32m%s\e[0m"
-
+  len = specs.map{|s| s.size }.sort.last
   tt = ta = tf = te = 0
+
+  left_format = "%4d/%d: %-#{len + 11}s"
+  red, green = "\e[31m%s\e[0m", "\e[32m%s\e[0m"
+  spec_format = "%d specifications (%d requirements), %d failures, %d errors"
 
   specs.each_with_index do |spec, idx|
     print(left_format % [idx + 1, total, spec])
@@ -24,19 +26,24 @@ task 'spec' do
       out = sout.read
       err = serr.read
 
-      md = out.match(/(\d+) tests, (\d+) assertions, (\d+) failures, (\d+) errors/)
-      tests, assertions, failures, errors = all = md.captures.map{|c| c.to_i }
-      tt += tests; ta += assertions; tf += failures; te += errors
+      out.each_line do |line|
+        tests, assertions, failures, errors = all = line.scanf(spec_format)
+        next unless all.any?
+        tt += tests; ta += assertions; tf += failures; te += errors
 
-      if tests == 0 || failures + errors > 0
-        puts((red % "%6d tests, %d assertions, %d failures, %d errors") % all)
-        puts out
-        puts err
-      else
-        puts((green % "%6d passed") % tests)
+        if tests == 0 || failures + errors > 0
+          puts((red % spec_format) % all)
+          puts out
+          puts err
+        else
+          puts((green % "%6d passed") % tests)
+        end
+
+        break
       end
     end
   end
 
-  puts "#{tt} tests, #{ta} assertions, #{tf} failures, #{te} errors"
+  puts(spec_format % [tt, ta, tf, te])
+  exit 1 if some_failed
 end
