@@ -23,7 +23,9 @@ def generate_gemspec(version)
     s.has_rdoc = true
     s.post_install_message = POST_INSTALL_MESSAGE
 
-    s.add_dependency('rack', '>=0.3.0')
+    s.add_dependency('rack', '>= 0.9.1')
+    s.add_dependency('innate', '>= 2009.02')
+    s.add_dependency('rack-contrib', '>= 0.9.0')
   }
 end
 
