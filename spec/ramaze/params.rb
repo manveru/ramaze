@@ -64,11 +64,10 @@ class TCParamsController3 < Ramaze::Controller
 end
 
 describe "Simple Parameters" do
-  behaves_like 'http'
-  ramaze
+  behaves_like :mock
 
   def handle(*url)
-    Ramaze::Controller.handle(*url)
+    Ramaze::Mock.get(*url).body
   end
 
   it "Should respond to no parameters given" do
@@ -80,8 +79,7 @@ describe "Simple Parameters" do
   end
 
   it "call /bar though index doesn't take params" do
-    lambda{ handle('/bar') }.
-      should.raise(Ramaze::Error::NoAction)
+    handle('/bar').should == 'No action found at: "/bar"'
   end
 
   it "action that takes a single param" do
@@ -93,8 +91,7 @@ describe "Simple Parameters" do
   end
 
   it "action that takes two params but we give only one" do
-    lambda{ handle('/double_param/foo') }.
-      should.raise(Ramaze::Error::NoAction)
+    handle('/double_param/foo').should == 'No action found at: "/double_param/foo"'
   end
 
   it "action that takes all params" do
@@ -144,14 +141,14 @@ describe "Simple Parameters" do
   end
 
   it 'params should have no content without params' do
-    get('/ma').body.should == '""'
+    handle('/ma').should == '""'
   end
 
   it 'should have a parameter via QUERY_PARAMS' do
-    get('/ma', 'foo' => 'bar').body.should == '"bar"'
+    handle('/ma?foo=bar').should == '"bar"'
   end
 
   it 'should handle valueless params' do
-    raw_mock_request(:get, '/jo/keys?foo').body.should == '"foo"'
+    handle('/jo/keys?foo').should == '"foo"'
   end
 end
