@@ -2,7 +2,12 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-require 'memcache'
+
+spec_precondition 'memcached is running' do
+  require 'memcache'
+  cache = MemCache.new(['localhost:11211'])
+  cache.set('active', true)
+end
 
 describe Ramaze::Cache::MemCache do
   Ramaze.options.cache.names = [:one, :two]
