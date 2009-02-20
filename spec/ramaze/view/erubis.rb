@@ -3,8 +3,8 @@
 
 require 'spec/helper'
 
-Innate.options.app.root = __DIR__
-Innate.options.app.view = 'erubis'
+Ramaze.options.app.root = __DIR__
+Ramaze.options.app.view = 'erubis'
 
 class SpecErubis < Ramaze::Controller
   map '/'
@@ -16,9 +16,9 @@ class SpecErubis < Ramaze::Controller
 
   def links
     '<ul>
-      <li><a href="<%=r(:index)%>">Index page</a></li>
-      <li><a href="<%=r(:internal)%>">Internal template</a></li>
-      <li><a href="<%=r(:external)%>">External template</a></li>
+      <li><%= a("Index page", :index) %></li>
+      <li><%= a("Internal template", :internal) %></li>
+      <li><%= a("External template", :external) %></li>
     </ul>'.ui
   end
 
@@ -70,5 +70,4 @@ describe "Ramaze::View::Erubis" do
     got['Content-Type'].should == 'text/html'
     got.body.strip.should == "<div>3</div>"
   end
-
 end
