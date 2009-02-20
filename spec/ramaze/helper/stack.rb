@@ -8,10 +8,6 @@ class SpecStackHelper < Ramaze::Controller
   helper :stack
   engine :None
 
-  def session_inspect
-    session.inspect
-  end
-
   def logged_in_page
     call(r(:login)) unless logged_in?
     "the logged in page"
