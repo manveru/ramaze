@@ -3,8 +3,8 @@
 
 require 'spec/helper'
 
-Innate.options.app.root = __DIR__
-Innate.options.app.view = 'sass'
+Ramaze.options.app.root = __DIR__
+Ramaze.options.app.view = 'sass'
 
 class SpecSass < Ramaze::Controller
   map '/'

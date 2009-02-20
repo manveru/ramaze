@@ -3,8 +3,8 @@
 
 require 'spec/helper'
 
-Innate.options.app.root = __DIR__
-Innate.options.app.view = 'liquid'
+Ramaze.options.app.root = __DIR__
+Ramaze.options.app.view = 'liquid'
 
 class SpecLiquid < Ramaze::Controller
   map '/'

@@ -3,8 +3,8 @@
 
 require 'spec/helper'
 
-Innate.options.app.root = __DIR__
-Innate.options.app.view = 'amrita2'
+Ramaze.options.app.root = __DIR__
+Ramaze.options.app.view = 'amrita2'
 
 class SpecAmrita2 < Ramaze::Controller
   map '/'

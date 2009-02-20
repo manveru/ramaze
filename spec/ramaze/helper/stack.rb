@@ -1,3 +1,6 @@
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
 require 'spec/helper'
 
 class SpecStackHelper < Ramaze::Controller
@@ -38,8 +41,6 @@ class SpecStackHelper < Ramaze::Controller
     session[:logged_in]
   end
 end
-
-Innate.setup_dependencies
 
 describe Ramaze::Helper::Stack do
   behaves_like :session

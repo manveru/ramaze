@@ -1,3 +1,6 @@
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
 module Ramaze
 
   # This is a container module for wrappers of templating engines and handles

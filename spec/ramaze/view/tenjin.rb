@@ -1,7 +1,10 @@
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
 require 'spec/helper'
 
-Innate.options.app.root = __DIR__
-Innate.options.app.view = 'tenjin'
+Ramaze.options.app.root = __DIR__
+Ramaze.options.app.view = 'tenjin'
 
 class SpecTenjin < Ramaze::Controller
   map '/'
