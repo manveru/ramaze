@@ -34,7 +34,7 @@ describe 'Informer' do
     end
 
     @inform.error(ex)
-    @out[-16].should =~ format(:error, ex.inspect)
+    @out.any?{|o| o =~ format(:error, ex.inspect) }.should.be.true
   end
 
   should 'choose stdout on init(stdout,:stdout,STDOUT)' do
