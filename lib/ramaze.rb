@@ -49,14 +49,25 @@ module Ramaze
   class << self; attr_accessor :options; end
 
   MIDDLEWARE[:dev] = lambda{|m|
-    m.use(Rack::Lint, Rack::CommonLogger, Rack::ShowExceptions,
-          Rack::ShowStatus, Rack::Head, Rack::ETag, Rack::ConditionalGet,
-          Rack::Reloader)
+    m.use(Rack::Lint,
+          Rack::Reloader,
+          Rack::ShowStatus,
+          Rack::RouteExceptions,
+          Rack::ShowExceptions,
+          Rack::Head,
+          Rack::ETag,
+          Rack::ConditionalGet,
+          Rack::CommonLogger)
     m.innate
   }
 
   MIDDLEWARE[:live] = lambda{|m|
-    m.use(Rack::CommonLogger, Rack::ShowStatus, Rack::Head, Rack::ETag,
+    m.use(Rack::CommonLogger,
+          Rack::RouteExceptions,
+          Rack::ShowStatus,
+          Rack::ShowExceptions,
+          Rack::Head,
+          Rack::ETag,
           Rack::ConditionalGet)
     m.innate
   }
