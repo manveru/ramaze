@@ -3,6 +3,7 @@ require 'spec/helper'
 class SpecStackHelper < Ramaze::Controller
   map '/'
   helper :stack
+  engine :None
 
   def session_inspect
     session.inspect
