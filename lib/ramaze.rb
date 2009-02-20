@@ -27,7 +27,6 @@ module Ramaze
   require 'ramaze/helper'
   require 'ramaze/view'
   require 'ramaze/controller'
-  require 'ramaze/route'
   require 'ramaze/cache'
 
   # Usually it's just mental overhead to remember which module has which
