@@ -13,9 +13,13 @@ describe 'Helper::Formatting' do
   end
 
   it 'should return difference in time as a string' do
-    time_diff(Time.now-29).should == 'less than a minute'
-    time_diff(Time.now-60).should == '1 minute'
-    time_diff(Time.now, Time.now+29, true).should == 'half a minute'
+    time_diff(Time.now - 29).should == 'less than a minute'
+    time_diff(Time.now - 60).should == '1 minute'
+    time_diff(Time.now - 3000).should == 'about 1 hour'
+    time_diff(Time.now - 10000).should == 'about 3 hours'
+    time_diff(Time.now - 100_000).should == '1 day'
+    time_diff(Time.now, Time.now + 29, true).should == 'half a minute'
+    time_diff(Time.now, Time.now + 29, true).should == 'half a minute'
   end
 
   it 'should linkify urls' do
@@ -50,5 +54,17 @@ describe 'Helper::Formatting' do
       {"code"=>0.75, "ramaze"=>0.75, "ruby"=>1.0}
     tagcloud(tags, 0.5, 2.0).should ==
       {"code"=>0.875, "ramaze"=>0.875, "ruby"=>1.25}
+  end
+
+  should 'convert newlines to br tags' do
+    nl2br("foo\nbar\nfoobar").should == 'foo<br />bar<br />foobar'
+    nl2br("foo\nbar\nfoobar", false).should == 'foo<br>bar<br>foobar'
+  end
+
+  should 'obvfuscate email addresses' do
+    obfuscate_email('foo@example.com').
+      should == "<a href=\"mailto:&#102&#111&#111&#064&#101&#120&#097&#109&#112&#108&#101&#046&#099&#111&#109\">&#102&#111&#111&#064&#101&#120&#097&#109&#112&#108&#101&#046&#099&#111&#109</a>"
+    obfuscate_email('foo@example.com', 'mail foo').
+      should == "<a href=\"mailto:&#102&#111&#111&#064&#101&#120&#097&#109&#112&#108&#101&#046&#099&#111&#109\">mail foo</a>"
   end
 end
