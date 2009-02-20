@@ -14,7 +14,7 @@ module Ramaze
 
     def self.inherited(into)
       Innate::Node.included(into)
-      into.engine(:Nagoro)
+      into.provide(:html => :nagoro) if LIST.empty?
       LIST << into
     end
 
