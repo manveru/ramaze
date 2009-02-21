@@ -19,7 +19,7 @@ module Ramaze
   # dependencies
   require 'innate'
   require 'rack/contrib'
-  require 'rack/contrib/route_exceptions'
+  require 'rack/route_exceptions'
 
   # Ramaze core
   require 'ramaze/version'
