@@ -62,7 +62,9 @@ module Ramaze
       end
 
       module SingletonMethods
-        def cache
+        def cache(name, hash = {})
+          Ramaze.deprecated('Helper::Cache::cache', 'Helper::Cache::cache_action')
+          cache_action(hash.merge(:method => name))
         end
 
         def cache_action(hash)
