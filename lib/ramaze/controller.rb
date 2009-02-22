@@ -14,8 +14,11 @@ module Ramaze
 
     def self.inherited(into)
       Innate::Node.included(into)
-      into.provide(:html => :nagoro) if LIST.empty?
       LIST << into
+
+      return if into.ancestral_trait[:provide_set]
+      into.provide(:html => [:xhtml, :nag], :yaml => :yaml, :json => :json)
+      into.trait(:provide_set => false)
     end
 
     def self.engine(*symbols)
