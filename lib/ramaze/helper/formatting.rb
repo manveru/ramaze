@@ -44,7 +44,7 @@ module Ramaze
     end
 
     # stolen and adapted from rails
-    def time_diff from_time, to_time = Time.now, include_seconds = false
+    def time_diff(from_time, to_time = Time.now, include_seconds = false)
       distance_in_minutes = (((to_time - from_time).abs)/60).round
       distance_in_seconds = ((to_time - from_time).abs).round if include_seconds
 
