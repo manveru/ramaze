@@ -56,7 +56,7 @@ module Ramaze
       Watcher = WatchStat
     end
 
-    def initialize(app)
+    def initialize(app = nil)
       @app = app
       @files = {}
       @watcher = Watcher.new
@@ -81,7 +81,7 @@ module Ramaze
         end
       end
 
-      @app.call(env)
+      @app.call(env) if @app
     end
 
     def cycle

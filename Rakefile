@@ -107,7 +107,7 @@ desc "create bzip2 and tarball"
 task :distribute => :gem do
   sh "rm -rf pkg/ramaze-#{VERS}"
   sh "mkdir -p pkg/ramaze-#{VERS}"
-  sh "cp -r {bin,doc,lib,examples,spec,Rakefile,README.markdown,rake_tasks} pkg/ramaze-#{VERS}/"
+  sh "cp -r {bin,doc,lib,examples,spec,Rakefile,README.md,rake_tasks} pkg/ramaze-#{VERS}/"
 
   Dir.chdir('pkg') do |pwd|
     sh "tar -zcvf ramaze-#{VERS}.tar.gz ramaze-#{VERS}"
@@ -225,4 +225,24 @@ task README do
       readme.puts '', '' unless title == chapters[-2]
     end
   end
+end
+
+desc 'Generate YARD documentation'
+task :ydoc do
+  sh('yardoc -o ydoc -r README.md')
+end
+
+task :publish => [:ydoc]
+
+begin
+  require 'grancher/task'
+
+  Grancher::Task.new do |g|
+    g.branch = 'gh-pages'
+#     g.push_to = 'origin'
+    g.message = 'Updated website'
+    g.directory 'ydoc', '.'
+  end
+rescue LoadError
+  # oh well :)
 end

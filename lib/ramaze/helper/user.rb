@@ -16,7 +16,7 @@ module Ramaze
     #   end
     #
     #   def login
-    #     user_login if reuqest.post?
+    #     user_login if request.post?
     #   end
     # end
 

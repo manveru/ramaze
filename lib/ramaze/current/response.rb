@@ -15,10 +15,8 @@ module Ramaze
     end
 
     # Build/replace this responses data
-    def build(new_body = body, status = status, header = header)
-      header.each do |key, value|
-        self[key] = value
-      end
+    def build(new_body = body, status = status, new_header = {})
+      self.header.merge!(new_header)
 
       self.body, self.status = new_body, status
     end

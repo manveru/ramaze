@@ -70,7 +70,7 @@ module Ramaze
             body << localize_body(chunk, options)
           end
 
-          response.body = body
+          response.body = body.join
         end
 
         # Localizes a response body.  It reacts to a regular expression as given

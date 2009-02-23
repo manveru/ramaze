@@ -1,10 +1,10 @@
 module Ramaze
   class Fiber < ::Fiber
-    # initialize isn't being called, so we have to hook into ::new
-    def self.new(*args)
-      instance = super
-      instance.state = {}
-      instance
+    attr_accessor :state
+
+    def initialize(*args)
+      super
+      @state = {}
     end
 
     attr_accessor :state
