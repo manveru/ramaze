@@ -6,15 +6,15 @@ module Ramaze
     include Innate::Node
 
     # we are no mapped node
-    Innate::Node::LIST.delete(self)
+    Innate::Node::NODE_LIST.delete(self)
 
-    LIST = Set.new
+    CONTROLLER_LIST = Set.new
 
     trait :automap => true
 
     def self.inherited(into)
       Innate::Node.included(into)
-      LIST << into
+      CONTROLLER_LIST << into
 
       return if into.ancestral_trait[:provide_set]
       into.provide(:html => [:xhtml, :nag], :yaml => :yaml, :json => :json)
