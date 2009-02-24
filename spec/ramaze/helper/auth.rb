@@ -47,27 +47,7 @@ class SpecHelperAuthLambda < SpecHelperAuth
 end
 
 describe Ramaze::Helper::Auth do
-  behaves_like :session
-
-  def multipart_env(hash)
-    boundary = 'MuLtIpArT56789'
-    data = []
-    hash.each do |key, value|
-      data << "--#{boundary}"
-      data << %(Content-Disposition: form-data; name="#{key}")
-      data << ''
-      data << value
-    end
-    data << "--#{boundary}--"
-    body = data.join("\r\n")
-
-    type = "multipart/form-data; boundary=#{boundary}"
-    length = body.respond_to?(:bytesize) ? body.bytesize : body.size
-
-    { 'CONTENT_TYPE' => type,
-      'CONTENT_LENGTH' => length.to_s,
-      :input => StringIO.new(body) }
-  end
+  behaves_like :session, :multipart
 
   def procedure(prefix)
     session do |mock|
@@ -79,7 +59,7 @@ describe Ramaze::Helper::Auth do
       got.status.should == 200
       got.body.should =~ (/<form/)
 
-      env = multipart_env('username' => 'manveru', 'password' => 'pass')
+      env = multipart('username' => 'manveru', 'password' => 'pass')
       got = mock.post("#{prefix}/login", env)
       got.status.should == 302
       got['Location'].should =~ (/#{prefix}\/secured/)
