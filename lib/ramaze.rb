@@ -29,6 +29,7 @@ module Ramaze
   require 'ramaze/view'
   require 'ramaze/controller'
   require 'ramaze/cache'
+  require 'ramaze/reloader'
 
   # Usually it's just mental overhead to remember which module has which
   # constant, so we just assign them here as well.
@@ -50,7 +51,7 @@ module Ramaze
 
   MIDDLEWARE[:dev] = lambda{|m|
     m.use(Rack::Lint,
-          Rack::Reloader,
+          Ramaze::Reloader,
           Rack::ShowStatus,
           Rack::RouteExceptions,
           Rack::ShowExceptions,
