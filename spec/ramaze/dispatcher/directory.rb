@@ -4,7 +4,7 @@ spec_require 'hpricot'
 
 module Ramaze
   # minimal middleware, no exception handling
-  middleware!(:innate){|m|
+  middleware!(:spec){|m|
     m.run m.directory(__DIR__('public'))
   }
 end

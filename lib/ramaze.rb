@@ -49,7 +49,7 @@ module Ramaze
   @options = Innate.options
   class << self; attr_accessor :options; end
 
-  MIDDLEWARE[:dev] = lambda{|m|
+  middleware! :dev do |m|
     m.use(Rack::Lint,
           Ramaze::Reloader,
           Rack::ShowStatus,
@@ -60,9 +60,9 @@ module Ramaze
           Rack::ConditionalGet,
           Rack::CommonLogger)
     m.innate
-  }
+  end
 
-  MIDDLEWARE[:live] = lambda{|m|
+  middleware! :live do |m|
     m.use(Rack::CommonLogger,
           Rack::RouteExceptions,
           Rack::ShowStatus,
@@ -71,5 +71,5 @@ module Ramaze
           Rack::ETag,
           Rack::ConditionalGet)
     m.innate
-  }
+  end
 end
