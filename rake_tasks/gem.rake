@@ -25,7 +25,6 @@ def generate_gemspec(version)
 
     s.add_dependency('rack', '>= 0.9.1')
     s.add_dependency('innate', '>= 2009.02')
-    s.add_dependency('rack-contrib', '>= 0.9.0')
   }
 end
 

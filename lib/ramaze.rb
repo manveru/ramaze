@@ -16,22 +16,11 @@ module Ramaze
     $LOAD_PATH.unshift(ROOT)
   end
 
-  # bootstrap dependencies
-  require 'ramaze/setup'
-
-  begin
-    require 'rubygems'
-    Ramaze.setup(:verbose => false) do
-      gem 'innate', '>=2009.02.25'
-      gem 'rack', '>=0.9.1'
-      gem 'rack-contrib', '>=0.9.0', :lib => 'rack/contrib'
-    end
-  rescue LoadError
-    require 'innate'
-    require 'rack/contrib'
-  end
+  # 3rd party
+  require 'innate'
 
   # vendored, will go into rack-contrib
+  require 'vendor/etag'
   require 'vendor/route_exceptions'
 
   # Ramaze itself
@@ -43,6 +32,7 @@ module Ramaze
   require 'ramaze/controller'
   require 'ramaze/cache'
   require 'ramaze/reloader'
+  require 'ramaze/setup'
 
   # Usually it's just mental overhead to remember which module has which
   # constant, so we just assign them here as well.
