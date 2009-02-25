@@ -6,6 +6,15 @@ module Rack
     ROUTE_EXCEPTIONS_EXCEPTION = 'rack.route_exceptions.exception'.freeze
     ROUTE_EXCEPTIONS_RETURNED  = 'rack.route_exceptions.returned'.freeze
 
+    class << self
+      def route(exception, to)
+        ROUTES.delete_if{|k,v| k == exception }
+        ROUTES << [exception, to]
+      end
+
+      alias []= route
+    end
+
     def initialize(app)
       @app = app
     end
@@ -35,12 +44,5 @@ module Rack
 
       call(env, try_again = false)
     end
-
-    def self.route(exception, to)
-      ROUTES.delete_if{|k,v| k == exception }
-      ROUTES << [exception, to]
-    end
-
-    alias []= route
   end
 end
