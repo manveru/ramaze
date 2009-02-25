@@ -26,6 +26,8 @@ module Ramaze
     #     end
     #   end
     module SimpleCaptcha
+      include Ramaze::Traited
+
       NUMBERS = [5, 10, 15, 20]
 
       # lambda should return question and answer in [question, answer] form

@@ -83,6 +83,7 @@ module Ramaze
 
 class Pager
   include Ramaze::Helper::Link
+  include Ramaze::Traited
 
   # Items per page.
 

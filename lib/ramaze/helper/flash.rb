@@ -24,10 +24,9 @@ module Ramaze
 
   module Helper
     module Flash
-      def self.included(into)
-        p into
-        into.trait :flashbox => "<div class='flash' id='flash_%key'>%value</div>"
-      end
+      include Ramaze::Traited
+
+      trait :flashbox => "<div class='flash' id='flash_%key'>%value</div>"
 
       # answers with Current.session.flash
       def flash

@@ -10,14 +10,15 @@ module Ramaze
     # If you want to do authentication with a model see Helper::User instead.
     module Auth
       Helper::LOOKUP << self
-
-      def self.included(into)
-        into.helper(:stack)
-      end
+      include Ramaze::Traited
 
       trait :auth_table => {}
       trait :auth_hashify => lambda{|pass| Digest::SHA1.hexdigest(pass) }
       trait :auth_post_only => false
+
+      def self.included(into)
+        into.helper(:stack)
+      end
 
       def login
         return auth_template if trait[:auth_post_only] and !request.post?
