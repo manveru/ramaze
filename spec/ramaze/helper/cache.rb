@@ -25,7 +25,6 @@ end
 
 class SpecHelperCacheTTL < Ramaze::Controller
   map '/ttl'
-
   helper :cache
   cache_action(:method => :index, :ttl => 1)
 
@@ -36,7 +35,6 @@ end
 
 class SpecHelperCacheKey < Ramaze::Controller
   map '/key'
-
   helper :cache
   cache_action(:method => :name){ request[:name] }
 
