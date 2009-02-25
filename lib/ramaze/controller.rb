@@ -3,6 +3,7 @@
 
 module Ramaze
   class Controller
+    include Innate::Traited
     include Innate::Node
 
     # we are no mapped node
