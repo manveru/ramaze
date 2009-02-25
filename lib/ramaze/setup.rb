@@ -70,7 +70,7 @@ module Ramaze
       Gem.activate(name, *[options[:version]].compact)
       require(options[:lib] || name)
     rescue LoadError => exception
-      Log.error exception
+      puts exception
       install_gem(name, options) if try_install
       setup_gem(name, options, try_install = false)
     end
@@ -101,7 +101,7 @@ module Ramaze
     private
 
     def log(msg)
-      Log.info(msg) if @verbose
+      puts(msg) if @verbose
     end
 
     def rubyforge; 'http://gems.rubyforge.org/' end

@@ -16,15 +16,28 @@ module Ramaze
     $LOAD_PATH.unshift(ROOT)
   end
 
-  # dependencies
-  require 'innate'
-  require 'rack/contrib'
+  # bootstrap dependencies
+  require 'ramaze/setup'
+
+  begin
+    require 'rubygems'
+    Ramaze.setup(:verbose => false) do
+      gem 'innate', '>=2009.02.25'
+      gem 'rack', '>=0.9.1'
+      gem 'rack-contrib', '>=0.9.0', :lib => 'rack/contrib'
+    end
+  rescue LoadError
+    require 'innate'
+    require 'rack/contrib'
+  end
+
+  # vendored, will go into rack-contrib
   require 'vendor/route_exceptions'
 
-  # Ramaze core
+  # Ramaze itself
   require 'ramaze/version'
-  require 'ramaze/snippets'
   require 'ramaze/log'
+  require 'ramaze/snippets'
   require 'ramaze/helper'
   require 'ramaze/view'
   require 'ramaze/controller'

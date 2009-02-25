@@ -24,7 +24,7 @@ module Ramaze
 
   module Helper
     module Flash
-      include Ramaze::Traited
+      include Innate::Traited
 
       trait :flashbox => "<div class='flash' id='flash_%key'>%value</div>"
 
