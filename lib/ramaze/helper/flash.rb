@@ -22,37 +22,42 @@ module Ramaze
   #
   # On the request after this, flash[:error] is gone.
 
-  module Helper::Flash
-    trait :flashbox => "<div class='flash' id='flash_%key'>%value</div>"
+  module Helper
+    module Flash
+      def self.included(into)
+        p into
+        into.trait :flashbox => "<div class='flash' id='flash_%key'>%value</div>"
+      end
 
-    # answers with Current.session.flash
-    def flash
-      Current.session.flash
-    end
+      # answers with Current.session.flash
+      def flash
+        Current.session.flash
+      end
 
-    # Use in your template to display all flash messages that may be stored.
-    # For example, given you stored:
-    #
-    #   flash # => { :error => 'Pleae enter your name'
-    #                :info => 'Do you see the fnords?' }
-    #
-    # Then a flashbox would display:
-    #
-    #   <div class='flash' id='flash_error'>Please enter your name</div>
-    #   <div class='flash' id='flash_info'>Do you see the fnords?</div>
-    #
-    # This is designed to be customized permanently or per usage:
-    #
-    #   flashbox("<div class='flash_%key'>%value</div>")
-    #
-    # Where any occurrence of %key and %value will be replaced by the actual
-    # contents of each element of flash
-    def flashbox(tag = ancestral_trait[:flashbox])
-      flash.map{|key, *values|
-        values.flatten.map do |value|
-          tag.gsub(/%key/, key.to_s).gsub(/%value/, value.to_s)
-        end
-      }.flatten.join("\n")
+      # Use in your template to display all flash messages that may be stored.
+      # For example, given you stored:
+      #
+      #   flash # => { :error => 'Pleae enter your name'
+      #                :info => 'Do you see the fnords?' }
+      #
+      # Then a flashbox would display:
+      #
+      #   <div class='flash' id='flash_error'>Please enter your name</div>
+      #   <div class='flash' id='flash_info'>Do you see the fnords?</div>
+      #
+      # This is designed to be customized permanently or per usage:
+      #
+      #   flashbox("<div class='flash_%key'>%value</div>")
+      #
+      # Where any occurrence of %key and %value will be replaced by the actual
+      # contents of each element of flash
+      def flashbox(tag = ancestral_trait[:flashbox])
+        flash.map{|key, *values|
+          values.flatten.map do |value|
+            tag.gsub(/%key/, key.to_s).gsub(/%value/, value.to_s)
+          end
+        }.flatten.join("\n")
+      end
     end
   end
 end
