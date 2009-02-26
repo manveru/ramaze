@@ -3,6 +3,7 @@
 
 require 'spec/helper'
 
+spec_require 'haml/util'
 spec_require 'sass/engine'
 
 class TCTemplateSassController < Ramaze::Controller
