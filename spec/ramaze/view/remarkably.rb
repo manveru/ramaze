@@ -2,6 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
+spec_require 'remarkably'
 
 Ramaze.options.app.root = __DIR__
 Ramaze.options.app.view = 'remarkably'

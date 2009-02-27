@@ -2,7 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-
 spec_requires 'erubis', 'redcloth'
 
 Ramaze.options.app.root = __DIR__
