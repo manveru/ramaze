@@ -1,3 +1,4 @@
+require 'haml/util'
 require 'sass/engine'
 
 module Ramaze
