@@ -9,6 +9,7 @@ module Ramaze
     # Also have a look at the examples/helpers/paginate.rb
 
     module Paginate
+      include Traited
 
       # Define default options in your Controller, they are being retrieved by
       # ancestral_trait, so you can also put it into a common superclass
@@ -62,8 +63,8 @@ module Ramaze
       # Provides easy pagination and navigation
 
       class Paginator
-        include Ramaze::Helper::Link
-        include Ramaze::Helper::CGI
+        include Ramaze::Helper
+        helper :link, :cgi
 
         def initialize(data = [], page = 1, limit = 10, var = 'pager')
           @data, @page, @limit, @var = data, page, limit, var
@@ -164,9 +165,9 @@ module Ramaze
         def link(n, text = n, hash = {})
           text = h(text.to_s)
 
-          params = Ramaze::Request.current.params.merge(@var.to_s => n)
-          name = Ramaze::Request.current.request_path
-          hash[:href] = R(name, params)
+          params = request.params.merge(@var.to_s => n)
+          name = request.script_name + request.path_info
+          hash[:href] = r(name, params)
 
           g.a(hash){ text }
         end
