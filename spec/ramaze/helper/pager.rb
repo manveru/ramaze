@@ -2,8 +2,7 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-
-require 'hpricot'
+spec_require 'hpricot'
 
 module Og
   class Mock
