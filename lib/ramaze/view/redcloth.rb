@@ -6,7 +6,7 @@ require 'redcloth'
 module Ramaze
   module View
     module RedCloth
-      def self.render(action, string = nil)
+      def self.render(action, string)
         restrictions = action.variables[:redcloth_options] || []
         rules        = action.variables[:redcloth_options] || []
 

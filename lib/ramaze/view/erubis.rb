@@ -8,7 +8,7 @@ module Ramaze
     module Erubis
       OPTIONS = { :engine => ::Erubis::Eruby }
 
-      def self.render(action, string = nil)
+      def self.render(action, string)
         options = OPTIONS.dup
         engine = options.delete(:engine)
 

@@ -3,7 +3,7 @@ require 'tenjin'
 module Ramaze
   module View
     module Tenjin
-      def self.render(action, string = action.view)
+      def self.render(action, string)
         template = ::Tenjin::Template.new
         template.convert(string)
 

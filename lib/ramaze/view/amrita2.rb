@@ -3,7 +3,7 @@ require 'amrita2'
 module Ramaze
   module View
     module Amrita2
-      def self.render(action, string = action.view)
+      def self.render(action, string)
         # prepare
         action.copy_variables
         action.instance.extend(::Amrita2::Runtime) # if data.kind_of?(Binding)

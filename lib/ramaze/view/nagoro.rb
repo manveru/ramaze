@@ -9,11 +9,9 @@ module Ramaze
 
       OPTIONS = { :pipes => DEFAULT_PIPES }
 
-      def self.render(action, string = nil)
-        string ||= action.view
-
+      def self.render(action, string)
         action.options[:pipes] ||= OPTIONS[:pipes]
-        action.options[:filename] ||= action.view
+        action.options[:filename] = action.view
         action.options[:binding] = action.binding
         action.options[:variables] = action.variables
 

@@ -4,9 +4,7 @@ require 'sass/engine'
 module Ramaze
   module View
     module Sass
-      def self.render(action, string = nil)
-        string ||= action.view
-
+      def self.render(action, string)
         Current.response['Content-Type'] = 'text/css'
 
         options = action.options

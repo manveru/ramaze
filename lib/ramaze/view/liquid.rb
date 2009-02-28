@@ -6,7 +6,7 @@ require 'liquid'
 module Ramaze
   module View
     module Liquid
-      def self.render(action, string = nil)
+      def self.render(action, string)
         instance_variables = {}
         instance = action.instance
 
