@@ -46,7 +46,11 @@ module Ramaze
     }
 
     begin
-      gem 'RInotify', '>=0.9' # is older version ok?
+      begin
+        gem('RInotify', '>=0.9') # is older version ok?
+      rescue NoMethodError # Kernel::gem might simply be not available
+      end
+
       require 'rinotify'
       require 'ramaze/reloader/watch_inotify'
       Watcher = WatchInotify
