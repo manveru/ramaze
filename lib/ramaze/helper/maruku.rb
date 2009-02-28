@@ -1,4 +1,4 @@
-autoload :Maruku, 'maruku'
+require 'maruku'
 
 module Ramaze
   module Helper
