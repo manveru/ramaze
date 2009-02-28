@@ -4,6 +4,11 @@
 module Ramaze
   module Helper
     EXPOSE = LOOKUP = Innate::Helper::EXPOSE
+
+    def self.included(into)
+      into.extend(HelperAccess)
+      into.__send__(:include, Trinity)
+    end
   end
 
   Innate::HelpersHelper.add_path(File.dirname(__FILE__))
