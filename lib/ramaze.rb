@@ -53,26 +53,26 @@ module Ramaze
   class << self; attr_accessor :options; end
 
   middleware! :dev do |m|
-    m.use(Rack::Lint,
-          Ramaze::Reloader,
-          Rack::ShowStatus,
-          Rack::RouteExceptions,
-          Rack::ShowExceptions,
-          Rack::Head,
-          Rack::ETag,
-          Rack::ConditionalGet,
-          Rack::CommonLogger)
+    m.use Rack::Lint
+    m.use Rack::CommonLogger
+    m.use Ramaze::Reloader
+    m.use Rack::ShowStatus
+    m.use Rack::RouteExceptions
+    m.use Rack::ShowExceptions
+    m.use Rack::Head
+    m.use Rack::ETag
+    m.use Rack::ConditionalGet
     m.innate
   end
 
   middleware! :live do |m|
-    m.use(Rack::CommonLogger,
-          Rack::RouteExceptions,
-          Rack::ShowStatus,
-          Rack::ShowExceptions,
-          Rack::Head,
-          Rack::ETag,
-          Rack::ConditionalGet)
+    m.use Rack::CommonLogger
+    m.use Rack::RouteExceptions
+    m.use Rack::ShowStatus
+    m.use Rack::ShowExceptions
+    m.use Rack::Head
+    m.use Rack::ETag
+    m.use Rack::ConditionalGet
     m.innate
   end
 end
