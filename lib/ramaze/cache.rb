@@ -8,5 +8,10 @@ module Ramaze
 
   class Cache
     autoload :MemCache, 'ramaze/cache/memcache'
+
+    def self.clear_after_reload
+      action.clear if respond_to?(:action)
+      action_value.clear if respond_to?(:action_value)
+    end
   end
 end

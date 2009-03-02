@@ -151,9 +151,7 @@ module Ramaze
       # Overwrite to add actions after a file is Kernel::load-ed successfully,
       # by default we clean the Cache for compiled templates and resolved actions.
       def after_safe_load_succeed(file)
-        Ramaze::Cache.compiled.clear
-        Ramaze::Cache.resolved.clear
-        Ramaze::Cache.action_methods.clear
+        Cache.clear_after_reload
         after_safe_load(file)
       end
 
