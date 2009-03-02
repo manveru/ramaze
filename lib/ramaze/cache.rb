@@ -8,6 +8,7 @@ module Ramaze
 
   class Cache
     autoload :MemCache, 'ramaze/cache/memcache'
+    autoload :Sequel, 'ramaze/cache/sequel'
 
     def self.clear_after_reload
       action.clear if respond_to?(:action)
