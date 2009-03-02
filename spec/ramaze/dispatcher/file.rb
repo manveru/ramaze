@@ -9,7 +9,7 @@ require 'spec/helper'
 module Ramaze
   # minimal middleware, no exception handling
   middleware!(:spec){|m|
-    m.use(Rack::ETag, Rack::ConditionalGet)
+    m.apps(Rack::ETag, Rack::ConditionalGet)
     m.innate
   }
 end

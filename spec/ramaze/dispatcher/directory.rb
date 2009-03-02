@@ -50,7 +50,7 @@ describe 'Directory listing' do
      ["../", "Parent Directory"],
      ["/favicon.ico", "favicon.ico"],
      ["/file name.txt", "file name.txt"],
-     ["/test", "test"],
+     ["/test/", "test/"],
      ["/test_download.css", "test_download.css"]
    ]
 
@@ -60,7 +60,7 @@ describe 'Directory listing' do
   should 'serve hierarchies' do
     files = [
       ["../", "Parent Directory"],
-      ["/test/deep", "deep"],
+      ["/test/deep/", "deep/"],
       ["/test/five.txt", "five.txt"],
       ["/test/six.txt", "six.txt"]
     ]
