@@ -4,72 +4,74 @@ require 'ramaze'
 REALM = 'ramaze authentication required'
 
 class MainController < Ramaze::Controller
-
   helper :httpdigest
 
   def index
     %|
-    <p><a href="#{Rs(:eyes_only)}">eyes only</a></p>
-    <p><a href="#{R(SecretController,'/')}">secret area</a></p>
-    <p><a href="#{R(GuestController,'/')}">guest area</a> username is <em>guest</em> password is <em>access</em></p>
-     | 
+<p>#{a('eyes only', :eyes_only)}</p>
+<p>#{SecretController.a('secret area', '/')}</p>
+<p>#{GuestController.a('guest area', '/')} username is <em>guest</em> password is <em>access</em></p>
+     |
   end
 
   def eyes_only
-    httpdigest('eyes only',REALM) do |username|
+    httpdigest('eyes only', REALM) do |username|
       password = username.reverse
-      MD5.hexdigest([username,REALM,password].join(':'))
+      Digest::MD5.hexdigest([username, REALM, password].join(':'))
     end
     "Shhhh don't tell anyone"
   end
 
+  def logout
+    httpdigest_logout
+    redirect_referer
+  end
 end
 
 class LoginController < Ramaze::Controller
   map '/login'
-
   helper :httpdigest
 
   def index
      @username ||= session[:username]
-     @username ||= httpdigest('login area',REALM)
+     @username ||= httpdigest('login area', REALM)
     "Hi there #@username!"
   end
 
   def login
-    %|<form action="#{Rs(:post)}" method="post"><input type="text" name="username"/><input type="password" name="password"/><input type="submit"/></form>|
+    %|
+<form action="#{Rs(:post)}" method="post">
+  <input type="text" name="username" />
+  <input type="password" name="password" />
+  <input type="submit" />
+</form>
+    |
   end
 
   def post
-    username = request.params["username"]
-    password = request.params["password"]
-    if password == "entry"
-      session[:username] = username
-      destination = session[ :redirect_after_login ]
-      session.delete( :redirect_after_login )
-      redirect destination
-    end
-    redirect Rs(:login)
+    username, password = request[:username, :password]
+
+    redirect r(:login) unless password == "entry"
+
+    session[:username] = username
+    answer(r(:index))
   end
 
-  protected
+  private
 
   def httpdigest_failure
-    session[ :redirect_after_login ] = Rs(Ramaze::Action.current.method)
-    redirect Rs(:login)
+    call(r(:login))
   end
-
 end
 
 class SecretController < Ramaze::Controller
   map '/secret'
-  helper :aspect
   helper :httpdigest
 
   USERS = { 'admin' => 'secret', 'root' => 'password' }
 
   before_all do
-    @username = httpdigest('secret area',REALM)
+    @username = httpdigest('secret area', REALM)
   end
 
   def index
@@ -78,19 +80,17 @@ class SecretController < Ramaze::Controller
 
   protected
 
-  def httpdigest_lookup_plaintext_password username
+  def httpdigest_lookup_plaintext_password(username)
     USERS[ username ]
   end
-
 end
 
 class GuestController < Ramaze::Controller
   map '/guest'
-  helper :aspect
   helper :httpdigest
 
   before_all do
-    @username = httpdigest('guest area',REALM)
+    @username = httpdigest('guest area', REALM)
   end
 
   def index
@@ -99,10 +99,9 @@ class GuestController < Ramaze::Controller
 
   protected
 
-  def httpdigest_lookup_password username
+  def httpdigest_lookup_password(username)
     return "b71f15b2f6dd4834224fbe02169ed94c" if username == "guest"
   end
-
 end
 
 Ramaze.start
