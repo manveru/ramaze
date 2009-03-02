@@ -1,15 +1,10 @@
-# drop-in replacement for Ramaze's built-in MemoryCache built on the Sequel.
-# to use with sessions do
-#
-#   Ramaze::Global::cache_alternative[:sessions] = Ramaze::SequelCache
-#
-# to use with everything do
-#
-#   Ramaze::Global::cache = Ramaze::SequelCache
-#
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
   class Cache
+
+    # Cache based on a Sequel model using relational databases.
     class Sequel
       include Cache::API
 
@@ -28,17 +23,19 @@ module Ramaze
         ]
       end
 
-      # setup the table, not suitable for multiple apps yet.
+      # Setup the table, not suitable for multiple apps yet.
       def cache_setup(host, user, app, name)
         @namespace = [host, user, app, name].compact.join(':')
         Table.create_table unless Table.table_exists?
         @store = Table
       end
 
+      # Wipe out _all_ data in the table, use with care.
       def cache_clear
         Table.delete_all
       end
 
+      # Delete records for given +keys+
       def cache_delete(*keys)
         super do |key|
           record = @store[:key => namespaced(key)]
@@ -47,9 +44,7 @@ module Ramaze
       end
 
       def cache_fetch(key, default = nil)
-        super do |key|
-          @store[:key => namespaced(key)]
-        end
+        super{|key| @store[:key => namespaced(key)] }
       end
 
       def cache_store(key, value, options = {})

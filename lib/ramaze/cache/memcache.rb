@@ -1,4 +1,4 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'memcache'
@@ -36,8 +36,7 @@ module Ramaze
         @store = ::MemCache.new(servers, options)
       end
 
-      # NOTE:
-      #   * This will wipe out _all_ data in memcached, use with care.
+      # Wipe out _all_ data in memcached, use with care.
       def cache_clear
         @store.flush_all
       rescue ::MemCache::MemCacheError => e
@@ -45,6 +44,7 @@ module Ramaze
         nil
       end
 
+      #
       def cache_delete(*keys)
         super{|key| @store.delete(key) }
       rescue ::MemCache::MemCacheError => e
