@@ -75,7 +75,7 @@ class SecretController < Ramaze::Controller
   end
 
   def index
-    "Hello <em>#@username</em>, welcome to SECRET world"
+    "Hello <em>#@username</em>, welcome to SECRET world."
   end
 
   protected
