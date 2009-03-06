@@ -9,6 +9,11 @@ module Ramaze
 
       OPTIONS = { :pipes => DEFAULT_PIPES }
 
+      def self.call(*args)
+        p :call => args
+        ['text/html', render(*args)]
+      end
+
       def self.render(action, string)
         action.options[:pipes] ||= OPTIONS[:pipes]
         action.options[:filename] = action.view

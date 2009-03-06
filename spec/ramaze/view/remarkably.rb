@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'remarkably'
 
 class SpecRemarkably < Ramaze::Controller
   map '/'
-  provide :html => :rem
+  engine :Remarkably
   helper :remarkably
 
   def index

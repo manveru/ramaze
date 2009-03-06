@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'nagoro'
 
 class SpecNagoro < Ramaze::Controller
   map '/'
-  provide :html => :nag
+  engine :Nagoro
 
   def index
     '<h1>Nagoro Index</h1>'

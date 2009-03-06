@@ -1,8 +1,8 @@
 require 'spec/helper'
 
-class TCActionOne < Ramaze::Controller
+class SpecAction < Ramaze::Controller
   map '/'
-  provide :html => :none
+  provide :html, :None
 
   def index
     'Hello, World!'
@@ -15,7 +15,7 @@ end
 
 describe 'Action#render' do
   it 'works when Action is manually created' do
-    action = Ramaze::Action.create(:method => :index, :node => TCActionOne)
+    action = SpecAction.resolve('/')
     action.render.should == 'Hello, World!'
   end
 end

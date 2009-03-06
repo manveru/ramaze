@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'haml'
 
 class SpecHaml < Ramaze::Controller
   map '/'
-  provide :html => :haml
+  engine :Haml
 
   def index
     '%h1 Haml Index'

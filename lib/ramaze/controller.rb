@@ -18,16 +18,12 @@ module Ramaze
       CONTROLLER_LIST << into
 
       return if into.ancestral_trait[:provide_set]
-      into.provide(:html => [:xhtml, :nag], :yaml => :yaml, :json => :json)
+      into.provide(:html, :Nagoro)
       into.trait(:provide_set => false)
     end
 
-    def self.engine(*symbols)
-      symbols.each do |symbol|
-        regex = /#{symbol}/i
-        exts = Innate::View::ENGINE.map{|ext, const| ext if const=~ regex }
-        provide(:html => exts.compact)
-      end
+    def self.engine(name)
+      provide(:html, name.to_sym)
     end
 
     def self.mapping

@@ -3,6 +3,10 @@ require 'tagz'
 module Ramaze
   module View
     module Tagz
+      def self.call(*args)
+        ['text/html', render(*args)]
+      end
+
       def self.render(action, string)
         return string unless action.view
 

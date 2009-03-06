@@ -3,6 +3,10 @@ require 'amrita2'
 module Ramaze
   module View
     module Amrita2
+      def self.call(*args)
+        ['text/html', render(*args)]
+      end
+
       def self.render(action, string)
         # prepare
         action.copy_variables

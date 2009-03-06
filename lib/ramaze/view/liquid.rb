@@ -6,6 +6,10 @@ require 'liquid'
 module Ramaze
   module View
     module Liquid
+      def self.call(*args)
+        ['text/html', render(*args)]
+      end
+
       def self.render(action, string)
         instance_variables = {}
         instance = action.instance

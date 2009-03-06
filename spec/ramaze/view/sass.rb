@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'sass'
 
 class SpecSass < Ramaze::Controller
   map '/'
-  provide :css => :sass
+  provide :css, :Sass
 
   def style
 %{
@@ -24,7 +24,7 @@ end
 
 class SpecSassOptions < Ramaze::Controller
   map '/options'
-  provide :css => :sass
+  provide :css, :Sass
   trait :sass_options => { :style => :compact }
 
   def test

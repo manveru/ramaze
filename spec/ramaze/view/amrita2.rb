@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'amrita2'
 
 class SpecAmrita2 < Ramaze::Controller
   map '/'
-  provide :html => :amr
+  engine :Amrita2
 
   def index
     @data = {:title => 'Amrita2 Index'}

@@ -7,12 +7,12 @@ Ramaze.options.app.root = __DIR__
 Ramaze.options.app.layout = 'view'
 Ramaze.options.action.needs_method = true
 
-class MainController < Ramaze::Controller
+class SpecActionlessTemplates < Ramaze::Controller
   map '/'
   alias_view :non_existant_method, :list
 end
 
-class TCActionOtherLayout < Ramaze::Controller
+class SpecActionlessTemplatesLayout < Ramaze::Controller
   map '/other'
   layout 'other_wrapper'
 

@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'tenjin'
 
 class SpecTenjin < Ramaze::Controller
   map '/'
-  provide :html => :rbhtml
+  engine :Tenjin
 
   def index
     '<h1>Tenjin Index</h1>'

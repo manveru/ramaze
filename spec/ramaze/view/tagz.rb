@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'tagz'
 
 class SpecTagz < Ramaze::Controller
   map '/'
-  provide :html => :tagz
+  engine :Tagz
   helper :tagz
 
   def index

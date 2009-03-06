@@ -9,7 +9,7 @@ Ramaze.options.app.view = 'erubis'
 
 class SpecErubis < Ramaze::Controller
   map '/'
-  provide :html => :rhtml
+  engine :Erubis
 
   def index
     '<h1>Erubis Index</h1>'

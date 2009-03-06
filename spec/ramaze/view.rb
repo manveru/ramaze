@@ -6,8 +6,8 @@ require 'spec/helper'
 module Ramaze
   module View
     module MyEngine
-      def self.render(action, string)
-        string
+      def self.call(action, string)
+        ['application/x-ruby', string]
       end
     end
 
@@ -28,6 +28,9 @@ describe Ramaze::View do
   behaves_like :mock
 
   it 'uses MyEngine' do
-    get('/').body.should == 'Hello, World!'
+    got = get('/')
+    got.status.should == 200
+    got['Content-Type'].should == 'application/x-ruby'
+    got.body.should == 'Hello, World!'
   end
 end

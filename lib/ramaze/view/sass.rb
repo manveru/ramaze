@@ -4,6 +4,10 @@ require 'sass/engine'
 module Ramaze
   module View
     module Sass
+      def self.call(*args)
+        ['text/css', render(*args)]
+      end
+
       def self.render(action, string)
         Current.response['Content-Type'] = 'text/css'
 

@@ -11,7 +11,7 @@ class SpecControllerInheritedMain < Ramaze::Controller
 end
 
 class SpecControllerInheritedOther < Ramaze::Controller
-  Ramaze.node('/other').provide(:html => :haml)
+  Ramaze.node('/other').engine(:Haml)
   def index; "%p Other is haml"; end
 end
 
@@ -21,7 +21,7 @@ class SpecControllerInheritedAnother < SpecControllerInheritedOther
 end
 
 class SpecControllerInheritedYetAnother < SpecControllerInheritedAnother
-  Ramaze.node('/yet_another').provide(:html => :maruku)
+  Ramaze.node('/yet_another').engine(:Maruku)
   def index; "Yet Another is Maruku. Inherited but overriden"; end
 end
 
