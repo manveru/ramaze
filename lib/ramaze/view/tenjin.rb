@@ -3,16 +3,14 @@ require 'tenjin'
 module Ramaze
   module View
     module Tenjin
-      def self.call(*args)
-        ['text/html', render(*args)]
-      end
-
-      def self.render(action, string)
+      def self.call(action, string)
         template = ::Tenjin::Template.new
         template.convert(string)
 
         action.copy_variables
-        template.ramaze_render(action.binding)
+        html = template.ramaze_render(action.binding)
+
+        return html, 'text/html'
       end
     end
   end

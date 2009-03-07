@@ -6,11 +6,7 @@ require 'liquid'
 module Ramaze
   module View
     module Liquid
-      def self.call(*args)
-        ['text/html', render(*args)]
-      end
-
-      def self.render(action, string)
+      def self.call(action, string)
         instance_variables = {}
         instance = action.instance
 
@@ -19,7 +15,9 @@ module Ramaze
         end
 
         template = ::Liquid::Template.parse(string)
-        template.render(instance_variables)
+        html = template.render(instance_variables)
+
+        return html, 'text/html'
 
         # data = action.variables[:data] || {}
         # template.render(data, options)

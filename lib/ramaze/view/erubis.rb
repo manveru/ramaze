@@ -8,17 +8,15 @@ module Ramaze
     module Erubis
       OPTIONS = { :engine => ::Erubis::Eruby }
 
-      def self.call(*args)
-        ['text/html', render(*args)]
-      end
-
-      def self.render(action, string)
+      def self.call(action, string)
         options = OPTIONS.dup
         engine = options.delete(:engine)
 
         eruby = engine.new(string, options)
         eruby.init_evaluator(:filename => (action.view || __FILE__))
-        eruby.result(action.binding)
+        html = eruby.result(action.binding)
+
+        return html, 'text/html'
       end
     end
   end

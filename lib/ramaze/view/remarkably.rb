@@ -3,13 +3,11 @@ require 'remarkably/engines/html'
 module Ramaze
   module View
     module Remarkably
-      def self.call(*args)
-        ['text/html', render(*args)]
-      end
-
-      def self.render(action, string)
+      def self.call(action, string)
         string = transform_string(action, string) if action.view
-        string.to_s
+        html = string.to_s
+
+        return html, 'text/html'
       end
 
       def self.transform_string(action, string)

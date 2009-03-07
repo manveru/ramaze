@@ -10,18 +10,15 @@ module Ramaze
 
       OPTIONS = { :pipes => DEFAULT_PIPES }
 
-      def self.call(*args)
-        p :call => args
-        ['text/html', render(*args)]
-      end
-
-      def self.render(action, string)
+      def self.call(action, string)
         action.options[:pipes] ||= OPTIONS[:pipes]
         action.options[:filename] = action.view
         action.options[:binding] = action.binding
         action.options[:variables] = action.variables
 
-        ::Nagoro.render(string.to_s, action.options)
+        html = ::Nagoro.render(string.to_s, action.options)
+
+        return html, 'text/html'
       end
     end
   end

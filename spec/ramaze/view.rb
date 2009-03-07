@@ -7,7 +7,7 @@ module Ramaze
   module View
     module MyEngine
       def self.call(action, string)
-        ['application/x-ruby', string]
+        return string, 'application/x-ruby'
       end
     end
 

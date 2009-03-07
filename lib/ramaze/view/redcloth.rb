@@ -6,17 +6,15 @@ require 'redcloth'
 module Ramaze
   module View
     module RedCloth
-      def self.call(*args)
-        ['text/html', render(*args)]
-      end
-
-      def self.render(action, string)
+      def self.call(action, string)
         restrictions = action.variables[:redcloth_options] || []
         rules        = action.variables[:redcloth_options] || []
 
-        erubis = Ramaze::View::Erubis.render(action, string)
+        erubis, _ = Ramaze::View::Erubis.call(action, string)
         redcloth = ::RedCloth.new(erubis, restrictions)
-        redcloth.to_html(*rules)
+        html = redcloth.to_html(*rules)
+
+        return html, 'text/html'
       end
     end
   end

@@ -3,18 +3,16 @@ require 'tagz'
 module Ramaze
   module View
     module Tagz
-      def self.call(*args)
-        ['text/html', render(*args)]
-      end
-
-      def self.render(action, string)
-        return string unless action.view
+      def self.call(action, string)
+        return string, 'text/html' unless action.view
 
         markup = "tagz{#{string}}"
         action.instance.extend(Ramaze::View::Tagz::Methods)
         binding = action.binding
 
-        eval(markup, binding, action.view)
+        html = eval(markup, binding, action.view)
+
+        return html, 'text/html'
       end
 
       # A host of methods useful inside the context of a view including print
