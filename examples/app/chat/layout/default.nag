@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/css/chat.css" />
   </head>
   <body>
-    #@content
+    #{@content}
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/chat.js"></script>
   </body>
