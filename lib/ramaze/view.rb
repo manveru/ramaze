@@ -22,11 +22,11 @@ module Ramaze
 
     auto_register :Amrita2,    :amrita, :amr, :a2html
     auto_register :Erubis,     :erubis, :rhtml
-    auto_register :Ezamar,     :zmr
+    auto_register :Ezamar,     :xhtml, :zmr
     auto_register :Haml,       :haml
     auto_register :Liquid,     :liquid
     auto_register :Maruku,     :mkd, :md
-    auto_register :Nagoro,     :xhtml, :nag
+    auto_register :Nagoro,     :nag
     auto_register :RedCloth,   :redcloth
     auto_register :Sass,       :sass
     auto_register :Tenjin,     :rbhtml
