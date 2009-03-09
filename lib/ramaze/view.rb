@@ -22,6 +22,7 @@ module Ramaze
 
     auto_register :Amrita2,    :amrita, :amr, :a2html
     auto_register :Erubis,     :erubis, :rhtml
+    auto_register :Ezamar,     :zmr
     auto_register :Haml,       :haml
     auto_register :Liquid,     :liquid
     auto_register :Maruku,     :mkd, :md
