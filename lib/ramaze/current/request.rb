@@ -34,5 +34,11 @@ module Ramaze
         instance.instance_variable_set("@#{arg}", value)
       end
     end
+
+    def accept_charset(default = 'UTF-8')
+      return default unless charsets = env['HTTP_ACCEPT_CHARSET']
+      charset = charsets.split(',', 2).first
+      charset == '*' ? default : charset
+    end
   end
 end
