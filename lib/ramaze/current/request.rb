@@ -34,9 +34,5 @@ module Ramaze
         instance.instance_variable_set("@#{arg}", value)
       end
     end
-
-    def params
-      robust_params(super)
-    end
   end
 end
