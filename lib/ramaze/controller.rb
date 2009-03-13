@@ -27,14 +27,27 @@ module Ramaze
     end
 
     def self.mapping
-      mapped = Innate.to(self)
-      return mapped if mapped
-      return unless ancestral_trait[:automap]
-      return if self.to_s =~ /#<Class:/ # cannot determine name of anonymous class
+      if mapped = App[ancestral_trait[:app]].to(self)
+        mapped
+      elsif ancestral_trait[:automap]
+        generate_mapping(self.name)
+      end
+    end
 
-      name = self.to_s.gsub('Controller', '').gsub('::', '/').clone
-      return if name.empty? # won't map a class named Controller
-      name == 'Main' ? '/' : "/#{name.snake_case}"
+    IRREGULAR_MAPPING = {
+      'Controller' => nil,
+      'MainController' => '/'
+    }
+
+    def self.generate_mapping(klass)
+      chunks = klass.split(/::/)
+      return if chunks.empty?
+
+      last = chunks.last
+      return IRREGULAR_MAPPING[last] if IRREGULAR_MAPPING.key?(last)
+
+      last.sub!(/Controller$/, '')
+      ['', *chunks.map{|chunk| chunk.snake_case }].join('/')
     end
 
     def self.template(*args)
