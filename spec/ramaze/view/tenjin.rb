@@ -4,12 +4,10 @@
 require 'spec/helper'
 spec_require 'tenjin'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.view = 'tenjin'
-
 class SpecTenjin < Ramaze::Controller
   map '/'
   engine :Tenjin
+  options.view = 'tenjin'
 
   def index
     '<h1>Tenjin Index</h1>'

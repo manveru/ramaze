@@ -4,12 +4,10 @@
 require 'spec/helper'
 spec_require 'amrita2'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.view = 'amrita2'
-
 class SpecAmrita2 < Ramaze::Controller
   map '/'
   engine :Amrita2
+  options.view = 'amrita2'
 
   def index
     @data = {:title => 'Amrita2 Index'}

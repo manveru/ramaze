@@ -4,12 +4,10 @@
 require 'spec/helper'
 spec_require 'ezamar'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.view = 'ezamar'
-
 class SpecEzamar < Ramaze::Controller
   map '/'
   engine :Ezamar
+  options.view = 'ezamar'
 
   def index
     '<h1>Ezamar Index</h1>'

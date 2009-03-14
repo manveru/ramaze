@@ -4,12 +4,10 @@
 require 'spec/helper'
 spec_require 'nagoro'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.view = 'nagoro'
-
 class SpecNagoro < Ramaze::Controller
   map '/'
   engine :Nagoro
+  options.view = 'nagoro'
 
   def index
     '<h1>Nagoro Index</h1>'

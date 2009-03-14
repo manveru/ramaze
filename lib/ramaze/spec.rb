@@ -19,3 +19,9 @@ rescue Exception => ex
   puts "Spec precondition: %p failed: %p" % [name, ex.message]
   exit 0
 end
+
+module Ramaze
+  Mock::OPTIONS[:app] = Ramaze
+
+  middleware!(:spec){|m| m.run(AppMap) }
+end

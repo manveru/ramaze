@@ -4,12 +4,10 @@
 require 'spec/helper'
 spec_require 'erubis'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.view = 'erubis'
-
 class SpecErubis < Ramaze::Controller
   map '/'
   engine :Erubis
+  options.view = 'erubis'
 
   def index
     '<h1>Erubis Index</h1>'

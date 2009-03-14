@@ -4,13 +4,11 @@
 require 'spec/helper'
 spec_require 'remarkably'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.view = 'remarkably'
-
 class SpecRemarkably < Ramaze::Controller
   map '/'
   engine :Remarkably
   helper :remarkably
+  options.view = 'remarkably'
 
   def index
     h1 "Remarkably Index"

@@ -3,9 +3,7 @@
 
 require 'spec/helper'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.layout = 'view'
-Ramaze.options.action.needs_method = true
+Ramaze::Controller.options.merge!(:layout => 'view', :needs_method => true)
 
 class SpecActionlessTemplates < Ramaze::Controller
   map '/'

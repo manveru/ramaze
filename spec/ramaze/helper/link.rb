@@ -26,7 +26,7 @@ describe Ramaze::Helper::Link do
   end
 
   it 'lays out breadcrumbs' do
-    breadcrumbs('/file/dir/listing/is/cool').
+    SpecHelperLink.breadcrumbs('/file/dir/listing/is/cool').
       should == [
       '<a href="/file">file</a>',
       '<a href="/file/dir">dir</a>',
@@ -37,7 +37,7 @@ describe Ramaze::Helper::Link do
   end
 
   it 'lays out breadcrumbs with href prefix' do
-    breadcrumbs('/file/dir/listing/is/cool', '/', '/', '/prefix/path').
+    SpecHelperLink.breadcrumbs('/file/dir/listing/is/cool', '/', '/', '/prefix/path').
       should == [
       '<a href="/prefix/path/file">file</a>',
       '<a href="/prefix/path/file/dir">dir</a>',

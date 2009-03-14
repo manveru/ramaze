@@ -19,6 +19,9 @@ module Ramaze
   # 3rd party
   require 'innate'
 
+  @options = Innate.options
+  class << self; attr_accessor :options; end
+
   # vendored, will go into rack-contrib
   require 'vendor/etag'
   require 'vendor/route_exceptions'
@@ -33,6 +36,10 @@ module Ramaze
   require 'ramaze/cache'
   require 'ramaze/reloader'
   require 'ramaze/setup'
+  require 'ramaze/app'
+  require 'ramaze/files'
+  require 'ramaze/middleware_compiler'
+  require 'ramaze/plugin'
 
   # Usually it's just mental overhead to remember which module has which
   # constant, so we just assign them here as well.
@@ -49,8 +56,7 @@ module Ramaze
 
   extend Innate::SingletonMethods
 
-  @options = Innate.options
-  class << self; attr_accessor :options; end
+  options[:middleware_compiler] = Ramaze::MiddlewareCompiler
 
   middleware! :dev do |m|
     m.use Rack::Lint
@@ -62,7 +68,7 @@ module Ramaze
     m.use Rack::Head
     m.use Rack::ETag
     m.use Rack::ConditionalGet
-    m.innate
+    m.run Ramaze::AppMap
   end
 
   middleware! :live do |m|
@@ -73,6 +79,6 @@ module Ramaze
     m.use Rack::Head
     m.use Rack::ETag
     m.use Rack::ConditionalGet
-    m.innate
+    m.run Ramaze::AppMap
   end
 end

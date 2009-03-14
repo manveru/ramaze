@@ -11,7 +11,7 @@ module Ramaze
 
     CONTROLLER_LIST = Set.new
 
-    trait :automap => true
+    trait :automap => true, :app => :pristine
 
     def self.inherited(into)
       Innate::Node.included(into)
@@ -53,6 +53,29 @@ module Ramaze
     def self.template(*args)
       Ramaze.deprecated('Controller::template', 'Controller::alias_view')
       alias_view(*args)
+    end
+
+    def self.map(location, app_name = :pristine)
+      trait :app => app_name
+      App.find_or_create(app_name).map(location, self)
+    end
+
+    def self.view_root(location = nil)
+      location ? (@view_root = location) : (@view_root ||= Ramaze.to(self))
+    end
+
+    def self.app
+      App[ancestral_trait[:app]]
+    end
+
+    def self.options
+      Innate::Node.options
+    end
+
+    private
+
+    def options
+      App[ancestral_trait[:app]].options
     end
   end
 end

@@ -4,13 +4,12 @@
 require 'spec/helper'
 spec_require 'tagz'
 
-Ramaze.options.app.root = __DIR__
-Ramaze.options.app.view = 'tagz'
-
 class SpecTagz < Ramaze::Controller
   map '/'
   engine :Tagz
   helper :tagz
+  options.view = 'tagz'
+
 
   def index
     tagz{ h1_{ "Tagz Index" } }
