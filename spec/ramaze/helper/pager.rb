@@ -65,6 +65,7 @@ shared 'pager' do
   it "should link to other pages" do
     # mock the action
     action = '/page'
+    def action.node; TCPagerController; end
     def action.name; self; end
     Ramaze::Current.actions = [action]
 

@@ -143,11 +143,20 @@ module Ramaze
           @pager.page_count > 1
         end
 
+        def page_count; @pager.page_count end
+        def each(&block) @pager.each(&block) end
+        def first_page?; @pager.first_page?; end
+        def prev_page; @pager.prev_page; end
+        def current_page; @pager.current_page; end
+        def last_page; @pager.last_page; end
+        def last_page?; @pager.last_page?; end
+        def next_page; @pager.next_page; end
+
         # Forward everything to the inner @pager
 
-        def method_missing(meth, *args, &block)
-          @pager.send(meth, *args, &block)
-        end
+#         def method_missing(meth, *args, &block)
+#           @pager.send(meth, *args, &block)
+#         end
 
         private
 
@@ -167,7 +176,7 @@ module Ramaze
 
           params = request.params.merge(@var.to_s => n)
           name = request.script_name + request.path_info
-          hash[:href] = r(name, params)
+          hash[:href] = Current.action.node.r(name, params)
 
           g.a(hash){ text }
         end
