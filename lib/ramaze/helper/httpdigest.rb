@@ -58,9 +58,14 @@ module Ramaze
                     end
                   end
                 end
-                ha2 = MD5.hexdigest([request.request_method,request.fullpath].join(':'))
-                md5 = MD5.hexdigest([ha1, nonce, nc, cnonce, qop, ha2].join(':'))
 
+                a2 = [request.request_method,request.fullpath]
+                a2 << MD5.hexdigest(request.body.read) if qop == "auth-int"
+
+                ha2 = MD5.hexdigest( a2.join(':') )
+
+                md5 = MD5.hexdigest([ha1, nonce, nc, cnonce, qop, ha2].join(':'))
+                
                 authorized = digest_response == md5
               end
             end
