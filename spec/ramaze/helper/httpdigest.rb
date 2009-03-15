@@ -41,6 +41,8 @@ class PasswordLookupController < Ramaze::Controller
     "Hello #{user}"
   end
 
+  protected
+
   def httpdigest_lookup_password username
     Digest::MD5.hexdigest([username, REALM, username.reverse].join(':'))
   end
