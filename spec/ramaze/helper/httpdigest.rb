@@ -95,6 +95,12 @@ describe Ramaze::Helper::HttpDigest do
     got.body.should == "Hello foo"
   end
 
+  it 'fails to authenticate an incorrect password with a block' do
+    got = get_auth( '/authenticate', 'foo', 'bar' )
+    got.status.should == 401
+    got.body.should == "Unauthorized"
+  end
+
   it 'authenticates a user with a block using auth for a random given' do
     got = get_auth( '/authenticate', 'foo', 'oof', 'some-random-non-existant-auth-type' )
     got.status.should == 200
@@ -107,10 +113,22 @@ describe Ramaze::Helper::HttpDigest do
     got.body.should == "Hello foo"
   end
 
+  it 'fails to authenticate an incorrect password with the plaintext method' do
+    got = get_auth( '/plaintext/authenticate', 'foo', 'bar' )
+    got.status.should == 401
+    got.body.should == "Unauthorized"
+  end
+
   it 'authenticates a user with the password lookup method' do
     got = get_auth( '/lookup/authenticate', 'foo', 'oof' )
     got.status.should == 200
     got.body.should == "Hello foo"
+  end
+
+  it 'fails to authenticate an incorrect password with the password lookup method' do
+    got = get_auth( '/lookup/authenticate', 'foo', 'bar' )
+    got.status.should == 401
+    got.body.should == "Unauthorized"
   end
 
   it 'authenticates a user with a block using auth-int' do
