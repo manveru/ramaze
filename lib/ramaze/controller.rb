@@ -27,10 +27,19 @@ module Ramaze
     end
 
     def self.mapping
-      if mapped = App[ancestral_trait[:app]].to(self)
-        mapped
+      if app = self.app
+        if mapped = app.to(self)
+          return mapped
+        elsif ancestral_trait[:automap]
+          location = generate_mapping(self.name)
+          app.map(location, self)
+          return location
+        end
       elsif ancestral_trait[:automap]
-        generate_mapping(self.name)
+        app = App.find_or_create(ancestral_trait[:app])
+        location = generate_mapping(self.name)
+        app.map(location, self)
+        return location
       end
     end
 
