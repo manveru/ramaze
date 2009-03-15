@@ -26,6 +26,12 @@ task 'spec' do
       out = sout.read
       err = serr.read
 
+      if out.empty?
+        puts(red % "ERROR getting a result")
+        puts err
+        next
+      end
+
       out.each_line do |line|
         tests, assertions, failures, errors = all = line.scanf(spec_format)
         next unless all.any?
