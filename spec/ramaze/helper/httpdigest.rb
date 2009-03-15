@@ -83,10 +83,19 @@ describe Ramaze::Helper::HttpDigest do
     got
   end
 
-  it 'exposes auth and auth-int support' do
-    got = get('/authenticate')
-    authorization = Rack::Auth::Digest::Params.parse(got.headers['WWW-Authenticate'])
-    authorization["qop"].should == "auth,auth-int"
+  it 'sends out all the required header information' do
+    session do |mock|
+      got = mock.get('/authenticate')
+      authorization = Rack::Auth::Digest::Params.parse(got.headers['WWW-Authenticate'])
+      authorization["opaque"].should.not.be.empty
+      authorization["nonce"].should.not.be.empty
+      authorization["realm"].should == REALM
+      authorization["qop"].should == "auth,auth-int"
+      got = mock.get( '/authenticate' , 'HTTP_AUTHORIZATION' => auth_for(got, '/authenticate', 'foo', 'oof' ) )
+      got.headers.should.satisfy do |headers|
+        !headers.has_key?( "WWW-Authenticate" )
+      end
+    end
   end
 
   it 'authenticates a user with a block' do
