@@ -11,9 +11,56 @@ module Ramaze
     App[app_name].to(object)
   end
 
+  # App is the superclass for applications and acts as their prototype when it
+  # comes to configuration.
+  #
+  # An application consists of options, a location, and a list of objects. The
+  # objects are usually {Controller}s.
+  #
+  # The options are inherited, the basics are set in Ramaze.options, from there
+  # to Ramaze::App.options, and finally into every instance of App.
+  #
+  # This allows to collect {Controller}s of your application into a common
+  # group that can easily be used in other applications, while retaining the
+  # original options.
+  #
+  # Every instance of {App} is mapped in {AppMap}, which is the default
+  # location to #call from Rack.
+  #
+  # Additionally, every {App} can have custom locations for
+  # root/public/view/layout directories, which allows reuse beyond directory
+  # boundaries.
+  #
+  # In contrast to Innate, where all Nodes share the same middleware, {App}
+  # also has a subset of middleware that handles serving static files, routes
+  # and rewrites.
+  #
+  # To indicate that a {Controller} belongs to a specific application, you can
+  # pass a second argument to {Controller::map}
+  #
+  # @example adding Controller to application
+  #
+  #   class WikiController < Ramaze::Controller
+  #     map '/', :wiki
+  #   end
+  #
+  # The App instance will be created for you and if you don't use any other
+  # applications in your code there is nothing else you have to do. Others can
+  # now come and simply reuse your code in their own applications.
+  #
+  # There is some risk of name collisions if everybody calls their app `:wiki`,
+  # but given that you only use one foreign app of this kind might give less
+  # reason for concern.
+  #
+  # If you still try to use two apps with the same name, you have to be
+  # careful, loading one first, renaming it, then loading the second one.
+  #
+  # The naming of an App has no influence on any other aspects of dispatching
+  # or configuration.
   class App
     include Innate::Optional
 
+    # options not found here will be looked up in Ramaze.options
     options.dsl do
       o "Unique identifier for this application",
         :name, :pristine
