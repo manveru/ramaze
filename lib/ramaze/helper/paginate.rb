@@ -143,6 +143,9 @@ module Ramaze
           @pager.page_count > 1
         end
 
+        # these methods are actually on the pager, but we def them here for
+        # convenience (method_missing in helper is evil and even slower)
+
         def page_count; @pager.page_count end
         def each(&block) @pager.each(&block) end
         def first_page?; @pager.first_page?; end
@@ -151,12 +154,6 @@ module Ramaze
         def last_page; @pager.last_page; end
         def last_page?; @pager.last_page?; end
         def next_page; @pager.next_page; end
-
-        # Forward everything to the inner @pager
-
-#         def method_missing(meth, *args, &block)
-#           @pager.send(meth, *args, &block)
-#         end
 
         private
 
@@ -174,9 +171,9 @@ module Ramaze
         def link(n, text = n, hash = {})
           text = h(text.to_s)
 
+          action = Current.action
           params = request.params.merge(@var.to_s => n)
-          name = request.script_name + request.path_info
-          hash[:href] = Current.action.node.r(name, params)
+          hash[:href] = action.node.r(action.name, params)
 
           g.a(hash){ text }
         end
