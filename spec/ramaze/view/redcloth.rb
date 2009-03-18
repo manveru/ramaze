@@ -4,10 +4,11 @@
 require 'spec/helper'
 spec_requires 'erubis', 'redcloth'
 
+Ramaze::App.options.views = 'redcloth'
+
 class SpecRedCloth < Ramaze::Controller
   map '/'
   engine :RedCloth
-  options.view = 'redcloth'
 
   def index
     'h1. RedCloth Index'

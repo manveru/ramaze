@@ -4,10 +4,11 @@
 require 'spec/helper'
 spec_require 'haml/util', 'sass/engine'
 
+Ramaze::App.options.views = 'sass'
+
 class SpecSass < Ramaze::Controller
   map '/'
   provide :css, :Sass
-  options.view = 'sass'
 
   def style
 %{

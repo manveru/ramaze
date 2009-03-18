@@ -4,10 +4,11 @@
 require 'spec/helper'
 spec_require 'liquid'
 
+Ramaze::App.options.views = 'liquid'
+
 class SpecLiquid < Ramaze::Controller
   map '/'
   engine :Liquid
-  options.view = 'liquid'
 
   def index
     '<h1>Liquid Index</h1>'

@@ -4,10 +4,11 @@
 require 'spec/helper'
 spec_require 'haml'
 
+Ramaze::App.options.views = 'haml'
+
 class SpecHaml < Ramaze::Controller
   map '/'
   engine :Haml
-  options.view = 'haml'
 
   def index
     '%h1 Haml Index'

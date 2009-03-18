@@ -60,22 +60,12 @@ module Ramaze
       App.find_or_create(app_name).map(location, self)
     end
 
-    def self.view_root(location = nil)
-      location ? (@view_root = location) : (@view_root ||= Ramaze.to(self))
-    end
-
     def self.app
       App[ancestral_trait[:app]]
     end
 
     def self.options
-      Innate::Node.options
-    end
-
-    private
-
-    def options
-      App[ancestral_trait[:app]].options
+      app.options
     end
   end
 end

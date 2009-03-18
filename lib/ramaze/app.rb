@@ -16,29 +16,12 @@ module Ramaze
 
     options.dsl do
       o "Unique identifier for this application",
-        :name, name
-
-      o "Root directories containing the application",
-        :root, [File.dirname($0)]
-
-      o "Root directories for view templates, relative to app root",
-        :view, ['view']
-
-      o "Root directories for layout templates, relative to app root",
-        :layout, ['layout']
-
-      o "Root directories for static public files, relative to app root",
-        :public, ['public']
-
-      o "Prefix of this application",
-        :prefix, '/'
-
-      trigger(:public){|v| Ramaze.middleware_recompile }
+        :name, :pristine
     end
 
     APP_LIST = {}
 
-    attr_reader :name, :location, :map
+    attr_reader :name, :location, :map, :options
 
     def initialize(name, location)
       @name = name.to_sym
@@ -48,10 +31,6 @@ module Ramaze
       APP_LIST[@name] = self
 
       @options = self.class.options.sub(@name)
-    end
-
-    def options
-      @options
     end
 
     def sync
@@ -82,7 +61,7 @@ module Ramaze
     end
 
     def public_roots
-      roots, publics = [*options.root], [*options.public]
+      roots, publics = [*options.roots], [*options.publics]
       roots.map{|root| publics.map{|public| ::File.join(root, public) }}.flatten
     end
 
