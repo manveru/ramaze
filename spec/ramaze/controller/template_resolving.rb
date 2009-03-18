@@ -3,8 +3,6 @@
 
 require 'spec/helper'
 
-Ramaze.options.app.root = __DIR__
-
 class SpecViewAlias < Ramaze::Controller
   map '/'
 

@@ -38,7 +38,7 @@ Ramaze::App[:other].location = '/other'
 describe Ramaze::App do
   behaves_like :mock
 
-  it 'handles call from rack' do
+  it 'handles call with rack env' do
     get('/').body.should == 'core main'
     get('/two').body.should == 'core two'
     get('/other').body.should == 'other main'

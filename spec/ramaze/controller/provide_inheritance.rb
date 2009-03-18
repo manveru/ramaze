@@ -1,9 +1,8 @@
 require 'spec/helper'
 
-Ramaze.options.app.root = '/'
-
 class SpecControllerInheritedMain < Ramaze::Controller
   Ramaze.node('/')
+
   def index
     @ngr = "Main is nagoro"
     "<p>#{@ngr}</p>"

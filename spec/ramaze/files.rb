@@ -8,13 +8,11 @@ class SpecFilesOther < Ramaze::Controller
   map '/', :other
 end
 
-Ramaze::App.options.root = __DIR__
-
 Ramaze::App[:core].location = '/'
-Ramaze::App[:core].options.public = 'files/public_1'
+Ramaze::App[:core].options.publics = 'files/public_1'
 
 Ramaze::App[:other].location = '/other'
-Ramaze::App[:other].options.public = 'files/public_2'
+Ramaze::App[:other].options.publics = 'files/public_2'
 
 Ramaze.middleware!(:spec){|m| m.run(Ramaze::AppMap) }
 

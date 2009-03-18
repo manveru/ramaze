@@ -17,8 +17,6 @@ end
 describe 'Serving static files' do
   behaves_like :mock
 
-  Ramaze.options.app.root = __DIR__
-  Ramaze.options.app.public = '/public'
   Ramaze.map('/', lambda{|env| [200, {}, 'nothing']})
 
   it 'serves from public root' do

@@ -26,8 +26,6 @@ describe 'Directory listing' do
     FileUtils.touch(__DIR__(:public, path))
   end
 
-  Ramaze.options.app.root = __DIR__
-  Ramaze.options.app.public = '/public'
   Ramaze.map('/', lambda{|env| [404, {}, ['not found']]})
 
   def build_listing(path)

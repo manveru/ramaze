@@ -3,9 +3,6 @@
 
 require 'spec/helper'
 
-Ramaze.options.app.root = '/'
-Ramaze.options.app.view = __DIR__(:view)
-
 class MainController < Ramaze::Controller
   map '/'
   engine :Nagoro
