@@ -57,7 +57,8 @@ module Ramaze
     end
 
     def to(object)
-      [location, @map.to(object)].join('/')
+      return unless mapped = @map.to(object)
+      [location, mapped].join('/').squeeze('/')
     end
 
     def public_roots

@@ -9,17 +9,29 @@ module Ramaze
     # we are no mapped node
     Innate::Node::NODE_LIST.delete(self)
 
+    # call our setup method one startup
+    Ramaze.options.setup << self
+
     CONTROLLER_LIST = Set.new
 
-    trait :automap => true, :app => :pristine
+    trait :app => :pristine
+    trait :skip_controller_map => false
 
     def self.inherited(into)
       Innate::Node.included(into)
       CONTROLLER_LIST << into
+      into.trait :skip_node_map => true
 
       return if into.ancestral_trait[:provide_set]
       into.provide(:html, :Nagoro)
       into.trait(:provide_set => false)
+    end
+
+    def self.setup
+      CONTROLLER_LIST.each do |controller|
+        next if controller.trait[:skip_controller_map]
+        controller.map(generate_mapping(controller.name))
+      end
     end
 
     def self.engine(name)
@@ -27,11 +39,7 @@ module Ramaze
     end
 
     def self.mapping
-      if mapped = App[ancestral_trait[:app]].to(self)
-        mapped
-      elsif ancestral_trait[:automap]
-        generate_mapping(self.name)
-      end
+      Ramaze.to(self)
     end
 
     IRREGULAR_MAPPING = {
@@ -39,24 +47,27 @@ module Ramaze
       'MainController' => '/'
     }
 
-    def self.generate_mapping(klass)
-      chunks = klass.split(/::/)
+    def self.generate_mapping(klass_name = self.name)
+      p :generate_mapping
+      chunks = klass_name.split(/::/)
       return if chunks.empty?
 
       last = chunks.last
       return IRREGULAR_MAPPING[last] if IRREGULAR_MAPPING.key?(last)
 
       last.sub!(/Controller$/, '')
-      ['', *chunks.map{|chunk| chunk.snake_case }].join('/')
+      '/' << chunks.map{|chunk| chunk.snake_case }.join('/')
     end
 
-    def self.template(*args)
-      Ramaze.deprecated('Controller::template', 'Controller::alias_view')
-      alias_view(*args)
-    end
+    def self.map(location, app_name = nil)
+      if app_name
+        trait :app => app_name
+      else
+        app_name = ancestral_trait[:app]
+      end
 
-    def self.map(location, app_name = :pristine)
-      trait :app => app_name
+      trait :skip_controller_map => true
+
       App.find_or_create(app_name).map(location, self)
     end
 
@@ -65,7 +76,13 @@ module Ramaze
     end
 
     def self.options
+      return unless app = self.app
       app.options
+    end
+
+    def self.template(*args)
+      Ramaze.deprecated('Controller::template', 'Controller::alias_view')
+      alias_view(*args)
     end
   end
 end

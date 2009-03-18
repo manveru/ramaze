@@ -34,6 +34,10 @@ module Ramaze
         r(*args).to_s
       end
 
+      def route_location(klass)
+        Ramaze.to(klass) || Ramaze.to(klass.class)
+      end
+
       # Give it a path with character to split at and one to join the crumbs with.
       # It will generate a list of links that act as pointers to previous pages on
       # this path.
