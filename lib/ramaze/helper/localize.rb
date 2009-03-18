@@ -1,3 +1,4 @@
+require 'locale/tag'
 require 'locale'
 
 module Ramaze

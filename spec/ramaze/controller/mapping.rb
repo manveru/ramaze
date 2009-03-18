@@ -41,3 +41,19 @@ describe 'Controller::generate_mapping' do
     gen(Class.new.name).should == nil
   end
 end
+
+class SpecControllerMapping < Ramaze::Controller
+  def index
+    'automatically mapped'
+  end
+end
+
+Ramaze.setup_dependencies
+
+describe 'Controller automap' do
+  behaves_like :mock
+
+  it 'automatically creates an app and maps the controller into it' do
+    get('/spec_controller_mapping').body.should == 'automatically mapped'
+  end
+end

@@ -22,9 +22,15 @@ task 'spec' do
   specs.each_with_index do |spec, idx|
     print(left_format % [idx + 1, total, spec])
 
-    Open3.popen3("#{RUBY} #{spec}") do |sin, sout, serr|
+    Open3.popen3("#{RUBY} #{begin;::Gem;true;rescue;false;end ? "-rubygems" : '' } #{spec}") do |sin, sout, serr|
       out = sout.read
       err = serr.read
+
+      if out.empty?
+        puts(red % "ERROR getting a result")
+        puts err
+        next
+      end
 
       out.each_line do |line|
         tests, assertions, failures, errors = all = line.scanf(spec_format)
