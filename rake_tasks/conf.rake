@@ -5,7 +5,7 @@ COPYRIGHT = [
   "#          Copyright (c) #{Time.now.year} Michael Fellinger m.fellinger@gmail.com",
   "# All files in this distribution are subject to the terms of the Ruby license."
 ]
-README = 'README.markdown'
+README = 'README.md'
 CLEAN.include %w[
   **/.*.sw?
   *.gem
