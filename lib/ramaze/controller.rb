@@ -42,30 +42,12 @@ module Ramaze
       Ramaze.to(self)
     end
 
-    # the old implementation of self.mapping... we deprecate :automap
-    #
-    #       if app = self.app
-    #         if mapped = app.to(self)
-    #           return mapped
-    #         elsif ancestral_trait[:automap]
-    #           location = generate_mapping(self.name)
-    #           app.map(location, self)
-    #           return location
-    #         end
-    #       elsif ancestral_trait[:automap]
-    #         app = App.find_or_create(ancestral_trait[:app])
-    #         location = generate_mapping(self.name)
-    #         app.map(location, self)
-    #         return location
-    #       end
-
     IRREGULAR_MAPPING = {
       'Controller' => nil,
       'MainController' => '/'
     }
 
     def self.generate_mapping(klass_name = self.name)
-      p :generate_mapping
       chunks = klass_name.split(/::/)
       return if chunks.empty?
 

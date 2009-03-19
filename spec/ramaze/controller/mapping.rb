@@ -48,8 +48,6 @@ class SpecControllerMapping < Ramaze::Controller
   end
 end
 
-Ramaze.setup_dependencies
-
 describe 'Controller automap' do
   behaves_like :mock
 
