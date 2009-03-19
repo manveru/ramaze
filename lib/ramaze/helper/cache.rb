@@ -14,7 +14,7 @@ module Ramaze
       # @author manveru
       def self.included(into)
         into.extend(SingletonMethods)
-        into.trait[:wrap] ||= [:aspect_wrap, :cache_wrap]
+        into.add_action_wrapper(6.0, :cache_wrap)
         into.trait[:cache_action] ||= Set.new
         Ramaze::Cache.add(:action, :action_value)
       end
