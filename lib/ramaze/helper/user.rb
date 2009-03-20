@@ -3,31 +3,109 @@ module Ramaze
 
     # This helper provides a convenience wrapper for handling authentication
     # and persistence of users.
-    # It will wrap and cache the value returned by the callback or model during
-    # one request/response cycle.
-    # On every request it checks authentication again and retrieves the model.
     #
-    # Incomplete example:
+    # On every request, when you use the {User#user} method for the first time,
+    # we confirm the authentication and store the returned object in the
+    # request.env, usually this will involve a request to your database.
     #
-    # class MainController < Ramaze::Controller
-    #   trait :user_callback => lambda{|auth| }
+    # @example Basic usage with User::authenticate
     #
-    #   def index
-    #     return "Hello #{user.name}" if logged_in?
-    #     a('login', :login)
+    #   # We assume that User::[] will make a query and returns the requested
+    #   # User instance. This instance will be wrapped and cached.
+    #
+    #   class User
+    #     def self.authenticate(creds)
+    #       User[:name => creds['name'], :pass => creds['pass']]
+    #     end
     #   end
     #
-    #   def login
-    #     user_login if reuqest.post?
+    #   class Profiles < Ramaze::Controller
+    #     helper :user
+    #
+    #     def edit
+    #       redirect_referrer unless logged_in?
+    #       "Your profile is shown, your are logged in."
+    #     end
     #   end
-    # end
+    #
+    #   class Accounts < Ramaze::Controller
+    #     helper :user
+    #
+    #     def login
+    #       return unless request.post?
+    #       user_login(request.subset(:name, :pass))
+    #       redirect Profiles.r(:edit)
+    #     end
+    #
+    #     def logout
+    #       user_logout
+    #       redirect_referer
+    #     end
+    #   end
+    #
+    # On every request it checks authentication again and retrieves the model,
+    # we are not using a normal cache for this as it may lead to behaviour that
+    # is very hard to predict and debug.
+    #
+    # You can however, add your own caching quite easily.
+    #
+    # @example caching the authentication lookup with memcached
+    #
+    #   # Add the name of the cache you are going to use for the authentication
+    #   # and set all caches to use memcached
+    #
+    #   Ramaze::Cache.options do |cache|
+    #     cache.names = [:session, :user]
+    #     cache.default = Ramaze::Cache::MemCache
+    #   end
+    #
+    #   class User
+    #
+    #     # Try to fetch the user from the cache, if that fails make a query.
+    #     # We are using a ttl (time to live) of one hour, that's just to show
+    #     # you how to do it and not necessary.
+    #     def self.authenticate(credentials)
+    #       cache = Ramaze::Cache.user
+    #
+    #       if user = cache[credentials]
+    #         return user
+    #       elsif user = User[:name => creds['name'], :pass => creds['pass']]
+    #         cache.store(credentials, user, :ttl => 3600)
+    #       end
+    #     end
+    #   end
+    #
+    # @example Using a lambda instead of User::authenticate
+    #
+    #   # assumes all your controllers inhert from this one
+    #
+    #   class Controller < Ramaze::Controller
+    #     trait :user_callback => lambda{|creds|
+    #       User[:name => creds['name'], :pass => creds['pass']]
+    #     }
+    #   end
+    #
+    # @example Using a different model instead of User
+    #
+    #   # assumes all your controllers inhert from this one
+    #
+    #   class Controller < Ramaze::Controller
+    #     trait :user_model => Account
+    #   end
+    #
+    # @author manveru
+    # @todo convert the examples into real examples with specs
     module User
+      # Using this as key in request.env
       RAMAZE_HELPER_USER = 'ramaze.helper.user'.freeze
 
       # Use this method in your application, but do not use it in conditionals
       # as it will never be nil or false.
       #
       # @return [Ramaze::Helper::User::Wrapper] wrapped return value from model or callback
+      #
+      # @api external
+      # @author manveru
       def user
         env = request.env
         found = env[RAMAZE_HELPER_USER]
@@ -41,7 +119,10 @@ module Ramaze
       # shortcut for user._login but default argument are request.params
       #
       # @param [Hash] creds the credentials that will be passed to callback or model
+      #
       # @return [nil Hash] the given creds are returned on successful login
+      #
+      # @api external
       # @see Ramaze::Helper::User::Wrapper#_login
       # @author manveru
       def user_login(creds = request.params)
@@ -49,7 +130,10 @@ module Ramaze
       end
 
       # shortcut for user._logout
+      #
       # @return [nil]
+      #
+      # @api external
       # @see Ramaze::Helper::User::Wrapper#_logout
       # @author manveru
       def user_logout
@@ -57,6 +141,8 @@ module Ramaze
       end
 
       # @return [true false] whether the user is logged in already.
+      #
+      # @api external
       # @see Ramaze::Helper::User::Wrapper#_logged_in?
       # @author manveru
       def logged_in?
@@ -107,6 +193,7 @@ module Ramaze
           end
         end
 
+        # @api internal
         # @see Ramaze::Helper::User#user_logout
         # @autor manveru
         def _logout
@@ -115,6 +202,7 @@ module Ramaze
         end
 
         # @return [true false] whether the current user is logged in.
+        # @api internal
         # @see Ramaze::Helper::User#logged_in?
         # @autor manveru
         def _logged_in?
