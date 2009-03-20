@@ -1,17 +1,22 @@
-Ramaze::Rewrite['REST dispatch'] = lambda do |path, request|
-  path << '/' unless path[-1] == '/'
+# Use this together with the Rack::MethodOverride middleware for best
+# behaviour.
+#
+# See spec/contrib/rest.rb for usage.
 
-  method = if request.request_method == 'POST' and request.params.has_key?('method')
-             request.params['method'].upcase
-           else
-             request.request_method
-           end
-  
-  case method
-  when 'GET' then path << 'show/'
-  when 'POST' then path << 'create/'
-  when 'PUT' then path << 'update/'
-  when 'DELETE' then path << 'destroy/'
-  else path
-  end
+module Ramaze
+  # Don't use one option per method, we don't want to turn request_method into
+  # a symbol, together with MethodOverride this could lead to a memory leak.
+  options.o "REST rewrite mapping",
+    :rest_rewrite, { 'GET'    => 'show',
+                     'POST'   => 'create',
+                     'PUT'    => 'update',
+                     'DELETE' => 'destroy'}
+
+  Rewrite['REST dispatch'] = lambda{|path, request|
+    if suffix = Ramaze.options[:rest_rewrite][request.request_method]
+      "#{path}/#{suffix}".squeeze('/')
+    else
+      path
+    end
+  }
 end
