@@ -1,8 +1,8 @@
 #!/usr/bin/env rackup
 #
-# start.ru for ramaze apps
+# config.ru for ramaze apps
 # use thin >= 1.0.0
-# thin start -R start.ru
+# thin start -R config.ru
 #
 # rackup is a useful tool for running Rack applications, which uses the
 # Rack::Builder DSL to configure middleware and build up applications easily.
@@ -14,4 +14,4 @@
 cwd = File.dirname(__FILE__)
 require "#{cwd}/start"
 Ramaze.start(:started => true)
-run Innate.middleware(:innate)
+run Innate
