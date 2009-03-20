@@ -4,11 +4,11 @@ module Ramaze
   #
   # Usage for sessions only:
   #
-  #     Ramaze::Global::cache_alternative[:sessions] = Ramaze::FileCache
+  #     Ramaze::Global.cache_alternative[:sessions] = Ramaze::FileCache
   #
   # Usage for everything:
   #
-  #     Ramaze::Global::cache = Ramaze::FileCache
+  #     Ramaze::Global.cache = Ramaze::FileCache
 
   class FileCache
     attr_accessor :root, :subdir
