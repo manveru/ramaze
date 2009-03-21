@@ -1,0 +1,20 @@
+<div class="auth login">
+  <form method='post'>
+    <fieldset>
+      <legend>Login</legend>
+      <ul>
+        <li>
+          <label for="username">Username:</label>
+          <input type="text" name="username" id="username" />
+        </li>
+        <li>
+          <label for="password">Password:</label>
+          <input type="text" name="password" id="password" />
+        </li>
+        <li>
+          <input type="submit" value="Login" />
+        </li>
+      </ul>
+    </fieldset>
+  </form>
+</div>
