@@ -21,14 +21,14 @@ module Ramaze
       Innate::Node.included(into)
       CONTROLLER_LIST << into
       into.trait :skip_node_map => true
-
-      return if into.ancestral_trait[:provide_set]
-      into.provide(:html, :Nagoro)
-      into.trait(:provide_set => false)
     end
 
     def self.setup
       CONTROLLER_LIST.each do |controller|
+        unless controller.ancestral_trait[:provide_set]
+          controller.engine(:Nagoro)
+          controller.trait(:provide_set => false)
+        end
         next if controller.trait[:skip_controller_map]
         controller.map(generate_mapping(controller.name))
       end
