@@ -83,5 +83,10 @@ module Ramaze
       Ramaze.deprecated('Controller::template', 'Controller::alias_view')
       alias_view(*args)
     end
+
+    def self.view_root(*locations)
+      Ramaze.deprecated('Controller::view_root', 'Controller::map_views')
+      map_views(*locations)
+    end
   end
 end
