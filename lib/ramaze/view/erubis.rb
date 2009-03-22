@@ -11,6 +11,7 @@ module Ramaze
       def self.call(action, string)
         options = OPTIONS.dup
         engine = options.delete(:engine)
+        action.copy_variables
 
         eruby = engine.new(string, options)
         eruby.init_evaluator(:filename => (action.view || __FILE__))
