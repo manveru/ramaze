@@ -25,6 +25,18 @@ module Ramaze
         form_input(label, :type => :file, :name => name)
       end
 
+      def form_hidden(name, value = nil)
+        Ramaze::Gestalt.build{
+          input(:type => :hidden, :name => name, :value => value)
+        }
+      end
+
+      def form_submit(value = nil)
+        hash = {:type => :submit}.merge(form_tabindex)
+        hash[:value] = value if value
+        Ramaze::Gestalt.build{ tr{ td(:colspan => 2){ input(hash) }}}
+      end
+
       def form_input(label, hash)
         form_build(:input, label, hash)
       end
@@ -32,15 +44,13 @@ module Ramaze
       def form_build(tag_name, label, hash, &block)
         form_id = "form-#{hash[:name]}"
         opts = hash.merge(form_tabindex.merge(:id => form_id))
-        errors = form_errors
+        error = form_errors[opts[:name]]
 
         Ramaze::Gestalt.build do
           tr do
             td do
               label(:for => form_id){ "#{label}:" }
-              if error = errors[opts[:name]]
-                div(:class => "error"){ error }
-              end
+              span(:class => "error"){ error } if error
             end
             td do
               tag(tag_name, opts, &block)

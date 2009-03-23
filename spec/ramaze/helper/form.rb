@@ -25,6 +25,10 @@ class SpecHelperForm < Ramaze::Controller
   def file
     form_file('File', :file)
   end
+
+  def hidden
+    form_hidden(:secret, request[:secret])
+  end
 end
 
 describe Ramaze::Helper::Form do
@@ -166,5 +170,37 @@ describe Ramaze::Helper::Form do
     input[:value].should.be.nil
     input[:checked].should.be.nil
     input[:tabindex].should == '1'
+  end
+
+  it 'provides empty hidden input' do
+    got = get('/hidden')
+
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
+
+    label.should.be.nil
+
+    input[:id].should.be.nil
+    input[:type].should == 'hidden'
+    input[:name].should == 'secret'
+    input[:value].should == ''
+    input[:checked].should.be.nil
+    input[:tabindex].should.be.nil
+  end
+
+  it 'provides filled hidden input' do
+    got = get('/hidden?secret=fish')
+
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
+
+    label.should.be.nil
+
+    input[:id].should.be.nil
+    input[:type].should == 'hidden'
+    input[:name].should == 'secret'
+    input[:value].should == 'fish'
+    input[:checked].should.be.nil
+    input[:tabindex].should.be.nil
   end
 end
