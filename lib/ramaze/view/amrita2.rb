@@ -5,7 +5,6 @@ module Ramaze
     module Amrita2
       def self.call(action, string)
         # prepare
-        action.copy_variables
         action.instance.extend(::Amrita2::Runtime) # if data.kind_of?(Binding)
 
         # setup

@@ -7,7 +7,6 @@ module Ramaze
         template = ::Tenjin::Template.new
         template.convert(string)
 
-        action.copy_variables
         html = template.ramaze_render(action.binding)
 
         return html, 'text/html'
