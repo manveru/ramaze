@@ -29,6 +29,31 @@ class SpecHelperForm < Ramaze::Controller
   def hidden
     form_hidden(:secret, request[:secret])
   end
+
+  def select_array
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages)
+  end
+
+  def select_array_size
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages, :size => 5)
+  end
+
+  def select_array_multiple
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages, :multiple => true)
+  end
+
+  def select_array_selected
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages, :selected => 'German')
+  end
+
+  def select_hash
+    languages = {'English' => 'en', 'German' => 'de', 'Japanese' => 'ja'}
+    form_select('Languages', :languages, languages)
+  end
 end
 
 describe Ramaze::Helper::Form do
@@ -40,15 +65,15 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label[:for].should == 'form-username'
+    label.attributes.should == {'for' => 'form-username'}
     label.inner_text.should == 'Username:'
 
-    input[:id].should == 'form-username'
-    input[:type].should == 'text'
-    input[:name].should == 'username'
-    input[:value].should == ''
-    input[:checked].should.be.nil
-    input[:tabindex].should == '1'
+    input.attributes.should == {
+      'id' => 'form-username',
+      'type' => 'text',
+      'name' => 'username',
+      'value' => '',
+      'tabindex' => '1'}
   end
 
   it 'provides filled text input' do
@@ -57,15 +82,15 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label[:for].should == 'form-username'
+    label.attributes.should == {'for' => 'form-username'}
     label.inner_text.should == 'Username:'
 
-    input[:id].should == 'form-username'
-    input[:type].should == 'text'
-    input[:name].should == 'username'
-    input[:value].should == 'manveru'
-    input[:checked].should.be.nil
-    input[:tabindex].should == '1'
+    input.attributes.should == {
+      'id' => 'form-username',
+      'type' => 'text',
+      'name' => 'username',
+      'value' => 'manveru',
+      'tabindex' => '1'}
   end
 
   it 'provides unchecked checkbox input' do
@@ -74,15 +99,14 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label[:for].should == 'form-admin'
+    label.attributes.should == {'for' => 'form-admin'}
     label.inner_text.should == 'Administrator:'
 
-    input[:id].should == 'form-admin'
-    input[:type].should == 'checkbox'
-    input[:name].should == 'admin'
-    input[:value].should.be.nil
-    input[:checked].should.be.nil
-    input[:tabindex].should == '1'
+    input.attributes.should == {
+      'id' => 'form-admin',
+      'type' => 'checkbox',
+      'name' => 'admin',
+      'tabindex' => '1'}
   end
 
   it 'provides checked checkbox input' do
@@ -91,15 +115,15 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label[:for].should == 'form-admin'
+    label.attributes.should == {'for' => 'form-admin'}
     label.inner_text.should == 'Administrator:'
 
-    input[:id].should == 'form-admin'
-    input[:type].should == 'checkbox'
-    input[:name].should == 'admin'
-    input[:value].should.be.nil
-    input[:checked].should == 'checked'
-    input[:tabindex].should == '1'
+    input.attributes.should == {
+      'id' => 'form-admin',
+      'type' => 'checkbox',
+      'name' => 'admin',
+      'checked' => 'checked',
+      'tabindex' => '1'}
   end
 
   it 'provides password input' do
@@ -108,15 +132,14 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label[:for].should == 'form-password'
+    label.attributes.should == {'for' => 'form-password'}
     label.inner_text.should == 'Password:'
 
-    input[:id].should == 'form-password'
-    input[:type].should == 'password'
-    input[:name].should == 'password'
-    input[:value].should.be.nil
-    input[:checked].should.be.nil
-    input[:tabindex].should == '1'
+    input.attributes.should == {
+      'id' => 'form-password',
+      'type' => 'password',
+      'name' => 'password',
+      'tabindex' => '1'}
   end
 
   it 'provides empty textarea' do
@@ -125,16 +148,14 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, textarea = doc.at(:label), doc.at(:textarea)
 
-    label[:for].should == 'form-text'
+    label.attributes.should == {'for' => 'form-text'}
     label.inner_text.should == 'Text:'
 
-    textarea[:id].should == 'form-text'
-    textarea[:type].should.be.nil
-    textarea[:name].should == 'text'
-    textarea[:value].should.be.nil
-    textarea[:checked].should.be.nil
-    textarea[:tabindex].should == '1'
     textarea.inner_text.should == ''
+    textarea.attributes.should == {
+      'id' => 'form-text',
+      'name' => 'text',
+      'tabindex' => '1'}
   end
 
   it 'provides filled textarea' do
@@ -143,16 +164,14 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, textarea = doc.at(:label), doc.at(:textarea)
 
-    label[:for].should == 'form-text'
+    label.attributes.should == {'for' => 'form-text'}
     label.inner_text.should == 'Text:'
 
-    textarea[:id].should == 'form-text'
-    textarea[:type].should.be.nil
-    textarea[:name].should == 'text'
-    textarea[:value].should.be.nil
-    textarea[:checked].should.be.nil
-    textarea[:tabindex].should == '1'
     textarea.inner_text.should == 'foobar'
+    textarea.attributes.should == {
+      'id' => 'form-text',
+      'name' => 'text',
+      'tabindex' => '1'}
   end
 
   it 'provides file upload input' do
@@ -161,15 +180,15 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label[:for].should == 'form-file'
+    label.attributes.should == {'for' => 'form-file'}
     label.inner_text.should == 'File:'
 
-    input[:id].should == 'form-file'
-    input[:type].should == 'file'
-    input[:name].should == 'file'
-    input[:value].should.be.nil
-    input[:checked].should.be.nil
-    input[:tabindex].should == '1'
+    input.inner_text.should == ''
+    input.attributes.should == {
+      'id' => 'form-file',
+      'name' => 'file',
+      'tabindex' => '1',
+      'type' => 'file'}
   end
 
   it 'provides empty hidden input' do
@@ -180,12 +199,11 @@ describe Ramaze::Helper::Form do
 
     label.should.be.nil
 
-    input[:id].should.be.nil
-    input[:type].should == 'hidden'
-    input[:name].should == 'secret'
-    input[:value].should == ''
-    input[:checked].should.be.nil
-    input[:tabindex].should.be.nil
+    input.inner_text.should == ''
+    input.attributes.should == {
+      'name' => 'secret',
+      'type' => 'hidden',
+      'value' => ''}
   end
 
   it 'provides filled hidden input' do
@@ -196,11 +214,143 @@ describe Ramaze::Helper::Form do
 
     label.should.be.nil
 
-    input[:id].should.be.nil
-    input[:type].should == 'hidden'
-    input[:name].should == 'secret'
-    input[:value].should == 'fish'
-    input[:checked].should.be.nil
-    input[:tabindex].should.be.nil
+    input.inner_text.should == ''
+    input.attributes.should == {
+      'name' => 'secret',
+      'type' => 'hidden',
+      'value' => 'fish'}
+  end
+
+  it 'provides array select' do
+    got = get('/select_array')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides sized array select' do
+    got = get('/select_array_size')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '5',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides multiple array select' do
+    got = get('/select_array_multiple')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'multiple' => 'multiple',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides preselected array select' do
+    got = get('/select_array_selected')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German', 'selected' => 'selected'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides hash select' do
+    got = get('/select_hash')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.sort.
+      should == [['English',  {'value' => 'en'}],
+                 ['German',   {'value' => 'de'}],
+                 ['Japanese', {'value' => 'ja'}]]
+  end
+
+  it 'provides hash select' do
+    got = get('/select_hash')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.sort.
+      should == [['English',  {'value' => 'en'}],
+                 ['German',   {'value' => 'de'}],
+                 ['Japanese', {'value' => 'ja'}]]
   end
 end

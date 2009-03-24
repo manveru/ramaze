@@ -26,9 +26,7 @@ module Ramaze
       end
 
       def form_hidden(name, value = nil)
-        Ramaze::Gestalt.build{
-          input(:type => :hidden, :name => name, :value => value)
-        }
+        Ramaze::Gestalt.build{ input(:type => :hidden, :name => name, :value => value) }
       end
 
       def form_submit(value = nil)
@@ -37,14 +35,47 @@ module Ramaze
         Ramaze::Gestalt.build{ tr{ td(:colspan => 2){ input(hash) }}}
       end
 
+      def form_select(label, name, values, hash = {})
+        name = name.to_sym
+        id = "form-#{name}"
+
+        s_args = {:name => name, :id => id}.merge(form_tabindex)
+        s_args[:multiple] = :multiple if hash[:multiple]
+        s_args[:size] = hash[:size] || 1
+
+        has_selected, selected = hash.key?(:selected), hash[:selected]
+        error = form_errors[name]
+
+        g = Ramaze::Gestalt.new
+        g.tr do
+          g.td do
+            g.label(:for => id){ "#{label}:" }
+            g.span(:class => 'error'){ error } if error
+          end
+          g.td do
+            g.select(s_args) do
+              values.each do |key, value|
+                value ||= key
+                o_args = {:value => value}
+                o_args[:selected] = :selected if has_selected and value == selected
+                g.option(o_args){ key }
+              end
+            end
+          end
+        end
+
+        g.to_s
+      end
+
       def form_input(label, hash)
         form_build(:input, label, hash)
       end
 
       def form_build(tag_name, label, hash, &block)
-        form_id = "form-#{hash[:name]}"
+        name = hash[:name].to_sym
+        form_id = "form-#{name}"
         opts = hash.merge(form_tabindex.merge(:id => form_id))
-        error = form_errors[opts[:name]]
+        error = form_errors[name]
 
         Ramaze::Gestalt.build do
           tr do
