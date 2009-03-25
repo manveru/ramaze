@@ -7,8 +7,8 @@ module Ramaze
             describe.behaves_like :mock
 
             describe.it '/' do
-              get('/').body.strip.should ==
-                "<a href=\"/\">Home</a> | <a href=\"/internal\">internal</a> | <a href=\"/external\">external</a>"
+              get('/').body.strip.should =~
+                %r{<a href="/">Home</a> \| <a href="/internal">internal</a> \| <a href="/external">external</a>}
             end
 
             %w[/internal /external].each do |url|
