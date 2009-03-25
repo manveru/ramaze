@@ -8,7 +8,7 @@ task 'spec' do
   require 'open3'
   require 'scanf'
 
-  specs = Dir['spec/{ramaze,snippets}/**/*.rb']
+  specs = Dir['spec/{examples,ramaze,snippets}/**/*.rb']
 
   some_failed = false
   total = specs.size
