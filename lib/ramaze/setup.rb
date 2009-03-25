@@ -31,8 +31,8 @@ module Ramaze
   class GemSetup
     def initialize(options = {}, &block)
       @gems = []
-      @verbose = options.delete(:verbose)
-      @options = options
+      @options = options.dup
+      @verbose = @options.delete(:verbose)
 
       run(&block)
     end
