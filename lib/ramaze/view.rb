@@ -20,9 +20,12 @@ module Ramaze
     # * markaby - though we should advertise remarkably instead
     # * XSLT    - this one is just crazy, someone up for the task?
 
+    # Engines provided by Innate are:
+    # ERB, Etanni, None
+
     auto_register :Amrita2,    :amrita, :amr, :a2html
     auto_register :Erubis,     :erubis, :rhtml
-    auto_register :Ezamar,     :xhtml, :zmr
+    auto_register :Ezamar,     :zmr
     auto_register :Haml,       :haml
     auto_register :Liquid,     :liquid
     auto_register :Maruku,     :mkd, :md
