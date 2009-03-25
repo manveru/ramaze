@@ -2,11 +2,10 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Nagoro
 
   def index
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{ #{a('Home',:/)} | #{a(:internal)} | #{a(:external)} }
   end
 
   def internal *args
@@ -18,12 +17,12 @@ class MainController < Ramaze::Controller
   </head>
   <body>
   <h1>The internal Template for Nagoro</h1>
-    #{A 'Home', :href => :/}
+    #{a('Home',:/)}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      #{A("internal/one")}<br />
-      #{A("internal/one/two/three")}<br />
-      #{A("internal/one?foo=bar")}<br />
+      #{a("internal/one")}<br />
+      #{a("internal/one/two/three")}<br />
+      #{a("internal/one?foo=bar")}<br />
     </p>
     <div>
       The arguments you have passed to this action are:
