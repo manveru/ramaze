@@ -8,7 +8,7 @@ module Ramaze
 
             describe.it '/' do
               get('/').body.strip.should =~
-                %r{<a href="/">Home</a> \| <a href="/internal">internal</a> \| <a href="/external">external</a>}
+                %r{<a href\s*=\s*"/">Home</a> \| <a href\s*=\s*"/internal">internal</a> \| <a href\s*=\s*"/external">external</a>}
             end
 
             %w[/internal /external].each do |url|
