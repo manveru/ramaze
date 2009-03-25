@@ -34,6 +34,8 @@ class SpecHelperAuthMethod < SpecHelperAuth
   map '/method'
   trait :auth_table => :auth_table
 
+  private
+
   def auth_table
     { 'manveru' => $password }
   end
