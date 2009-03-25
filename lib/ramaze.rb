@@ -40,6 +40,8 @@ module Ramaze
   require 'ramaze/files'
   require 'ramaze/middleware_compiler'
   require 'ramaze/plugin'
+  require 'ramaze/request'
+  require 'ramaze/current'
 
   # Usually it's just mental overhead to remember which module has which
   # constant, so we just assign them here as well.
