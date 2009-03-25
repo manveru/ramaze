@@ -32,7 +32,7 @@ module Ramaze
     auto_register :Nagoro,     :nag
     auto_register :RedCloth,   :redcloth
     auto_register :Sass,       :sass
-    auto_register :Tenjin,     :rbhtml
+    auto_register :Tenjin,     :rbhtml, :tenjin
     auto_register :Remarkably, :rem
     auto_register :Tagz,       :rb, :tagz
   end
