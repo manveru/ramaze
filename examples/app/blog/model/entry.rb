@@ -72,16 +72,6 @@ module Blog
                      :content => 'Exciting news today, first post on this blog')
       entry.add_tag(Tag.create(:name => 'ramaze'))
       entry.add_tag(Tag.create(:name => 'blog'))
-
-      require 'faker'
-
-      20.times do
-        title = Faker::Lorem.sentence
-        content = Faker::Lorem.paragraphs(1 + rand(20)).join("\n\n")
-        tags = Faker::Lorem.words
-        entry = create(:title => title, :content => content)
-        tags.each{|tag| entry.add_tag(Tag.find_or_create(:name => tag)) }
-      end
     end
   end
 end
