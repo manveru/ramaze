@@ -2,11 +2,10 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Amrita2
 
   def index
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{ #{a('Home', :/)} | #{a(:internal)} | #{a(:external)} }
   end
 
   def internal(*args)
@@ -47,19 +46,19 @@ __AMRITA2__
   end
 
   def link_home
-    A('Home', :href => '/')
+    a('Home', :/)
   end
 
   def link_one
-    A("/#{@place}/one", :href => Rs(@place, :one))
+    a("/#{@place}/one", Rs(@place, :one))
   end
 
   def link_two
-    A("/#{@place}/one/two/three", :href => Rs(@place, :one, :two, :three))
+    a("/#{@place}/one/two/three", Rs(@place, :one, :two, :three))
   end
 
   def link_three
-    A("/#{@place}?foo=bar", :href => Rs(@place, :one, :foo => :bar))
+    a("/#{@place}?foo=bar", Rs(@place, :one, :foo => :bar))
   end
 
   def inspect_parameters

@@ -1,16 +1,9 @@
 require 'spec/helper'
+require 'ramaze/spec/helper/template_examples'
 
 spec_require 'amrita2'
 require 'examples/templates/template_amrita2'
 
-describe 'Template Amrita2' do
-  behaves_like 'http'
-  ramaze
-
-  it '/external' do
-    html = get('/external').body
-    html.should.not == nil
-    html.should =~ %r{<title>Template::Amrita2 external</title>}
-    html.should =~ %r{<h1>The external Template for Amrita2</h1>}
-  end
+describe 'Template Amrita2' do |describe|
+  ::Ramaze::Spec::Examples::Templates.tests( describe, 'Amrita2' )
 end

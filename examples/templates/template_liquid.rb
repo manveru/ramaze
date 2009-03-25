@@ -2,20 +2,19 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Liquid
 
   def index
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{ #{a('Home',:/)} | #{a(:internal)} | #{a(:external)} }
   end
 
   def liquid_hash(place, *args)
     {
       'header'     => "The #{place} Template for Liquid",
-      'link_home'  => A('Home', :href => :/),
-      'link_one'   => A("#{place}/one"),
-      'link_two'   => A("#{place}/one/two/three"),
-      'link_three' => A("#{place}?foo=Bar"),
+      'link_home'  => a('Home',:/),
+      'link_one'   => a("#{place}/one"),
+      'link_two'   => a("#{place}/one/two/three"),
+      'link_three' => a("#{place}?foo=Bar"),
       'args'       => args,
       'args_empty' => args.empty?,
       'params'     => request.params.inspect

@@ -2,13 +2,12 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :RedCloth
   layout :layout
 
   def index
     @place = :home
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{ #{a('Home',:/)} | #{a(:internal)} | #{a(:external)} }
   end
 
   def internal(*args)
@@ -17,12 +16,12 @@ class MainController < Ramaze::Controller
     <<__REDCLOTH__
 h1. The <%= @place %> Template for RedCloth
 
-"Home":<%= Rs(:/) %>
+"Home":<%= r(:/) %>
 
 Here you can pass some stuff if you like, parameters are just passed like this:<br />
-"<%= @place %>/one":<%= Rs(@place, :one) %><br />
-"<%= @place %>/two/three":<%= Rs(@place, :two, :three) %><br />
-"<%= @place %>/one?foo=bar":<%= Rs(@place, :one, :foo => :bar) %>
+"<%= @place %>/one":<%= r(@place, :one) %><br />
+"<%= @place %>/two/three":<%= r(@place, :two, :three) %><br />
+"<%= @place %>/one?foo=bar":<%= r(@place, :one, :foo => :bar) %>
 
 The arguments you have passed to this action are:<br />
 <% if @args.empty? %>
