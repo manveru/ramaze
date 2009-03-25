@@ -75,6 +75,11 @@ module Ramaze
       _gestalt_call_tag :p, args, &block
     end
 
+    # workaround for Kernel#select to make <select></select> work
+    def select(*args, &block)
+      _gestalt_call_tag(:select, args, &block)
+    end
+
     def _gestalt_call_tag(name, args, &block)
       if args.size == 1 and args[0].kind_of? Hash
         # args are just attributes, children in block...
