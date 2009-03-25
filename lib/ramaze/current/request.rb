@@ -40,5 +40,58 @@ module Ramaze
       charset = charsets.split(',', 2).first
       charset == '*' ? default : charset
     end
+
+    # Try to find out which languages the client would like to have and sort
+    # them by weight, (most wanted first).
+    #
+    # Returns and array of locales from env['HTTP_ACCEPT_LANGUAGE].
+    # e.g. ["fi", "en", "ja", "fr", "de", "es", "it", "nl", "sv"]
+    #
+    # Usage:
+    #
+    #   request.accept_language
+    #   # => ['en-us', 'en', 'de-at', 'de']
+    #
+    # @param [String #to_s] string the value of HTTP_ACCEPT_LANGUAGE
+    # @return [Array] list of locales
+    # @see Request#accept_language_with_weight
+    # @author manveru
+    def accept_language(string = env['HTTP_ACCEPT_LANGUAGE'])
+      return [] unless string
+
+      accept_language_with_weight(string).map{|lang, weight| lang }
+    end
+    alias locales accept_language
+
+    # Transform the HTTP_ACCEPT_LANGUAGE header into an Array with:
+    #
+    #   [[lang, weight], [lang, weight], ...]
+    #
+    # This algorithm was taken and improved from the locales library.
+    #
+    # Usage:
+    #
+    #   request.accept_language_with_weight
+    #   # => [["en-us", 1.0], ["en", 0.8], ["de-at", 0.5], ["de", 0.3]]
+    #
+    # @param [String #to_s] string the value of HTTP_ACCEPT_LANGUAGE
+    # @return [Array] array of [lang, weight] arrays
+    # @see Request#accept_language
+    # @author manveru
+    def accept_language_with_weight(string = env['HTTP_ACCEPT_LANGUAGE'])
+      string.to_s.gsub(/\s+/, '').split(',').
+            map{|chunk|        chunk.split(';q=', 2) }.
+            map{|lang, weight| [lang, weight ? weight.to_f : 1.0] }.
+        sort_by{|lang, weight| -weight }
+    end
+
+    INTERESTING_HTTP_VARIABLES =
+      (/USER|HOST|REQUEST|REMOTE|FORWARD|REFER|PATH|QUERY|VERSION|KEEP|CACHE/)
+
+    # Interesting HTTP variables from env
+    def http_variables
+      env.reject{|key, value| key.to_s !~ INTERESTING_HTTP_VARIABLES }
+    end
+    alias http_vars http_variables
   end
 end
