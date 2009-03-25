@@ -5,6 +5,6 @@ spec_require 'haml'
 require 'examples/templates/template_haml'
 
 
-describe 'Template Habl' do |describe|
+describe 'Template Haml' do |describe|
   ::Ramaze::Spec::Examples::Templates.tests( describe, 'Haml' )
 end
