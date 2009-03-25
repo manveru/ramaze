@@ -1,0 +1,6 @@
+<div id="entries">
+  <?r @entries.each do |entry| ?>
+    #{Blog::Entries.partial_content(:show, :entry => entry)}
+  <?r end ?>
+  #{ @entries.navigation }
+</div>

@@ -1,0 +1,33 @@
+<div class="entry hentry">
+  <h2 class="title entry-title">
+    <a href="#{@entry.href}" rel="bookmark" title="#{h @entry.title}">#{h @entry.title}</a>
+  </h2>
+
+  <div class="entry-content">
+    #{@entry.to_html}
+  </div>
+
+  <ul class="tags">
+    <?r @entry.tags.sort.each do |tag| ?>
+      <li><a href="#{Blog::Tags.r(tag)}" rel="tag">#{h tag}</a></li>
+    <?r end ?>
+  </ul>
+
+  <ul class="info post-info">
+    <li>
+      Published
+      <abbr class="published" title="#{@entry.published.iso8601}">#{@entry.published.strftime('%A, %d.%m.%Y, %R')}</abbr>
+    </li>
+    <li>
+      <address class="vcard author">
+        by <a class="url fn" href="#{author_url}">#{Blog.options.author.name}</a>
+      </address>
+    </li>
+    <?r if logged_in? ?>
+      <li class="actions">
+        #{a 'Edit', Blog::Entries.r(:edit, @entry.slug)}
+        #{a 'Delete', Blog::Entries.r(:delete, @entry.slug)}
+      </li>
+    <?r end ?>
+  </ul>
+</div>

@@ -1,29 +1,20 @@
-class MainController < Ramaze::Controller
-  layout '/layout'
+module Blog
+  class Main < Controller
+    map '/'
+    helper :paginate
+    provide(:rss, :type => 'application/rss+xml', :engine => :Nagoro)
+    provide(:atom, :type => 'application/atom+xml', :engine => :Nagoro)
 
-  def index
-    @entries = Entry.order(:created.desc).all
-  end
+    def index
+      data = Entry.order(:published.desc)
+      @entries = paginate(data, :limit => Blog.options.list_size)
+    end
 
-  def delete id
-    entry = Entry[id]
-    entry.delete
-    redirect :/
-  end
-
-  def edit id
-    @entry = Entry[id]
-    redirect_referrer unless @entry
-  end
-
-  def create
-    Entry.add(*request[:title, :content])
-    redirect :/
-  end
-
-  def save
-    redirect_referer unless  entry = Entry[request[:id]]
-    entry.update(*request[:title, :content])
-    redirect :/
+    def feed
+      @entries = Entry.history(Blog.options.feed_size)
+      @updated = @entries.last.updated
+      @generator = 'Ramaze Blog 2009.03.24'
+      @generator_uri = 'http://github.com/manveru/rablo'
+    end
   end
 end

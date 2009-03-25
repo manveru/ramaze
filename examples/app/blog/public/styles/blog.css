@@ -1,8 +1,82 @@
 body {
   margin: 0;
   padding: 0;
+  background: #ffe;
 }
 
+h1 {
+  background: #ffa;
+  color: #884;
+  padding: 0.2em;
+  text-align: center;
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+#actions {
+  padding: 0.1em 0.5em 0.5em 0.5em;
+  margin-right: 1em;
+  float: right;
+  position: relative;
+  top: -2em;
+}
+
+#actions a {
+  text-decoration: none;
+  margin: 0.2em;
+  background: #ff6;
+}
+
+.entry {
+  background: #ffa;
+  margin: auto;
+  margin-bottom: 1em;
+  width: 70%;
+  padding: 1em;
+}
+
+.entry .header {
+}
+
+.entry .header .title {
+  font-size: 1.5em;
+}
+
+.entry .header .created {
+  font-size: 0.8em;
+  display: none;
+  color: #aaa;
+}
+
+.entry .header .actions {
+  text-align: right;
+  position: relative;
+  top: -1em;
+}
+
+.entry .header .actions a {
+  background: #ff6;
+  margin: 0.2em;
+  background: #ff0;
+  text-decoration: none;
+}
+
+.entry .content {
+  background: #ffe;
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
+.entry .updated {
+  font-size: 0.8em;
+  text-align: right;
+  color: #aaa;
+}
+
+/*
 h1 {
   background: #FFC;
   margin: 0;
@@ -130,3 +204,8 @@ div.entry div.updated {
   color: #888;
   margin: -1.25em 0.5em 0 0;
 }
+*/font-size: 8pt;
+  color: #888;
+  margin: -1.25em 0.5em 0 0;
+}
+*/

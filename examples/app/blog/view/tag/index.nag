@@ -1,0 +1,5 @@
+<?r @tags.each do |tag| ?>
+  <?r tag.entries.each do |entry| ?>
+    #{Blog::Entries.partial_content(:show, :entry => entry)}
+  <?r end ?>
+<?r end ?>

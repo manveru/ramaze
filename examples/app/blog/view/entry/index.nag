@@ -1,0 +1,18 @@
+#{ Blog::Entries.partial_content(:show, :entry => @entry) }
+<div class="comments">
+  <div class="count">
+    <?r count = @entry.comments.count ?>
+    <?r if count == 1 ?>
+      There is one comment
+    <?r elsif count > 1 ?>
+      There are #{count} comments for this entry.
+    <?r else ?>
+      No comments yet.
+    <?r end ?>
+  </div>
+
+  <?r @entry.comments.each do |comment| ?>
+    #{ Blog::Comments.partial_content(:show, :comment => comment) }
+  <?r end ?>
+  #{ Blog::Comments.partial_content(:form, :entry => @entry) }
+</div>

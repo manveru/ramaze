@@ -1,0 +1,10 @@
+<form method="post" action="#{r(:create)}">
+  #{form_hidden :entry_id, @entry.id}
+  <table>
+    #{form_text 'Name', :author}
+    #{form_text 'Homepage', :homepage}
+    #{form_text 'E-mail', :email}
+    #{form_textarea 'Comment', :content}
+    #{form_submit 'Send comment'}
+  </table>
+</form>

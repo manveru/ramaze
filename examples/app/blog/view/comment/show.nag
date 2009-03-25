@@ -1,0 +1,7 @@
+<div class="comment">
+  <div class="comment-content">#{h @comment.content}</div>
+  <div class="comment-info">
+    <span class="published">#{@comment.published.strftime('%A, %d.%m.%Y, %R')}</span>
+    <span class="author">#{a @comment.author, @comment.homepage}</span>
+  </div>
+</div>
