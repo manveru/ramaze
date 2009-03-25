@@ -2,8 +2,7 @@ require 'spec/helper'
 require 'examples/basic/linking'
 
 describe 'Linking' do
-  behaves_like 'http'
-  ramaze
+  behaves_like :mock
 
   it 'should provide a link to help' do
     r = get('/').body
