@@ -3,15 +3,15 @@
     %title= "Template::Haml #@place"
   %body
     %h1= @title
-    = A('Home', :href => :/)
+    = a('Home',:/)
     %p
       Here you can pass some stuff if you like, parameters are just passed like this:
       %br/
-      = A("#@place/one")
+      = a("#@place/one")
       %br/
-      = A("#@place/one/two/three")
+      = a("#@place/one/two/three")
       %br/
-      = A("#@place/one?foo=bar")
+      = a("#@place/one?foo=bar")
     %div 
       The arguments you have passed to this action are:
       - if @args.empty?

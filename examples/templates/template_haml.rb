@@ -2,11 +2,10 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Haml
 
   def index
-    %{#{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)}}
+    %{#{a('Home',:/)} | #{a(:internal)} | #{a(:external)}}
   end
 
   def internal *args
@@ -20,15 +19,15 @@ class MainController < Ramaze::Controller
     %title= "Template::Haml #@place"
   %body
     %h1= @title
-    = A('Home', :href => :/)
+    = a('Home',:/)
     %p
       Here you can pass some stuff if you like, parameters are just passed like this:
       %br/
-      = A("#@place/one")
+      = a("#@place/one")
       %br/
-      = A("#@place/one/two/three")
+      = a("#@place/one/two/three")
       %br/
-      = A("#@place/one?foo=bar")
+      = a("#@place/one?foo=bar")
     %div
       The arguments you have passed to this action are:
       - if @args.empty?
