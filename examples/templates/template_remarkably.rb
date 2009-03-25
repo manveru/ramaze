@@ -2,13 +2,12 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Remarkably
 
-  include Remarkably::Common
+  helper :remarkably
 
   def index
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{ #{a('Home', :href => r(:/) )} | #{a(:internal,:href => r(:internal) )} | #{a(:external, :href => r(:external) )} }
   end
 
   def internal *args
@@ -19,15 +18,15 @@ class MainController < Ramaze::Controller
       end
       body do
         h1 "The #@place Template for Remarkably"
-        a("Home", :href => R(:/))
+        a("Home", :href => r(:/))
         P do
           text "Here you can pass some stuff if you like, parameters are just passed like this:"
           br
-          a("#@place/one", :href => Rs( @place, :one))
+          a("#@place/one", :href => r( @place, :one))
           br
-          a("#@place/one/two/three", :href => Rs( @place, :one, :two, :three))
+          a("#@place/one/two/three", :href => r( @place, :one, :two, :three))
           br
-          a("#@place/one?foo=bar", :href => Rs( @place, :one, :foo => :bar))
+          a("#@place/one?foo=bar", :href => r( @place, :one, :foo => :bar))
           br
         end
         div do
