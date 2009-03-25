@@ -14,6 +14,6 @@ describe Ramaze::Helper::Maruku do
   behaves_like :mock
 
   it 'converts a markdown string to html' do
-    get('/').body.should == "<h1 id='hello'>Hello</h1>"
+    get('/').body.should == %{<h1 id="hello">Hello</h1>}
   end
 end
