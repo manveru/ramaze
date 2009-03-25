@@ -24,10 +24,6 @@ class SimpleController < Ramaze::Controller
     "simple"
   end
 
-  def simple
-    request.inspect
-  end
-
   def join(first, second)
     [first, second].join
   end
