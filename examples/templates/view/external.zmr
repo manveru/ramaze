@@ -1,15 +1,15 @@
 <html>
   <head>
-    <title>Template::Ezamar internal</title>
+    <title>Template::Ezamar external</title>
   </head>
   <body>
-  <h1>The internal Template for Ezamar</h1>
-    #{A 'Home', :href => :/}
+  <h1>The external Template for Ezamar</h1>
+    #{a('Home',:/)}
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      #{A("internal/one")}<br />
-      #{A("internal/one/two/three")}<br />
-      #{A("internal/one?foo=bar")}<br />
+      #{a("external/one")}<br />
+      #{a("external/one/two/three")}<br />
+      #{a("external/one?foo=bar")}<br />
     </p>
     <div>
       The arguments you have passed to this action are:
