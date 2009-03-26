@@ -56,11 +56,6 @@ Ramaze offers following features at the moment:
 
 
 * Templates
-  * [Amrita2](http://amrita2.rubyforge.org/)
-
-    Amrita2 is a xml/xhtml template library for Ruby. It makes html documents
-    from a template and a model data.
-
   * [Erubis](http://rubyforge.org/projects/erubis)
 
     Erubis is a fast, secure, and very extensible implementation of eRuby.
