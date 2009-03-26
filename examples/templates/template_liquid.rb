@@ -61,4 +61,4 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze.start
+Ramaze.start :file => __FILE__

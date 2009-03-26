@@ -27,4 +27,3 @@ module Ramaze
     end
   end
 end
-Ramaze.options.views = '../../../examples/templates/view'

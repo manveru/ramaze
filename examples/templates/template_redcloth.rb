@@ -55,4 +55,4 @@ __HTML__
   end
 end
 
-Ramaze.start
+Ramaze.start :file => __FILE__
