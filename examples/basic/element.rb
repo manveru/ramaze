@@ -30,7 +30,7 @@ end
 
 class MainController < Ramaze::Controller
   map '/'
-  provide :html => :nagoro
+  engine :Nagoro
 
   def index
     %{
