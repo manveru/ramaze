@@ -24,7 +24,7 @@ class SpecHelperPartialSub < SpecHelperPartialMain
   map '/sub'
 
   def entry
-    @entry = 'Hello'
+    @entry ||= 'Hello'
 
     'Entry: #{@entry}'
   end
@@ -34,9 +34,7 @@ describe 'Ramaze::Helper::Partial' do
   behaves_like :mock
 
   it 'renders partial content' do
-    SpecHelperPartialSub.partial_content(:entry, :entry => 'foo').
-      should == 'Entry: foo'
     SpecHelperPartialSub.partial_content(:entry).should == 'Entry: Hello'
-#     get('/entries').body.should == ''
+    SpecHelperPartialSub.partial_content(:entry, :entry => 'foo').should == 'Entry: foo'
   end
 end
