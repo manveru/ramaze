@@ -6,11 +6,23 @@ module Blog
 
     def index(slug)
       @entry = Entry.from_slug(slug)
-      @tabindex = 10
       redirect Blog::Main.r('/') unless @entry
+      @tabindex = 10 # outsmart the sidebar tabindex for login
     end
 
+    # just making the work in the template easier
     def show
+      @id = @entry.id
+      @href = @entry.href
+      @comment_href = @entry.comment_href
+      @respond_href = @entry.respond_href
+      @trackback_href = @entry.trackback_href
+
+      @title = h(@entry.title)
+      @pub_iso = @entry.published.iso8601
+      @pub_formatted = @entry.published.strftime(Blog.options.time_format)
+
+      @comment_count = number_counter(@entry.comments.count, 'comment')
     end
 
     def feed

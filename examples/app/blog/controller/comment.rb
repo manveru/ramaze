@@ -1,19 +1,45 @@
 module Blog
   class Comments < Controller
     map '/comment'
+    helper :gravatar
 
-    def show(id)
-      @comment = Comment[id]
+    def index(id)
+    end
+
+    def show
+      @pub_formatted = @comment.published.strftime(Blog.options.time_format)
+      @id = @comment.id
+      @author = h(@comment.author)
+      @homepage = @comment.homepage
+      @content = h(@comment.content)
+      @href = @comment.href
+      @gravatar = gravatar(@comment.email.to_s, :size => 80, :default => :wavatar)
     end
 
     def create
       @comment = Comment.new
-      @comment.update(request)
+      @entry = Entry[request[:entry_id]]
 
-      redirect @comment.href
+      if @comment.update(@entry, request)
+        redirect @comment.href
+      else
+        partial_content(:form, :comment => @comment, :entry => @entry)
+      end
     end
 
     def form
+      @comment ||= Comment.new
+      form_errors_from_model(@comment)
+    end
+
+    def edit(id)
+      'TODO: not implemted'
+    end
+
+    def delete(id)
+      login_required
+      Comment[id].destroy
+      redirect_referrer
     end
   end
 end

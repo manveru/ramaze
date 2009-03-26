@@ -7,7 +7,7 @@ module Blog
 
     def index
       data = Entry.order(:published.desc)
-      @entries = paginate(data, :limit => Blog.options.list_size)
+      @pager = paginate(data, :limit => Blog.options.list_size)
     end
 
     def feed

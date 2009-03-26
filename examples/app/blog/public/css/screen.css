@@ -6,6 +6,12 @@ body {
 
 a {
   color: #f60;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #a30;
+  text-decoration: underline;
 }
 
 address {
@@ -159,20 +165,74 @@ input {
   text-decoration: none;
 }
 
+.entry .entry-info {
+  background: #ed9;
+  padding: 6px;
+  font-size: 0.9em;
+}
+
 .entry .tags {
   float: left;
-  padding: 0em 0 0 1em;
+  margin: 0;
 }
 
-.entry .info {
-  text-align: right;
-  padding: 0.2em 1em 0.2em 1em;
+.entry .count {
+  float: right;
 }
 
-.entry .info .published {
+.entry .about {
+  clear: both;
+  text-align: center;
 }
 
-.entry .info .actions {
+.entry .actions {
+}
+
+.comments {
+}
+
+.comment {
+  background: #ed9;
+  padding: 6px;
+  margin: 1em;
+}
+
+.comment .comment-content {
+  background: #ffc;
+  padding: 1em;
+  clear: both;
+}
+
+.comment .comment-info {
+  font-size: 0.9em;
+}
+
+.comment .about {
+  float: left;
+  padding: 6px;
+}
+
+.comment .gravatar {
+  float: right;
+  margin: 6px;
+}
+
+.comment .actions {
+  clear: both;
+  font-size: 0.9em;
+  padding: 6px;
+}
+
+.comments form {
+  margin-top: 2em;
+}
+
+.comments textarea {
+  height: 7em;
+}
+
+form .error {
+  color: #f00;
   display: block;
 }
 
@@ -210,29 +270,4 @@ form {
 #form-tags {
   padding: 0.5em;
   width: 100%;
-}
-
-.comments {
-}
-
-.comment {
-  background: #ed9;
-  padding: 6px;
-}
-
-.comment .comment-content {
-  background: #ffc;
-  padding: 1em;
-}
-
-.comment .comment-info {
-  text-align: right;
-}
-
-.comments form {
-  margin-top: 2em;
-}
-
-.comments textarea {
-  height: 7em;
 }

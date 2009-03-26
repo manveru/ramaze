@@ -48,6 +48,18 @@ module Blog
       Blog::Entries.r(:/, slug(id, title))
     end
 
+    def trackback_href
+      Blog::Entries.r(:trackback, slug)
+    end
+
+    def respond_href
+      Blog::Entries.r(:/, "#{slug}#respond")
+    end
+
+    def comment_href
+      Blog::Entries.r(:/, "#{slug}#comments")
+    end
+
     def tags=(tags)
       remove_all_tags
       tags.to_s.downcase.scan(/[^\s,\.]+/).uniq.each{|tag|

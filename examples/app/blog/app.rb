@@ -59,6 +59,9 @@ module Blog
 
     o 'Feed UUID', :uuid,
       'ramaze_blog'
+
+    o "Time format used throughout the blog, see `ri Time.strftime`", :time_format,
+      '%A, %d.%m.%Y at %R'
   end
 end
 
