@@ -44,7 +44,7 @@ module Ramaze
         s_args[:size] = hash[:size] || 1
 
         has_selected, selected = hash.key?(:selected), hash[:selected]
-        error = form_errors[name]
+        error = form_errors[name.to_s]
 
         g = Ramaze::Gestalt.new
         g.tr do
@@ -75,7 +75,7 @@ module Ramaze
         name = hash[:name].to_sym
         form_id = "form-#{name}"
         opts = hash.merge(form_tabindex.merge(:id => form_id))
-        error = form_errors[name]
+        error = form_errors[name.to_s]
 
         Ramaze::Gestalt.build do
           tr do
