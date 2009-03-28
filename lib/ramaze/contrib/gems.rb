@@ -1,4 +1,20 @@
 module Ramaze
+  # === Usage
+  #
+  #  require 'ramaze/contrib/gems'
+  #
+  #  # set install dir
+  #  # Ramaze::Gems.options :install_dir => __DIR__('../asdf')
+  #
+  #  module Ramaze::Gems
+  #    gem 'haml'
+  #    gem 'sequel', '>=1.2.0'
+  #    gem 'hpricot', :source => 'http://code.whytheluckystiff.net'
+  #    gem 'aws-s3', :lib => 'aws/s3'
+  #    gem 'oldmoe-mysql', :source => 'http://gems.github.com', :lib => 'mysqlplus'
+  #    setup
+  #  end
+  #
   module Gems
     @gems = []
 
@@ -63,16 +79,4 @@ module Ramaze
       end
     end
   end
-end
-
-__END__
-Usage example:
-
-module Ramaze::Gems
-  gem 'haml'
-  gem 'sequel', '>=1.2.0'
-  gem 'hpricot', :source => 'http://code.whytheluckystiff.net'
-  gem 'aws-s3', :lib => 'aws/s3'
-
-  setup
 end
