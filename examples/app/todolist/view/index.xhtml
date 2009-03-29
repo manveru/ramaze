@@ -1,0 +1,29 @@
+<form method="post" action="#{r 'create'}">
+  <fieldset>
+    <legend>Add a task by entering a title.</legend>
+    <label for="form-title">Task title:</label>
+    <input id="form-title" name="title" type="text" value="#{@title}" />
+    <input type="submit" value="Create" />
+  </fieldset>
+</form>
+
+#{flashbox}
+
+<?r if @tasks.empty? ?>
+  No Tasks
+<?r else ?>
+  <table summary="tasks in the todolist">
+    <caption>
+      All pending and closed tasks, in order of creation.
+    </caption>
+    <tr><th>Title</th><th>Status</th><th>Toggle</th><th>Delete</th></tr>
+    <?r @tasks.each do |task| ?>
+      <tr class="#{task.status}">
+        <td class="title">  #{h task.title}  </td>
+        <td class="status"> #{task.status.capitalize} </td>
+        <td class="toggle"> #{task.toggle_link} </td>
+        <td class="delete"> #{task.delete_link} </td>
+      </tr>
+    <?r end ?>
+  </table>
+<?r end ?>

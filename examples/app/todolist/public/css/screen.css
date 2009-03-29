@@ -1,0 +1,63 @@
+h1 {
+  text-align: center;
+  color: #33f;
+}
+
+th {
+  color: #33f;
+}
+
+fieldset {
+  border: 0;
+  width: 21em;
+  margin: auto;
+  padding: 1em;
+  margin-bottom: 2em;
+}
+
+fieldset legend {
+  color: #33f;
+}
+
+table {
+  width: 50em;
+  border: 2px solid #eef;
+  margin: auto;
+}
+
+table caption {
+  color: #33f;
+}
+
+tr.done {
+  background: #efe;
+}
+
+tr.pending {
+  background: #fee;
+}
+
+tr:hover {
+  background: #eef;
+}
+
+td {
+  width: 5em;
+}
+
+td.title {
+  font-weight: bold;
+  width: auto;
+}
+
+td a {
+  display: block;
+}
+
+td.toggle a {
+  color: #3a3;
+}
+
+td.delete a {
+  color: #f00;
+}
