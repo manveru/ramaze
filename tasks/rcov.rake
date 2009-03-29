@@ -1,9 +1,7 @@
 desc 'code coverage'
 task :rcov => :clean do
-  specs = Dir['spec/{ramaze,snippets}/**/*.rb']
-  specs -= Dir['spec/ramaze/cache/common.rb']
+  specs = PROJECT_SPECS
 
-  # we ignore adapter as this has extensive specs in rack already.
   ignore = %w[ gem rack bacon innate hpricot nagoro/lib/nagoro ]
 
   if RUBY_VERSION >= '1.8.7'
@@ -14,11 +12,12 @@ task :rcov => :clean do
   end
 
   ignored = ignore.join(',')
+
   cmd = "rcov --aggregate coverage.data --sort coverage -t --%s -x '#{ignored}' %s"
 
   while spec = specs.shift
     puts '', "Gather coverage for #{spec} ..."
     html = specs.empty? ? 'html' : 'no-html'
-    sh(cmd % [html, spec]){|*a| }
+    sh(cmd % [html, spec])
   end
 end
