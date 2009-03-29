@@ -9,6 +9,11 @@ module Ramaze
       into.extend(HelperAccess)
       into.__send__(:include, Trinity)
     end
+
+    # assign some of the default helpers that have no overrides
+    Innate::HelpersHelper.each(:cgi, :aspect, :redirect, :send_file) do |mod|
+      Helper.const_set(mod.name.split('::').last, mod)
+    end
   end
 
   Innate::HelpersHelper.add_path(File.dirname(__FILE__))
