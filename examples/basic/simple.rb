@@ -33,7 +33,7 @@ class SimpleController < Ramaze::Controller
   end
 
   def sum first, second
-    first.to_i + second.to_i
+    "#{first.to_i + second.to_i}"
   end
 
   def post_or_get
