@@ -24,6 +24,8 @@ module Ramaze
     end
 
     def self.setup
+      require 'ramaze/controller/default' if CONTROLLER_LIST.empty?
+
       CONTROLLER_LIST.each do |controller|
         unless controller.ancestral_trait[:provide_set]
           controller.engine(:Etanni)
