@@ -8,13 +8,17 @@ module TodoList
     end
 
     def create
-      title = request[:title]
-      redirect r('/', :title => title) unless request.post? and title
-      Task.create(:title => title)
-      redirect r('/')
+      if request.post? and title = request[:title]
+        title.strip!
+
+        unless title.empty?
+          Task.create :title => title
+        end
+      end
+
+      redirect route('/', :title => title)
     rescue Sequel::DatabaseError => ex
-      flash[:error] = ex.message
-      redirect r('/', :title => title)
+      redirect route('/', :title => title)
     end
 
     def open(title)
