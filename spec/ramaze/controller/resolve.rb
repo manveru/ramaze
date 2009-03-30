@@ -5,7 +5,6 @@ require 'spec/helper'
 
 class MainController < Ramaze::Controller
   map '/'
-  engine :Nagoro
 
   define_method('file.ext'){ 'file.ext' }
   define_method('css__file.css'){ 'file.css' }

@@ -26,7 +26,7 @@ module Ramaze
     def self.setup
       CONTROLLER_LIST.each do |controller|
         unless controller.ancestral_trait[:provide_set]
-          controller.engine(:Nagoro)
+          controller.engine(:Etanni)
           controller.trait(:provide_set => false)
         end
         next if controller.trait[:skip_controller_map]

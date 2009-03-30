@@ -13,7 +13,7 @@ class SpecHelperCache < Ramaze::Controller
   end
 
   def cached_action
-    random
+    random.to_s
   end
 
   private
@@ -29,7 +29,7 @@ class SpecHelperCacheTTL < Ramaze::Controller
   cache_action(:method => :index, :ttl => 1)
 
   def index
-    rand
+    rand.to_s
   end
 end
 

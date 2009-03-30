@@ -20,7 +20,7 @@ class SpecUserHelper < Ramaze::Controller
   end
 
   def login
-    user_login
+    user_login ? 'logged in' : 'failed login'
   end
 
   def profile
@@ -53,7 +53,7 @@ describe Ramaze::Helper::User do
   should 'login' do
     session do |mock|
       mock.get('/status').body.should == 'no'
-      mock.get('/login?name=arthur&password=42')
+      mock.get('/login?name=arthur&password=42').body.should == 'logged in'
       mock.get('/status').body.should == 'yes'
       mock.get('/profile').body.should == MockSequelUser.new.profile
     end
@@ -62,7 +62,7 @@ describe Ramaze::Helper::User do
   should 'login via the callback' do
     session do |mock|
       mock.get('/callback/status').body.should == 'no'
-      mock.get('/callback/login?name=arthur&password=42')
+      mock.get('/callback/login?name=arthur&password=42').body.should == 'logged in'
       mock.get('/callback/status').body.should == 'yes'
       mock.get('/callback/profile').body.should == MockSequelUser.new.profile
     end
