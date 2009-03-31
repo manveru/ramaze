@@ -1,29 +1,37 @@
-Following persons (in alphabetical order) have contributed to Ramaze:
+Following persons have contributed to ramaze.
+(Sorted by number of submitted patches, then alphabetically)
 
-   Aman Gupta            :  aman@ramaze.net
-   Andy Smith            :  andy@tinnedfruit.org
-   Ara T. Howard         :  ara.t.howard@gmail.com
-   Carlo Zottmann        :  carlo@zottmann.org
-   Chris Duncan          :  celldee@gmail.com
-   Christian Neukirchen  :  chneukirchen@gmail.com
-   Clive Crous           :  clive@crous.co.za
-   Colin Shea            :  comp.lang.zenix+ramaze@gmail.com
-   Fabian Buch           :  fabian.buch@fabian-buch.de
-   Gabriele Renzi        :  rff.rff@gmail.com
-   James Tucker          :  raggi@mbk.local
-   Jeremy Evans          :  code@jeremyevans.net
-   Joe Holt              :  joe07734@gmail.com
-   Jonathan Buch         :  john@oxyliquit.de
-   Keita Yamaguchi       :  keita.yamaguchi@gmail.com
-   Lars Olsson           :  lasso@lassoweb.se
-   Leo Borisenko         :  leo.borisenko@gmail.com
-   Martin Hilbig         :  blueonyx@dev-area.net
-   Michael Fellinger     :  m.fellinger@gmail.com
-   Pistos                :  jesuswasramazing.10.pistos@geoshell.com
-   Richard Outten        :  outtenr@gmail.com
-   Ryan Grove            :  ryan@wonko.com
-   Stephan Maka          :  stephan@spaceboyz.net
-   Thomas Leitner        :  thomas.leitner@gmail.com
-   samcarr               :  samcarr@gmail.com
-   skaar                 :  skaar@waste.org
-
+  2394 Michael Fellinger <m.fellinger@gmail.com>
+   215 Aman Gupta <aman@ramaze.net>
+    87 Jonathan Buch <john@oxyliquit.de>
+    62 Clive Crous <clive@crous.co.za>
+    27 Keita Yamaguchi <keita.yamaguchi@gmail.com>
+    17 Ryan Grove <ryan@wonko.com>
+    11 Pistos <gitsomegrace.5.pistos@geoshell.com>
+    11 Wang, Jinjing <nfjinjing@gmail.com>
+     6 Aki Reijonen <aki.reijonen@gmail.com>
+     6 Sam Carr <samcarr@gmail.com>
+     5 Tadahiko Uehara <kikofx@gmail.com>
+     4 James Tucker <jftucker@gmail.com>
+     3 Chris Duncan <celldee@gmail.com>
+     3 Clinton R. Nixon <clinton.nixon@viget.com>
+     2 Andrew Farmer <xichekolas@gmail.com>
+     2 Jonathan Buch <jonathan.buch@gmail.com>
+     2 Lars Olsson <lasso@lassoweb.se>
+     2 Riku Raisaenen <riku@helloit.fi>
+     1 Andreas Karlsson <andreas@proxel.se>
+     1 Ara T. Howard <ara.t.howard@gmail.com>
+     1 Carlo Zottmann <carlo@zottmann.org>
+     1 Cheah Chu Yeow <chuyeow@gmail.com>
+     1 Christian Neukirchen <chneukirchen@gmail.com>
+     1 Colin Shea <colin@centuar.(none)>
+     1 Fabian Buch <fabian.buch@fabian-buch.de>
+     1 Gavin Kistner <gavin@phrogz.net>
+     1 Jean-Francois Chevrette <jfchevrette@iweb.ca>
+     1 Jeremy Evans <code@jeremyevans.net>
+     1 Martin Hilbig <blueonyx@dev-area.net>
+     1 Matt Rubens <mrubens@goldencookie.localdomain>
+     1 Rob Lievaart <rob@rebeltechnologies.nl>
+     1 Thomas Leitner <thomas.leitner@gmail.com>
+     1 Vincent Roy <VincentRoy8@gmail.com>
+     1 Yasushi Abe <yasushi.abe@gmail.com>

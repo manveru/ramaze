@@ -3,7 +3,6 @@ require 'ramaze'
 require 'ramaze/gestalt'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :XSLT
 
   def index
@@ -46,4 +45,4 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze.start
+Ramaze.start :file => __FILE__

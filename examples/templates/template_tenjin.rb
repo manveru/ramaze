@@ -2,11 +2,10 @@ require "rubygems"
 require "ramaze"
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Tenjin
 
   def index
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{ #{a('Home',:/)} | #{a(:internal)} | #{a(:external)} }
   end
 
   def internal(*args)
@@ -19,12 +18,12 @@ class MainController < Ramaze::Controller
   </head>
   <body>
   <h1>The #{@place} Template for Tenjin</h1>
-  <a href="#{Rs(:/)}">Home</a>
+  <a href="#{r(:/)}">Home</a>
   <p>
   Here you can pass some stuff if you like, parameters are just passed like this:<br />
-  <a href="#{Rs(@place, :one)}">#{Rs(@place, :one)}</a><br />
-  <a href="#{Rs(@place, :two, :three)}">#{Rs(@place, :two, :three)}</a><br />
-  <a href="#{Rs(@place, :one, :foo => :bar)}">#{Rs(@place, :one, :foo => :bar)}</a>
+  <a href="#{r(@place, :one)}">#{r(@place, :one)}</a><br />
+  <a href="#{r(@place, :two, :three)}">#{r(@place, :two, :three)}</a><br />
+  <a href="#{r(@place, :one, :foo => :bar)}">#{r(@place, :one, :foo => :bar)}</a>
   </p>
 
   <div>
@@ -50,4 +49,4 @@ __TENJIN__
   end
 end
 
-Ramaze.start
+Ramaze.start :file => __FILE__

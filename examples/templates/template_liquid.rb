@@ -2,29 +2,17 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Liquid
 
   def index
-    %{ #{A 'Home', :href => :/} | #{A(:internal)} | #{A(:external)} }
+    %{ {% anchor "Home" / %} |
+       {% anchor "internal" internal %} |
+       {% anchor "external" external %}}
   end
 
-  def liquid_hash(place, *args)
-    {
-      'header'     => "The #{place} Template for Liquid",
-      'link_home'  => A('Home', :href => :/),
-      'link_one'   => A("#{place}/one"),
-      'link_two'   => A("#{place}/one/two/three"),
-      'link_three' => A("#{place}?foo=Bar"),
-      'args'       => args,
-      'args_empty' => args.empty?,
-      'params'     => request.params.inspect
-    }
-  end
+  def internal(*args)
+    set_liquid_variables(:internal, *args)
 
-
-  def internal *args
-    @hash = liquid_hash(:internal, *args)
     %q{
 <html>
   <head>
@@ -58,8 +46,21 @@ class MainController < Ramaze::Controller
   end
 
   def external *args
-    @hash = liquid_hash(:external, *args)
+    set_liquid_variables(:internal, *args)
+  end
+
+  private
+
+  def set_liquid_variables(place, *args)
+    @header = "The #{place} Template for Liquid"
+    @link_home = a('Home', :/)
+    @link_one = a("#{place}/one")
+    @link_two = a("#{place}/one/two/three")
+    @link_three = a("#{place}?foo=Bar")
+    @args = args
+    @args_empty = args.empty?
+    @params = request.params.inspect
   end
 end
 
-Ramaze.start
+Ramaze.start :file => __FILE__

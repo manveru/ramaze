@@ -70,7 +70,7 @@ always change the whole framework to fit your needs.
 - View
 
    Ramaze offers a plethora of Templating-engines that you can use in your
-   View, including Amrita2, Erubis (ERB), HAML, Liquid, Remarkably, Markaby and
+   View, including Erubis (ERB), HAML, Liquid, Remarkably, Markaby and
    the default, called Ezamar.
 
    The View in Ramaze is tightly coupled with the Controller, that means that

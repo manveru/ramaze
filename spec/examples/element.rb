@@ -2,8 +2,7 @@ require 'spec/helper'
 require 'examples/basic/element'
 
 describe 'Element' do
-  behaves_like 'http'
-  ramaze
+  behaves_like :mock
 
   it '/' do
     r = get('/').body

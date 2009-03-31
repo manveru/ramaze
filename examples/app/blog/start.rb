@@ -1,7 +1,5 @@
-require 'rubygems'
-require 'ramaze'
+$LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require 'model/entry'
-require 'controller/main'
+require 'app'
 
-Ramaze.start
+Ramaze.start(:adapter => :webrick, :mode => :dev)

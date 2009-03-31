@@ -1,50 +1,110 @@
 module Ramaze
-  def self.setup(start = true, &block)
-    SetupEnvironment.new(&block) if block_given?
-    self.start if start
+  # Convenient setup and activation of gems from different sources and specific
+  # versions.
+  # It's almost like Kernel#gem but also installs automatically if a gem is
+  # missing.
+  #
+  # @usage
+  #   Ramaze.setup :verbose => true do
+  #     # gem and specific version
+  #     gem 'makura', '>=2009.01'
+  #
+  #     # gem and name for require
+  #     gem 'aws-s3', :lib => 'aws/s3'
+  #
+  #     # gem with specific version from rubyforge (default)
+  #     gem 'json', :version => '=1.1.3', :source => rubyforge
+  #
+  #     # gem from github
+  #     gem 'manveru-org', :lib => 'org', :source => github
+  #   end
+  #
+  # @option options [boolean] (true) verbose
+  # @option options [String] (nil) extconf
+  # @yield block
+  # @see GemSetup#initialize
+  # @author manveru
+  def self.setup(options = {:verbose => true}, &block)
+    GemSetup.new(options, &block)
   end
 
-  class SetupEnvironment
-    # FIXME:
-    # * This is weird, class scope includes Global, yet it's skipped
-    #   by Ruby on the lookup only because it's not in the scope of the block
-    #   at the point of creation, shouldn't instance_eval take the binding of
-    #   the SetupEnvironment instance in acocunt?
+  class GemSetup
+    def initialize(options = {}, &block)
+      @gems = []
+      @options = options.dup
+      @verbose = @options.delete(:verbose)
 
-    def initialize(&block)
+      run(&block)
+    end
+
+    def run(&block)
+      return unless block_given?
       instance_eval(&block)
+      setup
     end
 
-    # Shortcut for Ramaze::Gems::gem
-    def gem(*args)
-      require 'ramaze/contrib/gems'
-      Ramaze::Gems::gem(*args)
-      Ramaze::Gems::setup
-    end
-
-    # Shortcut if you don't need specific versions but tons of gems
-    def gems(*args)
-      args.each{|g| gem(g) }
-    end
-
-    def global(hash = nil)
-      if hash
-        Global.merge!(hash)
+    def gem(name, version = nil, options = {})
+      if version.respond_to?(:merge!)
+        options = version
       else
-        Global
+        options[:version] = version
+      end
+
+      @gems << [name, options]
+    end
+
+    # all gems defined, let's try to load/install them
+    def setup
+      require 'rubygems'
+      require 'rubygems/dependency_installer'
+
+      @gems.each do |name, options|
+        setup_gem(name, options)
       end
     end
-    alias option global
+
+    # first try to activate, install and try to activate again if activation
+    # fails the first time
+    def setup_gem(name, options, try_install = true)
+      log "activating #{name}"
+      Gem.activate(name, *[options[:version]].compact)
+      require(options[:lib] || name)
+    rescue LoadError => exception
+      puts exception
+      install_gem(name, options) if try_install
+      setup_gem(name, options, try_install = false)
+    end
+
+    # tell rubygems to install a gem
+    def install_gem(name, options)
+      installer = Gem::DependencyInstaller.new(options)
+
+      temp_argv(options[:extconf]) do
+        log "Installing #{name}"
+        installer.install(name, options[:version])
+      end
+    end
+
+    # prepare ARGV for rubygems installer
+    def temp_argv(extconf)
+      if extconf ||= @options[:extconf]
+        old_argv = ARGV.clone
+        ARGV.replace(extconf.split(' '))
+      end
+
+      yield
+
+    ensure
+      ARGV.replace(old_argv) if extconf
+    end
+
+    private
+
+    def log(msg)
+      puts(msg) if @verbose
+    end
+
+    def rubyforge; 'http://gems.rubyforge.org/' end
+    def github; 'http://gems.github.com/' end
   end
-end
-
-__END__
-Usage example:
-
-Ramaze.setup do
-  gem 'json'
-
-  option :middleware => true
-  global.adapter = :thin
-  option.port = 7000
 end

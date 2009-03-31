@@ -1,8 +1,7 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-
 spec_require 'hpricot'
 
 module Og
@@ -27,15 +26,11 @@ class TCPagerController < Ramaze::Controller
 
     items.inspect
   end
-
 end
 
 shared 'pager' do
-  behaves_like 'http'
-  behaves_like 'resolve'
+  behaves_like :mock
   extend Ramaze::Helper::Pager
-
-  ramaze
 
   def pager_key
     Ramaze::Pager.trait[:key]
@@ -56,27 +51,29 @@ shared 'pager' do
 
   it 'should be paginated' do
     get('/page').body.should == [1, 2].inspect
-    get('/page', pager_key => '2').body.should == [3, 4].inspect
+    get('/page?_page=2').body.should == [3, 4].inspect
   end
 
   it "should report the number of articles as Pager#total_count" do
-    @pager.should.not.be.nil
     @pager.total_count.should.equal 5
   end
 
   it "should return the same number of items as passed to :per_page" do
-    @items.should.not.be.nil
     @items.size.should.equal 2
   end
 
   it "should link to other pages" do
-    stack('/page') do
-      @pager.should.not.be.nil
-      @pager.navigation.should.not.be.nil
+    # mock the action
+    action = '/page'
+    def action.node; TCPagerController; end
+    def action.name; self; end
+    Ramaze::Current.actions = [action]
 
-      page = Hpricot(@pager.navigation)
-      (page / 'a').size.should == 4
-    end
+    @pager.should.not.be.nil
+    @pager.navigation.should.not.be.nil
+
+    page = Hpricot(@pager.navigation)
+    (page / 'a').size.should == 4
   end
 end
 

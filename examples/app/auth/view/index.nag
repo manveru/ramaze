@@ -1,0 +1,4 @@
+<p>
+  This is a small example application showing you how to integrate the
+  <code>Ramaze::Helper::Auth</code> into your own code.
+</p>

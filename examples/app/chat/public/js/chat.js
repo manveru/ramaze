@@ -15,8 +15,14 @@
     $('#main').load('/listen')
   }
 
+  function poll() {
+    update();
+    setTimeout(poll, 1000.0);
+  }
+
   $('body').ready(function () {
     $('#chat').submit(say);
     $('input#talk').focus();
+    poll();
   });
 })();

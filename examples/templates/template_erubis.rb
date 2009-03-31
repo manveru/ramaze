@@ -2,29 +2,28 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  view_root __DIR__(:template)
   engine :Erubis
 
   def index
-    %{ #{A('Home', :href => :/)} | #{A(:internal)} | #{A(:external)} }
+    %{ #{a('Home', :/)} | #{a(:internal)} | #{a(:external)} }
   end
 
   def internal *args
     @args = args
     @place = :internal
-    %q{
+    %{
 <html>
   <head>
-    <title>Template::Erubis internal</title>
+    <title>Template::Erubis #@place</title>
   </head>
   <body>
-  <h1>The internal Template for Erubis</h1>
-    <%= A('Home', :href => :/) %>
+  <h1>The #@place Template for Erubis</h1>
+    <%= a('Home', :/) %>
     <p>
       Here you can pass some stuff if you like, parameters are just passed like this:<br />
-      <%= A("/#@place/one") %><br />
-      <%= A("#@place/two/three") %><br />
-      <%= A("#@place/one?foo=bar") %><br />
+      <%= a("/#@place/one") %><br />
+      <%= a("#@place/two/three") %><br />
+      <%= a("#@place/one?foo=bar") %><br />
     </p>
     <div>
       The arguments you have passed to this action are:
@@ -50,4 +49,4 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze.start
+Ramaze.start :file => __FILE__

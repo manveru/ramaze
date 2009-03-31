@@ -2,10 +2,9 @@ require 'spec/helper'
 require 'examples/basic/hello'
 
 describe 'Hello' do
-  behaves_like 'http'
-  ramaze
+  behaves_like :mock
 
-  it '/' do
+  it 'serves the index page' do
     get('/').body.should == 'Hello, World!'
   end
 end

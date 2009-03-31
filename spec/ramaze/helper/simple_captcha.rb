@@ -1,22 +1,49 @@
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
 require 'spec/helper'
-require 'ramaze/helper/simple_captcha'
+
+class SpecSimpleCaptcha < Ramaze::Controller
+  helper :simple_captcha
+  map '/'
+
+  def ask_question
+    question = simple_captcha
+  end
+
+  def answer_question(with)
+    check_captcha(with) ? 'correct' : 'wrong'
+  end
+end
+
+class SpecCustomCaptcha < SpecSimpleCaptcha
+  map '/fish'
+
+  trait :captcha => lambda{
+    ["the answer to everything", 42]
+  }
+end
 
 describe Ramaze::Helper::SimpleCaptcha do
-  extend Ramaze::Helper::SimpleCaptcha
+  behaves_like :session
 
-  # mock session
-  SESSION = {}
-  def session; SESSION; end
+  should 'ask question' do
+    session do |mock|
+      question = mock.get('/ask_question').body
+      question.should =~ /^\d+ [+-] \d+$/
 
-  should 'generate question and answer' do
-    simple_captcha
-    question = SESSION[:CAPTCHA][:question]
-    question.should =~ /^\d+ [+-] \d+$/
-    lh, m, rh = question.split
+      lh, m, rh = question.split
+      answer = lh.to_i.send(m, rh.to_i)
 
-    answer = SESSION[:CAPTCHA][:answer]
-    answer.should =~ /^\d+$/
+      mock.get("/answer_question/#{answer}").body.should == 'correct'
+    end
+  end
 
-    lh.to_i.send(m, rh.to_i).should == answer.to_i
+  should 'ask custom question' do
+    session do |mock|
+      question = mock.get('/fish/ask_question')
+      question.body.should == 'the answer to everything'
+      mock.get('/fish/answer_question/42').body.should == 'correct'
+    end
   end
 end

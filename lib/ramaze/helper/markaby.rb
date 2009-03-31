@@ -15,7 +15,7 @@ module Ramaze
     def markaby(ivs = {}, helpers = nil, &block)
       builder = ::Markaby::Builder
       builder.extend(Ramaze::Helper::Methods)
-      builder.send(:helper, :redirect, :link, :sendfile, :flash, :cgi, :partial)
+      builder.send(:helper, :link)
 
       iv_hash = {}
       instance_variables.each do |iv|
