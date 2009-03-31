@@ -58,7 +58,7 @@ module Ramaze
   # The naming of an App has no influence on any other aspects of dispatching
   # or configuration.
   class App
-    include Innate::Optional
+    include Innate::Optioned
 
     # options not found here will be looked up in Ramaze.options
     options.dsl do

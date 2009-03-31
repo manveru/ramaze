@@ -11,7 +11,7 @@ module Ramaze
     #
     # @see http://github.com/manveru/nagoro
     module Nagoro
-      include Optional
+      include Optioned
 
       options.dsl do
         o "Pipes to pass the template through",

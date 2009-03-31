@@ -3,6 +3,7 @@ module Ramaze
     :ThreadAccessor => :StateAccessor,
     :BASEDIR        => :ROOT,
     :Template       => :View,
+    :Optional       => :Optioned,
   }
 
   def self.deprecated(from, to = nil)
