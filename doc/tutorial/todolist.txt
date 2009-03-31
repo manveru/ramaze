@@ -223,7 +223,7 @@ explain that in more detail later when we come to layouts.
 To start we put some contents into 'view/index.xhtml' (xhtml is the default
 filename-extension for Etanni templates)
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
@@ -257,7 +257,7 @@ work, let's see how this looks like in a browser, start your application like ab
 
 The template expanded to something like (only showing the interesting part):
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <ul>
   <li>Laundry: false</li>
@@ -330,7 +330,7 @@ Ramaze.start
 Next we will have to modify the 'view/index.xhtml' to contain a link that will
 change the status of a task:
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <ul>
   <?r Task.each do |task| ?>
@@ -412,7 +412,7 @@ end
 
 And add a link to that action:
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <ul>
   <?r Task.each do |task| ?>
@@ -469,7 +469,7 @@ end
 
 And a link to the `delete` action.
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <ul>
   <?r Task.each do |task| ?>
@@ -501,7 +501,7 @@ No problem, I say, adding following code to our 'view/index.xhtml' will give us
 a nice little form that we can fill out in the few seconds between proving
 people on the internet wrong.
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <form method="post" action="#{ route('create') }">
   <fieldset>
@@ -591,7 +591,7 @@ try often enough it will eventually have to work, so let's save us some typing.
 
 In our 'view/index.xhtml' we modify the form input to have a default value:
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <form method="post" action="#{ route('create') }">
   <fieldset>
@@ -663,7 +663,7 @@ Not forever, but at least it will not show up anymore on the `index` action.
 So we filter out all tasks that haven't been done yet in the
 'view/index.xhtml':
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <ul>
   <?r Task.filter(:done => false).each do |task| ?>
@@ -674,7 +674,7 @@ So we filter out all tasks that haven't been done yet in the
 
 So off we go and add a new template at 'view/done.xhtml'.
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
@@ -722,7 +722,7 @@ of tasks, that's what we call 'layout'.
 Every action can have a layout associated with it, remember that empty 'layout'
 directory in your application? That's exactly where we will put it.
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
@@ -761,7 +761,7 @@ boilerplate we can delete the slack from our templates.
 
 'view/index.xhtml' becomes:
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <h2>Done Tasks</h2>
 
@@ -780,7 +780,7 @@ boilerplate we can delete the slack from our templates.
 
 'view/done.xhtml' becomes:
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <h2>Pending Tasks</h2>
 
@@ -818,7 +818,7 @@ in the example todo-list.
 What we do cover is adding it to your application, or the `<head>` in
 'layout/default.xhtml' to be exact:
 
-[source,xhtml]
+[source,html]
 --------------------------------------------------------------------------------
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
