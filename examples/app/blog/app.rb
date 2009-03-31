@@ -7,7 +7,7 @@ Ramaze.setup :verbose => true do
 end
 
 module Blog
-  include Ramaze::Optional
+  include Ramaze::Optioned
 
   options.dsl do
     o 'Title of this blog', :title,
