@@ -32,7 +32,7 @@ class FormController < Ramaze::Controller
   end
 
   def edit(id)
-    sequel_form(User[id])
+    sequel_form(User[id]).to_s
   end
 
   def edit_with_options(id)
