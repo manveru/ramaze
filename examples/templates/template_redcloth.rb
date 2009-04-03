@@ -42,13 +42,13 @@ __REDCLOTH__
   end
 
   def layout
-    <<__HTML__
+    <<'__HTML__'
 <html>
   <head>
     <title>Template::RedCloth <%= @place %></title>
   </head>
   <body>
-#{@content}
+    <%= @content %>
   </body>
 </html>
 __HTML__
