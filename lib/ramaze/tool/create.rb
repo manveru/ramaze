@@ -24,7 +24,7 @@ module Ramaze
       #   :layout copy one subdirectory in +proto+
 
       DEFAULT = {
-        :proto => File.join(::Ramaze::BASEDIR, 'proto'),
+        :proto => File.join(ROOT, 'proto'),
         :amend => false,
         :force => false,
         :layout => '/',

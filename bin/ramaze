@@ -36,8 +36,17 @@ end
 
 def create(command)
   project_name = OURARGS[OURARGS.index(command) + 1]
+  opts = {}
+  if OURARGS.detect { |arg| arg.match(/^(--force)/) }
+    puts "Overwriting any existing files as requested."
+    opts[:force] = true
+  end
+  if OURARGS.detect { |arg| arg.match(/^(--amend)/) }
+    puts "Only amending missing files as requested."
+    opts[:amend] = true
+  end
   require 'ramaze/tool/create'
-  Ramaze::Tool::Create.create(project_name)
+  Ramaze::Tool::Create.create(project_name, opts)
 end
 
 def stop(command)
