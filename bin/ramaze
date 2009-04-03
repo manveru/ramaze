@@ -14,11 +14,21 @@ rescue LoadError
 end
 
 def usage
-  "#{$0} <start|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [options]"
+  require 'app.rb'
+  <<-TXT
+  Usage: 
+
+    #{$0} <start|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [rack options]
+
+    Rack Options
+      #{%x{rackup --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")}
+  TXT
 end
 
 ## Methods for commands {{{
 def start
+  # Find the name of this app
+  app_name = default_pidfile.sub(/\.pid$/,'')
   if daemonize = OURARGS.detect { |arg| arg.match(/^(-[dD]|--daemonize)$/) }
     if pid_arg = OURARGS.detect { |arg| arg.match(/^(-P|--pid)/) }
       puts "User supplied pid: #{pid_arg}"
@@ -67,12 +77,12 @@ def stop(command)
   end
 end
 
+## End Command methods }}}
+
+# Helper methods {{{
 def default_pidfile
   return @default_pidfile if @default_pidfile
-  require 'app.rb'
-  puts "Application root is #{ENV["PWD"]}"
   @default_pidfile = (File.basename(File.expand_path(ENV["PWD"])) + ".pid").strip
-  puts "Default pidfile set to #{@default_pidfile}"
   @default_pidfile
 end
 
