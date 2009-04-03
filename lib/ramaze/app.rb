@@ -68,11 +68,11 @@ module Ramaze
 
     APP_LIST = {}
 
-    attr_reader :name, :location, :map, :options
+    attr_reader :name, :location, :url_map, :options
 
     def initialize(name, location)
       @name = name.to_sym
-      @map = Innate::URLMap.new
+      @url_map = Innate::URLMap.new
       self.location = location
 
       APP_LIST[@name] = self
@@ -95,16 +95,16 @@ module Ramaze
 
     def to_app
       files = Ramaze::Files.new(*public_roots)
-      app = Current.new(Route.new(@map), Rewrite.new(@map))
+      app = Current.new(Route.new(@url_map), Rewrite.new(@url_map))
       Rack::Cascade.new([files, app])
     end
 
     def map(location, object)
-      @map.map(location, object)
+      @url_map.map(location, object)
     end
 
     def to(object)
-      return unless mapped = @map.to(object)
+      return unless mapped = @url_map.to(object)
       [location, mapped].join('/').squeeze('/')
     end
 
