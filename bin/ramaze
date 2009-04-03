@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 begin
-  $:.unshift File.join(File.dirname(__FILE__), '../lib')
+  $:.unshift File.join(File.dirname(__FILE__), '/../lib')
   require 'ramaze'
 rescue LoadError
   $:.shift
@@ -13,68 +13,101 @@ rescue LoadError
   require 'ramaze'
 end
 
-additions = lambda do |op|
-  op.separator ''
-  op.separator 'Specialized options:'
-
-  op.on('--create PROJECT', 'New application from proto') do |project_name|
-    require 'ramaze/tool/create'
-    Ramaze::Tool::Create.create(project_name)
-    exit
-  end
-
-  op.on('-i', '--instant', "Start up with bare-bones Controller") do |instant|
-    require 'ramaze/controller/main'
-  end
-
-  op.on('-e', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
-    eval execute
-  end
+def usage
+  "#{$0} <start|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [options]"
 end
 
-runner = ARGV.reverse.find{|arg| File.file?(arg) }
-runner ||= 'start.rb' if File.file?('start.rb')
-
-if runner
-  overlay = {
-    :root => File.dirname(runner),
-    :runner => runner, :origin => :console,
-  }
-
-  [overlay, ENV, ARGV].each do |opt|
-    Ramaze::Global.merge!(opt, &additions)
-  end
-
-  runner = File.expand_path(runner)
-  
-  console = Ramaze::Global.console
-
-  if console
-    ARGV.clear #Avoid passing args to IRB
-
-    Ramaze.trait[:started] = true
-    require runner
-
-    require 'irb'
-    require 'irb/completion'
-
-    ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
-    Ramaze.start! :run_loose => true
-    IRB.start
-    Ramaze.shutdown
-  end
-  
-  daemonize = Ramaze::Global.daemonize
-
-  unless daemonize.empty?
-    require 'ramaze/tool/daemonize'
-    Ramaze::daemonize(runner, daemonize)
+## Methods for commands {{{
+def start
+  if daemonize = OURARGS.detect { |arg| arg.match(/^(-[dD]|--daemonize)$/) }
+    if pid_arg = OURARGS.detect { |arg| arg.match(/^(-P|--pid)/) }
+      puts "User supplied pid: #{pid_arg}"
+      pid_file = OURARGS[OURARGS.index(pid_arg) + 1]
+      puts "Starting daemon with user defined pidfile: #{pid_file}"
+      exec("rackup", "config.ru", *ARGV)
+    else
+      puts "Starting daemon with default pidfile: #{default_pidfile}"
+      exec("rackup", "config.ru", "-P", default_pidfile, *ARGV)
+    end
   else
-    Ramaze.trait[:started] = true
-    require runner
-    Ramaze.start!
+    exec("rackup", "config.ru", *ARGV)
   end
-else
-  Ramaze::Global.merge!(ARGV, &additions)
-  puts Ramaze::Global.option_parser(&additions)
 end
+
+def create(command)
+  project_name = OURARGS[OURARGS.index(command) + 1]
+  require 'ramaze/tool/create'
+  Ramaze::Tool::Create.create(project_name)
+end
+
+def stop(command)
+  return false unless pid_file = find_pid(command)
+  pid = File.read(pid_file).to_i
+  puts "Killing pid #{pid}"
+  Process.kill("INT", pid)
+  sleep 1
+  begin
+    Process.getpriority(Process::PRIO_PROCESS, pid)
+    $stdout.puts "Process #{pid} did not die, forcing it with -9"
+    Process.kill(9, pid)
+    File.unlink(pid_file) if File.file?(pid_file)
+    true
+  rescue Errno::ESRCH
+    File.unlink(pid_file) if File.file?(pid_file)
+    true
+  end
+end
+
+def default_pidfile
+  return @default_pidfile if @default_pidfile
+  require 'app.rb'
+  puts "Application root is #{ENV["PWD"]}"
+  @default_pidfile = (File.basename(File.expand_path(ENV["PWD"])) + ".pid").strip
+  puts "Default pidfile set to #{@default_pidfile}"
+  @default_pidfile
+end
+
+def find_pid(command)
+  pid_file = OURARGS[OURARGS.index(command) + 1]
+  if pid_file.nil? or not File.file?(pid_file)
+    pid_file = default_pidfile
+  end
+  unless File.file?(pid_file)
+    $stderr.puts "Could not find running process id."
+    return false 
+  end
+  pid_file
+end
+
+## End helper methods }}}
+
+OURARGS = ARGV.dup
+command = ARGV.detect { |arg| arg.match(/^(?:--)?(?:start|stop|restart|create|help)/) }
+if command.nil?
+  command = "start"
+else
+  ARGV.delete(command)
+end
+
+case command
+when /restart/
+  stop(command)
+  start
+when /start/
+  start
+when /create/
+  create(command)
+when /stop/
+  if stop(command)
+    puts "Ramazement has ended, go in peace"
+    $stdout.flush
+  else
+    puts "Ramaze failed to stop (or was not running)"
+  end
+when /help/
+  puts usage
+else
+  puts "#{command} not implemented"
+  puts usage
+end
+
