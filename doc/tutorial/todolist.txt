@@ -141,8 +141,7 @@ This requires the http://rubyforge.org/projects/sqlite-ruby[sqlite-ruby]
 bindings.
 
 You can try to `gem install sqlite`, which will complain if your system doesn't
-provide bindings, in which case I have to refer you to
-TODO http://sqlite.rubyforge.org
+provide bindings, in which case I have to refer you to http://sqlite.org.
 
 In order to use Sequel we also need a database connection.
 
