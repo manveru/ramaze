@@ -38,6 +38,7 @@ GEMSPEC = Gem::Specification.new{|s|
   # s.add_dependency('rack', '>= 0.9.9') # lies!
   # s.add_dependency('manveru-innate', '>= 2009.04')
 
+  # s.add_development_dependency('rack-test',  '>=0.1.0')
   # s.add_development_dependency('json',       '>=1.1.3')
   # s.add_development_dependency('erubis',     '>=2.6.4')
   # s.add_development_dependency('ezamar')

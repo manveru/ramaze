@@ -25,3 +25,13 @@ module Ramaze
 
   middleware!(:spec){|m| m.run(AppMap) }
 end
+
+shared :rack_test do
+  require 'rack/test'
+
+  extend Rack::Test::Methods
+
+  def app
+    Ramaze.middleware(:spec)
+  end
+end
