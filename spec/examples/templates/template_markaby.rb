@@ -6,5 +6,5 @@ require 'ramaze/spec/helper/template_examples'
 
 describe 'Template Markaby' do |describe|
   #::Ramaze::Spec::Examples::Templates.tests( describe, 'Markaby' )
-  it "isn't yet implemented"
+  it("isn't yet implemented"){ should.flunk('needed Ramaze::View::Markaby') }
 end

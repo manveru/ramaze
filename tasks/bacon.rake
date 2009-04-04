@@ -20,35 +20,42 @@ task :bacon => :install_dependencies do
     print(left_format % [idx + 1, specs_size, spec])
 
     Open3.popen3(RUBY, spec) do |sin, sout, serr|
-      out = sout.read
-      err = serr.read
+      out = sout.read.strip
+      err = serr.read.strip
 
-      total = nil
+      # this is conventional, see spec/innate/state/fiber.rb for usage
+      if out =~ /^Bacon::Error: (needed .*)/
+        puts(yellow % ("%6s %s" % ['', $1]))
+      else
+        total = nil
 
-      out.each_line do |line|
-        total = line.scanf(spec_format)
-        next if total.empty?
-        total = Vector[*total]
-        break
-      end
+        out.each_line do |line|
+          scanned = line.scanf(spec_format)
 
-      if total
-        totals += total
-        tests, assertions, failures, errors = total_array = total.to_a
+          next unless scanned.size == 4
 
-        if tests > 0 && failures + errors == 0
-          puts((green % "%6d passed") % tests)
+          total = Vector[*scanned]
+          break
+        end
+
+        if total
+          totals += total
+          tests, assertions, failures, errors = total_array = total.to_a
+
+          if tests > 0 && failures + errors == 0
+            puts((green % "%6d passed") % tests)
+          else
+            some_failed = true
+            puts(red % "       failed")
+            puts out unless out.empty?
+            puts err unless err.empty?
+          end
         else
           some_failed = true
           puts(red % "       failed")
-          puts out
-          puts err
+          puts out unless out.empty?
+          puts err unless err.empty?
         end
-      else
-        some_failed = true
-        puts(red % "       failed")
-        puts out
-        puts err
       end
     end
   end
