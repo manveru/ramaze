@@ -36,9 +36,6 @@ def usage
       console - Starts an irb console with app.rb (and irb completion) loaded. This command
                 ignores rack options.
 
-      version - Print Ramaze version and exit.
-
-      help    - Print this message.
     Rack Options
       #{%x{rackup --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")}
   TXT
