@@ -15,19 +15,19 @@ end
 
 def usage
   <<-TXT
-  Usage: 
+  Usage:
 
     #{$0} <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [rack options]
-    
+
     Commands:
       start   - Starts an instance of this application. Supply a pidfile name if you do
                 not want it to use the default (PROJECT.pid).
 
-      stop    - Stops a running instance of this application. Supply a pidfile name if you 
+      stop    - Stops a running instance of this application. Supply a pidfile name if you
                 started it with a pidfile other than the default (PROJECT.pid).
 
       restart - Stops running instance of this application, then starts it back up.  Pidfile
-                (if supplied) is used for both stop and start. 
+                (if supplied) is used for both stop and start.
 
       create  - Creates a new prototype Ramaze application in a directory named PROJECT in
                 the current directory.  ramaze create foo would make ./foo containing an
@@ -117,7 +117,7 @@ def find_pid(command)
   end
   unless File.file?(pid_file)
     $stderr.puts "Could not find running process id."
-    return false 
+    return false
   end
   pid_file
 end
