@@ -14,12 +14,31 @@ rescue LoadError
 end
 
 def usage
-  require 'app.rb'
   <<-TXT
   Usage: 
 
-    #{$0} <start|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [rack options]
+    #{$0} <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [rack options]
+    
+    Commands:
+      start   - Starts an instance of this application. Supply a pidfile name if you do
+                not want it to use the default (PROJECT.pid).
 
+      stop    - Stops a running instance of this application. Supply a pidfile name if you 
+                started it with a pidfile other than the default (PROJECT.pid).
+
+      restart - Stops running instance of this application, then starts it back up.  Pidfile
+                (if supplied) is used for both stop and start. 
+
+      create  - Creates a new prototype Ramaze application in a directory named PROJECT in
+                the current directory.  ramaze create foo would make ./foo containing an
+                application prototype. Rack options are meaningless here.
+
+      console - Starts an irb console with app.rb (and irb completion) loaded. This command
+                ignores rack options.
+
+      version - Print Ramaze version and exit.
+
+      help    - Print this message.
     Rack Options
       #{%x{rackup --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")}
   TXT
@@ -46,6 +65,11 @@ end
 
 def create(command)
   project_name = OURARGS[OURARGS.index(command) + 1]
+  if project_name.nil?
+    $stderr.puts "Must supply a project name" if project_name.nil?
+    puts usage
+    exit 1
+  end
   opts = {}
   if OURARGS.detect { |arg| arg.match(/^(--force)/) }
     puts "Overwriting any existing files as requested."
@@ -101,32 +125,42 @@ end
 ## End helper methods }}}
 
 OURARGS = ARGV.dup
-command = ARGV.detect { |arg| arg.match(/^(?:--)?(?:start|stop|restart|create|help)/) }
+command = ARGV.detect { |arg| arg.match(/^(?:--?)?(?:start|stop|restart|create|h(?:elp)?|v(?:ersion)?|console)/) }
 if command.nil?
-  command = "start"
+  command = ""
 else
   ARGV.delete(command)
 end
 
 case command
-when /restart/
+when /^(?:--?)?restart$/
   stop(command)
   start
-when /start/
+when /^(?:--?)?start$/
   start
-when /create/
+when /^(?:--?)?create$/
   create(command)
-when /stop/
+when /^(?:--?)?stop$/
   if stop(command)
     puts "Ramazement has ended, go in peace"
     $stdout.flush
   else
     puts "Ramaze failed to stop (or was not running)"
   end
-when /help/
+when /^(?:--?)?console$/
+  exec("irb", "-r", "irb/completion", "-r", "app")
+when /^(?:--?)?h(elp)?$/
   puts usage
+when /^(?:--?)?v(ersion)?$/
+  puts Ramaze::VERSION
+  exit
+when /^$/
+  puts "Must supply a valid command"
+  puts usage
+  exit 1
 else
   puts "#{command} not implemented"
   puts usage
+  exit 1
 end
 
