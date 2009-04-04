@@ -1,23 +1,25 @@
 #!/usr/bin/env ruby
 
-begin
-  $:.unshift File.join(File.dirname(__FILE__), '/../lib')
-  require 'ramaze'
-rescue LoadError
-  $:.shift
-
+def include_ramaze
   begin
-    require 'rubygems'
+    $:.unshift File.join(File.dirname(__FILE__), '/../lib')
+    require 'ramaze'
   rescue LoadError
+    $:.shift
+
+    begin
+      require 'rubygems'
+    rescue LoadError
+    end
+    require 'ramaze'
   end
-  require 'ramaze'
 end
 
 def usage
   <<-TXT
   Usage:
 
-    #{$0} <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [rack options]
+    ramaze <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [ruby/rack options]
 
     Commands:
       start   - Starts an instance of this application. Supply a pidfile name if you do
@@ -76,6 +78,7 @@ def create(command)
     puts "Only amending missing files as requested."
     opts[:amend] = true
   end
+  include_ramaze
   require 'ramaze/tool/create'
   Ramaze::Tool::Create.create(project_name, opts)
 end
@@ -145,10 +148,11 @@ when /^(?:--?)?stop$/
     puts "Ramaze failed to stop (or was not running)"
   end
 when /^(?:--?)?console$/
-  exec("irb", "-r", "irb/completion", "-r", "app")
+  exec("irb", "-r", "irb/completion", "-r", "app", *ARGV)
 when /^(?:--?)?h(elp)?$/
   puts usage
 when /^(?:--?)?v(ersion)?$/
+  include_ramaze
   puts Ramaze::VERSION
   exit
 when /^$/
