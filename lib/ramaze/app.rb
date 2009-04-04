@@ -95,16 +95,16 @@ module Ramaze
 
     def to_app
       files = Ramaze::Files.new(*public_roots)
-      app = Current.new(Route.new(@url_map), Rewrite.new(@url_map))
+      app = Current.new(Route.new(url_map), Rewrite.new(url_map))
       Rack::Cascade.new([files, app])
     end
 
     def map(location, object)
-      @url_map.map(location, object)
+      url_map.map(location, object)
     end
 
     def to(object)
-      return unless mapped = @url_map.to(object)
+      return unless mapped = url_map.to(object)
       [location, mapped].join('/').squeeze('/')
     end
 
