@@ -1,6 +1,5 @@
 module Ramaze
   DEPRECATED_CONSTANTS = {
-    :ThreadAccessor => :StateAccessor,
     :BASEDIR        => :ROOT,
     :Template       => :View,
     :Optional       => :Optioned,
