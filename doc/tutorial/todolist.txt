@@ -160,8 +160,13 @@ So we create a new file at 'model/init.rb' with following content:
 --------------------------------------------------------------------------------
 require 'sequel'
 
+Sequel::Model.plugin(:schema)
+
 DB = Sequel.sqlite('todolist.db')
 --------------------------------------------------------------------------------
+
+The `:schema` plugin is required since Sequel 3.0, if you run a version prior
+to 2.12 you may remove this line if it gives you any problems.
 
 Next we edit 'start.rb', remove the `Hello` class, and add a require for the
 file, 'start.rb' should look like this now:
@@ -209,6 +214,8 @@ Finally, add a line to your 'model/init.rb' that requires 'model/task.rb':
 [source,ruby]
 --------------------------------------------------------------------------------
 require 'sequel'
+
+Sequel::Model.plugin(:schema)
 
 DB = Sequel.sqlite('todolist.db')
 
