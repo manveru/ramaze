@@ -3,5 +3,10 @@ module Ramaze
 
   class DefaultController < Ramaze::Controller
     map '/'
+
+    def lobster
+      require 'rack/lobster'
+      respond Rack::Lobster::LobsterString
+    end
   end
 end
