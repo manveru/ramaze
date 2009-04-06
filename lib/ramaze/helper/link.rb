@@ -5,13 +5,10 @@ require 'innate/helper/link'
 
 module Ramaze
   module Helper
+    # This is a modification of Innate::Helper::Link to respect the routing of
+    # Ramaze
     # NOTE: The A/R/Rs methods have been deprecated.
     module Link
-      include Innate::Helper::Link
-
-      def self.included(into)
-        into.extend(self)
-      end
 
       # @return [String]
       # @see Innate::Helper#anchor

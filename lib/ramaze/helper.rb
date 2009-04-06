@@ -6,4 +6,7 @@ require 'innate/helper'
 module Ramaze
   Helper = Innate::Helper
   Innate::HelpersHelper.options.paths << File.dirname(__FILE__)
+
+  require 'ramaze/helper/flash'
+  require 'ramaze/helper/link'
 end
