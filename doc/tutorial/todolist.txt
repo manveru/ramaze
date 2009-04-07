@@ -37,8 +37,8 @@ We are also working on a book that describes Ramaze in more depth, called
 contents might interest you.
 
 The repository for the book is at http://github.com/manveru/ramaze-book.
-Every once in a while, updates for the book will be available in html and PDF
-form at http://book.ramae.net.
+Every once in a while, updates for the book will be available in HTML and PDF
+form at http://book.ramaze.net.
 
 
 == First Step, Create
