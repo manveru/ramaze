@@ -96,7 +96,7 @@ tradition, we create a file at the root of your application directory called
 require 'rubygems'
 require 'ramaze'
 
-class Hello < Ramaze::Controller
+class MainController < Ramaze::Controller
   def index
     "Hello, World!"
   end
