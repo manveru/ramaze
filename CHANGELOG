@@ -1,3 +1,204 @@
+[e2a87c9 | Mon Apr 06 02:27:14 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * changed path search to use request.request_uri instead of request.fullpath, to handle fastcgi, mod_rack, and any other method where rack strips part of fullpath to derive request_uri
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[69c3bf4 | Tue Apr 07 11:12:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Only MainController is automapped to '/'
+
+[de89b67 | Tue Apr 07 10:41:50 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update tutorial HTML
+
+[e43fa1b | Tue Apr 07 13:38:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * render_template is really deprecated, no replacements
+
+[5922f3c | Tue Apr 07 02:21:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix link to book.ramaze.net
+
+[30fec68 | Mon Apr 06 10:41:41 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add information about, and usage of: Sequel::Model.plugin(:schema)
+
+[83d41e0 | Mon Apr 06 10:32:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add some info about configuration to tutorial
+
+[7467ff6 | Mon Apr 06 03:35:06 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix Flash and Link helpers
+
+[b6297da | Mon Apr 06 02:43:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add some lobster
+
+[eabb559 | Mon Apr 06 01:33:30 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Change ext to reflect new default templating engine
+
+[36431f7 | Sun Apr 05 23:57:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * nitpicking
+
+[983cede | Sun Apr 05 23:57:48 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Simplify Helper with options
+
+[5a31740 | Sun Apr 05 23:57:13 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Take over the Partial helper from Innate, please use the Render helper instead
+
+[9797116 | Sun Apr 05 17:38:19 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adding Cache::LocalMemCache, see http://github.com/sck/localmemcache
+
+[d725385 | Sun Apr 05 14:26:10 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add methods removed from Innate::Request
+
+[ad0ce13 | Sun Apr 05 09:01:57 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adding contrib/app_graph, which shows all your sites apps, controllers, mappings and actions
+
+[61f621a | Sat Apr 04 02:33:23 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Removed ramaze dependencies from binary where not needed
+
+    * Allows including of custom library paths with standard ruby -I
+      functionality.
+    * Now passing ARGV along to irb with console command.
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[38f1b77 | Sat Apr 04 01:29:18 UTC 2009] bougyman <bougyman@falcon.(none)>
+
+  * Remove version and help message from bin/ramaze
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[4cf3d4a | Sat Apr 04 14:17:35 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove trailing newlines from bin/ramaze
+
+[6d912c9 | Sat Apr 04 00:53:48 UTC 2009] bougyman <bougyman@falcon.(none)>
+
+  * Added more help and --version
+
+    * Create command exits and prints error if no PROJECT given
+    * Added more verbose description of each command
+    * Now defaults to printing help instead of starting an application
+    
+    TODO:
+    
+    * Add ability to merge application options.  Perhaps ENV setting.
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[aed1603 | Sat Apr 04 06:26:53 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove contrib/sequel/fill, was quite useless anyway
+
+[02cd6ec | Sat Apr 04 06:25:59 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Improve bacon task so specs can fail on dependencies without messing up all the output
+
+[de5e21f | Sat Apr 04 04:05:21 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Use method instead of iv for App#url_map
+
+[597ec8c | Sat Apr 04 04:04:08 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add integration with rack/test, eventually we should port specs to that
+
+[59d3083 | Sat Apr 04 04:02:53 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Run specs in spec/contrib as well
+
+[49dd9d6 | Sat Apr 04 04:02:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add commented list of development dependencies for release
+
+[a4c080f | Sat Apr 04 03:43:24 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Improve bacon task
+
+[729ce2d | Fri Apr 03 04:06:22 UTC 2009] bougyman <bougyman@falcon.(none)>
+
+  * Added better help output and lowered debug output
+
+    * Pass along rackup --help options when requesting --help
+    * Removed debug output from default_pidfile
+    
+    TODO:
+    * Make ramaze --console work as expected
+    * Design a methodology to pass the ramaze application itself arguments, instead of just to rack(up)
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[686a38d | Fri Apr 03 02:15:53 UTC 2009] bougyman <bougyman@falcon.(none)>
+
+  * Added --force and --amend support to ramaze create. Also updated Ramaze::Tool::Create to use ROOT instead of Ramaze::BaseDir
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[b1ae885 | Fri Apr 03 01:58:37 UTC 2009] bougyman <bougyman@falcon.(none)>
+
+  * Rewrite of bin/ramaze
+
+    * Simple optparser for start|stop|restart|create
+    * Passing all other args on to config.ru
+    * Used old ramaze tool/create for creation from prototype
+    
+    TODO:
+    * Enable --force and --amend to ramaze create
+    * Recognize app.rb and rackup's options to display in --help
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[ea434b1 | Fri Apr 03 10:14:51 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Provide access to App#url_map
+
+[aa99126 | Fri Apr 03 09:54:05 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix link to sqlite
+
+[54f7ce0 | Fri Apr 03 09:49:13 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove the rack/innate dependencies until rack is out
+
+[e5af4e5 | Fri Apr 03 09:48:16 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix for redcloth spec
+
+[11118df | Fri Apr 03 09:28:26 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the sequel_form spec
+
+[cf18430 | Fri Apr 03 09:26:53 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove the XSLT example and spec
+
+[0395321 | Tue Mar 31 16:53:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Change dependency to innate-manveru, there's no rubyforge gem for it anyway... but that will cause trouble for local rake install
+
+[eb7d389 | Tue Mar 31 16:34:33 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix Optinoal reference in blog example
+
+[5f210cc | Tue Mar 31 16:33:49 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Innate::Optional is now Innate::Optioned
+
+[851e1bd | Tue Mar 31 16:21:56 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.04.01
+
 [9033500 | Tue Mar 31 06:12:46 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Use html syntax instead of xhtml for pdf generation

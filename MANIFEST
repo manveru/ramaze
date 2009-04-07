@@ -1,4 +1,6 @@
 .mailmap
+CHANGELOG
+MANIFEST
 README.markdown
 Rakefile
 benchmark/results.txt
@@ -171,7 +173,6 @@ examples/templates/template_nagoro.rb
 examples/templates/template_redcloth.rb
 examples/templates/template_remarkably.rb
 examples/templates/template_tenjin.rb
-examples/templates/template_xslt.rb
 examples/templates/view/external.haml
 examples/templates/view/external.liquid
 examples/templates/view/external.mab
@@ -180,12 +181,11 @@ examples/templates/view/external.redcloth
 examples/templates/view/external.rem
 examples/templates/view/external.rhtml
 examples/templates/view/external.tenjin
-examples/templates/view/external.xsl
 examples/templates/view/external.zmr
 lib/proto/config.ru
 lib/proto/controller/init.rb
 lib/proto/controller/main.rb
-lib/proto/layout/default.nag
+lib/proto/layout/default.xhtml
 lib/proto/model/init.rb
 lib/proto/public/.htaccess
 lib/proto/public/css/screen.css
@@ -195,13 +195,15 @@ lib/proto/public/js/jquery.js
 lib/proto/public/ramaze.png
 lib/proto/spec/main.rb
 lib/proto/start.rb
-lib/proto/view/index.nag
-lib/proto/view/page.nag
+lib/proto/view/index.xhtml
+lib/proto/view/page.xhtml
 lib/ramaze.rb
 lib/ramaze/app.rb
 lib/ramaze/cache.rb
+lib/ramaze/cache/localmemcache.rb
 lib/ramaze/cache/memcache.rb
 lib/ramaze/cache/sequel.rb
+lib/ramaze/contrib/app_graph.rb
 lib/ramaze/contrib/email.rb
 lib/ramaze/contrib/facebook.rb
 lib/ramaze/contrib/facebook/facebook.rb
@@ -214,7 +216,6 @@ lib/ramaze/contrib/maruku_uv.rb
 lib/ramaze/contrib/profiling.rb
 lib/ramaze/contrib/rest.rb
 lib/ramaze/contrib/sequel/create_join.rb
-lib/ramaze/contrib/sequel/fill.rb
 lib/ramaze/contrib/sequel/form_field.rb
 lib/ramaze/contrib/sequel/image.rb
 lib/ramaze/contrib/sequel/relation.rb
@@ -311,6 +312,8 @@ lib/ramaze/spec/helper/bacon.rb
 lib/ramaze/spec/helper/pretty_output.rb
 lib/ramaze/spec/helper/snippets.rb
 lib/ramaze/spec/helper/template_examples.rb
+lib/ramaze/tool/create.rb
+lib/ramaze/tool/project_creator.rb
 lib/ramaze/version.rb
 lib/ramaze/view.rb
 lib/ramaze/view/erubis.rb
@@ -329,7 +332,6 @@ lib/vendor/etag.rb
 lib/vendor/route_exceptions.rb
 ramaze.gemspec
 spec/contrib/rest.rb
-spec/contrib/sequel/fill.rb
 spec/examples/caching.rb
 spec/examples/css.rb
 spec/examples/element.rb
@@ -346,7 +348,6 @@ spec/examples/templates/template_nagoro.rb
 spec/examples/templates/template_redcloth.rb
 spec/examples/templates/template_remarkably.rb
 spec/examples/templates/template_tenjin.rb
-spec/examples/templates/template_xslt.rb
 spec/helper.rb
 spec/ramaze/action/render.rb
 spec/ramaze/action/view/bar.xhtml
@@ -357,6 +358,7 @@ spec/ramaze/action/view/single_wrapper.xhtml
 spec/ramaze/action/view/sub/sub_wrapper.erb
 spec/ramaze/action/view/sub/sub_wrapper.xhtml
 spec/ramaze/app.rb
+spec/ramaze/cache/localmemcache.rb
 spec/ramaze/cache/memcache.rb
 spec/ramaze/cache/sequel.rb
 spec/ramaze/controller/actionless_templates.rb
