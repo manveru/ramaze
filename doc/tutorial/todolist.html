@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.4.1" />
+<meta name="generator" content="AsciiDoc 8.4.2" />
 <title>The official Ramaze Todo-list tutorial</title>
 <style type="text/css">
 /* Debug borders */
@@ -448,6 +448,12 @@ either on the <a href="http://ramazetrac.purepistos.org/">Bug tracker</a>, or ju
 drop by on IRC on <tt>irc.freenode.org</tt> in the channel <tt>#ramaze</tt>.</p></div>
 <div class="paragraph"><p>If you have trouble with some of the terms used in this tutorial you can
 consult the <a href="#glossary">Glossary</a> at the end of this document.</p></div>
+<div class="paragraph"><p>We are also working on a book that describes Ramaze in more depth, called
+<em>Journey to Ramaze</em>, it is still very much work in progress, but some of the
+contents might interest you.</p></div>
+<div class="paragraph"><p>The repository for the book is at <a href="http://github.com/manveru/ramaze-book">http://github.com/manveru/ramaze-book</a>.
+Every once in a while, updates for the book will be available in HTML and PDF
+form at <a href="http://book.ramaze.net">http://book.ramaze.net</a>.</p></div>
 </div>
 <h2 id="_first_step_create">First Step, Create</h2>
 <div class="sectionbody">
@@ -521,7 +527,7 @@ Ramaze<span style="color: #990000">.</span>start</tt></pre></div></div>
 <pre><tt>delta ~/tmp/tutorial % ruby start.rb
 D [2009-03-30 14:15:01 $2124] DEBUG | : Using webrick
 I [2009-03-30 14:15:01 $2124]  INFO | : WEBrick 1.3.1
-I [2009-03-30 14:15:01 $2124]  INFO | : ruby 1.8.7 (2008-08-11) [i686-linux]
+I [2009-03-30 14:15:01 $2124]  INFO | : ruby 1.9.2 (2009-03-02) [i686-linux]
 D [2009-03-30 14:15:01 $2124] DEBUG | : TCPServer.new(0.0.0.0, 7000)
 D [2009-03-30 14:15:01 $2124] DEBUG | : Rack::Handler::WEBrick is mounted on /.
 I [2009-03-30 14:15:01 $2124]  INFO | : WEBrick::HTTPServer#start: pid=2124 port=7000</tt></pre>
@@ -552,8 +558,7 @@ you tremendously when it comes to writing your own applications.</p></div>
 This requires the <a href="http://rubyforge.org/projects/sqlite-ruby">sqlite-ruby</a>
 bindings.</p></div>
 <div class="paragraph"><p>You can try to <tt>gem install sqlite</tt>, which will complain if your system doesn&#8217;t
-provide bindings, in which case I have to refer you to
-TODO <a href="http://sqlite.rubyforge.org">http://sqlite.rubyforge.org</a></p></div>
+provide bindings, in which case I have to refer you to <a href="http://sqlite.org">http://sqlite.org</a>.</p></div>
 <div class="paragraph"><p>In order to use Sequel we also need a database connection.</p></div>
 <div class="paragraph"><p>So we create a new file at <em>model/init.rb</em> with following content:</p></div>
 <div class="listingblock">
@@ -563,7 +568,11 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-weight: bold"><span style="color: #000080">require</span></span> <span style="color: #FF0000">'sequel'</span>
 
+Sequel<span style="color: #990000">::</span>Model<span style="color: #990000">.</span>plugin<span style="color: #990000">(:</span>schema<span style="color: #990000">)</span>
+
 DB <span style="color: #990000">=</span> Sequel<span style="color: #990000">.</span>sqlite<span style="color: #990000">(</span><span style="color: #FF0000">'todolist.db'</span><span style="color: #990000">)</span></tt></pre></div></div>
+<div class="paragraph"><p>The <tt>:schema</tt> plugin is required since Sequel 3.0, if you run a version prior
+to 2.12 you may remove this line if it gives you any problems.</p></div>
 <div class="paragraph"><p>Next we edit <em>start.rb</em>, remove the <tt>Hello</tt> class, and add a require for the
 file, <em>start.rb</em> should look like this now:</p></div>
 <div class="listingblock">
@@ -610,6 +619,8 @@ by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-weight: bold"><span style="color: #000080">require</span></span> <span style="color: #FF0000">'sequel'</span>
+
+Sequel<span style="color: #990000">::</span>Model<span style="color: #990000">.</span>plugin<span style="color: #990000">(:</span>schema<span style="color: #990000">)</span>
 
 DB <span style="color: #990000">=</span> Sequel<span style="color: #990000">.</span>sqlite<span style="color: #990000">(</span><span style="color: #FF0000">'todolist.db'</span><span style="color: #990000">)</span>
 
@@ -1255,6 +1266,73 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>Voilà, you now have acquired the Certificate of Ramazeness and all your friends
 and enemies envy you.</p></div>
 </div>
+<h2 id="_twelfth_step_configuring_configurable_configurability">Twelfth Step, configuring configurable configurability</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>To round up this tutorial a bit, let&#8217;s introduce you to configuration in Ramaze.
+There are a number of ways to configure Ramaze, but here we&#8217;ll just see the
+most common ones with some options you&#8217;ll most likely want to change.</p></div>
+<div class="paragraph"><p>First of all, you have been running your ramaze application always on the same
+port, <tt>7000</tt>, which prevents you from starting more than one instance or other
+applications.</p></div>
+<div class="paragraph"><p>To change the port, you can, for example:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 2.11.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.</span>adapter<span style="color: #990000">.</span>port <span style="color: #990000">=</span> <span style="color: #993399">80</span></tt></pre></div></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">Running a server on a port below 1024 will require root privileges and is
+      generally not advised for applications that don&#8217;t drop their privileges
+      after establishing a connection.
+      Please have a look at <a href="http://wiki.ramaze.net/Deployment">http://wiki.ramaze.net/Deployment</a> for better ways
+      to deploy your site using a reverse proxy like apache, lighttpd, or
+      nginx.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>OK, a different port is fine, but how about some speed-boost? For this we will
+need a faster server like <a href="http://mongrel.rubyforge.org">Mongrel</a> or
+<a href="http://thin.rubyforge.org">Thin</a>.</p></div>
+<div class="paragraph"><p>You can install either one via:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>gem install thin
+gem install mongrel</tt></pre>
+</div></div>
+<div class="paragraph"><p>Now to the configuration:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 2.11.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># The default is WEBrick</span></span>
+Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.</span>adapter<span style="color: #990000">.</span>adapter <span style="color: #990000">=</span> <span style="color: #990000">:</span>webrick
+
+<span style="font-style: italic"><span style="color: #9A1900"># How about using Mongrel instead?</span></span>
+Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.</span>adapter<span style="color: #990000">.</span>adapter <span style="color: #990000">=</span> <span style="color: #990000">:</span>mongrel
+
+<span style="font-style: italic"><span style="color: #9A1900"># Or maybe Thin?</span></span>
+Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.</span>adapter<span style="color: #990000">.</span>adapter <span style="color: #990000">=</span> <span style="color: #990000">:</span>thin</tt></pre></div></div>
+<div class="paragraph"><p>For the full performance, switch Ramaze into <tt>:live</tt> mode:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 2.11.1
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># The default is :dev</span></span>
+Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.</span>mode <span style="color: #990000">=</span> <span style="color: #990000">:</span>live
+
+<span style="font-style: italic"><span style="color: #9A1900"># And here comes :live</span></span>
+Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.</span>mode <span style="color: #990000">=</span> <span style="color: #990000">:</span>live</tt></pre></div></div>
+<div class="paragraph"><p>The major differences between <tt>:dev</tt> and <tt>:live</tt> are that in <tt>:live</tt> mode your
+code won&#8217;t be automatically reloaded if it has changed and we don&#8217;t run every
+request through <tt>Rack::Lint</tt>, which helps you to stay within the
+request/response specifications required by Rack.</p></div>
+</div>
 <h2 id="glossary">Glossary</h2>
 <div class="sectionbody">
 <div class="dlist glossary"><dl>
@@ -1330,7 +1408,7 @@ RSI
 <div id="footer">
 <div id="footer-text">
 Version 2.0<br />
-Last updated 2009-03-30 20:29:25 JST
+Last updated 2009-04-07 19:08:12 JST
 </div>
 </div>
 </body>
