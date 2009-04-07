@@ -73,7 +73,7 @@ module Ramaze
       #   end
 
       def render_template(path, variables = {})
-        Ramaze.deprecated('Helper::Partial#render_template', 'Helper::Render#render_template')
+        Ramaze.deprecated('Helper::Partial#render_template')
         path = path.to_s
 
         ext = File.extname(path)
