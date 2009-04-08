@@ -2,10 +2,8 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  map :/
-
+  map '/'
   helper :cache
-  cache :index
 
   def index
 %[
@@ -22,8 +20,10 @@ class MainController < Ramaze::Controller
 ]
   end
 
+  cache_action :method => :index
+
   def invalidate
-    action_cache.delete '/index'
+    Ramaze::Cache.action.delete(:method => 'index')
     redirect :/
   end
 end

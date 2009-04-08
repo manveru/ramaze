@@ -1,4 +1,4 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 =begin rdoc
@@ -73,6 +73,11 @@ module Ramaze
 
     def p(*args, &block)
       _gestalt_call_tag :p, args, &block
+    end
+
+    # workaround for Kernel#select to make <select></select> work
+    def select(*args, &block)
+      _gestalt_call_tag(:select, args, &block)
     end
 
     def _gestalt_call_tag(name, args, &block)

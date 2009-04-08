@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Template::Erubis <%=@place%></title>
+  </head>
+  <body>
+    <h1>The <%=@place%> Template for Erubis</h1>
+    <%= a('Home', :/) %>
+    <p>
+      Here you can pass some stuff if you like, parameters are just passed like this:<br />
+      <%= a("/#@place/one") %><br />
+      <%= a("#@place/two/three") %><br />
+      <%= a("#@place/one?foo=bar") %><br />
+    </p>
+    <div>
+      The arguments you have passed to this action are:
+      <% if @args.empty? %>
+        none
+      <% else %>
+        <% @args.each do |arg| %>
+          <span><%= arg %></span>
+        <% end %>
+      <% end %>
+    </div>
+    <div>
+      <%= request.params.inspect %>
+    </div>
+  </body>
+</html>

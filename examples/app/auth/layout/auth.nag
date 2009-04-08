@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>Auth App</title>
+    <?css
+      body { margin: 5em; padding: 1em; border: 1px soid black; }
+      ul { list-style: none; margin: 0; }
+      .error { color: red; }
+    ?>
+  </head>
+  <body>
+    <div class="header">
+      <?r if logged_in? ?>
+        #{a 'Logout', :logout}
+      <?r else ?>
+        #{a 'Login', :login}
+      <?r end ?>
+    </div>
+    <div class="content">
+      <h1>Auth App</h1>
+      #{@content}
+    </div>
+    <div class="footer">
+    </div>
+  </body>
+</html>

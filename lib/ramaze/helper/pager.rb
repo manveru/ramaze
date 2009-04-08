@@ -83,6 +83,7 @@ module Ramaze
 
 class Pager
   include Ramaze::Helper::Link
+  include Ramaze::Traited
 
   # Items per page.
 
@@ -255,7 +256,7 @@ private
 
   def target_uri(page)
     params = @request.params.merge(@key => page)
-    Rs(Action.current.name, params)
+    Current.action.node.r(Current.action.name, params)
   end
 
   # Generate link for the first page.

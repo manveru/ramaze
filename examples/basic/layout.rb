@@ -2,8 +2,8 @@ require 'rubygems'
 require 'ramaze'
 
 class MainController < Ramaze::Controller
-  map '/'
   layout :page
+  provide :html => :nagoro
 
   def index
     @title = "Test"
@@ -11,7 +11,7 @@ class MainController < Ramaze::Controller
   end
 
   def page
-    %{
+    %q{
 <html>
   <head>
     <title>examples/layout</title>

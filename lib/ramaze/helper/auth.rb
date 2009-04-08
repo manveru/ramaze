@@ -1,125 +1,89 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'digest/sha1'
-
 module Ramaze
+  module Helper
 
-  # A simple way to do authentication. Please have a look at the docs for the
-  # check_auth method for detailed information
+    # A simple way to do authentication without a model.
+    # Please have a look at the docs of Auth#auth_login.
+    #
+    # If you want to do authentication with a model see Helper::User instead.
+    module Auth
+      Helper::LOOKUP << self
+      include Ramaze::Traited
 
-  module Helper::Auth
-    Helper::LOOKUP << self
+      trait :auth_table => {}
+      trait :auth_hashify => lambda{|pass| Digest::SHA1.hexdigest(pass) }
+      trait :auth_post_only => false
 
-    # add Helper::Aspect and Helper::Stack on inclusion of Helper::Auth
-
-    def self.included(klass)
-      klass.send(:helper, :aspect, :stack)
-    end
-
-    # The default Element to use (if any)
-
-    AUTH_ELEMENT = 'Page'
-
-    # action for login, takes a password
-    # ( ?password=passwort or /login/passwort or via a form )
-    # if no password given, shows a simple form to input it.
-
-    def login
-      username, password = request[:username, :password]
-      if check_auth(username, password)
-        session[:logged_in] = true
-        session[:username] = username
-        inside_stack? ? answer : redirect_referrer
-      else
-        if defined? AUTH_ELEMENT and AUTH_ELEMENT.to_s.split.any?
-          open_element = "<#{AUTH_ELEMENT}>"
-          close_element = "</#{AUTH_ELEMENT}>"
-        end
-        %{
-          #{open_element}
-            <form method="POST" action="#{Rs(:login)}">
-              <ul style="list-style:none;">
-                <li>Username: <input type="text" name="username" /></li>
-                <li>Password: <input type="password" name="password" /></li>
-                <li><input type="submit" /></li>
-              </ul>
-            </form>
-          #{close_element}
-        }
+      def self.included(into)
+        into.helper(:stack)
       end
-    end
 
-    # clear the session and redirect to the index action of the mapping of the
-    # current controller.
+      def login
+        return auth_template if trait[:auth_post_only] and !request.post?
+        @username, password = request[:username, :password]
+        answer(request.referer) if auth_login(@username, password)
+        return auth_template
+      end
 
-    def logout
-      session.clear
-      redirect_referer
-    end
+      def logout
+        auth_logout
+        answer(request.referer)
+      end
 
-    private
+      private
 
-    # call( R(self, :login) ) if not logged in
+      def login_required
+        call(r(:login)) unless logged_in?
+      end
 
-    def login_required
-      call(Rs(:login)) unless logged_in?
-    end
+      # @return [true false] whether user is logged in right now
+      def logged_in?
+        !!session[:logged_in]
+      end
 
-    # checks if the user is already logged in.
-    #   session[:logged_in] is not nil/false
+      def check_auth(user, pass)
+        Ramaze.deprecated('Helper::User#check_auth', 'Helper::User#auth_login')
+        auth_login(user, pass)
+      end
 
-    def logged_in?
-      !!session[:logged_in]
-    end
+      # @return
+      def auth_login(user, pass)
+        return unless user and pass
+        return if user.empty? or pass.empty?
+        return unless table = ancestral_trait[:auth_table]
+        return unless hashify = ancestral_trait[:auth_hashify]
 
-    # check the authentication (username and password) against the auth_table.
-    #
-    # auth_table is a trait, it may be the name of a method, a Proc or a simple
-    # Hash.
-    # If it is neither of the above it has at least to respond to #[]
-    # which will pass it the username as key and it should answer with the
-    # password as a Digest::SHA1.hexdigest.
-    #
-    # The method and Proc are both called on demand.
-    #
-    # If you want to change the way the password is hashed, change
-    #   trait[:auth_hashify]
-    #
-    # The default looks like:
-    #   lambda{ |pass| Digest::SHA1.hexdigest(pass.to_s) }
-    #
-    # As with the auth_table, this has to be an object that responds to #[]
-    #
-    # If you want all your controllers to use the same mechanism set the trait
-    # on one of the ancestors, the traits are looked up by #ancestral_trait
-    #
-    # Examples:
-    #
-    #   # The method to be called.
-    #   trait :auth_table => :auth_table
-    #   trait :auth_table => 'auth_table'
-    #
-    #   # Lambda that will be called upon demand
-    #   trait :auth_table => lambda{ {'manveru' => Digest::SHA1.hexdigest 'password'} }
-    #
-    #   # Hash holding the data.
-    #   trait :auth_table => {'manveru' => Digest::SHA1.hexdigest('password')}
+        if table.respond_to?(:to_sym) or table.respond_to?(:to_str)
+          table = send(table)
+        elsif table.respond_to?(:call)
+          table = table.call
+        end
 
-    def check_auth user, pass
-      return false if (not user or user.empty?) and (not pass or pass.empty?)
-      auth_table = ancestral_trait[:auth_table] ||= {}
+        return unless table[user] == hashify.call(pass)
 
-      auth_table = method(auth_table) if auth_table.is_a?(Symbol)
-      auth_table = method(auth_table) if auth_table.respond_to?(:to_str)
-      auth_table = auth_table.call    if auth_table.respond_to?(:call)
+        session[:logged_in] = true
+        session[:username] = user
+      end
 
-      default_hashify = lambda{ |pass| Digest::SHA1.hexdigest(pass.to_s) }
+      def auth_logout
+        session.delete(:logged_in)
+        session.delete(:username)
+      end
 
-      hashify  = (ancestral_trait[:auth_hashify] ||= default_hashify)
-      password = hashify[pass.to_s]
-
-      auth_table[user.to_s] == password
+      # @return [String] template for auth
+      def auth_template
+        <<-TEMPLATE.strip!
+<form method="post" action="#{r(:login)}">
+  <ul style="list-style:none;">
+    <li>Username: <input type="text" name="username" value="#@username"/></li>
+    <li>Password: <input type="password" name="password" /></li>
+    <li><input type="submit" /></li>
+  </ul>
+</form>
+        TEMPLATE
+      end
     end
   end
 end

@@ -1,6 +1,6 @@
-class History
-  include Ramaze::Helper::CGI
+require 'ramaze/gestalt'
 
+class History
   def initialize(size = 13)
     @size = size
     @history = []
@@ -10,20 +10,22 @@ class History
     text.strip!
     return if text.empty?
     @history.shift until @history.size < @size
-    @history << Message.new(h(nick), h(text), Time.now)
+    @history << Message.new(nick, text, Time.now)
     true
   end
 
   def to_html
-    @history.map {|message|
-      '<div class="message">' <<
-          [:time, :nick, :text].map{|key| span_for(message, key)}.join("\n") <<
-      '</div>'
-    }.join("\n")
-  end
+    g = Ramaze::Gestalt.new
 
-  def span_for(message, key)
-    "<span class='#{key}'>#{message[key]}</span>"
+    each do |message|
+      g.div(:class => :message) do
+        g.span(:class => :time){ message[:time].strftime('%X') }
+        g.span(:class => :nick){ message[:nick] }
+        g.span(:class => :text){ message[:text] }
+      end
+    end
+
+    g.to_s
   end
 
   include Enumerable

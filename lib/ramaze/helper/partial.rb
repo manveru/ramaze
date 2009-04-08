@@ -1,105 +1,100 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+  module Helper
 
-  # = Helper::Partial
-  #
-  # === Example Usage
-  #
-  #   class MyController
-  #     def index
-  #     end
-  #     def list
-  #       plain = request['plain']
-  #       "Hello World from List!  Plain List == #{plain}"
-  #     end
-  #   end
-  #
-  #
-  #   <html>
-  #     <head><title>Partial Render Index</title></head>
-  #     <body>
-  #       #{render_partial(Rs(:list), 'plain' => true)}
-  #     </body>
-  #   </html>
-
-  module Helper::Partial
-    module_function
-
-    # Renders a url 'inline'.
+    # = Helper::Partial
     #
-    # url:      normal URL, like you'd use for redirecting.
-    # options:  optional, will be used as request parameters.
+    # Please note that this helper is deprecated in favor of # Helper::Render,
+    # it has been removed from Innate and remains in Ramaze until 2009.05.
+    #
+    # === Example Usage
+    #
+    #   class MyController
+    #     def index
+    #     end
+    #
+    #     def list
+    #       plain = request['plain']
+    #       "Hello World from List!  Plain List == #{plain}"
+    #     end
+    #   end
+    #
+    #
+    #   <html>
+    #     <head><title>Partial Render Index</title></head>
+    #     <body>
+    #       #{render_partial(Rs(:list), 'plain' => true)}
+    #     </body>
+    #   </html>
+    module Partial
+      module_function
 
-    def render_partial(url, options = {})
-      # Save any request params that clash with the ones we're about to add in.
-      saved = {}
-      options.keys.each {|x| saved[x] = Request.current.params[x] }
+      # Renders a url 'inline'.
+      #
+      # +url+      normal URL, like you'd use for redirecting.
+      # +options+  optional, will be used as request parameters.
+      #
+      # Issues a mock request to the given +url+ with +options+ turned into
+      # query arguments.
+      def render_partial(url, options = {})
+        Ramaze.deprecated('Helper::Partial#render_partial', 'Helper::Render#render_full')
 
-      # Add/overwrite with the specified params. Ensure keys are strings since
-      # request[:foo] converts key to string when performing lookup.
-      options.each do |key, value|
-        Request.current.params[key.to_s] = value
-      end
+        uri = URI(url)
+        query = options # Innate::Current.request.params.merge(options)
+        uri.query = Rack::Utils.build_query(query)
 
-      Controller.handle(url)
-    ensure
-      # Always reinstate the original
-      options.keys.each {|x| Request.current.params[x] = saved[x] }
-    end
+        body = nil
 
-    # Render the template file in view_root of the
-    # current controller.
-
-    def render_template(file, vars = {})
-      current = Action.current
-      options = { :controller => current.controller,
-                  :instance => current.instance.dup }
-
-      file = file.to_s
-
-      if Pathname(file).absolute?
-        file = file.squeeze '/'
-        unless File.exist?(file)
-          Log.warn "render_template: #{file} does not exist."
-          return ''
+        Innate::Mock.session do |session|
+          cookie = Innate::Current.session.cookie
+          session.cookie = cookie
+          body = session.get(uri.to_s, options).body
         end
-        options[:template] = file
-      else
-        roots = [options[:controller].template_paths].flatten
 
-        if (files = Dir[File.join("{#{roots.join(',')}}","{#{file},#{file}.*}")]).any?
-          options[:template] = files.first.squeeze '/'
-        else
-          Log.warn "render_template: #{file} does not exist in the following directories: #{roots.join(',')}."
-          return ''
-        end
+        body
       end
 
-      binding = options[:instance].scope
-      
-      # For Ruby 1.9/1.8.7
-      binding = binding.binding if binding.respond_to?(:binding)
+      # Render the template file in view_root of the
+      # current controller.
+      #
+      # TODO:
+      # * Doesn't work for absolute paths, but there are no specs for that yet.
+      # * the local variable hack isn't working because innate allocates a new
+      #   binding.
+      #   For now one can simply use instance variables, which I prefer anyway.
+      #
+      # the local binding hack:
+      #
+      #   variables.each do |key, value|
+      #     value = "ObjectSpace._id2ref(#{value.object_id})"
+      #     eval "#{key} = #{value}", action.binding
+      #   end
 
-      vars.each do |name, value|
-        options[:instance].instance_variable_set("@#{name}", value)
+      def render_template(path, variables = {})
+        Ramaze.deprecated('Helper::Partial#render_template')
+        path = path.to_s
 
-        value = "ObjectSpace._id2ref(#{ value.object_id })"
-        eval "#{ name } = #{ value }", binding
+        ext = File.extname(path)
+        basename = File.basename(path, ext)
+
+        action = Innate::Current.action.dup
+        action.layout    = nil
+        action.view      = action.node.find_view(basename, 'html')
+        action.method    = action.node.find_method(basename, action.params)
+
+        action.variables = action.variables.merge(variables)
+        action.sync_variables(action)
+
+        return action.call if action.valid?
+        raise(ArgumentError, "cannot render %p" % path)
       end
 
-      options[:binding] = binding
-
-      Ramaze::Action(options).render
+      def render_action(method, *params)
+        Ramaze.deprecated('Helper::Partial#render_action', 'Helper::Render#render_full')
+        render_partial(r(method), *params)
+      end
     end
-
-    # shortcut to render_partial, accepts a method and contructs a link to the
-    # current controller, then calls render_partial on that
-
-    def render_action method, *params
-      render_partial(Rs(method), *params)
-    end
-
   end
 end

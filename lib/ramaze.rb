@@ -1,139 +1,86 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-# StdLib
-require 'abbrev'
-require 'cgi'
-require 'digest/md5'
-require 'fileutils'
-require 'ipaddr'
-require 'optparse'
-require 'ostruct'
-require 'pathname'
-require 'pp'
-require 'set'
-require 'socket'
-require 'timeout'
-require 'tmpdir'
-require 'yaml'
-
-begin
-  require 'rubygems'
-rescue LoadError
-end
-
-# Rack
-require 'rack'
-require 'rack/utils'
-require 'rack/request'
-require 'rack/response'
-
-# The main namespace for Ramaze
+# Namespace for Ramaze
+#
+# THINK:
+#   * for now, we don't extend this with Innate to keep things clean. But we
+#     should eventually do it for a simple API, or people always have to find
+#     out whether something is in Innate or Ramaze.
+#     No matter which way we go, we should keep references point to the
+#     original location to avoid too much confusion for core developers.
 module Ramaze
-  BASEDIR = File.dirname(File.expand_path(__FILE__))
-  $LOAD_PATH.unshift BASEDIR
-  $LOAD_PATH.uniq!
+  ROOT = File.expand_path(File.dirname(__FILE__)) unless defined?(Ramaze::ROOT)
 
-  # Shortcut to the HTTP_STATUS_CODES of Rack::Utils
-  # inverted for easier access
+  unless $LOAD_PATH.any?{|lp| File.expand_path(lp) == ROOT }
+    $LOAD_PATH.unshift(ROOT)
+  end
 
-  STATUS_CODE = Rack::Utils::HTTP_STATUS_CODES.invert
-end
+  # 3rd party
+  require 'innate'
 
-Thread.abort_on_exception = true
+  @options = Innate.options
+  class << self; attr_accessor :options; end
 
-# Bootstrap
-require 'ramaze/version'
-require 'ramaze/reloader'
-require 'ramaze/snippets'
-require 'ramaze/log'
-require 'ramaze/trinity'
-require 'ramaze/dispatcher'
-require 'ramaze/current'
-require 'ramaze/adapter'
-require 'ramaze/option'
-require 'ramaze/cache'
-require 'ramaze/tool'
+  # vendored, will go into rack-contrib
+  require 'vendor/etag'
+  require 'vendor/route_exceptions'
 
-# Startup
-require 'ramaze/controller'
+  # Ramaze itself
+  require 'ramaze/version'
+  require 'ramaze/log'
+  require 'ramaze/snippets'
+  require 'ramaze/helper'
+  require 'ramaze/view'
+  require 'ramaze/controller'
+  require 'ramaze/cache'
+  require 'ramaze/reloader'
+  require 'ramaze/setup'
+  require 'ramaze/app'
+  require 'ramaze/files'
+  require 'ramaze/middleware_compiler'
+  require 'ramaze/plugin'
+  require 'ramaze/request'
+  require 'ramaze/current'
 
-# Complete
-require 'ramaze/template/ezamar'
-require 'ramaze/contrib'
-require 'ramaze/route'
-
-module Ramaze
-
-  # Each of these classes will be called ::startup upon Ramaze.startup
-
-  trait :essentials => [
-    Global, Cache, Contrib, Controller, Session, Adapter
-  ]
-
-  trait :started => false
-
-  class << self
-
-    # The one place to start Ramaze, takes an Hash of options to pass on to
-    # each class in trait[:essentials] by calling ::startup on them.
-
-    def startup options = {}
-      options = options.to_hash
-
-      force = options.delete(:force)
-      force ||= !trait[:started]
-
-      options[:runner] ||= caller[0][/^(.*?):\d+/, 1]
-      Global.merge!(options)
-
-      if force
-        Log.info("Starting up Ramaze (Version #{VERSION})")
-        trait[:started] = true
-
-        trait[:essentials].each do |obj|
-          obj.startup(options)
-        end
-      else
-        Log.info "Ramaze already started, skipped start."
-      end
+  # Usually it's just mental overhead to remember which module has which
+  # constant, so we just assign them here as well.
+  # This will not affect any of the module functions on Innate, you still have
+  # to reference the correct module for them.
+  # We do not set constants already set from the requires above.
+  Innate.constants.each do |const|
+    begin
+      Ramaze.const_get(const)
+    rescue NameError
+      Ramaze.const_set(const, Innate.const_get(const))
     end
+  end
 
-    # A shortcut for setting Ramaze.trait[:started] = true.
+  extend Innate::SingletonMethods
 
-    def skip_start
-      trait[:started] = true
-    end
+  options[:middleware_compiler] = Ramaze::MiddlewareCompiler
 
-    # Forces the startup of Ramaze regardless if trait[:started] is set.
+  middleware! :dev do |m|
+    m.use Rack::Lint
+    m.use Rack::CommonLogger
+    m.use Ramaze::Reloader
+    m.use Rack::ShowStatus
+    m.use Rack::RouteExceptions
+    m.use Rack::ShowExceptions
+    m.use Rack::Head
+    m.use Rack::ETag
+    m.use Rack::ConditionalGet
+    m.run Ramaze::AppMap
+  end
 
-    def start!(options = {})
-      trait[:started] = false
-      startup(options)
-    end
-
-    # This will be called when you hit ^C or send SIGINT.
-    # It sends ::shutdown to every class in trait[:essentials] and informs you
-    # when it is done
-
-    def shutdown
-      Log.info "Initiate shutdown"
-
-      Timeout.timeout(5) do
-        trait[:essentials].each do |obj|
-          obj.shutdown if obj.respond_to?(:shutdown)
-        end
-
-        puts "Ramazement is over, have a nice day."
-
-        exit
-      end
-    rescue Timeout::Error
-      puts "Shutdown timed out, issuing exit!"
-      exit!
-    end
-
-    alias start startup
-    alias stop shutdown
+  middleware! :live do |m|
+    m.use Rack::CommonLogger
+    m.use Rack::RouteExceptions
+    m.use Rack::ShowStatus
+    m.use Rack::ShowExceptions
+    m.use Rack::Head
+    m.use Rack::ETag
+    m.use Rack::ConditionalGet
+    m.run Ramaze::AppMap
   end
 end

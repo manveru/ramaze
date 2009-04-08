@@ -1,4 +1,4 @@
-require 'gestalt'
+require 'ramaze/gestalt'
 
 module Ramaze
   module Helper

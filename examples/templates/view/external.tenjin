@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Template::Tenjin #{@place}</title>
+  </head>
+  <body>
+  <h1>The #{@place} Template for Tenjin</h1>
+  <a href="#{r(:/)}">Home</a>
+  <p>
+  Here you can pass some stuff if you like, parameters are just passed like this:<br />
+  <a href="#{r(@place, :one)}">#{r(@place, :one)}</a><br />
+  <a href="#{r(@place, :two, :three)}">#{r(@place, :two, :three)}</a><br />
+  <a href="#{r(@place, :one, :foo => :bar)}">#{r(@place, :one, :foo => :bar)}</a>
+  </p>
+
+  <div>
+    The arguments you have passed to this action are:<br />
+    <?rb if @args.empty? ?>
+      none
+    <?rb else ?>
+      <?rb @args.each do |arg| ?>
+        <span>#{arg}</span>
+      <?rb end ?>
+    <?rb end ?>
+  </div>
+
+  <div>#{request.params.inspect}</div>
+  </body>
+</html>

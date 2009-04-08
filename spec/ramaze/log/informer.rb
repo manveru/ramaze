@@ -1,63 +1,65 @@
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
 require 'spec/helper'
+require 'ramaze/log/informer'
 
 describe 'Informer' do
-  before do
-    @out = []
-    def @out.puts(*args) push(*args) end
-    Ramaze::Logger::Informer.trait[:colorize] = false
-    @inform = Ramaze::Logger::Informer.new(@out)
-  end
+  @out = []
+  def @out.puts(*args) push(*args) end
+  Ramaze::Logger::Informer.trait[:colorize] = false
+  @inform = Ramaze::Logger::Informer.new(@out)
 
   def format(tag, string)
     /\[\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\] #{tag.to_s.upcase.ljust(5)}  #{Regexp.escape(string)}/
   end
 
-  it 'info' do
+  should 'log #info' do
     @inform.info('Some Info')
-    @out.first.should =~ format(:info, 'Some Info')
+    @out.last.should =~ format(:info, 'Some Info')
   end
 
-  it 'debug' do
+  should 'log #debug' do
     arr = [:some, :stuff]
     @inform.debug(arr)
-    @out.first.should =~ format(:debug, arr.inspect)
+    @out.last.should =~ format(:debug, arr.inspect)
   end
 
-  it 'warn' do
+  should 'log #warn' do
     @inform.warn('More things')
-    @out.first.should =~ format(:warn, 'More things')
+    @out.last.should =~ format(:warn, 'More things')
   end
 
-  it 'error' do
+  should 'log #error' do
     begin
       raise('Stuff')
     rescue => ex
     end
 
     @inform.error(ex)
-    @out.first.should =~ format(:error, ex.inspect)
+    @out.any?{|o| o =~ format(:error, ex.inspect) }.should.be.true
   end
 
-  it 'should choose stdout on init(stdout,:stdout,STDOUT)' do
+  should 'choose stdout on init(stdout,:stdout,STDOUT)' do
     a = Ramaze::Logger::Informer.new(STDOUT)
     b = Ramaze::Logger::Informer.new(:stdout)
     c = Ramaze::Logger::Informer.new('stdout')
     [a,b,c].each { |x| x.out.should == $stdout}
   end
 
-  it 'should choose stderr on init(stderr,:stderr,STDERR)' do
+  should 'choose stderr on init(stderr,:stderr,STDERR)' do
     a = Ramaze::Logger::Informer.new(STDERR)
     b = Ramaze::Logger::Informer.new(:stderr)
     c = Ramaze::Logger::Informer.new('stderr')
     [a,b,c].each { |x| x.out.should == $stderr}
   end
 
-  it 'should use IO when supplied' do
+  should 'use IO when supplied' do
     i = Ramaze::Logger::Informer.new(s = StringIO.new)
     i.out.should == s
   end
 
-  it 'should open file otherwise' do
+  should 'open file otherwise' do
     begin
       i = Ramaze::Logger::Informer.new('tmp.dummy')
       out = i.out
@@ -68,5 +70,4 @@ describe 'Informer' do
       File.delete('tmp.dummy')
     end
   end
-
 end

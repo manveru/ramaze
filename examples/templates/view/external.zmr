@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Template::Ezamar external</title>
+  </head>
+  <body>
+  <h1>The external Template for Ezamar</h1>
+    #{a('Home',:/)}
+    <p>
+      Here you can pass some stuff if you like, parameters are just passed like this:<br />
+      #{a("external/one")}<br />
+      #{a("external/one/two/three")}<br />
+      #{a("external/one?foo=bar")}<br />
+    </p>
+    <div>
+      The arguments you have passed to this action are:
+      <?r if @args.empty? ?>
+        none
+      <?r else ?>
+        <?r @args.each do |arg| ?>
+          <span>#{arg}</span>
+        <?r end ?>
+      <?r end ?>
+    </div>
+    <div>
+      #{request.params.inspect}
+    </div>
+  </body>
+</html>

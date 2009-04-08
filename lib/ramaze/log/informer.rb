@@ -9,6 +9,7 @@ module Ramaze
 
     class Informer
       include Logging
+      include Ramaze::Traited
 
       attr_accessor :out, :colorize, :log_levels
 

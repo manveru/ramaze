@@ -1,0 +1,22 @@
+%html
+  %head
+    %title= "Template::Haml #@place"
+  %body
+    %h1= @title
+    = a('Home',:/)
+    %p
+      Here you can pass some stuff if you like, parameters are just passed like this:
+      %br/
+      = a("#@place/one")
+      %br/
+      = a("#@place/one/two/three")
+      %br/
+      = a("#@place/one?foo=bar")
+    %div 
+      The arguments you have passed to this action are:
+      - if @args.empty?
+        none
+      - else
+        - @args.each do |arg|
+          %span= arg
+    %div= request.params.inspect

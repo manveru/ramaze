@@ -2,8 +2,7 @@ require 'spec/helper'
 require 'examples/helpers/cache'
 
 describe 'Caching' do
-  behaves_like 'http'
-  ramaze
+  behaves_like :mock
 
   it '/' do
     3.times do

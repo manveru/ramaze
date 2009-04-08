@@ -11,4 +11,6 @@ if caller
   end
 end
 
-require 'lib/ramaze/spec/helper/bacon'
+require 'bacon'
+
+Bacon.summary_on_exit

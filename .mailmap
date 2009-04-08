@@ -1,0 +1,25 @@
+<aman@ramaze.net> <aman@tmm1.net>
+<aman@ramaze.net> <ramaze@tmm1.net>
+
+<clinton.nixon@viget.com> <crnixon@gmail.com>
+
+<clive@crous.co.za> <clive@localhost.(none)>
+<clive@crous.co.za> <clive@pc-clive.(none)>
+<clive@crous.co.za> <clive@star120.co.za>
+
+<john@oxyliquit.de> <jo@helloit.fi>
+
+<lasso@lassoweb.se> <lasso@lasso-laptop.(none)>
+
+James Tucker <jftucker@gmail.com> <raggi@mbk.local>
+James Tucker <jftucker@gmail.com> raggi
+
+Michael Fellinger <m.fellinger@gmail.com> <m.fellinger@gmail.com>
+Michael Fellinger <m.fellinger@gmail.com> <manveru@sigma.localdomain>
+Michael Fellinger <m.fellinger@gmail.com> <manveru@weez-int.com>
+
+# following lines will make git glibc through a double free, it has no handling
+# for empty email-addresses yet.
+# Michael Fellinger <m.fellinger@gmail.com> Michael Fellinger m.fellinger@gmail.com <>
+# Ara T. Howard <ara.t.howard@gmail.com> ahoward <>
+# Martin Hilbig <blueonyx@dev-area.net> Martin Hilbig blueonyx@dev-area.net <>

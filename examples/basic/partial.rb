@@ -2,15 +2,13 @@ require 'rubygems'
 require 'ramaze'
 
 # This is a small extension to the hello world example, showing how to use the
-# <render> tag of Ezamar.
+# <render> tag of Nagoro.
 #
 # Browse to /more and /even_more
 
-pipeline = Ramaze::Template::Ezamar::TRANSFORM_PIPELINE
-pipeline.put_after(::Ezamar::Element, ::Ezamar::RenderPartial)
-pipeline.uniq!
-
 class MainController < Ramaze::Controller
+  provide :html => :nagoro
+
   def index
     "Hello, World!"
   end

@@ -1,14 +1,11 @@
 require 'spec/helper'
 
-class TCActionOne < Ramaze::Controller
+class SpecAction < Ramaze::Controller
   map '/'
+  provide :html, :None
 
   def index
     'Hello, World!'
-  end
-
-  def foo
-    Ramaze::Action(:controller => self.class, :method => :bar).render
   end
 
   def bar
@@ -16,16 +13,9 @@ class TCActionOne < Ramaze::Controller
   end
 end
 
-describe 'Action rendering' do
-  behaves_like "http"
-  ramaze
-
-  it 'should render' do
-    action = Ramaze::Action(:method => :index, :controller => TCActionOne)
+describe 'Action#render' do
+  it 'works when Action is manually created' do
+    action = SpecAction.resolve('/')
     action.render.should == 'Hello, World!'
-  end
-
-  it 'should render inside the controller' do
-    get('/foo').body.should == 'yo from bar'
   end
 end

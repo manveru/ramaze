@@ -16,11 +16,11 @@ class SpecUserHelper < Ramaze::Controller
   trait :user_model => MockSequelUser
 
   def status
-    logged_in?
+    logged_in? ? 'yes' : 'no'
   end
 
   def login
-    user_login
+    user_login ? 'logged in' : 'failed login'
   end
 
   def profile
@@ -28,16 +28,43 @@ class SpecUserHelper < Ramaze::Controller
   end
 end
 
+Arthur = {
+  :name => 'arthur',
+  :pass => '42',
+  :profile => 'Arthur Dent, fearful human in outer space!'
+}
+
+
+class SpecUserHelperCallback < SpecUserHelper
+  map '/callback'
+  helper :user
+  trait :user_callback => lambda{|hash|
+    Arthur if hash.values_at('name', 'password') == Arthur.values_at(:name, :pass)
+  }
+
+  def profile
+    user[:profile]
+  end
+end
+
 describe Ramaze::Helper::User do
-  behaves_like 'browser'
-  ramaze :adapter => :webrick
+  behaves_like :session
 
   should 'login' do
-    Browser.new do
-      get('/status').should == 'false'
-      get('/login', 'name' => 'arthur', 'password' => '42')
-      get('/status').should == 'true'
-      get('/profile').should == MockSequelUser.new.profile
+    session do |mock|
+      mock.get('/status').body.should == 'no'
+      mock.get('/login?name=arthur&password=42').body.should == 'logged in'
+      mock.get('/status').body.should == 'yes'
+      mock.get('/profile').body.should == MockSequelUser.new.profile
+    end
+  end
+
+  should 'login via the callback' do
+    session do |mock|
+      mock.get('/callback/status').body.should == 'no'
+      mock.get('/callback/login?name=arthur&password=42').body.should == 'logged in'
+      mock.get('/callback/status').body.should == 'yes'
+      mock.get('/callback/profile').body.should == MockSequelUser.new.profile
     end
   end
 end

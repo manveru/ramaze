@@ -1,80 +1,167 @@
 #!/usr/bin/env ruby
 
-begin
-  $:.unshift File.join(File.dirname(__FILE__), '../lib')
-  require 'ramaze'
-rescue LoadError
-  $:.shift
-
+def include_ramaze
   begin
-    require 'rubygems'
+    $:.unshift File.join(File.dirname(__FILE__), '/../lib')
+    require 'ramaze'
   rescue LoadError
-  end
-  require 'ramaze'
-end
+    $:.shift
 
-additions = lambda do |op|
-  op.separator ''
-  op.separator 'Specialized options:'
-
-  op.on('--create PROJECT', 'New application from proto') do |project_name|
-    require 'ramaze/tool/create'
-    Ramaze::Tool::Create.create(project_name)
-    exit
-  end
-
-  op.on('-i', '--instant', "Start up with bare-bones Controller") do |instant|
-    require 'ramaze/controller/main'
-  end
-
-  op.on('-e', '--execute STRING', String, "Execute string instead of a start.rb.") do |execute|
-    eval execute
+    begin
+      require 'rubygems'
+    rescue LoadError
+    end
+    require 'ramaze'
   end
 end
 
-runner = ARGV.reverse.find{|arg| File.file?(arg) }
-runner ||= 'start.rb' if File.file?('start.rb')
+def usage
+  <<-TXT
+  Usage:
 
-if runner
-  overlay = {
-    :root => File.dirname(runner),
-    :runner => runner, :origin => :console,
-  }
+    ramaze <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [ruby/rack options]
 
-  [overlay, ENV, ARGV].each do |opt|
-    Ramaze::Global.merge!(opt, &additions)
-  end
+    Commands:
+      start   - Starts an instance of this application. Supply a pidfile name if you do
+                not want it to use the default (PROJECT.pid).
 
-  runner = File.expand_path(runner)
-  
-  console = Ramaze::Global.console
+      stop    - Stops a running instance of this application. Supply a pidfile name if you
+                started it with a pidfile other than the default (PROJECT.pid).
 
-  if console
-    ARGV.clear #Avoid passing args to IRB
+      restart - Stops running instance of this application, then starts it back up.  Pidfile
+                (if supplied) is used for both stop and start.
 
-    Ramaze.trait[:started] = true
-    require runner
+      create  - Creates a new prototype Ramaze application in a directory named PROJECT in
+                the current directory.  ramaze create foo would make ./foo containing an
+                application prototype. Rack options are meaningless here.
 
-    require 'irb'
-    require 'irb/completion'
+      console - Starts an irb console with app.rb (and irb completion) loaded. This command
+                ignores rack options.
 
-    ENV['IRBRC'] = ".irbrc" if File.exists? ".irbrc"
-    Ramaze.start! :run_loose => true
-    IRB.start
-    Ramaze.shutdown
-  end
-  
-  daemonize = Ramaze::Global.daemonize
+    Rack Options
+      #{%x{rackup --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")}
+  TXT
+end
 
-  unless daemonize.empty?
-    require 'ramaze/tool/daemonize'
-    Ramaze::daemonize(runner, daemonize)
+## Methods for commands {{{
+def start
+  # Find the name of this app
+  app_name = default_pidfile.sub(/\.pid$/,'')
+  if daemonize = OURARGS.detect { |arg| arg.match(/^(-[dD]|--daemonize)$/) }
+    if pid_arg = OURARGS.detect { |arg| arg.match(/^(-P|--pid)/) }
+      puts "User supplied pid: #{pid_arg}"
+      pid_file = OURARGS[OURARGS.index(pid_arg) + 1]
+      puts "Starting daemon with user defined pidfile: #{pid_file}"
+      exec("rackup", "config.ru", *ARGV)
+    else
+      puts "Starting daemon with default pidfile: #{default_pidfile}"
+      exec("rackup", "config.ru", "-P", default_pidfile, *ARGV)
+    end
   else
-    Ramaze.trait[:started] = true
-    require runner
-    Ramaze.start!
+    exec("rackup", "config.ru", *ARGV)
   end
-else
-  Ramaze::Global.merge!(ARGV, &additions)
-  puts Ramaze::Global.option_parser(&additions)
 end
+
+def create(command)
+  project_name = OURARGS[OURARGS.index(command) + 1]
+  if project_name.nil?
+    $stderr.puts "Must supply a project name" if project_name.nil?
+    puts usage
+    exit 1
+  end
+  opts = {}
+  if OURARGS.detect { |arg| arg.match(/^(--force)/) }
+    puts "Overwriting any existing files as requested."
+    opts[:force] = true
+  end
+  if OURARGS.detect { |arg| arg.match(/^(--amend)/) }
+    puts "Only amending missing files as requested."
+    opts[:amend] = true
+  end
+  include_ramaze
+  require 'ramaze/tool/create'
+  Ramaze::Tool::Create.create(project_name, opts)
+end
+
+def stop(command)
+  return false unless pid_file = find_pid(command)
+  pid = File.read(pid_file).to_i
+  puts "Killing pid #{pid}"
+  Process.kill("INT", pid)
+  sleep 1
+  begin
+    Process.getpriority(Process::PRIO_PROCESS, pid)
+    $stdout.puts "Process #{pid} did not die, forcing it with -9"
+    Process.kill(9, pid)
+    File.unlink(pid_file) if File.file?(pid_file)
+    true
+  rescue Errno::ESRCH
+    File.unlink(pid_file) if File.file?(pid_file)
+    true
+  end
+end
+
+## End Command methods }}}
+
+# Helper methods {{{
+def default_pidfile
+  return @default_pidfile if @default_pidfile
+  @default_pidfile = (File.basename(File.expand_path(ENV["PWD"])) + ".pid").strip
+  @default_pidfile
+end
+
+def find_pid(command)
+  pid_file = OURARGS[OURARGS.index(command) + 1]
+  if pid_file.nil? or not File.file?(pid_file)
+    pid_file = default_pidfile
+  end
+  unless File.file?(pid_file)
+    $stderr.puts "Could not find running process id."
+    return false
+  end
+  pid_file
+end
+
+## End helper methods }}}
+
+OURARGS = ARGV.dup
+command = ARGV.detect { |arg| arg.match(/^(?:--?)?(?:start|stop|restart|create|h(?:elp)?|v(?:ersion)?|console)/) }
+if command.nil?
+  command = ""
+else
+  ARGV.delete(command)
+end
+
+case command
+when /^(?:--?)?restart$/
+  stop(command)
+  start
+when /^(?:--?)?start$/
+  start
+when /^(?:--?)?create$/
+  create(command)
+when /^(?:--?)?stop$/
+  if stop(command)
+    puts "Ramazement has ended, go in peace"
+    $stdout.flush
+  else
+    puts "Ramaze failed to stop (or was not running)"
+  end
+when /^(?:--?)?console$/
+  exec("irb", "-r", "irb/completion", "-r", "app", *ARGV)
+when /^(?:--?)?h(elp)?$/
+  puts usage
+when /^(?:--?)?v(ersion)?$/
+  include_ramaze
+  puts Ramaze::VERSION
+  exit
+when /^$/
+  puts "Must supply a valid command"
+  puts usage
+  exit 1
+else
+  puts "#{command} not implemented"
+  puts usage
+  exit 1
+end
+

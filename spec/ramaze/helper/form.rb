@@ -1,118 +1,356 @@
 require 'spec/helper'
 
-spec_require 'hpricot', 'sequel'
+spec_requires 'hpricot'
 
-DB = Sequel.sqlite
-
-class User < Sequel::Model(:user)
-  set_schema do
-    primary_key :id
-
-    boolean :online
-    varchar :name
-    integer :level
-    text :description
-    date :birthday
-    time :created
-  end
-end
-
-User.create_table
-
-class FormController < Ramaze::Controller
+class SpecHelperForm < Ramaze::Controller
   map '/'
   helper :form
 
-  def new
-    form_for(User).to_s
+  def text
+    form_text('Username', :username, request[:username])
   end
 
-  def new_with_options
-    form_for(User, :method => :POST, :action => Rs(:create)).to_s
+  def checkbox
+    form_checkbox('Administrator', :admin, request[:admin])
   end
 
-  def edit(id)
-    form_for(User[id])
+  def password
+    form_password('Password', :password)
   end
 
-  def edit_with_options(id)
-    form_for(User[id], :method => :POST, :action => Rs(:create)).to_s
+  def textarea
+    form_textarea('Text', :text, request[:text])
+  end
+
+  def file
+    form_file('File', :file)
+  end
+
+  def hidden
+    form_hidden(:secret, request[:secret])
+  end
+
+  def select_array
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages)
+  end
+
+  def select_array_size
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages, :size => 5)
+  end
+
+  def select_array_multiple
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages, :multiple => true)
+  end
+
+  def select_array_selected
+    languages = %w[ English German Japanese ]
+    form_select('Languages', :languages, languages, :selected => 'German')
+  end
+
+  def select_hash
+    languages = {'English' => 'en', 'German' => 'de', 'Japanese' => 'ja'}
+    form_select('Languages', :languages, languages)
   end
 end
 
-describe 'Helper::Form' do
-  ramaze
+describe Ramaze::Helper::Form do
+  behaves_like :mock
 
-  describe 'raw model' do
-    behaves_like 'requester'
+  it 'provides empty text input' do
+    got = get('/text')
 
-    should 'handle class' do
-      form = hget('/new').at(:form)
-      inputs = (form/:input)
-      inputs.map{|i| i[:name] }.compact.sort.should == %w[level name online]
-      form.at(:textarea)[:name].should == 'description'
-    end
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
 
-    should 'handle options' do
-      hget('/new_with_options').at(:form).raw_attributes.
-        should == {"action" => "/create", "method" => "POST"}
-    end
+    label.attributes.should == {'for' => 'form-username'}
+    label.inner_text.should == 'Username:'
+
+    input.attributes.should == {
+      'id' => 'form-username',
+      'type' => 'text',
+      'name' => 'username',
+      'value' => '',
+      'tabindex' => '1'}
   end
 
-  describe 'instances' do
-    behaves_like 'requester'
+  it 'provides filled text input' do
+    got = get('/text?username=manveru')
 
-    data = {
-      :name        => 'manveru',
-      :description => 'Ramaze dev',
-      :online      => true,
-      :level       => 2,
-      :birthday    => Time.now,
-      :created     => Time.now,
-    }
-    User.create data
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
 
-    should 'handle class' do
-      form = hget('/edit/1').at(:form)
+    label.attributes.should == {'for' => 'form-username'}
+    label.inner_text.should == 'Username:'
 
-      form.at('input[@name=name]').raw_attributes.should ==
-        { "name" => "name", "type" => "text", "value" => "manveru"}
-      form.at('input[@name=online]').raw_attributes.should ==
-        {"name" => "online", "checked" => "checked", "type" => "checkbox", "value" => "true"}
-      form.at('input[@name=level]').raw_attributes.should ==
-        {"name" => "level", "type" => "text", "value" => "2"}
+    input.attributes.should == {
+      'id' => 'form-username',
+      'type' => 'text',
+      'name' => 'username',
+      'value' => 'manveru',
+      'tabindex' => '1'}
+  end
 
-      # TODO:
-      # find a way to XPATH to input[@name="birthday[day]"]
-      # the [] in the name seems to break things, works fine with ()
+  it 'provides unchecked checkbox input' do
+    got = get('/checkbox')
 
-      # check date
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
 
-      date = data[:birthday]
-      selects = (form/'select[@name]').select{|s| s[:name] =~ /birthday/ }
+    label.attributes.should == {'for' => 'form-admin'}
+    label.inner_text.should == 'Administrator:'
 
-      { :day => date.day, :month => date.month, :year => date.year,
-      }.each do |key, value|
-        select = selects.find{|s| s[:name] == "birthday[#{key}]" }
-        select.at('[@selected]')[:value].to_i.should == value
-      end
+    input.attributes.should == {
+      'id' => 'form-admin',
+      'type' => 'checkbox',
+      'name' => 'admin',
+      'tabindex' => '1'}
+  end
 
-      # check time
+  it 'provides checked checkbox input' do
+    got = get('/checkbox?admin=true')
 
-      time = data[:created]
-      selects = (form/'select[@name]').select{|s| s[:name] =~ /created/ }
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
 
-      { :day => time.day, :month => time.month, :year => time.year,
-        :hour => time.hour, :min => time.min, :sec => time.sec,
-      }.each do |key, value|
-        select = selects.find{|s| s[:name] == "created[#{key}]" }
-        select.at('[@selected]')[:value].to_i.should == value
-      end
-    end
+    label.attributes.should == {'for' => 'form-admin'}
+    label.inner_text.should == 'Administrator:'
 
-    should 'handle options' do
-      hget('/edit_with_options/1').at(:form).raw_attributes.
-        should == {"action" => "/create", "method" => "POST"}
-    end
+    input.attributes.should == {
+      'id' => 'form-admin',
+      'type' => 'checkbox',
+      'name' => 'admin',
+      'checked' => 'checked',
+      'tabindex' => '1'}
+  end
+
+  it 'provides password input' do
+    got = get('/password')
+
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
+
+    label.attributes.should == {'for' => 'form-password'}
+    label.inner_text.should == 'Password:'
+
+    input.attributes.should == {
+      'id' => 'form-password',
+      'type' => 'password',
+      'name' => 'password',
+      'tabindex' => '1'}
+  end
+
+  it 'provides empty textarea' do
+    got = get('/textarea')
+
+    doc = Hpricot(got.body)
+    label, textarea = doc.at(:label), doc.at(:textarea)
+
+    label.attributes.should == {'for' => 'form-text'}
+    label.inner_text.should == 'Text:'
+
+    textarea.inner_text.should == ''
+    textarea.attributes.should == {
+      'id' => 'form-text',
+      'name' => 'text',
+      'tabindex' => '1'}
+  end
+
+  it 'provides filled textarea' do
+    got = get('/textarea?text=foobar')
+
+    doc = Hpricot(got.body)
+    label, textarea = doc.at(:label), doc.at(:textarea)
+
+    label.attributes.should == {'for' => 'form-text'}
+    label.inner_text.should == 'Text:'
+
+    textarea.inner_text.should == 'foobar'
+    textarea.attributes.should == {
+      'id' => 'form-text',
+      'name' => 'text',
+      'tabindex' => '1'}
+  end
+
+  it 'provides file upload input' do
+    got = get('/file')
+
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
+
+    label.attributes.should == {'for' => 'form-file'}
+    label.inner_text.should == 'File:'
+
+    input.inner_text.should == ''
+    input.attributes.should == {
+      'id' => 'form-file',
+      'name' => 'file',
+      'tabindex' => '1',
+      'type' => 'file'}
+  end
+
+  it 'provides empty hidden input' do
+    got = get('/hidden')
+
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
+
+    label.should.be.nil
+
+    input.inner_text.should == ''
+    input.attributes.should == {
+      'name' => 'secret',
+      'type' => 'hidden',
+      'value' => ''}
+  end
+
+  it 'provides filled hidden input' do
+    got = get('/hidden?secret=fish')
+
+    doc = Hpricot(got.body)
+    label, input = doc.at(:label), doc.at(:input)
+
+    label.should.be.nil
+
+    input.inner_text.should == ''
+    input.attributes.should == {
+      'name' => 'secret',
+      'type' => 'hidden',
+      'value' => 'fish'}
+  end
+
+  it 'provides array select' do
+    got = get('/select_array')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides sized array select' do
+    got = get('/select_array_size')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '5',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides multiple array select' do
+    got = get('/select_array_multiple')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'multiple' => 'multiple',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides preselected array select' do
+    got = get('/select_array_selected')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.
+      should == [['English',  {'value' => 'English'}],
+                 ['German',   {'value' => 'German', 'selected' => 'selected'}],
+                 ['Japanese', {'value' => 'Japanese'}]]
+  end
+
+  it 'provides hash select' do
+    got = get('/select_hash')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.sort.
+      should == [['English',  {'value' => 'en'}],
+                 ['German',   {'value' => 'de'}],
+                 ['Japanese', {'value' => 'ja'}]]
+  end
+
+  it 'provides hash select' do
+    got = get('/select_hash')
+    doc = Hpricot(got.body)
+
+    label, select = doc.at(:label), doc.at(:select)
+
+    label.attributes.should == {'for' => 'form-languages'}
+    label.inner_text.should == 'Languages:'
+
+    select.attributes.should == {
+      'id'       => 'form-languages',
+      'name'     => 'languages',
+      'size'     => '1',
+      'tabindex' => '1'}
+
+    options = select/:option
+    options.map{|o| [o.inner_text, o.attributes] }.sort.
+      should == [['English',  {'value' => 'en'}],
+                 ['German',   {'value' => 'de'}],
+                 ['Japanese', {'value' => 'ja'}]]
   end
 end

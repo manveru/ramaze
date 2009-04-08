@@ -1,23 +1,34 @@
-module Ramaze::Helper
-  module XHTML
-    def css(name, media = 'screen', options = {})
-      if options.empty?
-        "<link rel='stylesheet' href='/css/#{name}.css' type='text/css' media='#{media}' />"
-      elsif options[:only] == 'IE'
-        "<!--[if IE]>#{css(name, media)}<![endif]-->"
+module Ramaze
+  module Helper
+
+    # Provides shortcuts to the link/script tags.
+    module XHTML
+      LINK_TAG = '<link href=%p media=%p rel="stylesheet" type="text/css" />'
+      SCRIPT_TAG = '<script src=%p type="text/javascript"></script>'
+
+      def css(name, media = 'screen', options = {})
+        if options.empty?
+          LINK_TAG % ["/css/#{name}.css", media]
+        elsif options[:only].to_s.downcase == 'ie'
+          "<!--[if IE]>#{css(name, media)}<![endif]-->"
+        end
       end
-    end
 
-    def css_for(*names)
-      names.flatten.map{|name| css(name) }.join("\n")
-    end
+      def css_for(*args)
+        args.map{|arg| css(*arg) }.join("\n")
+      end
 
-    def js(name)
-      "<script src='/js/#{name}.js' type='text/javascript'></script>"
-    end
+      def js(name)
+        if name =~ /^http/ # consider it external full url
+          SCRIPT_TAG % name
+        else
+          SCRIPT_TAG % "/js/#{name}.js"
+        end
+      end
 
-    def js_for(*names)
-      names.flatten.map{|name| js(name) }.join("\n")
+      def js_for(*args)
+        args.map{|arg| js(*arg) }.join("\n")
+      end
     end
   end
 end

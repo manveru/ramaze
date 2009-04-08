@@ -2,8 +2,7 @@ require 'spec/helper'
 require 'examples/basic/simple'
 
 describe 'Simple' do
-  behaves_like 'http'
-  ramaze
+  behaves_like :mock
 
   def check(url)
     response = get(url)
@@ -13,10 +12,6 @@ describe 'Simple' do
 
   it '/' do
     check('/').should == 'simple'
-  end
-
-  it '/simple' do
-    check('/simple').should =~ /^#<Ramaze::Request/
   end
 
   it '/join/foo/bar' do

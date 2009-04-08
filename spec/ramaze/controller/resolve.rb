@@ -1,21 +1,19 @@
-#          Copyright (c) 2006 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
 
 class MainController < Ramaze::Controller
-  engine :None
+  map '/'
 
-  define_method('file.ext') { 'file.ext' }
-  define_method('css/file.css') { 'file.css' }
-  define_method(:path/:to/:js/'file.js') { 'file.js' }
-
-  define_method(:other/:greet/:other) { @greet = 'hi' }
+  define_method('file.ext'){ 'file.ext' }
+  define_method('css__file.css'){ 'file.css' }
+  define_method('path__to__js__file.js'){ 'file.js' }
+  define_method('other__greet__other'){ @greet = 'hi' }
 end
 
 describe 'Controller resolving' do
-  behaves_like 'http'
-  ramaze :view_root => __DIR__(:view)
+  behaves_like :mock
 
   it 'should work with .' do
     get('/file.ext').body.should == 'file.ext'

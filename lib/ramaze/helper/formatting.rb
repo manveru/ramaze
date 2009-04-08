@@ -3,6 +3,32 @@
 
 module Ramaze
   module Helper::Formatting
+    FORMATTING_NUMBER_COUNTER = { 0 => 'no', 2 => 'two', 3 => 'three',
+      4 => 'four', 5 => 'five', 6 => 'six', 7 => 'seven', 8 => 'eight',
+      9 => 'nine', 10 => 'ten' }
+
+    # Answers with a representation of given +count+ with correct grammar.
+    # If no +items+ argument is given, and the +count+ argument is not 1, then
+    # we first check whether the +item+ argument responds to #pluralize (for
+    # example if you are using Sequel). If this doesn't work we append 's' to
+    # the +item+ argument.
+    #
+    # @example usage
+    #   numeric_counter(0, 'comment') # => 'no comments'
+    #   numeric_counter(1, 'comment') # => 'one comment'
+    #   numeric_counter(2, 'comment') # => '2 comments'
+
+    def number_counter(count, item, items = nil)
+      count, item = count.to_i, item.to_s
+
+      if count == 1
+        "one #{item}"
+      else
+        items ||= item.respond_to?(:pluralize) ? item.pluralize : "#{item}s"
+        prefix = FORMATTING_NUMBER_COUNTER[count] || count
+        "#{prefix} #{items}"
+      end
+    end
 
     # Format a floating number nicely for display.
     #
@@ -44,7 +70,7 @@ module Ramaze
     end
 
     # stolen and adapted from rails
-    def time_diff from_time, to_time = Time.now, include_seconds = false
+    def time_diff(from_time, to_time = Time.now, include_seconds = false)
       distance_in_minutes = (((to_time - from_time).abs)/60).round
       distance_in_seconds = ((to_time - from_time).abs).round if include_seconds
 
@@ -121,10 +147,9 @@ module Ramaze
     end
 
     # Maybe port to ruby < 1.8.7 ?
-    def obfuscate_email(string)
-      string = string.to_s
-      text = string.each_byte.map{|c| "&#%03d" % c}.join
-      %(<a href="mailto:#{string}">#{text}</a>)
+    def obfuscate_email(email, text = nil)
+      obfuscated = email.to_s.each_byte.map{|c| "&#%03d" % c}.join
+      %(<a href="mailto:#{obfuscated}">#{text || obfuscated}</a>)
     end
 
     # Returns Hash with tags as keys and their weight as value.

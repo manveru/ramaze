@@ -1,140 +1,77 @@
-#          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
 module Ramaze
+  module Helper
 
-  # This helper is providing easy access to a couple of Caches to use for
-  # smaller amounts of data.
+    # Caching of simple objects and whole action responses.
+    module Cache
 
-  module Helper::Cache
-    C = Ramaze::Cache
-
-    # Create the Cache.value_cache on inclusion if it doesn't exist yet.
-    def self.included(klass)
-      C.add(:value_cache) unless C::CACHES.has_key?(:value_cache)
-    end
-
-    # Example:
-    #
-    #   class FooController < Ramaze::Controller
-    #     helper :cache
-    #     cache :index, :map_of_the_internet
-    #   end
-    #
-    # cache supports these options
-    #   [+:ttl+]  time-to-live in seconds
-    #   [+:key+]  proc that returns a key to store cache with
-    #
-    # Example:
-    #
-    #   class CacheController < Ramaze::Controller
-    #     helper :cache
-    #
-    #     # for each distinct value of request['name']
-    #     # cache rendered output of name action for 60 seconds
-    #     cache :name, :key => lambda{ request['name'] }, :ttl => 60
-    #
-    #     def name
-    #       "hi #{request['name']}"
-    #     end
-    #   end
-    #
-    # cache acts as a wrapper for value_cache if no args are given
-
-    def cache *args
-      return value_cache if args.size == 0
-
-      opts = args.last.is_a?(Hash) ? args.pop : {}
-
-      args.compact.each do |arg|
-        actions_cached[arg.to_sym] = opts
+      # Setup needed traits, add the singleton methods and add the caches used
+      # by this helper.
+      #
+      # @param [Class] into Class that this Module is included into
+      # @author manveru
+      def self.included(into)
+        into.extend(SingletonMethods)
+        into.add_action_wrapper(6.0, :cache_wrap)
+        into.trait[:cache_action] ||= Set.new
+        Ramaze::Cache.add(:action, :action_value)
       end
-    end
 
-    private
+      # @param [Action] action The currently wrapped action
+      # @yield The next block in wrap_action_call
+      # @return [String] the response body
+      # @see Innate::Node#wrap_action_call
+      # @author manveru
+      def cache_wrap(action)
+        cache = Innate::Cache.action
 
-    # use this to cache values in your controller and templates,
-    # for example heavy calculations or time-consuming queries.
+        ancestral_trait[:cache_action].each do |cache_action|
+          temp = cache_action.dup
+          ttl = temp.delete(:ttl)
 
-    def value_cache
-      C.value_cache
-    end
+          if temp.all?{|key, value| action[key] == value }
+            if cached = cache[temp]
+              return cached
+            elsif ttl
+              return cache.store(temp, yield, :ttl => ttl)
+            else
+              return cache.store(temp, yield)
+            end
+          end
+        end
 
-    # action_cache holds rendered output of actions for which caching is enabled.
-    #
-    # For simple cases:
-    #
-    #   class Controller < Ramaze::Controller
-    #     map '/path/to'
-    #     helper :cache
-    #     cache :action
-    #
-    #     def action with, params
-    #       'rendered output'
-    #     end
-    #   end
-    #
-    #   { '/path/to/action/with/params' => {
-    #       :time => Time.at(rendering),
-    #       :type => 'content/type',
-    #       :content => 'rendered output'
-    #     }
-    #   }
-    #
-    # If an additional key is provided:
-    #
-    #   class Controller < Ramaze::Controller
-    #     map '/path/to'
-    #     helper :cache
-    #     cache :action, :key => lambda{ 'value of key proc' }
-    #
-    #     def action
-    #       'output'
-    #     end
-    #   end
-    #
-    #   { '/path/to/action' => {
-    #       'value of key proc' => {
-    #         :time => Time.at(rendering),
-    #         :type => 'content/type',
-    #         :content => 'output'
-    #       }
-    #     }
-    #   }
-    #
-    # Caches can be invalidated after a certain amount of time
-    # by supplying a :ttl option (in seconds)
-    #
-    #   class Controller < Ramaze::Controller
-    #     helper :cache
-    #     cache :index, :ttl => 60
-    #
-    #     def index
-    #       Time.now.to_s
-    #     end
-    #   end
-    #
-    # or by deleting values from action_cache directly
-    #
-    #   action_cache.clear
-    #   action_cache.delete '/index'
-    #   action_cache.delete '/path/to/action'
+        yield
+      end
 
-    def action_cache
-      C.actions
-    end
+      # @return [Object] The cache wrapper assigned for :action_value
+      # @see Innate::Cache
+      # @author manveru
+      def cache_value
+        Ramaze::Cache.action_value
+      end
 
-    # This refers to the class-trait of cached actions, you can
-    # add/remove actions to be cached.
-    #
-    # Example:
-    #
-    #   class FooController < Ramaze::Controller
-    #     trait :actions_cached => [:index, :map_of_the_internet]
-    #   end
 
-    def actions_cached
-      ancestral_trait[:actions_cached]
+      # @deprecated Use the #cache_value method instead
+      # @author manveru
+      def value_cache
+        Ramaze::deprecated('Innate::Helper::Cache#value_cache',
+                           'Innate::Helper::Cache#cache_value')
+        cache_value
+      end
+
+      module SingletonMethods
+        def cache(name, hash = {})
+          Ramaze.deprecated('Helper::Cache::cache', 'Helper::Cache::cache_action')
+          cache_action(hash.merge(:method => name))
+        end
+
+        def cache_action(hash)
+          hash[:method] = hash[:method].to_s
+          trait[:cache_action] << hash
+        end
+      end
     end
   end
 end
