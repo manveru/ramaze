@@ -30,6 +30,8 @@ require 'net/smtp'
 
 module Ramaze
   class EmailHelper
+    include Innate::Traited
+
     # Required to be set
     trait :smtp_server => 'smtp.your-isp.com'
     trait :smtp_helo_domain => 'your.helo.domain.com'
