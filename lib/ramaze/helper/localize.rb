@@ -19,7 +19,12 @@ module Ramaze
       end
 
       def locales
-        Parser.new(request).locales(ancestral_trait[:localize_locale])
+        locales = request.env['localize.locales']
+        return locales if locales
+
+        fallback = ancestral_trait[:localize_locale]
+        locales = Parser.new(request).locales(fallback)
+        request.env['localize.locales'] = locales
       end
 
       class Dictionary
@@ -105,11 +110,16 @@ module Ramaze
         end
 
         def parse
-          parse_params || parse_cookie || parse_header
+          parse_params || parse_session || parse_cookie || parse_header
         end
 
         def parse_params(key = 'lang')
           return unless lang = request.params[key]
+          ::Locale::Tag.parse(lang)
+        end
+
+        def parse_session(key = :lang)
+          return unless lang = Current.session[key]
           ::Locale::Tag.parse(lang)
         end
 
@@ -119,7 +129,7 @@ module Ramaze
         end
 
         def parse_header
-          request.accept_language_with_weight.map{|lang|
+          request.accept_language.map{|lang|
             ::Locale::Tag.parse(lang) }
         end
       end
