@@ -4,7 +4,7 @@
 require 'spec/helper'
 
 class SpecHelperFlash < Ramaze::Controller
-  map :/
+  map '/'
   helper :flash
   trait :flashbox => "%key : %value"
 
@@ -23,23 +23,19 @@ class SpecHelperFlash < Ramaze::Controller
 end
 
 describe Ramaze::Helper::Flash do
-  behaves_like :session
+  behaves_like :mock
 
   it 'displays a flashbox with one item' do
-    session do |mock|
-      mock.get('/populate_one')
-      got = mock.get('/box')
-      got.status.should == 200
-      got.body.should == 'one : for starters'
-    end
+    get('/populate_one')
+    get('/box')
+    last_response.status.should == 200
+    last_response.body.should == 'one : for starters'
   end
 
   it 'displays a flashbox with two items' do
-    session do |mock|
-      mock.get('/populate_two')
-      got = mock.get('/box')
-      got.status.should == 200
-      got.body.split("\n").sort.should == ['one : this one', 'two : and this']
-    end
+    get('/populate_two')
+    get('/box')
+    last_response.status.should == 200
+    last_response.body.split("\n").sort.should == ['one : this one', 'two : and this']
   end
 end

@@ -21,49 +21,51 @@ describe 'Serving static files' do
 
   it 'serves from public root' do
     css = File.read(__DIR__('public/test_download.css'))
-    got = get('/test_download.css')
-    got.body.should == css
-    got.status.should == 200
+    get '/test_download.css'
+    last_response.body.should == css
+    last_response.status.should == 200
   end
 
   it 'serves files with spaces' do
-    got = get('/file%20name.txt')
-    got.status.should == 200
-    got.body.should == 'hi'
+    get '/file%20name.txt'
+    last_response.status.should == 200
+    last_response.body.should == 'hi'
   end
 
   it 'sends ETag for string bodies' do
-    got = get('/')
-    got['ETag'].size.should == 34
+    get '/'
+    last_response['ETag'].size.should == 34
   end
 
   it 'sends Last-Modified for file bodies' do
-    got = get('/test_download.css')
+    get '/test_download.css'
 
     mtime = File.mtime(__DIR__('public/test_download.css'))
 
-    got['Last-Modified'].should == mtime.httpdate
+    last_response['Last-Modified'].should == mtime.httpdate
   end
 
   it 'respects ETag with HTTP_IF_NONE_MATCH' do
-    got = get('/')
+    get '/'
 
-    etag = got['ETag']
+    etag = last_response['ETag']
     etag.should.not.be.nil
 
-    got = get('/', 'HTTP_IF_NONE_MATCH' => etag)
-    got.status.should == 304
-    got.body.should == ''
+    header 'HTTP_IF_NONE_MATCH', etag
+    get '/'
+    last_response.status.should == 304
+    last_response.body.should == ''
   end
 
   it 'respects Last-Modified with HTTP_IF_MODIFIED_SINCE' do
-    got = get('/test_download.css')
+    get '/test_download.css'
 
-    mtime = got['Last-Modified']
+    mtime = last_response['Last-Modified']
     mtime.should.not.be.nil
 
-    got = get('/test_download.css', 'HTTP_IF_MODIFIED_SINCE' => mtime)
-    got.status.should == 304
-    got.body.should == ''
+    header 'HTTP_IF_MODIFIED_SINCE', mtime
+    get '/test_download.css'
+    last_response.status.should == 304
+    last_response.body.should == ''
   end
 end

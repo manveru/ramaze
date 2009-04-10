@@ -39,56 +39,48 @@ class SpecStackHelper < Ramaze::Controller
 end
 
 describe Ramaze::Helper::Stack do
-  behaves_like :session
+  behaves_like :mock
   @uri = 'http://example.org'
 
   should 'login directly' do
-    session do |mock|
-      mock.get('/secure').body.should == 'please login'
+    get('/secure').body.should == 'please login'
 
-      got = mock.get('/login')
-      got.status.should == 302
-      got['Location'].should == "#@uri/secure"
+    get('/login').status.should == 302
+    last_response['Location'].should == "#@uri/secure"
 
-      got = mock.get('/secure')
-      got.status.should == 200
-      got.body.should == 'secret content'
+    get('/secure').status.should == 200
+    last_response.body.should == 'secret content'
 
-      mock.get('/secure').body.should == 'secret content'
-      mock.get('/logout')
-      mock.get('/secure').body.should == 'please login'
-    end
+    get('/secure').body.should == 'secret content'
+    get('/logout')
+    get('/secure').body.should == 'please login'
   end
 
   should 'login via redirects' do
-    session do |mock|
-      got = mock.get('/logged_in_page')
-      got.status.should == 302
-      got['Location'].should == 'http://example.org/login'
+    get('/logged_in_page').status.should == 302
+    last_response['Location'].should == 'http://example.org/login'
 
-      got = mock.get('/login')
-      got.status.should == 302
-      got['Location'].should == 'http://example.org/logged_in_page'
+    get('/login').status.should == 302
+    last_response['Location'].should == 'http://example.org/logged_in_page'
 
-      got = mock.get('/logged_in_page')
-      got.status.should == 200
-      got.body.should == 'the logged in page'
-    end
+    get('/logged_in_page').status.should == 200
+    last_response.body.should == 'the logged in page'
+
+    get('/logout')
+    get('/secure').body.should == 'please login'
   end
 
   should 'login with params via redirects' do
-    session do |mock|
-      got = mock.get('/logged_in_params?x=y')
-      got.status.should == 302
-      got['Location'].should == 'http://example.org/login'
+    get('/logged_in_params?x=y').status.should == 302
+    last_response['Location'].should == 'http://example.org/login'
 
-      got = mock.get('/login')
-      got.status.should == 302
-      got['Location'].should == 'http://example.org/logged_in_params?x=y'
+    get('/login').status.should == 302
+    last_response['Location'].should == 'http://example.org/logged_in_params?x=y'
 
-      got = mock.get('/logged_in_params?x=y')
-      got.status.should == 200
-      got.body.should == {'x' => 'y'}.inspect
-    end
+    get('/logged_in_params?x=y').status.should == 200
+    last_response.body.should == {'x' => 'y'}.inspect
+
+    get('/logout')
+    get('/secure').body.should == 'please login'
   end
 end

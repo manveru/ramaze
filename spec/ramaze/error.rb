@@ -37,7 +37,7 @@ end
 describe 'Error handling' do
   behaves_like :mock
 
-  Ramaze.options.mode = :dev
+  Ramaze.options.mode = :live
 
   it 'uses Rack::ShowException to display errors' do
     got = get('/raises')
