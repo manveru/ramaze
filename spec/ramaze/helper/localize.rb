@@ -1,5 +1,5 @@
 # * Encoding: UTF-8
-$KCODE = 'u' if //.respond_to?(:kcode)
+$KCODE = 'u' if /regexp/.respond_to?(:kcode)
 require 'spec/helper'
 spec_requires 'locale/tag', 'locale'
 
