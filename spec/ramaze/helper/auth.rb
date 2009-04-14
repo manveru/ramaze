@@ -49,46 +49,35 @@ class SpecHelperAuthLambda < SpecHelperAuth
 end
 
 describe Ramaze::Helper::Auth do
-  behaves_like :session, :multipart
+  %w[ hash lambda method ].each do |prefix|
+    describe "login" do
+      behaves_like :mock
 
-  def procedure(prefix)
-    session do |mock|
-      got = mock.get("#{prefix}/secured")
-      got.status.should == 302
-      got['Location'].should =~ (/#{prefix}\/login$/)
+      it "uses a #{prefix}" do
+        get "/#{prefix}/secured"
+        follow_redirect!
+        last_response.status.should == 200
+        last_response.body.should =~ (/<form/)
 
-      got = mock.get("#{prefix}/login")
-      got.status.should == 200
-      got.body.should =~ (/<form/)
+        post("/#{prefix}/login", 'username' => 'manveru', 'password' => 'pass')
+        follow_redirect!
+        last_response.status.should == 200
+        last_response.body.should == 'Secret content'
 
-      env = multipart('username' => 'manveru', 'password' => 'pass')
-      got = mock.post("#{prefix}/login", env)
-      got.status.should == 302
-      got['Location'].should =~ (/#{prefix}\/secured/)
+        get "/#{prefix}/secured"
+        last_response.status.should == 200
+        last_response.body.should == 'Secret content'
 
-      got = mock.get("#{prefix}/secured")
-      got.status.should == 200
-      got.body.should == 'Secret content'
+        get "/#{prefix}/logout"
+        follow_redirect!
+        last_response.status.should == 200
+        last_response.body.should == 'SpecHelperAuth'
 
-      got = mock.get("#{prefix}/logout")
-      got.status.should == 302
-      got['Location'].should =~ (/\/$/)
-
-      got = mock.get("#{prefix}/secured")
-      got.status.should == 302
-      got['Location'].should =~ (/#{prefix}\/login$/)
+        get "/#{prefix}/secured"
+        follow_redirect!
+        last_response.status.should == 200
+        last_response.body.should =~ (/<form/)
+      end
     end
-  end
-
-  it 'authenticates by looking into a hash' do
-    procedure('/hash')
-  end
-
-  it 'authenticates by looking into a lambda' do
-    procedure('/lambda')
-  end
-
-  it 'authenticates by looking into a method' do
-    procedure('/method')
   end
 end

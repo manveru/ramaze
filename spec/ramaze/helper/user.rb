@@ -23,6 +23,10 @@ class SpecUserHelper < Ramaze::Controller
     user_login ? 'logged in' : 'failed login'
   end
 
+  def logout
+    user_logout
+  end
+
   def profile
     user.profile
   end
@@ -48,23 +52,21 @@ class SpecUserHelperCallback < SpecUserHelper
 end
 
 describe Ramaze::Helper::User do
-  behaves_like :session
+  behaves_like :mock
 
   should 'login' do
-    session do |mock|
-      mock.get('/status').body.should == 'no'
-      mock.get('/login?name=arthur&password=42').body.should == 'logged in'
-      mock.get('/status').body.should == 'yes'
-      mock.get('/profile').body.should == MockSequelUser.new.profile
-    end
+    get('/status').body.should == 'no'
+    get('/login', :name => :arthur, :password => 42).body.should == 'logged in'
+    get('/status').body.should == 'yes'
+    get('/profile').body.should == MockSequelUser.new.profile
+    get('/logout').status.should == 200
   end
 
   should 'login via the callback' do
-    session do |mock|
-      mock.get('/callback/status').body.should == 'no'
-      mock.get('/callback/login?name=arthur&password=42').body.should == 'logged in'
-      mock.get('/callback/status').body.should == 'yes'
-      mock.get('/callback/profile').body.should == MockSequelUser.new.profile
-    end
+    get('/callback/status').body.should == 'no'
+    get('/callback/login', :name => :arthur, :password => 42).body.should == 'logged in'
+    get('/callback/status').body.should == 'yes'
+    get('/callback/profile').body.should == MockSequelUser.new.profile
+    get('/logout').status.should == 200
   end
 end

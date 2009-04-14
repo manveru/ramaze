@@ -27,13 +27,14 @@ module Ramaze
     #   @name # => 'manveru'
     #   @lang # => nil
 
-    def to_ivs(*args)
+    def to_instance_variables(*args)
       instance = Action.current.instance
       args.each do |arg|
         next unless value = self[arg]
         instance.instance_variable_set("@#{arg}", value)
       end
     end
+    alias to_ivs to_instance_variables
 
     def accept_charset(default = 'UTF-8')
       return default unless charsets = env['HTTP_ACCEPT_CHARSET']

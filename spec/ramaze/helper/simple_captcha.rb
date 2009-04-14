@@ -25,25 +25,21 @@ class SpecCustomCaptcha < SpecSimpleCaptcha
 end
 
 describe Ramaze::Helper::SimpleCaptcha do
-  behaves_like :session
+  behaves_like :mock
 
   should 'ask question' do
-    session do |mock|
-      question = mock.get('/ask_question').body
-      question.should =~ /^\d+ [+-] \d+$/
+    get('/ask_question')
+    question = last_response.body
+    question.should =~ /^\d+ [+-] \d+$/
 
-      lh, m, rh = question.split
-      answer = lh.to_i.send(m, rh.to_i)
+    lh, m, rh = question.split
+    answer = lh.to_i.send(m, rh.to_i)
 
-      mock.get("/answer_question/#{answer}").body.should == 'correct'
-    end
+    get("/answer_question/#{answer}").body.should == 'correct'
   end
 
   should 'ask custom question' do
-    session do |mock|
-      question = mock.get('/fish/ask_question')
-      question.body.should == 'the answer to everything'
-      mock.get('/fish/answer_question/42').body.should == 'correct'
-    end
+    get('/fish/ask_question').body.should == 'the answer to everything'
+    get('/fish/answer_question/42').body.should == 'correct'
   end
 end

@@ -1,6 +1,6 @@
-require 'ramaze'
-require 'bacon'
+begin; require 'rubygems'; rescue LoadError; end
 
+require(File.expand_path("#{__FILE__}/../")) unless defined?(Ramaze)
 require 'innate/spec'
 
 def spec_requires(*libs)
@@ -26,12 +26,9 @@ module Ramaze
   middleware!(:spec){|m| m.run(AppMap) }
 end
 
-shared :rack_test do
-  require 'rack/test'
-
+shared :mock do
+  Ramaze.setup_dependencies
   extend Rack::Test::Methods
 
-  def app
-    Ramaze.middleware(:spec)
-  end
+  def app; Ramaze.middleware; end
 end
