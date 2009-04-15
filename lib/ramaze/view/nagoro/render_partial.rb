@@ -1,4 +1,4 @@
-require 'ramaze/helper/render'
+require 'innate/helper/render'
 
 module Nagoro
   module Pipe
@@ -14,7 +14,7 @@ module Nagoro
     #   <render src="hello" tail="foo" />
     #
     class RenderPartial < Base
-      include Innate::Helper::Partial
+      include Innate::Helper::Render
 
       def tag_start(tag, attrs)
         if tag == 'render' and action_name = attrs.delete('src')
