@@ -1,24 +1,24 @@
-require 'innate/helper/partial'
+require 'ramaze/helper/render'
 
 module Nagoro
   module Pipe
     # Pipe that transforms <render /> tags.
     #
     # the src parameter in the render tag will be used as first parameter to
-    # render_partial, all other paramters are passed on as +options+.
+    # render_partial, all other paramters are passed on as +variables+.
     #
-    # Example calling render_partial('/hello'):
-    #   <render src="/hello" />
+    # Example calling render_partial('hello'):
+    #   <render src="hello" />
     #
-    # Example calling render_partial('/hello', 'tail' => 'foo'):
-    #   <render src="/hello" tail="foo" />
+    # Example calling render_partial('hello', 'tail' => 'foo'):
+    #   <render src="hello" tail="foo" />
     #
     class RenderPartial < Base
       include Innate::Helper::Partial
 
       def tag_start(tag, attrs)
-        if tag == 'render' and src = attrs.delete('src')
-          append(render_partial(src, attrs))
+        if tag == 'render' and action_name = attrs.delete('src')
+          append(render_partial(action_name, attrs))
         else
           super
         end
