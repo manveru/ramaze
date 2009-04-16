@@ -2,9 +2,9 @@
 # controllers
 
 class Controller < Ramaze::Controller
-  layout 'default'
+  layout :default
   helper :xhtml
-  engine :Nagoro
+  engine :Etanni
 end
 
 # Here go your requires for subclasses of Controller:
