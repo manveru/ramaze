@@ -47,19 +47,22 @@ end
 def start
   # Find the name of this app
   app_name = default_pidfile.sub(/\.pid$/,'')
+  added_args = []
   if daemonize = OURARGS.detect { |arg| arg.match(/^(-[dD]|--daemonize)$/) }
     if pid_arg = OURARGS.detect { |arg| arg.match(/^(-P|--pid)/) }
       puts "User supplied pid: #{pid_arg}"
       pid_file = OURARGS[OURARGS.index(pid_arg) + 1]
       puts "Starting daemon with user defined pidfile: #{pid_file}"
-      exec("rackup", "config.ru", *ARGV)
     else
-      puts "Starting daemon with default pidfile: #{default_pidfile}"
-      exec("rackup", "config.ru", "-P", default_pidfile, *ARGV)
+      puts "Starting daemon with default pidfile: #{pid_file = default_pidfile}"
+      added_args += ["-P", pid_file]
     end
-  else
-    exec("rackup", "config.ru", *ARGV)
+    if check_running?(pid_file)
+      $stderr.puts "Ramaze is already running with pidfile: #{pid_file}"
+      exit 127
+    end
   end
+  exec("rackup", "config.ru", *(ARGV + added_args))
 end
 
 def create(command)
@@ -84,18 +87,20 @@ def create(command)
 end
 
 def stop(command)
-  return false unless pid_file = find_pid(command)
+  unless pid_file = find_pid(OURARGS[OURARGS.index(command) + 1])
+    $stderr.puts "No pid_file found #{pid_file} cannot stop ramaze (may not be started)."
+    return false 
+  end
   pid = File.read(pid_file).to_i
-  puts "Killing pid #{pid}"
+  puts "Stopping pid #{pid}"
   Process.kill("INT", pid)
-  sleep 1
-  begin
-    Process.getpriority(Process::PRIO_PROCESS, pid)
-    $stdout.puts "Process #{pid} did not die, forcing it with -9"
+  sleep 2
+  if is_running?(pid)
+    $stderr.puts "Process #{pid} did not die, forcing it with -9"
     Process.kill(9, pid)
     File.unlink(pid_file) if File.file?(pid_file)
     true
-  rescue Errno::ESRCH
+  else
     File.unlink(pid_file) if File.file?(pid_file)
     true
   end
@@ -110,8 +115,20 @@ def default_pidfile
   @default_pidfile
 end
 
-def find_pid(command)
-  pid_file = OURARGS[OURARGS.index(command) + 1]
+def is_running?(pid)
+  begin
+    prio = Process.getpriority(Process::PRIO_PROCESS, pid)
+  rescue Errno::ESRCH
+    false
+  end
+end
+
+def check_running?(pid_file)
+  return false unless File.file?(pid_file)
+  is_running?(File.read(pid_file).to_i)
+end
+
+def find_pid(pid_file)
   if pid_file.nil? or not File.file?(pid_file)
     pid_file = default_pidfile
   end
