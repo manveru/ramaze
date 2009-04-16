@@ -1,12 +1,8 @@
-require 'rubygems'
-require 'ramaze'
+# Use this file directly like `ruby start.rb` if you don't want to use the
+# `ramaze start` command.
+# All application related things should go into `app.rb`, this file is simply
+# for options related to running the application locally.
 
-# Add the directory this file resides in to the load path, so you can run the
-# app from any other working directory
-$LOAD_PATH.unshift(__DIR__)
+require File.expand_path('app', File.dirname(__FILE__))
 
-# Initialize controllers and models
-require 'controller/init'
-require 'model/init'
-
-Ramaze.start(:adapter => :webrick, :port => 7000) if __FILE__ == $0
+Ramaze.start(:adapter => :webrick, :port => 7000, :file => __FILE__)

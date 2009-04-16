@@ -11,7 +11,6 @@
 # application as FastCGI, CGI, or standalone with Mongrel or WEBrick—all from
 # the same configuration.
 
-cwd = File.dirname(__FILE__)
-require "#{cwd}/start"
-Ramaze.start(:started => true)
+require File.expand_path('app', File.dirname(__FILE__))
+Ramaze.start(:file => __FILE__, :started => true)
 run Ramaze
