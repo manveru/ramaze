@@ -23,7 +23,8 @@ def usage
 
     Commands:
       start   - Starts an instance of this application. Supply a pidfile name if you do
-                not want it to use the default (PROJECT.pid).
+                not want it to use the default (PROJECT.pid). Defaults to webrick on port 7000 
+                unless you supply the -p PORT and/or -s SERVER options for rack. 
 
       stop    - Stops a running instance of this application. Supply a pidfile name if you
                 started it with a pidfile other than the default (PROJECT.pid).
@@ -62,6 +63,8 @@ def start
       exit 127
     end
   end
+  added_args += ["-p", "7000"] unless OURARGS.detect { |arg| arg.match(/^(-p|--port)/) }
+  added_args += ["-s", "webrick"] unless OURARGS.detect { |arg| arg.match(/^(-s|--server)/) }
   exec("rackup", "config.ru", *(ARGV + added_args))
 end
 
