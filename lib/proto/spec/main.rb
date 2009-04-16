@@ -2,6 +2,7 @@ require 'ramaze'
 require 'ramaze/spec'
 
 require __DIR__('../start')
+Ramaze.options.roots = __DIR__('../')
 
 describe MainController do
   behaves_like :mock

@@ -6,7 +6,8 @@ require 'rake/gempackagetask'
 require 'time'
 require 'date'
 
-PROJECT_SPECS = Dir['spec/{contrib,examples,ramaze,snippets}/**/*.rb']
+PROJECT_SPECS = FileList['spec/{contrib,examples,ramaze,snippets}/**/*.rb']
+PROJECT_SPECS += FileList['lib/proto/spec/*.rb']
 PROJECT_MODULE = 'Ramaze'
 PROJECT_JQUERY_FILE = 'lib/proto/public/js/jquery.js'
 PROJECT_README = 'README.markdown'
