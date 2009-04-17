@@ -129,18 +129,29 @@ def status(command)
     puts "Ramaze is running!\n\tName: %s\n\tCommand Line: %s\n\tVirtual Size: %s\n\tStarted: %s\n\tExec Path: %s\n\tStatus: %s" % ours.first
   else
     require "pathname"
+    # Check for /proc
     if File.directory?(proc_dir = Pathname.new("/proc"))
       proc_dir = proc_dir.join(pid)
-      stats = File.read(proc_dir.join("stat")).split
-      puts "Ramaze is running!\n\tCommand Line: %s\n\tVirtual Size: %s\n\tStarted: %s\n\tExec Path: %s\n\tStatus: %s" % [
-        File.read(proc_dir.join("cmdline")).split("\000").join(" "),
-        "%s k" % (stats[22].to_f / 1024),
-        File.mtime(proc_dir),
-        File.readlink(proc_dir.join("exe")),
-        stats[2]
-      ]
-    else
-      puts "Ramaze process #{pid} is running, no further information available on your platform"
+      # If we have a "stat" file, we'll assume linux and get as much info
+      # as we can
+      if File.file?(stat_file = proc_dir.join("stat"))
+        stats = File.read(stat_file).split
+        puts "Ramaze is running!\n\tCommand Line: %s\n\tVirtual Size: %s\n\tStarted: %s\n\tExec Path: %s\n\tStatus: %s" % [
+          File.read(proc_dir.join("cmdline")).split("\000").join(" "),
+          "%s k" % (stats[22].to_f / 1024),
+          File.mtime(proc_dir),
+          File.readlink(proc_dir.join("exe")),
+          stats[2]
+        ]
+        exit
+      end
+    end
+    # Fallthrough status, just print a ps
+    puts "Ramaze process #{pid} is running!"
+    begin
+      puts %x{ps l #{pid}}
+    rescue
+      puts "No further information available"
     end
   end
 end
