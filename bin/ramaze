@@ -19,25 +19,28 @@ def usage
   <<-TXT
   Usage:
 
-    ramaze <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|create PROJECT|console> [ruby/rack options]
+    ramaze <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|status [PIDFILE]|create PROJECT|console> [ruby/rack options]
 
     Commands:
-      start   - Starts an instance of this application. Supply a pidfile name if you do
-                not want it to use the default (PROJECT.pid). Defaults to webrick on port 7000 
-                unless you supply the -p PORT and/or -s SERVER options for rack. 
+      * All commands which take an optional PIDFILE default to PROJECT.pid if you do not supply one.
+      * All commands which start a ramaze instance will default to webrick on port 7000 unless you supply
+        the rack options -p/--port PORT and/or * -s/--server SERVER.
 
-      stop    - Stops a running instance of this application. Supply a pidfile name if you
-                started it with a pidfile other than the default (PROJECT.pid).
+      start   - Starts an instance of this application.
+
+      stop    - Stops a running instance of this application.
 
       restart - Stops running instance of this application, then starts it back up.  Pidfile
                 (if supplied) is used for both stop and start.
 
+      status  - Gives status of a running ramaze instance
+
       create  - Creates a new prototype Ramaze application in a directory named PROJECT in
                 the current directory.  ramaze create foo would make ./foo containing an
-                application prototype. Rack options are meaningless here.
+                application prototype. Rack options are ignored here.
 
       console - Starts an irb console with app.rb (and irb completion) loaded. This command
-                ignores rack options.
+                ignores rack options, ARGV is passed on to IRB.
 
     Rack Options
       #{%x{rackup --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")}
@@ -91,7 +94,7 @@ end
 
 def stop(command)
   unless pid_file = find_pid(OURARGS[OURARGS.index(command) + 1])
-    $stderr.puts "No pid_file found #{pid_file} cannot stop ramaze (may not be started)."
+    $stderr.puts "No pid_file found!  Cannot stop ramaze (may not be started)."
     return false 
   end
   pid = File.read(pid_file).to_i
@@ -109,20 +112,60 @@ def stop(command)
   end
 end
 
+def status(command)
+  unless pid_file = find_pid(OURARGS[OURARGS.index(command) + 1])
+    $stderr.puts "No pid_file found! Ramaze may not be started."
+    exit 1
+  end
+  puts "Pid file #{pid_file} found, PID is #{pid = File.read(pid_file)}"
+  unless is_running?(pid.to_i)
+    $stderr.puts "PID #{pid} is not running"
+    exit 1
+  end
+  if Object.const_defined?("WIN32OLE")
+    wmi = WIN32OLE.connect("winmgmts://")
+    processes, ours = wmi.ExecQuery("select * from win32_process where ProcessId = #{pid}"), []
+    processes.each { |p| ours << [p.Name, p.CommandLine, p.VirtualSize, p.CreationDate, p.ExecutablePath, p.Status ] }
+    puts "Ramaze is running!\n\tName: %s\n\tCommand Line: %s\n\tVirtual Size: %s\n\tStarted: %s\n\tExec Path: %s\n\tStatus: %s" % ours.first
+  else
+    require "pathname"
+    if File.directory?(proc_dir = Pathname.new("/proc"))
+      proc_dir = proc_dir.join(pid)
+      stats = File.read(proc_dir.join("stat")).split
+      puts "Ramaze is running!\n\tCommand Line: %s\n\tVirtual Size: %s\n\tStarted: %s\n\tExec Path: %s\n\tStatus: %s" % [
+        File.read(proc_dir.join("cmdline")).split("\000").join(" "),
+        "%s k" % (stats[22].to_f / 1024),
+        File.mtime(proc_dir),
+        File.readlink(proc_dir.join("exe")),
+        stats[2]
+      ]
+    else
+      puts "Ramaze process #{pid} is running, no further information available on your platform"
+    end
+  end
+end
+
 ## End Command methods }}}
 
 # Helper methods {{{
 def default_pidfile
   return @default_pidfile if @default_pidfile
   @default_pidfile = (File.basename(File.expand_path(ENV["PWD"])) + ".pid").strip
-  @default_pidfile
 end
 
 def is_running?(pid)
-  begin
-    prio = Process.getpriority(Process::PRIO_PROCESS, pid)
-  rescue Errno::ESRCH
-    false
+  if Object.const_defined?("WIN32OLE")
+    wmi = WIN32OLE.connect("winmgmts://")
+    processes, ours = wmi.ExecQuery("select * from win32_process where ProcessId = #{pid}"), []
+    processes.each { |process| ours << process.Name }
+    ours.first.nil?
+  else
+    begin
+      prio = Process.getpriority(Process::PRIO_PROCESS, pid)
+      true
+    rescue Errno::ESRCH
+      false
+    end
   end
 end
 
@@ -145,7 +188,7 @@ end
 ## End helper methods }}}
 
 OURARGS = ARGV.dup
-command = ARGV.detect { |arg| arg.match(/^(?:--?)?(?:start|stop|restart|create|h(?:elp)?|v(?:ersion)?|console)/) }
+command = ARGV.detect { |arg| arg.match(/^(?:--?)?(?:start|stop|restart|create|h(?:elp)?|v(?:ersion)?|console|status)/) }
 if command.nil?
   command = ""
 else
@@ -153,6 +196,8 @@ else
 end
 
 case command
+when /^(?:--?)?status$/
+  status(command)
 when /^(?:--?)?restart$/
   stop(command)
   start
@@ -162,13 +207,19 @@ when /^(?:--?)?create$/
   create(command)
 when /^(?:--?)?stop$/
   if stop(command)
-    puts "Ramazement has ended, go in peace"
+    puts "Ramazement has ended, go in peace."
     $stdout.flush
   else
     puts "Ramaze failed to stop (or was not running)"
   end
 when /^(?:--?)?console$/
-  exec("irb", "-r", "irb/completion", "-r", "app", *ARGV)
+  require "ramaze"
+  require "irb"
+  require "irb/completion"
+  Ramaze.options.started = true
+  require "start"
+  IRB.start
+  puts "Ramazement has ended, go in peace."
 when /^(?:--?)?h(elp)?$/
   puts usage
 when /^(?:--?)?v(ersion)?$/
