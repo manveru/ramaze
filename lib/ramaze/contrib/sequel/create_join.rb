@@ -1,4 +1,5 @@
 require 'sequel'
+require 'sequel/extensions/inflector'
 
 module Sequel
   class Model

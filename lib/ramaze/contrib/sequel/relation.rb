@@ -65,20 +65,34 @@ module SequelRelation
     end
 
     def belongs_to(model)
-      todo :belongs_to, model.to_s.downcase.to_sym
+      todo :many_to_one, singular_sym(model), :class => model
     end
 
     def has_many(model)
       todo :create_join, model
-      todo :many_to_many, model.to_s.downcase.pluralize.to_sym
+      todo :many_to_many, plural_sym(model), :class => model
     end
 
     def has_one(model)
-      todo :belongs_to, model.to_s.downcase.to_sym
+      todo :many_to_one, singular_sym(model), :class => model
     end
 
     def todo(method, *args)
       TODO[@left] << [method, *args]
+    end
+
+    private
+
+    def plural_sym(obj)
+      basename(obj).pluralize.to_sym
+    end
+
+    def singular_sym(obj)
+      basename(obj).to_sym
+    end
+
+    def basename(obj)
+      obj.to_s.split('::').last.downcase
     end
   end
 end

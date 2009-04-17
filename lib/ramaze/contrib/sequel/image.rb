@@ -7,7 +7,7 @@
 # Usage:
 #   class Avatar < Sequel::Model
 #     IMAGE = {
-#       # specifies belongs_to, will create relation and foreign key
+#       # specifies many_to_one, will create relation and foreign key
 #
 #       :owner => :User,
 #
@@ -51,8 +51,8 @@
 module SequelImage
   def self.included(model)
     args = model::IMAGE
-    set_foreign_key = args[:foreign_key] || "#{args[:owner]}_id".downcase.to_sym
-    set_belongs_to  = args[:belongs_to]  ||    args[:owner].to_s.downcase.to_sym
+    set_foreign_key = args[:foreign_key]  || "#{args[:owner]}_id".downcase.to_sym
+    set_many_to_one  = args[:many_to_one] ||    args[:owner].to_s.downcase.to_sym
 
     # Define schema
     model.set_schema do
@@ -68,21 +68,19 @@ module SequelImage
     end
 
     # Define Relations
-    model.belongs_to set_belongs_to
+    model.many_to_one set_many_to_one
 
     # Define Hooks
-    model.send(:hooks).clear
-
-    model.before_create do
+    model.before_create :generate_thumbnails do
       generate_thumbnails
       self.created_at = Time.now
     end
 
-    model.before_save do
+    model.before_save :update_time do
       self.updated_at = Time.now
     end
 
-    model.before_destroy do
+    model.before_destroy :cleanup do
       cleanup if conf[:cleanup]
     end
 
@@ -110,7 +108,7 @@ module SequelImage
       tempfile = file[:tempfile]
       raise ArgumentError, 'Empty tempfile' if tempfile.size == 0
 
-      ext         = Ramaze::Tool::MIME.ext_for(type)
+      ext         = Rack::Mime::MIME_TYPES.invert[type]
       image.mime  = type
       target_name = image.next_name(File.basename(filename, File.extname(filename)), ext)
       target_path = File.join(image.public_root, image.path, target_name)
@@ -150,7 +148,7 @@ module SequelImage
     end
 
     def public_root
-      Ramaze::Global.public_root
+      Ramaze.options.roots.first
     end
 
     def filename(size)

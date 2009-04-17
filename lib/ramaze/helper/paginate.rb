@@ -154,6 +154,7 @@ module Ramaze
         def last_page; @pager.last_page; end
         def last_page?; @pager.last_page?; end
         def next_page; @pager.next_page; end
+        def empty?; @pager.empty?; end
 
         private
 
