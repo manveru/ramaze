@@ -18,26 +18,28 @@ class MainController < Ramaze::Controller
   end
 end
 
-class PageController < Ramaze::Controller
+class Pages < Ramaze::Controller
   map '/page'
 
-  helper :aspect
-
   def create
+    redirect_referer unless request.post?
+
     change "Created Page '%s'" do |title, text|
       Page.create(:title => title, :text => text, :version => 1)
-      redirect R(MainController, title)
+      redirect MainController.r(:/, title)
     end
   end
 
   def save
+    redirect_referer unless request.post?
+
     change "Updated Page '%s'" do |title, text|
       page = Page[:title => title]
       page.backup
       page.text = text
       page.version += 1
       page.save
-      redirect R(MainController, title)
+      redirect MainController.r(:/, title)
     end
   end
 
@@ -60,11 +62,7 @@ class PageController < Ramaze::Controller
   def revert(title)
     page = Page[:title => title]
     page.revert
-    redirect R(MainController, title)
-  end
-
-  before :create, :save do
-    redirect_referer unless request.post?
+    redirect MainController.r(:/, title)
   end
 
   private
@@ -75,6 +73,6 @@ class PageController < Ramaze::Controller
       message % title
     end
 
-    redirect(R(MainController, redirect_to))
+    redirect MainController.r(redirect_to)
   end
 end

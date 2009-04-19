@@ -1,20 +1,18 @@
 require 'ramaze'
-require 'ramaze/spec/helper'
+require 'ramaze/spec'
 
-spec_require 'hpricot', 'sequel'
+spec_requires 'hpricot', 'sequel'
 
 $LOAD_PATH.unshift base = __DIR__('..')
 require 'start'
 
 describe 'Wikore' do
-  behaves_like 'http'
-  ramaze :public_root => base/:public,
-         :view_root   => base/:template
+  behaves_like :mock
 
   def check_redirect(to = '/')
     response = yield
     response.status.should == 302
-    response.body.should =~ /<a href="#{to}">/
+    response.body.should =~ /<a href='.*#{to}'>/
   end
 
   def page_should_exist(name, *matches)
