@@ -36,9 +36,9 @@ end
 class SpecHelperCacheKey < Ramaze::Controller
   map '/key'
   helper :cache
-  cache_action(:method => :name){ request[:name] }
+  cache_action(:method => :index){ request[:name] }
 
-  def name
+  def index
     "hi #{request['name']} #{rand}"
   end
 end
@@ -80,5 +80,17 @@ describe Ramaze::Helper::Cache do
     end
 
     lambda{ sleep 1; get('/ttl').body }.should.change{ get('/ttl').body }
+  end
+
+  it 'caches actions with block keys' do
+    2.times do
+      lambda{ get('/key?name=foo').body }.should.not.change{ get('/key?name=foo').body }
+    end
+
+    get('/key?name=foo').body.should.not == get('/key?name=bar').body
+  end
+
+  it 'caches actions on a per-controller basis' do
+    get('/ttl').body.should.not == get('/key').body
   end
 end
