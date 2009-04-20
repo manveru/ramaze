@@ -51,7 +51,7 @@ module Ramaze
         variables = {}
         action.variables.each{|k,v| variables[k.to_s] = v }
 
-        template = ::Liquid::Template.parse(string)
+        template = ::Liquid::Template.parse(string.to_s)
         html = template.render(variables)
 
         return html, 'text/html'
