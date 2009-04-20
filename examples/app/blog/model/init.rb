@@ -1,4 +1,5 @@
 require 'sequel'
+require 'sequel/extensions/inflector'
 
 module Blog
   DB = Sequel.sqlite("#{__DIR__}/../blog.db")
