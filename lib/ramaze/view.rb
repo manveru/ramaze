@@ -9,6 +9,10 @@ module Ramaze
   module View
     extend Innate::View
 
+    def self.get(*args)
+      Innate::View.get(*args)
+    end
+
     # Combine Kernel#autoload and Innate::View::register
 
     def self.auto_register(name, *exts)
