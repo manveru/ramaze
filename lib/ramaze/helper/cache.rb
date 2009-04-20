@@ -31,13 +31,16 @@ module Ramaze
           temp = cache_action.dup
           ttl = temp.delete(:ttl)
 
+          cache_key = "#{action.node.name}_#{temp[:method].to_s}"
+          cache_key << "_#{temp.delete(:key).call.to_s}" if temp[:key]
+
           if temp.all?{|key, value| action[key] == value }
-            if cached = cache[temp]
+            if cached = cache[cache_key]
               return cached
             elsif ttl
-              return cache.store(temp, yield, :ttl => ttl)
+              return cache.store(cache_key, yield, :ttl => ttl)
             else
-              return cache.store(temp, yield)
+              return cache.store(cache_key, yield)
             end
           end
         end
@@ -67,7 +70,8 @@ module Ramaze
           cache_action(hash.merge(:method => name))
         end
 
-        def cache_action(hash)
+        def cache_action(hash, &block)
+          hash[:key] = block if block_given?
           hash[:method] = hash[:method].to_s
           trait[:cache_action] << hash
         end
