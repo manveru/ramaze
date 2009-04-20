@@ -2,7 +2,7 @@ require 'rubygems'
 require 'ramaze'
 
 Ramaze.setup :verbose => true do
-  gem 'sequel', '2.11.0'
+  gem 'sequel', '2.12.0'
   gem 'maruku', '0.5.9'
 end
 

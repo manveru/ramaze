@@ -7,8 +7,8 @@ module Blog
       foreign_key :tag_id
     end
 
-    belongs_to :entry, :class => 'Blog::Entry'
-    belongs_to :tag, :class => 'Blog::Tag'
+    many_to_one :entry, :class => 'Blog::Entry'
+    many_to_one :tag, :class => 'Blog::Tag'
 
     create_table unless table_exists?
   end
