@@ -1,7 +1,7 @@
-#{ Blog::Entries.partial_content(:show, :entry => @entry) }
+#{ Blog::Entries.render_partial(:show, :entry => @entry) }
 <div id="comments" class="comments">
   <?r @entry.comments.each do |comment| ?>
-    #{ Blog::Comments.partial_content(:show, :comment => comment) }
+    #{ Blog::Comments.render_partial(:show, :comment => comment) }
   <?r end ?>
-  #{ Blog::Comments.partial_content(:form, :entry => @entry) }
+  #{ Blog::Comments.render_partial(:form, :entry => @entry) }
 </div>

@@ -23,7 +23,7 @@ module Blog
       if @comment.update(@entry, request)
         redirect @comment.href
       else
-        partial_content(:form, :comment => @comment, :entry => @entry)
+        render_partial(:form, :comment => @comment, :entry => @entry)
       end
     end
 
