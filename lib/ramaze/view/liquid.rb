@@ -5,22 +5,56 @@ require 'liquid'
 
 module Ramaze
   module View
+    # Liquid is a smarty-style templating engine that restricts the usage of
+    # code inside templates. This is mostly helpful if you want to let users
+    # submit templates but prevent them from running arbitrary code.
+    #
+    # Liquid offers a pipe-like syntax for chaining operations on objects.
+    # Any instance variable from your Controller is available as a variable
+    # inside Liquid, so be sensitive about what data you provide.
+    #
+    # If you want to allow partials you can provide a kind of virtual
+    # filesystem that contains partials. These can be rendered using the
+    # Liquid `{% include 'name' %}` tag. The include tag has no relation to the
+    # Ramaze::Helper::Render, it simply inlines the file.
+    #
+    # To tell Liquid where to find partials, you have to set the file_system.
+    # The naming-convention for liquid-partials is to use a '_' prefix to the
+    # filename and the '.liquid' filename extension. The names of partials
+    # are restricted to ASCII alpha-numeric characters and underscores. You
+    # can also use '/' to use templates located in deeper directories.
+    # The partial has access to the same variables as the template including
+    # it.
+    #
+    # @example setting file_system
+    #   template_path = './partials/'
+    #   Liquid::Template.file_system = Liquid::LocalFileSystem.new(template_path)
+    #
+    # @example using include
+    #   {% include 'foo' %}
+    #   {% include 'bar/foo' %}
+    #
+    # This will include the files located at './partials/_foo.liquid' and
+    # './partials/bar/_foo.liquid'.
+    #
+    # This functionality gets even more interesting if you customize it with
+    # your own virtual file-system, you can use anything that responds to
+    # `#read_template_file(path)`.
+    # That way you can even fetch templates from a database or instruct Liquid
+    # to allow you access to your own templates in the '/views' directory.
     module Liquid
-      def self.call(action, string)
-        instance_variables = {}
-        instance = action.instance
 
-        instance.instance_variables.each do |iv|
-          instance_variables[iv.to_s[1..-1]] = instance.instance_variable_get(iv)
-        end
+      # Liquid requires the variable keys to be strings, most likely for
+      # security resons (don't allow arbitrary symbols).
+      def self.call(action, string)
+        action.sync_variables(action)
+        variables = {}
+        action.variables.each{|k,v| variables[k.to_s] = v }
 
         template = ::Liquid::Template.parse(string)
-        html = template.render(instance_variables)
+        html = template.render(variables)
 
         return html, 'text/html'
-
-        # data = action.variables[:data] || {}
-        # template.render(data, options)
       end
 
       class Tag < ::Liquid::Tag
