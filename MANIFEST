@@ -36,11 +36,11 @@ doc/meta/users.kml
 doc/tutorial/todolist.html
 doc/tutorial/todolist.mkd
 doc/tutorial/todolist.txt
-examples/app/auth/layout/auth.nag
+examples/app/auth/layout/auth.xhtml
 examples/app/auth/start.rb
-examples/app/auth/view/index.nag
-examples/app/auth/view/login.nag
-examples/app/auth/view/secret.nag
+examples/app/auth/view/index.xhtml
+examples/app/auth/view/login.xhtml
+examples/app/auth/view/secret.xhtml
 examples/app/blog/README
 examples/app/blog/app.rb
 examples/app/blog/config.ru
@@ -113,7 +113,7 @@ examples/app/wikore/spec/wikore.rb
 examples/app/wikore/src/controller.rb
 examples/app/wikore/src/model.rb
 examples/app/wikore/start.rb
-examples/app/wikore/template/index.xhtml
+examples/app/wikore/view/index.xhtml
 examples/app/wiktacular/README
 examples/app/wiktacular/mkd/link/2007-07-20_19-45-51.mkd
 examples/app/wiktacular/mkd/link/current.mkd

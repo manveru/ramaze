@@ -1,3 +1,59 @@
+[711c5df | Tue Apr 21 16:11:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * strip some whitespace
+
+[f65b9a6 | Mon Apr 20 15:25:27 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Relax Liquid input
+
+[e81a073 | Mon Apr 20 15:25:09 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Allow access to Ramaze::View::get
+
+[d18060d | Mon Apr 20 15:24:55 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make methods of Helper::Formatting module-functions
+
+[ea15f87 | Sun Apr 19 14:02:43 UTC 2009] Ryan Grove <ryan@wonko.com>
+
+  * Fix collisions when caching methods with the same name across multiple controllers and add support for a block parameter that returns a key value to make cache_action work as expected.
+
+[9bf2985 | Mon Apr 20 05:13:15 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Require sequel/extensions/inflector to get rid of silly warning
+
+[81e6bdb | Mon Apr 20 05:11:26 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Show unhelpful comment for the blog trackback until someone shows me how it's done
+
+[648acce | Mon Apr 20 05:02:17 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * We shouldn't use partial_content, use render_partial instead
+
+[0ef8bb7 | Mon Apr 20 04:59:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Minor improvments and some comments for Liquid engine
+
+[15a6c75 | Mon Apr 20 04:59:19 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Bring blog example up to date
+
+[986ae27 | Sun Apr 19 15:24:08 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix wikore example, i wonder whether this is worth keeping
+
+[7f478c3 | Sun Apr 19 02:17:01 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix auth example
+
+[48adcf6 | Sat Apr 18 02:44:03 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * It should be `ramaze create` now
+
+[3951076 | Sat Apr 18 02:29:13 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.04.18
+
 [afb3336 | Sat Apr 18 02:28:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Improve tasks a bit
