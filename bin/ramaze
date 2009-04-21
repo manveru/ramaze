@@ -95,7 +95,7 @@ end
 def stop(command)
   unless pid_file = find_pid(OURARGS[OURARGS.index(command) + 1])
     $stderr.puts "No pid_file found!  Cannot stop ramaze (may not be started)."
-    return false 
+    return false
   end
   pid = File.read(pid_file).to_i
   puts "Stopping pid #{pid}"
