@@ -13,6 +13,6 @@
   <id>#{ "#{ Blog.options.uuid }/atom" }</id>
   <generator uri='#{ @generator_uri }'>#{ @generator }</generator>
   <?r @entries.each do |entry| ?>
-    #{ Blog::Entries.partial_content('feed.atom', :entry => entry) }
+    #{ Blog::Entries.render_partial('feed.atom', :entry => entry) }
   <?end ?>
 </feed>

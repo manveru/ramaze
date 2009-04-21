@@ -19,7 +19,7 @@
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     <ttl>240</ttl>
     <?r @entries.each do |entry| ?>
-      #{ Blog::Entries.partial_content('feed.rss', :entry => entry) }
+      #{ Blog::Entries.render_partial('feed.rss', :entry => entry) }
     <?r end ?>
   </channel>
 </rss>
