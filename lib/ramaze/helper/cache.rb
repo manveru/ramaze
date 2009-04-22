@@ -28,13 +28,14 @@ module Ramaze
         cache = Innate::Cache.action
 
         ancestral_trait[:cache_action].each do |cache_action|
-          temp = cache_action.dup
-          ttl = temp.delete(:ttl)
-
-          cache_key = "#{action.node.name}_#{temp[:method].to_s}"
-          cache_key << "_#{temp.delete(:key).call.to_s}" if temp[:key]
+          temp  = cache_action.dup
+          block = temp.delete(:key)
+          ttl   = temp.delete(:ttl)
 
           if temp.all?{|key, value| action[key] == value }
+            cache_key = "#{action.node.name}_#{temp[:method].to_s}"
+            cache_key << "_#{action.instance.instance_eval(&block).to_s}" if block
+
             if cached = cache[cache_key]
               return cached
             elsif ttl
