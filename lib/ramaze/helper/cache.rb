@@ -33,16 +33,25 @@ module Ramaze
           ttl   = temp.delete(:ttl)
 
           if temp.all?{|key, value| action[key] == value }
-            cache_key = "#{action.node.name}_#{temp[:method].to_s}"
+            cache_key = action.full_path
             cache_key << "_#{action.instance.instance_eval(&block).to_s}" if block
 
             if cached = cache[cache_key]
-              return cached
-            elsif ttl
-              return cache.store(cache_key, yield, :ttl => ttl)
+              action.options[:content_type] = cached[:type]
             else
-              return cache.store(cache_key, yield)
+              cached = {
+                :body => catch(:respond) { yield },
+                :type => response['Content-Type']
+              }
+
+              if ttl
+                cache.store(cache_key, cached, :ttl => ttl)
+              else
+                cache.store(cache_key, cached)
+              end
             end
+
+            return cached[:body]
           end
         end
 
