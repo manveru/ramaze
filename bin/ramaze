@@ -16,7 +16,7 @@ def include_ramaze
 end
 
 def usage
-  <<-TXT
+  txt = <<-TXT
   Usage:
 
     ramaze <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|status [PIDFILE]|create PROJECT|console> [ruby/rack options]
@@ -41,10 +41,12 @@ def usage
 
       console - Starts an irb console with app.rb (and irb completion) loaded. This command
                 ignores rack options, ARGV is passed on to IRB.
-
-    Rack Options
-      #{%x{rackup --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")}
-  TXT
+TXT
+  if is_windows?
+    txt << %x{ruby #{rackup_path} --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")
+  else
+    txt << %x{#{rackup_path} --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")
+  end
 end
 
 ## Methods for commands {{{
@@ -68,7 +70,11 @@ def start
   end
   added_args += ["-p", "7000"] unless OURARGS.detect { |arg| arg.match(/^(-p|--port)/) }
   added_args += ["-s", "webrick"] unless OURARGS.detect { |arg| arg.match(/^(-s|--server)/) }
-  exec("rackup", "config.ru", *(ARGV + added_args))
+  if is_windows?
+    exec("ruby", rackup_path.to_s, "config.ru", *(ARGV + added_args))
+  else
+    exec(rackup_path.to_s, "config.ru", *(ARGV + added_args))
+  end
 end
 
 def create(command)
@@ -122,7 +128,7 @@ def status(command)
     $stderr.puts "PID #{pid} is not running"
     exit 1
   end
-  if Object.const_defined?("WIN32OLE")
+  if is_windows?
     wmi = WIN32OLE.connect("winmgmts://")
     processes, ours = wmi.ExecQuery("select * from win32_process where ProcessId = #{pid}"), []
     processes.each { |p| ours << [p.Name, p.CommandLine, p.VirtualSize, p.CreationDate, p.ExecutablePath, p.Status ] }
@@ -161,11 +167,59 @@ end
 # Helper methods {{{
 def default_pidfile
   return @default_pidfile if @default_pidfile
-  @default_pidfile = (File.basename(File.expand_path(ENV["PWD"])) + ".pid").strip
+  require "pathname"
+  @default_pidfile = (Pathname.new(".").expand_path.basename.to_s + ".pid").strip
+end
+
+def is_windows?
+  return @is_win if @is_win
+  begin
+    require "win32ole"
+  rescue LoadError
+  end
+  @is_win ||= Object.const_defined?("WIN32OLE")
+end
+
+def rackup_path
+  return @rackup_path if @rackup_path
+  # Use the supplied path if the user supplied -R
+  if path_supplied = ARGV.delete("-R")
+    @rackup_path = ARGV.delete(OURARGS[OURARGS.index("-R") + 1])
+    if @rackup_path and File.file?(@rackup_path)
+      return @rackup_path
+    else
+      $stderr.puts "rackup does not exist at #{@rackup_path} (given with -R)"
+    end
+  end
+  # Check with 'which' on platforms which support it
+  unless is_windows?
+    @rackup_path = %x{which rackup}.to_s.chomp
+    if @rackup_path.size > 0 and File.file?(@rackup_path)
+      return @rackup_path
+    end
+  end
+  # check for rackup in RUBYLIB
+  libs = ENV["RUBYLIB"].to_s.split(is_windows? ? ";" : ":")
+  if rack_lib = libs.detect { |r| r.match %r<(\\|/)rack\1> }
+    require "pathname"
+    @rackup_path = Pathname.new(rack_lib).parent.join("bin").join("rackup").expand_path
+    return @rackup_path if File.file?(@rackup_path)
+  end
+  begin
+    require "rubygems"
+    require "rack"
+    require "pathname"
+    @rackup_path = Pathname.new(Gem.bindir).join("rackup").to_s
+    return @rackup_path if File.file?(@rackup_path)
+  rescue LoadError
+    nil
+  end
+  @rackup_path = nil
+  raise "Cannot find path to rackup, please supply full path to rackup with -R"
 end
 
 def is_running?(pid)
-  if Object.const_defined?("WIN32OLE")
+  if is_windows?
     wmi = WIN32OLE.connect("winmgmts://")
     processes, ours = wmi.ExecQuery("select * from win32_process where ProcessId = #{pid}"), []
     processes.each { |process| ours << process.Name }
