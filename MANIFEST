@@ -153,7 +153,6 @@ examples/helpers/httpdigest.rb
 examples/helpers/identity.rb
 examples/helpers/nitro_form.rb
 examples/helpers/paginate.rb
-examples/helpers/provide.rb
 examples/helpers/rest.rb
 examples/helpers/simple_captcha.rb
 examples/misc/css.rb

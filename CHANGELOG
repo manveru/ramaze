@@ -1,3 +1,38 @@
+[8a0c6ac | Sat Apr 25 14:31:04 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update dependencies
+
+[1da636d | Thu Apr 23 07:14:51 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Fixes for bin/ramaze on Win32
+
+    * Added #rackup_path for finding the location of
+       the rackup binary
+     * Added #is_windows? for a standard platform check
+     * Added new exec formats for Win32
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[b734de6 | Fri Apr 24 02:52:28 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove ancient example
+
+[156f355 | Thu Apr 23 15:56:34 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make all text in config.ru ASCII
+
+[b8fff75 | Wed Apr 22 14:31:15 UTC 2009] Ryan Grove <ryan@wonko.com>
+
+  * Action cache now uses the full path (including params) as the cache key, preserves the Content-Type, and catches :respond
+
+[410576f | Tue Apr 21 12:32:01 UTC 2009] Ryan Grove <ryan@wonko.com>
+
+  * Evaluate cache key blocks in the scope of the node instance for the current action
+
+[41746b9 | Tue Apr 21 16:12:48 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.04.22
+
 [711c5df | Tue Apr 21 16:11:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * strip some whitespace
