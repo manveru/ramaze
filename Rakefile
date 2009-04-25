@@ -39,8 +39,8 @@ GEMSPEC = Gem::Specification.new{|s|
   s.executables = ["ramaze"]
   s.rubyforge_project = "ramaze"
 
-  # s.add_dependency('rack', '>= 0.9.9') # lies!
-  # s.add_dependency('manveru-innate', '>= 2009.04')
+  s.add_dependency('rack',   '= 1.0.0')
+  s.add_dependency('innate', '= 2009.04')
 
   # s.add_development_dependency('rack-test',  '>=0.1.0')
   # s.add_development_dependency('json',       '>=1.1.3')
