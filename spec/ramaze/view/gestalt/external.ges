@@ -1,0 +1,8 @@
+html do
+  head do
+    title 'Gestalt Test'
+  end
+  body do
+    h1 'Gestalt Template'
+  end
+end
