@@ -1,6 +1,8 @@
 module Ramaze
   module Helper
     module Ultraviolet
+      include Innate::Traited
+
       trait :ultraviolet => {
         :output       => 'xhtml',
         :syntax       => nil, # syntax_name, nil|false indicates automatic detection
