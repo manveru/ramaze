@@ -62,7 +62,7 @@ module Ramaze
 
   middleware! :dev do |m|
     m.use Rack::Lint
-    m.use Rack::CommonLogger
+    m.use Rack::CommonLogger, Ramaze::Log
     m.use Ramaze::Reloader
     m.use Rack::ShowStatus
     m.use Rack::RouteExceptions
@@ -75,7 +75,7 @@ module Ramaze
   end
 
   middleware! :live do |m|
-    m.use Rack::CommonLogger
+    m.use Rack::CommonLogger, Ramaze::Log
     m.use Rack::RouteExceptions
     m.use Rack::ShowStatus
     m.use Rack::ShowExceptions
