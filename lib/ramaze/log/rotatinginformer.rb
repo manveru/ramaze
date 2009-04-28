@@ -1,16 +1,16 @@
 module Ramaze
-  
+
   module Logger
 
     # A customized logger (based on Informer) that creates multiple log files based on time
 
     class RotatingInformer
-      
+      include Innate::Traited
       include Logging
 
       attr_accessor :time_format, :log_levels
       attr_reader :base_dir
-      
+
       # parameter for Time.now.strftime
       trait :timestamp => "%Y-%m-%d %H:%M:%S"
 
@@ -47,24 +47,24 @@ module Ramaze
       def initialize(base_dir, time_format = '%Y-%m-%d.log', log_levels = [:debug, :error, :info, :warn])
         # Verify and set base directory
         send :base_dir=, base_dir, true
-        
+
         @time_format = time_format
         @log_levels = log_levels
-        
+
         # Keep track of log shutdown (to prevent StackErrors due to recursion)
         @in_shutdown = false
       end
 
       # Set the base directory for log files
-      # 
+      #
       # If this method is called with the raise_exception
       # parameter set to true the method will raise an exception
       # if the specified directory does not exist or is unwritable.
-      # 
+      #
       # If raise_exception is set to false, the method will just
       # silently fail if the specified directory does not exist
       # or is unwritable
-      
+
       def base_dir=(directory, raise_exception = false)
         # Expand directory path
         base_dir = File.expand_path(directory)
@@ -85,7 +85,7 @@ module Ramaze
           raise Exception.new("#{base_dir} does not exist.") if raise_exception
         end
       end
-      
+
       # Close the file we log to if it isn't closed already.
 
       def shutdown
@@ -106,7 +106,7 @@ module Ramaze
         return unless @log_levels.include?(tag)
 
         # Update current log
-        update_current_log       
+        update_current_log
 
         messages.flatten!
 
