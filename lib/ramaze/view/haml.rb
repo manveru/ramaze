@@ -5,11 +5,17 @@ module Ramaze
   module View
     module Haml
       def self.call(action, string)
-        action.options[:filename] = (action.view || '(haml)')
-        haml = ::Haml::Engine.new(string.to_s, action.options)
-        html = haml.to_html(action.instance, action.variables)
+        return render(ation, string), 'text/html'
+      end
 
-        return html, 'text/html'
+      def self.render(action, string)
+        haml = compile(action, string)
+        haml.to_html(action.instance, action.variables)
+      end
+
+      def self.compile(action, string)
+        action.options[:filename] = (action.view || '(haml)')
+        ::Haml::Engine.new(string.to_s, action.options)
       end
     end
   end
