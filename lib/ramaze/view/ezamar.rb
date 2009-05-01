@@ -6,8 +6,8 @@ module Ramaze
       TRANSFORM_PIPELINE = [ ::Ezamar::Element ]
 
       def self.call(action, string)
-        template = compile(action, string)
-        html = template.result(action.binding)
+        ezamar = View.compile(string){|s| compile(action, s) }
+        html = ezamar.result(action.binding)
         return html, 'text/html'
       end
 

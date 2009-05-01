@@ -12,7 +12,7 @@ module Ramaze
         options = OPTIONS.dup
         engine = options.delete(:engine)
 
-        eruby = engine.new(string, options)
+        eruby = View.compile(string){|s| engine.new(s, options) }
         eruby.init_evaluator(:filename => (action.view || __FILE__))
         html = eruby.result(action.binding)
 

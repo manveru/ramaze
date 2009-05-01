@@ -4,10 +4,13 @@ module Ramaze
   module View
     module Tenjin
       def self.call(action, string)
-        template = ::Tenjin::Template.new
-        template.convert(string)
+        tenjin = View.compile(string){|s|
+          template = ::Tenjin::Template.new
+          template.convert(s)
+          template
+        }
 
-        html = template.ramaze_render(action.binding)
+        html = tenjin.ramaze_render(action.binding)
 
         return html, 'text/html'
       end

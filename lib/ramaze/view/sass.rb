@@ -11,7 +11,7 @@ module Ramaze
           options = options.merge(sass_options)
         end
 
-        sass = ::Sass::Engine.new(string, options)
+        sass = View.compile(string){|s| ::Sass::Engine.new(s, options) }
         css = sass.to_css
 
         return css, 'text/css'
