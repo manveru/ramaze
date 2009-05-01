@@ -14,7 +14,7 @@ module Ramaze
 
         eruby = View.compile(string){|s| engine.new(s, options) }
         eruby.init_evaluator(:filename => (action.view || __FILE__))
-        html = eruby.result(action.binding)
+        html = eruby.evaluate(action.instance)
 
         return html, 'text/html'
       end
