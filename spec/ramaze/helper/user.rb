@@ -56,7 +56,7 @@ describe Ramaze::Helper::User do
 
   should 'login' do
     get('/status').body.should == 'no'
-    get('/login', :name => :arthur, :password => 42).body.should == 'logged in'
+    get('/login?name=arthur&password=42').body.should == 'logged in'
     get('/status').body.should == 'yes'
     get('/profile').body.should == MockSequelUser.new.profile
     get('/logout').status.should == 200
@@ -64,7 +64,7 @@ describe Ramaze::Helper::User do
 
   should 'login via the callback' do
     get('/callback/status').body.should == 'no'
-    get('/callback/login', :name => :arthur, :password => 42).body.should == 'logged in'
+    get('/callback/login?name=arthur&password=42').body.should == 'logged in'
     get('/callback/status').body.should == 'yes'
     get('/callback/profile').body.should == MockSequelUser.new.profile
     get('/logout').status.should == 200
