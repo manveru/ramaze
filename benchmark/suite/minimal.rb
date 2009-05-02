@@ -8,6 +8,6 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze::Global.sourcereload = false
-Ramaze::Global.sessions = false
-Ramaze::Log.loggers = []
+Ramaze.middleware!(:bench){|m| m.run(Ramaze::AppMap) }
+Ramaze.options.mode = :bench
+Ramaze::Log.loggers.clear
