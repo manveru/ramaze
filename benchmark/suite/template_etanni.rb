@@ -1,5 +1,3 @@
-require 'ramaze'
-
 class MainController < Ramaze::Controller
   engine :Etanni
 
@@ -8,5 +6,3 @@ class MainController < Ramaze::Controller
     '<html><body><?r 10.times do ?><span>#{@hello}</span><?r end ?></body></html>'
   end
 end
-
-Ramaze.start
