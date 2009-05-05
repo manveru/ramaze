@@ -1,6 +1,8 @@
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
+require 'sequel'
+
 module Ramaze
   class Cache
 
@@ -9,6 +11,9 @@ module Ramaze
       include Cache::API
 
       class Table < ::Sequel::Model(:ramaze_cache)
+        plugin :schema
+        plugin :serialization, :marshal, :value
+
         set_schema do
           primary_key :id
           string :key
@@ -17,10 +22,13 @@ module Ramaze
           index :key, :unique => true
         end
 
-        transform :value => [
-          lambda{|value| ::Marshal.load(value.unpack('m*')[0]) },
-          lambda{|value| [::Marshal.dump(value)].pack('m*') }
-        ]
+        def [](column)
+          if column == :value
+            deserialized_values[column] = deserialize_value(@values[column])
+          else
+            super
+          end
+        end
       end
 
       # Setup the table, not suitable for multiple apps yet.
@@ -32,7 +40,7 @@ module Ramaze
 
       # Wipe out _all_ data in the table, use with care.
       def cache_clear
-        Table.delete_all
+        Table.delete
       end
 
       # Delete records for given +keys+
