@@ -84,6 +84,9 @@ module Ramaze
       if args.size == 1 and args[0].kind_of? Hash
         # args are just attributes, children in block...
         _gestalt_build_tag name, args[0], &block
+      elsif args[1].kind_of? Hash
+        # args are text and attributes ie. a('mylink', :href => '/mylink')
+        _gestalt_build_tag(name, args[1], args[0], &block)
       else
         # no attributes, but text
         _gestalt_build_tag name, {}, args, &block

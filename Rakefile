@@ -6,7 +6,11 @@ require 'rake/gempackagetask'
 require 'time'
 require 'date'
 
-PROJECT_SPECS = Dir['spec/{contrib,examples,ramaze,snippets}/**/*.rb']
+PROJECT_SPECS = FileList[
+  'spec/{contrib,examples,ramaze,snippets}/**/*.rb',
+  'lib/proto/spec/*.rb'
+]
+
 PROJECT_MODULE = 'Ramaze'
 PROJECT_JQUERY_FILE = 'lib/proto/public/js/jquery.js'
 PROJECT_README = 'README.markdown'
@@ -35,8 +39,8 @@ GEMSPEC = Gem::Specification.new{|s|
   s.executables = ["ramaze"]
   s.rubyforge_project = "ramaze"
 
-  # s.add_dependency('rack', '>= 0.9.9') # lies!
-  # s.add_dependency('manveru-innate', '>= 2009.04')
+  s.add_dependency('rack',   '= 1.0.0')
+  s.add_dependency('innate', '= 2009.04')
 
   # s.add_development_dependency('rack-test',  '>=0.1.0')
   # s.add_development_dependency('json',       '>=1.1.3')
@@ -57,7 +61,7 @@ GEMSPEC = Gem::Specification.new{|s|
 
 Thank you for installing Ramaze!
 You can now do create a new project:
-# ramaze --create yourproject
+# ramaze create yourproject
 
 ============================================================
 MESSAGE

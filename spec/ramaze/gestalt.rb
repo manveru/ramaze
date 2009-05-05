@@ -26,38 +26,38 @@ describe "Gestalt" do
 
   it "deep nested tags" do
     gestalt{ p do
-      div do
-        ol do
-          li
+        div do
+          ol do
+            li
+          end
         end
       end
-    end
     }.should == '<p><div><ol><li /></ol></div></p>'
   end
 
   it "deep nested tags with repetition" do
     gestalt{ p do
-      div do
-        ol do
-          li
-          li
-        end
-        ol do
-          li
-          li
+        div do
+          ol do
+            li
+            li
+          end
+          ol do
+            li
+            li
+          end
         end
       end
-    end
     }.should == '<p><div><ol><li /><li /></ol><ol><li /><li /></ol></div></p>'
   end
 
   it "deep nested tags with strings" do
     gestalt{
       p do
-      div do
-       'Hello, World'
+        div do
+          'Hello, World'
+        end
       end
-    end
     }.should == '<p><div>Hello, World</div></p>'
   end
 
@@ -106,6 +106,12 @@ describe "Gestalt" do
       a(:href => "http://example.org/?a=one&b=two") {
         "Click here"
       }
+    }.should == '<a href="http://example.org/?a=one&amp;b=two">Click here</a>'
+  end
+
+  it 'takes text and attributes' do
+    gestalt {
+      a('Click here', :href => "http://example.org/?a=one&b=two")
     }.should == '<a href="http://example.org/?a=one&amp;b=two">Click here</a>'
   end
 

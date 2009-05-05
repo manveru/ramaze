@@ -6,5 +6,6 @@ class MainController < Ramaze::Controller
   end
 end
 
-Ramaze::Log.loggers = []
-Ramaze::Global.sessions = false
+Ramaze.middleware!(:live){|m| m.run(Ramaze::AppMap) }
+Ramaze.options.mode = :live
+Ramaze::Log.loggers.clear

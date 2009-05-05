@@ -94,14 +94,14 @@ class FormField
       select(gestalt)
     else
       case db_type
-      when 'varchar', 'integer'
+      when /varchar|integer/
         input(gestalt)
-      when 'boolean'
+      when /boolean/
         checkbox(gestalt)
-      when 'string'
+      when /string/
         textarea(gestalt)
       else
-        raise "Unsupported type: (#{db_type || hint} : #{field})"
+        raise("Unsupported type: (%p : %p)" % [db_type || hint, field])
       end
     end
   end

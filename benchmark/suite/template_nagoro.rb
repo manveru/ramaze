@@ -5,6 +5,6 @@ class MainController < Ramaze::Controller
 
   def index
     @hello = "Hello, World!"
-    '<html><body><span times=10>#{@hello}</span></body></html>'
+    '<html><body><span times="10">#{@hello}</span></body></html>'
   end
 end

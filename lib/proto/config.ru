@@ -8,10 +8,9 @@
 # Rack::Builder DSL to configure middleware and build up applications easily.
 #
 # rackup automatically figures out the environment it is run in, and runs your
-# application as FastCGI, CGI, or standalone with Mongrel or WEBrick—all from
+# application as FastCGI, CGI, or standalone with Mongrel or WEBrick -- all from
 # the same configuration.
 
-cwd = File.dirname(__FILE__)
-require "#{cwd}/start"
-Ramaze.start(:started => true)
+require File.expand_path('app', File.dirname(__FILE__))
+Ramaze.start(:file => __FILE__, :started => true)
 run Ramaze

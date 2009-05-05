@@ -1,16 +1,13 @@
 require 'sequel'
 
-begin
-  case $wikore_db
-  when :memory
-    DB = Sequel.sqlite
-  else
-    DB_FILE = __DIR__('wikore.db')
-    DB = Sequel.connect("sqlite://#{DB_FILE}")
-  end
-rescue NoMethodError
-  raise LoadError, 'Install latest Sequel gem'
+if $wikore_db == :memory
+  DB = Sequel.sqlite
+else
+  DB_FILE = __DIR__('wikore.db')
+  DB = Sequel.connect("sqlite://#{DB_FILE}")
 end
+
+Sequel::Model.plugin :schema
 
 module Model
   PAGE_SCHEMA = lambda{

@@ -46,4 +46,16 @@ describe 'Ramaze::Request' do
   should 'provide #accept_charset' do
     request(@env).accept_charset.should == 'UTF-8'
   end
+
+  should 'properly parse requested locale' do
+    header = { "HTTP_ACCEPT_LANGUAGE" => "sv-se,sv;q=0.8,en-us;q=0.5,en;q=0.3" }
+    request(@env.merge(header)).accept_language_with_weight.should == [
+      ['sv-se', 1.0], ['sv', 0.8], ['en-us', 0.5], ['en', 0.3]
+    ]
+
+    header = { "HTTP_ACCEPT_LANGUAGE" => "nl-nl" }
+    request(@env.merge(header)).accept_language_with_weight.should == [
+      ['nl-nl', 1.0]
+    ]
+  end
 end

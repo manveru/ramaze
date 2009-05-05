@@ -28,17 +28,30 @@ module Ramaze
         cache = Innate::Cache.action
 
         ancestral_trait[:cache_action].each do |cache_action|
-          temp = cache_action.dup
-          ttl = temp.delete(:ttl)
+          temp  = cache_action.dup
+          block = temp.delete(:key)
+          ttl   = temp.delete(:ttl)
 
           if temp.all?{|key, value| action[key] == value }
-            if cached = cache[temp]
-              return cached
-            elsif ttl
-              return cache.store(temp, yield, :ttl => ttl)
+            cache_key = action.full_path
+            cache_key << "_#{action.instance.instance_eval(&block).to_s}" if block
+
+            if cached = cache[cache_key]
+              action.options[:content_type] = cached[:type]
             else
-              return cache.store(temp, yield)
+              cached = {
+                :body => catch(:respond) { yield },
+                :type => response['Content-Type']
+              }
+
+              if ttl
+                cache.store(cache_key, cached, :ttl => ttl)
+              else
+                cache.store(cache_key, cached)
+              end
             end
+
+            return cached[:body]
           end
         end
 
@@ -67,7 +80,8 @@ module Ramaze
           cache_action(hash.merge(:method => name))
         end
 
-        def cache_action(hash)
+        def cache_action(hash, &block)
+          hash[:key] = block if block_given?
           hash[:method] = hash[:method].to_s
           trait[:cache_action] << hash
         end

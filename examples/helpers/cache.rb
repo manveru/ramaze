@@ -6,12 +6,14 @@ class MainController < Ramaze::Controller
   helper :cache
 
   def index
-%[
+    @number = rand * 100
+
+%q[
 <html>
   <head><title>examples/caching</title></head>
   <body>
     <p>
-      This action just shows you a random number: #{rand * 100}.<br />
+      This action just shows you a random number: #{@number}.<br />
       If you <a href="/">refresh</a> the page it won't change since you see a cached version.<br />
       But if you <a href="/invalidate">invalidate</a> it, the page will be regenerated.
     </p>
@@ -20,10 +22,10 @@ class MainController < Ramaze::Controller
 ]
   end
 
-  cache_action :method => :index
+  cache_action :method => 'index'
 
   def invalidate
-    Ramaze::Cache.action.delete(:method => 'index')
+    Ramaze::Cache.action.delete('/')
     redirect :/
   end
 end

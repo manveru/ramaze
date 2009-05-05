@@ -1,3 +1,207 @@
+[8a0c6ac | Sat Apr 25 14:31:04 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update dependencies
+
+[1da636d | Thu Apr 23 07:14:51 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Fixes for bin/ramaze on Win32
+
+    * Added #rackup_path for finding the location of
+       the rackup binary
+     * Added #is_windows? for a standard platform check
+     * Added new exec formats for Win32
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[b734de6 | Fri Apr 24 02:52:28 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove ancient example
+
+[156f355 | Thu Apr 23 15:56:34 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make all text in config.ru ASCII
+
+[b8fff75 | Wed Apr 22 14:31:15 UTC 2009] Ryan Grove <ryan@wonko.com>
+
+  * Action cache now uses the full path (including params) as the cache key, preserves the Content-Type, and catches :respond
+
+[410576f | Tue Apr 21 12:32:01 UTC 2009] Ryan Grove <ryan@wonko.com>
+
+  * Evaluate cache key blocks in the scope of the node instance for the current action
+
+[41746b9 | Tue Apr 21 16:12:48 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.04.22
+
+[711c5df | Tue Apr 21 16:11:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * strip some whitespace
+
+[f65b9a6 | Mon Apr 20 15:25:27 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Relax Liquid input
+
+[e81a073 | Mon Apr 20 15:25:09 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Allow access to Ramaze::View::get
+
+[d18060d | Mon Apr 20 15:24:55 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make methods of Helper::Formatting module-functions
+
+[ea15f87 | Sun Apr 19 14:02:43 UTC 2009] Ryan Grove <ryan@wonko.com>
+
+  * Fix collisions when caching methods with the same name across multiple controllers and add support for a block parameter that returns a key value to make cache_action work as expected.
+
+[9bf2985 | Mon Apr 20 05:13:15 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Require sequel/extensions/inflector to get rid of silly warning
+
+[81e6bdb | Mon Apr 20 05:11:26 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Show unhelpful comment for the blog trackback until someone shows me how it's done
+
+[648acce | Mon Apr 20 05:02:17 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * We shouldn't use partial_content, use render_partial instead
+
+[0ef8bb7 | Mon Apr 20 04:59:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Minor improvments and some comments for Liquid engine
+
+[15a6c75 | Mon Apr 20 04:59:19 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Bring blog example up to date
+
+[986ae27 | Sun Apr 19 15:24:08 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix wikore example, i wonder whether this is worth keeping
+
+[7f478c3 | Sun Apr 19 02:17:01 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix auth example
+
+[48adcf6 | Sat Apr 18 02:44:03 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * It should be `ramaze create` now
+
+[3951076 | Sat Apr 18 02:29:13 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.04.18
+
+[afb3336 | Sat Apr 18 02:28:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Improve tasks a bit
+
+[a4bbc31 | Fri Apr 17 02:37:14 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Only use /proc in bin/ramaze if possible, otherwise fall back to ps
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[35bf7c2 | Fri Apr 17 01:36:28 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Added status command and moved IRB.start inline instead of exec.
+
+    * Status needs testing on WIN32 and OSX
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[df495ae | Fri Apr 17 07:48:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Specify correct behaviour of Request#accept_language_with_weight
+
+[7cee203 | Fri Apr 17 11:52:23 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Bring various Sequel specific stuff up to date
+
+[21e2c4d | Thu Apr 16 03:01:32 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Defaults to webrick on port 7000 when starting now
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[bc09190 | Thu Apr 16 02:51:38 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * Fixed "ramaze start" so it doesn't try and start a new instance
+
+    * added is_running? and check_running? as helpers
+    * refactored #stop to pass it's given pid to find_pid
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[c29043d | Thu Apr 16 12:47:02 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adding app.rb to proto, explain new convention
+
+[2e0d0ba | Thu Apr 16 03:33:16 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make sure proto spec runs in right directory
+
+[1a8c518 | Thu Apr 16 03:17:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Proto should use Etanni as well
+
+[146a4d6 | Thu Apr 16 03:05:43 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove old layout from proto
+
+[95e4e98 | Wed Apr 15 10:59:47 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix nagoro/render_partial, sorry for the mess
+
+[9eb1cf0 | Wed Apr 15 10:59:10 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove String#each, we are compatible with Rack spec
+
+[f95cdae | Wed Apr 15 02:12:02 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Use the render helper for nagoro/render_partial
+
+[730b17f | Mon Apr 13 14:35:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Try to please the github syntax highlighter
+
+[152aad6 | Mon Apr 13 04:58:24 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Rename Request#to_ivs to Request#to_instance_variables and add to_ivs alias for it
+
+[425e8ff | Sat Apr 11 04:18:39 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make Rapp example run
+
+[518ab37 | Fri Apr 10 12:30:24 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Port specs to rack-test
+
+    * This breaks the spec for httpdigest helper since rack assumes that
+      plaintext auth consits of ['user:pass'].pack('m*') and we consider
+      plaintext auth as MD5 digest auth which includes the realm.
+
+[18fabfc | Fri Apr 10 10:31:17 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add a `rake setup` task that takes care of installing dependencies
+
+[9567c23 | Thu Apr 09 11:00:33 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * More improvments and fixes to the localize helper
+
+[e0d48c3 | Thu Apr 09 11:00:03 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * This should fix the contrib EmailHelper
+
+[ed05392 | Wed Apr 08 09:19:29 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * run Ramaze instead of Innate, just for better look
+
+[97b1bd8 | Thu Apr 09 17:52:05 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add ContentLength middleware
+
+[591f1c0 | Tue Apr 07 17:15:59 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.04.08
+
 [e2a87c9 | Mon Apr 06 02:27:14 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
 
   * changed path search to use request.request_uri instead of request.fullpath, to handle fastcgi, mod_rack, and any other method where rack strips part of fullpath to derive request_uri

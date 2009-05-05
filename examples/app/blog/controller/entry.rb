@@ -25,9 +25,6 @@ module Blog
       @comment_count = number_counter(@entry.comments.count, 'comment')
     end
 
-    def feed
-    end
-
     def edit(slug)
       login_required
       @entry = Entry.from_slug(slug)
@@ -59,6 +56,18 @@ module Blog
     def delete(slug)
       login_required
       Entry.from_slug(slug).destroy
+    end
+
+    def trackback(slug)
+      render_partial(:index){|a|
+        a.method = :index
+        a.params << slug
+      } + <<-COMMENT.strip
+I really have not the faintest idea about what this is supposed to do.<br />
+People tell me it's broken, but nobody tells me how to fix it :)<br />
+For now I'll just use it to show off how to modify an action that requires a
+method parameter.
+      COMMENT
     end
 
     private

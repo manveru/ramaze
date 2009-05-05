@@ -36,11 +36,11 @@ doc/meta/users.kml
 doc/tutorial/todolist.html
 doc/tutorial/todolist.mkd
 doc/tutorial/todolist.txt
-examples/app/auth/layout/auth.nag
+examples/app/auth/layout/auth.xhtml
 examples/app/auth/start.rb
-examples/app/auth/view/index.nag
-examples/app/auth/view/login.nag
-examples/app/auth/view/secret.nag
+examples/app/auth/view/index.xhtml
+examples/app/auth/view/login.xhtml
+examples/app/auth/view/secret.xhtml
 examples/app/blog/README
 examples/app/blog/app.rb
 examples/app/blog/config.ru
@@ -113,7 +113,7 @@ examples/app/wikore/spec/wikore.rb
 examples/app/wikore/src/controller.rb
 examples/app/wikore/src/model.rb
 examples/app/wikore/start.rb
-examples/app/wikore/template/index.xhtml
+examples/app/wikore/view/index.xhtml
 examples/app/wiktacular/README
 examples/app/wiktacular/mkd/link/2007-07-20_19-45-51.mkd
 examples/app/wiktacular/mkd/link/current.mkd
@@ -153,7 +153,6 @@ examples/helpers/httpdigest.rb
 examples/helpers/identity.rb
 examples/helpers/nitro_form.rb
 examples/helpers/paginate.rb
-examples/helpers/provide.rb
 examples/helpers/rest.rb
 examples/helpers/simple_captcha.rb
 examples/misc/css.rb
@@ -182,6 +181,7 @@ examples/templates/view/external.rem
 examples/templates/view/external.rhtml
 examples/templates/view/external.tenjin
 examples/templates/view/external.zmr
+lib/proto/app.rb
 lib/proto/config.ru
 lib/proto/controller/init.rb
 lib/proto/controller/main.rb
@@ -196,7 +196,6 @@ lib/proto/public/ramaze.png
 lib/proto/spec/main.rb
 lib/proto/start.rb
 lib/proto/view/index.xhtml
-lib/proto/view/page.xhtml
 lib/ramaze.rb
 lib/ramaze/app.rb
 lib/ramaze/cache.rb
@@ -299,7 +298,6 @@ lib/ramaze/snippets/ramaze/fiber.rb
 lib/ramaze/snippets/ramaze/struct.rb
 lib/ramaze/snippets/string/camel_case.rb
 lib/ramaze/snippets/string/color.rb
-lib/ramaze/snippets/string/each.rb
 lib/ramaze/snippets/string/end_with.rb
 lib/ramaze/snippets/string/esc.rb
 lib/ramaze/snippets/string/ord.rb
@@ -397,7 +395,6 @@ spec/ramaze/helper/localize.rb
 spec/ramaze/helper/maruku.rb
 spec/ramaze/helper/pager.rb
 spec/ramaze/helper/paginate.rb
-spec/ramaze/helper/partial.rb
 spec/ramaze/helper/request_accessor.rb
 spec/ramaze/helper/sequel_form.rb
 spec/ramaze/helper/simple_captcha.rb
@@ -482,6 +479,7 @@ tasks/metric_changes.rake
 tasks/rcov.rake
 tasks/release.rake
 tasks/reversion.rake
+tasks/setup.rake
 tasks/todo.rake
 tasks/traits.rake
 tasks/yard.rake
