@@ -7,6 +7,10 @@ module Ramaze
   class Cache
 
     # Cache based on a Sequel model using relational databases.
+    #
+    # Please note that this cache might not work perfectly with Sequel 3.0.0,
+    # as the #[] and #[]= methods do not respect serialization.
+    # I'll lobby for a change in that direction.
     class Sequel
       include Cache::API
 
