@@ -1,4 +1,5 @@
 require 'spec/helper'
+spec_require 'nagoro'
 require 'examples/basic/element'
 
 describe 'Element' do
