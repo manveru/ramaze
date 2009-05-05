@@ -26,7 +26,7 @@ module Tenjin
     # Tenjin::ContextHelper is not available here. Patches welcome.
     def ramaze_render(binding)
       code = "_buf = #{init_buf_expr}; #{@script}; _buf.to_s"
-      _buf = binding.eval(code, @filename || '(tenjin)')
+      _buf = eval(code, binding, @filename || '(tenjin)')
     end
   end
 end

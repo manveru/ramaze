@@ -5,6 +5,8 @@ spec_requires 'hpricot', 'sequel'
 DB = Sequel.sqlite
 
 class User < Sequel::Model(:user)
+  plugin :schema
+
   set_schema do
     primary_key :id
 
