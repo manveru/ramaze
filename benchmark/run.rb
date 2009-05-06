@@ -144,8 +144,8 @@ class RamazeBenchmark
   end
 
   attr_accessor :requests, :adapters, :port, :log, :display_code, :target
-  attr_accessor :concurrent, :paths, :benchmarker, :informer, :sessions
-  attr_accessor :show_log, :formats
+  attr_accessor :concurrent, :paths, :benchmarker, :informer
+  attr_accessor :mode, :show_log, :formats
 
   def initialize()
     @adapters = [:webrick]
@@ -159,6 +159,7 @@ class RamazeBenchmark
     @informer = true
     @formats = ["text"]
     @writers = []
+    @mode = :live
     yield self
   end
 
@@ -245,7 +246,8 @@ class RamazeBenchmark
   def ramaze(filename, adapter)
     pid = fork do
       begin
-        require filename
+        require 'ramaze'
+        Ramaze.options.mode = @mode
         if @informer
           unless @show_log
             require 'ramaze/log/informer'
@@ -254,6 +256,7 @@ class RamazeBenchmark
         else
           Ramaze::Log.loggers = []
         end
+        require filename
         Ramaze.start :adapter => adapter, :port => @port
       rescue LoadError => ex; l :Error, ex; end
     end
@@ -319,16 +322,16 @@ RamazeBenchmark.new do |bm|
       bm.paths = paths.split(",")
     end
 
+    opt.on('--mode MODE', '[live] Ramaze mode') do |mode|
+      bm.mode = mode.to_sym
+    end
+
     opt.on('--no-informer', 'Disable informer') do
       bm.informer = false
     end
 
     opt.on('--show-log', 'Show log') do
       bm.show_log = true
-    end
-
-    opt.on('--no-sessions', 'Disable sessions') do
-      bm.sessions = false
     end
 
     opt.on('--target REGEXP',
