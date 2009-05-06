@@ -399,20 +399,6 @@ For help you can:
 - Join the Mailinglist at http://ramaze.rubyforge.org
 
 
-# Appendix
-
-* Performance
-  * Serving
-
-    For best performance you should consider using Mongrel to host your
-    application.
-
-  * Caching
-
-    You can easily cache your pages using the CacheHelper.
-    Also, using MemCache gives you high-end performance and security.
-
-
 # And thanks to...
 
 There is a large number of people who made Ramaze possibe by their ongoing
