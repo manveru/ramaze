@@ -2,7 +2,7 @@ namespace :release do
   task :all => [:release_github, :release_rubyforge]
 
   desc 'Display instructions to release on github'
-  task :github => [:jquery, :reversion, :gemspec] do
+  task :github => [:jquery, :reversion, :authors, :gemspec] do
     name, version = GEMSPEC.name, GEMSPEC.version
 
     puts <<INSTRUCTIONS
@@ -22,7 +22,7 @@ INSTRUCTIONS
 
   # TODO: Not tested
   desc 'Display instructions to release on rubyforge'
-  task :rubyforge => [:jquery, :reversion, :gemspec, :package] do
+  task :rubyforge => [:jquery, :reversion, :authors, :gemspec, :package] do
     name, version = GEMSPEC.name, GEMSPEC.version
 
     puts <<INSTRUCTIONS
