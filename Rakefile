@@ -14,7 +14,8 @@ PROJECT_SPECS = FileList[
 PROJECT_MODULE      = 'Ramaze'
 PROJECT_JQUERY_FILE = 'lib/proto/public/js/jquery.js'
 PROJECT_README      = 'README.md'
-PROJECT_COPYRIGHT = [
+PROJECT_VERSION     = ENV['VERSION'] || Date.today.strftime('%Y.%m.%d')
+PROJECT_COPYRIGHT   = [
   "#          Copyright (c) #{Time.now.year} Michael Fellinger m.fellinger@gmail.com",
   "# All files in this distribution are subject to the terms of the Ruby license."
 ]
@@ -30,7 +31,7 @@ GEMSPEC = Gem::Specification.new{|s|
   s.email        = 'm.fellinger@gmail.com'
   s.homepage     = 'http://github.com/manveru/org'
   s.platform     = Gem::Platform::RUBY
-  s.version      = (ENV['PROJECT_VERSION'] || Date.today.strftime("%Y.%m.%d"))
+  s.version      = PROJECT_VERSION
   s.files        = `git ls-files`.split("\n").sort
   s.has_rdoc     = true
   s.require_path = 'lib'
