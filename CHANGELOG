@@ -1,3 +1,167 @@
+[6025293 | Wed May 06 15:36:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * VERSION=xxx rake release:xxx
+
+[025d2f0 | Wed May 06 15:33:00 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * bring rakefile up to date
+
+[645a7e9 | Wed May 06 15:31:47 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Finally move readme to README.md
+
+[fe285e1 | Wed May 06 15:31:26 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove some useless stuff from the readme
+
+[9622f31 | Wed May 06 15:21:25 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Last minute changes to tasks
+
+[966fce3 | Wed May 06 12:38:55 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove Object#constant since it collides with facets
+
+[1d9215a | Sun May 03 18:10:44 UTC 2009] Andreas Karlsson <andreas@proxel.se>
+
+  * Clean up benchmarking.
+
+    Clean up benchmarking a bit adding support for a mode switch,
+    which defaults to "live". Move "require 'ramaze'" to support
+    custom environments and killing the logging correctly.
+    
+    Also fix bug where Ramaze.start was run in one of the files
+    in the suite, and finally remove the unused --no-sessions.
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[b8337e9 | Tue May 05 15:29:15 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add some more non-serious fail
+
+[be9d471 | Tue May 05 14:23:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Don't use Binding#eval
+
+[b79699a | Tue May 05 06:13:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add comment about the state of serialization in Sequel
+
+[38a1f25 | Tue May 05 05:13:25 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make the sequel cache and the spec of sequel_form compatible with sequel 3.0.0
+
+[0a0553a | Mon May 04 16:39:29 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Chat examples uses Etanni, not Nagoro
+
+[5778a31 | Sat May 02 21:04:38 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * refactored bin code to lib/ramaze/tool/bin
+
+[b84b566 | Sun May 03 14:53:26 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Request::current is in Innate
+
+[53108b8 | Sat May 02 13:29:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * We don't rely on STATE anymore
+
+[8d2e57b | Sat May 02 14:09:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the benchmarks
+
+[2d5dda3 | Fri May 01 10:22:13 UTC 2009] Andreas Karlsson <andreas@proxel.se>
+
+  * Use faster method for erubis templates.
+
+    The evaluate method uses instance_eval on a cached proc instead of using
+    eval like the erb compatible result method does.
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[cfd250c | Fri May 01 07:02:03 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Skip :install_dependencies until we figure out something better
+
+[1829f38 | Fri May 01 07:00:39 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Seems like a regression in rack-test...
+
+[09d6fa1 | Fri May 01 07:00:07 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the errors spec, it should run in :dev mode since :live has no ShowExceptions anymore
+
+[499c4ed | Fri May 01 06:55:57 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make RouteExceptions a little bit less verbose
+
+[a8c6383 | Fri May 01 06:55:35 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Give the other engines compile caching as well (where it makes sense)
+
+[81380cf | Fri May 01 05:49:55 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adapt gestalt spec to latest rack-test
+
+[e784317 | Fri May 01 05:43:50 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the helper/caching example
+
+[93a741b | Thu Apr 30 09:06:35 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Use caching for Haml
+
+[47a6dec | Thu Apr 30 09:06:17 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Integrate View better with Innate
+
+[e86a143 | Thu Apr 30 07:57:51 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Split up Haml engine, prepare for caching
+
+[b2747cc | Wed Apr 29 09:33:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Don't use ShowExceptinos in live mode
+
+[552a4c3 | Tue Apr 28 17:52:34 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix RotatingInformer
+
+[2e53d6e | Tue Apr 28 04:50:27 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the release tasks
+
+[e3c1418 | Tue Apr 28 04:49:49 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Give the paginator a count
+
+[a395c1c | Mon Apr 27 03:33:16 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Ultraviolet needs traited
+
+[a65aaad | Mon Apr 27 01:47:48 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Forward logging to Ramaze::Log by default
+
+[d0536fa | Sun Apr 26 12:21:41 UTC 2009] Tadahiko Uehara <kikofx@gmail.com>
+
+  * Add support Gestalt as another template engine.
+
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[37b2928 | Sun Apr 26 11:51:52 UTC 2009] Tadahiko Uehara <kikofx@gmail.com>
+
+  * Add gestalt to take text and attributes as arguments.
+
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[42e96b1 | Sat Apr 25 15:19:31 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.04
+
 [8a0c6ac | Sat Apr 25 14:31:04 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Update dependencies
