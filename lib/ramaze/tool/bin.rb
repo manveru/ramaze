@@ -208,7 +208,8 @@ module Ramaze
         def start # {{{
           # Find the name of this app
           app_name = default_pidfile.sub(/\.pid$/,'')
-          added_args = []
+          rack_args = []
+
           if daemonize = @ourargs.detect { |arg| arg.match(/^(-[dD]|--daemonize)$/) }
             if pid_arg = @ourargs.detect { |arg| arg.match(/^(-P|--pid)/) }
               puts "User supplied pid: #{pid_arg}"
@@ -216,19 +217,24 @@ module Ramaze
               puts "Starting daemon with user defined pidfile: #{pid_file}"
             else
               puts "Starting daemon with default pidfile: #{pid_file = default_pidfile}"
-              added_args += ["-P", pid_file]
+              rack_args += ["-P", pid_file]
             end
             if check_running?(pid_file)
               $stderr.puts "Ramaze is already running with pidfile: #{pid_file}"
               exit 127
             end
           end
-          added_args += ["-p", "7000"] unless @ourargs.detect { |arg| arg.match(/^(-p|--port)/) }
-          added_args += ["-s", "webrick"] unless @ourargs.detect { |arg| arg.match(/^(-s|--server)/) }
+
+          port = Ramaze.options.adapter.port
+          rack_args += ["-p", port   ] if @ourargs.grep(/^(-p|--port)/).empty?
+
+          handler = Ramaze.options.adapter.handler
+          rack_args += ["-s", handler] if @ourargs.grep(/^(-s|--server)/).empty?
+
           if is_windows?
-            exec("ruby", rackup_path.to_s, "config.ru", *(ARGV + added_args))
+            exec("ruby", rackup_path.to_s, "config.ru", *(ARGV + rack_args))
           else
-            exec(rackup_path.to_s, "config.ru", *(ARGV + added_args))
+            exec(rackup_path.to_s, "config.ru", *(ARGV + rack_args))
           end
         end # }}}
 
