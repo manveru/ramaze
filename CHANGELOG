@@ -1,3 +1,11 @@
+[6780a7b | Wed May 06 15:56:16 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove spec for Object#constant
+
+[1719994 | Wed May 06 15:39:28 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.05
+
 [6025293 | Wed May 06 15:36:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * VERSION=xxx rake release:xxx
