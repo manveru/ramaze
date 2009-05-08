@@ -413,7 +413,7 @@ I would like to thank:
 
     For giving the world Ruby and bringing fun back into programming.
 
-* Zed Shawn a.k.a. zedas
+* Zed Shaw a.k.a. zedas
 
     For developing Mongrel, Ramaze started out as a simple Hello World based
     on that awesome server.
