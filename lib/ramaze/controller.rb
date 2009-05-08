@@ -31,8 +31,14 @@ module Ramaze
           controller.engine(:Etanni)
           controller.trait(:provide_set => false)
         end
+
         next if controller.trait[:skip_controller_map]
+
         controller.map(generate_mapping(controller.name))
+      end
+
+      if CONTROLLER_LIST.size == 1 # lonely controller rule
+        CONTROLLER_LIST.first.map '/'
       end
     end
 
