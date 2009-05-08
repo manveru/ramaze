@@ -1,3 +1,4 @@
+.gitignore
 .mailmap
 CHANGELOG
 MANIFEST
@@ -461,7 +462,6 @@ spec/ramaze/view/tenjin/external.rbhtml
 spec/ramaze/view/tenjin/sum.rbhtml
 spec/snippets/array/put_within.rb
 spec/snippets/binding/locals.rb
-spec/snippets/kernel/constant.rb
 spec/snippets/numeric/filesize_format.rb
 spec/snippets/numeric/time.rb
 spec/snippets/object/__dir__.rb
