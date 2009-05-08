@@ -31,7 +31,7 @@ module Ramaze
 
       # Wipe out _all_ data in localmemcached, use with care.
       def cache_clear
-        ::LocalMemCache.clear_namespace(@namespace)
+        @store.clear
       end
 
       def cache_delete(*args)
