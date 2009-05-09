@@ -13,7 +13,20 @@ module Ramaze
     #
     # It is highly recommended to install memcache-client_extensions for
     # a bit of speedup and more functionality
+    #
+    # NOTE: There is a big issue with persisting sessions in memcache, not only
+    #       can they be dropped at any time, essentially logging the user out
+    #       without them noticing, but there is also a low limit to the maximum
+    #       time-to-live. After 30 days, your session will be dropped, no
+    #       matter what.
+    #       Please remember that memcache is, first of all, a cache, not a
+    #       persistence mechanism.
+    #
+    # NOTE: If you try to set a higher ttl than allowed, your stored key/value
+    #       will be expired immediately.
     class MemCache
+      MAX_TTL = 2592000
+
       include Cache::API
 
       # +:multithread+: May be turned off at your own risk.
@@ -34,6 +47,7 @@ module Ramaze
         options = {:namespace => @namespace}.merge(OPTIONS)
         servers = options.delete(:servers)
         @store = ::MemCache.new(servers, options)
+        @warned = false
       end
 
       # Wipe out _all_ data in memcached, use with care.
@@ -65,6 +79,17 @@ module Ramaze
 
       def cache_store(key, value, options = {})
         ttl = options[:ttl] || 0
+
+        if ttl > MAX_TTL
+          unless @warned
+            Log.warn('MemCache cannot set a ttl greater than 2592000 seconds.')
+            Log.warn('Modify Ramaze.options.session.ttl to a value <= of that.')
+            @warned = true
+          end
+
+          ttl = MAX_TTL
+        end
+
         @store.set(key, value, ttl)
         value
       rescue ::MemCache::MemCacheError => e
