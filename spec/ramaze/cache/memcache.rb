@@ -45,6 +45,12 @@ describe Ramaze::Cache::MemCache do
     cache.fetch(:hello).should == nil
   end
 
+  should 'amend the ttl if it is too high' do
+    ttl = Ramaze::Cache::MemCache::MAX_TTL + 1
+    cache.store(:hello, @hello, :ttl => ttl)
+    cache.fetch(:hello).should == @hello
+  end
+
   should 'clear' do
     cache.store(:hello, @hello)
     cache.fetch(:hello).should == @hello
