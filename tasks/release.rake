@@ -5,12 +5,14 @@ namespace :release do
   task :github => [:jquery, :reversion, :authors, :gemspec] do
     name, version = GEMSPEC.name, GEMSPEC.version
 
+    sh('git', 'add',
+       'MANIFEST', 'doc/CHANGELOG', 'doc/AUTHORS',
+       "#{name}.gemspec",
+       "lib/#{name}/version.rb")
+
     puts <<INSTRUCTIONS
-First add the relevant files:
 
-git add MANIFEST doc/CHANGELOG #{name}.gemspec lib/#{name}/version.rb
-
-Then commit them, tag the commit, and push:
+I added the relevant files, you can commit them, tag the commit, and push:
 
 git commit -m 'Version #{version}'
 git tag -a -m '#{version}' '#{version}'
