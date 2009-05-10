@@ -444,16 +444,16 @@ be because Ramaze changed (which happens very often while it is still young)
 or I actually made some mistake while writing it.</p></div>
 <div class="paragraph"><p>In either case it would make me (and all other poor fellows who happen to try
 this tutorial) very happy if you could spare some time and report the issue
-either on the <a href="http://ramazetrac.purepistos.org/">Bug tracker</a>, or just
+either on the <a href="http://github.com/manveru/ramaze/issues">Bug tracker</a> , or just
 drop by on IRC on <tt>irc.freenode.org</tt> in the channel <tt>#ramaze</tt>.</p></div>
 <div class="paragraph"><p>If you have trouble with some of the terms used in this tutorial you can
 consult the <a href="#glossary">Glossary</a> at the end of this document.</p></div>
 <div class="paragraph"><p>We are also working on a book that describes Ramaze in more depth, called
 <em>Journey to Ramaze</em>, it is still very much work in progress, but some of the
 contents might interest you.</p></div>
-<div class="paragraph"><p>The repository for the book is at <a href="http://github.com/manveru/ramaze-book">http://github.com/manveru/ramaze-book</a>.
-Every once in a while, updates for the book will be available in HTML and PDF
-form at <a href="http://book.ramaze.net">http://book.ramaze.net</a>.</p></div>
+<div class="paragraph"><p>The repository for the book is at <a href="http://github.com/manveru/ramaze-book">http://github.com/manveru/ramaze-book</a>. Every
+once in a while, updates for the book will be put in HTML and PDF form at
+<a href="http://book.ramaze.net">http://book.ramaze.net</a>.</p></div>
 </div>
 <h2 id="_first_step_create">First Step, Create</h2>
 <div class="sectionbody">
@@ -514,7 +514,7 @@ http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-weight: bold"><span style="color: #000080">require</span></span> <span style="color: #FF0000">'rubygems'</span>
 <span style="font-weight: bold"><span style="color: #000080">require</span></span> <span style="color: #FF0000">'ramaze'</span>
 
-<span style="font-weight: bold"><span style="color: #0000FF">class</span></span> Hello <span style="color: #990000">&lt;</span> Ramaze<span style="color: #990000">::</span>Controller
+<span style="font-weight: bold"><span style="color: #0000FF">class</span></span> MainController <span style="color: #990000">&lt;</span> Ramaze<span style="color: #990000">::</span>Controller
   <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> index
     <span style="color: #FF0000">"Hello, World!"</span>
   <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
@@ -767,56 +767,20 @@ http://www.gnu.org/software/src-highlite -->
   &lt;?r Task.each do |task| ?&gt;
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>
       #{ h(task.title) }: #{ task.done },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title) })
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
   &lt;?r end ?&gt;
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span></tt></pre></div></div>
 <div class="paragraph"><p>Now we have an additional link next to each task that allows us to set it to
 done.</p></div>
-<div class="paragraph"><p>The line we added requires some closer examination, it consists of following
-parts (from inside out and with intermediate variables and annotation):</p></div>
-<div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 2.11.1
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt>title <span style="color: #990000">=</span> task<span style="color: #990000">.</span>title                 <span style="color: #FF0000"><b>&lt;1&gt;</b></span>
-url_title <span style="color: #990000">=</span> url_encode<span style="color: #990000">(</span>title<span style="color: #990000">)</span>      <span style="color: #FF0000"><b>&lt;2&gt;</b></span>
-action <span style="color: #990000">=</span> route<span style="color: #990000">(</span><span style="color: #FF0000">'close'</span><span style="color: #990000">,</span> url_title<span style="color: #990000">)</span> <span style="color: #FF0000"><b>&lt;3&gt;</b></span>
-link <span style="color: #990000">=</span> anchor<span style="color: #990000">(</span><span style="color: #FF0000">'close'</span><span style="color: #990000">,</span> action<span style="color: #990000">)</span>     <span style="color: #FF0000"><b>&lt;4&gt;</b></span></tt></pre></div></div>
-<div class="colist arabic"><ol>
-<li>
-<p>
-Obtain the title of the task from the Model object.
-</p>
-</li>
-<li>
-<p>
-Encode the title for use in an URL.
-</p>
-</li>
-<li>
-<p>
-Ask the Controller about it&#8217;s mapping for the <em>close</em> action and build a
-    link from that, this means that if you ever change the mapping of the
-    <tt>Tasks</tt> Controller, you will not have to change any links.
-</p>
-</li>
-<li>
-<p>
-Finally create the anchor tag that will look like:
-    <tt>&lt;a href="/close/Wash+dishes"&gt;close&lt;/a&gt;</tt>
-</p>
-</li>
-</ol></div>
 <div class="paragraph"><p>An even shorter way of writing that line using default aliases, that you will
-encounter in other applications is:</p></div>
+encounter in other applications, is:</p></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight 2.11.1
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt> a<span style="color: #990000">(</span><span style="color: #FF0000">'close'</span><span style="color: #990000">,</span> r<span style="color: #990000">(</span><span style="color: #FF0000">'close'</span><span style="color: #990000">,</span> u<span style="color: #990000">(</span>task<span style="color: #990000">.</span>title<span style="color: #990000">)))</span></tt></pre></div></div>
+<pre><tt>a<span style="color: #990000">(</span><span style="color: #FF0000">'close'</span><span style="color: #990000">,</span> <span style="color: #FF0000">'close'</span><span style="color: #990000">,</span> task<span style="color: #990000">.</span>title<span style="color: #990000">)</span></tt></pre></div></div>
 <div class="paragraph"><p>But for the purpose of this tutorial we&#8217;ll try to be as explicit as possible.</p></div>
 <div class="paragraph"><p>Now that&#8217;s a lot of things at once, but I&#8217;m sure you will be able to keep up,
 the hardest part is behind us.</p></div>
@@ -862,8 +826,8 @@ http://www.gnu.org/software/src-highlite -->
   &lt;?r Task.each do |task| ?&gt;
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>
       #{ h(task.title) }: #{ task.done },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
-      (#{ anchor('open', route('open', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title) })
+      (#{ anchor('open', 'open', task.title) })
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
   &lt;?r end ?&gt;
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span></tt></pre></div></div>
@@ -915,9 +879,9 @@ http://www.gnu.org/software/src-highlite -->
   &lt;?r Task.each do |task| ?&gt;
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>
       #{ h(task.title) }: #{ task.done },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
-      (#{ anchor('open', route('open', url_encode(task.title))) })
-      (#{ anchor('delete', route('delete', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title)})
+      (#{ anchor('open', 'open', task.title)})
+      (#{ anchor('delete', 'delete', task.title)})
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
   &lt;?r end ?&gt;
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span></tt></pre></div></div>
@@ -1146,8 +1110,8 @@ http://www.gnu.org/software/src-highlite -->
       &lt;?r Task.filter(:done =&gt; true).each do |task| ?&gt;
         <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>
           #{ h(task.title) }: #{ task.done },
-          (#{ anchor('open', route('open', url_encode(task.title))) })
-          (#{ anchor('delete', route('delete', url_encode(task.title))) })
+          (#{ anchor('open', 'open', task.title) })
+          (#{ anchor('delete', 'delete', task.title) })
         <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
       &lt;?r end ?&gt;
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span>
@@ -1206,14 +1170,14 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>Done Tasks<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
 
-#{ anchor('Pending tasks', route('done')) }
+#{ anchor('Pending tasks', 'done') }
 
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;ul&gt;</span></span>
   &lt;?r Task.filter(:done =&gt; false).each do |task| ?&gt;
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>
       #{ h(task.title) },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
-      (#{ anchor('delete', route('delete', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title) })
+      (#{ anchor('delete', 'delete', task.title) })
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
   &lt;?r end ?&gt;
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span></tt></pre></div></div>
@@ -1225,14 +1189,14 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>Pending Tasks<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
 
-#{ anchor('Done tasks', route('done')) }
+#{ anchor('Done tasks', 'done') }
 
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;ul&gt;</span></span>
   &lt;?r Task.filter(:done =&gt; true).each do |task| ?&gt;
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;li&gt;</span></span>
       #{ h(task.title) },
-      (#{ anchor('open', route('open', url_encode(task.title))) })
-      (#{ anchor('delete', route('delete', url_encode(task.title))) })
+      (#{ anchor('open', 'open', task.title) })
+      (#{ anchor('delete', 'delete', task.title) })
     <span style="font-weight: bold"><span style="color: #0000FF">&lt;/li&gt;</span></span>
   &lt;?r end ?&gt;
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span></tt></pre></div></div>
@@ -1408,7 +1372,7 @@ RSI
 <div id="footer">
 <div id="footer-text">
 Version 2.0<br />
-Last updated 2009-04-07 19:08:12 JST
+Last updated 2009-05-10 10:37:49 JST
 </div>
 </div>
 </body>

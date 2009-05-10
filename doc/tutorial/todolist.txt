@@ -26,7 +26,7 @@ or I actually made some mistake while writing it.
 
 In either case it would make me (and all other poor fellows who happen to try
 this tutorial) very happy if you could spare some time and report the issue
-either on the http://ramazetrac.purepistos.org/[Bug tracker], or just
+either on the http://github.com/manveru/ramaze/issues[Bug tracker] , or just
 drop by on IRC on `irc.freenode.org` in the channel `#ramaze`.
 
 If you have trouble with some of the terms used in this tutorial you can
@@ -36,9 +36,9 @@ We are also working on a book that describes Ramaze in more depth, called
 'Journey to Ramaze', it is still very much work in progress, but some of the
 contents might interest you.
 
-The repository for the book is at http://github.com/manveru/ramaze-book.
-Every once in a while, updates for the book will be available in HTML and PDF
-form at http://book.ramaze.net.
+The repository for the book is at http://github.com/manveru/ramaze-book. Every
+once in a while, updates for the book will be put in HTML and PDF form at
+http://book.ramaze.net.
 
 
 == First Step, Create
@@ -351,7 +351,7 @@ change the status of a task:
   <?r Task.each do |task| ?>
     <li>
       #{ h(task.title) }: #{ task.done },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title) })
     </li>
   <?r end ?>
 </ul>
@@ -360,31 +360,12 @@ change the status of a task:
 Now we have an additional link next to each task that allows us to set it to
 done.
 
-The line we added requires some closer examination, it consists of following
-parts (from inside out and with intermediate variables and annotation):
-
-[source,ruby]
-----
-title = task.title                 <1>
-url_title = url_encode(title)      <2>
-action = route('close', url_title) <3>
-link = anchor('close', action)     <4>
-----
-
-<1> Obtain the title of the task from the Model object.
-<2> Encode the title for use in an URL.
-<3> Ask the Controller about it's mapping for the 'close' action and build a
-    link from that, this means that if you ever change the mapping of the
-    `Tasks` Controller, you will not have to change any links.
-<4> Finally create the anchor tag that will look like:
-    `<a href="/close/Wash+dishes">close</a>`
-
 An even shorter way of writing that line using default aliases, that you will
-encounter in other applications is:
+encounter in other applications, is:
 
 [source,ruby]
 --------------------------------------------------------------------------------
- a('close', r('close', u(task.title)))
+a('close', 'close', task.title)
 --------------------------------------------------------------------------------
 
 But for the purpose of this tutorial we'll try to be as explicit as possible.
@@ -433,8 +414,8 @@ And add a link to that action:
   <?r Task.each do |task| ?>
     <li>
       #{ h(task.title) }: #{ task.done },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
-      (#{ anchor('open', route('open', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title) })
+      (#{ anchor('open', 'open', task.title) })
     </li>
   <?r end ?>
 </ul>
@@ -490,9 +471,9 @@ And a link to the `delete` action.
   <?r Task.each do |task| ?>
     <li>
       #{ h(task.title) }: #{ task.done },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
-      (#{ anchor('open', route('open', url_encode(task.title))) })
-      (#{ anchor('delete', route('delete', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title)})
+      (#{ anchor('open', 'open', task.title)})
+      (#{ anchor('delete', 'delete', task.title)})
     </li>
   <?r end ?>
 </ul>
@@ -715,8 +696,8 @@ So off we go and add a new template at 'view/done.xhtml'.
       <?r Task.filter(:done => true).each do |task| ?>
         <li>
           #{ h(task.title) }: #{ task.done },
-          (#{ anchor('open', route('open', url_encode(task.title))) })
-          (#{ anchor('delete', route('delete', url_encode(task.title))) })
+          (#{ anchor('open', 'open', task.title) })
+          (#{ anchor('delete', 'delete', task.title) })
         </li>
       <?r end ?>
     </ul>
@@ -780,14 +761,14 @@ boilerplate we can delete the slack from our templates.
 --------------------------------------------------------------------------------
 <h2>Done Tasks</h2>
 
-#{ anchor('Pending tasks', route('done')) }
+#{ anchor('Pending tasks', 'done') }
 
 <ul>
   <?r Task.filter(:done => false).each do |task| ?>
     <li>
       #{ h(task.title) },
-      (#{ anchor('close', route('close', url_encode(task.title))) })
-      (#{ anchor('delete', route('delete', url_encode(task.title))) })
+      (#{ anchor('close', 'close', task.title) })
+      (#{ anchor('delete', 'delete', task.title) })
     </li>
   <?r end ?>
 </ul>
@@ -799,14 +780,14 @@ boilerplate we can delete the slack from our templates.
 --------------------------------------------------------------------------------
 <h2>Pending Tasks</h2>
 
-#{ anchor('Done tasks', route('done')) }
+#{ anchor('Done tasks', 'done') }
 
 <ul>
   <?r Task.filter(:done => true).each do |task| ?>
     <li>
       #{ h(task.title) },
-      (#{ anchor('open', route('open', url_encode(task.title))) })
-      (#{ anchor('delete', route('delete', url_encode(task.title))) })
+      (#{ anchor('open', 'open', task.title) })
+      (#{ anchor('delete', 'delete', task.title) })
     </li>
   <?r end ?>
 </ul>
