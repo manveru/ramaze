@@ -225,10 +225,10 @@ module Ramaze
             end
           end
 
-          port = Ramaze.options.adapter.port
+          port = Ramaze.options.adapter.port.to_s
           rack_args += ["-p", port   ] if @ourargs.grep(/^(-p|--port)/).empty?
 
-          handler = Ramaze.options.adapter.handler
+          handler = Ramaze.options.adapter.handler.to_s
           rack_args += ["-s", handler] if @ourargs.grep(/^(-s|--server)/).empty?
 
           if is_windows?
