@@ -8,7 +8,7 @@ namespace :release do
     puts <<INSTRUCTIONS
 First add the relevant files:
 
-git add MANIFEST CHANGELOG #{name}.gemspec lib/#{name}/version.rb
+git add MANIFEST doc/CHANGELOG #{name}.gemspec lib/#{name}/version.rb
 
 Then commit them, tag the commit, and push:
 
