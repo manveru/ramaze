@@ -1,8 +1,13 @@
 #!/usr/bin/env ruby
 begin
   require "pathname"
-  require Pathname.new(__FILE__).expand_path.dirname.join("..", "lib", "ramaze")
-  require "ramaze/bin_ramaze"
+  local_ramaze = Pathname.new(__FILE__).expand_path.dirname.join("..", "lib", "ramaze")
+  if local_ramaze
+    require local_ramaze
+  else
+    require "ramaze"
+  end
+  require "ramaze/tool/bin"
 rescue LoadError
   require "rubygems"
   require "ramaze/tool/bin"
