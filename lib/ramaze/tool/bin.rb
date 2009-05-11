@@ -206,6 +206,8 @@ module Ramaze
 
         ### Methods for commands {{{
         def start # {{{
+          include_ramaze
+
           # Find the name of this app
           app_name = default_pidfile.sub(/\.pid$/,'')
           rack_args = []
