@@ -65,14 +65,21 @@ module Ramaze
 
     # first try to activate, install and try to activate again if activation
     # fails the first time
-    def setup_gem(name, options, try_install = true)
+    def setup_gem(name, options)
+      version = [options[:version]].compact
+      lib_name = options[:lib] || name
+
       log "activating #{name}"
-      Gem.activate(name, *[options[:version]].compact)
-      require(options[:lib] || name)
+
+      Gem.activate(name, *version)
+      require(lib_name)
+
     rescue LoadError => exception
-      puts exception
-      install_gem(name, options) if try_install
-      setup_gem(name, options, try_install = false)
+      log exception
+
+      install_gem(name, options)
+      Gem.activate(name, *version)
+      require(lib_name)
     end
 
     # tell rubygems to install a gem
