@@ -108,7 +108,13 @@ module Ramaze
     private
 
     def log(msg)
-      puts(msg) if @verbose
+      return unless @verbose
+
+      if defined?(Log)
+        Log.info(msg)
+      else
+        puts(msg)
+      end
     end
 
     def rubyforge; 'http://gems.rubyforge.org/' end
