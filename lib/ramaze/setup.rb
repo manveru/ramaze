@@ -74,8 +74,7 @@ module Ramaze
       Gem.activate(name, *version)
       require(lib_name)
 
-    rescue LoadError => exception
-      log exception
+    rescue LoadError
 
       install_gem(name, options)
       Gem.activate(name, *version)
