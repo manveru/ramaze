@@ -202,6 +202,8 @@ module Ramaze
           else
             txt << %x{#{rackup_path} --help}.split("\n").reject { |line| line.match(/^Usage:/) }.join("\n\t")
           end
+
+          txt.gsub(/^\t$/, '')
         end # }}}
 
         ### Methods for commands {{{

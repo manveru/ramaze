@@ -5,8 +5,7 @@ module Ramaze
   BINPATH = Pathname.new(Ramaze::ROOT).join("..", "bin", "ramaze").expand_path
 end
 
-def usage
-  <<-TXT
+USAGE = <<TXT
 
   Usage:
 	ramaze <start [PIDFILE]|stop [PIDFILE]|restart [PIDFILE]|status [PIDFILE]|create PROJECT|console> [ruby/rack options]
@@ -33,12 +32,14 @@ def usage
 	 console - Starts an irb console with app.rb (and irb completion) loaded. This command
 	           ignores rack options, ARGV is passed on to IRB.
 
+
 	Ruby options:
 	  -e, --eval LINE          evaluate a LINE of code
 	  -d, --debug              set debugging flags (set $DEBUG to true)
 	  -w, --warn               turn warnings on for your script
 	  -I, --include PATH       specify $LOAD_PATH (may be used more than once)
 	  -r, --require LIBRARY    require the library, before executing your script
+
 	Rack options:
 	  -s, --server SERVER      serve using SERVER (webrick/mongrel)
 	  -o, --host HOST          listen on HOST (default: 0.0.0.0)
@@ -46,11 +47,11 @@ def usage
 	  -E, --env ENVIRONMENT    use ENVIRONMENT for defaults (default: development)
 	  -D, --daemonize          run daemonized in the background
 	  -P, --pid FILE           file to store PID (default: rack.pid)
+
 	Common options:
 	  -h, --help               Show this message
 	      --version            Show version
 TXT
-end
 
 describe "bin/ramaze command" do
   it "Can find the ramaze binary" do
@@ -58,8 +59,8 @@ describe "bin/ramaze command" do
   end
 
   it "Shows command line help" do
-    output = %x{#{Ramaze::BINPATH} -h}
-    output.should == usage
+    output = `#{Ramaze::BINPATH} -h`
+    output.should == USAGE
   end
 
   it "Shows the correct version" do
