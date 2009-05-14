@@ -63,14 +63,14 @@ module Ramaze
   middleware! :dev do |m|
     m.use Rack::Lint
     m.use Rack::CommonLogger, Ramaze::Log
-    m.use Ramaze::Reloader
+    m.use Rack::ShowExceptions
     m.use Rack::ShowStatus
     m.use Rack::RouteExceptions
-    m.use Rack::ShowExceptions
-    m.use Rack::Head
-    m.use Rack::ETag
-    m.use Rack::ConditionalGet
     m.use Rack::ContentLength
+    m.use Rack::ConditionalGet
+    m.use Rack::ETag
+    m.use Rack::Head
+    m.use Ramaze::Reloader
     m.run Ramaze::AppMap
   end
 
@@ -78,10 +78,10 @@ module Ramaze
     m.use Rack::CommonLogger, Ramaze::Log
     m.use Rack::RouteExceptions
     m.use Rack::ShowStatus
-    m.use Rack::Head
-    m.use Rack::ETag
-    m.use Rack::ConditionalGet
     m.use Rack::ContentLength
+    m.use Rack::ConditionalGet
+    m.use Rack::ETag
+    m.use Rack::Head
     m.run Ramaze::AppMap
   end
 end
