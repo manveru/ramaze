@@ -56,7 +56,7 @@ module Ramaze
     }
 
     def self.generate_mapping(klass_name = self.name)
-      chunks = klass_name.split(/::/)
+      chunks = klass_name.to_s.split(/::/)
       return if chunks.empty?
 
       last = chunks.last
