@@ -1,28 +1,18 @@
-module Ramaze
-  module Spec
-    module Examples
-      module Templates
-        def self.tests( describe, spec_engine )
+shared :template_spec do
+  behaves_like :mock
 
-            describe.behaves_like :mock
+  def spec_template(spec_engine)
+    it 'works on /' do
+      get('/').body.strip.
+        should =~ %r{<a href\s*=\s*"/">Home</a>\s+\|\s+<a href\s*=\s*"/internal">internal</a>\s+\|\s+<a href\s*=\s*"/external">external</a>}
+    end
 
-            describe.it '/' do
-              get('/').body.strip.should =~
-                %r{<a href\s*=\s*"/">Home</a>\s+\|\s+<a href\s*=\s*"/internal">internal</a>\s+\|\s+<a href\s*=\s*"/external">external</a>}
-            end
-
-            %w[/internal /external].each do |url|
-              describe.it url do
-                html = get(url).body
-                html.should.not == nil
-                html.should =~ %r{<title>Template::#{spec_engine} (internal|external)</title>}
-                html.should =~ %r{<h1>The (internal|external) Template for #{spec_engine}</h1>}
-              end
-
-          end
-
-        end
-
+    %w[/internal /external].each do |url|
+      it "works on #{url}" do
+        html = get(url).body
+        html.should.not == nil
+        html.should =~ %r{<title>Template::#{spec_engine} (internal|external)</title>}
+        html.should =~ %r{<h1>The (internal|external) Template for #{spec_engine}</h1>}
       end
     end
   end
