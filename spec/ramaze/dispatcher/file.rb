@@ -9,7 +9,7 @@ require 'spec/helper'
 module Ramaze
   # minimal middleware, no exception handling
   middleware!(:spec){|m|
-    m.apps(Rack::ETag, Rack::ConditionalGet)
+    m.apps Rack::ConditionalGet, Rack::ETag
     m.innate
   }
 end
@@ -17,7 +17,7 @@ end
 describe 'Serving static files' do
   behaves_like :mock
 
-  Ramaze.map('/', lambda{|env| [200, {}, 'nothing']})
+  Ramaze.map('/', lambda{|env| [200, {}, ['nothing']]})
 
   it 'serves from public root' do
     css = File.read(__DIR__('public/test_download.css'))
@@ -32,9 +32,9 @@ describe 'Serving static files' do
     last_response.body.should == 'hi'
   end
 
-  it 'sends ETag for string bodies' do
+  it 'sends Etag for string bodies' do
     get '/'
-    last_response['ETag'].size.should == 34
+    last_response['Etag'].size.should > 1
   end
 
   it 'sends Last-Modified for file bodies' do
@@ -45,10 +45,10 @@ describe 'Serving static files' do
     last_response['Last-Modified'].should == mtime.httpdate
   end
 
-  it 'respects ETag with HTTP_IF_NONE_MATCH' do
+  it 'respects Etag with HTTP_IF_NONE_MATCH' do
     get '/'
 
-    etag = last_response['ETag']
+    etag = last_response['Etag']
     etag.should.not.be.nil
 
     header 'HTTP_IF_NONE_MATCH', etag

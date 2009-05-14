@@ -10,8 +10,10 @@ module Rack
     def call(env)
       status, headers, body = @app.call(env)
 
-      if !headers.has_key?('ETag') && body.is_a?(String)
-        headers['ETag'] = %("#{Digest::MD5.hexdigest(body)}")
+      unless headers.key?('Etag')
+        hashes = []
+        body.each{|chunk| hashes << chunk.hash }
+        headers['Etag'] = %("#{Digest::MD5.hexdigest(hashes.join)}")
       end
 
       [status, headers, body]
