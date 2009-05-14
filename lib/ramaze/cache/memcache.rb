@@ -60,7 +60,7 @@ module Ramaze
 
       #
       def cache_delete(*keys)
-        super{|key| @store.delete(key) }
+        super{|key| @store.delete(key); nil }
       rescue ::MemCache::MemCacheError => e
         Log.error(e)
         nil
