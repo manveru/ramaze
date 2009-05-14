@@ -66,7 +66,7 @@ describe 'Error handling' do
   end
 
   it 'uses Rack::RouteExceptions when a route is set' do
-    Rack::RouteExceptions[NameError] = '/handle/name_error'
+    Rack::RouteExceptions.route(NameError, '/handle/name_error')
 
     got = get('/raises')
     [got.status, got['Content-Type']].should == [200, 'text/html']
