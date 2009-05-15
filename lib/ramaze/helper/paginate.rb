@@ -134,7 +134,7 @@ module Ramaze
           end
 
           out << '</div>'
-          out.map{|e| e.to_s}.join("\n")
+          out.join
         end
 
         # Useful to omit pager if it's of no use.
