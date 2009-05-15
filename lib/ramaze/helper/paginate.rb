@@ -175,7 +175,7 @@ module Ramaze
 
           action = Current.action
           params = request.params.merge(@var.to_s => n)
-          hash[:href] = action.node.r(action.name, params)
+          hash[:href] = action.node.r(action.path, params)
 
           g.a(hash){ text }
         end
