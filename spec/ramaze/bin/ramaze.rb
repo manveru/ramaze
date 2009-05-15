@@ -65,7 +65,6 @@ describe "bin/ramaze command" do
 
   it "Shows the correct version" do
     output = %x{#{Ramaze::BINPATH} --version}
-    File.open("/tmp/output","w+") { |f| f.puts output }
     output.strip.should == Ramaze::VERSION
   end
 
