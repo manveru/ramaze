@@ -24,22 +24,35 @@ module Ramaze
     end
 
     def self.setup
-      require 'ramaze/controller/default' if CONTROLLER_LIST.empty?
+      case CONTROLLER_LIST.size
+      when 0
+        require 'ramaze/controller/default'
+      when 1
+        controller = CONTROLLER_LIST.first
 
-      CONTROLLER_LIST.each do |controller|
-        unless controller.ancestral_trait[:provide_set]
-          controller.engine(:Etanni)
-          controller.trait(:provide_set => false)
+        begin
+          controller.mapping
+        rescue
+          controller.map '/'
         end
 
-        next if controller.trait[:skip_controller_map]
+        controller.setup_procedure
+      else
+        CONTROLLER_LIST.each do |controller|
+          controller.setup_procedure
+        end
+      end
+    end
 
-        controller.map(generate_mapping(controller.name))
+    def self.setup_procedure
+      unless ancestral_trait[:provide_set]
+        engine(:Etanni)
+        trait(:provide_set => false)
       end
 
-      if CONTROLLER_LIST.size == 1 # lonely controller rule
-        CONTROLLER_LIST.first.map '/'
-      end
+      return if trait[:skip_controller_map]
+
+      map(generate_mapping(name))
     end
 
     def self.engine(name)
