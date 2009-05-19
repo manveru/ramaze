@@ -103,8 +103,7 @@ describe "Simple Parameters" do
   end
 
   it "action that takes all params but needs at least one (not given here)" do
-    lambda{ handle('/at_least_one') }.
-      should.raise(ArgumentError)
+    lambda{ handle('/at_least_one') }.should.raise(ArgumentError)
   end
 
   it "one default" do
