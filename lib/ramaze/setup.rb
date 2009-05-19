@@ -4,7 +4,8 @@ module Ramaze
   # It's almost like Kernel#gem but also installs automatically if a gem is
   # missing.
   #
-  # @usage
+  # @example
+  #
   #   Ramaze.setup :verbose => true do
   #     # gem and specific version
   #     gem 'makura', '>=2009.01'

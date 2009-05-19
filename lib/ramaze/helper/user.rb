@@ -170,7 +170,7 @@ module Ramaze
         # @return [Ramaze::Helper::User::Wrapper] wrapped return value from
         #                                         model or callback
         # @see Ramaze::Helper::User#user_login
-        # @autor manveru
+        # @author manveru
         def _login(creds = _persistence)
           if @_user = _would_login?(creds)
             self._persistence = creds
@@ -195,7 +195,7 @@ module Ramaze
 
         # @api internal
         # @see Ramaze::Helper::User#user_logout
-        # @autor manveru
+        # @author manveru
         def _logout
           _persistence.clear
           Current.request.env['ramaze.helper.user'] = nil
@@ -204,7 +204,7 @@ module Ramaze
         # @return [true false] whether the current user is logged in.
         # @api internal
         # @see Ramaze::Helper::User#logged_in?
-        # @autor manveru
+        # @author manveru
         def _logged_in?
           !!_user
         end
