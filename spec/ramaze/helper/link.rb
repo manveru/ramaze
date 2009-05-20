@@ -66,7 +66,7 @@ describe Ramaze::Helper::Link do
     SpecHelperAppTwo.a(:foo, :bar).should == '<a href="/other/two/bar">foo</a>'
   end
   it "builds routes when Ramaze.options.prefix is present" do
-
+    Ramaze.options.prefix = '/prfx'
     SpecHelperLink.r(:foo).to_s.should == '/prfx/foo'
     SpecHelperLinkTwo.r(:foo).to_s.should == '/prfx/two/foo'
     SpecHelperApp.r(:foo).to_s.should == '/prfx/other/foo'
