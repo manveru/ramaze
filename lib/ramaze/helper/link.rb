@@ -32,7 +32,9 @@ module Ramaze
       end
 
       def route_location(klass)
-        Ramaze.to(klass) || Ramaze.to(klass.class)
+        prefix = Ramaze.options.prefix
+        location = Ramaze.to(klass) || Ramaze.to(klass.class)
+        [prefix, location].join('/')
       end
 
       # Give it a path with character to split at and one to join the crumbs with.
