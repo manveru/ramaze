@@ -115,7 +115,7 @@ module Ramaze
                       [-\w]+                   # subdomain or domain
                       (?:\.[-\w]+)*            # remaining subdomains or domain
                       (?::\d+)?                # port
-                      (?:/(?:(?:[~\w\+@%-]|(?:[,.;:][^\s$]))+)?)* # path
+                      (?:/(?:(?:[~\w\+@%-]|(?:[,.;:][^\s$])))?)* # path
                       (?:\?[\w\+@%&=.;-]+)?     # query string
                       (?:\#[\w\-]*)?           # trailing anchor
                     )
