@@ -4,7 +4,6 @@ module Rack
 
     PATH_INFO = 'rack.route_exceptions.path_info'.freeze
     EXCEPTION = 'rack.route_exceptions.exception'.freeze
-    RETURNED  = 'rack.route_exceptions.returned'.freeze
 
     class << self
       def route(exception, to)
@@ -20,27 +19,23 @@ module Rack
     end
 
     def call(env, try_again = true)
-      returned = @app.call(env)
+      @app.call(env)
     rescue Exception => exception
       raise(exception) unless try_again
 
       ROUTES.each do |klass, to|
         next unless klass === exception
-        return route(to, env, returned, exception)
+        return route(to, env, exception)
       end
 
       raise(exception)
     end
 
-    def route(to, env, returned, exception)
+    def route(to, env, exception)
       env.merge!(
-        PATH_INFO => env['PATH_INFO'],
-        EXCEPTION => exception,
-        RETURNED => returned
-      )
-
-      env['PATH_INFO'] = to
-
+        PATH_INFO   => env['PATH_INFO'],
+        EXCEPTION   => exception,
+        'PATH_INFO' => to)
       call(env, try_again = false)
     end
   end
