@@ -59,9 +59,9 @@ module Facebook
       end while ret.empty? and @server = connect
 
       ret = case
-            when ret == 'true':    true
-            when ret == 'false':   false
-            when ret[0..0] == '"': ret[1..-2]
+            when ret == 'true';    true
+            when ret == 'false';   false
+            when ret[0..0] == '"'; ret[1..-2]
             else
               begin
                 JSON::parse(ret)
