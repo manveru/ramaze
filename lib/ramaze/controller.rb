@@ -19,6 +19,7 @@ module Ramaze
 
     def self.inherited(into)
       Innate::Node.included(into)
+      into.helper(:layout)
       CONTROLLER_LIST << into
       into.trait :skip_node_map => true
     end

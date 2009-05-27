@@ -9,4 +9,5 @@ module Ramaze
 
   require 'ramaze/helper/flash'
   require 'ramaze/helper/link'
+  require 'ramaze/helper/layout'
 end
