@@ -20,7 +20,7 @@ module Ramaze
       # It will generate a list of links that act as pointers to previous pages on
       # this path.
       #
-      # Example:
+      # @example usage
       #   breadcrumbs('/path/to/somewhere')
       #
       #   # results in this, newlines added for readability:
@@ -32,7 +32,7 @@ module Ramaze
       # Optionally a href prefix can be specified which generate link
       # names a above, but with the prefix prepended to the href path.
       #
-      # Example:
+      # @example usage
       #   breadcrumbs('/path/to/somewhere', '/', '/', '/mycontroller/action')
       #
       #   # results in this, newlines added for readability:
