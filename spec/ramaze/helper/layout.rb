@@ -6,6 +6,7 @@ require 'spec/helper'
 class LayoutHelperOne < Ramaze::Controller
   map '/one'
 
+  helper :layout
   set_layout 'default'
 
   def laid_out1
@@ -54,40 +55,40 @@ describe Ramaze::Helper::Layout do
   it 'lays out all actions' do
     get '/one/laid_out1'
     last_response.status.should == 200
-    last_response.body.should.match 'laid out'
+    last_response.body[0].should.match /laid out/
     get '/one/laid_out2'
     last_response.status.should == 200
-    last_response.body.should.match 'laid out'
+    last_response.body[0].should.match /laid out/
     get '/one/laid_out3'
     last_response.status.should == 200
-    last_response.body.should.match 'laid out'
+    last_response.body[0].should.match /laid out/
   end
 
   it 'lays out only a whitelist of actions' do
     get '/two/laid_out1'
     last_response.status.should == 200
-    last_response.body.should.match 'laid out'
+    last_response.body[0].should.match /laid out/
     get '/two/laid_out2'
     last_response.status.should == 200
-    last_response.body.should.match 'laid out'
+    last_response.body[0].should.match /laid out/
     get '/two/not_laid_out'
     last_response.status.should == 200
-    last_response.body.should.not.match 'laid out'
+    last_response.body[0].should.not.match /laid out/
   end
 
   it 'lays out all actions except a blacklist' do
     get '/three/laid_out1'
     last_response.status.should == 200
-    last_response.body.should.match 'laid out'
+    last_response.body[0].should.match /laid out/
     get '/three/laid_out2'
     last_response.status.should == 200
-    last_response.body.should.match 'laid out'
+    last_response.body[0].should.match /laid out/
     get '/three/not_laid_out1'
     last_response.status.should == 200
-    last_response.body.should.not.match 'laid out'
+    last_response.body[0].should.not.match /laid out/
     get '/three/not_laid_out2'
     last_response.status.should == 200
-    last_response.body.should.not.match 'laid out'
+    last_response.body[0].should.not.match /laid out/
   end
 
 end
