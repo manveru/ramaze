@@ -43,11 +43,6 @@ module Ramaze
         !!session[:logged_in]
       end
 
-      def check_auth(user, pass)
-        Ramaze.deprecated('Helper::User#check_auth', 'Helper::User#auth_login')
-        auth_login(user, pass)
-      end
-
       # @return
       def auth_login(user, pass)
         return unless user and pass
