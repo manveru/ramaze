@@ -7,30 +7,9 @@ module Ramaze
   module Helper
     # This is a modification of Innate::Helper::Link to respect the routing of
     # Ramaze
+    #
     # NOTE: The A/R/Rs methods have been deprecated.
     module Link
-
-      # @return [String]
-      # @see Innate::Helper#anchor
-      def A(*args)
-        Ramaze.deprecated('Ramaze::Helper::Link#A', 'Ramaze::Helper::Link#a')
-        a(*args)
-      end
-
-      # @return [String]
-      # @see Innate::Helper#route
-      def R(arg, *args)
-        Ramaze.deprecated('Ramaze::Helper::Link#R', 'Ramaze::Helper::Link#r')
-        (arg < Controller ? arg.r(*args) : r(arg, *args)).to_s
-      end
-
-      # @return [String]
-      # @see Innate::Helper#route
-      def Rs(*args)
-        Ramaze.deprecated('Ramaze::Helper::Link#Rs', 'Ramaze::Helper::Link#r')
-        r(*args).to_s
-      end
-
       def route_location(klass)
         prefix = Ramaze.options.prefix
         location = Ramaze.to(klass) || Ramaze.to(klass.class)
