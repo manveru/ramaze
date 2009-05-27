@@ -1,4 +1,4 @@
-          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
+          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
  All files in this distribution are subject to the terms of the Ruby license.
 
 # About Ramaze
@@ -396,7 +396,7 @@ For help you can:
 
 - Visit us in the channel #ramaze on irc.freenode.net
 
-- Join the Mailinglist at http://ramaze.rubyforge.org
+- Join the Mailinglist at http://groups.google.com/group/ramaze
 
 
 # And thanks to...
