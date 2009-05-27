@@ -6,7 +6,6 @@ require 'spec/helper'
 class LayoutHelperOne < Ramaze::Controller
   map '/one'
 
-  helper :layout
   set_layout 'default'
 
   def laid_out1
