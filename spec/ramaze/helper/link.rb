@@ -2,7 +2,6 @@
 # All files in this distribution are subject to the terms of the Ruby license.
 
 require 'spec/helper'
-require 'ramaze/helper/link'
 
 class SpecHelperLink < Ramaze::Controller
   map '/'
@@ -22,20 +21,8 @@ end
 
 Ramaze::App[:other].location = '/other'
 
-
-
 describe Ramaze::Helper::Link do
   extend Ramaze::Helper::Link
-
-  it 'builds routes' do
-    R(SpecHelperLink, :foo).should == '/foo'
-    SpecHelperLink.Rs(:foo).should == '/foo'
-  end
-
-  it 'builds links' do
-    SpecHelperLink.A(:foo).should == '<a href="/foo">foo</a>'
-    SpecHelperLink.A(:foo, :bar).should == '<a href="/bar">foo</a>'
-  end
 
   it 'lays out breadcrumbs' do
     SpecHelperLink.breadcrumbs('/file/dir/listing/is/cool').
