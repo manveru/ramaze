@@ -65,15 +65,6 @@ module Ramaze
         Ramaze::Cache.action_value
       end
 
-
-      # @deprecated Use the #cache_value method instead
-      # @author manveru
-      def value_cache
-        Ramaze::deprecated('Innate::Helper::Cache#value_cache',
-                           'Innate::Helper::Cache#cache_value')
-        cache_value
-      end
-
       module SingletonMethods
         def cache(name, hash = {})
           Ramaze.deprecated('Helper::Cache::cache', 'Helper::Cache::cache_action')
