@@ -2,7 +2,7 @@ require 'spec/helper'
 require 'examples/helpers/cache'
 
 describe 'Caching' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it '/' do
     3.times do

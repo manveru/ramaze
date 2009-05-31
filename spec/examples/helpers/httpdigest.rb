@@ -11,7 +11,7 @@ require 'examples/helpers/httpdigest'
 # @digest_password before we make a request.
 
 describe Ramaze::Helper do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'authorizes request for /eyes_only' do
     digest_authorize nil, nil

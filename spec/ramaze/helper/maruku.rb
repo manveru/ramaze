@@ -11,7 +11,7 @@ class SpecHelperMaruku < Ramaze::Controller
 end
 
 describe Ramaze::Helper::Maruku do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'converts a markdown string to html' do
     get('/').body.should =~ /<h1 id=["']hello["']>Hello<\/h1>/

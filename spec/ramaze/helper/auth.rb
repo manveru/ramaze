@@ -51,7 +51,7 @@ end
 describe Ramaze::Helper::Auth do
   %w[ hash lambda method ].each do |prefix|
     describe "login" do
-      behaves_like :mock
+      behaves_like :rack_test
 
       it "uses a #{prefix}" do
         get "/#{prefix}/secured"

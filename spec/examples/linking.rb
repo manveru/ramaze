@@ -2,7 +2,7 @@ require 'spec/helper'
 require 'examples/basic/linking'
 
 describe 'Linking' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'should provide a link to help' do
     r = get('/').body

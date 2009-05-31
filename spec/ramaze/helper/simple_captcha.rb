@@ -25,7 +25,7 @@ class SpecCustomCaptcha < SpecSimpleCaptcha
 end
 
 describe Ramaze::Helper::SimpleCaptcha do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'ask question' do
     get('/ask_question')

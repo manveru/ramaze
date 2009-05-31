@@ -32,7 +32,7 @@ class SpecHaml < Ramaze::Controller
 end
 
 describe Ramaze::View::Haml do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'render' do
     got = get('/')

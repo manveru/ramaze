@@ -40,7 +40,7 @@ body
 end
 
 describe Ramaze::View::Sass do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'render inline' do
     got = get('/style.css')

@@ -2,7 +2,7 @@ require 'spec/helper'
 require 'examples/basic/simple'
 
 describe 'Simple' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   def check(url)
     response = get(url)

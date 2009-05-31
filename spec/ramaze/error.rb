@@ -35,7 +35,7 @@ class SpecErrorHandling < SpecError
 end
 
 describe 'Error handling' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   Ramaze.options.mode = :dev
 

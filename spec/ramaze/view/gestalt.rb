@@ -66,7 +66,7 @@ module SpecGestalDifferentModule
 end
 
 describe Ramaze::View::Gestalt do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'use g helper' do
      get('/').body.should == '<h1>Gestalt Index</h1>'

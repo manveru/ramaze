@@ -35,7 +35,7 @@ end
 
 
 describe Ramaze::Helper::Layout do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'lays out all actions' do
     get '/one/laid_out1'

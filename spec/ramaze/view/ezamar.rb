@@ -28,7 +28,7 @@ class SpecEzamar < Ramaze::Controller
 end
 
 describe "Ramaze::View::Ezamar" do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'render' do
     got = get('/')

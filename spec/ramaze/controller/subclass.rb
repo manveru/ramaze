@@ -14,7 +14,7 @@ class MainController < BaseController
 end
 
 describe 'Controller' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'allows sub-classing MainController' do
     get('/test').body.should == 'test'

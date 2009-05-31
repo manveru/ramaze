@@ -52,7 +52,7 @@ class SpecUserHelperCallback < SpecUserHelper
 end
 
 describe Ramaze::Helper::User do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'login' do
     get('/status').body.should == 'no'

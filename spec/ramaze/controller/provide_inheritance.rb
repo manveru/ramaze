@@ -25,7 +25,7 @@ class SpecControllerInheritedYetAnother < SpecControllerInheritedAnother
 end
 
 describe 'Ramaze::Controller#self.inherited' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'default renders nagoro' do
     get('/').body.should == "<p>Main is nagoro</p>"

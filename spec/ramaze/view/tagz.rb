@@ -31,7 +31,7 @@ class SpecTagz < Ramaze::Controller
 end
 
 describe Ramaze::View::Tagz do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'use tagz methods' do
     get('/').body.should == '<h1>Tagz Index</h1>'

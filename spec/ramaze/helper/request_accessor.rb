@@ -10,7 +10,7 @@ class SpecHelperRequestAccessor < Ramaze::Controller
 end
 
 describe 'Ramaze::Helper::RequestAccessor' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'gives direct access to methods in Request' do
     get('/').body.should == 'GET'

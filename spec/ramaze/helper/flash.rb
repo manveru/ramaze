@@ -23,7 +23,7 @@ class SpecHelperFlash < Ramaze::Controller
 end
 
 describe Ramaze::Helper::Flash do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'displays a flashbox with one item' do
     get('/populate_one')

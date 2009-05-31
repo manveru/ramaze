@@ -43,7 +43,7 @@ class FormController < Ramaze::Controller
 end
 
 describe Ramaze::Helper::SequelForm do
-  behaves_like :mock
+  behaves_like :rack_test
 
   def hget(uri)
     got = get(uri)

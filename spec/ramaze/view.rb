@@ -25,7 +25,7 @@ class SpecView < Ramaze::Controller
 end
 
 describe Ramaze::View do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'uses MyEngine' do
     got = get('/')

@@ -28,7 +28,7 @@ class SpecErubis < Ramaze::Controller
 end
 
 describe "Ramaze::View::Erubis" do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'render' do
     got = get('/')

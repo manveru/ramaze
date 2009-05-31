@@ -23,7 +23,7 @@ class SpecActionlessTemplatesLayout < Ramaze::Controller
 end
 
 describe "Testing Actionless Templates" do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it "should not find template file for non existant method" do
     get('/list').status.should == 404

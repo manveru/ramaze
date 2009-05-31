@@ -56,7 +56,7 @@ class SpecHelperCacheKey < Ramaze::Controller
 end
 
 describe Ramaze::Helper::Cache do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'caches actions' do
     got = get('/cached_action')

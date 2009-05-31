@@ -57,7 +57,7 @@ class SpecHelperForm < Ramaze::Controller
 end
 
 describe Ramaze::Helper::Form do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'provides empty text input' do
     got = get('/text')

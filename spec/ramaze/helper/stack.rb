@@ -39,7 +39,7 @@ class SpecStackHelper < Ramaze::Controller
 end
 
 describe Ramaze::Helper::Stack do
-  behaves_like :mock
+  behaves_like :rack_test
   @uri = 'http://example.org'
 
   should 'login directly' do

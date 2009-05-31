@@ -28,7 +28,7 @@ class SpecTenjin < Ramaze::Controller
 end
 
 describe 'Ramaze::View::Tenjin' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'render' do
     get('/').body.should == '<h1>Tenjin Index</h1>'

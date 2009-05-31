@@ -64,7 +64,7 @@ class TCParamsController3 < Ramaze::Controller
 end
 
 describe "Simple Parameters" do
-  behaves_like :mock
+  behaves_like :rack_test
 
   def handle(*url)
     Ramaze::Mock.get(*url).body

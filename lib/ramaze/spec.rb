@@ -26,9 +26,15 @@ module Ramaze
   middleware!(:spec){|m| m.run(AppMap) }
 end
 
-shared :mock do
+shared :rack_test do
   Ramaze.setup_dependencies
   extend Rack::Test::Methods
 
   def app; Ramaze.middleware; end
 end
+
+# Backwards compatibility
+shared(:mock){
+  Ramaze.deprecated('behaves_like(:mock)', 'behaves_like(:rack_test)')
+  behaves_like :rack_test
+}

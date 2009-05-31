@@ -28,7 +28,7 @@ DICTIONARY.load(:de, :hash => {'one' => 'eins', 'two' => 'zwei'})
 DICTIONARY.load(:ja, :hash => {'one' => '一', 'three' => '三'})
 
 describe Ramaze::Helper::Localize do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'default to a language' do
     get('/').body.should == 'en'

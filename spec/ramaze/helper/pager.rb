@@ -29,7 +29,7 @@ class TCPagerController < Ramaze::Controller
 end
 
 shared 'pager' do
-  behaves_like :mock
+  behaves_like :rack_test
   extend Ramaze::Helper::Pager
 
   def pager_key

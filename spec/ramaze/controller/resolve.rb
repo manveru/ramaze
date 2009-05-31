@@ -13,7 +13,7 @@ class MainController < Ramaze::Controller
 end
 
 describe 'Controller resolving' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'should work with .' do
     get('/file.ext').body.should == 'file.ext'

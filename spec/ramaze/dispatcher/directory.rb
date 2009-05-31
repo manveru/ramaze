@@ -10,7 +10,7 @@ module Ramaze
 end
 
 describe 'Directory listing' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   @hierarchy = %w[
     /test/deep/hierarchy/one.txt

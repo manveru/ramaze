@@ -28,7 +28,7 @@ class SpecNagoro < Ramaze::Controller
 end
 
 describe "Ramaze::View::Nagoro" do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'render' do
     got = get('/')

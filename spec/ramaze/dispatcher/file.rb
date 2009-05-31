@@ -15,7 +15,7 @@ module Ramaze
 end
 
 describe 'Serving static files' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   Ramaze.map('/', lambda{|env| [200, {}, ['nothing']]})
 

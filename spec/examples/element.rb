@@ -3,7 +3,7 @@ spec_require 'nagoro'
 require 'examples/basic/element'
 
 describe 'Element' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it '/' do
     r = get('/').body

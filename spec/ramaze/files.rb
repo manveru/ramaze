@@ -17,7 +17,7 @@ Ramaze::App[:other].options.publics = 'files/public_2'
 Ramaze.middleware!(:spec){|m| m.run(Ramaze::AppMap) }
 
 describe Ramaze::Files do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'serves files for core app from public_1' do
     get('/plain.txt').body.should == "Just some text in a file\n"

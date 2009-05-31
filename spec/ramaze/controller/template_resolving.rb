@@ -44,7 +44,7 @@ class SpecViewAlias2 < SpecViewAlias
 end
 
 describe "Template aliasing" do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'serves normal template' do
     get('/greet/asdf').body.should == '<html>asdf : Message</html>'

@@ -3,7 +3,7 @@ spec_require 'haml'
 require 'examples/misc/css'
 
 describe 'CSSController' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   def req(path) r = get(path); [r.content_type, r.body] end
 

@@ -13,7 +13,7 @@ class Posts < Ramaze::Controller
 end
 
 describe 'Contrib REST rewrite' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it('rewrites GET to show'){          get('/').body.should == 'Showing' }
   it('rewrites POST to create'){      post('/').body.should == 'Creating' }

@@ -49,7 +49,7 @@ end
 
 describe Ramaze::Helper::HttpDigest do
   describe 'headers' do
-    behaves_like :mock
+    behaves_like :rack_test
 
     it 'sends out all the required header information' do
       get '/authenticate'
@@ -72,7 +72,7 @@ end
 __END__
 
   describe 'Digest authentication' do
-    behaves_like :mock
+    behaves_like :rack_test
 
     it 'authenticates a user with a block' do
       digest_authorize 'foo', 'oof'
@@ -90,7 +90,7 @@ __END__
   end
 
   describe 'Plaintext authentication' do
-    behaves_like :mock
+    behaves_like :rack_test
 
     it 'authenticates a user with the plaintext method' do
       get '/plaintext/authenticate'

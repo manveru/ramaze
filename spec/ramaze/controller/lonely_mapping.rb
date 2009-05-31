@@ -8,7 +8,7 @@ class SpecHello < Ramaze::Controller
 end
 
 describe 'Lonely Controller automap' do
-  behaves_like :mock
+  behaves_like :rack_test
 
   it 'automatically creates an app and maps the controller into it' do
     get('/').body.should == 'automatically mapped'

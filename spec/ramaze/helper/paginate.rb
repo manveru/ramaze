@@ -23,7 +23,7 @@ end
 
 describe Ramaze::Helper::Paginate do
   describe 'Array' do
-    behaves_like :mock
+    behaves_like :rack_test
 
     it 'shows navigation for page 1' do
       doc = Hpricot(get("/array/navigation").body)
