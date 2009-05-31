@@ -38,3 +38,14 @@ shared(:mock){
   Ramaze.deprecated('behaves_like(:mock)', 'behaves_like(:rack_test)')
   behaves_like :rack_test
 }
+
+shared :webrat do
+  behaves_like :rack_test
+
+  require 'webrat'
+
+  Webrat.configure{|config| config.mode = :rack_test }
+
+  extend Webrat::Methods
+  extend Webrat::Matchers
+end
