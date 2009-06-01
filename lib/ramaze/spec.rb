@@ -1,7 +1,4 @@
-begin; require 'rubygems'; rescue LoadError; end
-
-require(File.expand_path("#{__FILE__}/../")) unless defined?(Ramaze)
-require 'innate/spec'
+require File.expand_path('../', __FILE__) unless defined?(Ramaze)
 
 def spec_requires(*libs)
   spec_precondition 'require' do
@@ -26,26 +23,11 @@ module Ramaze
   middleware!(:spec){|m| m.run(AppMap) }
 end
 
-shared :rack_test do
-  Ramaze.setup_dependencies
-  extend Rack::Test::Methods
-
-  def app; Ramaze.middleware; end
-end
-
-# Backwards compatibility
-shared(:mock){
-  Ramaze.deprecated('behaves_like(:mock)', 'behaves_like(:rack_test)')
-  behaves_like :rack_test
-}
-
-shared :webrat do
-  behaves_like :rack_test
-
-  require 'webrat'
-
-  Webrat.configure{|config| config.mode = :rack_test }
-
-  extend Webrat::Methods
-  extend Webrat::Matchers
+# FIXME: will remove that in 2009.07, and then we can offer integration with
+#        any other test-framework we like and they can share this code.
+#        Then Ramaze can be:
+#          Any ruby, any ORM, any templating-engine, any test-framework
+unless defined?(Bacon)
+  Ramaze.deprecated "require('ramaze/spec')", "require('ramaze/spec/bacon')"
+  require 'ramaze/spec/bacon'
 end
