@@ -68,7 +68,7 @@ class ProjectCreator
   def copy(from, to)
     return unless copy_check(to)
     puts "copy(%p, %p)" % [from, to]
-    FileUtils.cp(from, to)
+    FileUtils.cp(from, to, :preserve => true)
     post_process(to)
   end
 
