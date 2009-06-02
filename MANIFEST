@@ -1,6 +1,5 @@
 .gitignore
 .mailmap
-CHANGELOG
 MANIFEST
 README.md
 Rakefile
@@ -42,7 +41,6 @@ doc/meta/configuration.txt
 doc/meta/internals.txt
 doc/meta/users.kml
 doc/tutorial/todolist.html
-doc/tutorial/todolist.mkd
 doc/tutorial/todolist.txt
 examples/app/auth/layout/auth.xhtml
 examples/app/auth/start.rb
@@ -210,6 +208,7 @@ lib/ramaze/cache.rb
 lib/ramaze/cache/localmemcache.rb
 lib/ramaze/cache/memcache.rb
 lib/ramaze/cache/sequel.rb
+lib/ramaze/contrib/addressable_route.rb
 lib/ramaze/contrib/app_graph.rb
 lib/ramaze/contrib/email.rb
 lib/ramaze/contrib/facebook.rb
@@ -243,6 +242,7 @@ lib/ramaze/helper/gestalt.rb
 lib/ramaze/helper/gravatar.rb
 lib/ramaze/helper/httpdigest.rb
 lib/ramaze/helper/identity.rb
+lib/ramaze/helper/layout.rb
 lib/ramaze/helper/link.rb
 lib/ramaze/helper/localize.rb
 lib/ramaze/helper/markaby.rb
@@ -285,14 +285,12 @@ lib/ramaze/snippets.rb
 lib/ramaze/snippets/array/put_within.rb
 lib/ramaze/snippets/binding/locals.rb
 lib/ramaze/snippets/blankslate.rb
-lib/ramaze/snippets/divide.rb
 lib/ramaze/snippets/fiber.rb
 lib/ramaze/snippets/kernel/pretty_inspect.rb
 lib/ramaze/snippets/metaid.rb
 lib/ramaze/snippets/numeric/filesize_format.rb
 lib/ramaze/snippets/numeric/time.rb
 lib/ramaze/snippets/object/__dir__.rb
-lib/ramaze/snippets/object/acquire.rb
 lib/ramaze/snippets/object/instance_variable_defined.rb
 lib/ramaze/snippets/object/pretty.rb
 lib/ramaze/snippets/object/scope.rb
@@ -313,6 +311,7 @@ lib/ramaze/snippets/string/start_with.rb
 lib/ramaze/snippets/string/unindent.rb
 lib/ramaze/snippets/thread/into.rb
 lib/ramaze/spec.rb
+lib/ramaze/spec/bacon.rb
 lib/ramaze/spec/helper/bacon.rb
 lib/ramaze/spec/helper/pretty_output.rb
 lib/ramaze/spec/helper/snippets.rb
@@ -338,6 +337,7 @@ lib/ramaze/view/tenjin.rb
 lib/vendor/etag.rb
 lib/vendor/route_exceptions.rb
 ramaze.gemspec
+spec/contrib/addressable_route.rb
 spec/contrib/rest.rb
 spec/examples/caching.rb
 spec/examples/css.rb
@@ -365,10 +365,12 @@ spec/ramaze/action/view/single_wrapper.xhtml
 spec/ramaze/action/view/sub/sub_wrapper.erb
 spec/ramaze/action/view/sub/sub_wrapper.xhtml
 spec/ramaze/app.rb
+spec/ramaze/bin/ramaze.rb
 spec/ramaze/cache/localmemcache.rb
 spec/ramaze/cache/memcache.rb
 spec/ramaze/cache/sequel.rb
 spec/ramaze/controller/actionless_templates.rb
+spec/ramaze/controller/lonely_mapping.rb
 spec/ramaze/controller/mapping.rb
 spec/ramaze/controller/provide_inheritance.rb
 spec/ramaze/controller/resolve.rb
@@ -399,6 +401,8 @@ spec/ramaze/helper/formatting.rb
 spec/ramaze/helper/gestalt.rb
 spec/ramaze/helper/gravatar.rb
 spec/ramaze/helper/httpdigest.rb
+spec/ramaze/helper/layout.rb
+spec/ramaze/helper/layout/default.xhtml
 spec/ramaze/helper/link.rb
 spec/ramaze/helper/localize.rb
 spec/ramaze/helper/maruku.rb
@@ -427,6 +431,7 @@ spec/ramaze/public/ramaze.png
 spec/ramaze/public/test_download.css
 spec/ramaze/request.rb
 spec/ramaze/rewrite/file.css
+spec/ramaze/session/memcache.rb
 spec/ramaze/struct.rb
 spec/ramaze/template/ramaze/external.test
 spec/ramaze/view.rb
@@ -479,10 +484,9 @@ tasks/bacon.rake
 tasks/changelog.rake
 tasks/copyright.rake
 tasks/gem.rake
-tasks/gem_installer.rake
+tasks/gem_setup.rake
 tasks/git.rake
 tasks/grancher.rake
-tasks/install_dependencies.rake
 tasks/jquery.rake
 tasks/manifest.rake
 tasks/metric_changes.rake

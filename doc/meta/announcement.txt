@@ -1,5 +1,5 @@
-This time we are proud to announce Version 2008.07 of Ramaze, the light and
-modular open source web framework.
+The Ramaze development team is happy to announce version 2009.06 of Ramaze, the
+light and modular open source web framework that tries to stay out of your way.
 
 This release features a lot of work directly from our community and we are
 really greatful for everybody who helped in testing, patching and contributing
@@ -9,14 +9,17 @@ Our extensive set of specs and docs now covers almost every detail of
 implementation and usage. Ramaze is under development by a growing community
 and in production use at companies.
 
+There have been too many changes since the last official announcement in
+2008.07, so I will only list changes since the last release.
+
+
+== Metadata
 
 Home page:       http://ramaze.net
-Screencasts:     http://ramaze.net/screencasts
+Wiki:            http://wiki.ramaze.net
 
-Source browser:  http://source.ramaze.net
 Repository:      http://github.com/manveru/ramaze
 
-Nightly gems:    http://gems.ramaze.net
 Git clone:       git://github.com/manveru/ramaze
 Current tarball: http://github.com/manveru/ramaze/tarball/master
 
@@ -36,61 +39,105 @@ Simple example:
   Ramaze.start
 
 
-Some of 52 patches since 2008.06:
+== Around 80 commits since 2009.05
 
-  - Loggers are now in Ramaze::Logger namespace
-  - Global.prefix for nested deployment via webserver in front
-  - Binding#locals fixed for Ruby 1.9
-  - Redirects now use HTTP status 302 instead of 303
-  - Logger::Syslog works again
+- Improved bin/ramaze with lots of specs, should work now even on windows.
+- Middleware order has been inverted.
+- Support for Webrat out of the box.
+- Fixed MemCache caching and sessions.
+- Removed a whole lot of methods that were marked deprecated.
+- New default Layout helper
 
-Special (alphabetic) thanks go to:
 
-  Pistos                  - The usual Mathetes, patches and lots of friendly support
-  Aman 'tmm1' Gupta       - Time snippets for numeric
-  Clinton R. Nixon        - More REST and some fixes
-  Jean-Francois Chevrette - Restore --console feature
-  raggi                   - Various fixes
-  Rob Lievaart            - Fix Logger::Syslog
-  Sam Carr                - Cleanup of Cache
-  Wang Jinjing            - 1.9 compatibility
-  Yasushi Abe             - First patch!
+== Summarized changes with their respective commits
+
+- Antti Tuomi 
+  - Link helper did not set the prefix, added spec and fixed the behaviour
+    [ af753a0 | bae2b53 | eba4734 ]
+
+- Michael Fellinger (manveru)
+  - Fix bug that made default port/handler break in bin/ramaze [ e6715e1 ]
+  - Remove deprecated methods on Ramaze::Controller, Helper::Cache,
+    Helper::Link, and Helper::Auth. Also remove the deprecated methods
+    Object#acquire, String#/, and Symbol#/
+    [ 272fced | 1e4ac92 | a0a9329 | 68242b3 | 57e7a85 | 31b809a | 3fc4622 ]
+  - The bacon scope :mock was renamed to :rack_test, added shared :webrat, so
+    you can run your specs with that as well. Also move the bacon-specific code
+    to ramaze/spec/bacon, prepare for test-framework-agnostic behaviour.
+    [ f1a2669 | c12a0a4 | fdde916 ]
+  - Fix ordering of middleware [ 508bffc ]
+  - Warn and fix the ttl if someone exceeds the maximum ttl allowed by MemCache
+    [ 3124879 | bc08091 ]
+  - Comaptibility with localmemcache 0.4.0 [ 096f051 ]
+  - Fixed Cache::Sequel to work with 3.1.0 [ d2c2b85 ]
+  - Fix bug with memcache on 1.9, make sure the Etag middleware works on it
+    [ 21763df | 1d0dff5 ]
+  - A little bit of example-usage for Helper::Form#form_select, improve by
+    allowing :multiple => 10 [ a634582 | de73014 ]
+  - Avoid useless iteration and fix ambigous linking in helper/paginate
+    [ 6fb74df | 9b73450 ]
+  - Respect preset options for port/adapter on ramaze start [ 6efaaaa ]
+  - Preserve file permissions during `ramaze create` [ 3e3bc0a ]
+  - Implement and spec the lonely controller rule [ fdfe5b9 | 4dd866b ]
+  - Fix "bug" pointed out by druby [ 796627a ]
+  - Output to logger in ramaze/setup if Log is available, don't output the
+    require exception twice. Avoid infinite recursion when a
+    gem name does not match it's lib name [ b9fa0c4 | 7bc9d65 | e6b4996 ]
+  - Put a notice into config.ru making clear that the handler cannot be set
+    inside [ b4bad57 ]
+  - Some mods to contrib, fix facebook.rb syntax for ruby 1.9 and adding
+    Ramaze::AddressableRoute for great profit!  [ c7fbf0c | cafe657 ]
+  - Don't write a file to /tmp during the bin/ramaze spec [ eb5e4ef ]
+
+- Pistos 
+  - Explicitly state top-level namespace for ::File in config.ru, since
+    otherwise it is confused for Rack::File.
+    [ 5509950 ]
+  - Added Layout helper with specs and documentation
+    [ a84f675 | 41ad023 | 4f23d16 ]
+
+- TJ Vanderpoel (bougyman)
+  - Added some specs for ramaze/bin, correcting a require bug already in
+    bin/ramaze. [ 8bbb8e8 | 9a3edf3 | 33fa3aa ]
 
 A complete Changelog is available at
 http://github.com/manveru/ramaze/tree/master/doc/CHANGELOG?raw=true
 
 
-Known issues:
+== Known issues
 
-  - none yet, waiting for your reports :)
+- Some problems may show up when running the specs, these are mostly caused
+  by the gem-versions of Rack::Test and Rack, they only affect the specs and
+  should have no influence on the actual runtime.
 
 
-Ramaze Features:
-  - Builds on top of the Rack library, which provides easy use of adapters like
-    Mongrel, WEBrick, LiteSpeed, Thin, CGI or FCGI.
+== Ramaze Features
 
-  - Supports a wide range of templating-engines like: Amrita2, Erubis, Haml,
-    Liquid, Markaby, Remarkably and its own engine called Ezamar and (still
-    unofficial) Nagoro.
+- Builds on top of the Rack library, which provides easy use of adapters like
+  Mongrel, WEBrick, LiteSpeed, Thin, CGI or FCGI.
 
-  - Highly modular structure: you can just use the parts you like. This also
-    means that it's very simple to add your own customizations.
+- Supports a wide range of templating-engines like: ERB, Erubis, Haml, Liquid,
+  Maruku, Redcloth, Remarkably, Sass, Tagz, Tenjin. And its own engines called
+  Etanni, Ezamar, Gestalt, and Nagoro.
 
-  - A variety of helpers is already available, giving you things like advanced
-    caching, OpenID-authentication or aspect-oriented programming for your
-    controllers.
+- Highly modular structure: you can just use the parts you like. This also
+  means that it's very simple to add your own customizations.
 
-  - It is possible to use the ORM you like, be it Sequel, DataMapper,
-    ActiveRecord, Og, Kansas or something more simplistic like DBI, or a
-    wrapper around YAML::Store.
+- A variety of helpers is already available, giving you things like advanced
+  caching, OpenID-authentication or aspect-oriented programming for your
+  controllers.
 
-  - Good documentation: although we don't have 100% documentation right now
-    (dcov says around 75%), just about every part of Ramaze is covered with
-    basic and advanced docs. There are a variety of examples, screencasts and a
-    tutorial available.
+- It is possible to use the ORM you like, be it Sequel, DataMapper,
+  ActiveRecord, Og, Kansas or something more simplistic like DBI, or a wrapper
+  around YAML::Store.
 
-  - Friendly community: there are people from all over the world using Ramaze,
-    so you can get almost instant help and info.
+- Good documentation: although we don't have 100% documentation right now (dcov
+  says around 75%), just about every part of Ramaze is covered with basic and
+  advanced docs. There are a variety of examples, screencasts and a tutorial
+  available.
+
+- Friendly community: there are people from all over the world using Ramaze, so
+  you can get almost instant help and info.
 
 
 For more information please come to http://ramaze.net or ask directly on IRC

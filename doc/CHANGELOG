@@ -1,3 +1,261 @@
+[a7f9a02 | Tue Jun 02 11:45:03 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Use the development-dependencies that rubygems offers
+
+[d2c2b85 | Tue Jun 02 07:27:52 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the Cache::Sequel to work with 3.1.0
+
+[b41b981 | Tue Jun 02 06:09:35 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make sure the Time format is the same as on 1.8
+
+[de73014 | Tue Jun 02 05:56:56 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * form_select :multiple parameter can now be numeric to omit :size
+
+[c7fbf0c | Tue Jun 02 05:43:24 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adding Ramaze::AddressableRoute for great profit!
+
+[fdde916 | Mon Jun 01 05:30:41 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Move the bacon-specific code to ramaze/spec/bacon, prepare for test-framework agnostic behaviour
+
+[3e3bc0a | Mon Jun 01 01:32:43 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Preserve file permissions when copying via ProjectCreator
+
+[a634582 | Sun May 31 12:13:11 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * A little bit of example-usage for Helper::Form#form_select, improve by allowing :multiple => 10
+
+[c12a0a4 | Sun May 31 11:57:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add shared(:webrat) so you can run your specs with that
+
+[f1a2669 | Sun May 31 11:55:46 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Deprecate shared(:mock), use shared(:rack_test) instead
+
+[4f23d16 | Thu May 28 04:04:47 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Documented the Layout helper.
+
+[2529786 | Thu May 28 00:15:19 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Put layout helper into controller singleton only, fix specs, improve style
+
+[d0e381f | Wed May 27 05:20:11 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Added Layout helper.
+
+[569f262 | Wed May 27 05:19:52 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Don't need explicit "helper :layout".
+
+[50b8312 | Wed May 27 05:18:29 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Match against regexps in spec, not strings. last_response.body seems to be an array, so use the first element (the body text).
+
+[41ad023 | Wed May 27 04:38:39 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Added Layout helper specs, with layout file for testing.
+
+[65e3666 | Wed May 27 05:46:19 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Removed old todolist.mkd from my (Pistos) fork.
+
+[6622d94 | Wed May 27 05:45:14 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Removed CHANGELOG file from my (Pistos) fork.
+
+[a84f675 | Wed May 27 05:20:11 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Added Layout helper.
+
+[6d5875c | Wed May 27 05:19:52 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Don't need explicit "helper :layout".
+
+[5a58feb | Wed May 27 05:18:29 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Match against regexps in spec, not strings.  last_response.body seems to be an array, so use the first element (the body text).
+
+[eabc52d | Wed May 27 04:38:39 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Added Layout helper specs, with layout file for testing.
+
+[68242b3 | Wed May 27 17:32:16 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove deprecated method Object#acquire
+
+[3fc4622 | Wed May 27 17:32:01 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove deprecated methods String#/ and Symbol#/
+
+[272fced | Wed May 27 17:31:42 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove deprecated methods on Helper::Cache
+
+[31b809a | Wed May 27 17:31:34 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove deprecated methods on Helper::Auth
+
+[1e4ac92 | Wed May 27 17:31:14 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove deprecated methods on Controller
+
+[a0a9329 | Wed May 27 17:27:26 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove specs for deprecated link methods
+
+[f412fa3 | Wed May 27 17:27:12 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix some YARD
+
+[57e7a85 | Wed May 27 17:27:01 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove deprecated Helper::Link A|R|Rs
+
+[cafe657 | Tue May 26 16:04:13 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix facebook.rb syntax for ruby 1.9
+
+[2bf3434 | Sun May 24 04:32:31 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove cruft from RouteExceptions
+
+[731622d | Thu May 21 08:51:49 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Silence regexp warning
+
+[bae2b53 | Wed May 20 03:00:37 UTC 2009] Antti Tuomi <antti.tuomi@tkk.fi>
+
+  * link helper now should use Ramaze.options.prefix
+
+[af753a0 | Wed May 20 02:43:01 UTC 2009] Antti Tuomi <antti.tuomi@tkk.fi>
+
+  * link helper spec did not set the prefix
+
+[eba4734 | Tue May 19 10:45:14 UTC 2009] Antti Tuomi <antti.tuomi@tkk.fi>
+
+  * spec to check if the link helper works properly with prefix
+
+[30db1aa | Tue May 19 02:41:13 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Minor cleanup
+
+[50c9971 | Tue May 19 02:41:00 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix some yard tags
+
+[086d3e4 | Fri May 15 12:52:06 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove invalid spec, the automatic mapping is completely specified now
+
+[9b73450 | Fri May 15 12:47:23 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix ambigous linking in helper/paginate
+
+[6fb74df | Fri May 15 12:47:06 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Avoid useless iteration in helper/paginate
+
+[fdfe5b9 | Fri May 15 12:46:27 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix a bug in the lonely controller mapping, it should not ignore maps set explicitly
+
+[eb5e4ef | Fri May 15 00:53:23 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Don't write a file to /tmp during the bin/ramaze spec
+
+[5359459 | Thu May 14 18:31:51 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix ramaze/params spec to pass on 1.9
+
+[46c2cfa | Thu May 14 18:31:36 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Amend helper/bench spec to pass on 1.9
+
+[71916e2 | Thu May 14 18:31:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Use normal RouteExceptions interface
+
+[7b6cac5 | Thu May 14 18:30:45 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove useless tabs from bin/ramaze help
+
+[21763df | Thu May 14 18:19:31 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make sure the Etag middleware works on 1.9 as well
+
+[8ee6b94 | Thu May 14 18:18:54 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * generate_mapping shouldn't fail too early
+
+[1d0dff5 | Thu May 14 18:18:19 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix bug with memcache on 1.9... String#[:foo] is evil!
+
+[508bffc | Thu May 14 18:17:43 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix ordering of middleware
+
+[5be67f5 | Thu May 14 16:41:28 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Simplify and make the template specs work on ruby 1.9
+
+[b9fa0c4 | Wed May 13 04:25:54 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Don't output the require exception twice in ramaze/setup
+
+[7bc9d65 | Wed May 13 03:10:10 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * output to logger in ramaze/setup if Log is available
+
+[e6b4996 | Wed May 13 03:09:21 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Avoid infinite recursion in ramaze/setup when a gem name does not match it's lib name
+
+[8bbb8e8 | Mon May 11 14:53:57 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * nope, had one more buglet
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[9a3edf3 | Mon May 11 14:47:12 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * corrected the local_ramaze conditional check
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[33fa3aa | Mon May 11 14:38:17 UTC 2009] TJ Vanderpoel <bougy.man@gmail.com>
+
+  * added some specs for ramaze/bin, correcting a require bug already in bin/ramaze
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[b4bad57 | Mon May 11 10:33:00 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Put a notice into config.ru making clear that the handler cannot be set inside
+
+[46cf89a | Mon May 11 10:31:59 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix last issue in bin/ramaze
+
+[4efbb88 | Sun May 10 23:56:54 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Automate release:github a tiny little bit, and adapt it to pick up doc/AUTHORS
+
+[608a89c | Sun May 10 23:52:19 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the todo task
+
+[9f1a651 | Sun May 10 23:44:03 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Move CHANGELOG into doc/ again, punish the responsible rake task
+
 [e6715e1 | Sun May 10 23:37:47 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Fix bug that made default port/handler break in bin/ramaze
@@ -49,6 +307,18 @@
 [47b5704 | Fri May 08 03:42:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Reflect removal of constant spec
+
+[71873f1 | Thu May 07 14:36:59 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * rake gemspec
+
+[dc3fbad | Thu May 07 14:30:49 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Explicitly state top-level namespace for ::File in config.ru, since otherwise it is confused for Rack::File.
+
+[ddff30a | Thu May 07 14:24:47 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Added a .gitignore for some basic byproduct files and dirs.
 
 [6780a7b | Wed May 06 15:56:16 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
@@ -1530,6 +1800,18 @@
 
   * Fix the 100% cpu problem... seems like hash iteration went wrong
 
+[8191be7 | Fri Feb 13 13:24:58 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Added more to the post-install message.
+
+[13f56f5 | Fri Feb 13 13:13:49 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Bumped version to 2009.02.
+
+[f73a2b3 | Fri Feb 13 13:13:19 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Freshened URLs throughout documentation and examples.
+
 [244b7a6 | Fri Feb 13 06:40:48 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Fix strange behaviour when using Fiber
@@ -1780,6 +2062,10 @@
 
     Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
 
+[73419a5 | Thu Jan 29 10:18:07 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Updated copyright years in README and version.rb.
+
 [6e23112 | Thu Jan 29 15:27:44 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * run specs with total summary
@@ -1994,6 +2280,10 @@
 
     Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
 
+[674943e | Mon Jan 12 01:59:58 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Updated Ramaze::VERSION to 2009.01.
+
 [0dd410a | Sat Jan 10 08:00:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Use Innate::Route
@@ -2071,6 +2361,20 @@
     10 times per 10000 requests.
     
     Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[e3df9f7 | Tue Jan 06 06:15:46 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Changed @routed (in Ramaze::Controller << self ) to be Thread.current[ :routed ]
+
+    concurrent hits, the @routed variable would get shared among threads, leading
+    to values that did not reflect reality.  This caused routing to fail about 1 to
+    10 times per 10000 requests.
+
+[a298997 | Tue Jan 06 05:59:34 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * More robust "create table" block for blog example and wikore example.
+
+
 
 [f931e37 | Tue Jan 06 18:08:20 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
@@ -2167,6 +2471,12 @@
 [121f7be | Thu Jan 01 03:51:47 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Use path_info instead of request_path
+
+[46abb06 | Tue Dec 30 11:39:07 UTC 2008] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Adjusted post_install_message not to mention ramaze --create,
+
+    Added rubyforge_project.
 
 [e633436 | Sat Dec 27 10:56:07 UTC 2008] Michael Fellinger <m.fellinger@gmail.com>
 
@@ -2325,6 +2635,46 @@
   * Change to File.join because String#/ is deprecated
 
     Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[815975d | Wed Dec 03 14:52:52 UTC 2008] Andreas Karlsson <andreas@proxel.se>
+
+  * Fix for random overwrite of referrer in MockHTTP.
+
+    This bug caused :referrer to be randomly over written by nil from not set
+    :referer, or the other way round depending on order the hash was iterated
+    over. As a side effect we also get rid of various HTTP_* set to null when
+    missing from the query hash.
+    
+    Also fix incorrect indentation in the make_query function; tabs converted
+    to spaces.
+
+[7e4fbba | Mon Dec 01 15:41:14 UTC 2008] Michael Fellinger <m.fellinger@gmail.com>
+
+  * proper gravatar escaping
+
+[8910f17 | Sat Nov 29 08:41:11 UTC 2008] Michael Fellinger <m.fellinger@gmail.com>
+
+  * docs and improvments for redirect_referrer
+
+[2455cd2 | Sat Nov 29 08:40:54 UTC 2008] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Docs for to_ivs
+
+[e20ba11 | Sat Nov 29 06:18:08 UTC 2008] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove another usage of String#/
+
+[09e51c6 | Fri Nov 28 15:45:49 UTC 2008] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove blog.db
+
+[1d1e226 | Mon Jun 16 15:14:45 UTC 2008] Riku Raisaenen <riku@helloit.fi>
+
+  * Added documentation as well as I could, rdoc coverage up from 78 to 80 or so.
+
+[6ab9064 | Thu Nov 27 12:17:02 UTC 2008] Michael Fellinger <m.fellinger@gmail.com>
+
+  * more specific errors for Helper
 
 [4909f01 | Tue Nov 25 06:41:56 UTC 2008] Clive Crous <clive@crous.co.za>
 
