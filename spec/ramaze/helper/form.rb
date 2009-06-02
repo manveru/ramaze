@@ -42,7 +42,7 @@ class SpecHelperForm < Ramaze::Controller
 
   def select_array_multiple
     languages = %w[ English German Japanese ]
-    form_select('Languages', :languages, languages, :multiple => true)
+    form_select('Languages', :languages, languages, :multiple => 1)
   end
 
   def select_array_selected

@@ -49,10 +49,11 @@ module Ramaze
       def form_select(label, name, values, hash = {})
         name = name.to_sym
         id = "form-#{name}"
+        multiple, size = hash.values_at(:multiple, :size)
 
         s_args = {:name => name, :id => id}.merge(form_tabindex)
-        s_args[:multiple] = hash[:multiple] if hash[:multiple]
-        s_args[:size] = hash[:size] || hash[:multiple].to_i
+        s_args[:multiple] = :multiple if multiple
+        s_args[:size] = (size || multiple || 1).to_i
 
         has_selected, selected = hash.key?(:selected), hash[:selected]
         error = form_errors[name.to_s]
