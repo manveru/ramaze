@@ -7,6 +7,8 @@ task :changelog do
       ref    = ref[/commit ([0-9a-f]+)/, 1]
       author = author[/Author: (.*)/, 1].strip
       time   = Time.parse(time[/Date: (.*)/, 1]).utc
+      time   = time.strftime('%a %b %d %H:%M:%S %Z %Y')
+
       title.strip!
 
       changelog.puts "[#{ref} | #{time}] #{author}"
