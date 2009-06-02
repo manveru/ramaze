@@ -16,19 +16,22 @@ module Ramaze
 
       class Table < ::Sequel::Model(:ramaze_cache)
         plugin :schema
-        plugin :serialization, :marshal, :value
+        plugin :serialization
+
+        serialize_attributes :marshal, :value
 
         set_schema do
           primary_key :id
-          string :key
-          string :value
-          time :expires
           index :key, :unique => true
+
+          String :key
+          String :value
+          Time :expires
         end
 
         def [](column)
           if column == :value
-            deserialized_values[column] = deserialize_value(@values[column])
+            deserialized_values[column] = deserialize_value(column, @values[column])
           else
             super
           end
@@ -38,7 +41,7 @@ module Ramaze
       # Setup the table, not suitable for multiple apps yet.
       def cache_setup(host, user, app, name)
         @namespace = [host, user, app, name].compact.join(':')
-        Table.create_table unless Table.table_exists?
+        Table.create_table?
         @store = Table
       end
 
