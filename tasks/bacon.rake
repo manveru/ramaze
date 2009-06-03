@@ -1,5 +1,5 @@
 desc 'Run all bacon specs with pretty output'
-task :bacon => :install_dependencies do
+task :bacon => :setup do
   require 'open3'
   require 'scanf'
   require 'matrix'
