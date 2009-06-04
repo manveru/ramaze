@@ -1,3 +1,15 @@
+[b67f27d | Thu Jun 04 11:56:01 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix Controller for 1.8.6
+
+[38430a9 | Wed Jun 03 11:20:14 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the bacon task dependency
+
+[3d44f3b | Tue Jun 02 11:50:50 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.06
+
 [a7f9a02 | Tue Jun 02 11:45:03 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Use the development-dependencies that rubygems offers
