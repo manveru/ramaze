@@ -35,7 +35,7 @@ module Ramaze
       end
 
       def cache_delete(*args)
-        super{|key| @store.delete(key.to_s) }
+        super{|key| @store.delete(key.to_s); nil }
       end
 
       # NOTE:
