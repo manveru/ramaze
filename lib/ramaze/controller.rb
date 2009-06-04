@@ -29,7 +29,7 @@ module Ramaze
       when 0
         require 'ramaze/controller/default'
       when 1
-        controller = CONTROLLER_LIST.first
+        controller = CONTROLLER_LIST.to_a.first
 
         begin
           controller.mapping
