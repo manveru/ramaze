@@ -43,7 +43,7 @@ You can now do create a new project:
       s.add_development_dependency(%q<memcache-client>, ["~> 1.7.2"])
       s.add_development_dependency(%q<nagoro>, [">= 2009.05"])
       s.add_development_dependency(%q<rack-test>, [">= 0.3.0"])
-      s.add_development_dependency(%q<sequel>, ["= 3.1.0"])
+      s.add_development_dependency(%q<sequel>, ["= 3.0.0"])
       s.add_development_dependency(%q<tagz>, [">= 5.0.1"])
       s.add_development_dependency(%q<tenjin>, ["~> 0.6.1"])
     else
@@ -60,7 +60,7 @@ You can now do create a new project:
       s.add_dependency(%q<memcache-client>, ["~> 1.7.2"])
       s.add_dependency(%q<nagoro>, [">= 2009.05"])
       s.add_dependency(%q<rack-test>, [">= 0.3.0"])
-      s.add_dependency(%q<sequel>, ["= 3.1.0"])
+      s.add_dependency(%q<sequel>, ["= 3.0.0"])
       s.add_dependency(%q<tagz>, [">= 5.0.1"])
       s.add_dependency(%q<tenjin>, ["~> 0.6.1"])
     end
@@ -78,7 +78,7 @@ You can now do create a new project:
     s.add_dependency(%q<memcache-client>, ["~> 1.7.2"])
     s.add_dependency(%q<nagoro>, [">= 2009.05"])
     s.add_dependency(%q<rack-test>, [">= 0.3.0"])
-    s.add_dependency(%q<sequel>, ["= 3.1.0"])
+    s.add_dependency(%q<sequel>, ["= 3.0.0"])
     s.add_dependency(%q<tagz>, [">= 5.0.1"])
     s.add_dependency(%q<tenjin>, ["~> 0.6.1"])
   end
