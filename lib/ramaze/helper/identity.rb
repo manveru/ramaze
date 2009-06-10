@@ -26,7 +26,7 @@ module Ramaze
       # embedded into a page.
       def openid_login_form(caption="login")
         %{
-<form method="GET" action="#{Rs(:openid_begin)}">
+<form method="GET" action="#{rs(:openid_begin)}">
   Identity URL: <input type="text" name="url" />
   <input type="submit" value="#{caption}"/>
 </form>
@@ -62,7 +62,7 @@ module Ramaze
         openid_request.return_to_args['did_pape'] = 'y'
 
         root      = "http://#{request.http_host}/"
-        return_to = request.domain(Rs(:openid_complete)).to_s
+        return_to = request.domain(rs(:openid_complete)).to_s
         immediate = false
 
         if openid_request.send_redirect?(root, return_to, immediate)
@@ -75,7 +75,7 @@ module Ramaze
 
       rescue OpenID::OpenIDError => ex
         flash[:error] = "Discovery failed for #{url}: #{ex}"
-        raw_redirect Rs(:/)
+        raw_redirect rs(:/)
       end
 
       # After having authenticated at the OpenID server browsers are redirected
