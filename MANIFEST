@@ -84,6 +84,9 @@ examples/app/chat/public/js/jquery.js
 examples/app/chat/start.rb
 examples/app/chat/view/chat.xhtml
 examples/app/chat/view/index.xhtml
+examples/app/localization/locale/de.yaml
+examples/app/localization/locale/en.yaml
+examples/app/localization/locale/ja.yaml
 examples/app/localization/start.rb
 examples/app/sourceview/public/coderay.css
 examples/app/sourceview/public/images/file.gif

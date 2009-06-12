@@ -1,3 +1,21 @@
+[d933aa5 | Tue Jun 09 17:28:14 UTC 2009] Aaron Mueller <mail@aaron-mueller.de>
+
+  * Update the identity helper with the new link helper.
+
+[dbf25ed | Mon Jun 08 12:29:08 UTC 2009] Masahiro Nakagawa <repeatedly@gmail.com>
+
+  * Rewrite localization example
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[e2c9414 | Mon Jun 08 00:12:04 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make sure that the config.ru knows the correct location
+
+[5e92d92 | Thu Jun 04 14:41:23 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the Sequel dependency, 3.1.0 isn't out yet
+
 [ea236c8 | Thu Jun 04 12:48:23 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Fix bug with localmemcache on 1.9
