@@ -6,10 +6,9 @@
 require 'rubygems'
 require 'ramaze'
 
-# Add the directory this file resides in to the load path, so you can run the
-# app from any other working directory
-$LOAD_PATH.unshift(__DIR__)
+# Make sure that Ramaze knows where you are
+Ramaze.options.roots = [__DIR__]
 
 # Initialize controllers and models
-require 'model/init'
-require 'controller/init'
+require __DIR__('model/init')
+require __DIR__('controller/init')

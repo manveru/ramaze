@@ -1,11 +1,10 @@
 require 'ramaze'
-require 'ramaze/spec'
+require 'ramaze/spec/bacon'
 
-require __DIR__('../start')
-Ramaze.options.roots = __DIR__('../')
+require __DIR__('../app')
 
 describe MainController do
-  behaves_like :mock
+  behaves_like :rack_test
 
   should 'show start page' do
     get('/').status.should == 200
