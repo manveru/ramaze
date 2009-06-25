@@ -16,7 +16,7 @@ module Ramaze
         into.extend(SingletonMethods)
         into.add_action_wrapper(6.0, :cache_wrap)
         into.trait[:cache_action] ||= Set.new
-        Ramaze::Cache.add(:action, :action_value)
+        Ramaze::Cache.add(:action, :cache_helper_value)
       end
 
       # @param [Action] action The currently wrapped action
@@ -58,11 +58,38 @@ module Ramaze
         yield
       end
 
-      # @return [Object] The cache wrapper assigned for :action_value
+      # This method is used to access Ramaze::Cache.cache_helper_value.
+      # It provides an easy way to cache long-running computations, gathering
+      # external resources like RSS feeds or DB queries that are the same for
+      # every user of an application.
+      # This method changes behaviour if a block is passed, which can be used
+      # to do lazy computation of the cached value conveniently when using a
+      # custom TTL or longer expressions that don't fit on one line with ||=.
+      #
+      # @usage Example to get the cache object directly
+      #
+      #   count = cache_value[:count] ||= Article.count
+      #
+      # @usage Example with block
+      #
+      #   count = cache_value(:count){ Article.count }
+      #   count = cache_value(:count, :ttl => 60){ Article.count }
+      #
+      # @return [Object] The cache wrapper assigned for :cache_helper_value
       # @see Innate::Cache
       # @author manveru
-      def cache_value
-        Ramaze::Cache.action_value
+      def cache_value(key = nil, options = {})
+        cache = Ramaze::Cache.cache_helper_value
+
+        if key and block_given?
+          if found = cache[key]
+            found
+          else
+            cache.store(key, yield, options)
+          end
+        else
+          cache
+        end
       end
 
       module SingletonMethods
