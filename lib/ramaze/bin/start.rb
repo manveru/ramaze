@@ -110,6 +110,7 @@ USAGE
         rackup = rackup_path.to_s
 
         if is_windows?
+          puts ['ruby', rackup, "config.ru", *rack_args].join(' ')
           system('ruby', rackup, 'config.ru', *rack_args)
         else
           puts [rackup, "config.ru", *rack_args].join(' ')
