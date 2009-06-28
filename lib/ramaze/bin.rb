@@ -166,7 +166,7 @@ module Ramaze
       # check for rackup in RUBYLIB
       def rackup_path_from_rubylib
         env_path_separator = is_windows? ? ';' : ':'
-        path_separator = File::ALT_SEPARATOR || File::SEPARATOR
+        path_separator = Regexp.escape(File::ALT_SEPARATOR || File::SEPARATOR)
         needle = /#{path_separator}rack#{path_separator}/
 
           paths = ENV["RUBYLIB"].to_s.split(env_path_separator)
