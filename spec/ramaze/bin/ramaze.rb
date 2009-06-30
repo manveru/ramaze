@@ -1,8 +1,13 @@
-require "spec/helper"
+#          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
+# All files in this distribution are subject to the terms of the Ruby license.
+
+require File.expand_path('../../../../spec/helper', __FILE__)
 require "ramaze/tool/bin"
+
 require "pathname"
+
 module Ramaze
-  BINPATH = Pathname.new(Ramaze::ROOT).join("..", "bin", "ramaze").expand_path
+  BINPATH = Pathname(Ramaze::ROOT).join("../bin/ramaze").expand_path
 end
 
 USAGE = <<TXT
