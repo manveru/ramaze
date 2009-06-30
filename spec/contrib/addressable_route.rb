@@ -1,4 +1,4 @@
-require 'spec/helper'
+require File.expand_path('../../../spec/helper', __FILE__)
 require 'ramaze/contrib/addressable_route'
 
 class SpecAddressableRoute < Ramaze::Controller

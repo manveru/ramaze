@@ -1,14 +1,14 @@
 #          Copyright (c) 2008 rob@rebeltechnologies.nl
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'spec/helper'
+require File.expand_path('../../../../spec/helper', __FILE__)
 
 require 'ramaze/log/syslog'
 
 describe 'Syslog' do
 
 	# close the syslog, if it was open for some reason before we
-	# start a test. 
+	# start a test.
 	before do
 		if ( Syslog.opened? )
 			::Syslog.close
@@ -24,8 +24,8 @@ describe 'Syslog' do
 	end
 
 	it 'should handle non default initialization' do
-		syslog = Ramaze::Logger::Syslog.new( 'ramaze_syslog_test', 
-		                                               ::Syslog::LOG_NDELAY | ::Syslog::LOG_NOWAIT, 
+		syslog = Ramaze::Logger::Syslog.new( 'ramaze_syslog_test',
+		                                               ::Syslog::LOG_NDELAY | ::Syslog::LOG_NOWAIT,
 		                                               ::Syslog::LOG_DAEMON )
 		::Syslog.opened?.should == true
 		::Syslog.ident.should   == 'ramaze_syslog_test'
@@ -43,7 +43,7 @@ describe 'Syslog' do
 		child = fork {
 			logpipe[0].close
 			STDERR.reopen(logpipe[1])
-			syslog = Ramaze::Logger::Syslog.new( 'ramaze_syslog_test', 
+			syslog = Ramaze::Logger::Syslog.new( 'ramaze_syslog_test',
 			                                              ::Syslog::LOG_PID | ::Syslog::LOG_NDELAY | ::Syslog::LOG_PERROR,
 														  ::Syslog::LOG_USER )
 			syslog.send priority, msg
@@ -54,7 +54,7 @@ describe 'Syslog' do
 
 		logpipe[0].gets.should == "ramaze_syslog_test[#{child}]: #{msg}\n"
 	end
-	
+
 	it 'should handle debug' do
 		test_log_msg :direct, :debug, "Hello Debug World"
 	end

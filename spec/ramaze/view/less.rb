@@ -1,11 +1,7 @@
-
-### And the CSS output it produces:
-
-
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'spec/helper'
+require File.expand_path('../../../../spec/helper', __FILE__)
 spec_require 'less'
 
 Ramaze::App.options.views = 'less'

@@ -13,7 +13,7 @@ shared :rack_test do
   Ramaze.setup_dependencies
   extend Rack::Test::Methods
 
-  def app; Ramaze::AppMap; end
+  def app; Ramaze; end
 end
 
 shared :webrat do

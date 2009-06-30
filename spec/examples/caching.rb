@@ -1,5 +1,5 @@
-require 'spec/helper'
-require 'examples/helpers/cache'
+require File.expand_path('../../../spec/helper', __FILE__)
+require File.expand_path('../../../examples/helpers/cache', __FILE__)
 
 describe 'Caching' do
   behaves_like :rack_test
