@@ -10,15 +10,10 @@ module Ramaze::SourceReloadHooks
 end
 
 class CSSController < Ramaze::Controller
-  engine :Sass
+  helper :cache
+  provide :css, :type => 'text/css', :engine => :Sass
 
-  helper :aspect
-  before_all do
-    response['Content-Type'] = 'text/css'
-    nil
-  end
-
-  define_method('style.css') do
+  def style
     %(
 body
   font:
@@ -29,9 +24,8 @@ body
     )
   end
 
-  helper :cache
-  cache 'style.css'
+  cache_action :method => 'style'
 end
 
-# http://localhost:81/css/style.css
-Ramaze.start :adapter => :mongrel, :port => 81
+# http://localhost:7000/css/style.css
+Ramaze.start :adapter => :mongrel, :port => 7000
