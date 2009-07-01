@@ -93,11 +93,19 @@ module Ramaze
       end
 
       module SingletonMethods
-        def cache(name, hash = {})
-          Ramaze.deprecated('Helper::Cache::cache', 'Helper::Cache::cache_action')
-          cache_action(hash.merge(:method => name))
-        end
-
+        # This method allows you to cache whole actions.
+        #
+        # @example Basic usage
+        #
+        #   class Foo < Ramaze::Controller
+        #     helper :cache
+        #     cache_action :method => :bar
+        #
+        #     def bar
+        #       rand
+        #     end
+        #   end
+        #
         def cache_action(hash, &block)
           hash[:key] = block if block_given?
           hash[:method] = hash[:method].to_s
