@@ -37,6 +37,7 @@ DEVELOPMENT_DEPENDENCIES = {
   'memcache-client'  => {:version => '~> 1.7.2', :lib => 'memcache'},
   'nagoro'           => {:version => '>= 2009.05'},
   'rack-test'        => {:version => '>= 0.3.0', :lib => 'rack/test'},
+  'rack-contrib'     => {:version => '>= 0.9.2', :lib => 'rack/contrib'},
   'sequel'           => {:version => '=  3.1.0'},
   'tagz'             => {:version => '>= 5.0.1'},
   'tenjin'           => {:version => '~> 0.6.1'},

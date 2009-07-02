@@ -58,16 +58,16 @@ task :gem_setup do
     rescue Gem::LoadError
       log "activating #{name} failed, try to install"
 
-      install_gem(name, options)
+      install_gem(name, version, options)
     end
 
     # tell rubygems to install a gem
-    def install_gem(name, options)
+    def install_gem(name, version, options)
       installer = Gem::DependencyInstaller.new(options)
 
       temp_argv(options[:extconf]) do
         log "installing #{name}"
-        installer.install(name, options[:version])
+        installer.install(name, *version)
       end
 
       Gem.activate(name, *version)
