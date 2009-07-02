@@ -16,7 +16,7 @@ task :bacon => :setup do
   left_format = "%4d/%d: %-#{len + 11}s"
   spec_format = "%d specifications (%d requirements), %d failures, %d errors"
 
-  load_path = File.expand_path('../../', __FILE__)
+  load_path = File.expand_path('../../lib', __FILE__)
 
   specs.each_with_index do |spec, idx|
     print(left_format % [idx + 1, specs_size, spec])
