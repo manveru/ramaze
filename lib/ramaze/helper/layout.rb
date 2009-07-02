@@ -55,7 +55,7 @@ module Ramaze
         #   set_layout 'default' => [ :index, :admin ]
         def set_layout(hash_or_the_layout)
           if hash_or_the_layout.respond_to?(:to_hash)
-            f = hash_or_the_layout.first
+            f = hash_or_the_layout.to_hash.find{|k,v| k && v }
             the_layout = f[0]
             whitelist = f[1].map{|action| action.to_s }
           else
@@ -78,7 +78,7 @@ module Ramaze
         #   set_layout_except 'default' => [ :user_data ]
         def set_layout_except(hash_or_the_layout)
           if hash_or_the_layout.respond_to?(:to_hash)
-            f = hash_or_the_layout.to_hash.first
+            f = hash_or_the_layout.to_hash.find{|k,v| k && v }
             the_layout = f[0]
             blacklist = f[1].map{|action| action.to_s }
           else
