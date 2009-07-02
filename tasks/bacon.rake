@@ -28,6 +28,10 @@ task :bacon => :setup do
       # this is conventional
       if out =~ /^Bacon::Error: (needed .*)/
         puts(yellow % ("%6s %s" % ['', $1]))
+      elsif out =~ /^Spec (precondition: "[^"]*" failed)/
+        puts(yellow % ("%6s %s" % ['', $1]))
+      elsif out =~ /^Spec require: "require" failed: "(no such file to load -- [^"]*)"/
+        puts(yellow % ("%6s %s" % ['', $1]))
       else
         total = nil
 
