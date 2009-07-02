@@ -8,13 +8,11 @@ require File.expand_path('../../../../spec/helper', __FILE__)
 
 spec_require 'rack/contrib'
 
-module Ramaze
-  # minimal middleware, no exception handling
-  middleware!(:spec){|m|
-    m.apps Rack::ConditionalGet, Rack::ETag
-    m.innate
-  }
-end
+# minimal middleware, no exception handling
+Ramaze.middleware!(:spec){|m|
+  m.apps Rack::ConditionalGet, Rack::ETag
+  m.run Ramaze::AppMap
+}
 
 describe 'Serving static files' do
   behaves_like :rack_test

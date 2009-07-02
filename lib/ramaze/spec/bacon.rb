@@ -9,11 +9,16 @@ require File.expand_path('../', __FILE__) unless defined?(Ramaze)
 
 require 'innate/spec/bacon'
 
+# minimal middleware, no exception handling
+Ramaze.middleware!(:spec){|m|
+  m.run(Ramaze::AppMap)
+}
+
 shared :rack_test do
   Ramaze.setup_dependencies
   extend Rack::Test::Methods
 
-  def app; Ramaze; end
+  def app; Ramaze.middleware; end
 end
 
 shared :webrat do
