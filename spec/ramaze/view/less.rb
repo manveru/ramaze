@@ -27,12 +27,17 @@ end
 describe Ramaze::View::Less do
   behaves_like :rack_test
 
+  def cmp(actually, expected)
+    actually.strip.split("\n").sort.
+      should == expected.strip.split("\n").sort
+  end
+
   should 'render inline' do
     got = get('/style.css')
     got.status.should == 200
     got['Content-Type'].should == 'text/css'
 
-    got.body.should == <<-CSS.strip
+    cmp(got.body, <<-CSS)
 .outline { border: 1px solid black; }
 .article a { text-decoration: none; }
 .article p { color: #110011; }
@@ -44,7 +49,8 @@ describe Ramaze::View::Less do
     got = get('/file.css')
     got.status.should == 200
     got['Content-Type'].should == 'text/css'
-    got.body.should == <<-CSS.strip
+
+    cmp(got.body, <<-CSS)
 .outline { border: 1px solid black; }
 .article a { text-decoration: none; }
 .article p { color: #110011; }
