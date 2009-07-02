@@ -107,7 +107,7 @@ describe Ramaze::Helper::Cache do
       lambda{ get('/ttl').body }.should.not.change{ get('/ttl').body }
     end
 
-    lambda{ sleep 1; get('/ttl').body }.should.change{ get('/ttl').body }
+    lambda{ sleep 1.5; get('/ttl').body }.should.change{ get('/ttl').body }
   end
 
   it 'caches actions with block keys' do
