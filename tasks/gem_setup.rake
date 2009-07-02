@@ -44,8 +44,10 @@ task :gem_setup do
       setup
     end
 
-    # first try to activate, install and try to activate again if activation
-    # fails the first time
+    # First try to activate.
+    # If activation fails, try to install and activate again.
+    # If the second activation also fails, try to require as it may just as
+    # well be in $LOAD_PATH.
     def setup_gem(name, options)
       version = [options[:version]].compact
       lib_name = options[:lib] || name
@@ -53,9 +55,10 @@ task :gem_setup do
       log "activating #{name}"
 
       Gem.activate(name, *version)
-    rescue LoadError
+    rescue Gem::LoadError
+      log "activating #{name} failed, try to install"
+
       install_gem(name, options)
-      Gem.activate(name, *version)
     end
 
     # tell rubygems to install a gem
@@ -63,9 +66,19 @@ task :gem_setup do
       installer = Gem::DependencyInstaller.new(options)
 
       temp_argv(options[:extconf]) do
-        log "Installing #{name}"
+        log "installing #{name}"
         installer.install(name, options[:version])
       end
+
+      Gem.activate(name, *version)
+
+      log "install and final activation successful"
+    rescue Gem::GemNotFoundException => ex
+      log "installation failed: #{ex}, use normal require"
+
+      require(options[:lib] || name)
+
+      log "require successful, cannot verify version though"
     end
 
     # prepare ARGV for rubygems installer

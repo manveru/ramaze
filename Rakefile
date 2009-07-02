@@ -20,8 +20,27 @@ PROJECT_COPYRIGHT   = [
   "# All files in this distribution are subject to the terms of the Ruby license."
 ]
 
-# To release the monthly version do:
-# $ VERSION=2009.03 rake release
+DEPENDENCIES = {
+  'innate' => {:version => '= 2009.07'},
+}
+
+DEVELOPMENT_DEPENDENCIES = {
+  'Remarkably'       => {:version => '~> 0.5.2', :lib => 'remarkably'},
+  'bacon'            => {:version => '>= 1.1.0'},
+  'erubis'           => {:version => '>= 2.6.4'},
+  'ezamar'           => {:version => '>= 2009.06'},
+  'haml'             => {:version => '~> 2.0.9'},
+  'hpricot'          => {:version => '>= 0.8.1'},
+  'json'             => {:version => '>= 1.1.6'},
+  'liquid'           => {:version => '~> 2.0.0'},
+  'localmemcache'    => {:version => '~> 0.4.0'},
+  'memcache-client'  => {:version => '~> 1.7.2', :lib => 'memcache'},
+  'nagoro'           => {:version => '>= 2009.05'},
+  'rack-test'        => {:version => '>= 0.3.0', :lib => 'rack/test'},
+  'sequel'           => {:version => '=  3.1.0'},
+  'tagz'             => {:version => '>= 5.0.1'},
+  'tenjin'           => {:version => '~> 0.6.1'},
+}
 
 GEMSPEC = Gem::Specification.new{|s|
   s.name         = 'ramaze'
@@ -40,25 +59,6 @@ GEMSPEC = Gem::Specification.new{|s|
   s.rubyforge_project = "ramaze"
   s.required_rubygems_version = '>= 1.3.1'
 
-  s.add_dependency('innate', '= 2009.06.12')
-
-  # rip those out if they cause you trouble
-  s.add_development_dependency('Remarkably',      '~> 0.5.2')
-  s.add_development_dependency('bacon',           '>= 1.1.0')
-  s.add_development_dependency('erubis',          '>= 2.6.4')
-  s.add_development_dependency('ezamar',          '>= 2009.06')
-  s.add_development_dependency('haml',            '~> 2.0.9')
-  s.add_development_dependency('hpricot',         '>= 0.8.1')
-  s.add_development_dependency('json',            '>= 1.1.6')
-  s.add_development_dependency('liquid',          '~> 2.0.0')
-  s.add_development_dependency('localmemcache',   '~> 0.4.0')
-  s.add_development_dependency('memcache-client', '~> 1.7.2')
-  s.add_development_dependency('nagoro',          '>= 2009.05')
-  s.add_development_dependency('rack-test',       '>= 0.3.0')
-  s.add_development_dependency('sequel',          '=  3.1.0')
-  s.add_development_dependency('tagz',            '>= 5.0.1')
-  s.add_development_dependency('tenjin',          '~> 0.6.1')
-
   s.post_install_message = <<MESSAGE.strip
 ============================================================
 
@@ -69,6 +69,14 @@ You can now do create a new project:
 ============================================================
 MESSAGE
 }
+
+DEPENDENCIES.each do |name, options|
+  GEMSPEC.add_dependency(name, options[:version])
+end
+
+DEVELOPMENT_DEPENDENCIES.each do |name, options|
+  GEMSPEC.add_development_dependency(name, options[:version])
+end
 
 Dir['tasks/*.rake'].each{|f| import(f) }
 
