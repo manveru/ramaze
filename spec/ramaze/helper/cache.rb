@@ -1,7 +1,7 @@
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'spec/helper'
+require File.expand_path('../../../../spec/helper', __FILE__)
 
 class SpecHelperCache < Ramaze::Controller
   map '/'
@@ -107,7 +107,7 @@ describe Ramaze::Helper::Cache do
       lambda{ get('/ttl').body }.should.not.change{ get('/ttl').body }
     end
 
-    lambda{ sleep 1; get('/ttl').body }.should.change{ get('/ttl').body }
+    lambda{ sleep 1.5; get('/ttl').body }.should.change{ get('/ttl').body }
   end
 
   it 'caches actions with block keys' do

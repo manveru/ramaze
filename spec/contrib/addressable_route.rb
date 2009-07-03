@@ -1,4 +1,4 @@
-require 'spec/helper'
+require File.expand_path('../../../spec/helper', __FILE__)
 require 'ramaze/contrib/addressable_route'
 
 class SpecAddressableRoute < Ramaze::Controller
@@ -12,11 +12,9 @@ end
 describe 'addressable routing' do
   behaves_like :rack_test
 
-  RAR = Ramaze::AddressableRoute
-  RAR.map('/customer/{customer_id}/order/{order_id}', '/order/show')
-
   Ramaze.middleware! :spec do |m|
-    m.use RAR
+    m.use(Ramaze::AddressableRoute,
+          '/customer/{customer_id}/order/{order_id}' => '/order/show')
     m.run Ramaze::AppMap
   end
 

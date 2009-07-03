@@ -66,7 +66,6 @@ module Ramaze
     m.use Rack::ShowExceptions
     m.use Rack::ShowStatus
     m.use Rack::RouteExceptions
-    m.use Rack::ContentLength
     m.use Rack::ConditionalGet
     m.use Rack::ETag
     m.use Rack::Head
@@ -78,7 +77,6 @@ module Ramaze
     m.use Rack::CommonLogger, Ramaze::Log
     m.use Rack::RouteExceptions
     m.use Rack::ShowStatus
-    m.use Rack::ContentLength
     m.use Rack::ConditionalGet
     m.use Rack::ETag
     m.use Rack::Head

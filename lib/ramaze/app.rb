@@ -70,10 +70,10 @@ module Ramaze
 
     attr_reader :name, :location, :url_map, :options
 
-    def initialize(name, location)
+    def initialize(name, location = nil)
       @name = name.to_sym
       @url_map = Innate::URLMap.new
-      self.location = location
+      self.location = location if location
 
       APP_LIST[@name] = self
 
@@ -113,7 +113,8 @@ module Ramaze
       roots.map{|root| publics.map{|public| ::File.join(root, public) }}.flatten
     end
 
-    def self.find_or_create(name, location = '/')
+    def self.find_or_create(name, location = nil)
+      location = '/' if location.nil? && name == :pristine
       self[name] || new(name, location)
     end
 

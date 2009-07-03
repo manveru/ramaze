@@ -1,18 +1,18 @@
 #          Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-require 'spec/helper'
+require File.expand_path('../../../../spec/helper', __FILE__)
 
 # This spec more or less tries to ensure that we integrate with rack and
 # rack-contrib in regards to static file serving.
 
-module Ramaze
-  # minimal middleware, no exception handling
-  middleware!(:spec){|m|
-    m.apps Rack::ConditionalGet, Rack::ETag
-    m.innate
-  }
-end
+spec_require 'rack/contrib'
+
+# minimal middleware, no exception handling
+Ramaze.middleware!(:spec){|m|
+  m.apps Rack::ConditionalGet, Rack::ETag
+  m.run Ramaze::AppMap
+}
 
 describe 'Serving static files' do
   behaves_like :rack_test

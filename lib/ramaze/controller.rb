@@ -51,9 +51,7 @@ module Ramaze
         trait(:provide_set => false)
       end
 
-      return if trait[:skip_controller_map]
-
-      map(generate_mapping(name))
+      map(generate_mapping(name)) unless trait[:skip_controller_map]
     end
 
     def self.engine(name)

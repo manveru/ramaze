@@ -18,30 +18,31 @@ module Ramaze
   # @example output of request.params at '/order/show'
   #
   #     {'customer_id => '12', 'order_id' => '15'}
-  #     
+  #
   # I haven't explored the full capabilities of the templates yet, but the
   # specs of Addressable::Template suggest that there is a lot to be
   # discovered.
   class AddressableRoute
-    ROUTES = {}
-
-    def self.map(from, to)
-      ROUTES[Addressable::Template.new(from)] = to
-    end
-
-    def initialize(app)
+    def initialize(app, routes = {})
       @app = app
+      @routes = {}
+
+      routes.each{|from, to| map(from, to) }
     end
 
     def call(env)
       path_info = env['PATH_INFO']
 
-      ROUTES.each do |template, target|
+      @routes.each do |template, target|
         extracted = template.extract(path_info)
         return dispatch(env, target, extracted) if extracted
       end
 
       @app.call(env)
+    end
+
+    def map(from, to)
+      @routes[Addressable::Template.new(from)] = to
     end
 
     def dispatch(env, target, extracted)
