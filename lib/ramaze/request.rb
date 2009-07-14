@@ -25,7 +25,7 @@ module Ramaze
     #   @lang # => nil
 
     def to_instance_variables(*args)
-      instance = Action.current.instance
+      instance = Current.action.instance
       args.each do |arg|
         next unless value = self[arg]
         instance.instance_variable_set("@#{arg}", value)
