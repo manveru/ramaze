@@ -100,41 +100,40 @@ module Ramaze
 
 
         def navigation(limit = 8)
-          out = [ g.div(:class => :pager) ]
-
-          if first_page?
-            out << g.span(:class => 'first grey'){ h('<<') }
-            out << g.span(:class => 'previous grey'){ h('<') }
-          else
-            out << link(1, '<<', :class => :first)
-            out << link(prev_page, '<', :class => :previous)
-          end
-
-          lower = limit ? (current_page - limit) : 1
-          lower = lower < 1 ? 1 : lower
-
-          (lower...current_page).each do |n|
-            out << link(n)
-          end
-
-          out << link(current_page, current_page, :class => :current)
-
-          if last_page?
-            out << g.span(:class => 'next grey'){ h('>') }
-            out << g.span(:class => 'last grey'){ h('>>') }
-          elsif next_page
-            higher = limit ? (next_page + limit) : page_count
-            higher = [higher, page_count].min
-            (next_page..higher).each do |n|
-              out << link(n)
+          g = Ramaze::Gestalt.new
+          g.div :class => :pager do
+            if first_page?
+              g.span(:class => 'first grey'){ h('<<') }
+              g.span(:class => 'previous grey'){ h('<') }
+            else
+              link(g, 1, '<<', :class => :first)
+              link(g, prev_page, '<', :class => :previous)
             end
 
-            out << link(next_page, '>', :class => :next)
-            out << link(page_count, '>>', :class => :last)
-          end
+            lower = limit ? (current_page - limit) : 1
+            lower = lower < 1 ? 1 : lower
 
-          out << '</div>'
-          out.join
+            (lower...current_page).each do |n|
+              link(g, n)
+            end
+
+            link(g, current_page, current_page, :class => :current)
+
+            if last_page?
+              g.span(:class => 'next grey'){ h('>') }
+              g.span(:class => 'last grey'){ h('>>') }
+            elsif next_page
+              higher = limit ? (next_page + limit) : page_count
+              higher = [higher, page_count].min
+              (next_page..higher).each do |n|
+                link(g, n)
+              end
+
+              link(g, next_page, '>', :class => :next)
+              link(g, page_count, '>>', :class => :last)
+            end
+          end
+          g.to_s
         end
 
         # Useful to omit pager if it's of no use.
@@ -170,7 +169,7 @@ module Ramaze
           end
         end
 
-        def link(n, text = n, hash = {})
+        def link(g, n, text = n, hash = {})
           text = h(text.to_s)
 
           action = Current.action
@@ -178,10 +177,6 @@ module Ramaze
           hash[:href] = action.node.r(action.path, params)
 
           g.a(hash){ text }
-        end
-
-        def g
-          Ramaze::Gestalt.new
         end
 
         # Wrapper for Array to behave like the Sequel pagination
