@@ -8,7 +8,7 @@ describe LRU = Ramaze::LRUHash do
     it 'fetches via #fetch' do
       lru = LRU.new
 
-      lambda{ lru.fetch(:a) }.should.raise(KeyError).message ==  "key not found: :a"
+      lambda{ lru.fetch(:a) }.should.raise(LRU::KeyError).message ==  "key not found: :a"
       lru.fetch(:a, :b).should == :b
       lru.fetch(:a).should == :b
       lru.fetch(:c){|key| key.to_s }.should == 'c'

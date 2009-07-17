@@ -27,6 +27,9 @@ module Ramaze
     CacheObject = Struct.new(:content, :size, :atime)
     VERSION = '0.3'
 
+    # On 1.8 we raise IndexError, on 1.9 we raise KeyError
+    KeyError = Module.const_defined?(:KeyError) ? KeyError : IndexError
+
     include Enumerable
 
     def initialize(options = {}, &hook)
