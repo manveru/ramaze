@@ -60,7 +60,7 @@ describe LRU = Ramaze::LRUHash do
       lru.statistics.should == {:size => 10, :count => 2, :hits => 0, :misses => 0}
 
       lru[:c]
-      lru.statistics.should == {:size => 10, :count => 2, :hits => 1, misses: 0}
+      lru.statistics.should == {:size => 10, :count => 2, :hits => 1, :misses => 0}
 
       lru[:d]
       lru.statistics.should == {:size => 10, :count => 2, :hits => 1, :misses => 1}

@@ -48,7 +48,7 @@ module Ramaze
         def build(form_errors = {})
           @form_errors = form_errors
 
-          @g.form(@form_args) do |g|
+          @g.form(@form_args) do
             if block_given?
               @g.fieldset do
                 yield self
@@ -110,7 +110,7 @@ module Ramaze
           has_checked, checked = options.key?(:checked), options[:checked]
 
           @g.p do
-            values.each.with_index do |(value, o_name), index|
+            values.each_with_index do |(value, o_name), index|
               o_name ||= value
               id = id_for("#{name}-#{index}")
 
