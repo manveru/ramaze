@@ -7,6 +7,7 @@ module Ramaze
   Cache = Innate::Cache
 
   class Cache
+    autoload :LRU,           'ramaze/cache/lru'
     autoload :LocalMemCache, 'ramaze/cache/localmemcache'
     autoload :MemCache,      'ramaze/cache/memcache'
     autoload :Sequel,        'ramaze/cache/sequel'
