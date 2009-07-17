@@ -10,7 +10,7 @@ module Ramaze
         # expiration in seconds
         :expiration => nil,
         # maximum elements in the cache
-        :max_count => 10000
+        :max_count => 10000,
         # maximum total memory usage of the cache
         :max_total => nil,
         # maximum memory usage of an element of the cache
