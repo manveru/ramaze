@@ -48,34 +48,34 @@ describe LRU = Ramaze::LRUHash do
 
     it 'should keep some statistics' do
       lru = LRU.new(:max_count => 2)
-      lru.statistics.should == {size: 0, count: 0, hits: 0, misses: 0}
+      lru.statistics.should == {:size => 0, :count => 0, :hits => 0, :misses => 0}
 
       lru[:a] = :b
-      lru.statistics.should == {size: 5, count: 1, hits: 0, misses: 0}
+      lru.statistics.should == {:size => 5, :count => 1, :hits => 0, :misses => 0}
 
       lru[:a] = :b
-      lru.statistics.should == {size: 5, count: 1, hits: 0, misses: 0}
+      lru.statistics.should == {:size => 5, :count => 1, :hits => 0, :misses => 0}
 
       lru[:c] = :d
-      lru.statistics.should == {size: 10, count: 2, hits: 0, misses: 0}
+      lru.statistics.should == {:size => 10, :count => 2, :hits => 0, :misses => 0}
 
       lru[:c]
-      lru.statistics.should == {size: 10, count: 2, hits: 1, misses: 0}
+      lru.statistics.should == {:size => 10, :count => 2, :hits => 1, misses: 0}
 
       lru[:d]
-      lru.statistics.should == {size: 10, count: 2, hits: 1, misses: 1}
+      lru.statistics.should == {:size => 10, :count => 2, :hits => 1, :misses => 1}
 
       lru[:e] = :f
-      lru.statistics.should == {size: 10, count: 2, hits: 1, misses: 1}
+      lru.statistics.should == {:size => 10, :count => 2, :hits => 1, :misses => 1}
 
       lru[:a]
-      lru.statistics.should == {size: 10, count: 2, hits: 1, misses: 2}
+      lru.statistics.should == {:size => 10, :count => 2, :hits => 1, :misses => 2}
 
       lru.delete :e
-      lru.statistics.should == {size: 5, count: 1, hits: 1, misses: 2}
+      lru.statistics.should == {:size => 5, :count => 1, :hits => 1, :misses => 2}
 
       lru[:a] = 'foobar'
-      lru.statistics.should == {size: 21, count: 2, hits: 1, misses: 2}
+      lru.statistics.should == {:size => 21, :count => 2, :hits => 1, :misses => 2}
     end
   end
 
