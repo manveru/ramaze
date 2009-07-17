@@ -7,8 +7,7 @@ describe BF = Ramaze::Helper::BlueForm do
   extend BF
 
   def tidy(html)
-    # require 'nokogiri'
-    # require 'open3'
+    require 'open3'
     Open3.popen3('tidy -i'){|sin, sout, serr|
       sin.print(html)
       sin.close
