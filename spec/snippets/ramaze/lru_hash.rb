@@ -75,7 +75,9 @@ describe LRU = Ramaze::LRUHash do
       lru.statistics.should == {:size => 5, :count => 1, :hits => 1, :misses => 2}
 
       lru[:a] = 'foobar'
-      lru.statistics.should == {:size => 21, :count => 2, :hits => 1, :misses => 2}
+      s = lru.statistics
+      s.delete(:size) # Differs on 1.8/1.9
+      s.should == {:count => 2, :hits => 1, :misses => 2}
     end
   end
 
