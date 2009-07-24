@@ -209,6 +209,7 @@ lib/ramaze.rb
 lib/ramaze/app.rb
 lib/ramaze/cache.rb
 lib/ramaze/cache/localmemcache.rb
+lib/ramaze/cache/lru.rb
 lib/ramaze/cache/memcache.rb
 lib/ramaze/cache/sequel.rb
 lib/ramaze/contrib/addressable_route.rb
@@ -236,6 +237,7 @@ lib/ramaze/gestalt.rb
 lib/ramaze/helper.rb
 lib/ramaze/helper/auth.rb
 lib/ramaze/helper/bench.rb
+lib/ramaze/helper/blue_form.rb
 lib/ramaze/helper/cache.rb
 lib/ramaze/helper/disqus.rb
 lib/ramaze/helper/flash.rb
@@ -303,6 +305,7 @@ lib/ramaze/snippets/ramaze/acquire.rb
 lib/ramaze/snippets/ramaze/deprecated.rb
 lib/ramaze/snippets/ramaze/dictionary.rb
 lib/ramaze/snippets/ramaze/fiber.rb
+lib/ramaze/snippets/ramaze/lru_hash.rb
 lib/ramaze/snippets/ramaze/struct.rb
 lib/ramaze/snippets/string/camel_case.rb
 lib/ramaze/snippets/string/color.rb
@@ -328,6 +331,7 @@ lib/ramaze/view/erubis.rb
 lib/ramaze/view/ezamar.rb
 lib/ramaze/view/gestalt.rb
 lib/ramaze/view/haml.rb
+lib/ramaze/view/less.rb
 lib/ramaze/view/liquid.rb
 lib/ramaze/view/maruku.rb
 lib/ramaze/view/nagoro.rb
@@ -368,8 +372,10 @@ spec/ramaze/action/view/single_wrapper.xhtml
 spec/ramaze/action/view/sub/sub_wrapper.erb
 spec/ramaze/action/view/sub/sub_wrapper.xhtml
 spec/ramaze/app.rb
+spec/ramaze/app/location.rb
 spec/ramaze/bin/ramaze.rb
 spec/ramaze/cache/localmemcache.rb
+spec/ramaze/cache/lru.rb
 spec/ramaze/cache/memcache.rb
 spec/ramaze/cache/sequel.rb
 spec/ramaze/controller/actionless_templates.rb
@@ -397,6 +403,7 @@ spec/ramaze/files/public_2/rich.txt
 spec/ramaze/gestalt.rb
 spec/ramaze/helper/auth.rb
 spec/ramaze/helper/bench.rb
+spec/ramaze/helper/blue_form.rb
 spec/ramaze/helper/cache.rb
 spec/ramaze/helper/flash.rb
 spec/ramaze/helper/form.rb
@@ -449,6 +456,8 @@ spec/ramaze/view/gestalt/external.ges
 spec/ramaze/view/haml.rb
 spec/ramaze/view/haml/external.haml
 spec/ramaze/view/haml/sum.haml
+spec/ramaze/view/less.rb
+spec/ramaze/view/less/file.css.less
 spec/ramaze/view/liquid.rb
 spec/ramaze/view/liquid/external.liquid
 spec/ramaze/view/liquid/sum.liquid
@@ -476,6 +485,7 @@ spec/snippets/object/__dir__.rb
 spec/snippets/ordered_set.rb
 spec/snippets/ramaze/acquire.rb
 spec/snippets/ramaze/dictionary.rb
+spec/snippets/ramaze/lru_hash.rb
 spec/snippets/ramaze/struct.rb
 spec/snippets/string/camel_case.rb
 spec/snippets/string/color.rb

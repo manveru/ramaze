@@ -1,3 +1,147 @@
+[e802979 | Sun Jul 19 03:16:06 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update versions for Rakefile
+
+[311b372 | Sun Jul 19 01:39:12 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix marshal size for 1.8
+
+[42516be | Fri Jul 17 10:02:05 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Raise correct exception depending on existence of KeyError
+
+[90d49ee | Fri Jul 17 09:40:09 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix some more 1.8 incompatibilities
+
+[5121688 | Fri Jul 17 09:21:25 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Don't require nokogiri
+
+[17c4aa6 | Fri Jul 17 09:21:06 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Forgot using 1.8 syntax
+
+[9fd07cb | Fri Jul 17 09:16:29 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Try to make the blue_form spec nicer
+
+[6bb2c79 | Fri Jul 17 09:07:45 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix syntax error in LRU cache
+
+[2cc4309 | Fri Jul 17 08:09:12 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adding Helper::BlueForm and spec
+
+[cd77929 | Fri Jul 17 07:59:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adding LRU cache
+
+[252dda0 | Thu Jul 16 03:04:47 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Rely on Gestalt to make proper markup for paginate
+
+[fe6c09f | Tue Jul 14 07:01:08 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix Request#to_instance_variables
+
+[b8d016b | Thu Jul 02 12:28:05 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Increase the time we wait for the cache ttl to expire
+
+[eb63517 | Thu Jul 02 12:20:56 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Recognize Spec precondition and Spec require in bacon task
+
+[552ae84 | Thu Jul 02 11:48:04 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add the ramaze/lib directory to -I on bacon task
+
+[0333e52 | Thu Jul 02 11:34:12 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Clean up the spec middleware mess, it's _always_ m.run(Ramaze::AppMap)
+
+[02a7c0b | Thu Jul 02 10:43:27 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add missing rack-contrib development dependency
+
+[5d14456 | Thu Jul 02 10:35:12 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Now even obfuscate_mail should work on 1.8 again
+
+[6547065 | Thu Jul 02 10:13:22 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Layout helper asks for #to_hash, so it should use it. Also don't rely on Enumerable#first, not in 1.8.6
+
+[21e47bb | Thu Jul 02 10:12:49 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Don't rely on order in less spec
+
+[1389dd8 | Thu Jul 02 09:28:12 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Improve gem_setup task
+
+[dd9d838 | Thu Jul 02 07:02:57 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update announcement
+
+[158ae0f | Tue Jun 30 10:50:13 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Let the bacon task pass -I with the root directory
+
+[4747ef4 | Tue Jun 30 10:49:34 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the require path for bin/ramaze spec
+
+[1667e7f | Tue Jun 30 10:48:10 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Refactor AddressableRoute, use instance variable instead of constant
+
+[a41c4ac | Tue Jun 30 10:47:22 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix annoying behaviour when '/' location is assigned to an app earlier loaded, apps after it would overwrite the location. Now only :pristine uses it by default
+
+[2e7a643 | Tue Jun 30 10:45:44 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove ContentLength middleware from default stacks, all Rack handlers do that already
+
+[cfef249 | Tue Jun 30 10:45:19 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix the misc/css example
+
+[4dcc77d | Tue Jun 30 10:43:50 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Use absolute path when spec requires spec/helper, '.' will be removed from the load path in 1.9.2
+
+[03bd5bb | Sun Jun 28 05:43:57 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove deprecated cache method, add basic doc for cache_action
+
+[b2ae4dd | Thu Jun 25 11:18:58 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Improve the cache_value method of the cache helper, rename the cache used to cache_helper_value, and add some docs describing the new behaviour
+
+[0a4cbaf | Thu Jun 18 04:14:26 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove cruft from less
+
+[de61a32 | Thu Jun 18 04:09:15 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Add support for the less css templating engine
+
+[529681e | Thu Jun 18 04:08:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix some spelling mistakes in the readme
+
+[f90b76e | Sat Jun 13 12:22:10 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * The spec mode was flawed, fix it and give proto better defaults
+
+[3aa5bfb | Fri Jun 12 12:54:51 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.06.12
+
 [d933aa5 | Tue Jun 09 17:28:14 UTC 2009] Aaron Mueller <mail@aaron-mueller.de>
 
   * Update the identity helper with the new link helper.
