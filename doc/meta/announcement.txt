@@ -51,6 +51,8 @@ Simple example:
 
 - Michael Fellinger (manveru)
   - Adding support for the less CSS templating engine
+  - Adding LRU cache
+  - Fixing problems in paginate
   - Better defaults for proto specs
   - The Helper::Cache#cache_value optionally takes a block now
   - Make sure proto/config.ru points to correct location
