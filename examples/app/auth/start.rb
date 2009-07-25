@@ -11,6 +11,8 @@ module Auth
 
   class AuthController < Ramaze::Controller
     map '/', :auth
+    app.location = '/'
+
     helper :auth
     layout :auth
     trait :auth_table => USERS
