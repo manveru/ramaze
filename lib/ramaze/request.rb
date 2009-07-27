@@ -19,7 +19,7 @@ module Ramaze
     #
     # Usage:
     #   request.params # => {'name' => 'manveru', 'q' => 'google', 'lang' => 'de'}
-    #   to_ivs(:name, :q)
+    #   request.to_ivs(:name, :q)
     #   @q    # => 'google'
     #   @name # => 'manveru'
     #   @lang # => nil
