@@ -1,11 +1,11 @@
 #          Copyright (c) 2008 Michael Fellinger m.fellinger@gmail.com
 # All files in this distribution are subject to the terms of the Ruby license.
 
-dir  = File.join(File.expand_path(File.dirname(__FILE__)), 'snippets')
-glob = File.join(dir, '**', '*.rb')
+require 'find'
 
-Dir[glob].each do |snippet|
-  require(snippet)
+
+Find.find(File.expand_path('../snippets', __FILE__)) do |file|
+  require(file) if file =~ /\.rb$/ && File.file?(file)
 end
 
 Ramaze::CoreExtensions.constants.each do |const|
