@@ -162,7 +162,7 @@ module Ramaze
           @page = @page < 1 ? 1 : @page
 
           case obj
-          when Array
+          when Array, DataMapper::Collection
             ArrayPager.new(obj, @page, @limit)
           else
             obj.paginate(@page, @limit)
