@@ -8,7 +8,7 @@ require 'openid/extensions/sreg'
 
 module Ramaze
 
-  openid_store_file = ::File.join(Dir.tmpdir, 'openid-store')
+  openid_store_file = ::File.join(Ramaze.options.roots[0], '/tmp', 'openid-store')
 
   # Constant for storing meta-information persistent
   OpenIDStore = OpenID::Store::Filesystem.new(openid_store_file)
