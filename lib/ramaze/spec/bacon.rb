@@ -26,14 +26,8 @@ shared :webrat do
 
   require 'webrat'
 
-  Webrat.configure{|config| config.mode = :rack_test }
+  Webrat.configure{|config| config.mode = :rack }
 
   extend Webrat::Methods
   extend Webrat::Matchers
 end
-
-# Backwards compatibility
-shared(:mock){
-  Ramaze.deprecated('behaves_like(:mock)', 'behaves_like(:rack_test)')
-  behaves_like :rack_test
-}
