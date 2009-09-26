@@ -35,5 +35,6 @@ module Ramaze
     auto_register :Sass,       :sass
     auto_register :Tagz,       :rb, :tagz
     auto_register :Tenjin,     :rbhtml, :tenjin
+    auto_register :Slippers,     :st
   end
 end
