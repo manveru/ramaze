@@ -27,6 +27,9 @@ class SpecErector < Ramaze::Controller
     }
   end
 
+  def strict_xhtml
+  end
+
   def sum(num1, num2)
     @num1, @num2 = num1.to_i, num2.to_i
   end
@@ -49,5 +52,9 @@ describe Ramaze::View::Erector do
 
   should 'render external template with instance variables' do
     get('/sum/1/2').body.should == '<div><p>3</p></div>'
+  end
+
+  should 'render external strict xhtml template' do
+    get('/strict_xhtml').body.should == "<div><?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"DTD/xhtml1-strict.dtd\"><html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\"><p>STRICT!</p></html></div>"
   end
 end

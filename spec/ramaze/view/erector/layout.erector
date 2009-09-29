@@ -1,4 +1,4 @@
 div {
   # can also use raw! @content
-  rawtext @content
+  raw! @content
 }
