@@ -26,7 +26,10 @@ DEPENDENCIES = {
 
 DEVELOPMENT_DEPENDENCIES = {
   'Remarkably'       => {:version => '~> 0.5.2', :lib => 'remarkably'},
+  'addressable'      => {:version => '~> 2.1.0'},
   'bacon'            => {:version => '>= 1.1.0'},
+  'erector'          => {:version => '~> 0.7.0'},
+  'activesupport'    => {:version => '~> 2.3.4'},
   'erubis'           => {:version => '>= 2.6.4'},
   'ezamar'           => {:version => '>= 2009.06'},
   'haml'             => {:version => '~> 2.2.1'},
@@ -34,12 +37,17 @@ DEVELOPMENT_DEPENDENCIES = {
   'json'             => {:version => '>= 1.1.7'},
   'liquid'           => {:version => '~> 2.0.0'},
   'localmemcache'    => {:version => '~> 0.4.1'},
+  'maruku'           => {:version => '~> 0.6.0'},
   'memcache-client'  => {:version => '~> 1.7.4', :lib => 'memcache'},
   'nagoro'           => {:version => '>= 2009.05'},
-  'rack-test'        => {:version => '>= 0.4.0', :lib => 'rack/test'},
   'rack-contrib'     => {:version => '>= 0.9.2', :lib => 'rack/contrib'},
+  'rack-test'        => {:version => '>= 0.4.0', :lib => 'rack/test'},
+  'RedCloth'         => {:version => '~> 4.2.2'},
+  'less'             => {:version => '~> 1.1.13'},
   'sequel'           => {:version => '=  3.2.0'},
-  'tagz'             => {:version => '>= 5.0.1'},
+  'sqlite3-ruby'     => {:version => '~> 1.2.5', :lib => 'sqlite3'},
+  'tagz'             => {:version => '>= 7.1.0'},
+  'locale'           => {:version => '~> 2.0.4'},
   'tenjin'           => {:version => '~> 0.6.1'},
 }
 
