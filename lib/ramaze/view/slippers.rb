@@ -13,9 +13,11 @@ module Ramaze
       private
         def self.template_group(action)
           subtemplates = action.instance.ancestral_trait[:slippers_options] || {}
+          missing_template_handler = action.instance.ancestral_trait[:slippers_missing_template_handler]
+          default_string = action.instance.ancestral_trait[:slippers_default_string]
           views = action.instance.options[:views].map{|view| "#{action.instance.options[:roots]}/#{view}" }
-          super_group = ::Slippers::TemplateGroup.new(:templates => subtemplates)
-          ::Slippers::TemplateGroupDirectory.new(views, :super_group => super_group)          
+          super_group = ::Slippers::TemplateGroup.new(:templates => subtemplates, :missing_template_handler => missing_template_handler, :default_string => default_string)
+          ::Slippers::TemplateGroupDirectory.new(views, :super_group => super_group, :missing_template_handler => missing_template_handler, :default_string => default_string)          
         end
     end
   end
