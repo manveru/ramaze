@@ -1,16 +1,19 @@
 namespace :release do
-  task :all => [:release_github, :release_rubyforge]
+  task :prepare => %w[jquery reversion authors gemspec]
+  task :all => %w[release:github release:rubyforge release:gemcutter]
 
-  desc 'Display instructions to release on github'
-  task :github => [:jquery, :reversion, :authors, :gemspec] do
+  desc 'Release on github'
+  task :github => :prepare do
     name, version = GEMSPEC.name, GEMSPEC.version
 
     sh('git', 'add',
        'MANIFEST', 'doc/CHANGELOG', 'doc/AUTHORS',
        "#{name}.gemspec",
+       'lib/proto/public/js/jquery.js',
        "lib/#{name}/version.rb")
 
-    puts <<INSTRUCTIONS
+    puts <<-INSTRUCTIONS
+================================================================================
 
 I added the relevant files, you can commit them, tag the commit, and push:
 
@@ -18,37 +21,46 @@ git commit -m 'Version #{version}'
 git tag -a -m '#{version}' '#{version}'
 git push
 
-INSTRUCTIONS
-
+================================================================================
+    INSTRUCTIONS
   end
 
-  # TODO: Not tested
-  desc 'Display instructions to release on rubyforge'
-  task :rubyforge => [:jquery, :reversion, :authors, :gemspec, :package] do
+  desc 'Release on rubyforge'
+  task :rubyforge => ['release:prepare', :package] do
     name, version = GEMSPEC.name, GEMSPEC.version
 
-    puts <<INSTRUCTIONS
+    pkgs = Dir["pkg/#{name}-#{version}.{tgz,zip}"].map{|file|
+      "rubyforge add_file #{name} #{name} '#{version}' '#{file}'"
+    }
+
+    puts <<-INSTRUCTIONS
+================================================================================
+
 To publish to rubyforge do following:
 
 rubyforge login
 rubyforge add_release #{name} #{name} '#{version}' pkg/#{name}-#{version}.gem
 
-After you have done these steps, see:
+To publish the archives for distro packagers:
 
-rake release:rubyforge_archives
+#{pkgs.join "\n"}
 
-INSTRUCTIONS
+================================================================================
+    INSTRUCTIONS
   end
 
-  desc 'Display instructions to add archives after release:rubyforge'
-  task :rubyforge_archives do
+  desc 'Release on gemcutter'
+  task :gemcutter => ['release:prepare', :package] do
     name, version = GEMSPEC.name, GEMSPEC.version
-    puts "Adding archives for distro packagers is:", ""
 
-    Dir["pkg/#{name}-#{version}.{tgz,zip}"].each do |file|
-      puts "rubyforge add_file #{name} #{name} '#{version}' '#{file}'"
-    end
+    puts <<-INSTRUCTIONS
+================================================================================
 
-    puts
+To publish to gemcutter do following:
+
+gem push pkg/#{name}-#{version}.gem
+
+================================================================================
+    INSTRUCTIONS
   end
 end
