@@ -30,6 +30,12 @@ class SpecErector < Ramaze::Controller
   def strict_xhtml
   end
 
+  def css
+    erector {
+      css "test.css", :media => 'screen'
+    }
+  end
+
   def sum(num1, num2)
     @num1, @num2 = num1.to_i, num2.to_i
   end
@@ -56,5 +62,9 @@ describe Ramaze::View::Erector do
 
   should 'render external strict xhtml template' do
     get('/strict_xhtml').body.should == "<div><?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"DTD/xhtml1-strict.dtd\"><html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\"><p>STRICT!</p></html></div>"
+  end
+
+  should 'render css link with merged options' do
+    get('/css').body.should == "<div><link href=\"test.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /></div>"
   end
 end
