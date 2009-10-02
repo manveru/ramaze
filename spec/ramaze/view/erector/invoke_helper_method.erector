@@ -1,0 +1,1 @@
+a(:href => r(:index)) { text "Index page" }
