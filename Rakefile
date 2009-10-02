@@ -21,7 +21,7 @@ PROJECT_COPYRIGHT   = [
 ]
 
 DEPENDENCIES = {
-  'innate' => {:version => '= 2009.07'},
+  'innate' => {:version => '= 2009.10'},
 }
 
 DEVELOPMENT_DEPENDENCIES = {
