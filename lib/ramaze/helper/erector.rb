@@ -31,6 +31,12 @@ module Ramaze
           script :src => src
         end
 
+        def ie_if(expr, &block)
+          raw! "<!--[if #{expr}]>"
+          yield
+          raw! "<![endif]-->"
+        end
+
         # Diagnostics
         def inspect(elem)
           text elem.inspect

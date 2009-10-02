@@ -13,6 +13,9 @@ class SpecErector < Ramaze::Controller
   helper :erector
   layout :layout
 
+  def invoke_helper_method 
+  end
+
   def index
     erector { h1 "Erector Index" }
   end
@@ -28,6 +31,15 @@ class SpecErector < Ramaze::Controller
   end
 
   def strict_xhtml
+  end
+
+  def ie_if
+    erector {
+      ie_if("lt IE 8") {
+        css "ie.css"
+        css "test2.css", :media => 'screen'
+      }
+    }
   end
 
   def css
@@ -66,5 +78,13 @@ describe Ramaze::View::Erector do
 
   should 'render css link with merged options' do
     get('/css').body.should == "<div><link href=\"test.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /></div>"
+  end
+
+  should 'render ie conditional' do
+    get('/ie_if').body.should == "<div><!--[if lt IE 8]><link href=\"ie.css\" rel=\"stylesheet\" type=\"text/css\" /><link href=\"test2.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" /><![endif]--></div>"
+  end
+
+  should 'invoke helper methods from external template'  do
+    get('/invoke_helper_method').body.should == "<div><a href=\"/index\">Index page</a></div>"
   end
 end

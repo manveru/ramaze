@@ -6,14 +6,18 @@ module Ramaze
      def self.call(action, string)
         return string, 'text/html' unless action.view
 
-        html = ::Erector.inline do
-          # copy instance variables into Erector context
-          action.instance.instance_variables.each do |v|
-            instance_variable_set(v, action.instance.instance_variable_get(v))
-          end
+        markup = <<-EOS
+          _controller = self
+          html = ::Erector.inline do
+            # copy instance variables into Erector context
+            _controller.instance_variables.each do |v|
+              instance_variable_set(v, _controller.instance_variable_get(v))
+            end
+            #{string}
+          end.to_s
+        EOS
 
-          eval(string)
-        end.to_s
+        html = action.instance.instance_eval(markup)
 
         return html, 'text/html'
       end
