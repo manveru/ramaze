@@ -1,3 +1,117 @@
+[ba23aa6 | Fri Oct 02 15:09:32 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * dependency against latest innate
+
+[e4c63be | Fri Oct 02 15:06:41 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Improve release tasks
+
+[6d758f3 | Thu Oct 01 14:39:03 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * Add missing erector spec template
+
+[84587e5 | Thu Oct 01 14:38:04 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * Call helper methods from external erector template
+
+[a95384c | Thu Oct 01 12:24:32 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * moved erector helper methods from engine into helper
+
+[6c10e2a | Tue Sep 29 14:03:07 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix slippers spec
+
+[4b31204 | Tue Sep 29 13:55:31 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Adding slippers as dev dependency
+
+[9561d90 | Tue Sep 29 13:46:23 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update dependencies
+
+[d7d368b | Mon Sep 28 13:14:55 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * Added strict_xhtml Erector method
+
+[23ffbd0 | Mon Sep 28 08:01:11 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * Updated Erector dependencies
+
+[e70a358 | Sun Sep 27 14:23:03 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * added erector specs
+
+[72684cb | Sun Sep 27 07:39:33 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * adding erector engine convenience methods
+
+[18501a7 | Sun Sep 27 06:12:25 UTC 2009] Mario Gutierrez <mgutz@mgutz-mbp.local>
+
+  * adding Erector view engine
+
+[98e41a6 | Sat Sep 26 00:53:20 UTC 2009] starapor <me@sarahtaraporewalla.com>
+
+  * the view_root now uses all the view directories available in teh attribute
+
+[b4f6f0e | Sat Sep 26 00:19:12 UTC 2009] starapor <me@sarahtaraporewalla.com>
+
+  * Adding a view engine for slippers
+
+[5dda528 | Sun Aug 16 12:58:31 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove shared mock, fix webrat
+
+[f545a47 | Tue Aug 11 03:01:33 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix wrong constant reference
+
+[e7732d1 | Tue Aug 11 02:39:37 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Only try to get win32console on ruby < 1.9, fix logger
+
+[8d79efe | Wed Aug 05 12:58:10 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Provide support for :haml_options trait again
+
+[1d21bad | Sat Aug 01 04:07:45 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Don't use system temp dir;
+
+    ('openid-store' in our case).
+    
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[e417109 | Mon Jul 27 05:00:18 UTC 2009] Pistos <gitsomegrace.5.pistos@geoshell.com>
+
+  * Fixed error in rdocs of Ramaze::Request#to_instance_variables.
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[3713845 | Sat Aug 01 08:39:25 UTC 2009] Yutaka HARA <yutaka.hara+github@gmail.com>
+
+  * Added DataMapperPager (does not load all the rows)
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[802c0d9 | Fri Jul 31 09:03:27 UTC 2009] Yutaka HARA <yutaka.hara+github@gmail.com>
+
+  * paginate helper supports DataMapper
+
+    Signed-off-by: Michael Fellinger <m.fellinger@gmail.com>
+
+[c098591 | Wed Jul 29 13:39:33 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Require snippets using Find::find instead of Dir::glob
+
+[37470de | Sat Jul 25 14:30:04 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fixing the auth example by mapping it to /
+
+[e95e5f1 | Fri Jul 24 19:04:21 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update announcement
+
 [d0267ff | Fri Jul 24 18:56:44 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * Version 2009.07

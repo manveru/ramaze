@@ -240,6 +240,7 @@ lib/ramaze/helper/bench.rb
 lib/ramaze/helper/blue_form.rb
 lib/ramaze/helper/cache.rb
 lib/ramaze/helper/disqus.rb
+lib/ramaze/helper/erector.rb
 lib/ramaze/helper/flash.rb
 lib/ramaze/helper/form.rb
 lib/ramaze/helper/formatting.rb
@@ -327,6 +328,7 @@ lib/ramaze/tool/create.rb
 lib/ramaze/tool/project_creator.rb
 lib/ramaze/version.rb
 lib/ramaze/view.rb
+lib/ramaze/view/erector.rb
 lib/ramaze/view/erubis.rb
 lib/ramaze/view/ezamar.rb
 lib/ramaze/view/gestalt.rb
@@ -339,6 +341,7 @@ lib/ramaze/view/nagoro/render_partial.rb
 lib/ramaze/view/redcloth.rb
 lib/ramaze/view/remarkably.rb
 lib/ramaze/view/sass.rb
+lib/ramaze/view/slippers.rb
 lib/ramaze/view/tagz.rb
 lib/ramaze/view/tenjin.rb
 lib/vendor/etag.rb
@@ -445,6 +448,12 @@ spec/ramaze/session/memcache.rb
 spec/ramaze/struct.rb
 spec/ramaze/template/ramaze/external.test
 spec/ramaze/view.rb
+spec/ramaze/view/erector.rb
+spec/ramaze/view/erector/external.erector
+spec/ramaze/view/erector/invoke_helper_method.erector
+spec/ramaze/view/erector/layout.erector
+spec/ramaze/view/erector/strict_xhtml.erector
+spec/ramaze/view/erector/sum.erector
 spec/ramaze/view/erubis.rb
 spec/ramaze/view/erubis/external.rhtml
 spec/ramaze/view/erubis/sum.rhtml
@@ -471,6 +480,9 @@ spec/ramaze/view/remarkably/external.rem
 spec/ramaze/view/remarkably/sum.rem
 spec/ramaze/view/sass.rb
 spec/ramaze/view/sass/file.css.sass
+spec/ramaze/view/slippers.rb
+spec/ramaze/view/slippers/external.st
+spec/ramaze/view/slippers/sum.st
 spec/ramaze/view/tagz.rb
 spec/ramaze/view/tagz/external.tagz
 spec/ramaze/view/tagz/sum.tagz
