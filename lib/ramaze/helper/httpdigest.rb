@@ -28,14 +28,11 @@ module Ramaze
         ::SecureRandom.hex(32)
       end
 
-      # Set the WWW-Authenticate header and store relevant data in the session.
-      #
-      # @param [String] uid
-      # @param [String] realm
-      def httpdigest_headers(uid, realm)
+      def httpdigest_failure_internal(uid,realm)
         nonce = session[SESSION_NONCE] = httpdigest_uuid
         opaque = session[SESSION_OPAQUE][realm][uid] = httpdigest_uuid
         response['WWW-Authenticate'] = DIGEST_HEADER % [realm, nonce, opaque]
+        httpdigest_failure
       end
 
       def httpdigest_failure
@@ -46,8 +43,7 @@ module Ramaze
         http_authorization = request.env['HTTP_AUTHORIZATION']
         return http_authorization if http_authorization
 
-        httpdigest_headers(uid, realm)
-        httpdigest_failure
+        httpdigest_failure_internal(uid, realm)
       end
 
       def httpdigest_lookup(username, realm)
@@ -69,18 +65,18 @@ module Ramaze
 
         http_authorization = httpdigest_http_authorization(uid, realm)
 
-        httpdigest_failure unless session_nonce = session[SESSION_NONCE]
-        httpdigest_failure unless session_opaque = session[SESSION_OPAQUE][realm][uid]
+        httpdigest_failure_internal(uid, realm) unless session_nonce = session[SESSION_NONCE]
+        httpdigest_failure_internal(uid, realm) unless session_opaque = session[SESSION_OPAQUE][realm][uid]
 
         auth_type, auth_raw = http_authorization.split(' ', 2)
-        httpdigest_failure unless auth_type == 'Digest'
+        httpdigest_failure_internal(uid, realm) unless auth_type == 'Digest'
 
         authorization = Rack::Auth::Digest::Params.parse(auth_raw)
 
         digest_response, username, nonce, nc, cnonce, qop, opaque =
           authorization.values_at(*%w[response username nonce nc cnonce qop opaque])
 
-        httpdigest_failure unless nonce == session_nonce and opaque == session_opaque
+        httpdigest_failure_internal(uid, realm) unless nonce == session_nonce and opaque == session_opaque
 
         ha1 = httpdigest_lookup(username, realm, &block)
         a2 = [request.request_method,request.request_uri]
@@ -88,7 +84,7 @@ module Ramaze
         ha2 = Digest::MD5.hexdigest( a2.join(':') )
         md5 = Digest::MD5.hexdigest([ha1, nonce, nc, cnonce, qop, ha2].join(':'))
 
-        httpdigest_failure unless digest_response == md5
+        httpdigest_failure_internal(uid, realm) unless digest_response == md5
 
         return username
       end
