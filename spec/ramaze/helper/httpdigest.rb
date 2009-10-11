@@ -16,6 +16,10 @@ class MainController < Ramaze::Controller
     "Hello #{user}"
   end
 
+  def logout
+    httpdigest_logout
+  end
+
 end
 
 class PlainTextController < Ramaze::Controller
@@ -75,6 +79,13 @@ describe Ramaze::Helper::HttpDigest do
     behaves_like :rack_test
 
     it 'authenticates a user with a block' do
+      get '/logout'
+      digest_authorize nil, nil
+
+      get '/authenticate'
+      last_response.status.should == 401
+      last_response.body.should == "Unauthorized"
+
       digest_authorize 'foo', 'oof'
       get '/authenticate'
       last_response.status.should == 200
@@ -82,6 +93,13 @@ describe Ramaze::Helper::HttpDigest do
     end
 
     it 'fails to authenticate an incorrect password with a block' do
+      get '/logout'
+      digest_authorize nil, nil
+
+      get '/authenticate'
+      last_response.status.should == 401
+      last_response.body.should == "Unauthorized"
+
       digest_authorize 'foo', 'bar'
       get '/authenticate'
       last_response.status.should == 401
@@ -93,6 +111,9 @@ describe Ramaze::Helper::HttpDigest do
     behaves_like :rack_test
 
     it 'authenticates a user with the plaintext method' do
+      get '/logout'
+      digest_authorize nil, nil
+
       get '/plaintext/authenticate'
       last_response.status.should == 401
       last_response.body.should == 'Unauthorized'
@@ -104,6 +125,13 @@ describe Ramaze::Helper::HttpDigest do
     end
 
     it 'fails to authenticate an incorrect password with the plaintext method' do
+      get '/logout'
+      digest_authorize nil, nil
+
+      get '/plaintext/authenticate'
+      last_response.status.should == 401
+      last_response.body.should == "Unauthorized"
+
       digest_authorize 'foo', 'bar'
       get '/plaintext/authenticate'
       last_response.status.should == 401
@@ -115,6 +143,13 @@ describe Ramaze::Helper::HttpDigest do
     behaves_like :rack_test
 
     it 'authenticates a user with the password lookup method' do
+      get '/logout'
+      digest_authorize nil, nil
+
+      get '/lookup/authenticate'
+      last_response.status.should == 401
+      last_response.body.should == "Unauthorized"
+
       digest_authorize 'foo', 'oof'
       get '/lookup/authenticate'
       last_response.status.should == 200
@@ -122,6 +157,13 @@ describe Ramaze::Helper::HttpDigest do
     end
 
     it 'fails to authenticate an incorrect password with the password lookup method' do
+      get '/logout'
+      digest_authorize nil, nil
+
+      get '/lookup/authenticate'
+      last_response.status.should == 401
+      last_response.body.should == "Unauthorized"
+
       digest_authorize 'foo', 'bar'
       get '/lookup/authenticate'
       last_response.status.should == 401
