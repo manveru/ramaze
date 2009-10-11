@@ -97,14 +97,14 @@ describe Ramaze::Helper::HttpDigest do
       last_response.status.should == 401
       last_response.body.should == 'Unauthorized'
 
-      authorize 'foo', 'oof'
+      digest_authorize 'foo', 'oof'
       get '/plaintext/authenticate'
       last_response.status.should == 200
       last_response.body.should == "Hello foo"
     end
 
     it 'fails to authenticate an incorrect password with the plaintext method' do
-      authorize 'foo', 'bar'
+      digest_authorize 'foo', 'bar'
       get '/plaintext/authenticate'
       last_response.status.should == 401
       last_response.body.should == "Unauthorized"
@@ -122,7 +122,7 @@ describe Ramaze::Helper::HttpDigest do
     end
 
     it 'fails to authenticate an incorrect password with the password lookup method' do
-      authorize 'foo', 'bar'
+      digest_authorize 'foo', 'bar'
       get '/lookup/authenticate'
       last_response.status.should == 401
       last_response.body.should == "Unauthorized"
