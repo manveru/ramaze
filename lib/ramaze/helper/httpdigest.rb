@@ -32,6 +32,9 @@ module Ramaze
         nonce = session[SESSION_NONCE] = httpdigest_uuid
         opaque = session[SESSION_OPAQUE][realm][uid] = httpdigest_uuid
         response['WWW-Authenticate'] = DIGEST_HEADER % [realm, nonce, opaque]
+        response['Pragma'] = 'no-cache' # HTTP/1.0
+        response['Cache-Control'] = 'no-cache' # HTTP/1.1
+        response['Last-Modified'] = Time.now.httpdate
         httpdigest_failure
       end
 
