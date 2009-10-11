@@ -76,15 +76,15 @@ module Ramaze
 
         authorization = Rack::Auth::Digest::Params.parse(auth_raw)
 
-        digest_response, username, nonce, nc, cnonce, qop, opaque =
-          authorization.values_at(*%w[response username nonce nc cnonce qop opaque])
+        digest_response, username, nonce, nc, cnonce, qop, opaque, uri =
+          authorization.values_at(*%w[response username nonce nc cnonce qop opaque uri])
 
         httpdigest_failure_internal(uid, realm) unless nonce == session_nonce and opaque == session_opaque
 
         ha1 = httpdigest_lookup(username, realm, &block)
-        a2 = [request.request_method,request.request_uri]
+        a2 = [request.request_method,uri]
         a2 << Digest::MD5.hexdigest(request.body.read) if qop == "auth-int"
-        ha2 = Digest::MD5.hexdigest( a2.join(':') )
+        ha2 = Digest::MD5.hexdigest(a2.join(':'))
         md5 = Digest::MD5.hexdigest([ha1, nonce, nc, cnonce, qop, ha2].join(':'))
 
         httpdigest_failure_internal(uid, realm) unless digest_response == md5
