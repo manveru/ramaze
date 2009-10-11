@@ -70,9 +70,6 @@ describe Ramaze::Helper::HttpDigest do
       end
     end
   end
-end
-
-__END__
 
   describe 'Digest authentication' do
     behaves_like :rack_test
@@ -114,34 +111,22 @@ __END__
     end
   end
 
-  it 'authenticates a user with the password lookup method' do
-    got = get_auth( '/lookup/authenticate', 'foo', 'oof' )
-    got.status.should == 200
-    got.body.should == "Hello foo"
-  end
+  describe 'Password lookup authentication' do
+    behaves_like :rack_test
 
-  it 'fails to authenticate an incorrect password with the password lookup method' do
-    got = get_auth( '/lookup/authenticate', 'foo', 'bar' )
-    got.status.should == 401
-    got.body.should == "Unauthorized"
-  end
+    it 'authenticates a user with the password lookup method' do
+      digest_authorize 'foo', 'oof'
+      get '/lookup/authenticate'
+      last_response.status.should == 200
+      last_response.body.should == "Hello foo"
+    end
 
-  it 'authenticates a user with a block using auth-int' do
-    got = get_auth( '/authenticate', 'foo', 'oof', 'auth-int' )
-    got.status.should == 200
-    got.body.should == "Hello foo"
-  end
-
-  it 'authenticates a user with the plaintext method using auth-int' do
-    got = get_auth( '/plaintext/authenticate', 'foo', 'oof', 'auth-int' )
-    got.status.should == 200
-    got.body.should == "Hello foo"
-  end
-
-  it 'authenticates a user with the password lookup method using auth-int' do
-    got = get_auth( '/lookup/authenticate', 'foo', 'oof', 'auth-int' )
-    got.status.should == 200
-    got.body.should == "Hello foo"
+    it 'fails to authenticate an incorrect password with the password lookup method' do
+      authorize 'foo', 'bar'
+      get '/lookup/authenticate'
+      last_response.status.should == 401
+      last_response.body.should == "Unauthorized"
+    end
   end
 
 end
