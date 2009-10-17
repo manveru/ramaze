@@ -61,13 +61,15 @@ class ProjectCreator
     exists = File.directory?(dir)
     return if exists and amend?
     return if exists and not force?
-    puts "mkdir(%p)" % dir
+    relate = dir.gsub(target + '/','')
+    print("%12s    %s\n" % ['mkdir',relate])
     FileUtils.mkdir_p(dir)
   end
 
   def copy(from, to)
     return unless copy_check(to)
-    puts "copy(%p, %p)" % [from, to]
+    relate = to.gsub(target + '/','')
+    print("%12s    %s\n" % ['create',relate])
     FileUtils.cp(from, to, :preserve => true)
     post_process(to)
   end
