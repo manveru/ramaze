@@ -13,6 +13,12 @@ module Ramaze
         form_input(label, hash)
       end
 
+      def form_checkbox_tag(label, name, value, checked = false)
+        hash = {:type => :checkbox, :name => name + '[]', :value => value}
+        hash[:checked] = 'checked' if checked
+        form_input(label, hash)
+      end
+
       def form_password(label, name)
         form_input(label, :type => :password, :name => name)
       end
