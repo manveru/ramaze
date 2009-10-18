@@ -69,7 +69,7 @@ class ProjectCreator
   def mkdir?(dir)
     exists = File.directory?(dir)
 
-    !exists && amend? or exists && force?
+    !exists && amend? or exists && force? or !exists
   end
 
   def copy(from, to)
@@ -85,7 +85,7 @@ class ProjectCreator
   def copy?(file)
     exists = File.file?(file)
 
-    !exists && amend? or exists && force?
+    !exists && amend? or exists && force? or !exists
   end
 
   # Think about a useful way to process the generated files it should be
