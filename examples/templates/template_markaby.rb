@@ -24,11 +24,11 @@ class MainController < Ramaze::Controller
           p do
             text "Here you can pass some stuff if you like, parameters are just passed like this:"
             br
-            a("#@place/one", :href => R(@this, @place, :one))
+            a("#@place/one", :href => r(@this, @place, :one))
             br
-            a("#@place/one/two/three", :href => R(@this, @place, :one, :two, :three))
+            a("#@place/one/two/three", :href => r(@this, @place, :one, :two, :three))
             br
-            a("#@place/one?foo=bar", :href => R(@this, @place, :one, :foo => :bar))
+            a("#@place/one?foo=bar", :href => r(@this, @place, :one, :foo => :bar))
             br
           end
           div do
