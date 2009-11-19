@@ -13,7 +13,7 @@ module Ramaze
         context, path, ext = class_defined?(action)
 
         action.sync_variables(action)
-        action.variables.each { |k, v| context[k.intern] = v }
+        action.variables.each { |k, v| context[k.to_sym] = v }
 
         view = View.compile(string) { |s| ::Mustache::Template.new(s, path, ext) }
         html = view.render(context)
