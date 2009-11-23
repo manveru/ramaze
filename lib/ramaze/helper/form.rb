@@ -98,7 +98,7 @@ module Ramaze
         Ramaze::Gestalt.build do
           tr do
             td do
-              label(:for => form_id){ "#{label}:" }
+              label(:for => form_id){ "#{label}:" } unless label==''
               span(:class => "error"){ error } if error
             end
             td do
