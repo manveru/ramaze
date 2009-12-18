@@ -14,6 +14,8 @@ describe Ramaze::Helper::XHTML do
       should == '<link href="/css/foo.css" media="mobile" rel="stylesheet" type="text/css" />'
     css(:foo, 'screen', :only => :ie).
       should == '<!--[if IE]><link href="/css/foo.css" media="screen" rel="stylesheet" type="text/css" /><![endif]-->'
+    css('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js', 'screen').
+      should == '<link href="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js" media="screen" rel="stylesheet" type="text/css" />'
   end
 
   should 'answer with <script> on #js' do
