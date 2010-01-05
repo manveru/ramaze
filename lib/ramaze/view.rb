@@ -29,6 +29,7 @@ module Ramaze
     auto_register :Haml,       :haml
     auto_register :Less,       :lss, :less
     auto_register :Liquid,     :liquid
+	auto_register :Lokar,      :lok
     auto_register :Maruku,     :mkd, :md
     auto_register :Nagoro,     :nag
     auto_register :RedCloth,   :redcloth

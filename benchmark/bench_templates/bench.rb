@@ -13,7 +13,7 @@ require 'benchmark'
 Benchmark.bmbm(20) do |b|
   n = 500
   urls = ['/small', '/large']
-  engines = %w[Etanni Haml ERB]
+  engines = %w[Etanni Haml ERB Lokar]
 
   urls.each do |url|
     engines.each do |engine|
