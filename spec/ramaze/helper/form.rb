@@ -68,15 +68,16 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label.attributes.should == {'for' => 'form-username'}
+    label.attributes.to_hash.should == {'for' => 'form-username'}
     label.inner_text.should == 'Username:'
 
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'id' => 'form-username',
       'type' => 'text',
       'name' => 'username',
       'value' => '',
-      'tabindex' => '1'}
+      'tabindex' => '1'
+    }
   end
 
   it 'provides filled text input' do
@@ -85,10 +86,10 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label.attributes.should == {'for' => 'form-username'}
+    label.attributes.to_hash.should == {'for' => 'form-username'}
     label.inner_text.should == 'Username:'
 
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'id' => 'form-username',
       'type' => 'text',
       'name' => 'username',
@@ -102,10 +103,10 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label.attributes.should == {'for' => 'form-admin'}
+    label.attributes.to_hash.should == {'for' => 'form-admin'}
     label.inner_text.should == 'Administrator:'
 
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'id' => 'form-admin',
       'type' => 'checkbox',
       'name' => 'admin',
@@ -118,10 +119,10 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label.attributes.should == {'for' => 'form-admin'}
+    label.attributes.to_hash.should == {'for' => 'form-admin'}
     label.inner_text.should == 'Administrator:'
 
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'id' => 'form-admin',
       'type' => 'checkbox',
       'name' => 'admin',
@@ -135,10 +136,10 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label.attributes.should == {'for' => 'form-password'}
+    label.attributes.to_hash.should == {'for' => 'form-password'}
     label.inner_text.should == 'Password:'
 
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'id' => 'form-password',
       'type' => 'password',
       'name' => 'password',
@@ -151,11 +152,11 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, textarea = doc.at(:label), doc.at(:textarea)
 
-    label.attributes.should == {'for' => 'form-text'}
+    label.attributes.to_hash.should == {'for' => 'form-text'}
     label.inner_text.should == 'Text:'
 
     textarea.inner_text.should == ''
-    textarea.attributes.should == {
+    textarea.attributes.to_hash.should == {
       'id' => 'form-text',
       'name' => 'text',
       'tabindex' => '1'}
@@ -167,11 +168,11 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, textarea = doc.at(:label), doc.at(:textarea)
 
-    label.attributes.should == {'for' => 'form-text'}
+    label.attributes.to_hash.should == {'for' => 'form-text'}
     label.inner_text.should == 'Text:'
 
     textarea.inner_text.should == 'foobar'
-    textarea.attributes.should == {
+    textarea.attributes.to_hash.should == {
       'id' => 'form-text',
       'name' => 'text',
       'tabindex' => '1'}
@@ -183,11 +184,11 @@ describe Ramaze::Helper::Form do
     doc = Hpricot(got.body)
     label, input = doc.at(:label), doc.at(:input)
 
-    label.attributes.should == {'for' => 'form-file'}
+    label.attributes.to_hash.should == {'for' => 'form-file'}
     label.inner_text.should == 'File:'
 
     input.inner_text.should == ''
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'id' => 'form-file',
       'name' => 'file',
       'tabindex' => '1',
@@ -203,7 +204,7 @@ describe Ramaze::Helper::Form do
     label.should.be.nil
 
     input.inner_text.should == ''
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'name' => 'secret',
       'type' => 'hidden',
       'value' => ''}
@@ -218,7 +219,7 @@ describe Ramaze::Helper::Form do
     label.should.be.nil
 
     input.inner_text.should == ''
-    input.attributes.should == {
+    input.attributes.to_hash.should == {
       'name' => 'secret',
       'type' => 'hidden',
       'value' => 'fish'}
@@ -230,17 +231,17 @@ describe Ramaze::Helper::Form do
 
     label, select = doc.at(:label), doc.at(:select)
 
-    label.attributes.should == {'for' => 'form-languages'}
+    label.attributes.to_hash.should == {'for' => 'form-languages'}
     label.inner_text.should == 'Languages:'
 
-    select.attributes.should == {
+    select.attributes.to_hash.should == {
       'id'       => 'form-languages',
       'name'     => 'languages',
       'size'     => '1',
       'tabindex' => '1'}
 
     options = select/:option
-    options.map{|o| [o.inner_text, o.attributes] }.
+    options.map{|o| [o.inner_text, o.attributes.to_hash] }.
       should == [['English',  {'value' => 'English'}],
                  ['German',   {'value' => 'German'}],
                  ['Japanese', {'value' => 'Japanese'}]]
@@ -252,17 +253,17 @@ describe Ramaze::Helper::Form do
 
     label, select = doc.at(:label), doc.at(:select)
 
-    label.attributes.should == {'for' => 'form-languages'}
+    label.attributes.to_hash.should == {'for' => 'form-languages'}
     label.inner_text.should == 'Languages:'
 
-    select.attributes.should == {
+    select.attributes.to_hash.should == {
       'id'       => 'form-languages',
       'name'     => 'languages',
       'size'     => '5',
       'tabindex' => '1'}
 
     options = select/:option
-    options.map{|o| [o.inner_text, o.attributes] }.
+    options.map{|o| [o.inner_text, o.attributes.to_hash] }.
       should == [['English',  {'value' => 'English'}],
                  ['German',   {'value' => 'German'}],
                  ['Japanese', {'value' => 'Japanese'}]]
@@ -274,10 +275,10 @@ describe Ramaze::Helper::Form do
 
     label, select = doc.at(:label), doc.at(:select)
 
-    label.attributes.should == {'for' => 'form-languages'}
+    label.attributes.to_hash.should == {'for' => 'form-languages'}
     label.inner_text.should == 'Languages:'
 
-    select.attributes.should == {
+    select.attributes.to_hash.should == {
       'id'       => 'form-languages',
       'multiple' => 'multiple',
       'name'     => 'languages',
@@ -285,7 +286,7 @@ describe Ramaze::Helper::Form do
       'tabindex' => '1'}
 
     options = select/:option
-    options.map{|o| [o.inner_text, o.attributes] }.
+    options.map{|o| [o.inner_text, o.attributes.to_hash] }.
       should == [['English',  {'value' => 'English'}],
                  ['German',   {'value' => 'German'}],
                  ['Japanese', {'value' => 'Japanese'}]]
@@ -297,17 +298,17 @@ describe Ramaze::Helper::Form do
 
     label, select = doc.at(:label), doc.at(:select)
 
-    label.attributes.should == {'for' => 'form-languages'}
+    label.attributes.to_hash.should == {'for' => 'form-languages'}
     label.inner_text.should == 'Languages:'
 
-    select.attributes.should == {
+    select.attributes.to_hash.should == {
       'id'       => 'form-languages',
       'name'     => 'languages',
       'size'     => '1',
       'tabindex' => '1'}
 
     options = select/:option
-    options.map{|o| [o.inner_text, o.attributes] }.
+    options.map{|o| [o.inner_text, o.attributes.to_hash] }.
       should == [['English',  {'value' => 'English'}],
                  ['German',   {'value' => 'German', 'selected' => 'selected'}],
                  ['Japanese', {'value' => 'Japanese'}]]
@@ -319,17 +320,17 @@ describe Ramaze::Helper::Form do
 
     label, select = doc.at(:label), doc.at(:select)
 
-    label.attributes.should == {'for' => 'form-languages'}
+    label.attributes.to_hash.should == {'for' => 'form-languages'}
     label.inner_text.should == 'Languages:'
 
-    select.attributes.should == {
+    select.attributes.to_hash.should == {
       'id'       => 'form-languages',
       'name'     => 'languages',
       'size'     => '1',
       'tabindex' => '1'}
 
     options = select/:option
-    options.map{|o| [o.inner_text, o.attributes] }.sort.
+    options.map{|o| [o.inner_text, o.attributes.to_hash] }.sort.
       should == [['English',  {'value' => 'en'}],
                  ['German',   {'value' => 'de'}],
                  ['Japanese', {'value' => 'ja'}]]
@@ -341,17 +342,17 @@ describe Ramaze::Helper::Form do
 
     label, select = doc.at(:label), doc.at(:select)
 
-    label.attributes.should == {'for' => 'form-languages'}
+    label.attributes.to_hash.should == {'for' => 'form-languages'}
     label.inner_text.should == 'Languages:'
 
-    select.attributes.should == {
+    select.attributes.to_hash.should == {
       'id'       => 'form-languages',
       'name'     => 'languages',
       'size'     => '1',
       'tabindex' => '1'}
 
     options = select/:option
-    options.map{|o| [o.inner_text, o.attributes] }.sort.
+    options.map{|o| [o.inner_text, o.attributes.to_hash] }.sort.
       should == [['English',  {'value' => 'en'}],
                  ['German',   {'value' => 'de'}],
                  ['Japanese', {'value' => 'ja'}]]
