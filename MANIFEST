@@ -6,9 +6,11 @@ Rakefile
 benchmark/bench_templates/bench.rb
 benchmark/bench_templates/view/large.erb
 benchmark/bench_templates/view/large.haml
+benchmark/bench_templates/view/large.lok
 benchmark/bench_templates/view/large.xhtml
 benchmark/bench_templates/view/small.erb
 benchmark/bench_templates/view/small.haml
+benchmark/bench_templates/view/small.lok
 benchmark/bench_templates/view/small.xhtml
 benchmark/results.txt
 benchmark/run.rb
@@ -177,6 +179,7 @@ examples/templates/template_ezamar.rb
 examples/templates/template_haml.rb
 examples/templates/template_liquid.rb
 examples/templates/template_markaby.rb
+examples/templates/template_mustache.rb
 examples/templates/template_nagoro.rb
 examples/templates/template_redcloth.rb
 examples/templates/template_remarkably.rb
@@ -184,6 +187,7 @@ examples/templates/template_tenjin.rb
 examples/templates/view/external.haml
 examples/templates/view/external.liquid
 examples/templates/view/external.mab
+examples/templates/view/external.mt
 examples/templates/view/external.nag
 examples/templates/view/external.redcloth
 examples/templates/view/external.rem
@@ -335,7 +339,9 @@ lib/ramaze/view/gestalt.rb
 lib/ramaze/view/haml.rb
 lib/ramaze/view/less.rb
 lib/ramaze/view/liquid.rb
+lib/ramaze/view/lokar.rb
 lib/ramaze/view/maruku.rb
+lib/ramaze/view/mustache.rb
 lib/ramaze/view/nagoro.rb
 lib/ramaze/view/nagoro/render_partial.rb
 lib/ramaze/view/redcloth.rb
@@ -361,6 +367,7 @@ spec/examples/templates/template_ezamar.rb
 spec/examples/templates/template_haml.rb
 spec/examples/templates/template_liquid.rb
 spec/examples/templates/template_markaby.rb
+spec/examples/templates/template_mustache.rb
 spec/examples/templates/template_nagoro.rb
 spec/examples/templates/template_redcloth.rb
 spec/examples/templates/template_remarkably.rb
@@ -470,6 +477,12 @@ spec/ramaze/view/less/file.css.less
 spec/ramaze/view/liquid.rb
 spec/ramaze/view/liquid/external.liquid
 spec/ramaze/view/liquid/sum.liquid
+spec/ramaze/view/lokar.rb
+spec/ramaze/view/lokar/external.lok
+spec/ramaze/view/lokar/sum.lok
+spec/ramaze/view/mustache.rb
+spec/ramaze/view/mustache/external.mt
+spec/ramaze/view/mustache/sum.mt
 spec/ramaze/view/nagoro.rb
 spec/ramaze/view/nagoro/external.nag
 spec/ramaze/view/nagoro/sum.nag

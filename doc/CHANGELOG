@@ -1,3 +1,129 @@
+[c29407c | Wed Jan 06 15:57:43 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * New version spec
+
+[2dbf20e | Wed Jan 06 15:54:58 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix form spec for latest Hpricot
+
+[4e5d5b3 | Wed Jan 06 15:27:34 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Revert change made by Dmitry Gorbik
+
+[23412e5 | Mon Nov 23 16:42:44 UTC 2009] Dmitry Gorbik <dmitrygorbik@isengard.local>
+
+  * Small form helper fix
+
+[4e6d6a1 | Mon Oct 19 08:40:00 UTC 2009] Dmitry Gorbik <socket.h@gmail.com>
+
+  * Little refactoring
+
+[a226b40 | Mon Oct 19 04:24:13 UTC 2009] Dmitry Gorbik <socket.h@gmail.com>
+
+  * Fixed small bug in haml view
+
+[45db6fe | Sun Oct 18 19:07:42 UTC 2009] Dmitry Gorbik <socket.h@gmail.com>
+
+  * Made Haml cache more efficient
+
+[2dd1012 | Tue Jan 05 17:20:57 UTC 2010] Zoxc <zoxc32@gmail.com>
+
+  * Added support for the Lokar template engine.
+
+[d1dc44e | Mon Dec 21 18:35:11 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * update mailmap
+
+[d7dd102 | Mon Dec 21 18:03:40 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Seems like git finally got its act together
+
+[3a24ddd | Fri Dec 18 03:32:06 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Allow absolute external uris for css
+
+[1f83803 | Thu Nov 19 03:49:20 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix mustache engine for 1.8
+
+[79ddac2 | Thu Nov 19 03:34:59 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Spell out requires of snippets
+
+[67eb0aa | Mon Nov 16 17:14:18 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Nicer require
+
+[8e72903 | Wed Nov 04 11:51:49 UTC 2009] mig <mig@mypeplum.com>
+
+  * Revert "Add imap_auth.rb in examples/misc/"
+
+    This reverts commit 8dd2b7860f7f50b5604e9a8333a0c7d01ade1802.
+
+[c0a6bbd | Wed Nov 04 11:45:07 UTC 2009] mig <mig@mypeplum.com>
+
+  * Replace R method with r in markaby view
+
+[51f0cc1 | Wed Nov 04 11:41:28 UTC 2009] mig <mig@mypeplum.com>
+
+  * Replace R method with r in markaby controller
+
+[e4ec45d | Wed Oct 21 12:17:28 UTC 2009] mig <mig@mypeplum.com>
+
+  * Add imap_auth.rb in examples/misc/
+
+[d29bafe | Sun Oct 18 15:46:36 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix logic error in project creator
+
+[1cc16ac | Sun Oct 18 06:13:06 UTC 2009] Dmitry Gorbik <socket.h@gmail.com>
+
+  * form_checkbox_tag added for working with multiple checkboxes
+
+[0ad9c9c | Sun Oct 18 08:54:02 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Make the ProjectCreator code a bit more readable
+
+[02a9609 | Sat Oct 17 08:51:29 UTC 2009] Dmitry Gorbik <socket.h@gmail.com>
+
+  * Rails-like output for project generator
+
+[6ab8b38 | Sat Oct 17 10:40:23 UTC 2009] Masahiro Nakagawa <repeatedly@gmail.com>
+
+  * Add Mustache template engine
+
+[2398699 | Sun Oct 11 07:02:11 UTC 2009] Clive Crous <clive@crous.co.za>
+
+  * Correct a2 encoding within httpdigest helper to use remotely given uri
+
+[903c522 | Sun Oct 11 06:30:44 UTC 2009] Clive Crous <clive@crous.co.za>
+
+  * reset digest_authorize before each test, I really don't trust digest_authorize completely it does not seem to obey the digest-auth specification correctly
+
+[96b2e65 | Sun Oct 11 06:12:39 UTC 2009] Clive Crous <clive@crous.co.za>
+
+  * Specs should be using digest_authentication not basic (how and when did this happen?)
+
+[9683aa5 | Sun Oct 11 05:46:34 UTC 2009] Clive Crous <clive@crous.co.za>
+
+  * Ensure that authentication request responses for httpdigest do not get cached
+
+[de3572b | Sun Oct 11 05:32:40 UTC 2009] Clive Crous <clive@crous.co.za>
+
+  * Cleanup existing and (re)add a few httpdigest specs
+
+[2f62921 | Sun Oct 11 04:37:36 UTC 2009] Clive Crous <clive@crous.co.za>
+
+  * Ensure that the httpdigest helper always returns challenge headers on authentication failure
+
+[f827b63 | Wed Sep 30 05:12:09 UTC 2009] starapor <me@sarahtaraporewalla.com>
+
+  * adding missing handlers to slippers so that you can customize the error handling
+
+[842d47f | Fri Oct 02 15:09:43 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2009.10
+
 [ba23aa6 | Fri Oct 02 15:09:32 UTC 2009] Michael Fellinger <m.fellinger@gmail.com>
 
   * dependency against latest innate
@@ -439,6 +565,18 @@
   * link helper spec did not set the prefix
 
 [eba4734 | Tue May 19 10:45:14 UTC 2009] Antti Tuomi <antti.tuomi@tkk.fi>
+
+  * spec to check if the link helper works properly with prefix
+
+[3aeadad | Wed May 20 03:00:37 UTC 2009] Antti Tuomi <antti.tuomi@tkk.fi>
+
+  * link helper now should use Ramaze.options.prefix
+
+[6dc8f88 | Wed May 20 02:43:01 UTC 2009] Antti Tuomi <antti.tuomi@tkk.fi>
+
+  * link helper spec did not set the prefix
+
+[1391f90 | Tue May 19 10:45:14 UTC 2009] Antti Tuomi <antti.tuomi@tkk.fi>
 
   * spec to check if the link helper works properly with prefix
 
