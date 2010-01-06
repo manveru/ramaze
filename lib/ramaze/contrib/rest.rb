@@ -13,11 +13,11 @@ module Ramaze
                      'DELETE' => 'destroy'}
 
   Rewrite['REST dispatch'] = lambda{|path, request|
-    # if suffix = Ramaze.options[:rest_rewrite][request.request_method]
-      # "#{path}/#{suffix}".squeeze('/')
-    # else
-      # path
-    # end
-    return '/'
+    if suffix = Ramaze.options[:rest_rewrite][request.request_method]
+      "#{path}/#{suffix}".squeeze('/')
+    else
+      path
+    end
+    # return '/'
   }
 end
