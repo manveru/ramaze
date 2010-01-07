@@ -28,14 +28,12 @@ DEVELOPMENT_DEPENDENCIES = {
   "RedCloth"        => {:version => "4.2.2"},
   "Remarkably"      => {:version => "0.5.2", :lib => 'remarkably'},
   "abstract"        => {:version => "1.0.0"},
-  "activesupport"   => {:version => "2.3.5"},
   "addressable"     => {:version => "2.1.1"},
   "bacon"           => {:version => "1.1.0"},
   "builder"         => {:version => "2.1.2"},
   "erector"         => {:version => "0.7.2"},
   "erubis"          => {:version => "2.6.5"},
   "ezamar"          => {:version => "2009.06"},
-  "gemcutter"       => {:version => "0.3.0"},
   "haml"            => {:version => "2.2.16"},
   "hpricot"         => {:version => "0.8.2"},
   "json"            => {:version => "1.2.0"},
@@ -47,10 +45,8 @@ DEVELOPMENT_DEPENDENCIES = {
   "maruku"          => {:version => "0.6.0"},
   "memcache-client" => {:version => "1.7.7", :lib => 'memcache'},
   "mustache"        => {:version => "0.5.1"},
-  "mutter"          => {:version => "0.5.2"},
   "nagoro"          => {:version => "2009.05"},
   "polyglot"        => {:version => "0.2.9"},
-  "rack"            => {:version => "1.1.0"},
   "rack-contrib"    => {:version => "0.9.2", :lib => 'rack/contrib'},
   "rack-test"       => {:version => "0.5.3", :lib => 'rack/test'},
   "sequel"          => {:version => "3.8.0"},
@@ -58,7 +54,6 @@ DEVELOPMENT_DEPENDENCIES = {
   "sqlite3-ruby"    => {:version => "1.2.5", :lib => 'sqlite3'},
   "tagz"            => {:version => "7.2.3"},
   "tenjin"          => {:version => "0.6.1"},
-  "treetop"         => {:version => "1.4.3"},
 }
 
 GEMSPEC = Gem::Specification.new{|s|
