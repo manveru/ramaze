@@ -100,27 +100,27 @@ module Ramaze
       end
     end
 
-    # copied from actionpack
+    # Copied from actionpack, and revised by insane-dreamer to fix a bug (original fails on some URLs)
     AUTO_LINK_RE = %r{
-                    (                          # leading text
-                      <\w+.*?>|                # leading HTML tag, or
-                      [^=!:'"/]|               # leading punctuation, or
-                      ^                        # beginning of line
-                    )
-                    (
-                      (?:https?://)|           # protocol spec, or
-                      (?:www\.)                # www.*
-                    )
-                    (
-                      [-\w]+                   # subdomain or domain
-                      (?:\.[-\w]+)*            # remaining subdomains or domain
-                      (?::\d+)?                # port
-                      (?:/(?:(?:[~\w\+@%-]|(?:[,.;:][^\s$])))?)* # path
-                      (?:\?[\w\+@%&=.;-]+)?     # query string
-                      (?:\#[\w\-]*)?           # trailing anchor
-                    )
-                    ([[:punct:]]|\s|<|$)       # trailing text
-                   }x unless defined? AUTO_LINK_RE
+      (                          # leading text
+        <\w+.*?>|                # leading HTML tag, or
+        [^=!:'"/]|               # leading punctuation, or
+        ^                        # beginning of line
+      )
+      (
+        (?:https?://)|           # protocol spec, or
+        (?:www\.)                # www.*
+      )
+      (
+        [-\w]+                   # subdomain or domain
+        (?:\.[-\w]+)*            # remaining subdomains or domain
+        (?::\d+)?                # port
+        (?:/(?:[~\w\+@%=\(\)-]|(?:[,.;:'][^\s<$]))*)* # path
+        (?:\?[\w\+@%&=.;:-]+)?   # query string
+        (?:\#[\w\-]*)?           # trailing anchor
+      )
+      ([[:punct:]]|<|$|)         # trailing text
+    }x unless defined? AUTO_LINK_RE
 
     # Turns all urls into clickable links.  If a block is given, each url
     # is yielded and the result is used as the link text.
