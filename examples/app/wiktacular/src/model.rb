@@ -42,7 +42,7 @@ class WikiEntry
   end
 
   def delete
-    FileUtils.rm_rf(base)
+    FileUtils.rm_rf(base) if exists?
   end
 
   def revert

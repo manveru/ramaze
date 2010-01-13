@@ -35,7 +35,7 @@ class MainController < Ramaze::Controller
   end
 
   def delete handle
-    WikiEntry[handle].delete
+    WikiEntry.new(handle).delete
     redirect_referer
   end
 
@@ -49,8 +49,7 @@ class MainController < Ramaze::Controller
 
   def setup
     @nodes = WikiEntry.titles.map{|f|
-        name = File.basename(f)
-        %[<a href="/#{name}">#{name}</a>]
+        anchor File.basename(f)
       }.join("\n")
   end
 
