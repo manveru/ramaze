@@ -2,6 +2,7 @@ class MainController < Ramaze::Controller
 
   engine :Etanni
   layout :application
+  before_all {setup}
   
   def index handle = "main"
     @handle = handle
@@ -46,7 +47,7 @@ class MainController < Ramaze::Controller
     redirect route(:index, handle)
   end
 
-  def html_layout
+  def setup
     @nodes = WikiEntry.titles.map{|f|
         name = File.basename(f)
         %[<a href="/#{name}">#{name}</a>]
