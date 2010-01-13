@@ -5,12 +5,12 @@ class WikiEntry
   ENTRIES_DIR = __DIR__('../mkd')
   class << self
     def [](name)
-      if File.exist?(ENTRIES_DIR/File.basename(File.expand_path(name)))
+      if File.exist?(File.join(ENTRIES_DIR, File.basename(File.expand_path(name))))
         new(name)
       end
     end
     def titles
-      Dir[ENTRIES_DIR/'*'].entries
+      Dir[File.join(ENTRIES_DIR,'*')].entries
     end
   end
 
@@ -64,7 +64,7 @@ class WikiEntry
   end
 
   def base
-    ENTRIES_DIR/@name
+    File.join(ENTRIES_DIR, @name)
   end
 
   def content
@@ -81,7 +81,7 @@ class WikiEntry
 end
 
 class EntryView
-  include Ramaze::Helper::Methods
+  extend Ramaze::HelperAccess
   helper :cgi, :link
 
   class << self
@@ -94,7 +94,7 @@ class EntryView
       html = BlueCloth.new(text).to_html
       html.gsub!(/\[\[(.*?)\]\]/) do |m|
         exists = WikiEntry[$1] ? 'exists' : 'nonexists'
-        A(h($1), :href => $1, :class => exists)
+        "<a class=\"#{exists}\" href=\"/#{$1}\">#{$1}</a>"
       end
       html
     end

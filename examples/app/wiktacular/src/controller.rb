@@ -1,6 +1,8 @@
 class MainController < Ramaze::Controller
-  
 
+  engine :Etanni
+  layout :application
+  
   def index handle = "main"
     @handle = handle
     @entry = WikiEntry.new(handle)
@@ -23,12 +25,12 @@ class MainController < Ramaze::Controller
 
   def revert handle
     WikiEntry[handle].revert
-    redirect Rs(handle)
+    redirect route(handle)
   end
 
   def unrevert handle
     WikiEntry[handle].unrevert
-    redirect Rs(handle)
+    redirect route(handle)
   end
 
   def delete handle
@@ -41,7 +43,7 @@ class MainController < Ramaze::Controller
     handle = request['handle']
     entry = WikiEntry.new(handle)
     entry.save(request['text'])
-    redirect Rs(:index, handle)
+    redirect route(:index, handle)
   end
 
   def html_layout
@@ -51,5 +53,4 @@ class MainController < Ramaze::Controller
       }.join("\n")
   end
 
-  layout '/html_layout'
 end
