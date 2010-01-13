@@ -1,6 +1,6 @@
 <form method="POST" action="/save" id="edit_entry">
-  <input type="text" name="handle" value="#@handle" />
+  <input type="text" name="handle" value="#{h @entry.name}" />
   <textarea name="text">#@text</textarea>
   <input type="submit" />
-  or #{anchor('cancel', route(@handle))}
+  or #{anchor('cancel', @entry.name)}
 </form>
