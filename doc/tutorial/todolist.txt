@@ -65,7 +65,7 @@ require 'rubygems'
 # => true
 require 'ramaze'
 # => true
-File.expand_path(Ramaze::BASEDIR + '/../examples/app/todolist')
+File.expand_path(Ramaze::ROOT + '/../examples/app/todolist')
 # => "/home/manveru/c/ramaze/examples/app/todolist"
 --------------------------------------------------------------------------------
 
