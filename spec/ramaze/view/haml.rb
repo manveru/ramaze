@@ -31,6 +31,22 @@ class SpecHaml < Ramaze::Controller
   end
 end
 
+class SpecHamlLayout < Ramaze::Controller
+  map '/with_layout'
+  engine :Haml
+  layout :wrapper
+
+  RUNS = [1,2,3]
+
+  def index
+    RUNS.shift.to_s
+  end
+
+  def wrapper
+    '= @content'
+  end
+end
+
 describe Ramaze::View::Haml do
   behaves_like :rack_test
 
@@ -82,5 +98,17 @@ describe Ramaze::View::Haml do
 "<div>
   3
 </div>"
+  end
+
+  should 'render the wrapped view twice even with caching' do
+    got = get('/with_layout')
+    got.status.should == 200
+    got['Content-Type'].should == 'text/html'
+    got.body.strip.should == "1"
+
+    got = get('/with_layout')
+    got.status.should == 200
+    got['Content-Type'].should == 'text/html'
+    got.body.strip.should == "2"
   end
 end
