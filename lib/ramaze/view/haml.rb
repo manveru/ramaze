@@ -10,15 +10,10 @@ module Ramaze
         if haml_options = action.instance.ancestral_trait[:haml_options]
           options = options.merge(haml_options)
         end
-        action.sync_variables(action)
-        action.options[:filename] = (action.view || '(haml)')
 
-        haml = View.compile(string) do |s| 
-          var_names = action.instance.instance_variables
-          var_names.collect! {|v| v.gsub('@','')}
-          ::Haml::Engine.new(s,options).render_proc(Object.new,*var_names) 
-        end
-        html = haml.call action.variables
+        action.options[:filename] = (action.view || '(haml)')
+        haml = View.compile(string){|s| ::Haml::Engine.new(s, options) }
+        html = haml.to_html(action.instance, action.variables)
 
         return html, 'text/html'
       end
