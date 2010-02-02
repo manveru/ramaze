@@ -14,7 +14,9 @@ module Ramaze
         action.options[:filename] = (action.view || '(haml)')
 
         haml = View.compile(string) do |s| 
-          ::Haml::Engine.new(s,options).render_proc(action.instance,*action.variables.keys) 
+          var_names = action.instance.instance_variables
+          var_names.collect! {|v| v.gsub('@','')}
+          ::Haml::Engine.new(s,options).render_proc(action.instance,*var_names) 
         end
         html = haml.call action.variables
 
