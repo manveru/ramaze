@@ -759,9 +759,9 @@ boilerplate we can delete the slack from our templates.
 
 [source,html]
 --------------------------------------------------------------------------------
-<h2>Done Tasks</h2>
+<h2>Pending Tasks</h2>
 
-#{ anchor('Pending tasks', '') }
+#{ anchor('Done tasks', 'done') }
 
 <ul>
   <?r Task.filter(:done => false).each do |task| ?>
@@ -778,9 +778,9 @@ boilerplate we can delete the slack from our templates.
 
 [source,html]
 --------------------------------------------------------------------------------
-<h2>Pending Tasks</h2>
+<h2>Done Tasks</h2>
 
-#{ anchor('Done tasks', 'done') }
+#{ anchor('Pending tasks', '') }
 
 <ul>
   <?r Task.filter(:done => true).each do |task| ?>
