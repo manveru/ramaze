@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.5.2" />
+<meta name="generator" content="AsciiDoc 8.5.3" />
 <title>The official Ramaze Todo-list tutorial</title>
 <style type="text/css">
 /* Debug borders */
@@ -180,8 +180,8 @@ div.quoteblock > div.attribution {
   text-align: right;
 }
 
-div.verseblock > div.content {
-  white-space: pre;
+div.verseblock > pre.content {
+  font-family: inherit;
 }
 div.verseblock > div.attribution {
   padding-top: 0.75em;
@@ -399,8 +399,8 @@ div.quoteblock-attribution {
   text-align: right;
 }
 
-div.verseblock-content {
-  white-space: pre;
+pre.verseblock-content {
+  font-family: inherit;
 }
 div.verseblock-attribution {
   padding-top: 0.75em;
@@ -608,7 +608,7 @@ Ramaze distribution.
 To find out where that is located (as this differs widely between systems), you
 can follow these steps in <tt>irb</tt>:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -638,7 +638,7 @@ File<span style="color: #990000">.</span>expand_path<span style="color: #990000"
 tradition, we create a file at the root of your application directory called
 <em>start.rb</em> with following content:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -693,7 +693,7 @@ provide bindings, in which case I have to refer you to <a href="http://sqlite.or
 <div class="paragraph"><p>In order to use Sequel we also need a database connection.</p></div>
 <div class="paragraph"><p>So we create a new file at <em>model/init.rb</em> with following content:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -707,7 +707,7 @@ to 2.12 you may remove this line if it gives you any problems.</p></div>
 <div class="paragraph"><p>Next we edit <em>start.rb</em>, remove the <tt>Hello</tt> class, and add a require for the
 file, <em>start.rb</em> should look like this now:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -721,7 +721,7 @@ Ramaze<span style="color: #990000">.</span>start</tt></pre></div></div>
 ask how we are going to create our schema.</p></div>
 <div class="paragraph"><p>So our next step is to create the actual model for our data, for this we create another file at <em>model/task.rb</em>:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -745,7 +745,7 @@ very good support for them as well, but seriously, this is a really simple
 schema that probably won&#8217;t change much over the next few years.</p></div>
 <div class="paragraph"><p>Finally, add a line to your <em>model/init.rb</em> that requires <em>model/task.rb</em>:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -769,7 +769,7 @@ explain that in more detail later when we come to layouts.</p></div>
 <div class="paragraph"><p>To start we put some contents into <em>view/index.xhtml</em> (xhtml is the default
 filename-extension for Etanni templates)</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -799,7 +799,7 @@ yielding a list of task titles and the respective status of the task.</p></div>
 work, let&#8217;s see how this looks like in a browser, start your application like above with <tt>ruby start.rb</tt> and open <a href="http://localhost:7000/">http://localhost:7000/</a>.</p></div>
 <div class="paragraph"><p>The template expanded to something like (only showing the interesting part):</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -826,7 +826,7 @@ Structure of the Model or View independent from each other.</p></div>
 we will implement marking a task as done.</p></div>
 <div class="paragraph"><p>Go on and create the file <em>controller/task.rb</em> with following contents:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -876,7 +876,7 @@ Redirect the client to where it came from.
 </ul></div>
 <div class="paragraph"><p>And we add a require to <em>controller/task.rb</em> to our <em>start.rb</em>:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -890,7 +890,7 @@ Ramaze<span style="color: #990000">.</span>start</tt></pre></div></div>
 <div class="paragraph"><p>Next we will have to modify the <em>view/index.xhtml</em> to contain a link that will
 change the status of a task:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -907,7 +907,7 @@ done.</p></div>
 <div class="paragraph"><p>An even shorter way of writing that line using default aliases, that you will
 encounter in other applications, is:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -924,7 +924,7 @@ do your laundry and come back for the next episode.</p></div>
 open them again, so you won&#8217;t be without work tomorrow.</p></div>
 <div class="paragraph"><p>Let&#8217;s add a method to our Controller that will let us open a closed task:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -949,7 +949,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #0000FF">end</span></span></tt></pre></div></div>
 <div class="paragraph"><p>And add a link to that action:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -970,7 +970,7 @@ that will take care of that for you.</p></div>
 <div class="paragraph"><p>Time to get rid of that task once and for all. No more dish washing yay!</p></div>
 <div class="paragraph"><p>A little modification to Controller, using destructive force.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1002,7 +1002,7 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #0000FF">end</span></span></tt></pre></div></div>
 <div class="paragraph"><p>And a link to the <tt>delete</tt> action.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1031,7 +1031,7 @@ forgetting about it.</p></div>
 a nice little form that we can fill out in the few seconds between proving
 people on the internet wrong.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1048,7 +1048,7 @@ yet. Trying to create a task will result in an error.</p></div>
 <div class="paragraph"><p>So what we have to do is adding one more method to our Controller that will
 take care of actually creating the Task.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1102,7 +1102,7 @@ one with the same title, you will get a nice error:</p></div>
 <div class="paragraph"><p>OK, programmers ignore warnings and hide errors, let&#8217;s rescue the exception and
 just act as if nothing has happened.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1135,7 +1135,7 @@ What a waste of our honest effort to create a duplicate task, we all know if we
 try often enough it will eventually have to work, so let&#8217;s save us some typing.</p></div>
 <div class="paragraph"><p>In our <em>view/index.xhtml</em> we modify the form input to have a default value:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1151,7 +1151,7 @@ http://www.gnu.org/software/src-highlite -->
 and View.
 We didn&#8217;t set any such variable in the Controller yet, so do it now:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1169,7 +1169,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>Turns out we have to revisit the <tt>create</tt> method to give us a hint in form of a
 GET parameter and change <tt>index</tt> to pick it up.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1203,7 +1203,7 @@ Not forever, but at least it will not show up anymore on the <tt>index</tt> acti
 <div class="paragraph"><p>So we filter out all tasks that haven&#8217;t been done yet in the
 <em>view/index.xhtml</em>:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1213,7 +1213,7 @@ http://www.gnu.org/software/src-highlite -->
       # ...</tt></pre></div></div>
 <div class="paragraph"><p>So off we go and add a new template at <em>view/done.xhtml</em>.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1257,7 +1257,7 @@ of tasks, that&#8217;s what we call <em>layout</em>.</p></div>
 <div class="paragraph"><p>Every action can have a layout associated with it, remember that empty <em>layout</em>
 directory in your application? That&#8217;s exactly where we will put it.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1283,7 +1283,7 @@ http://www.gnu.org/software/src-highlite -->
 <div class="paragraph"><p>And to tell Ramaze which layout to use for our <tt>Tasks</tt> we&#8217;ll have to add a line
 to the Controller.</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1295,13 +1295,13 @@ http://www.gnu.org/software/src-highlite -->
 boilerplate we can delete the slack from our templates.</p></div>
 <div class="paragraph"><p><em>view/index.xhtml</em> becomes:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>Done Tasks<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>Pending Tasks<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
 
-#{ anchor('Pending tasks', 'done') }
+#{ anchor('Done tasks', 'done') }
 
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;ul&gt;</span></span>
   &lt;?r Task.filter(:done =&gt; false).each do |task| ?&gt;
@@ -1314,13 +1314,13 @@ http://www.gnu.org/software/src-highlite -->
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;/ul&gt;</span></span></tt></pre></div></div>
 <div class="paragraph"><p><em>view/done.xhtml</em> becomes:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>Pending Tasks<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
+<pre><tt><span style="font-weight: bold"><span style="color: #0000FF">&lt;h2&gt;</span></span>Done Tasks<span style="font-weight: bold"><span style="color: #0000FF">&lt;/h2&gt;</span></span>
 
-#{ anchor('Done tasks', 'done') }
+#{ anchor('Pending tasks', '') }
 
 <span style="font-weight: bold"><span style="color: #0000FF">&lt;ul&gt;</span></span>
   &lt;?r Task.filter(:done =&gt; true).each do |task| ?&gt;
@@ -1347,7 +1347,7 @@ in the example todo-list.</p></div>
 <div class="paragraph"><p>What we do cover is adding it to your application, or the <tt>&lt;head&gt;</tt> in
 <em>layout/default.xhtml</em> to be exact:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1371,7 +1371,7 @@ port, <tt>7000</tt>, which prevents you from starting more than one instance or 
 applications.</p></div>
 <div class="paragraph"><p>To change the port, you can, for example:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1400,7 +1400,7 @@ gem install mongrel</tt></pre>
 </div></div>
 <div class="paragraph"><p>Now to the configuration:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1414,7 +1414,7 @@ Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.
 Ramaze<span style="color: #990000">.</span>options<span style="color: #990000">.</span>adapter<span style="color: #990000">.</span>adapter <span style="color: #990000">=</span> <span style="color: #990000">:</span>thin</tt></pre></div></div>
 <div class="paragraph"><p>For the full performance, switch Ramaze into <tt>:live</tt> mode:</p></div>
 <div class="listingblock">
-<div class="content"><!-- Generator: GNU source-highlight 3.1
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
@@ -1505,7 +1505,7 @@ RSI
 <div id="footer">
 <div id="footer-text">
 Version 2.0<br />
-Last updated 2010-01-20 20:51:42 JST
+Last updated 2010-02-14 23:00:52 JST
 </div>
 </div>
 </body>
