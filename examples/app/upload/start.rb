@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'ramaze'
 
-class MainController < Ramaze::Controller
+class Upload < Ramaze::Controller
   def index
     return unless request.post?
     @inspection = h(request.params.pretty_inspect)
@@ -10,7 +10,11 @@ class MainController < Ramaze::Controller
     @extname, @basename = File.extname(filename), File.basename(filename)
     @file_size = tempfile.size
 
-    FileUtils.move(tempfile.path, Ramaze::Global.public_root/@basename)
+    options = Upload.options
+    dir = File.join(options.roots.first, options.publics.first)
+    file = File.expand_path(@basename, dir)
+    FileUtils.mkdir_p(dir)
+    FileUtils.cp(tempfile.path, file)
 
     @is_image = @type.split('/').first == 'image'
   end
