@@ -9,7 +9,7 @@ task :changelog do
       time   = Time.parse(time[/Date: (.*)/, 1]).utc
       time   = time.strftime('%a %b %d %H:%M:%S %Z %Y')
 
-      title.strip!
+      title = title.to_s.strip
 
       changelog.puts "[#{ref} | #{time}] #{author}"
       changelog.puts '', "  * #{title}"
