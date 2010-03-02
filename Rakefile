@@ -46,7 +46,6 @@ DEVELOPMENT_DEPENDENCIES = {
   "memcache-client" => {:version => "1.7.7", :lib => 'memcache'},
   "mustache"        => {:version => "0.5.1"},
   "nagoro"          => {:version => "2009.05"},
-  "polyglot"        => {:version => "0.2.9"},
   "rack-contrib"    => {:version => "0.9.2", :lib => 'rack/contrib'},
   "rack-test"       => {:version => "0.5.3", :lib => 'rack/test'},
   "sequel"          => {:version => "3.8.0"},
