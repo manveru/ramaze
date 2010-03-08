@@ -126,6 +126,7 @@ examples/app/wikore/src/model.rb
 examples/app/wikore/start.rb
 examples/app/wikore/view/index.xhtml
 examples/app/wiktacular/README
+examples/app/wiktacular/layout/application.xhtml
 examples/app/wiktacular/mkd/link/2007-07-20_19-45-51.mkd
 examples/app/wiktacular/mkd/link/current.mkd
 examples/app/wiktacular/mkd/main/2007-07-20_16-31-33.mkd
@@ -147,10 +148,9 @@ examples/app/wiktacular/spec/wiktacular.rb
 examples/app/wiktacular/src/controller.rb
 examples/app/wiktacular/src/model.rb
 examples/app/wiktacular/start.rb
-examples/app/wiktacular/template/edit.xhtml
-examples/app/wiktacular/template/html_layout.xhtml
-examples/app/wiktacular/template/index.xhtml
-examples/app/wiktacular/template/new.xhtml
+examples/app/wiktacular/view/edit.xhtml
+examples/app/wiktacular/view/index.xhtml
+examples/app/wiktacular/view/new.xhtml
 examples/basic/element.rb
 examples/basic/gestalt.rb
 examples/basic/hello.rb

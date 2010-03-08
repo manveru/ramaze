@@ -1,3 +1,97 @@
+[8629332 | Tue Mar 02 05:36:52 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Gracefully handle empty commit title
+
+[04e7ac5 | Tue Mar 02 05:31:21 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove polyglot dependency, it's indirect
+
+[cc60569 | Thu Feb 25 18:31:39 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix upload example
+
+[957bbee | Sun Feb 14 14:01:33 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update todolist.html
+
+[9c39d64 | Sat Feb 13 21:55:29 UTC 2010] jShaf <joshua.shaffner@gmail.com>
+
+  * 
+
+[2b917ff | Sat Feb 13 21:48:10 UTC 2010] jShaf <joshua.shaffner@gmail.com>
+
+  * 
+
+[5c93ded | Tue Feb 02 08:26:17 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Revert "Made Haml cache more efficient"
+
+    This reverts commit 45db6fe0696dfac7deeebba42c62c6bcca8bab10.
+
+[87a2562 | Tue Feb 02 08:26:02 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Revert "Fixed small bug in haml view"
+
+    This reverts commit a226b402518e17d1715b1632981732a5d43b56f9.
+
+[a85a6b5 | Tue Feb 02 08:25:41 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Revert "Little refactoring"
+
+    This reverts commit 4e6d6a17e46d8d26c012781ef7b5140fba50237c.
+
+[ba832e9 | Tue Feb 02 08:23:30 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Document the failure around Haml caching as a spec
+
+[d931221 | Wed Jan 20 11:52:08 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix old reference to BASEDIR
+
+[0b4d33d | Wed Jan 20 11:34:46 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update the HTML todolist tutorial to match TXT version
+
+[a1ca6a1 | Wed Jan 13 04:32:00 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix wiktacular
+
+[d23dd7b | Wed Jan 13 01:34:58 UTC 2010] mwlang <mwlang@cybrains.net>
+
+  * minor tweaks
+
+[645e221 | Wed Jan 13 00:22:01 UTC 2010] mwlang <mwlang@cybrains.net>
+
+  * fixed anchor in new.xhtml
+
+[1b3192d | Wed Jan 13 00:11:03 UTC 2010] mwlang <mwlang@cybrains.net>
+
+  * fixed the specs for wiktacular
+
+[037dfd9 | Tue Jan 12 23:10:41 UTC 2010] mwlang <mwlang@cybrains.net>
+
+  * updated to work with Ramaze 2010.01
+
+[4ea45ca | Tue Jan 12 23:05:23 UTC 2010] mwlang <mwlang@cybrains.net>
+
+  * changing directory names to current conventions
+
+[519e76f | Tue Jan 12 00:56:30 UTC 2010] kez <kdobson@gmail.com>
+
+  * Fixed a bug with the auto_link regexp
+
+[fb08f7c | Thu Jan 07 04:48:32 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Next release is going to need rubygems 1.3.5
+
+[017a759 | Thu Jan 07 04:48:19 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove some dev dependencies we don't need
+
+[1e88bb6 | Wed Jan 06 15:58:30 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2010.01
+
 [c29407c | Wed Jan 06 15:57:43 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
 
   * New version spec
