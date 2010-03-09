@@ -49,7 +49,6 @@ DEVELOPMENT_DEPENDENCIES = {
   "polyglot"        => {:version => "0.3.0"},
   "rack-contrib"    => {:version => "0.9.2", :lib => 'rack/contrib'},
   "rack-test"       => {:version => "0.5.3", :lib => 'rack/test'},
-  "ramaze"          => {:version => "2010.03.02"},
   "RedCloth"        => {:version => "4.2.3"},
   "Remarkably"      => {:version => "0.5.2", :lib => 'remarkably'},
   "RubyInline"      => {:version => "3.8.4"},
