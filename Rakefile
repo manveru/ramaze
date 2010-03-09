@@ -14,7 +14,7 @@ PROJECT_SPECS = FileList[
 PROJECT_MODULE      = 'Ramaze'
 PROJECT_JQUERY_FILE = 'lib/proto/public/js/jquery.js'
 PROJECT_README      = 'README.md'
-PROJECT_VERSION     = ENV['VERSION'].dup || Date.today.strftime('%Y.%m.%d')
+PROJECT_VERSION     = (ENV['VERSION'] || Date.today.strftime('%Y.%m.%d')).dup
 PROJECT_COPYRIGHT   = [
   "#          Copyright (c) #{Time.now.year} Michael Fellinger m.fellinger@gmail.com",
   "# All files in this distribution are subject to the terms of the Ruby license."
