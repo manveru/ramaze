@@ -22,7 +22,7 @@ module Ramaze
       end
 
       def self.class_defined?(action)
-        return {}, nil, nil unless action.view
+        return ::Mustache::Context.new(nil), nil, nil unless action.view
 
         path = File.dirname(action.view)
 

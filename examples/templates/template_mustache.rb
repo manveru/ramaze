@@ -18,7 +18,7 @@ class MainController < Ramaze::Controller
     %q{
 <html>
   <head>
-    <title>Template::Mustache external</title>
+    <title>Template::Mustache internal</title>
   </head>
   <body>
   <h1>{{header}}</h1>
