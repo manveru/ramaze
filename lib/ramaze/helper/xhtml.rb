@@ -11,7 +11,7 @@ module Ramaze
           if name =~ /^http/ # consider it external full url
             LINK_TAG % [name, media]
           else
-            LINK_TAG % ["/css/#{name}.css", media]
+            LINK_TAG % ["#{Ramaze.options.prefix}/css/#{name}.css", media]
           end
         elsif options[:only].to_s.downcase == 'ie'
           "<!--[if IE]>#{css(name, media)}<![endif]-->"
@@ -26,7 +26,7 @@ module Ramaze
         if name =~ /^http/ # consider it external full url
           SCRIPT_TAG % name
         else
-          SCRIPT_TAG % "/js/#{name}.js"
+          SCRIPT_TAG % "#{Ramaze.options.prefix}/js/#{name}.js"
         end
       end
 
