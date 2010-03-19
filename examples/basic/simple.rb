@@ -3,8 +3,9 @@ require 'ramaze'
 
 # A very simple little application, you can simply run it and
 # point your browser to http://localhost:7000
-# you can change the port by setting
-# Global.port = 80
+#
+# You can change the port by setting
+# Ramaze.options.adapter.port = 80
 # this most likely requires root-privileges though.
 
 # This example shows following (requests to the mentioned base-url) :

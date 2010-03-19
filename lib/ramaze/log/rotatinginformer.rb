@@ -131,7 +131,7 @@ module Ramaze
         message
       end
 
-      # This uses Global.inform_timestamp or a date in the format of
+      # This uses timestamp trait or a date in the format of
       #   %Y-%m-%d %H:%M:%S
       #   # => "2007-01-19 21:09:32"
 
