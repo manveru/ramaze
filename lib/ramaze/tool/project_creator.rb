@@ -113,7 +113,7 @@ class ProjectCreator
   end
 
   def each
-    Dir["#{proto}/**/*"].each{|path| yield(path) }
+    Dir.glob("#{proto}/**/*", File::FNM_DOTMATCH).each{|path| yield(path) }
   end
 
   include Enumerable
