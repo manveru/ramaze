@@ -16,9 +16,9 @@ module Ramaze
     # the +item+ argument.
     #
     # @example usage
-    #   numeric_counter(0, 'comment') # => 'no comments'
-    #   numeric_counter(1, 'comment') # => 'one comment'
-    #   numeric_counter(2, 'comment') # => '2 comments'
+    #   number_counter(0, 'comment') # => 'no comments'
+    #   number_counter(1, 'comment') # => 'one comment'
+    #   number_counter(2, 'comment') # => '2 comments'
 
     def number_counter(count, item, items = nil)
       count, item = count.to_i, item.to_s
