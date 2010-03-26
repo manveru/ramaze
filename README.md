@@ -349,7 +349,7 @@ There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
 You can start up an example just as you usually would any other ruby program:
 
-  $ ruby examples/hello.rb
+  $ ruby examples/basic/hello.rb
 
 Or:
 
