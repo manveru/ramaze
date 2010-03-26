@@ -22,17 +22,17 @@ module TodoList
     end
 
     def open(title)
-      Task[:title => title].open!
+      Task[:title => Ramaze::Helper::CGI.url_decode(title)].open!
       redirect r('/')
     end
 
     def close(title)
-      Task[:title => title].close!
+      Task[:title => Ramaze::Helper::CGI.url_decode(title)].close!
       redirect r('/')
     end
 
     def delete(title)
-      Task[:title => title].destroy
+      Task[:title => Ramaze::Helper::CGI.url_decode(title)].destroy
       redirect r('/')
     end
   end
