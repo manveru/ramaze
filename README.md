@@ -347,18 +347,15 @@ Some places to get started are:
 
 There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
-To start up an example, you can use the Ramaze binary located in bin/ramaze
-for example:
+You can start up an example just as you usually would any other ruby program:
 
-  $ ramaze examples/hello.rb
+  $ ruby examples/hello.rb
 
 Or:
 
-  $ cd examples/blog
-  $ ramaze
-
-Since ramaze uses the start.rb by default if you don't pass anything else.
-
+  $ cd examples/app/blog
+  $ ruby start.rb
+  
 For more information about the usage of ramaze try:
 
   $ ramaze --help
@@ -366,16 +363,16 @@ For more information about the usage of ramaze try:
 
 Examples include:
 
-* examples/hello.rb
+* examples/basic/hello.rb
   Hello, World!
 
-* examples/simple.rb
+* examples/basic/simple.rb
   A bit more advanced than the hello-example, but still very basic.
 
-* examples/blog
+* examples/app/blog
   Not yet fully functional, but coming along.
 
-* examples/whywiki
+* examples/app/whywiki
   A basic examples of a minimalistic application, based on the Wiki of \_why in
   his camping-framework.
 
