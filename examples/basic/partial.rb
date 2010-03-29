@@ -7,7 +7,7 @@ require 'ramaze'
 # Browse to /more and /even_more
 
 class MainController < Ramaze::Controller
-  provide :html => :nagoro
+  engine :nagoro
 
   def index
     "Hello, World!"
