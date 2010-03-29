@@ -3,7 +3,7 @@ require 'ramaze'
 
 class MainController < Ramaze::Controller
   layout :page
-  provide :html => :nagoro
+  provide :html, :engine => :Nagoro
 
   def index
     @title = "Test"
