@@ -11,4 +11,4 @@ module TodoList
   # DB = Sequel.sqlite(__DIR__('../todolist.sqlite'))
 end
 
-require 'model/task'
+require __DIR__'task'

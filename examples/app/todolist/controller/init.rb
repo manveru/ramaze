@@ -9,4 +9,4 @@ module TodoList
   end
 end
 
-require 'controller/task'
+require __DIR__'task'

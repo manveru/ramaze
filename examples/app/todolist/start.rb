@@ -5,7 +5,7 @@ Ramaze.setup do
   gem 'sequel'
 end
 
-require 'controller/init'
-require 'model/init'
+require __DIR__'controller/init'
+require __DIR__'model/init'
 
 Ramaze.start
