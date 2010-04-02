@@ -361,6 +361,7 @@ spec/examples/element.rb
 spec/examples/hello.rb
 spec/examples/helpers/httpdigest.rb
 spec/examples/linking.rb
+spec/examples/misc/sequel_scaffolding.rb
 spec/examples/simple.rb
 spec/examples/templates/template_erubis.rb
 spec/examples/templates/template_ezamar.rb
@@ -372,6 +373,7 @@ spec/examples/templates/template_nagoro.rb
 spec/examples/templates/template_redcloth.rb
 spec/examples/templates/template_remarkably.rb
 spec/examples/templates/template_tenjin.rb
+spec/examples/todolist.rb
 spec/helper.rb
 spec/ramaze/action/render.rb
 spec/ramaze/action/view/bar.xhtml

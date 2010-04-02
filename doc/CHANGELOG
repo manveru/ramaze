@@ -1,3 +1,118 @@
+[f8a2708 | Fri Apr 02 15:41:43 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix Mustache engine
+
+[a1c7fd6 | Fri Apr 02 15:34:50 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update post install message
+
+[fd3697a | Fri Apr 02 15:34:36 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Update dependencies
+
+[135bc90 | Fri Apr 02 07:11:24 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed file dispatcher spec
+
+[4891e4b | Fri Apr 02 01:35:11 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * added scaffolding_extensions dev dependency
+
+[f098e58 | Fri Apr 02 01:05:51 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed todolist requires
+
+[32c33de | Fri Apr 02 00:46:31 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * pagination fixes
+
+[89080f4 | Fri Apr 02 00:19:34 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * paginate helper to extend sequel with pagination
+
+[8c1a80a | Fri Apr 02 00:12:21 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed blog example
+
+[a4cc3cc | Mon Mar 29 15:13:35 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed partial example
+
+[df28492 | Mon Mar 29 14:59:09 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fix layout example
+
+[33fe3d0 | Fri Mar 26 11:49:18 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed path in usage example
+
+[de80952 | Fri Mar 26 11:45:54 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed a couple of depreciated methods in documentation
+
+[68682c1 | Fri Mar 26 01:18:05 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * Change app location setting to how it's documented
+
+[7de6f76 | Fri Mar 26 00:51:35 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * added spec for todolist example
+
+[1c2848e | Fri Mar 26 00:29:47 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed todolist example
+
+[fccee57 | Wed Mar 24 14:00:37 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed documention for number_counter, wrong method name used
+
+[a7ee66f | Wed Mar 24 02:20:19 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * added spec for sequel_scaffolding
+
+[f19ddf9 | Wed Mar 24 02:11:34 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * fixed sequel_scaffolding example
+
+[4c36872 | Wed Mar 24 00:05:12 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * xhtml helpers should chomp leading slash from prefix
+
+[d4dcc8a | Tue Mar 23 16:24:28 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * adapter handler should be fastcgi rack handler
+
+[d11daa3 | Tue Mar 23 10:07:40 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * Project creator not copying dotfiles (.htaccess) due to globbing
+
+[bd1ec41 | Fri Mar 19 01:22:55 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Replace last occurances of Global
+
+[050a949 | Thu Mar 11 18:44:20 UTC 2010] Masahiro Nakagawa <repeatedly@gmail.com>
+
+  * Fix Mustache template adapter
+
+    Mustache changed template context(latest version doesn't use Hash).
+    So, if template file doesn't find, use Mustache::Context instead of Hash.
+
+[6df728c | Thu Mar 11 08:14:43 UTC 2010] crab <crabtw@gmail.com>
+
+  * use Ramaze.options.prefix as link prefix
+
+[1095d18 | Tue Mar 09 01:50:23 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * ramaze is no dependency of ramaze
+
+[b46443d | Tue Mar 09 01:47:57 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Fix .dup in Rakefile
+
+[43a38b8 | Mon Mar 08 13:55:07 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2010.03
+
 [8629332 | Tue Mar 02 05:36:52 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
 
   * Gracefully handle empty commit title
