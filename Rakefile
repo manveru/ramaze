@@ -53,6 +53,7 @@ DEVELOPMENT_DEPENDENCIES = {
   "Remarkably"      => {:version => "0.5.2", :lib => 'remarkably'},
   "RubyInline"      => {:version => "3.8.4"},
   "sequel"          => {:version => "3.9.0"},
+  "scaffolding_extensions"  => {:version => "1.4.0"},
   "slippers"        => {:version => "0.0.14"},
   "sqlite3-ruby"    => {:version => "1.2.5", :lib => 'sqlite3'},
   "tagz"            => {:version => "7.2.3"},
