@@ -80,8 +80,8 @@ GEMSPEC = Gem::Specification.new{|s|
 ============================================================
 
 Thank you for installing Ramaze!
-You can now do create a new project:
-# ramaze create yourproject
+To create a new project:
+$ ramaze create yourproject
 
 ============================================================
 MESSAGE
