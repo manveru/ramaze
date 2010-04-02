@@ -15,7 +15,7 @@ module Ramaze
         action.sync_variables(action)
         action.variables.each { |k, v| context[k.to_sym] = v }
 
-        view = View.compile(string) { |s| ::Mustache::Template.new(s, path, ext) }
+        view = View.compile(string) { |s| ::Mustache::Template.new(s) }
         html = view.render(context)
 
         return html, 'text/html'
