@@ -39,6 +39,9 @@ module Ramaze
       #   @pager.navigation
       #   @pager.each{|e| puts(e)
       #
+      # Note that you must first extend Sequel with the pagination extension.
+      #   Sequel.extension :pagination
+      #
       # +dataset+ may be a Sequel dataset or an Array
       # +options+ Takes precedence to trait[:paginate] and may contain
       #           following pairs:
@@ -56,12 +59,6 @@ module Ramaze
         limit = options[:limit]
         var   = options[:var]
         page  = options[:page] || (request[var] || 1).to_i
-        
-        # Extend Sequel with pagination functionality if given a dataset.
-        # A quick hack, any better suggestions are welcome 
-        if dataset.class.to_s =~ /dataset$/i
-          Sequel.extension :pagination
-        end
           
         Paginator.new(dataset, page, limit, var)
       end
