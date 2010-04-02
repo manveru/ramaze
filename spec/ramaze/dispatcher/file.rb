@@ -14,10 +14,15 @@ Ramaze.middleware!(:spec){|m|
   m.run Ramaze::AppMap
 }
 
+class Main < Ramaze::Controller
+  map '/'
+  def index
+    "nothing"
+  end
+end
+
 describe 'Serving static files' do
   behaves_like :rack_test
-
-  Ramaze.map('/', lambda{|env| [200, {}, ['nothing']]})
 
   it 'serves from public root' do
     css = File.read(__DIR__('public/test_download.css'))
@@ -45,25 +50,25 @@ describe 'Serving static files' do
     last_response['Last-Modified'].should == mtime.httpdate
   end
 
-  it 'respects Etag with HTTP_IF_NONE_MATCH' do
+  it 'respects Etag with IF_NONE_MATCH' do
     get '/'
 
     etag = last_response['Etag']
     etag.should.not.be.nil
 
-    header 'HTTP_IF_NONE_MATCH', etag
+    header 'IF_NONE_MATCH', etag
     get '/'
     last_response.status.should == 304
     last_response.body.should == ''
   end
 
-  it 'respects Last-Modified with HTTP_IF_MODIFIED_SINCE' do
+  it 'respects Last-Modified with IF_MODIFIED_SINCE' do
     get '/test_download.css'
 
     mtime = last_response['Last-Modified']
     mtime.should.not.be.nil
 
-    header 'HTTP_IF_MODIFIED_SINCE', mtime
+    header 'IF_MODIFIED_SINCE', mtime
     get '/test_download.css'
     last_response.status.should == 304
     last_response.body.should == ''
