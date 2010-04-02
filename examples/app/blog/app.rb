@@ -2,8 +2,8 @@ require 'rubygems'
 require 'ramaze'
 
 Ramaze.setup :verbose => true do
-  gem 'sequel', '2.12.0'
-  gem 'maruku', '0.5.9'
+  gem 'sequel', '3.9.0'
+  gem 'maruku', '0.6.0'
 end
 
 module Blog

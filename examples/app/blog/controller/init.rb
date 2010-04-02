@@ -3,6 +3,8 @@ module Blog
     engine :Nagoro
     layout(:default){|path, wish| wish !~ /rss|atom/ }
     map_layouts '/'
+    map nil, :blog
+    app.location = '/'
     trait :app => :blog
     helper :form, :auth, :formatting
 
