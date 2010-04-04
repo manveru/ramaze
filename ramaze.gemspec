@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ramaze}
-  s.version = "2010.04"
+  s.version = "2010.04.04"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.5") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael 'manveru' Fellinger"]
-  s.date = %q{2010-04-03}
+  s.date = %q{2010-04-04}
   s.default_executable = %q{ramaze}
   s.description = %q{Ramaze is a simple and modular web framework}
   s.email = %q{m.fellinger@gmail.com}
@@ -30,7 +30,7 @@ $ ramaze create yourproject
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<innate>, ["= 2010.03"])
+      s.add_runtime_dependency(%q<innate>, ["= 2010.04"])
       s.add_development_dependency(%q<abstract>, ["= 1.0.0"])
       s.add_development_dependency(%q<addressable>, ["= 2.1.1"])
       s.add_development_dependency(%q<bacon>, ["= 1.1.0"])
@@ -64,7 +64,7 @@ $ ramaze create yourproject
       s.add_development_dependency(%q<tagz>, ["= 7.2.3"])
       s.add_development_dependency(%q<tenjin>, ["= 0.6.1"])
     else
-      s.add_dependency(%q<innate>, ["= 2010.03"])
+      s.add_dependency(%q<innate>, ["= 2010.04"])
       s.add_dependency(%q<abstract>, ["= 1.0.0"])
       s.add_dependency(%q<addressable>, ["= 2.1.1"])
       s.add_dependency(%q<bacon>, ["= 1.1.0"])
@@ -99,7 +99,7 @@ $ ramaze create yourproject
       s.add_dependency(%q<tenjin>, ["= 0.6.1"])
     end
   else
-    s.add_dependency(%q<innate>, ["= 2010.03"])
+    s.add_dependency(%q<innate>, ["= 2010.04"])
     s.add_dependency(%q<abstract>, ["= 1.0.0"])
     s.add_dependency(%q<addressable>, ["= 2.1.1"])
     s.add_dependency(%q<bacon>, ["= 1.1.0"])
