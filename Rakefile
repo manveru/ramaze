@@ -32,7 +32,6 @@ DEVELOPMENT_DEPENDENCIES = {
   "erector"                 => {:version => "0.7.2"},
   "erubis"                  => {:version => "2.6.5"},
   "ezamar"                  => {:version => "2009.06"},
-  "gemcutter"               => {:version => "0.5.0"},
   "haml"                    => {:version => "2.2.22"},
   "hpricot"                 => {:version => "0.8.2"},
   "json"                    => {:version => "1.2.3"},
