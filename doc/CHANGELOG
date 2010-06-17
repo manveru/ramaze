@@ -1,3 +1,19 @@
+[8c86f88 | Thu Jun 17 15:41:50 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Allow latest version of Rack/Innate
+
+[a2b04aa | Sun May 09 10:19:43 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Remove gemcutter development dependency
+
+[1373a3a | Sat Apr 03 17:07:29 UTC 2010] injekt <injekt.me@gmail.com>
+
+  * updated mailmap
+
+[0a9e80e | Sun Apr 04 00:57:11 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
+
+  * Version 2010.04.04
+
 [8a77923 | Fri Apr 02 15:43:02 UTC 2010] Michael Fellinger <m.fellinger@gmail.com>
 
   * Version 2010.04
