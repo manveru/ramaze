@@ -313,7 +313,7 @@ There are some basic principles that Ramaze tries to follow:
 
 * Direct Download
 
-  You can alternatively download the entire source code in a tarball from
+  You can alternatively download the latest source code in a tarball from
   [here](http://github.com/Ramaze/ramaze/tarball/master).
 
 # Getting Started
