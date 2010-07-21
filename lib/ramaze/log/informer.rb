@@ -32,7 +32,7 @@ module Ramaze
       }
 
       # Create a new instance of Informer.
-      # You can spcify
+      # You can specify
       #
       # Examples:
       #   Informer.new                    #=> logs to stdout with all levels being
