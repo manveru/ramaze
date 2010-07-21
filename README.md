@@ -239,15 +239,6 @@ There are some basic principles that Ramaze tries to follow:
   Versions are made as we see fit and get an announcement out (usually that's
   the major obstacle as there is a lot to announce).
 
-  If you want to install the nightly gem of Ramaze you can do this with:
-
-      $ gem install ramaze --source=http://gem.ramaze.net/
-
-  We also use the gem building process on github, which locates gems at
-  http://gems.github.com - so you can get a version from there as well:
-
-      $ gem install manveru-ramaze --source=http://gems.github.com/
-
 * via git
 
   To get the latest and sweetest, you can just pull from the repository and run
@@ -320,6 +311,10 @@ There are some basic principles that Ramaze tries to follow:
         # From here on you can use either git-send-email or go the manual route
         $ tar -cjf ramaze_bundle.tar.bz2 *.patch
 
+* Direct Download
+
+  You can alternatively download the entire source code in a tarball from
+  http://github.com/Ramaze/ramaze/tarball/master
 
 # Getting Started
 
@@ -380,6 +375,7 @@ Examples include:
   examples of real usage of the templating-engines. Tries to implement the same
   functionality in each `template_*.rb` file using a different engine.
 
+* Many more fully functional examples can be found in the examples folder.
 
 
 # How to find Help
