@@ -3,6 +3,7 @@
 
 require File.expand_path('../../../../spec/helper', __FILE__)
 require 'ramaze/log/informer'
+require 'stringio'
 
 describe 'Informer' do
   @out = []
