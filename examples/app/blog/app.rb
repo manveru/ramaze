@@ -4,6 +4,8 @@ require 'ramaze'
 Ramaze.setup :verbose => true do
   gem 'sequel', '3.9.0'
   gem 'maruku', '0.6.0'
+  gem 'sqlite3-ruby', :lib => 'sqlite3'
+  gem 'nagoro'
 end
 
 module Blog
