@@ -54,7 +54,7 @@ class SpecUserHelperCallback < SpecUserHelper
   end
 end
 
-describe Ramaze::Helper::User do
+describe Ramaze::Helper::UserHelper do
   behaves_like :rack_test
 
   should 'login' do
