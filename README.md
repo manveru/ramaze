@@ -244,7 +244,7 @@ There are some basic principles that Ramaze tries to follow:
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
 
-      $ git clone git://github.com/manveru/ramaze.git
+      $ git clone git://github.com/Ramaze/ramaze.git
 
   Please read the `man git` or `git help` for more information about updating
   and creating your own patches.
