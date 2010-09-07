@@ -227,7 +227,7 @@ There are some basic principles that Ramaze tries to follow:
 
 # Installation
 
-* via RubyGems
+## RubyGems
 
   The simplest way of installing Ramaze is via the gem.
 
@@ -239,7 +239,7 @@ There are some basic principles that Ramaze tries to follow:
   Versions are made as we see fit and get an announcement out (usually that's
   the major obstacle as there is a lot to announce).
 
-* via git
+## Git
 
   To get the latest and sweetest, you can just pull from the repository and run
   Ramaze that way.
@@ -311,7 +311,7 @@ There are some basic principles that Ramaze tries to follow:
         # From here on you can use either git-send-email or go the manual route
         $ tar -cjf ramaze_bundle.tar.bz2 *.patch
 
-* Direct Download
+## Direct Download
 
   You can alternatively download the latest source code in a tarball from
   [here](http://github.com/Ramaze/ramaze/tarball/master).
