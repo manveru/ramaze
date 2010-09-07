@@ -50,7 +50,7 @@ module Ramaze
       #   Fall back to default if the given +email+ doesn't have an gravatar;
       #   may be an absolute url, 'identicon', 'monsterid', or 'wavatar'
       #
-      # @options opts [true, false] :force (false)
+      # @option opts [true, false] :force (false)
       #   Force use of the default avatar, useful if you want to use only
       #   identicons or the like
       #

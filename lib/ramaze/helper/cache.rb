@@ -66,11 +66,11 @@ module Ramaze
       # to do lazy computation of the cached value conveniently when using a
       # custom TTL or longer expressions that don't fit on one line with ||=.
       #
-      # @usage Example to get the cache object directly
+      # @example to get the cache object directly
       #
       #   count = cache_value[:count] ||= Article.count
       #
-      # @usage Example with block
+      # @example with block
       #
       #   count = cache_value(:count){ Article.count }
       #   count = cache_value(:count, :ttl => 60){ Article.count }

@@ -198,7 +198,7 @@ module Ramaze
     # given default instead. Optionally it also takes a block, the return value
     # of the block is then stored and returned.
     #
-    # @usage Example
+    # @example
     #
     #   lru = LRUHash.new
     #   lru.fetch(:a) # => KeyError: key not found: :a
