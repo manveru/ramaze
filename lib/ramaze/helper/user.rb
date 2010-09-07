@@ -4,7 +4,7 @@ module Ramaze
     # This helper provides a convenience wrapper for handling authentication
     # and persistence of users.
     #
-    # On every request, when you use the {User#user} method for the first time,
+    # On every request, when you use the {UserHelper#user} method for the first time,
     # we confirm the authentication and store the returned object in the
     # request.env, usually this will involve a request to your database.
     #
