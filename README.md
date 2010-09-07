@@ -344,16 +344,16 @@ There are some examples for your instant pleasure inside the examples-directory
 in the Ramaze-distribution.
 You can start up an example just as you usually would any other ruby program:
 
-  $ ruby examples/basic/hello.rb
+    $ ruby examples/basic/hello.rb
 
 Or:
 
-  $ cd examples/app/blog
-  $ ruby start.rb
+    $ cd examples/app/blog
+    $ ruby start.rb
   
 For more information about the usage of ramaze try:
 
-  $ ramaze --help
+    $ ramaze --help
 
 
 Examples include:
@@ -389,7 +389,7 @@ For help you can:
 
 # And thanks to...
 
-There is a large number of people who made Ramaze possible by their ongoing
+There are a large number of people who made Ramaze possible by their ongoing
 efforts in the world of open source and by encouraging and helping me.
 
 This list is by no means a full listing of all these people, but I try to
@@ -444,7 +444,7 @@ I would like to thank:
     All the people in there deserve special thanks for getting me hooked to Ruby
     and providing their help in a friendly and patient manner.
 
-    * #nitro
-    * #ruby-de
-    * #ruby-lang
-    * #rubyforce
+  * \#nitro
+  * \#ruby-de
+  * \#ruby-lang
+  * \#rubyforce
