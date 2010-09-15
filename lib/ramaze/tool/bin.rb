@@ -142,7 +142,7 @@ module Ramaze
             require "irb"
             require "irb/completion"
             Ramaze.options.started = true
-            require "start"
+            require "./start"
             IRB.start
             puts "Ramazement has ended, go in peace."
           when /^(?:--?)?h(elp)?$/
