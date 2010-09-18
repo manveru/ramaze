@@ -173,6 +173,7 @@ module Ramaze
         # @author manveru
         def _login(creds = _persistence)
           if @_user = _would_login?(creds)
+            Current.session.resid!
             self._persistence = creds
           end
         end
