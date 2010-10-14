@@ -1,11 +1,11 @@
 namespace :git do
   task :anon do
-    sh 'git config remote.origin.url git://github.com/manveru/ramaze'
+    sh 'git config remote.origin.url git://github.com/Ramaze/ramaze'
     puts "You're now accessing ramaze anonymous"
   end
 
   task :committer do
-    sh 'git config remote.origin.url git@github.com:manveru/ramaze'
+    sh 'git config remote.origin.url git@github.com:Ramaze/ramaze'
     puts "You're now accessing ramaze as committer"
   end
 
