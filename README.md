@@ -1,6 +1,8 @@
           Copyright (c) 2009 Michael Fellinger m.fellinger@gmail.com
  All files in this distribution are subject to the terms of the Ruby license.
 
+# NOTE: The main Ramaze repository has been moved to [Ramaze/ramaze](http://github.com/Ramaze/ramaze). Please refer to this repo in future
+
 # About Ramaze
 
 Ramaze is a very simple and straight-forward web-framework.
