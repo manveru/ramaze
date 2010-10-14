@@ -14,7 +14,7 @@ module Ramaze
   # On the first request, for example on registering:
   #
   #   flash[:error] = "You should reconsider your username, it's taken already"
-  #   redirect R(self, :register)
+  #   redirect r(:register)
   #
   # This is the request from the redirect:
   #
