@@ -7,14 +7,20 @@ module Ramaze
       SCRIPT_TAG = '<script src=%p type="text/javascript"></script>'
 
       def css(name, media = 'screen', options = {})
-        if options.empty?
-          if name =~ /^http/ # consider it external full url
+        if media.respond_to?(:keys)
+          options = media
+          media = 'screen'
+        end
+
+        if only = options.delete(:only) and only.to_s == 'ie'
+          "<!--[if IE]>#{css(name, media, options)}<![endif]-->"
+        else
+          if name =~ /^http/
             LINK_TAG % [name, media]
           else
-            LINK_TAG % ["#{Ramaze.options.prefix.chomp("/")}/css/#{name}.css", media]
+            prefix = options[:prefix] || 'css'
+            LINK_TAG % ["#{Ramaze.options.prefix.chomp("/")}/#{prefix}/#{name}.css", media]
           end
-        elsif options[:only].to_s.downcase == 'ie'
-          "<!--[if IE]>#{css(name, media)}<![endif]-->"
         end
       end
 
@@ -22,11 +28,11 @@ module Ramaze
         args.map{|arg| css(*arg) }.join("\n")
       end
 
-      def js(name)
+      def js(name, options={})
         if name =~ /^http/ # consider it external full url
           SCRIPT_TAG % name
         else
-          SCRIPT_TAG % "#{Ramaze.options.prefix.chomp("/")}/js/#{name}.js"
+          SCRIPT_TAG % "#{Ramaze.options.prefix.chomp("/")}/#{options[:prefix] || 'js'}/#{name}.js"
         end
       end
 
