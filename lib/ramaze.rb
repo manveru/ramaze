@@ -23,7 +23,6 @@ module Ramaze
   class << self; attr_accessor :options; end
 
   # vendored, will go into rack-contrib
-  require 'vendor/etag'
   require 'vendor/route_exceptions'
 
   # Ramaze itself

@@ -258,12 +258,10 @@ lib/ramaze/helper/localize.rb
 lib/ramaze/helper/markaby.rb
 lib/ramaze/helper/maruku.rb
 lib/ramaze/helper/nitroform.rb
-lib/ramaze/helper/pager.rb
 lib/ramaze/helper/paginate.rb
-lib/ramaze/helper/partial.rb
 lib/ramaze/helper/remarkably.rb
 lib/ramaze/helper/request_accessor.rb
-lib/ramaze/helper/sequel.rb
+lib/ramaze/helper/send_file.rb
 lib/ramaze/helper/sequel_form.rb
 lib/ramaze/helper/simple_captcha.rb
 lib/ramaze/helper/stack.rb
@@ -350,7 +348,6 @@ lib/ramaze/view/sass.rb
 lib/ramaze/view/slippers.rb
 lib/ramaze/view/tagz.rb
 lib/ramaze/view/tenjin.rb
-lib/vendor/etag.rb
 lib/vendor/route_exceptions.rb
 ramaze.gemspec
 spec/contrib/addressable_route.rb
@@ -428,7 +425,6 @@ spec/ramaze/helper/layout/default.xhtml
 spec/ramaze/helper/link.rb
 spec/ramaze/helper/localize.rb
 spec/ramaze/helper/maruku.rb
-spec/ramaze/helper/pager.rb
 spec/ramaze/helper/paginate.rb
 spec/ramaze/helper/request_accessor.rb
 spec/ramaze/helper/sequel_form.rb
