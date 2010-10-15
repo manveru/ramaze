@@ -1,9 +1,0 @@
-#login { margin: auto; padding: 10em; width: 300px; }
-#main { height: 300px; overflow: auto; font-family: monospace; }
-#main .time { margin-right: 0.5em; }
-#main .time:before { content:"["; color: #ccc; }
-#main .time:after { content:"]"; color: #ccc; }
-#main .nick { margin-right: 1em; }
-#main .nick:before { content:"<"; color: #ccc; }
-#main .nick:after { content:">"; color: #ccc; }
-#talk { width: 100%; }
